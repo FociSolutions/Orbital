@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbitalDesigner.Server", "src\OrbitalDesigner.Server\OrbitalDesigner.Server.csproj", "{391E695D-01C6-4D2C-BC5E-44B624628D86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbitalDesigner.Client", "src\OrbitalDesigner.Client\OrbitalDesigner.Client.csproj", "{09EC0F54-D02F-4D73-8A5D-5B95C1E721F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbitalDesigner.Shared", "src\OrbitalDesigner.Shared\OrbitalDesigner.Shared.csproj", "{0C84264D-C267-400E-87D0-7E06C6F9C5B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbitalDesigner.Server.Tests", "tests\OrbitalDesigner.Server.Tests\OrbitalDesigner.Server.Tests.csproj", "{962E6CC2-09A8-43F0-8CB5-A087E11CAC10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbitalDesigner.Client.Tests", "tests\OrbitalDesigner.Client.Tests\OrbitalDesigner.Client.Tests.csproj", "{3D252349-9A8D-436E-87C9-41E41465109A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbitalDesigner.Shared.Tests", "tests\OrbitalDesigner.Shared.Tests\OrbitalDesigner.Shared.Tests.csproj", "{40405F7B-5E11-4C56-9F72-15EB0883CCBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{391E695D-01C6-4D2C-BC5E-44B624628D86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{391E695D-01C6-4D2C-BC5E-44B624628D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{391E695D-01C6-4D2C-BC5E-44B624628D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{391E695D-01C6-4D2C-BC5E-44B624628D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EC0F54-D02F-4D73-8A5D-5B95C1E721F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EC0F54-D02F-4D73-8A5D-5B95C1E721F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EC0F54-D02F-4D73-8A5D-5B95C1E721F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EC0F54-D02F-4D73-8A5D-5B95C1E721F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C84264D-C267-400E-87D0-7E06C6F9C5B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C84264D-C267-400E-87D0-7E06C6F9C5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C84264D-C267-400E-87D0-7E06C6F9C5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C84264D-C267-400E-87D0-7E06C6F9C5B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{962E6CC2-09A8-43F0-8CB5-A087E11CAC10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{962E6CC2-09A8-43F0-8CB5-A087E11CAC10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{962E6CC2-09A8-43F0-8CB5-A087E11CAC10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{962E6CC2-09A8-43F0-8CB5-A087E11CAC10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D252349-9A8D-436E-87C9-41E41465109A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D252349-9A8D-436E-87C9-41E41465109A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D252349-9A8D-436E-87C9-41E41465109A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D252349-9A8D-436E-87C9-41E41465109A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40405F7B-5E11-4C56-9F72-15EB0883CCBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40405F7B-5E11-4C56-9F72-15EB0883CCBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40405F7B-5E11-4C56-9F72-15EB0883CCBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40405F7B-5E11-4C56-9F72-15EB0883CCBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E27EF168-84CB-44B5-BF67-DF4AF0F417EA}
+	EndGlobalSection
+EndGlobal

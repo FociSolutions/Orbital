@@ -1,0 +1,82 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+  
+variables:
+  buildConfiguration: 'Release'
+
+container: mcr.microsoft.com/dotnet/core/sdk:3.0
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Unit Testing Client Project
+  inputs:
+    command: test
+    arguments: '--configuration $(buildConfiguration) 
+                /p:CollectCoverage=true 
+                /p:CoverletOutput=$(System.DefaultWorkingDirectory)/client 
+                /p:Include=[OrbitalDesigner*]* 
+                /p:Exclude=[*.Tests]* 
+                /p:ExcludeByAttribute=GeneratedCodeAttribute 
+                --filter Category!=Integration'
+    publishTestResults: true
+    workingDirectory: tests/OrbitalDesigner.Client.Tests
+
+- task: DotNetCoreCLI@2
+  displayName: Unit Testing Shared Project
+  inputs:
+    command: test
+    arguments: '--configuration $(buildConfiguration) 
+                /p:CollectCoverage=true 
+                /p:MergeWith=$(System.DefaultWorkingDirectory)/client.json 
+                /p:CoverletOutput=$(System.DefaultWorkingDirectory)/shared 
+                /p:Include=[OrbitalDesigner*]* 
+                /p:Exclude=[*.Tests]* 
+                /p:ExcludeByAttribute=GeneratedCodeAttribute 
+                --filter Category!=Integration'
+    publishTestResults: true
+    workingDirectory: tests/OrbitalDesigner.Shared.Tests
+
+- task: DotNetCoreCLI@2
+  displayName: Unit Testing Server Project
+  inputs:
+    command: test
+    arguments: '--configuration $(buildConfiguration) 
+                /p:CollectCoverage=true 
+                /p:MergeWith=$(System.DefaultWorkingDirectory)/shared.json 
+                /p:CoverletOutput=$(System.DefaultWorkingDirectory)/orbital 
+                /p:CoverletOutputFormat=cobertura 
+                /p:Include=[OrbitalDesigner*]* 
+                /p:Exclude=[*.Tests]* 
+                /p:ExcludeByAttribute=GeneratedCodeAttribute 
+                --filter Category!=Integration'
+    publishTestResults: true
+    workingDirectory: tests/OrbitalDesigner.Server.Tests
+
+- task: DotNetCoreCLI@2
+  displayName: Publishing
+  inputs:
+    command: publish
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    workingDirectory: src/OrbitalDesigner.Server
+    publishWebProjects: false
+    modifyOutputPath: true
+
+- script: |
+    dotnet tool install dotnet-reportgenerator-globaltool --tool-path . --version 4.1.5
+    ./reportgenerator "-reports:$(System.DefaultWorkingDirectory)/orbital.cobertura.xml" "-targetdir:$(System.DefaultWorkingDirectory)/results" "-reporttypes:HTMLInline;HTMLChart" 
+  displayName: Generating Code Coverage Report
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura 
+    summaryFileLocation: $(System.DefaultWorkingDirectory)/orbital.cobertura.xml
+    reportDirectory: $(System.DefaultWorkingDirectory)/results
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Build Artifiacts
