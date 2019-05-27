@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "orbital-designer"
+		}
+	],
+	"settings": {
+		"git.ignoreMissingGitWarning": true,
+    	"prettier.singleQuote": true,
+    	"typescript.updateImportsOnFileMove.enabled": "always",
+    	"window.zoomLevel": 0,
+    	"workbench.iconTheme": "vscode-icons"
+	},
+	"extensions": {
+        "recommendations": [
+            "esbenp.prettier-vscode",
+            "vscode-icons-team.vscode-icons",
+			      "zhuangtongfa.material-theme",
+			      "ms-vscode.vscode-typescript-tslint-plugin"
+,
+			      "vincaslt.highlight-matching-tag"        ]
+    }
+}

@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/node_modules/
+.vs/
+.git/
+packages/
+report/
+tests/
+docker/
+azure-pipelines.yml
+**/*.md
+**/.gitignore

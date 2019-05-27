@@ -1,0 +1,70 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+trigger:
+  branches:
+    include:
+      - '*'
+  paths:
+    include:
+      - src/orbital-designer/*
+      - azure-pipelines-designer.yml
+
+variables:
+  buildConfiguration: 'Release'
+
+container: microsoft/dotnet:2.2-sdk
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.x'
+
+  - script: npm install
+    displayName: npm install
+    workingDirectory: src/orbital-designer
+
+  - script: npm run-script coverage-test --coverageDirectory=$(System.DefaultWorkingDirectory)
+    displayName: npm test
+    workingDirectory: src/orbital-designer
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: '**/junit.xml'
+
+  - task: DotNetCoreCLI@2
+    displayName: Publishing Designer Server
+    inputs:
+      command: publish
+      arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/designer/build'
+      workingDirectory: src/Orbital.Designer.Server/
+      publishWebProjects: false
+      modifyOutputPath: true
+      zipAfterPublish: false
+
+  - task: CopyFiles@2
+    displayName: Move npm Build to Designer Server Build
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)/designer'
+      Contents: 'orbital-designer/**'
+      TargetFolder: '$(System.DefaultWorkingDirectory)/designer/build'
+
+  - task: CopyFiles@2
+    displayName: Move Builds to Artifact Directory
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)/designer/build'
+      Contents: |
+        *
+        orbital-designer/**
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/**/cobertura*.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/**/lcov-report
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Build Artifiacts
