@@ -1,11 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import CreateNewMock from './CreateNewMockComponent';
-import { BrowserRouter } from 'react-router-dom';
+import { shallow } from 'enzyme';
+import NewMockTitle from './NewMockTitleComponent';
+import NewMockForm from './NewMockFormComponent';
 
-it('renders without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<BrowserRouter><CreateNewMock /></BrowserRouter>, div);
-     ReactDOM.unmountComponentAtNode(div);
-  });
-  
+it('renders new mock title without crashing', () => {
+  const app = shallow(<CreateNewMock />);
+  expect(app.containsMatchingElement(<NewMockTitle />)).toBeTruthy();
+});
+
+it('renders new mock form without crashing', () => {
+  const app = shallow(<CreateNewMock />);
+  expect(app.containsMatchingElement(<NewMockForm />)).toBeTruthy();
+});

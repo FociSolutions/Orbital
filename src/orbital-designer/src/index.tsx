@@ -3,13 +3,36 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './app/App';
 import * as serviceWorker from './serviceWorker';
-import configureStore from './app/common/stores/store';
 import { Provider } from 'react-redux';
+import { configureStore, getDefaultMiddleware } from 'redux-starter-kit';
+import logger from 'redux-logger';
+import ApiInformationReducer from './app/common/ducks/ApiInformationSlice';
+import MetadataReducer from './app/common/ducks/MetadataSlice';
+import EndpointReducer from './app/common/ducks/EndpointSlice';
+import { BrowserRouter } from 'react-router-dom';
 
-const store = configureStore();
+var reducer = {
+    apiInfo: ApiInformationReducer,
+    metadata: MetadataReducer,
+    endpoint: EndpointReducer
+};
 
+var middleware = [...getDefaultMiddleware(), logger];
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+var store = configureStore({
+    reducer,
+    middleware,
+    devTools: process.env.NODE_ENV !== 'production'
+});
+
+ReactDOM.render(
+    <Provider store={store}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </Provider>,
+    document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

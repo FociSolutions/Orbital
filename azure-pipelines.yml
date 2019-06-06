@@ -1,10 +1,12 @@
 pool:
   vmImage: 'Ubuntu 16.04'
-
+  
 trigger:
   branches:
     include:
       - '*'
+    exclude:
+      - master
   paths:
     exclude:
       - src/orbital-designer/*
@@ -12,6 +14,7 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
+  system.debug: true
 
 container: microsoft/dotnet:2.2-sdk
 
@@ -21,7 +24,7 @@ steps:
     inputs:
       command: build
       arguments: '--configuration $(buildConfiguration)'
-
+  
   - task: DotNetCoreCLI@2
     displayName: Unit Testing for Mock Server
     inputs:
@@ -35,16 +38,16 @@ steps:
         /p:ExcludeByAttribute=GeneratedCodeAttribute'
       publishTestResults: true
       workingDirectory: tests/Orbital.Mock.Server.Tests
-
+  
   - task: DotNetCoreCLI@2
     displayName: Publishing Mock Server
     inputs:
-      command: publish
-      arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-      workingDirectory: src/Orbital.Mock.Server/
-      publishWebProjects: false
-      modifyOutputPath: true
-      zipAfterPublish: false
+     command: publish
+     arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build'
+     workingDirectory: src/Orbital.Mock.Server/
+     publishWebProjects: false
+     modifyOutputPath: true
+     zipAfterPublish: false
 
   - script: |
       dotnet tool install dotnet-reportgenerator-globaltool --tool-path . --version 4.1.5

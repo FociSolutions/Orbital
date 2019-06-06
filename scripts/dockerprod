@@ -1,0 +1,8 @@
+echo Docker login
+echo $2 | docker login --username $DOCKERHUBFOCI --password-stdin
+echo Pushing Orbital Mock image to Docker Hub
+docker tag  $REGISTRY.azurecr.io/$IMAGENAMEMOCK:$1 $DOCKERHUBFOCI/$IMAGENAMEMOCK:$2
+docker push $DOCKERHUBFOCI/$IMAGENAMEMOCK:$2
+echo Pushing Orbital Designer image to Docker Hub
+docker tag  $REGISTRY.azurecr.io/$IMAGENAMEMOCK:$1 $DOCKERHUBFOCI/$IMAGENAMEDESIGNER:$2
+docker push $DOCKERHUBFOCI/$IMAGENAMEDESIGNER:$2

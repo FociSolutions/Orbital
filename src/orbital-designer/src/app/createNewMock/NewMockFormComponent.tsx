@@ -1,15 +1,26 @@
 import React, { ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
-import OpenAPISchemaValidator from 'openapi-schema-validator';
-import yaml from 'js-yaml';
+import { Link, Redirect } from 'react-router-dom';
+import { Metadata } from '../common/models/mockDefinition/Metadata';
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from './duck/Container';
+import read from '../common/services/FileProcessService';
+import { toOpenApiSpec } from '../common/models/mockDefinition/MockDefinition';
 
-export interface Props {}
+export interface Props {
+  onMetadata?: (m: Metadata) => void;
+  onOpenApi?: (s: string) => void;
+  onHost?: (s: string) => void;
+  onBasePath?: (s: string) => void;
+}
 
 interface State {
   currentMockName: string;
-  currentDescription?: string;
+  currentDescription: string;
   fileName: string;
-  openApiSpec: any;
+  openApiSpec: string;
+  host: string;
+  basePath: string;
+  redirect: boolean;
 }
 
 class NewMockForm extends React.Component<Props, State> {
@@ -17,11 +28,15 @@ class NewMockForm extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+
     this.state = {
       currentMockName: '',
       currentDescription: '',
       fileName: 'Choose file',
-      openApiSpec: {}
+      openApiSpec: '',
+      host: '',
+      basePath: '',
+      redirect: false
     };
 
     this.onMockNameChange = this.onMockNameChange.bind(this);
@@ -31,11 +46,18 @@ class NewMockForm extends React.Component<Props, State> {
     this.fileInputRef = React.createRef();
   }
 
+  /**
+   * Event handler for mock title onChange event
+   * @param e Input change event
+   */
   onMockNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.info(e);
     this.setState({ currentMockName: e.target.value });
   }
 
+  /**
+   * Event handler for mock description onChange event
+   * @param e Input change event
+   */
   onDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     this.setState({ currentDescription: e.target.value });
   }
@@ -49,47 +71,89 @@ class NewMockForm extends React.Component<Props, State> {
     if (files && files.length > 0) {
       var file = files[0];
       this.setState({ fileName: file.name });
-      var fileReader = new FileReader();
-      fileReader.onload = () => {
-        this.processFile(fileReader.result as string);
-      };
-      fileReader.readAsText(file);
+      read(file).then(contentString => {
+        toOpenApiSpec(contentString).then(
+          result =>
+            this.setOpenApiInfo(contentString, result.host, result.basePath),
+          _err => this.showFileError()
+        );
+      });
     } else {
       this.setState({ fileName: 'Choose file' });
-      var input = this.fileInputRef.current;
-      if (input) {
-        input.classList.remove('is-invalid');
-      }
+      this.hideFileError();
     }
   }
 
   /**
-   * Check if the provided file is valid.
-   * If it is valid, save to state, otherwise, display error.
-   * @param content Content of OpenAPI spec file
+   * Event handler for form onSubmit event
+   * @param _e Submit event
    */
-  processFile(content: string) {
+  onFormSubmit(_e: React.FormEvent<HTMLFormElement>) {
+    if (this.props.onMetadata) {
+      this.props.onMetadata({
+        title: this.state.currentMockName,
+        description: this.state.currentDescription
+      });
+    }
+
+    if (this.props.onHost) {
+      this.props.onHost(this.state.host);
+    }
+
+    if (this.props.onBasePath) {
+      this.props.onBasePath(this.state.basePath);
+    }
+
+    if (this.props.onOpenApi) {
+      this.props.onOpenApi(this.state.openApiSpec);
+    }
+
+    this.setState({ redirect: true });
+  }
+
+  /**
+   * Set the open api information in the component stat and hide file error
+   * @param openApiSpec String representation of OpenAPI spec
+   * @param hostInfo Host information from openAPI spec
+   * @param basePathInfo Base path information from openAPI spec
+   */
+  setOpenApiInfo(
+    openApiSpec: string,
+    hostInfo?: string,
+    basePathInfo?: string
+  ) {
+    this.setState({
+      openApiSpec: openApiSpec,
+      host: hostInfo ? hostInfo : '',
+      basePath: basePathInfo ? basePathInfo : ''
+    });
+    this.hideFileError();
+  }
+
+  /**
+   * Show error message for read file
+   */
+  showFileError() {
     var input = this.fileInputRef.current;
-    var validator = new OpenAPISchemaValidator({ version: 2 });
-    if (content) {
-      var spec = yaml.safeLoad(content);
-      var result = validator.validate(spec);
-      if (!result.errors || result.errors.length < 1) {
-        this.setState({ openApiSpec: spec });
-        if (input) {
-          input.classList.remove('is-invalid');
-        }
-      } else if (input) {
-        input.classList.add('is-invalid');
-      }
+    if (input) {
+      input.classList.add('is-invalid');
     }
   }
 
-  onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
-    console.info(e);
+  /**
+   * Hide error message for read file
+   */
+  hideFileError() {
+    var input = this.fileInputRef.current;
+    if (input) {
+      input.classList.remove('is-invalid');
+    }
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={{ pathname: '/endpointScenarioOverview' }} />;
+    }
     return (
       <form className="needs-validation" onSubmit={this.onFormSubmit}>
         <div className="form-row mb-3">
@@ -141,11 +205,11 @@ class NewMockForm extends React.Component<Props, State> {
         </div>
 
         <div className="form-row">
-          <button className="btn btn-light mr-2">
-            <Link to="/">Go Back</Link>
-          </button>
+          <Link className="btn btn-light mr-2" to="/">
+            Go Back
+          </Link>
           <button className="btn btn-light ml-2" type="submit">
-            <Link to="/endpointScenarioOverview"> Edit Mock Definition</Link>
+            Edit Mock Definition
           </button>
         </div>
       </form>
@@ -153,4 +217,7 @@ class NewMockForm extends React.Component<Props, State> {
   }
 }
 
-export default NewMockForm;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewMockForm);

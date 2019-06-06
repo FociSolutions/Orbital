@@ -5,11 +5,13 @@ trigger:
   branches:
     include:
       - '*'
+    exclude:
+      - master
   paths:
     include:
       - src/orbital-designer/*
       - azure-pipelines-designer.yml
-
+      
 variables:
   buildConfiguration: 'Release'
 
@@ -27,7 +29,7 @@ steps:
   - script: npm run-script coverage-test --coverageDirectory=$(System.DefaultWorkingDirectory)
     displayName: npm test
     workingDirectory: src/orbital-designer
-
+  
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
@@ -38,7 +40,7 @@ steps:
     displayName: Publishing Designer Server
     inputs:
       command: publish
-      arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/designer/build'
+      arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/designer/build/'
       workingDirectory: src/Orbital.Designer.Server/
       publishWebProjects: false
       modifyOutputPath: true
@@ -68,3 +70,4 @@ steps:
 
   - task: PublishBuildArtifacts@1
     displayName: Publish Build Artifiacts
+  
