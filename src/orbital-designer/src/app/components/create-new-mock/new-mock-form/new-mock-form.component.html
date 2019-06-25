@@ -1,0 +1,56 @@
+<form class="needs-validation" onSubmit={this.onFormSubmit}>
+  <div class="form-row mb-3">
+    <label htmlFor="validationMockName">Mock Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="validationMockName"
+      placeholder="Mock Name"
+      onChange={this.onMockNameChange}
+      required
+    />
+  </div>
+
+  <div class="form-row mb-3">
+    <label htmlFor="mockDescription">Description</label>
+    <textarea
+      rows={4}
+      class="form-control"
+      id="mockDescription"
+      placeholder="Mock Description (optional)"
+      onChange={this.onDescriptionChange}
+    ></textarea>
+  </div>
+
+  <div class="form-row mb-3">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">OpenAPI Spec</span>
+      </div>
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input form-control"
+          accept=".yml,.yaml"
+          id="openAPISpec"
+          required
+        />
+        <label class="custom-file-label" htmlFor="openAPISpec">
+          <!-- {{this.state.fileName}} -->
+        </label>
+        <div class="invalid-feedback mt-5 pt-2">
+          Please provide a valid OpenAPI specification
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <button class="btn btn-light mr-2" to="/">
+      Go Back
+    </button>
+    <button class="btn btn-light ml-2" type="submit">
+      Edit Mock Definition
+    </button>
+  </div>
+</form>

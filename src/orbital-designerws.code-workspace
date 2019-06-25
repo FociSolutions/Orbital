@@ -18,6 +18,6 @@
 			      "zhuangtongfa.material-theme",
 			      "ms-vscode.vscode-typescript-tslint-plugin"
 ,
-			      "vincaslt.highlight-matching-tag"        ]
+			      "vincaslt.highlight-matching-tag",         "johnpapa.angular-essentials"]
     }
 }

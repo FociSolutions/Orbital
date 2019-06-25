@@ -1,0 +1,200 @@
+<div class="col-8">
+  <div class="row m-2">
+    <label>
+      <h2>Scenario Name</h2>
+    </label>
+  </div>
+  <div class="row m-2">
+    <label>
+      <h2>Request</h2>
+    </label>
+  </div>
+  <form>
+    <div class="scenarioBorder">
+      <div class="form-row m-3">
+        <div class="form-group col-sm-4">
+          <label htmlFor="headerkey">Header Key</label>
+          <input
+            class="form-control "
+            defaultValue="Content-type"
+            id="headerkey"
+          />
+        </div>
+        <div class="form-group col-sm-4">
+          <label htmlFor="headervalue">Header Value</label>
+          <input
+            class="form-control "
+            defaultValue="application/json"
+            id="headervalue"
+          />
+        </div>
+      </div>
+      <div class="form-group row m-3">
+        <label class="col-form-label" htmlFor="bodyrequest">
+          Body
+        </label>
+        <textarea
+          class="form-control"
+          id="bodyrequest"
+          rows={4}
+        ></textarea>
+      </div>
+    </div>
+    <div class="row m-2">
+      <label>
+        <h2>Response</h2>
+      </label>
+    </div>
+    <div class="scenarioBorder">
+      <div class="row col-sm-4 m-2">
+        <label>Response Type</label>
+        <select class="custom-select" id="inputGroupSelect01" defaultValue="Choose...">
+          <option >Choose...</option>
+          <option value="1">Mock</option>
+          <option value="2">Falt</option>
+          <option value="3">Proxy</option>
+        </select>
+      </div>
+      <div class="form-row m-3">
+        <div class="form-group col-sm-4">
+          <label htmlFor="headerkey">Header Key</label>
+          <input
+            class="form-control "
+            defaultValue="Content-type"
+            id="headerkey"
+          />
+        </div>
+        <div class="form-group col-sm-4">
+          <label htmlFor="headervalue">Header Value</label>
+          <input
+            class="form-control "
+            defaultValue="application/json"
+            id="headervalue"
+          />
+        </div>
+        <div class="form-group  col-sm-4">
+          <label>Status </label>
+          <input class="form-control" type="number" />
+        </div>
+      </div>
+      <div class="form-group row m-3">
+        <label class="col-form-label" htmlFor="bodyrequest">
+          Body
+        </label>
+        <textarea
+          class="form-control"
+          id="bodyrequest"
+          rows={4}
+        ></textarea>
+      </div>
+    </div>
+    <div class="row m-2">
+      <label>
+        <h2>Matching Rules</h2>
+      </label>
+    </div>
+    <div class="scenarioBorder">
+      <label>
+        <h4>Schema Rule</h4>
+      </label>
+      <div class="form-row m-3">
+        <div class="form-group col-sm-4">
+        <label htmlFor="schemaSpec">
+                  Schema File
+                </label>
+        <input
+                  type="file"
+                  accept=".yml,.yaml"
+                  id="schemaSpec"
+                />
+
+        </div>
+      </div>
+    </div>
+
+    <div class="scenarioBorder">
+      <label>
+        <h4>JsonPath Rule</h4>
+      </label>
+      <div class="form-row m-3">
+      <div class="form-group col-sm-4">
+          <label htmlFor="headerkey">Selector</label>
+          <select class="custom-select" id="inputGroupSelect01" defaultValue="Choose...">
+          <option >Choose...</option>
+          <option value="==">==</option>
+          <option value="!=">!=</option>
+          <option value=">">></option>
+        </select>
+        </div>
+        <div class="form-group col-sm-4">
+          <label htmlFor="headervalue">Value</label>
+          <input
+            class="form-control "
+            defaultValue="34"
+            id="headervalue"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="scenarioBorder">
+      <label>
+        <h4>Header Equality Rule</h4>
+      </label>
+      <div class="form-row m-3">
+        <div class="form-group col-sm-4">
+          <label htmlFor="headerkey">Header Key</label>
+          <input
+            class="form-control "
+            defaultValue="Content-type"
+            id="headerkeyrule"
+          />
+        </div>
+        <div class="form-group col-sm-4">
+          <label htmlFor="headervalue">Header Value</label>
+          <input
+            class="form-control "
+            defaultValue="application/json"
+            id="headervaluerule"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="scenarioBorder">
+      <label>
+        <h4>Body Equality Rule</h4>
+      </label>
+      <div class="form-group row m-3">
+        <label class="col-form-label" htmlFor="bodyrequestrule">
+          Body
+        </label>
+        <textarea
+          class="form-control"
+          id="bodyrequestrule"
+          rows={4}
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="m-2">
+        <button class="btn btn-primary btn-md" type="submit">
+          Save Scenario
+        </button>
+      </div>
+      <div class="m-2">
+        <button class="btn btn-danger btn-md" type="submit">
+          Delete Scenario
+        </button>
+      </div>
+
+      <div class="m-2">
+        <button class="btn btn-light btn-md">
+          Export Mock File
+        </button>
+      </div>
+    </div>
+  </form>
+
+</div>

@@ -1,14 +1,10 @@
 pool:
     vmImage: 'Ubuntu 16.04'
 
-trigger:
+pr:
   branches:
     include:
-      - '*'
-  paths:
-    exclude:
-      - src/orbital-designer/*
-      - azure-pipelines-pr-designer.yml
+      - master
 
 variables:
     buildConfiguration: 'Release'
@@ -33,57 +29,14 @@ steps:
    displayName: npm install
    workingDirectory: src/orbital-designer
 
- - task: DotNetCoreCLI@2
-   displayName: Publishing Designer Server
-   inputs:
-     command: publish
-     arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/designer/build/'
-     workingDirectory: src/Orbital.Designer.Server/
-     publishWebProjects: false
-     modifyOutputPath: true
-     zipAfterPublish: false
-
- - task: DotNetCoreCLI@2
-   displayName: Publishing Designer Server Windows
-   inputs:
-     command: publish
-     arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/designer/build/win --runtime win-x64'
-     workingDirectory: src/Orbital.Designer.Server/
-     publishWebProjects: false
-     modifyOutputPath: true
-     zipAfterPublish: true
-      
- - task: DotNetCoreCLI@2
-   displayName: Publishing Designer Server Linux
-   inputs:
-     command: publish
-     arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/designer/build/linux --runtime linux-x64'
-     workingDirectory: src/Orbital.Designer.Server/
-     publishWebProjects: false
-     modifyOutputPath: true
-     zipAfterPublish: true
-
- - task: DotNetCoreCLI@2
-   displayName: Publishing Designer Server MacOS
-   inputs:
-     command: publish
-     arguments: '--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/designer/build/mac --runtime osx-x64'
-     workingDirectory: src/Orbital.Designer.Server/
-     publishWebProjects: false
-     modifyOutputPath: true
-     zipAfterPublish: true
-
- - task: CopyFiles@2
-   displayName: Move npm Build to Designer Server Build
-   inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)/designer'
-    Contents: 'orbital-designer/**'
-    TargetFolder: '$(System.DefaultWorkingDirectory)/designer/build'
+ - script: npm run build -- --prod
+   displayName: npm build
+   workingDirectory: src/orbital-designer
 
  - task: CopyFiles@2
    displayName: Move Builds to Artifact Directory
    inputs:
-     SourceFolder: '$(System.DefaultWorkingDirectory)/designer/build'
+     SourceFolder: '$(System.DefaultWorkingDirectory)/src/orbital-designer/dist'
      Contents: |
         *
         orbital-designer/**
@@ -152,7 +105,8 @@ steps:
     command: 'buildAndPush'
     containerRegistry: 'OrbitalRegistrym'
     repository: 'orbitaldesigner'
-    dockerfile: '$(System.DefaultWorkingDirectory)/designer/build/Dockerfile'
+    buildContext: '$(System.DefaultWorkingDirectory)'
+    dockerfile: '$(System.DefaultWorkingDirectory)/docker/designer/Dockerfile'
     tags: |
         $(GitVersion.SemVer)
 

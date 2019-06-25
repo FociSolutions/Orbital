@@ -1,84 +1,65 @@
 {
   "name": "orbital-designer",
-  "version": "0.1.0",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "test-ci": "ng test --code-coverage --karmaConfig=./karma.ci.conf.js",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
   "private": true,
   "dependencies": {
-    "@types/jest": "24.0.12",
+    "@angular/animations": "~8.0.0",
+    "@angular/cdk": "^8.0.0",
+    "@angular/common": "~8.0.0",
+    "@angular/compiler": "~8.0.0",
+    "@angular/core": "~8.0.0",
+    "@angular/forms": "~8.0.0",
+    "@angular/platform-browser": "~8.0.0",
+    "@angular/platform-browser-dynamic": "~8.0.0",
+    "@angular/router": "~8.0.0",
+    "@nebular/eva-icons": "4.1.0",
+    "@nebular/theme": "^4.1.0",
     "@types/js-yaml": "^3.12.1",
-    "@types/node": "12.0.0",
-    "@types/react": "16.8.17",
-    "@types/react-dom": "16.8.4",
-    "@types/react-redux": "^7.0.8",
-    "@types/react-router-bootstrap": "^0.24.5",
-    "@types/react-router-dom": "^4.3.3",
-    "@types/redux-logger": "^3.0.7",
-    "@types/redux-mock-store": "^1.0.1",
     "bootstrap": "^4.3.1",
-    "connected-react-router": "^6.4.0",
+    "eva-icons": "^1.1.1",
     "jquery": "^3.4.1",
     "js-yaml": "^3.13.1",
-    "node-sass": "^4.12.0",
+    "ngx-logger": "^3.3.13",
     "openapi-schema-validator": "^3.0.3",
     "popper.js": "^1.15.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-redux": "^7.0.3",
-    "react-router-bootstrap": "^0.25.0",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.1",
-    "redux": "^4.0.1",
-    "redux-logger": "^3.0.6",
-    "redux-mock-store": "^1.5.3",
-    "redux-starter-kit": "^0.5.1",
-    "typescript": "3.4.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "coverage-test": "react-scripts test --coverage --reporters=jest-junit --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}",
-      "!/node_modules/",
-      "!src/index.tsx",
-      "!src/react-app-env.d.ts",
-      "!src/serviceWorker.ts",
-      "!src/setupTests.ts"
-    ],
-    "coverageReporters": [
-      "clover",
-      "cobertura"
-    ]
-  },
-  "jest-junit": {
-    "usePathForSuiteName": "true"
+    "rxjs": "~6.4.0",
+    "tslib": "^1.9.0",
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.9.1",
-    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@angular-devkit/build-angular": "~0.800.0",
+    "@angular/cli": "~8.0.2",
+    "@angular/compiler-cli": "~8.0.0",
+    "@angular/language-service": "~8.0.0",
+    "@schematics/angular": "~8.0.0",
     "@types/faker": "^4.1.5",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.12.1",
+    "@types/jasmine": "~3.3.8",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
+    "codelyzer": "^5.0.0",
     "faker": "^4.1.0",
-    "jest-junit": "^6.4.0",
-    "react-test-renderer": "^16.8.6"
+    "jasmine-core": "~3.4.0",
+    "jasmine-reporters": "^2.3.2",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~4.1.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-jasmine": "~2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.0",
+    "karma-junit-reporter": "^1.2.0",
+    "protractor": "~5.4.0",
+    "puppeteer": "^1.17.0",
+    "ts-node": "~7.0.0",
+    "tslint": "~5.15.0",
+    "typescript": "~3.4.3"
   }
 }

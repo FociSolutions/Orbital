@@ -1,0 +1,14 @@
+<div *ngIf="endpoints?.length > 0; else noEndpoints">
+  <div className="list-group" *ngFor="let endpoint of endpoints">
+    <app-endpoint-list-item
+      *ngIf="endpoint"
+      [item]="endpoint"
+    ></app-endpoint-list-item>
+  </div>
+</div>
+
+<ng-template #noEndpoints>
+  <div class="center">
+    <p>No endpoints were found.</p>
+  </div>
+</ng-template>
