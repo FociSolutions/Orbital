@@ -22,6 +22,8 @@ import { EndpointOverviewComponent } from './components/endpoint-overview/endpoi
 import { EndpointListComponent } from './components/endpoint-overview/endpoint-list/endpoint-list.component';
 import { EndpointListItemComponent } from './components/endpoint-overview/endpoint-list-item/endpoint-list-item.component';
 import { ScenarioOverviewComponent } from './components/scenario-overview/scenario-overview.component';
+import { MockDefinitionStore } from './store/mockdefinitionstore';
+import { EndpointsStore } from './store/endpoints-store';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,7 @@ import { ScenarioOverviewComponent } from './components/scenario-overview/scenar
     NbButtonModule,
     NbCardModule
   ],
-  providers: [],
+  providers: [MockDefinitionStore, EndpointsStore],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

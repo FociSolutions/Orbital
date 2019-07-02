@@ -7,6 +7,7 @@ import { ScenarioOverviewComponent } from '../scenario-overview/scenario-overvie
 import { NbCardModule } from '@nebular/theme';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditScenarioComponent } from '../edit-scenario/edit-scenario.component';
+import { EndpointsStore } from 'src/app/store/endpoints-store';
 
 describe('EndpointOverviewComponent', () => {
   let component: EndpointOverviewComponent;
@@ -21,7 +22,8 @@ describe('EndpointOverviewComponent', () => {
         ScenarioOverviewComponent,
         EditScenarioComponent
       ],
-      imports: [RouterTestingModule, NbCardModule]
+      imports: [RouterTestingModule, NbCardModule],
+      providers: [EndpointsStore]
     }).compileComponents();
   }));
 

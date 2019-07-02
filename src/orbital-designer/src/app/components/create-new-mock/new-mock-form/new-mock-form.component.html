@@ -1,4 +1,4 @@
-<form class="needs-validation" onSubmit={this.onFormSubmit}>
+<form class="needs-validation" (submit)=this.onFormSubmit()>
   <div class="form-row mb-3">
     <label htmlFor="validationMockName">Mock Name</label>
     <input
@@ -6,7 +6,7 @@
       class="form-control"
       id="validationMockName"
       placeholder="Mock Name"
-      onChange={this.onMockNameChange}
+      (change)=this.onMockNameChange($event.target.value)
       required
     />
   </div>
@@ -18,7 +18,7 @@
       class="form-control"
       id="mockDescription"
       placeholder="Mock Description (optional)"
-      onChange={this.onDescriptionChange}
+      (change)=this.onDescriptionChange($event.target.value)
     ></textarea>
   </div>
 
@@ -33,20 +33,22 @@
           class="custom-file-input form-control"
           accept=".yml,.yaml"
           id="openAPISpec"
+          (change)="this.onFileChange($event.target.files)"
           required
         />
         <label class="custom-file-label" htmlFor="openAPISpec">
           <!-- {{this.state.fileName}} -->
+          {{this.fileName}}
         </label>
-        <div class="invalid-feedback mt-5 pt-2">
+        </div>
+        <div [style.visibility]="!!this.showError ? 'visible' : 'hidden'" class="d-block invalid-feedback mt-2 pt-2">
           Please provide a valid OpenAPI specification
         </div>
-      </div>
     </div>
   </div>
 
   <div class="form-row">
-    <button class="btn btn-light mr-2" to="/">
+    <button class="btn btn-light mr-2" [routerLink]="['']" type="button">
       Go Back
     </button>
     <button class="btn btn-light ml-2" type="submit">

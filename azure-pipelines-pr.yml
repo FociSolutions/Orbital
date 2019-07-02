@@ -2,9 +2,7 @@ pool:
     vmImage: 'Ubuntu 16.04'
 
 pr:
-  branches:
-    include:
-      - master
+- master
 
 variables:
     buildConfiguration: 'Release'

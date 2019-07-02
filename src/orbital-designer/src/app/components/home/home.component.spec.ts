@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { ImportExistingMockComponent } from './import-existing-mock/import-existing-mock.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -11,7 +12,8 @@ describe('HomeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [HomeComponent, ImportExistingMockComponent]
+      declarations: [HomeComponent, ImportExistingMockComponent],
+      providers: [MockDefinitionStore]
     }).compileComponents();
   }));
 
