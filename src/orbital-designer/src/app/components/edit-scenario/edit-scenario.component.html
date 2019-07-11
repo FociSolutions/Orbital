@@ -1,176 +1,184 @@
-<div class="col-8">
-  <div class="row m-2">
-    <label>
-      <h2>Scenario Name</h2>
-    </label>
-  </div>
-  <div class="row m-2">
-    <label>
-      <h2>Request</h2>
-    </label>
-  </div>
+<div class="col-12 m-2">
   <form>
-    <div class="scenarioBorder">
-      <div class="form-row m-3">
-        <div class="form-group col-sm-4">
-          <label htmlFor="headerkey">Header Key</label>
-          <input
-            class="form-control "
-            defaultValue="Content-type"
-            id="headerkey"
-          />
-        </div>
-        <div class="form-group col-sm-4">
-          <label htmlFor="headervalue">Header Value</label>
-          <input
-            class="form-control "
-            defaultValue="application/json"
-            id="headervalue"
-          />
-        </div>
-      </div>
-      <div class="form-group row m-3">
-        <label class="col-form-label" htmlFor="bodyrequest">
-          Body
-        </label>
-        <textarea class="form-control" id="bodyrequest" rows="{4}"></textarea>
+    <div class="row m-2">
+      <label>
+        <h2>Scenario Name</h2>
+      </label>
+      <input
+        class="form-control"
+        placeholder="Enter Scenario Name"
+        type="text"
+        [value]="this.scenario.metadata.title"
+        (input)="this.scenario.metadata.title = $event.target.value"
+      />
+    </div>
+    <div class="row m-2">
+      <label>
+        <h2>Description</h2>
+      </label>
+      <textarea
+        class="form-control"
+        placeholder="Enter Description"
+        rows="{4}"
+        [value]="this.scenario.metadata.description"
+        (input)="this.scenario.metadata.description = $event.target.value"
+      ></textarea>
+    </div>
+    <div class="row m-2">
+      <label>
+        <h2>Request Matching Rules</h2>
+      </label>
+    </div>
+
+    <div class="pl-4 row mb-3">
+      <label>
+        <h4>Header Equality Rules</h4>
+      </label>
+      <div class="col-sm-12">
+        <app-key-value-list
+          keysTitle="Header Key"
+          valuesTitle="Header Value"
+          [keyValueMap]="this.scenario.requestMatchRules.headerRules"
+        ></app-key-value-list>
       </div>
     </div>
+
+    <div class="pl-4 row mb-3">
+      <label>
+        <h4>Query Equality Rules</h4>
+      </label>
+      <div class="col-sm-12">
+        <app-key-value-list
+          keysTitle="Header Key"
+          valuesTitle="Header Value"
+          [keyValueMap]="this.scenario.requestMatchRules.queryRules"
+        ></app-key-value-list>
+      </div>
+    </div>
+
+    <div class="pl-4 row mb-3">
+      <label>
+        <h4>Body Matching Rule</h4>
+      </label>
+      <div class="col-sm-10 mb-3">
+        <label>Body Rule Type</label>
+        <select
+          class="custom-select"
+          id="inputGroupSelect02"
+          (change)="this.bodyRuleType = $event.target.value"
+        >
+          <!--
+          <option value="{{ this.BodyRuleTypes.JsonSchema }}"
+            >JSON Schema</option
+          >
+          <option value="{{ this.BodyRuleTypes.JsonPath }}">JSON Path</option>
+          -->
+          <option
+            selected="{{
+              this.bodyRuleType === this.BodyRuleTypes.BodyEquality
+            }}"
+            value="{{ this.BodyRuleTypes.BodyEquality }}"
+            >Body Equality</option
+          >
+        </select>
+      </div>
+      <div class="form-row col-sm-12" [ngSwitch]="this.bodyRuleType">
+        <div
+          *ngSwitchCase="this.BodyRuleTypes.JsonSchema"
+          class="form-group col-sm-4"
+        >
+          <label htmlFor="schemaSpec">
+            Schema File
+          </label>
+          <input type="file" accept=".yml,.yaml" id="schemaSpec" />
+        </div>
+        <div *ngSwitchCase="this.BodyRuleTypes.JsonPath">
+          <div class="form-group col-sm-12">
+            <label htmlFor="headerkey">Selector</label>
+            <select
+              class="custom-select"
+              id="inputGroupSelect01"
+              defaultValue="Choose..."
+            >
+              <option>Choose...</option>
+              <option value="==">==</option>
+              <option value="!=">!=</option>
+              <option value=">">></option>
+            </select>
+          </div>
+          <div class="form-group col-sm-12">
+            <label htmlFor="headervalue">Value</label>
+            <input class="form-control " defaultValue="34" id="headervalue" />
+          </div>
+        </div>
+        <div
+          class="row col-sm-12 mb-2"
+          *ngSwitchCase="this.BodyRuleTypes.BodyEquality"
+        >
+          <label class="col-form-label" htmlFor="bodyrequestrule">
+            Body
+          </label>
+          <textarea
+            class="form-control"
+            id="bodyrequestrule"
+            rows="{4}"
+            [value]="this.scenario.requestMatchRules.bodyRules[0].rule"
+            (change)="
+              this.scenario.requestMatchRules.bodyRules[0].rule =
+                $event.target.value
+            "
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Response area-->
     <div class="row m-2">
       <label>
         <h2>Response</h2>
       </label>
     </div>
     <div class="scenarioBorder">
-      <div class="row col-sm-4 m-2">
-        <label>Response Type</label>
-        <select
-          class="custom-select"
-          id="inputGroupSelect01"
-          defaultValue="Choose..."
-        >
-          <option>Choose...</option>
-          <option value="1">Mock</option>
-          <option value="2">Falt</option>
-          <option value="3">Proxy</option>
-        </select>
-      </div>
       <div class="form-row m-3">
-        <div class="form-group col-sm-4">
-          <label htmlFor="headerkey">Header Key</label>
-          <input
-            class="form-control "
-            defaultValue="Content-type"
-            id="headerkey"
-          />
-        </div>
-        <div class="form-group col-sm-4">
-          <label htmlFor="headervalue">Header Value</label>
-          <input
-            class="form-control "
-            defaultValue="application/json"
-            id="headervalue"
-          />
-        </div>
         <div class="form-group  col-sm-4">
           <label>Status </label>
-          <input class="form-control" type="number" />
+          <input
+            class="form-control"
+            type="number"
+            [value]="this.scenario.response.status"
+            (input)="this.scenario.response.status = $event.target.value"
+          />
         </div>
       </div>
+      <app-key-value-list
+        keysTitle="Header Key"
+        valuesTitle="Header Value"
+        [keyValueMap]="this.scenario.response.headers"
+      ></app-key-value-list>
       <div class="form-group row m-3">
         <label class="col-form-label" htmlFor="bodyrequest">
           Body
         </label>
-        <textarea class="form-control" id="bodyrequest" rows="{4}"></textarea>
-      </div>
-    </div>
-    <div class="row m-2">
-      <label>
-        <h2>Matching Rules</h2>
-      </label>
-    </div>
-    <div class="scenarioBorder">
-      <label>
-        <h4>Schema Rule</h4>
-      </label>
-      <div class="form-row m-3">
-        <div class="form-group col-sm-4">
-          <label htmlFor="schemaSpec">
-            Schema File
-          </label>
-          <input type="file" accept=".yml,.yaml" id="schemaSpec" />
-        </div>
-      </div>
-    </div>
-
-    <div class="scenarioBorder">
-      <label>
-        <h4>JsonPath Rule</h4>
-      </label>
-      <div class="form-row m-3">
-        <div class="form-group col-sm-4">
-          <label htmlFor="headerkey">Selector</label>
-          <select
-            class="custom-select"
-            id="inputGroupSelect01"
-            defaultValue="Choose..."
-          >
-            <option>Choose...</option>
-            <option value="==">==</option>
-            <option value="!=">!=</option>
-            <option value=">">></option>
-          </select>
-        </div>
-        <div class="form-group col-sm-4">
-          <label htmlFor="headervalue">Value</label>
-          <input class="form-control " defaultValue="34" id="headervalue" />
-        </div>
-      </div>
-    </div>
-
-    <div class="scenarioBorder">
-      <label>
-        <h4>Header Equality Rule</h4>
-      </label>
-      <div class="form-row m-3">
-        <div class="form-group col-sm-4">
-          <label htmlFor="headerkey">Header Key</label>
-          <input
-            class="form-control "
-            defaultValue="Content-type"
-            id="headerkeyrule"
-          />
-        </div>
-        <div class="form-group col-sm-4">
-          <label htmlFor="headervalue">Header Value</label>
-          <input
-            class="form-control "
-            defaultValue="application/json"
-            id="headervaluerule"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="scenarioBorder">
-      <label>
-        <h4>Body Equality Rule</h4>
-      </label>
-      <div class="form-group row m-3">
-        <label class="col-form-label" htmlFor="bodyrequestrule">
-          Body
-        </label>
         <textarea
           class="form-control"
-          id="bodyrequestrule"
+          id="bodyrequest"
           rows="{4}"
+          [value]="this.scenario.response.body"
+          (input)="this.scenario.response.body = $event.target.value"
         ></textarea>
       </div>
     </div>
 
     <div class="row">
       <div class="m-2">
-        <button class="btn btn-primary btn-md" type="submit">
+        <button
+          class="btn btn-primary btn-md"
+          type="button"
+          data-toggle="popover"
+          title="Popover title"
+          data-content="Scenario Added"
+          (click)="this.onSave()"
+        >
           Save Scenario
         </button>
       </div>
@@ -186,8 +194,12 @@
       </div>
 
       <div class="m-2">
-        <button class="btn btn-light btn-md">
-          Export Mock File
+        <button
+          class="btn btn-light btn-md"
+          type="button"
+          (click)="this.onCancel()"
+        >
+          Cancel
         </button>
       </div>
     </div>
@@ -224,7 +236,14 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           Cancel
         </button>
-        <button type="button" class="btn btn-danger">Delete</button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="this.onDelete()"
+        >
+          Delete
+        </button>
       </div>
     </div>
   </div>

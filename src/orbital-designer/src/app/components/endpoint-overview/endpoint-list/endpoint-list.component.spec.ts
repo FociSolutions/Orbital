@@ -3,6 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EndpointListComponent } from './endpoint-list.component';
 import { EndpointListItemComponent } from '../endpoint-list-item/endpoint-list-item.component';
 import { EndpointsStore } from 'src/app/store/endpoints-store';
+import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios.pipe';
+import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color.pipe';
 
 describe('EndpointListComponent', () => {
   let component: EndpointListComponent;
@@ -10,7 +12,12 @@ describe('EndpointListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EndpointListComponent, EndpointListItemComponent],
+      declarations: [
+        EndpointListComponent,
+        EndpointListItemComponent,
+        GetEndpointScenariosPipe,
+        GetVerbColorPipe
+      ],
       providers: [EndpointsStore]
     }).compileComponents();
   }));

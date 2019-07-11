@@ -4,6 +4,7 @@ import { HomeComponent } from './home.component';
 import { ImportExistingMockComponent } from './import-existing-mock/import-existing-mock.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
+import { EndpointsStore } from 'src/app/store/endpoints-store';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -13,7 +14,7 @@ describe('HomeComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [HomeComponent, ImportExistingMockComponent],
-      providers: [MockDefinitionStore]
+      providers: [MockDefinitionStore, EndpointsStore]
     }).compileComponents();
   }));
 

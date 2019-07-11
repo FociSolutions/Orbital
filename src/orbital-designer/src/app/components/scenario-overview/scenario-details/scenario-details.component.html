@@ -1,0 +1,16 @@
+<div
+  class="border rounded p-2"
+  [ngClass]="{
+    selected: this.selected
+  }"
+  (click)="this.onSelect()"
+>
+  <h2>{{ this.scenario.metadata.title }}</h2>
+  <h6 [class]="this.scenario.verb | getVerbColor: 'text-'">
+    {{ this.scenario.verb }} {{ this.scenario.path }}
+  </h6>
+  <div>
+    <p>Description: {{ this.scenario.metadata.description }}</p>
+    <p>Code: {{ this.scenario.response.status }}</p>
+  </div>
+</div>

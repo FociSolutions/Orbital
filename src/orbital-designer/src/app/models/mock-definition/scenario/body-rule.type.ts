@@ -3,5 +3,6 @@
  */
 export enum BodyRuleType {
   JsonPath = 1,
-  JsonSchema
+  JsonSchema,
+  BodyEquality
 }

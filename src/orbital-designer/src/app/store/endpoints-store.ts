@@ -4,14 +4,10 @@ import { OpenAPIV2 } from 'openapi-types';
 import { Endpoint } from '../models/endpoint.model';
 import { VerbType } from '../models/verb.type';
 
-class EndpointsState {
-  endpoints: Endpoint[] = [];
-}
-
 @Injectable()
-export class EndpointsStore extends Store<EndpointsState> {
+export class EndpointsStore extends Store<Endpoint[]> {
   constructor() {
-    super(new EndpointsState());
+    super([]);
   }
 
   /**
@@ -31,9 +27,14 @@ export class EndpointsStore extends Store<EndpointsState> {
             : null
         )
         .filter(endpoint => !!endpoint);
-      this.setState({
-        endpoints: [...this.state.endpoints, ...newEndpoints]
-      });
+      this.setState([...this.state, ...newEndpoints]);
     }
+  }
+
+  /**
+   * Clears the endpoint store
+   */
+  clearStore() {
+    this.setState([]);
   }
 }

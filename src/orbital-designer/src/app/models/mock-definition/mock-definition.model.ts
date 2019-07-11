@@ -11,7 +11,7 @@ export class MockDefinition {
   metadata: Metadata;
   host: string;
   basePath: string;
-  scenarios: Scenario[];
+  scenarios: Scenario[] = [];
   openApi: string;
 
   /**

@@ -25,7 +25,10 @@ export class NewMockFormComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.mockDefinitionstore.clearStore();
+    this.endpointStore.clearStore();
+  }
 
   /**
    * Updates the MockDefinitionsStore's metadata description

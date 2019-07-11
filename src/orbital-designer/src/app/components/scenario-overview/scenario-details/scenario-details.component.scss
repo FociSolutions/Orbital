@@ -1,0 +1,12 @@
+.border {
+  border-width: 2pt !important;
+}
+
+.border:hover {
+  border-color: black !important;
+  cursor: pointer;
+}
+
+.selected {
+  border-color: black !important;
+}

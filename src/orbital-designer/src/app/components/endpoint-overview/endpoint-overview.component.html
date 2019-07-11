@@ -1,20 +1,51 @@
-<div class="row my-4">
-  <div class="col-4"><app-endpoint-list></app-endpoint-list></div>
+<!-- Endpoint overview with Scenario Overview -->
+<div class="row my-4" *ngIf="shouldShowOverview; else edit_scenario">
+  <div class="col-4">
+    <app-endpoint-list></app-endpoint-list>
+  </div>
   <div class="col">
     <nb-card>
-      <nb-card-body *ngIf="shouldShowOverview; else edit_scenario">
-        <app-scenario-overview
-          (addNewClicked)="onAddNewClicked()"
-        ></app-scenario-overview>
+      <nb-card-body>
+        <app-scenario-view
+          [scenarios]="
+            this.mockDefinition.scenarios
+              | getEndpointScenarios: this.selectedEndpoint
+          "
+        ></app-scenario-view>
       </nb-card-body>
     </nb-card>
   </div>
 </div>
+
 <div class="row">
-  <button nbButton [routerLink]="['']" class="mr-2">Go Back</button>
+  <button nbButton (click)="onBack()" class="mr-2">Go Back</button>
   <button nbButton (click)="onExportClicked()">Export Mock File</button>
 </div>
 
+<!-- Scenario Overview with edit scenario page -->
 <ng-template #edit_scenario>
-  <app-edit-scenario></app-edit-scenario>
+  <div class="row">
+    <div class="col-4">
+      <nb-card>
+        <nb-card-body>
+          <app-scenario-overview
+            [scenarios]="
+              this.mockDefinition.scenarios
+                | getEndpointScenarios: this.selectedEndpoint
+            "
+          ></app-scenario-overview>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-8">
+      <nb-card>
+        <nb-card-body>
+          <app-edit-scenario
+            [scenarioInput]="this.selectedScenario"
+          ></app-edit-scenario>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
 </ng-template>

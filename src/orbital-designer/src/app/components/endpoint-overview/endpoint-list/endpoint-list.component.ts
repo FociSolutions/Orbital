@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { EndpointsStore } from 'src/app/store/endpoints-store';
 
@@ -14,7 +14,7 @@ export class EndpointListComponent implements OnInit {
 
   ngOnInit() {
     this.store.state$.subscribe(state => {
-      this.endpoints = state.endpoints;
+      this.endpoints = state;
     });
   }
 }

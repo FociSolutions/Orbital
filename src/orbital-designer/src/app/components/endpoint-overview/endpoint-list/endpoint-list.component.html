@@ -1,8 +1,8 @@
-<div *ngIf="endpoints?.length > 0; else noEndpoints">
-  <div className="list-group" *ngFor="let endpoint of endpoints">
+<div class="scroll-list" *ngIf="endpoints?.length > 0; else noEndpoints">
+  <div class="list-group" *ngFor="let endpoint of endpoints">
     <app-endpoint-list-item
       *ngIf="endpoint"
-      [item]="endpoint"
+      [endpoint]="endpoint"
     ></app-endpoint-list-item>
   </div>
 </div>

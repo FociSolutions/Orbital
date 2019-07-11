@@ -12,7 +12,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~8.0.0",
+    "@angular/animations": "^8.0.3",
     "@angular/cdk": "^8.0.0",
     "@angular/common": "~8.0.0",
     "@angular/compiler": "~8.0.0",
@@ -29,11 +29,13 @@
     "jquery": "^3.4.1",
     "js-yaml": "^3.13.1",
     "ngx-logger": "^3.3.13",
+    "ngx-toastr": "^10.0.4",
     "openapi-schema-validator": "^3.0.3",
     "popper.js": "^1.15.0",
     "rxjs": "~6.4.0",
     "rxjs-observable-store": "^1.0.1",
     "tslib": "^1.9.0",
+    "uuid": "^3.3.2",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

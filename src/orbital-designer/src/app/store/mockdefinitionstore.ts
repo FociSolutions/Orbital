@@ -48,4 +48,11 @@ export class MockDefinitionStore extends Store<MockDefinition> {
       scenarios: s
     });
   }
+
+  /**
+   * Clears the MockDefinitionStore
+   */
+  clearStore() {
+    this.setState(new MockDefinition());
+  }
 }

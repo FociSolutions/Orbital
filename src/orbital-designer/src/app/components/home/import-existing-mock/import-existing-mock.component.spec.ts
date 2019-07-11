@@ -7,7 +7,9 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 import { FileParserService } from 'src/app/services/file-parser.service';
+import validOpenApiFiles from 'src/app/services/openApi-test-files/valid-test-cases';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { EndpointsStore } from 'src/app/store/endpoints-store';
 
 describe('ImportExistingMockComponent', () => {
   let component: ImportExistingMockComponent;
@@ -16,14 +18,10 @@ describe('ImportExistingMockComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ImportExistingMockComponent ],
-      imports: [ RouterTestingModule.withRoutes([]) ],
-      providers: [
-        MockDefinitionStore,
-        FileParserService
-      ]
-    })
-    .compileComponents();
+      declarations: [ImportExistingMockComponent],
+      imports: [RouterTestingModule.withRoutes([])],
+      providers: [MockDefinitionStore, FileParserService, EndpointsStore]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -45,22 +43,34 @@ describe('ImportExistingMockComponent', () => {
         title: faker.random.word(),
         description: faker.random.words()
       },
-      openApi: faker.random.words(),
+      openApi: validOpenApiFiles[0],
       scenarios: []
     };
     const file = new File([''], 'testFile');
     const routerSpy = spyOn(TestBed.get(Router), 'navigate');
-    const storeSpy = spyOn(TestBed.get(MockDefinitionStore), 'setState').and.callThrough();
-    const fileParserSpy = spyOn(TestBed.get(FileParserService), 'readMockDefinition')
-      .and.returnValue(
-        new Promise<MockDefinition>(
-          (resolve) => resolve(fakeMockDefinition)
-        )
-      );
-    await component.onFileInput({0: file, length: 1, item: (index: number) => file});
+    const storeSpy = spyOn(
+      TestBed.get(MockDefinitionStore),
+      'setState'
+    ).and.callThrough();
+    const fileParserSpy = spyOn(
+      TestBed.get(FileParserService),
+      'readMockDefinition'
+    ).and.returnValue(
+      new Promise<MockDefinition>(resolve => resolve(fakeMockDefinition))
+    );
+    const endPointsStoreSpy = spyOn(
+      TestBed.get(EndpointsStore),
+      'addEndpoints'
+    ).and.callThrough();
+    await component.onFileInput({
+      0: file,
+      length: 1,
+      item: (index: number) => file
+    });
     fixture.detectChanges();
     expect(fileParserSpy).toHaveBeenCalled();
     expect(storeSpy).toHaveBeenCalled();
+    expect(endPointsStoreSpy).toHaveBeenCalled();
     expect(routerSpy).toHaveBeenCalled();
     expect(component.showError).toBeFalsy();
     const errorMessage = element.query(By.css('.d-block.invalid-feedback'));
@@ -69,9 +79,15 @@ describe('ImportExistingMockComponent', () => {
 
   it('should read an invalid mock file show an error message', async () => {
     const file = new File([''], 'testFile');
-    const fileParserSpy = spyOn(TestBed.get(FileParserService), 'readMockDefinition')
-      .and.callThrough();
-    await component.onFileInput({0: file, length: 1, item: (index: number) => file});
+    const fileParserSpy = spyOn(
+      TestBed.get(FileParserService),
+      'readMockDefinition'
+    ).and.callThrough();
+    await component.onFileInput({
+      0: file,
+      length: 1,
+      item: (index: number) => file
+    });
     fixture.detectChanges();
     expect(fileParserSpy).toHaveBeenCalled();
     expect(component.showError).toBeTruthy();
@@ -81,9 +97,14 @@ describe('ImportExistingMockComponent', () => {
 
   it('should set file name after uploading an input file', async () => {
     const file = new File([''], 'testFile');
-    await component.onFileInput({0: file, length: 1, item: (index: number) => file});
+    await component.onFileInput({
+      0: file,
+      length: 1,
+      item: (index: number) => file
+    });
     fixture.detectChanges();
-    const fileName = element.query(By.css('.custom-file-label')).nativeElement.innerText;
+    const fileName = element.query(By.css('.custom-file-label')).nativeElement
+      .innerText;
     expect(fileName).toMatch(file.name);
     expect(component.fileName).toBe(file.name);
   });

@@ -1,4 +1,12 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Scenario,
+  newScenario
+} from 'src/app/models/mock-definition/scenario/scenario.model';
+import { AppStore } from 'src/app/store/app-store';
+
+import { ToastrService } from 'ngx-toastr';
+import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 
 @Component({
   selector: 'app-scenario-overview',
@@ -6,19 +14,28 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./scenario-overview.component.scss']
 })
 export class ScenarioOverviewComponent implements OnInit {
-  // The following is just a placeholder, please replace with service
-  @Output() addNewClicked: EventEmitter<boolean>;
+  @Input() scenarios: Scenario[];
 
-  constructor() {
-    this.addNewClicked = new EventEmitter();
+  constructor(
+    private app: AppStore,
+    private mockDefinitionStore: MockDefinitionStore,
+    private toastr: ToastrService
+  ) {}
+
+  onAdd() {
+    this.app.selectedScenario = newScenario(
+      this.app.state.selectedEndpoint.verb,
+      this.app.state.selectedEndpoint.path
+    );
+    this.mockDefinitionStore.updateScenarios([
+      ...this.mockDefinitionStore.state.scenarios,
+      this.app.state.selectedScenario
+    ]);
+    this.toastr.success('New Scenario Added!', '', {
+      timeOut: 2000
+    });
+    this.app.showEditor = true;
   }
 
   ngOnInit() {}
-
-  /**
-   * The following is just a placeholder, please replace with service
-   */
-  OnAddNewClicked() {
-    this.addNewClicked.emit(true);
-  }
 }

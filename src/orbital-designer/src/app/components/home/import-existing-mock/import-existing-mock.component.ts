@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FileParserService } from 'src/app/services/file-parser.service';
 import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 import { Router } from '@angular/router';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { EndpointsStore } from 'src/app/store/endpoints-store';
 
 @Component({
   selector: 'app-import-existing-mock',
@@ -14,7 +16,8 @@ export class ImportExistingMockComponent implements OnInit {
 
   constructor(
     private fileParser: FileParserService,
-    private store: MockDefinitionStore,
+    private mockDefinitionStore: MockDefinitionStore,
+    private endpointsStore: EndpointsStore,
     private router: Router
   ) {}
 
@@ -28,7 +31,9 @@ export class ImportExistingMockComponent implements OnInit {
     const file = files[0];
     try {
       const mockDefinition = await this.fileParser.readMockDefinition(file);
-      this.store.setState(mockDefinition);
+      const doc = await MockDefinition.toOpenApiSpec(mockDefinition.openApi);
+      this.mockDefinitionStore.setState(mockDefinition);
+      this.endpointsStore.addEndpoints(doc);
       this.router.navigate(['/EndpointOverview']);
       this.showError = false;
     } catch (err) {
