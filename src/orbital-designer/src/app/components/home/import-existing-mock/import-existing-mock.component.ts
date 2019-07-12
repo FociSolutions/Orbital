@@ -31,12 +31,14 @@ export class ImportExistingMockComponent implements OnInit {
     const file = files[0];
     try {
       const mockDefinition = await this.fileParser.readMockDefinition(file);
-      const doc = await MockDefinition.toOpenApiSpec(mockDefinition.openApi);
       this.mockDefinitionStore.setState(mockDefinition);
-      this.endpointsStore.addEndpoints(doc);
+      this.endpointsStore.addEndpoints(mockDefinition.openApi);
       this.router.navigate(['/EndpointOverview']);
       this.showError = false;
     } catch (err) {
+      window.alert(
+        'The file provided has empty data. Please try again with a valid one.'
+      );
       this.showError = true;
     }
     this.fileName = file.name;

@@ -3,6 +3,7 @@ import { Scenario } from './scenario/scenario.model';
 import * as yaml from 'js-yaml';
 import { OpenAPIV2 } from 'openapi-types';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
+import Yaml from '../yaml';
 
 /**
  * Model representation of mock definition
@@ -12,7 +13,7 @@ export class MockDefinition {
   host: string;
   basePath: string;
   scenarios: Scenario[] = [];
-  openApi: string;
+  openApi: any;
 
   /**
    * Parse provided string to mock definition
@@ -23,10 +24,25 @@ export class MockDefinition {
   ): Promise<MockDefinition> {
     return new Promise((resolve, reject) => {
       try {
-        const content = yaml.safeLoad(mockDefinition);
+        let content = yaml.safeLoad(mockDefinition);
         if (!this.isMockDefinition(content)) {
           reject('Invalid mock definition');
         } else {
+          content = {
+            ...content,
+            scenarios: content.scenarios.map(s => ({
+              ...s,
+              response: {
+                ...s.response,
+                headers: new Map(s.response.headers)
+              },
+              requestMatchRules: {
+                headerRules: new Map(s.requestMatchRules.headerRules),
+                queryRules: new Map(s.requestMatchRules.queryRules),
+                bodyRules: s.requestMatchRules.bodyRules
+              }
+            }))
+          };
           resolve(content as MockDefinition);
         }
       } catch (error) {
@@ -67,7 +83,17 @@ export class MockDefinition {
       Array.isArray(u.scenarios) &&
       typeof u.host === 'string' &&
       typeof u.metadata === 'object' &&
-      typeof u.openApi === 'string'
+      u.metadata !== null &&
+      typeof u.openApi === 'object' &&
+      u.openApi !== null
     );
+  }
+
+  /**
+   * Exports the mock definition as a yaml string
+   */
+  public static exportMockDefinitionAsYaml(mockDef: MockDefinition): string {
+    const safeMockDef = Yaml.collectionToArray(mockDef);
+    return yaml.safeDump(safeMockDef);
   }
 }

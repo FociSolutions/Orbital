@@ -8,6 +8,7 @@ import {
 } from '../models/mock-definition/scenario/scenario.model';
 import { VerbType } from '../models/verb.type';
 import { MockDefinition } from '../models/mock-definition/mock-definition.model';
+import { OpenAPIV2 } from 'openapi-types';
 
 describe('MockDefinition Store', () => {
   beforeEach(async () => {
@@ -33,10 +34,11 @@ describe('MockDefinition Store', () => {
   });
 
   it('should update API Information', () => {
+    const fakeDocument = { basePath: '', host: '' } as OpenAPIV2.Document;
     const apiInfo = {
       host: faker.internet.domainName(),
       basepath: faker.internet.domainSuffix(),
-      openApi: faker.random.words()
+      openApi: fakeDocument
     };
     const store = new MockDefinitionStore();
     store.updateApiInformation(apiInfo.host, apiInfo.basepath, apiInfo.openApi);

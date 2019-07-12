@@ -1,5 +1,5 @@
 import { EndpointsStore } from './endpoints-store';
-import validYaml from '../services/openApi-test-files/valid-test-cases';
+import validOpenApi from '../../test-files/valid-openapi-spec';
 import * as faker from 'faker';
 import { MockDefinition } from '../models/mock-definition/mock-definition.model';
 import { VerbType } from '../models/verb.type';
@@ -10,7 +10,7 @@ describe('EndpointsStore', () => {
   });
 
   it('should update the state with new endpoints', done => {
-    const petStore = validYaml[0];
+    const petStore = validOpenApi;
     const endpointStore = new EndpointsStore();
     const acceptedVerbs = Object.keys(VerbType).map(verb => verb.toLowerCase());
     expect(endpointStore.state).toEqual([]);

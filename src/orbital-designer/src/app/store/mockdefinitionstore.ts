@@ -3,6 +3,7 @@ import { MockDefinition } from '../models/mock-definition/mock-definition.model'
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { Scenario } from '../models/mock-definition/scenario/scenario.model';
 import { Injectable } from '@angular/core';
+import { OpenAPIV2 } from 'openapi-types';
 
 @Injectable()
 export class MockDefinitionStore extends Store<MockDefinition> {
@@ -28,7 +29,11 @@ export class MockDefinitionStore extends Store<MockDefinition> {
    * @param openApi The string representing openSpecAPI file contents
    */
 
-  updateApiInformation(host: string, basePath: string, openApi: string): void {
+  updateApiInformation(
+    host: string,
+    basePath: string,
+    openApi: OpenAPIV2.Document
+  ): void {
     this.setState({
       ...this.state,
       host,

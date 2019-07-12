@@ -70,15 +70,13 @@ export class NewMockFormComponent implements OnInit {
   async onFileChange(files: FileList) {
     const file = files[0];
     try {
-      const { doc, contentString } = await this.fileParser.readOpenApiSpec(
-        file
-      );
+      const openApi = await this.fileParser.readOpenApiSpec(file);
       this.mockDefinitionstore.updateApiInformation(
-        doc.host,
-        doc.basePath,
-        contentString
+        openApi.host,
+        openApi.basePath,
+        openApi
       );
-      this.endpointStore.addEndpoints(doc);
+      this.endpointStore.addEndpoints(openApi);
       this.showError = false;
     } catch (err) {
       this.showError = true;

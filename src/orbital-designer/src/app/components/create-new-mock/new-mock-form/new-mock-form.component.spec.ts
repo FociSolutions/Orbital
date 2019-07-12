@@ -40,14 +40,7 @@ describe('NewMockFormComponent', () => {
     const fileParserSpy = spyOn(
       TestBed.get(FileParserService),
       'readOpenApiSpec'
-    ).and.returnValue(
-      new Promise(resolve =>
-        resolve({
-          doc: fakeDocument,
-          contentString: ''
-        })
-      )
-    );
+    ).and.returnValue(new Promise(resolve => resolve(fakeDocument)));
     const mockDefStoreSpy = spyOn(
       TestBed.get(MockDefinitionStore),
       'updateApiInformation'

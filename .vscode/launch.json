@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ng serve",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: start",
+      "url": "http://localhost:4200/#",
+      "webRoot": "${workspaceFolder}/src/orbital-designer"
+    },
+    {
+      "name": "ng test",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:9876/debug.html",
+      "webRoot": "${workspaceFolder}/src/orbital-designer",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:/*": "${webRoot}/*",
+        "/./*": "${webRoot}/*",
+        "/src/*": "${webRoot}/*",
+        "/*": "*",
+        "/./~/*": "${webRoot}/node_modules/*"
+      }
+    },
+    {
+      "name": "ng e2e",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/orbital-designer/node_modules/protractor/bin/protractor",
+      "protocol": "inspector",
+      "args": ["${workspaceFolder}/src/orbital-designer/e2e/protractor.conf.js"]
+    }
+  ]
+}

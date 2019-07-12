@@ -10,6 +10,7 @@ import { AppStore } from 'src/app/store/app-store';
 import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 
 import { ToastrService, ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('EditScenarioComponent', () => {
   let component: EditScenarioComponent;
@@ -17,7 +18,7 @@ describe('EditScenarioComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ToastrModule.forRoot()],
+      imports: [BrowserAnimationsModule, ToastrModule.forRoot()],
       declarations: [EditScenarioComponent, KeyValueListComponent],
       providers: [AppStore, MockDefinitionStore, ToastrService]
     }).compileComponents();

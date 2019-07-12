@@ -8,6 +8,7 @@ import { VerbType } from 'src/app/models/verb.type';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ScenarioOverviewComponent', () => {
   let component: ScenarioOverviewComponent;
@@ -15,7 +16,7 @@ describe('ScenarioOverviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ToastrModule.forRoot()],
+      imports: [BrowserAnimationsModule, ToastrModule.forRoot()],
       declarations: [
         ScenarioOverviewComponent,
         ScenarioDetailsComponent,

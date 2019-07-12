@@ -1,5 +1,4 @@
-export default [
-    `---
+export default `---
     swagger: "2.0"
     info:
       version: "1.0.0"
@@ -148,5 +147,4 @@ export default [
             format: "int32"
           message:
             type: "string"
-    `
-];
+    `;

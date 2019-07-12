@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 import { FileParserService } from 'src/app/services/file-parser.service';
-import validOpenApiFiles from 'src/app/services/openApi-test-files/valid-test-cases';
+import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { EndpointsStore } from 'src/app/store/endpoints-store';
 
@@ -36,16 +36,6 @@ describe('ImportExistingMockComponent', () => {
   });
 
   it('should read valid mock file and store a MockDefinition representation', async () => {
-    const fakeMockDefinition: MockDefinition = {
-      basePath: faker.internet.domainSuffix(),
-      host: faker.internet.domainName(),
-      metadata: {
-        title: faker.random.word(),
-        description: faker.random.words()
-      },
-      openApi: validOpenApiFiles[0],
-      scenarios: []
-    };
     const file = new File([''], 'testFile');
     const routerSpy = spyOn(TestBed.get(Router), 'navigate');
     const storeSpy = spyOn(
@@ -55,9 +45,7 @@ describe('ImportExistingMockComponent', () => {
     const fileParserSpy = spyOn(
       TestBed.get(FileParserService),
       'readMockDefinition'
-    ).and.returnValue(
-      new Promise<MockDefinition>(resolve => resolve(fakeMockDefinition))
-    );
+    ).and.returnValue(validMockDefinition);
     const endPointsStoreSpy = spyOn(
       TestBed.get(EndpointsStore),
       'addEndpoints'
