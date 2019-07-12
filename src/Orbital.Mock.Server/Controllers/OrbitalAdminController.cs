@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Cache;
-using Orbital.Mock.Server.Models;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Controllers
 {
@@ -12,40 +9,39 @@ namespace Orbital.Mock.Server.Controllers
     [ApiController]
     public class OrbitalAdminController : ControllerBase
     {
-        private MemoryCache _cache;
-        public static readonly string cacheKey = "todoKey";
 
 
-        public OrbitalAdminController(OrbitalMemoryCache memoryCache)
-        {
-            _cache = memoryCache.Cache;
-        }
-        //GET api/orbitaladmin
+        // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> GetIt()
+        public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public ActionResult<string> Get(int id)
+        {
+            return "value";
+        }
+
+        // POST api/values
         [HttpPost]
-        public async Task<IActionResult> PublishMock([FromBody] MockService mock)
-
+        public void Post([FromBody] string value)
         {
-
-            return Ok("TODO");
         }
 
-
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> GetMock([FromQuery] string mockId)
-
+        // PUT api/values/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-
-            return Ok("TODO");
         }
 
-
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
     }
-
-
 }
+
