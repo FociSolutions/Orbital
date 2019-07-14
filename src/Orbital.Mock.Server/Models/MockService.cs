@@ -1,14 +1,14 @@
-﻿//using EventAggregation.Receiver.API.Interfaces;
-//using FluentValidation.Results;
+﻿
 using Newtonsoft.Json;
 using System;
 namespace Orbital.Mock.Server.Models
 {
-    public class MockService 
+    public class MockDefinition 
     {
-        [JsonProperty("mockid")]
-        public string MockId { get; set; }
-        [JsonProperty("mockvalue")]
-        public string MockValue { get; set; }
+        [JsonProperty("host")]
+        public string Host { get; set; }
+
+        [JsonProperty("metadata")]
+        public MetadataInfo Metadata { get; set; }
     }
 }

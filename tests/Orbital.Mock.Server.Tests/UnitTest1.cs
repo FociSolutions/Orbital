@@ -8,7 +8,7 @@ namespace Orbital.Mock.Server.Tests
         [Fact]
         public void Test1()
         {
-            OrbitalAdminController Target = new OrbitalAdminController();
+            //OrbitalAdminController Target = new OrbitalAdminController();
             Assert.True(true);
         }
     }
