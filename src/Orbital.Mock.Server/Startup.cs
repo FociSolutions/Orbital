@@ -22,6 +22,7 @@ using MediatR;
 
 namespace Orbital.Mock.Server
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)

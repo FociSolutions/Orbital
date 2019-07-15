@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Filters
 {
+    [ExcludeFromCodeCoverage]
     public class ModelValidationAttribute: ActionFilterAttribute
     {
 
