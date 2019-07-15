@@ -17,10 +17,7 @@ namespace Orbital.Mock.Server.Models.Validators
         /// </summary>
         public MetadataInfoValidator()
         {
-
-                RuleFor(x => x.Title).NotEmpty();
-                RuleFor(x => x.Description).NotNull();
-
+            RuleFor(x => x.Title).NotEmpty();
         }
     }
 }

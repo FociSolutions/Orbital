@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Orbital.Mock.Server.Commands
+namespace Orbital.Mock.Server.MockDefinitions.Commands
 {
-    public class GetMockDefinitionCommand : IRequest<string>
+    public class GetMockDefinitionByTitleCommand : IRequest<MockDefinition>
     {
-        public GetMockDefinitionCommand(string mockTitle)
+        public GetMockDefinitionByTitleCommand(string mockTitle)
         {
             this.MockDefinitionTitle = mockTitle;
-
         }
 
         public string MockDefinitionTitle { get; }

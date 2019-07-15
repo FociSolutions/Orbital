@@ -17,10 +17,8 @@ namespace Orbital.Mock.Server.Models.Validators
         /// </summary>
         public MockDefinitionValidator()
         {
-
             RuleFor(x => x.Host).NotEmpty();
             RuleFor(x => x.Metadata).InjectValidator();
-
         }
     }
 }

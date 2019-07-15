@@ -2,58 +2,60 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Cache;
-using Orbital.Mock.Server.Commands;
 using Orbital.Mock.Server.Filters;
+using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
 
 namespace Orbital.Mock.Server.Controllers
 {
+    /// <summary>
+    /// Controller for any administrative operations that orbital needs.
+    /// </summary>
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    [ModelValidation]
+    [ModelValidation]    
     public class OrbitalAdminController : ControllerBase
     {
-
         private readonly IMediator mediator;
-
-
+                
         /// <summary>
-        /// 
+        /// Default Constructor
         /// </summary>
-        /// <param name="cache"></param>
+        /// <param name="mediator"> MediatR</param>
         public OrbitalAdminController(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
+        /// <summary>
+        /// Geths the Mock Definition by the MockDefinition title
+        /// </summary>
+        /// <param name="id"> The mock definition title</param>
+        /// <returns>MockDefinition</returns>
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(string id)
+        public ActionResult<MockDefinition> Get(string id)
         {
-            var command = new GetMockDefinitionCommand(id);
+            var command = new GetMockDefinitionByTitleCommand(id);
             var result = this.mediator.Send(command).Result;
             return result;
 
         }
 
-        // POST api/values
+        /// <summary>
+        /// Saves a mock defintiion in cache
+        /// </summary>
+        /// <param name="mockDefinition">The mock defiition to save</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
             var command = new SaveMockDefinitionCommand(mockDefinition);
             this.mediator.Send(command);
-            return Ok();
-
+            return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
         }
 
         // PUT api/values/5
