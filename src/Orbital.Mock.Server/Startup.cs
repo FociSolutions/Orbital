@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Orbital.Mock.Server.Cache;
 using Orbital.Mock.Server.Registrations;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System.Diagnostics.CodeAnalysis;
@@ -46,7 +45,6 @@ namespace Orbital.Mock.Server
             //services.AddFluentValidation();
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
-            services.AddSingleton<OrbitalMemoryCache>();
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
 
