@@ -28,17 +28,12 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         {
             this.cache.TryGetValue<MockDefinition>(mockDefinitionTitle, out var mockDefinition);
 
-            if(mockDefinition == null)
+            if (mockDefinition == null)
             {
                 return null;
             }
 
             return mockDefinition;
-        }
-
-        internal object Handle(GetMockDefinitionByTitleCommand getMockDefinitionCommand, object none)
-        {
-            throw new NotImplementedException();
         }
     }
 }

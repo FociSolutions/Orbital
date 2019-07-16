@@ -14,7 +14,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
     public class GetMockDefinitionByTitleHandlerTests
     {
         [Fact]
-        public void GetMockDefinitionTitleHandlesSucessTest()
+        public void GetMockDefinitionTitleHandlerSucessTest()
         {
             #region Test Setup
 
@@ -26,19 +26,45 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             .RuleFor(m => m.Host, f => f.Internet.DomainName())
             .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
-            var mockDefinition = mockDefinitionFake.Generate();
+            var input = new
+            {
+                mockDefinition = mockDefinitionFake.Generate()
+            };
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
 
-            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
-            var getMockDefinitionCommand = new GetMockDefinitionByTitleCommand(mockDefinition.Metadata.Title);
+            cache.Set(input.mockDefinition.Metadata.Title, input.mockDefinition);
+            var getMockDefinitionCommand = new GetMockDefinitionByTitleCommand(input.mockDefinition.Metadata.Title);
             #endregion
 
             var Target = new GetMockDefinitionByTitleHandler(cache);
             var Actual = Target.Handle(getMockDefinitionCommand, CancellationToken.None).Result;
 
-            Assert.Equal(mockDefinition, Actual);
+            Assert.Equal(input.mockDefinition, Actual);
+        }
+
+        [Fact]
+        public void GetMockDefinitionTitleHandlerFailedTest()
+        {
+            #region Test Setup
+            var faker = new Faker();
+
+            var options = new MemoryCacheOptions();
+            var cache = new MemoryCache(options);
+
+            var input = new
+            {
+                title = faker.Random.String()
+            };
+
+            var getMockDefinitionCommand = new GetMockDefinitionByTitleCommand(input.title);
+            #endregion
+
+            var Target = new GetMockDefinitionByTitleHandler(cache);
+            var Actual = Target.Handle(getMockDefinitionCommand, CancellationToken.None).Result;
+
+            Assert.Null(Actual);
         }
 
 
