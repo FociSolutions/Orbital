@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.MockDefinitions.Commands
 {
-    public class SaveMockDefinitionCommand: IRequest
+    public class SaveMockDefinitionCommand : IRequest
     {
         public SaveMockDefinitionCommand(MockDefinition mockDefinition)
         {

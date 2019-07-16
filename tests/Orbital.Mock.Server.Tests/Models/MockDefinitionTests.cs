@@ -10,7 +10,7 @@ namespace Orbital.Mock.Server.Tests.Models
     public class MockDefinitionTests
     {
         [Fact]
-        public void EqualsObjectSuccessTest()
+        public void EqualsSuccessTest()
         {
             #region Test Setup
             var metadataFake = new Faker<MetadataInfo>()
@@ -35,56 +35,6 @@ namespace Orbital.Mock.Server.Tests.Models
             Assert.True(Actual);
         }
 
-        [Fact]
-        public void EqualsObjectFailsTest()
-        {
-            #region Test Setup
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
-            var mockDefinitionInfo = mockDefinitionFake.Generate();
-
-            var input = new
-            {
-                objTest = new MockDefinition { Host = mockDefinitionInfo.Host, Metadata = null } as Object
-            };
-
-            #endregion
-
-            var Actual = mockDefinitionInfo.Equals(input.objTest);
-            Assert.False(Actual);
-        }
-
-        [Fact]
-        public void EqualsSuccessTest()
-        {
-            #region Test Setup
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
-
-            var mockDefinitionInfo = mockDefinitionFake.Generate();
-
-            var input = new
-            {
-                mockDefinitionTest = mockDefinitionInfo
-            };
-
-            #endregion
-
-            var Actual = mockDefinitionInfo.Equals(input.mockDefinitionTest);
-            Assert.True(Actual);
-        }
 
         [Fact]
         public void EqualsFailsNullTest()

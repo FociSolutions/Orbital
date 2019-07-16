@@ -11,7 +11,7 @@ namespace Orbital.Mock.Server.Tests.Models
     {
 
         [Fact]
-        public void EqualsObjectSuccessTest()
+        public void EqualsSuccessTest()
         {
             #region Test Setup
             var metadataInfoFake = new Faker<MetadataInfo>()
@@ -31,47 +31,6 @@ namespace Orbital.Mock.Server.Tests.Models
             Assert.True(Actual);
         }
 
-        [Fact]
-        public void EqualsObjectFailsTest()
-        {
-            #region Test Setup
-            var metadataInfoFake = new Faker<MetadataInfo>()
-                .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
-                .RuleFor(m => m.Title, f => f.Lorem.Sentence());
-
-            var metadataInfo = metadataInfoFake.Generate();
-
-            var input = new
-            {
-                objTest = new MetadataInfo { Title = metadataInfo.Description, Description = metadataInfo.Title } as Object
-            };
-
-            #endregion
-
-            var Actual = metadataInfo.Equals(input.objTest);
-            Assert.False(Actual);
-        }
-
-        [Fact]
-        public void EqualsSuccessTest()
-        {
-            #region Test Setup
-            var metadataInfoFake = new Faker<MetadataInfo>()
-                .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
-                .RuleFor(m => m.Title, f => f.Lorem.Sentence());
-
-            var metadataInfo = metadataInfoFake.Generate();
-
-            var input = new
-            {
-                metadataInfoTest = metadataInfo as Object
-            };
-
-            #endregion
-
-            var Actual = metadataInfo.Equals(input.metadataInfoTest);
-            Assert.True(Actual);
-        }
 
         [Fact]
         public void EqualsFailsNullMetadataTest()
