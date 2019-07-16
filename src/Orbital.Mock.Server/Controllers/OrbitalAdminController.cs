@@ -15,11 +15,11 @@ namespace Orbital.Mock.Server.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    [ModelValidation]    
+    [ModelValidation]
     public class OrbitalAdminController : ControllerBase
     {
         private readonly IMediator mediator;
-                
+
         /// <summary>
         /// Default Constructor
         /// </summary>

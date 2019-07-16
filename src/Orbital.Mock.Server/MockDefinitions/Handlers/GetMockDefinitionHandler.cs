@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,6 +34,11 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
             }
 
             return mockDefinition;
+        }
+
+        internal object Handle(GetMockDefinitionByTitleCommand getMockDefinitionCommand, object none)
+        {
+            throw new NotImplementedException();
         }
     }
 }
