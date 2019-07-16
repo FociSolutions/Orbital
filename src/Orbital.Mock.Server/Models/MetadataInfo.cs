@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 using System;
 namespace Orbital.Mock.Server.Models
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MetadataInfo : IEquatable<MetadataInfo>
     {
         [JsonProperty("title")]
