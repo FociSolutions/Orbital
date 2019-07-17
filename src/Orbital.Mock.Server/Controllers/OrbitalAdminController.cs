@@ -30,7 +30,7 @@ namespace Orbital.Mock.Server.Controllers
         }
 
         /// <summary>
-        /// Geths the Mock Definition by the MockDefinition title
+        /// Gets the Mock Definition by the MockDefinition title
         /// </summary>
         /// <param name="id"> The mock definition title</param>
         /// <returns>MockDefinition</returns>
@@ -55,19 +55,6 @@ namespace Orbital.Mock.Server.Controllers
             var command = new SaveMockDefinitionCommand(mockDefinition);
             this.mediator.Send(command);
             return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
-        }
-
-        /// <summary>
-        /// Deletes a mock definition in cache
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            var command = new DeleteMockDefinitionByTitleCommand(id);
-            this.mediator.Send(command);
-            return Ok();
         }
     }
 }
