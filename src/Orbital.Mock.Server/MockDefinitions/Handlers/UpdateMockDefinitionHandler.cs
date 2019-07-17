@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
+using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     /// <summary>
     /// Class that handles incoming requests to update a mock definition
     /// </summary>
-    public class UpdateMockDefinitionHandler : IRequestHandler<UpdateMockDefinitionByTitleCommand>
+    public class UpdateMockDefinitionHandler : IRequestHandler<UpdateMockDefinitionByTitleCommand, MockDefinition>
     {
         private readonly IMemoryCache cache;
 
@@ -31,10 +32,12 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<Unit> Handle(UpdateMockDefinitionByTitleCommand request, CancellationToken cancellationToken)
+        public Task<MockDefinition> Handle(UpdateMockDefinitionByTitleCommand request, CancellationToken cancellationToken)
         {
-            this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-            return Unit.Task;
+            var mockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
+            cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
+            return Task.FromResult(mockDefinition);
         }
+
     }
 }

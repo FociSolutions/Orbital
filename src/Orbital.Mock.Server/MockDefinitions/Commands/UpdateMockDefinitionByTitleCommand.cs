@@ -10,7 +10,7 @@ namespace Orbital.Mock.Server.MockDefinitions.Commands
     /// <summary>
     /// Request to update a mock definition by its title
     /// </summary>
-    public class UpdateMockDefinitionByTitleCommand : IRequest
+    public class UpdateMockDefinitionByTitleCommand : IRequest<MockDefinition>
     {
         /// <summary>
         /// Constructor
