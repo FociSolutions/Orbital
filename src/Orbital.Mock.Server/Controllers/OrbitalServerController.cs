@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Orbital.Mock.Server.Cache;
 using System.Collections.Generic;
 
 namespace Orbital.Mock.Server.Controllers
@@ -10,17 +9,15 @@ namespace Orbital.Mock.Server.Controllers
     public class OrbitalServerController : ControllerBase
     {
 
-        private MemoryCache _cache;
-        public static readonly string cacheKey = "todoKey";
-
+        private IMemoryCache cache;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="memoryCache"></param>
-        public OrbitalServerController(OrbitalMemoryCache memoryCache)
+        public OrbitalServerController(IMemoryCache memoryCache)
         {
-            _cache = memoryCache.Cache;
+            cache = memoryCache;
         }
 
         // GET api/values

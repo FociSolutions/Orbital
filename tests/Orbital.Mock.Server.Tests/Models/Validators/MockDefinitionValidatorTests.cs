@@ -1,0 +1,85 @@
+﻿using Bogus;
+using FluentValidation.TestHelper;
+using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Validators;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using Xunit;
+
+namespace Orbital.Mock.Server.Tests.Models.Validators
+{
+    public class MockDefinitionValidatorTests
+    {
+        [Theory]
+        [ClassData(typeof(MockDefinitionValidatorTestData))]
+        public void MockDefinitionValidatorSuccessTest(string host)
+        {
+            var mockDefinitionFake = new Faker<MockDefinition>()
+                .RuleFor(m => m.Host, f => host);
+
+            var input = new
+            {
+                mockDefinition = mockDefinitionFake.Generate(10)
+            };
+
+            var Target = new MockDefinitionValidator();
+
+            foreach (var item in input.mockDefinition)
+            {
+                Target.ShouldNotHaveValidationErrorFor(m => m.Host, item.Host);
+            }
+        }
+
+        [Fact]
+        public void MockDefinitionValidatorHostNullFailureTest()
+        {
+            var mockDefinitionFake = new Faker<MockDefinition>()
+                .RuleFor(m => m.Host, f => null);
+
+            var input = new
+            {
+                mockDefinition = mockDefinitionFake.Generate()
+            };
+
+            var Target = new MockDefinitionValidator();
+            Target.ShouldHaveValidationErrorFor(m => m.Host, input.mockDefinition.Host);
+        }
+
+        [Fact]
+        public void MockDefinitionValidatorHosEmptyFailureTest()
+        {
+            var mockDefinitionFake = new Faker<MockDefinition>()
+                .RuleFor(m => m.Host, f => string.Empty);
+
+            var input = new
+            {
+                mockDefinition = mockDefinitionFake.Generate()
+            };
+
+            var Target = new MockDefinitionValidator();
+            Target.ShouldHaveValidationErrorFor(m => m.Host, input.mockDefinition.Host);
+        }
+    }
+
+    public class MockDefinitionValidatorTestData : IEnumerable<object[]>
+    {
+        private Faker faker;
+
+        public MockDefinitionValidatorTestData()
+        {
+            this.faker = new Faker();
+        }
+
+
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[] { faker.Internet.DomainName() };
+            yield return new object[] { faker.Internet.Ip() };
+            yield return new object[] { faker.Internet.Ipv6() };
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+}

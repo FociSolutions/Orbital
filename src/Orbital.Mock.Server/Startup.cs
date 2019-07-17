@@ -10,14 +10,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Orbital.Mock.Server.Cache;
 using Orbital.Mock.Server.Registrations;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Orbital.Mock.Server.Models.Validators;
+using MediatR;
 
 namespace Orbital.Mock.Server
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -36,8 +40,11 @@ namespace Orbital.Mock.Server
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton<OrbitalMemoryCache>();
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>())
+                               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddFluentValidation();
+            services.AddMemoryCache();
+            services.AddMediatR(typeof(Startup).Assembly);
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
 
