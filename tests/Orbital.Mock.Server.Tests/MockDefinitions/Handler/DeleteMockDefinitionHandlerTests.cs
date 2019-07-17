@@ -43,7 +43,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
         }
 
         [Fact]
-        public void DeleteMockDefinitionHandlerNotFoundSuccessTest()
+        public void DeleteMockDefinitionHandlerNotFoundTest()
         {
             #region TestSetup
             var options = new MemoryCacheOptions();
