@@ -20,11 +20,11 @@ namespace Orbital.Mock.Server.Models.Validators
             RuleFor(x => x.Host).NotEmpty();
             RuleFor(x => x.OpenApi).NotEmpty();
             RuleFor(x => x.BasePath).NotEmpty();
-            RuleFor(x => ValidateOpenAPIDocument(x)).Equals(true);
+            RuleFor(x => IsValidOpenAPIDocument(x)).Must(x => x == true);
             RuleFor(x => x.Metadata).InjectValidator();
         }
 
-        private bool ValidateOpenAPIDocument(MockDefinition mockDefinition)
+        private bool IsValidOpenAPIDocument(MockDefinition mockDefinition)
         {
             var openApiValidator = new OpenApiValidator(new ValidationRuleSet(ValidationRuleSet.GetDefaultRuleSet()));
             openApiValidator.Visit(mockDefinition.OpenApi);
