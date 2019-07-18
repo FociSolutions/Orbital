@@ -31,19 +31,19 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var cache = new MemoryCache(options);
 
             var mockDefinition = mockDefinitionFake.Generate();
-            var mockDefinitionUpdate = new MockDefinition { Host = mockDefinition.Host + "diff", Metadata = mockDefinition.Metadata };
+            var Expected = new MockDefinition { Host = mockDefinition.Host + "diff", Metadata = mockDefinition.Metadata };
 
             cache.Set(mockDefinition.Metadata.Title, mockDefinition);
 
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate);
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected);
             #endregion
 
             var Target = new UpdateMockDefinitionHandler(cache);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
-            cache.TryGetValue(mockDefinitionUpdate.Metadata.Title, out var savedUpdatedDefinition);
+            cache.TryGetValue(Expected.Metadata.Title, out var Actual);
 
-            Assert.Equal(savedUpdatedDefinition, mockDefinitionUpdate);
+            Assert.Equal(Expected, Actual);
 
 
         }
@@ -63,18 +63,17 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
-
-            var mockDefinitionUpdate = mockDefinitionFake.Generate();
-
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate);
             #endregion
+
+            var Expected = mockDefinitionFake.Generate();
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected);
 
             var Target = new UpdateMockDefinitionHandler(cache);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
-            cache.TryGetValue(mockDefinitionUpdate.Metadata.Title, out var savedUpdatedDefinition);
+            cache.TryGetValue(Expected.Metadata.Title, out var Actual);
 
-            Assert.Equal(savedUpdatedDefinition, mockDefinitionUpdate);
+            Assert.Equal(Actual, Expected);
 
 
         }
@@ -95,10 +94,10 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
 
-            var mockDefinition = mockDefinitionFake.Generate();
-            var mockDefinitionUpdate = new MockDefinition { Host = mockDefinition.Host + "diff", Metadata = mockDefinition.Metadata };
+            var Expected = mockDefinitionFake.Generate();
+            var mockDefinitionUpdate = new MockDefinition { Host = Expected.Host + "diff", Metadata = Expected.Metadata };
 
-            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
+            cache.Set(Expected.Metadata.Title, Expected);
 
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate);
             #endregion
@@ -107,7 +106,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var Actual = Target.Handle(updateMockDefinitionCommand, CancellationToken.None).Result;
 
 
-            Assert.Equal(Actual, mockDefinition);
+            Assert.Equal(Actual, Expected);
 
 
         }
