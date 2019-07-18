@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Microsoft.OpenApi.Models;
 
 namespace Orbital.Mock.Server.Models
 {
@@ -10,8 +11,14 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("host")]
         public string Host { get; set; }
 
+        [JsonProperty("basePath")]
+        public string BasePath { get; set; }
+
         [JsonProperty("metadata")]
         public MetadataInfo Metadata { get; set; }
+
+        [JsonProperty("openApi")]
+        public OpenApiDocument OpenApi { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -22,6 +29,8 @@ namespace Orbital.Mock.Server.Models
         {
             return other != null &&
                    Host == other.Host &&
+                   BasePath == other.BasePath &&
+                   EqualityComparer<OpenApiDocument>.Default.Equals(OpenApi, other.OpenApi) &&
                    EqualityComparer<MetadataInfo>.Default.Equals(Metadata, other.Metadata);
         }
 
