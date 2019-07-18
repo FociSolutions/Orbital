@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Microsoft.OpenApi.Models;
 using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,9 @@ namespace Orbital.Mock.Server.Tests.Models
 
             var mockDefinitionFake = new Faker<MockDefinition>()
             .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
+            .RuleFor(m => m.BasePath, f => f.Random.String())
+            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
 
             var mockDefinitionInfo = mockDefinitionFake.Generate();
@@ -67,14 +70,20 @@ namespace Orbital.Mock.Server.Tests.Models
 
             var mockDefinitionFake = new Faker<MockDefinition>()
             .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
+            .RuleFor(m => m.BasePath, f => f.Random.String())
+            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
             var mockDefinitionInfo = mockDefinitionFake.Generate();
 
             var input = new
             {
-                mockDefinitionTest = new MockDefinition { Metadata = mockDefinitionInfo.Metadata }
+                mockDefinitionTest = new MockDefinition
+                {
+                    Metadata = mockDefinitionInfo.Metadata,
+                    BasePath = mockDefinitionInfo.BasePath,
+                    OpenApi = mockDefinitionInfo.OpenApi
+                }
             };
 
 
@@ -94,19 +103,85 @@ namespace Orbital.Mock.Server.Tests.Models
 
             var mockDefinitionFake = new Faker<MockDefinition>()
             .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
+            .RuleFor(m => m.BasePath, f => f.Random.String())
+            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
             var mockDefinitionInfo = mockDefinitionFake.Generate();
 
             var input = new
             {
-                mockDefinitionTest = new MockDefinition { Host = mockDefinitionInfo.Host }
+                mockDefinitionTest = new MockDefinition
+                {
+                    Host = mockDefinitionInfo.Host,
+                    BasePath = mockDefinitionInfo.BasePath,
+                    OpenApi = mockDefinitionInfo.OpenApi
+                }
             };
 
 
             #endregion
 
+            var Actual = mockDefinitionInfo.Equals(input.mockDefinitionTest);
+            Assert.False(Actual);
+        }
+
+        [Fact]
+        public void EqualsFailsBasePathTest()
+        {
+            #region Test Setup
+            var metadataFake = new Faker<MetadataInfo>()
+            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+
+            var mockDefinitionFake = new Faker<MockDefinition>()
+            .RuleFor(m => m.Host, f => f.Internet.DomainName())
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
+            .RuleFor(m => m.BasePath, f => f.Random.String())
+            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
+
+            var mockDefinitionInfo = mockDefinitionFake.Generate();
+
+            var input = new
+            {
+                mockDefinitionTest = new MockDefinition
+                {
+                    Metadata = mockDefinitionInfo.Metadata,
+                    Host = mockDefinitionInfo.Host,
+                    OpenApi = mockDefinitionInfo.OpenApi
+                }
+            };
+            #endregion
+            var Actual = mockDefinitionInfo.Equals(input.mockDefinitionTest);
+            Assert.False(Actual);
+        }
+
+        [Fact]
+        public void EqualsFailsOpenApiTest()
+        {
+            #region Test Setup
+            var metadataFake = new Faker<MetadataInfo>()
+            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+
+            var mockDefinitionFake = new Faker<MockDefinition>()
+            .RuleFor(m => m.Host, f => f.Internet.DomainName())
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
+            .RuleFor(m => m.BasePath, f => f.Random.String())
+            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
+
+            var mockDefinitionInfo = mockDefinitionFake.Generate();
+
+            var input = new
+            {
+                mockDefinitionTest = new MockDefinition
+                {
+                    Metadata = mockDefinitionInfo.Metadata,
+                    Host = mockDefinitionInfo.Host,
+                    BasePath = mockDefinitionInfo.BasePath
+                }
+            };
+            #endregion
             var Actual = mockDefinitionInfo.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }
