@@ -26,7 +26,7 @@ namespace Orbital.Mock.Server.Models.Validators
 
         private bool IsValidOpenAPIDocument(MockDefinition mockDefinition)
         {
-            var openApiValidator = new OpenApiValidator(new ValidationRuleSet(ValidationRuleSet.GetDefaultRuleSet()));
+            var openApiValidator = new OpenApiValidator(ValidationRuleSet.GetDefaultRuleSet());
             openApiValidator.Visit(mockDefinition.OpenApi);
             return openApiValidator.Errors.Count() == 0;
         }
