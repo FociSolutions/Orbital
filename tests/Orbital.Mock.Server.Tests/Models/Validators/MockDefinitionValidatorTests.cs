@@ -48,7 +48,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         }
 
         [Fact]
-        public void MockDefinitionValidatorHosEmptyFailureTest()
+        public void MockDefinitionValidatorHostEmptyFailureTest()
         {
             var mockDefinitionFake = new Faker<MockDefinition>()
                 .RuleFor(m => m.Host, f => string.Empty);
@@ -60,6 +60,51 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
 
             var Target = new MockDefinitionValidator();
             Target.ShouldHaveValidationErrorFor(m => m.Host, input.mockDefinition.Host);
+        }
+
+        [Fact]
+        public void MockDefinitionValidatorBasePathNullFailureTest()
+        {
+            var mockDefinitionFake = new Faker<MockDefinition>()
+                .RuleFor(m => m.BasePath, f => null);
+
+            var input = new
+            {
+                mockDefinition = mockDefinitionFake.Generate()
+            };
+
+            var Target = new MockDefinitionValidator();
+            Target.ShouldHaveValidationErrorFor(m => m.BasePath, input.mockDefinition.BasePath);
+        }
+
+        [Fact]
+        public void MockDefinitionValidatorBasePathEmptyFailureTest()
+        {
+            var mockDefinitionFake = new Faker<MockDefinition>()
+                .RuleFor(m => m.BasePath, f => string.Empty);
+
+            var input = new
+            {
+                mockDefinition = mockDefinitionFake.Generate()
+            };
+
+            var Target = new MockDefinitionValidator();
+            Target.ShouldHaveValidationErrorFor(m => m.BasePath, input.mockDefinition.BasePath);
+        }
+
+        [Fact]
+        public void MockDefinitionValidatorOpenApiNullFailureTest()
+        {
+            var mockDefinitionFake = new Faker<MockDefinition>()
+                .RuleFor(m => m.OpenApi, f => null);
+
+            var input = new
+            {
+                mockDefinition = mockDefinitionFake.Generate()
+            };
+
+            var Target = new MockDefinitionValidator();
+            Target.ShouldHaveValidationErrorFor(m => m.OpenApi, input.mockDefinition.OpenApi);
         }
     }
 

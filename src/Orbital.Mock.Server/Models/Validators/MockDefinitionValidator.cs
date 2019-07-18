@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Validations;
 using Microsoft.OpenApi.Validations.Rules;
 using System;
@@ -20,14 +21,14 @@ namespace Orbital.Mock.Server.Models.Validators
             RuleFor(x => x.Host).NotEmpty();
             RuleFor(x => x.OpenApi).NotEmpty();
             RuleFor(x => x.BasePath).NotEmpty();
-            RuleFor(x => IsValidOpenAPIDocument(x)).Must(x => x == true);
+            RuleFor(x => x.OpenApi).Must(x => IsValidOpenAPIDocument(x));
             RuleFor(x => x.Metadata).InjectValidator();
         }
 
-        private bool IsValidOpenAPIDocument(MockDefinition mockDefinition)
+        private bool IsValidOpenAPIDocument(OpenApiDocument doc)
         {
             var openApiValidator = new OpenApiValidator(ValidationRuleSet.GetDefaultRuleSet());
-            openApiValidator.Visit(mockDefinition.OpenApi);
+            openApiValidator.Visit(doc);
             return openApiValidator.Errors.Count() == 0;
         }
     }
