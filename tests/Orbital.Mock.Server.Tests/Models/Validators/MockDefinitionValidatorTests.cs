@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using FluentValidation.TestHelper;
+using Microsoft.OpenApi.Models;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Validators;
 using System;
@@ -97,6 +98,21 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         {
             var mockDefinitionFake = new Faker<MockDefinition>()
                 .RuleFor(m => m.OpenApi, f => null);
+
+            var input = new
+            {
+                mockDefinition = mockDefinitionFake.Generate()
+            };
+
+            var Target = new MockDefinitionValidator();
+            Target.ShouldHaveValidationErrorFor(m => m.OpenApi, input.mockDefinition.OpenApi);
+        }
+
+        [Fact]
+        public void MockDefinitionValidatorOpenApiValidationFailureTest()
+        {
+            var mockDefinitionFake = new Faker<MockDefinition>()
+                .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
             var input = new
             {
