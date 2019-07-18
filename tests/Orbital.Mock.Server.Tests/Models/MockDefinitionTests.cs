@@ -25,16 +25,16 @@ namespace Orbital.Mock.Server.Tests.Models
             .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
 
-            var mockDefinitionInfo = mockDefinitionFake.Generate();
+            var Target = mockDefinitionFake.Generate();
 
             var input = new
             {
-                objTest = mockDefinitionInfo as Object
+                objTest = Target as Object
             };
 
             #endregion
 
-            var Actual = mockDefinitionInfo.Equals(input.objTest);
+            var Actual = Target.Equals(input.objTest);
             Assert.True(Actual);
         }
 
@@ -52,11 +52,11 @@ namespace Orbital.Mock.Server.Tests.Models
             .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
 
-            var mockDefinitionInfo = mockDefinitionFake.Generate();
+            var Target = mockDefinitionFake.Generate();
 
             #endregion
 
-            var Actual = mockDefinitionInfo.Equals(null);
+            var Actual = Target.Equals(null);
             Assert.False(Actual);
         }
 
@@ -74,22 +74,22 @@ namespace Orbital.Mock.Server.Tests.Models
             .RuleFor(m => m.BasePath, f => f.Random.String())
             .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
-            var mockDefinitionInfo = mockDefinitionFake.Generate();
+            var Target = mockDefinitionFake.Generate();
 
             var input = new
             {
                 mockDefinitionTest = new MockDefinition
                 {
-                    Metadata = mockDefinitionInfo.Metadata,
-                    BasePath = mockDefinitionInfo.BasePath,
-                    OpenApi = mockDefinitionInfo.OpenApi
+                    Metadata = Target.Metadata,
+                    BasePath = Target.BasePath,
+                    OpenApi = Target.OpenApi
                 }
             };
 
 
             #endregion
 
-            var Actual = mockDefinitionInfo.Equals(input.mockDefinitionTest);
+            var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }
 
@@ -107,22 +107,22 @@ namespace Orbital.Mock.Server.Tests.Models
             .RuleFor(m => m.BasePath, f => f.Random.String())
             .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
-            var mockDefinitionInfo = mockDefinitionFake.Generate();
+            var Target = mockDefinitionFake.Generate();
 
             var input = new
             {
                 mockDefinitionTest = new MockDefinition
                 {
-                    Host = mockDefinitionInfo.Host,
-                    BasePath = mockDefinitionInfo.BasePath,
-                    OpenApi = mockDefinitionInfo.OpenApi
+                    Host = Target.Host,
+                    BasePath = Target.BasePath,
+                    OpenApi = Target.OpenApi
                 }
             };
 
 
             #endregion
 
-            var Actual = mockDefinitionInfo.Equals(input.mockDefinitionTest);
+            var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }
 
@@ -140,19 +140,19 @@ namespace Orbital.Mock.Server.Tests.Models
             .RuleFor(m => m.BasePath, f => f.Random.String())
             .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
-            var mockDefinitionInfo = mockDefinitionFake.Generate();
+            var Target = mockDefinitionFake.Generate();
 
             var input = new
             {
                 mockDefinitionTest = new MockDefinition
                 {
-                    Metadata = mockDefinitionInfo.Metadata,
-                    Host = mockDefinitionInfo.Host,
-                    OpenApi = mockDefinitionInfo.OpenApi
+                    Metadata = Target.Metadata,
+                    Host = Target.Host,
+                    OpenApi = Target.OpenApi
                 }
             };
             #endregion
-            var Actual = mockDefinitionInfo.Equals(input.mockDefinitionTest);
+            var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }
 
@@ -170,19 +170,19 @@ namespace Orbital.Mock.Server.Tests.Models
             .RuleFor(m => m.BasePath, f => f.Random.String())
             .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
 
-            var mockDefinitionInfo = mockDefinitionFake.Generate();
+            var Target = mockDefinitionFake.Generate();
 
             var input = new
             {
                 mockDefinitionTest = new MockDefinition
                 {
-                    Metadata = mockDefinitionInfo.Metadata,
-                    Host = mockDefinitionInfo.Host,
-                    BasePath = mockDefinitionInfo.BasePath
+                    Metadata = Target.Metadata,
+                    Host = Target.Host,
+                    BasePath = Target.BasePath
                 }
             };
             #endregion
-            var Actual = mockDefinitionInfo.Equals(input.mockDefinitionTest);
+            var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }
     }
