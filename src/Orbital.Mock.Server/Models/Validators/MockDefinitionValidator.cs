@@ -12,26 +12,23 @@ namespace Orbital.Mock.Server.Models.Validators
     /// 
     /// </summary>
     public class MockDefinitionValidator : AbstractValidator<MockDefinition>
-    {
-        private OpenApiValidator openApiValidator;
-
-        /// <summary>
-        /// 
-        /// </summary>
+    {        /// <summary>
+             /// 
+             /// </summary>
         public MockDefinitionValidator()
         {
-            this.openApiValidator = new OpenApiValidator(new ValidationRuleSet(ValidationRuleSet.GetDefaultRuleSet()));
             RuleFor(x => x.Host).NotEmpty();
             RuleFor(x => x.OpenApi).NotEmpty();
             RuleFor(x => x.BasePath).NotEmpty();
-            RuleFor(x => helper(x)).Empty();
+            RuleFor(x => ValidateOpenAPIDocument(x)).Equals(true);
             RuleFor(x => x.Metadata).InjectValidator();
         }
 
-        private IEnumerable<OpenApiValidatorError> helper(MockDefinition x)
+        private bool ValidateOpenAPIDocument(MockDefinition mockDefinition)
         {
-            openApiValidator.Visit(x.OpenApi);
-            return openApiValidator.Errors;
+            var openApiValidator = new OpenApiValidator(new ValidationRuleSet(ValidationRuleSet.GetDefaultRuleSet()));
+            openApiValidator.Visit(mockDefinition.OpenApi);
+            return openApiValidator.Errors.Count() == 0;
         }
     }
 }
