@@ -15,7 +15,7 @@ namespace Orbital.Mock.Server.Handlers
     public class SaveMockDefinitionHandler : IRequestHandler<SaveMockDefinitionCommand>
     {
         private readonly IMemoryCache cache;
-        private readonly string mockIds = "modckIds";
+        private const string MOCKTITLEKEY = "mockids";
 
         /// <summary>
         /// Constructor
@@ -27,24 +27,18 @@ namespace Orbital.Mock.Server.Handlers
         }
 
         /// <summary>
-        /// Asynchronously handles saving the mock definition to cache.
+        /// Asynchronously handles saving the mock definition to cache at the same time it passes an accessible id (title) List from the cache
         /// </summary>
         /// <param name="request">SaveMockDefinition command</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public Task<Unit> Handle(SaveMockDefinitionCommand request, CancellationToken cancellationToken)
         {
-            List<string> KeyCollectionArray = new List<string>();
-            this.cache.Get(request.MockDefinition.Metadata.Title);
-            KeyCollectionArray.Add(request.MockDefinition.Metadata.Title);
-            
-            this.cache.Set(KeyCollectionArray, mockIds);
-
-            
             this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
 
-           
-            
+            var keysCollection = this.cache.GetOrCreate(MOCKTITLEKEY, cacheEntry => {return new List<string>();});
+            keysCollection.Add(request.MockDefinition.Metadata.Title);
+            this.cache.Set(MOCKTITLEKEY, keysCollection);
             return Unit.Task;
         }
     }
