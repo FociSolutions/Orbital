@@ -42,7 +42,7 @@ namespace Orbital.Mock.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .AddJsonOptions(options => { options.SerializerSettings.Converters.Add(new OpenApiConverter()); })
+                .AddJsonOptions(options => { options.SerializerSettings.Converters.Add(new OpenApiJsonConverter()); })
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

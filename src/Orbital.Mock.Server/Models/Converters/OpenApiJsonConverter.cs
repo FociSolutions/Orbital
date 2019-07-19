@@ -12,14 +12,15 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models.Converters
 {
-    public class OpenApiConverter : JsonConverter
+    /// <summary>
+    /// Json Converter for the Microsoft.OpenApi.OpenApiDocument model
+    /// </summary>
+    public class OpenApiJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(OpenApiDocument);
         }
-
-        public override bool CanWrite => true;
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
