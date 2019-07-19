@@ -17,6 +17,8 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
         [Fact]
         public void SaveMockDefinitionSuccessTest()
         {
+            #region Test Setup
+
             var metadataFake = new Faker<MetadataInfo>()
             .RuleFor(m => m.Title, f => f.Lorem.Sentence())
             .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
@@ -28,9 +30,10 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
 
+            #endregion
+
             var mockDefinition = mockDefinitionFake.Generate();
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
-            
 
             var Target = new SaveMockDefinitionHandler(cache);
             var Actual = Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result;
@@ -60,6 +63,37 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             var Target = new SaveMockDefinitionHandler(cache);
             Assert.Throws<ArgumentNullException>(() => Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result);
+        }
+
+        [Fact]
+        public void SaveKeysCollectionSuccessTest()
+        {
+            #region Test Setup
+
+            var metadataFake = new Faker<MetadataInfo>()
+            .RuleFor(m => m.Title, f => f.Lorem.Sentence());
+
+            var mockKeysCollections = new Faker<MockDefinition>()
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+
+            var options = new MemoryCacheOptions();
+            var cache = new MemoryCache(options);
+
+            var mockDefinition = mockKeysCollections.Generate();
+            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
+
+            var Expected = mockDefinition.Metadata.Title;
+
+            #endregion
+
+            cache.Set("mockids", new List<string>() { mockDefinition.Metadata.Title });
+            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
+
+            var Target = new SaveMockDefinitionHandler(cache);
+            cache.TryGetValue(mockDefinition.Metadata.Title, out var Actual);
+
+            Assert.NotNull(Actual);
+
         }
     }
 }
