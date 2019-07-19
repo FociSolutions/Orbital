@@ -73,7 +73,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             cache.TryGetValue(Expected.Metadata.Title, out var Actual);
 
-            Assert.Equal(Actual, Expected);
+            Assert.Equal(Expected, Actual);
 
 
         }
@@ -106,7 +106,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var Actual = Target.Handle(updateMockDefinitionCommand, CancellationToken.None).Result;
 
 
-            Assert.Equal(Actual, Expected);
+            Assert.Equal(Expected, Actual);
 
 
         }
