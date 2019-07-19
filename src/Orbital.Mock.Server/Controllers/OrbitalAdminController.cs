@@ -69,6 +69,23 @@ namespace Orbital.Mock.Server.Controllers
             this.mediator.Send(command);
             return Ok();
         }
+
+        /// <summary>
+        /// Updates a mock definition in cache
+        /// </summary>
+        /// <param name="mockDefinition"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public IActionResult Put([FromBody]MockDefinition mockDefinition)
+        {
+            var command = new UpdateMockDefinitionByTitleCommand(mockDefinition);
+            var result = mediator.Send(command).Result;
+            if (result == null)
+            {
+                return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
+            }
+            return Ok();
+        }
     }
 }
 
