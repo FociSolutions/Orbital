@@ -17,11 +17,25 @@ namespace Orbital.Mock.Server.Models.Converters
     /// </summary>
     public class OpenApiJsonConverter : JsonConverter
     {
+        /// <summary>
+        /// Checks that the given object type is able to be converted. In this case the object type must be 
+        /// an OpenApiDocument. Returns true if it is, false otherwise
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(OpenApiDocument);
         }
 
+        /// <summary>
+        /// Reads json into an OpenApiDocument Object using the OpenApiStringReader from Microsoft.OpenApi.Readers
+        /// </summary>
+        /// <param name="reader">The JsonReader that reads the incoming json</param>
+        /// <param name="objectType"></param>
+        /// <param name="existingValue"></param>
+        /// <param name="serializer"></param>
+        /// <returns></returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var openApiStringReader = new OpenApiStringReader();
@@ -30,6 +44,14 @@ namespace Orbital.Mock.Server.Models.Converters
             return openApiDocument;
         }
 
+        /// <summary>
+        /// Writes an Object into JSON using the OpenApiJsonWriter from Microsoft.OpenApi.Writers
+        /// This method only casts the object into an OpenApiDocument, checks if its not null and
+        /// passes it to the WriteJson method to do the actual conversion if its not null.
+        /// </summary>
+        /// <param name="writer">The JsonWriter used to write the json output</param>
+        /// <param name="value">The object to turn into Json</param>
+        /// <param name="serializer"></param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var openApi = value as OpenApiDocument;
@@ -40,6 +62,11 @@ namespace Orbital.Mock.Server.Models.Converters
             }
         }
 
+        /// <summary>
+        /// The method that writes the OpenApiDocument into JSOn using the OpenApiJsonWriter from Microsoft.OpenApi.Writers
+        /// </summary>
+        /// <param name="writer">The JsonWriter used to write the json output</param>
+        /// <param name="openApi">The OpenApiDocument Object to turn into Json</param>
         private static void WriteJson(JsonWriter writer, OpenApiDocument openApi)
         {
             using (var memory = new StringWriter())
