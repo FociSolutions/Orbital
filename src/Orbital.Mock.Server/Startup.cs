@@ -18,6 +18,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Orbital.Mock.Server.Models.Validators;
 using MediatR;
+using Orbital.Mock.Server.Models.Converters;
 
 namespace Orbital.Mock.Server
 {
@@ -40,9 +41,11 @@ namespace Orbital.Mock.Server
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>())
-                               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            //services.AddFluentValidation();
+            services.AddMvc()
+                .AddJsonOptions(options => { options.SerializerSettings.Converters.Add(new OpenApiConverter()); })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
             ApiVersionRegistration.ConfigureService(services);
