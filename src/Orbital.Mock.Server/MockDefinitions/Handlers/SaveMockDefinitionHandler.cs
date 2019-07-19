@@ -34,12 +34,13 @@ namespace Orbital.Mock.Server.Handlers
         /// <returns></returns>
         public Task<Unit> Handle(SaveMockDefinitionCommand request, CancellationToken cancellationToken)
         {
-            string[] keyCollectionArray= new string[];
-            keyCollectionArray = this.cache.Get(request.MockDefinition.Metadata.Title, request.MockDefinition);
-            keyCollectionArray.Add(request.MockDefinition.Metadata.Title);
-            this.cache.Set(keyCollectionArray, mockIds);
+            List<string> KeyCollectionArray = new List<string>();
+            this.cache.Get(request.MockDefinition.Metadata.Title, request.MockDefinition);
+            KeyCollectionArray.Add(request.MockDefinition.Metadata.Title);
             
+            this.cache.Set(KeyCollectionArray, mockIds);
 
+            
             this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
 
            
