@@ -36,7 +36,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
 
             var Target = new SaveMockDefinitionHandler(cache);
-            var Actual = Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result;
+            Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
 
             cache.TryGetValue(mockDefinition.Metadata.Title, out var savedDefinition);
 
@@ -82,9 +82,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var cache = new MemoryCache(options);
             const string MOCKTITLEKEY = "mockids";
             var mockDefinition = mockDefinitionFake.Generate();
+            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
             #endregion
 
-            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
+            var Target = new SaveMockDefinitionHandler(cache);
+            Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
+
             cache.Set(MOCKTITLEKEY, new List<string>() { mockDefinition.Metadata.Title });
             cache.TryGetValue(mockDefinition.Metadata.Title, out var Actual);
 
@@ -92,7 +95,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
         }
 
         [Fact]
-        public void savedTitleExistsInKeyCollections()
+        public void SavedTitleExistsInKeyCollections()
         {
             #region test setup
             var metadataFake = new Faker<MetadataInfo>()
