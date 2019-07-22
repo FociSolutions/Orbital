@@ -78,9 +78,10 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
                 .RuleFor(m => m.Host, f => f.Internet.DomainName())
                 .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
+            const string MOCKTITLEKEY = "mockids";
+
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
-            const string MOCKTITLEKEY = "mockids";
             var mockDefinition = mockDefinitionFake.Generate();
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
             #endregion
@@ -88,8 +89,8 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var Target = new SaveMockDefinitionHandler(cache);
             Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
 
-            cache.Set(MOCKTITLEKEY, new List<string>() { mockDefinition.Metadata.Title });
-            cache.TryGetValue(mockDefinition.Metadata.Title, out var Actual);
+            cache.TryGetValue(MOCKTITLEKEY, out List<string> Actual);
+            Assert.Contains(mockDefinition.Metadata.Title, Actual);
 
             Assert.NotNull(Actual);
         }
@@ -114,6 +115,8 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #endregion
             var mockDefinition = mockDefinitionFake.Generate();
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
+            cache.Set(MOCKTITLEKEY, new List<string> { mockDefinition.Metadata.Title });
+            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
 
             var Target = new SaveMockDefinitionHandler(cache);
             Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
