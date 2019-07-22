@@ -73,7 +73,6 @@ namespace Orbital.Mock.Server.Models.Converters
             {
                 writer.Flush();
                 var openApiWriter = new OpenApiJsonWriter(memory);
-                var openApiJson = string.Empty;
                 openApi.SerializeAsV2(openApiWriter);
                 var json = JObject.Parse(memory.ToString());
                 json.WriteTo(writer);
