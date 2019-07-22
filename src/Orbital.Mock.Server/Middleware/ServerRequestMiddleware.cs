@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -17,14 +18,16 @@ namespace Orbital.Mock.Server.Middleware
     public class ServerRequestMiddleware
     {
         private readonly RequestDelegate next;
+        private readonly IMediator mediator;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="next"></param>
-        public ServerRequestMiddleware(RequestDelegate next)
+        public ServerRequestMiddleware(RequestDelegate next, IMediator mediator)
         {
             this.next = next;
+            this.mediator = mediator;
         }
 
         /// <summary>
