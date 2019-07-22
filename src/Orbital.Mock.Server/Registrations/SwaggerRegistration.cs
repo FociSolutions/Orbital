@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -8,6 +9,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
+using Microsoft.OpenApi.Writers;
+using Newtonsoft.Json.Linq;
 
 namespace Orbital.Mock.Server.Registrations
 {
@@ -25,6 +29,17 @@ namespace Orbital.Mock.Server.Registrations
                 var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
                 var assemblyProduct = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>();
                 var assemblyDescription = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyDescriptionAttribute>();
+                o.MapType<OpenApiDocument>(() =>
+                {
+                    using (var stringWriter = new StringWriter())
+                    {
+                        var exampleObject = JsonConvert.DeserializeObject(File.ReadAllText(@"Registrations\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json"));
+                        return new Schema
+                        {
+                            Example = exampleObject
+                        };
+                    }
+                });
                 foreach (var version in provider.ApiVersionDescriptions)
                 {
                     o.SwaggerDoc(version.GroupName, new Info()
