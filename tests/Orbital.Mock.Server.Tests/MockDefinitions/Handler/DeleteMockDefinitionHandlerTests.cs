@@ -56,5 +56,36 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             Assert.Null(exception);
         }
+
+        [Fact]
+        public void DeleteMockDefinitionHandlerFromListSuccessTest()
+        {
+            #region TestSetup
+            var metadataFake = new Faker<MetadataInfo>()
+            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+
+            var mockDefinitionFake = new Faker<MockDefinition>()
+            .RuleFor(m => m.Host, f => f.Internet.DomainName())
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+
+            var options = new MemoryCacheOptions();
+            var cache = new MemoryCache(options);
+
+            var mockDefinition = mockDefinitionFake.Generate();
+            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
+
+            var expected = mockDefinition.Metadata.Title;
+            cache.Set("mockids", new List<string>() { mockDefinition.Metadata.Title });
+
+            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(mockDefinition.Metadata.Title);
+            #endregion
+            var Target = new DeleteMockDefinitionHandler(cache);
+            Target.Handle(deleteMockDefinitionCommand, CancellationToken.None);
+
+            cache.TryGetValue(mockDefinition.Metadata.Title, out var Actual);
+
+            Assert.Null(Actual);
+        }
     }
 }
