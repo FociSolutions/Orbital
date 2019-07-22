@@ -91,8 +91,6 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             cache.TryGetValue(MOCKTITLEKEY, out List<string> Actual);
             Assert.Contains(mockDefinition.Metadata.Title, Actual);
-
-            Assert.NotNull(Actual);
         }
 
         [Fact]
