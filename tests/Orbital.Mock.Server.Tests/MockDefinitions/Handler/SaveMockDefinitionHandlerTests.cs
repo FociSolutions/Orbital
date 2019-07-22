@@ -37,7 +37,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             var Target = new SaveMockDefinitionHandler(cache);
             var Actual = Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result;
-                        
+
             cache.TryGetValue(mockDefinition.Metadata.Title, out var savedDefinition);
 
             Assert.NotNull(savedDefinition);
@@ -74,21 +74,49 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
                 .RuleFor(m => m.Title, f => f.Lorem.Sentence())
                 .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
-            var mockKeysCollections = new Faker<MockDefinition>()
+            var mockDefinitionFake = new Faker<MockDefinition>()
                 .RuleFor(m => m.Host, f => f.Internet.DomainName())
                 .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
-
-            var mockDefinition = mockKeysCollections.Generate();
-            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
+            const string MOCKTITLEKEY = "mockids";
+            var mockDefinition = mockDefinitionFake.Generate();
             #endregion
 
-            cache.Set("mockids", new List<string>() { mockDefinition.Metadata.Title });
+            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
+            cache.Set(MOCKTITLEKEY, new List<string>() { mockDefinition.Metadata.Title });
             cache.TryGetValue(mockDefinition.Metadata.Title, out var Actual);
 
             Assert.NotNull(Actual);
+        }
+
+        [Fact]
+        public void savedTitleExistsInKeyCollections()
+        {
+            #region test setup
+            var metadataFake = new Faker<MetadataInfo>()
+               .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+               .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+
+            var mockDefinitionFake = new Faker<MockDefinition>()
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+            const string MOCKTITLEKEY = "mockids";
+
+            var options = new MemoryCacheOptions();
+            var cache = new MemoryCache(options);
+
+            #endregion
+            var mockDefinition = mockDefinitionFake.Generate();
+            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
+
+            var Target = new SaveMockDefinitionHandler(cache);
+            Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
+
+            cache.TryGetValue(MOCKTITLEKEY, out List<string> Actual);
+
+            Assert.Contains(mockDefinition.Metadata.Title, Actual);
 
         }
     }

@@ -41,5 +41,10 @@ namespace Orbital.Mock.Server.Handlers
             this.cache.Set(MOCKTITLEKEY, keysCollection);
             return Unit.Task;
         }
+
+        internal object Handle(object saveMockDefinitionCommand, CancellationToken none)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
