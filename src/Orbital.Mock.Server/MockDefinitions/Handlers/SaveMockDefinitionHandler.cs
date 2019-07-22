@@ -37,8 +37,13 @@ namespace Orbital.Mock.Server.Handlers
             this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
 
             var keysCollection = this.cache.GetOrCreate(MOCKTITLEKEY, cacheEntry => {return new List<string>();});
-            keysCollection.Add(request.MockDefinition.Metadata.Title);
-            this.cache.Set(MOCKTITLEKEY, keysCollection);
+
+            if (!keysCollection.Contains(request.MockDefinition.Metadata.Title))
+            {
+                keysCollection.Add(request.MockDefinition.Metadata.Title);
+                this.cache.Set(MOCKTITLEKEY, keysCollection);
+            }
+            
             return Unit.Task;
         }
 
