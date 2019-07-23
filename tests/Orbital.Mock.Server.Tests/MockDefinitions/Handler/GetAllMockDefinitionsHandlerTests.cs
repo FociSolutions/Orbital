@@ -60,6 +60,8 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var Actual = Target.Handle(getAllMockDefinitionsCommand, CancellationToken.None).Result;
 
             Assert.Equal(2, Actual.Count);
+            Assert.Equal(mockdeffake1.Metadata.Title, Actual[0].Metadata.Title);
+            Assert.Equal(mockdeffake2.Metadata.Title, Actual[1].Metadata.Title);
 
             #endregion
         }
