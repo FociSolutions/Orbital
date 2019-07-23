@@ -1,13 +1,28 @@
-<div class="container">
-  <div class="row mb-4">
-    Example Description 1
-  </div>
-  <div class="row mb-4">
-    Example Description 2
-  </div>
-  <div class="row mb-4">
-    Example Description 3
+<div
+  *ngIf="this.scenarios?.length > 0; else noScenarios"
+  class="container overflow-auto"
+>
+  <div *ngFor="let scenario of this.scenarios" class="row my-4">
+    <app-scenario-details
+      class="col-sm-11 mx-auto"
+      *ngIf="scenario"
+      [scenario]="scenario"
+    ></app-scenario-details>
   </div>
 </div>
 
-<button nbButton (click)="OnAddNewClicked()">Add New Scenario</button>
+<hr />
+
+<div class="row mt-3">
+  <div class="col-sm-11 mx-auto d-flex justify-content-between">
+    <button nbButton (click)="onAdd()">Add New Scenario</button>
+  </div>
+</div>
+
+<ng-template #noScenarios>
+  <div class="center">
+    <p>
+      No scenarios found.
+    </p>
+  </div>
+</ng-template>

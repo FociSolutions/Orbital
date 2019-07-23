@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { VerbType } from 'src/app/models/verb.type';
+import { AppStore } from 'src/app/store/app-store';
 
 @Component({
   selector: 'app-endpoint-list-item',
@@ -8,37 +9,14 @@ import { VerbType } from 'src/app/models/verb.type';
   styleUrls: ['./endpoint-list-item.component.scss']
 })
 export class EndpointListItemComponent implements OnInit {
-  endpoint: Endpoint;
-  badgeColor: string;
+  @Input() endpoint: Endpoint;
+  selected: boolean;
 
-  constructor() {}
+  constructor(private app: AppStore) {
+    this.app.state$.subscribe(state => {
+      this.selected = state.selectedEndpoint === this.endpoint;
+    });
+  }
 
   ngOnInit() {}
-
-  /**
-   * Handle on click for current list item
-   */
-  onItemSelected() {}
-
-  /**
-   * setter for endpoint list item and its badge color
-   */
-  @Input()
-  set item(item: Endpoint) {
-    this.endpoint = item;
-    switch (this.endpoint.verb) {
-      case VerbType.DELETE:
-        this.badgeColor = 'danger';
-        break;
-      case VerbType.GET:
-        this.badgeColor = 'info';
-        break;
-      case VerbType.POST:
-        this.badgeColor = 'success';
-        break;
-      case VerbType.PUT:
-        this.badgeColor = 'warning';
-        break;
-    }
-  }
 }

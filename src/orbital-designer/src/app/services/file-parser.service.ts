@@ -6,8 +6,7 @@ import { OpenAPIV2 } from 'openapi-types';
   providedIn: 'root'
 })
 export class FileParserService {
-
-  constructor() { }
+  constructor() {}
 
   /**
    * Reads a file as mock definition
@@ -24,23 +23,20 @@ export class FileParserService {
       });
     });
   }
-
   /**
    * Takes a file as input and returns a promise that will resolve to an OpenAPIV2.Document
    * if the file is valid. If the file is invalid it will reject an error.
    * @param file an Object representing the file to read and turn contents into an OpenApiSpec
-   * @returns promise containing an object with the Open Api Document and content string or an error
+   * @returns promise containing an object with the Open Api Document
    */
-  readOpenApiSpec(file: File): Promise<{doc: OpenAPIV2.Document, contentString: string}> {
+  readOpenApiSpec(file: File): Promise<OpenAPIV2.Document> {
     return new Promise((resolve, reject) => {
-      this.read(file).then(
-        contentString => {
-          MockDefinition.toOpenApiSpec(contentString).then (
-            doc => resolve({doc, contentString}),
-            err => reject(err)
-          );
-        }
-      );
+      this.read(file).then(contentString => {
+        MockDefinition.toOpenApiSpec(contentString).then(
+          doc => resolve(doc),
+          err => reject(err)
+        );
+      });
     });
   }
 
@@ -51,7 +47,7 @@ export class FileParserService {
    * @returns a promise containing a string representing the file contents
    */
   read(file: File): Promise<string> {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const fileContent = new FileReader();
       fileContent.readAsText(file);
       fileContent.onload = () => {

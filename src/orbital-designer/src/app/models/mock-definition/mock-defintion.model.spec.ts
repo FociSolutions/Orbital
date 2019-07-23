@@ -1,23 +1,15 @@
 import * as faker from 'faker';
-import { Scenario } from './scenario/scenario.model';
 import { MockDefinition } from './mock-definition.model';
 import * as yaml from 'js-yaml';
-import { Metadata } from './metadata.model';
+import testMockDefinitionObject from '../../../test-files/test-mockdefinition-object';
+import testMockDefinitionString from '../../../test-files/test-mockdefinition-file.mock';
 
 describe('MockDefinition.toMockDefinition', () => {
   it('parsed mock definition string that have the correct format', async () => {
-    const input = {
-      metadata: {} as Metadata,
-      host: faker.internet.url(),
-      basePath: '/' + faker.lorem.word(),
-      scenarios: [] as Scenario[],
-      openApi: faker.lorem.paragraph()
-    };
-
-    await MockDefinition.toMockDefinition(yaml.dump(input)).then(
-      actual => expect(actual).toEqual(input),
-      err => fail(err)
+    const model = await MockDefinition.toMockDefinition(
+      testMockDefinitionString
     );
+    expect(model).toEqual(testMockDefinitionObject);
   });
 
   it('failed to parse due to incorrect format', async () => {
@@ -69,5 +61,14 @@ describe('MockDefinition.toOpenApiSpec', () => {
       actual => fail(actual),
       err => expect(err).not.toBeUndefined()
     );
+  });
+});
+
+describe('Mockdefinition.exportMockDefinitionAsYaml', () => {
+  it('parsed model and returned string representing yaml content', () => {
+    const result = MockDefinition.exportMockDefinitionAsYaml(
+      testMockDefinitionObject
+    );
+    expect(result).toBe(testMockDefinitionString);
   });
 });

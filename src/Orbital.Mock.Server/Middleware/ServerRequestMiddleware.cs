@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Orbital.Mock.Server.Pipelines.Commands;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -24,6 +25,7 @@ namespace Orbital.Mock.Server.Middleware
         /// Constructor
         /// </summary>
         /// <param name="next"></param>
+        /// <param name="mediator"></param>
         public ServerRequestMiddleware(RequestDelegate next, IMediator mediator)
         {
             this.next = next;
@@ -45,14 +47,16 @@ namespace Orbital.Mock.Server.Middleware
             }
             else
             {
-                var result = mockPipeline(context);
-            }
-        }
+                var command = new InvokeSynchronousPipelineCommand(context.Request);
 
-        private HttpContext mockPipeline(HttpContext context)
-        {
-            context.Response.WriteAsync("Mocked Pipeline Result");
-            return context;
+                var response = await this.mediator.Send(command);
+                context.Response.StatusCode = response.Status;
+                await context.Response.WriteAsync(response.Body);
+                foreach (KeyValuePair<string, string> header in response.Headers)
+                {
+                    context.Response.Headers.Add(header.Key, header.Value);
+                }
+            }
         }
     }
 }
