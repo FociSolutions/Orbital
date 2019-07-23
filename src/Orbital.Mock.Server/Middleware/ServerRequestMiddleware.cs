@@ -25,6 +25,7 @@ namespace Orbital.Mock.Server.Middleware
         /// Constructor
         /// </summary>
         /// <param name="next"></param>
+        /// <param name="mediator"></param>
         public ServerRequestMiddleware(RequestDelegate next, IMediator mediator)
         {
             this.next = next;
