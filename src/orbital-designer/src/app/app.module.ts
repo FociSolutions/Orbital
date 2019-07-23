@@ -24,7 +24,16 @@ import { EndpointListItemComponent } from './components/endpoint-overview/endpoi
 import { ScenarioOverviewComponent } from './components/scenario-overview/scenario-overview.component';
 import { MockDefinitionStore } from './store/mockdefinitionstore';
 import { EndpointsStore } from './store/endpoints-store';
+import { ScenarioDetailsComponent } from './components/scenario-overview/scenario-details/scenario-details.component';
+import { GetEndpointScenariosPipe } from './pipes/get-endpoint-scenarios.pipe';
+import { GetVerbColorPipe } from './pipes/get-verb-color.pipe';
+import { KeyValueListComponent } from './components/edit-scenario/key-value-list/key-value-list.component';
+import { AppStore } from './store/app-store';
+import { ScenarioViewComponent } from './components/scenario-overview/scenario-view/scenario-view.component';
 
+import { CommonModule } from '@angular/common';
+
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,20 +46,27 @@ import { EndpointsStore } from './store/endpoints-store';
     EndpointOverviewComponent,
     EndpointListComponent,
     EndpointListItemComponent,
-    ScenarioOverviewComponent
+    ScenarioOverviewComponent,
+    ScenarioDetailsComponent,
+    GetEndpointScenariosPipe,
+    GetVerbColorPipe,
+    KeyValueListComponent,
+    ScenarioViewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG }),
+    CommonModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     NbThemeModule.forRoot({ name: 'default' }),
     NbLayoutModule,
     NbEvaIconsModule,
     NbButtonModule,
     NbCardModule
   ],
-  providers: [MockDefinitionStore, EndpointsStore],
+  providers: [MockDefinitionStore, EndpointsStore, AppStore],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

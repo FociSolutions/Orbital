@@ -3,8 +3,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EndpointListItemComponent } from './endpoint-list-item.component';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { VerbType } from 'src/app/models/verb.type';
-import { element } from 'protractor';
 import { By } from '@angular/platform-browser';
+import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color.pipe';
+import { AppStore } from 'src/app/store/app-store';
 
 describe('EndpointListItemComponent', () => {
   let component: EndpointListItemComponent;
@@ -25,7 +26,8 @@ describe('EndpointListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EndpointListItemComponent]
+      declarations: [EndpointListItemComponent, GetVerbColorPipe],
+      providers: [AppStore]
     }).compileComponents();
   }));
 
@@ -73,7 +75,7 @@ describe('EndpointListItemComponent', () => {
   }));
 
   it('should render pill in red for DELETE in badge class', async(() => {
-    component.item = { ...endpoint, verb: VerbType.DELETE };
+    component.endpoint = { ...endpoint, verb: VerbType.DELETE };
 
     fixture.detectChanges();
     const compiled = fixture.debugElement;
@@ -85,7 +87,7 @@ describe('EndpointListItemComponent', () => {
   }));
 
   it('should render pill in green for POST in badge class', async(() => {
-    component.item = { ...endpoint, verb: VerbType.POST };
+    component.endpoint = { ...endpoint, verb: VerbType.POST };
 
     fixture.detectChanges();
     const compiled = fixture.debugElement;
@@ -97,7 +99,7 @@ describe('EndpointListItemComponent', () => {
   }));
 
   it('should render pill in blue for GET in badge class', async(() => {
-    component.item = { ...endpoint, verb: VerbType.GET };
+    component.endpoint = { ...endpoint, verb: VerbType.GET };
 
     fixture.detectChanges();
     const compiled = fixture.debugElement;
@@ -109,7 +111,7 @@ describe('EndpointListItemComponent', () => {
   }));
 
   it('should render pill in yellow for PUT in badge class', async(() => {
-    component.item = { ...endpoint, verb: VerbType.PUT };
+    component.endpoint = { ...endpoint, verb: VerbType.PUT };
 
     fixture.detectChanges();
     const compiled = fixture.debugElement;

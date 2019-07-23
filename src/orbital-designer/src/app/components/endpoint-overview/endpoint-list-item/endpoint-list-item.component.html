@@ -1,7 +1,8 @@
 <div
   *ngIf="endpoint; else noEndpoint"
   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-  (click)="onItemSelected()"
+  (click)="this.app.selectedEndpoint = this.endpoint"
+  [ngClass]="{ selected: this.selected === true }"
 >
   <div class="flex-column">
     <h6>
@@ -12,9 +13,10 @@
         {{ endpoint.spec.description }}
       </small>
     </p>
-    <span class="{{ 'badge badge-pill badge-' + badgeColor }}">{{
-      endpoint.verb
-    }}</span>
+    <span
+      [class]="this.endpoint.verb | getVerbColor: 'badge badge-pill badge-'"
+      >{{ endpoint.verb }}</span
+    >
   </div>
 </div>
 

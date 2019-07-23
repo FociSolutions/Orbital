@@ -7,6 +7,5 @@ export interface RequestMatchRule {
   headerRules: Map<string, string>;
   queryRules: Map<string, string>;
   bodyRules: BodyRule[];
-  response: Response;
 }
 // <br/>
