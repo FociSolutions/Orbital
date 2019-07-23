@@ -17,6 +17,8 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     {
         private readonly IMemoryCache cache;
 
+        private const string MOCKIDS = "mockids";
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -36,6 +38,12 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         {
             var mockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
             cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
+            var KeyList = this.cache.GetOrCreate(MOCKIDS, cacheEntry => { return new List<string>(); });
+            if (!KeyList.Contains(request.MockDefinition.Metadata.Title))
+            {
+                KeyList.Add(request.MockDefinition.Metadata.Title);
+                this.cache.Set(MOCKIDS, KeyList);
+            }
             return Task.FromResult(mockDefinition);
         }
 

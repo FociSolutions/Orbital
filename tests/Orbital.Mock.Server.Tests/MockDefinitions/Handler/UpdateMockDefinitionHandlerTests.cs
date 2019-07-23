@@ -44,8 +44,6 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             cache.TryGetValue(Expected.Metadata.Title, out var Actual);
 
             Assert.Equal(Expected, Actual);
-
-
         }
 
         [Fact]
@@ -74,8 +72,6 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             cache.TryGetValue(Expected.Metadata.Title, out var Actual);
 
             Assert.Equal(Expected, Actual);
-
-
         }
 
         [Fact]
@@ -107,8 +103,6 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
 
             Assert.Equal(Expected, Actual);
-
-
         }
 
         [Fact]
@@ -137,8 +131,69 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
 
             Assert.Null(Actual);
+        }
 
 
+        [Fact]
+        public void UpdateKeysCollectionSuccessTest()
+        {
+            #region Test Setup
+
+            var metadataFake = new Faker<MetadataInfo>()
+           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+
+            var mockDefinitionFake = new Faker<MockDefinition>()
+            .RuleFor(m => m.Host, f => f.Internet.DomainName())
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+
+            var options = new MemoryCacheOptions();
+            var cache = new MemoryCache(options);
+
+            var input = new { mockDefinition = mockDefinitionFake.Generate() };
+
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition);
+            #endregion
+
+            var Target = new UpdateMockDefinitionHandler(cache);
+            Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
+
+            var Actual = cache.Get<List<string>>("mockids");
+
+            Assert.Contains(input.mockDefinition.Metadata.Title, Actual);
+        }
+
+        [Fact]
+        public void UpdateKeysCollectionExistingKeySuccessTest()
+        {
+            #region Test Setup
+
+            var metadataFake = new Faker<MetadataInfo>()
+           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+
+            var mockDefinitionFake = new Faker<MockDefinition>()
+            .RuleFor(m => m.Host, f => f.Internet.DomainName())
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+
+            var options = new MemoryCacheOptions();
+            var cache = new MemoryCache(options);
+
+            var input = new { mockDefinition = mockDefinitionFake.Generate() };
+
+            const string mockIdListKey = "mockids";
+
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition);
+            #endregion
+
+            cache.Set(input.mockDefinition.Metadata.Title, input.mockDefinition);
+            cache.Set(mockIdListKey, new List<string> { input.mockDefinition.Metadata.Title });
+            var Target = new UpdateMockDefinitionHandler(cache);
+            Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
+
+            var Actual = cache.Get<List<string>>(mockIdListKey);
+
+            Assert.Contains(input.mockDefinition.Metadata.Title, Actual);
         }
     }
 
