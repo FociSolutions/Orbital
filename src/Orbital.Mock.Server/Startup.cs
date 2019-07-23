@@ -19,6 +19,7 @@ using FluentValidation.AspNetCore;
 using Orbital.Mock.Server.Models.Validators;
 using MediatR;
 using Orbital.Mock.Server.Models.Converters;
+using Orbital.Mock.Server.Middleware;
 
 namespace Orbital.Mock.Server
 {
@@ -83,6 +84,7 @@ namespace Orbital.Mock.Server
                 }
             });
 
+            app.UseMiddleware<ServerRequestMiddleware>();
             app.UseMvc();
         }
     }
