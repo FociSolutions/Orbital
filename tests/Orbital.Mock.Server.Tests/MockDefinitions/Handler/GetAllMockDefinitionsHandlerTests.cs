@@ -21,7 +21,6 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
 
-            //cache.Set(input.mockDefinition.Metadata.Title, input.mockDefinition);
             var getAllMockDefinitionsCommand = new GetAllMockDefinitionsCommand();
             #endregion
 
@@ -37,8 +36,8 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-        .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-        .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
             .RuleFor(m => m.Host, f => f.Internet.DomainName())
