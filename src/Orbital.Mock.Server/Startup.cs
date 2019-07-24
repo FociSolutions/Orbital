@@ -19,6 +19,7 @@ using FluentValidation.AspNetCore;
 using Orbital.Mock.Server.Models.Validators;
 using MediatR;
 using Orbital.Mock.Server.Models.Converters;
+using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Middleware;
 
 namespace Orbital.Mock.Server
@@ -51,6 +52,13 @@ namespace Orbital.Mock.Server
             services.AddMediatR(typeof(Startup).Assembly);
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
+
+            services.AddSingleton(s =>
+            {
+                var processor = s.GetService<MockServerProcessor>();
+                processor.Start();
+                return processor;
+            });
 
 
         }
