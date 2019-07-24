@@ -45,6 +45,19 @@ namespace Orbital.Mock.Server.Controllers
         }
 
         /// <summary>
+        /// Gets all Mock Definitions
+        /// </summary>
+        /// <returns>MockDefinition</returns>
+        [HttpGet]
+        public ActionResult<List<MockDefinition>> GetAll()
+        {
+            var command = new GetAllMockDefinitionsCommand();
+            var result = this.mediator.Send(command).Result;
+            return result;
+
+        }
+
+        /// <summary>
         /// Saves a mock defintiion in cache
         /// </summary>
         /// <param name="mockDefinition">The mock defiition to save</param>
