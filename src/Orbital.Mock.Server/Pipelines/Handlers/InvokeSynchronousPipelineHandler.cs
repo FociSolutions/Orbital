@@ -17,7 +17,7 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
     /// <summary>
     /// Handler for executing the InvokeSynchronousPipelineCommand
     /// </summary>
-    public class InvokeSynchronousPipelineHandler : IRequestHandler<InvokeSynchronousPipelineCommand, PipelineResponse>
+    public class InvokeSynchronousPipelineHandler : IRequestHandler<InvokeSynchronousPipelineCommand, MockResponse>
     {
         /// <summary>
         /// Invokes the synchronous pipeline and returns the resulting HttpResponse
@@ -25,15 +25,15 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
         /// <param name="command"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<PipelineResponse> Handle(InvokeSynchronousPipelineCommand command, CancellationToken cancellationToken)
+        public Task<MockResponse> Handle(InvokeSynchronousPipelineCommand command, CancellationToken cancellationToken)
         {
             var response = this.mockPipeline(command.Request).Result;
             return Task.FromResult(response);
         }
 
-        private async Task<PipelineResponse> mockPipeline(HttpRequest context)
+        private async Task<MockResponse> mockPipeline(HttpRequest context)
         {
-            return new PipelineResponse
+            return new MockResponse
             {
                 Body = "mocked pipeline response",
                 Status = StatusCodes.Status200OK,

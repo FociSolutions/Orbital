@@ -11,7 +11,7 @@ namespace Orbital.Mock.Server.Pipelines.Commands
     /// <summary>
     /// The command used to invoke the pipeline
     /// </summary>
-    public class InvokeSynchronousPipelineCommand : IRequest<PipelineResponse>
+    public class InvokeSynchronousPipelineCommand : IRequest<MockResponse>
     {
         /// <summary>
         /// Constructor
