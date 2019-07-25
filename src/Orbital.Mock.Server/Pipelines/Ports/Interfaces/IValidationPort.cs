@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
-    internal interface IValidationPort
+    internal interface IPathValidationPort
     {
         string Path { get; set; }
 

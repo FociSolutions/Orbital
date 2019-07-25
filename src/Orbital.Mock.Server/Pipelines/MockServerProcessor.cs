@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -18,20 +19,22 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly SyncBlockFactory blockFactory;
 
         private readonly TODOFilter<ProcessMessagePort> todoFilter;
+        private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
 
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
-        public MockServerProcessor()
-            : this(new TODOFilter<ProcessMessagePort>())
+        public MockServerProcessor(IMemoryCache cache)
+            : this(new TODOFilter<ProcessMessagePort>(), new PathValidationFilter<ProcessMessagePort>(cache))
         {
         }
 
 
-        public MockServerProcessor(TODOFilter<ProcessMessagePort> todoFilter)
+        public MockServerProcessor(TODOFilter<ProcessMessagePort> todoFilter, PathValidationFilter<ProcessMessagePort> pathValidationFilter)
         {
             this.todoFilter = todoFilter;
+            this.pathValidationFilter = pathValidationFilter;
             this.blockFactory = new SyncBlockFactory();
         }
 
@@ -41,7 +44,7 @@ namespace Orbital.Mock.Server.Pipelines
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
             //Initialize blocks
-            this.startBlock = this.blockFactory.CreateTransformBlock(this.todoFilter.Process);            
+            this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
             this.endBlock = this.blockFactory.CreateFinalBlock();
 
             //Broadcast incoming request to all getter blocks
@@ -56,7 +59,7 @@ namespace Orbital.Mock.Server.Pipelines
                 input.ServerHttpRequest.Body == null ||
                 input.ServerHttpRequest.Headers == null)
             {
-                return "Something went worng" ;
+                return "Something went worng";
             }
 
             var port = new ProcessMessagePort()
@@ -117,7 +120,7 @@ namespace Orbital.Mock.Server.Pipelines
             {
                 if (disposing)
                 {
-                    this.Stop();                    
+                    this.Stop();
                 }
 
                 disposedValue = true;
