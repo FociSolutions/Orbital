@@ -20,6 +20,9 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("openApi")]
         public OpenApiDocument OpenApi { get; set; }
 
+        [JsonProperty("scenarios")]
+        public List<Scenario> Scenarios { get; set; }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as MockDefinition);
