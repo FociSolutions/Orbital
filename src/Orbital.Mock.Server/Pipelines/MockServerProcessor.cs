@@ -19,7 +19,6 @@ namespace Orbital.Mock.Server.Pipelines
     {
         private readonly SyncBlockFactory blockFactory;
 
-        private readonly TODOFilter<ProcessMessagePort> todoFilter;
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
 
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
@@ -27,14 +26,13 @@ namespace Orbital.Mock.Server.Pipelines
 
 
         public MockServerProcessor()
-            : this(new TODOFilter<ProcessMessagePort>(), new PathValidationFilter<ProcessMessagePort>())
+            : this(new PathValidationFilter<ProcessMessagePort>())
         {
         }
 
 
-        public MockServerProcessor(TODOFilter<ProcessMessagePort> todoFilter, PathValidationFilter<ProcessMessagePort> pathValidationFilter)
+        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter)
         {
-            this.todoFilter = todoFilter;
             this.pathValidationFilter = pathValidationFilter;
             this.blockFactory = new SyncBlockFactory();
         }

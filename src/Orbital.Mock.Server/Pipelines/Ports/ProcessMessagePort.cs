@@ -10,11 +10,10 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     /// Model class representing a port for message processor pipelines
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ProcessMessagePort : ITODOPort, IFaultablePort, IPathValidationPort, IScenariosPort
+    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort
     {
 
 
-        public string TODO { get; set; }
         public ICollection<string> Faults { get; set; }
 
         public bool IsFaulted => Faults != null && Faults.Count != 0;
