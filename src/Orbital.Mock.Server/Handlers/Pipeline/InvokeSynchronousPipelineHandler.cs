@@ -19,14 +19,14 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
     /// <summary>
     /// Handler for executing the InvokeSynchronousPipelineCommand
     /// </summary>
-    public class InvokeSynchronousPipelineHandler : IRequestHandler<InvokeSynchronousPipelineCommand, MockResponse>
+    internal class InvokeSynchronousPipelineHandler : IRequestHandler<InvokeSynchronousPipelineCommand, MockResponse>
     {
         private const string MOCKIDS = "mockids";
 
         private readonly MockServerProcessor mockServerProcessor;
         private readonly IMemoryCache cache;
 
-        internal InvokeSynchronousPipelineHandler(IMemoryCache cache, MockServerProcessor mockServerProcessor)
+        public InvokeSynchronousPipelineHandler(IMemoryCache cache, MockServerProcessor mockServerProcessor)
         {
             this.mockServerProcessor = mockServerProcessor;
             this.cache = cache;

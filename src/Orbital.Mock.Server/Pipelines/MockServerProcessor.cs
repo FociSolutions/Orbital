@@ -82,7 +82,7 @@ namespace Orbital.Mock.Server.Pipelines
                 return CreateFaultPayload(error);
             }
 
-            return port.TODO;
+            return "";
         }
 
         /// <inheritdoc />
