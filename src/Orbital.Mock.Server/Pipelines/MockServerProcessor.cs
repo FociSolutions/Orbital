@@ -93,7 +93,8 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 404, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
             }
 
-            return new MockResponse { Status = 200, Body = $"{port.QueryMatchResults.ToString()}", Headers = new Dictionary<string, string>() }; ;
+            var temp = "";
+            return new MockResponse { Status = 200, Body = $"Scenarios Found, id: {String.Join(temp, port.QueryMatchResults)}", Headers = new Dictionary<string, string>() }; ;
         }
 
         /// <inheritdoc />

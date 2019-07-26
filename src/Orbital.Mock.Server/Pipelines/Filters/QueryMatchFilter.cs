@@ -19,16 +19,10 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             }
 
             var scenarios = port.Scenarios;
-            var query = port.Query.Keys.Select(key => new KeyValuePair<string, string>(key, port.Query[key].ToString()));
-            //foreach (var scenario in scenarios)
-            //{
-            //    var queryRules = scenario.RequestMatchRules.QueryRules;
-            //    if (queryRules.Count != query.Count)
-            //    {
-            //        continue;
-            //    }
-
-            //}
+            var query = port.Query.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.ToString())).ToDictionary(x => x.Key, x => x.Value);
+            port.QueryMatchResults = scenarios.Where(
+                scenario => query.Count() == scenario.RequestMatchRules.QueryRules.Count && !query.Except(scenario.RequestMatchRules.QueryRules).Any()
+            ).Select(scenario => scenario.Id).ToList();
 
             return port;
         }
