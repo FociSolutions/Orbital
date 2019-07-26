@@ -46,7 +46,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             var rx = new Regex(@path);
 
-            if (!scenarioList.Where(e => rx.IsMatch(e.Path)).Any())
+            if (!scenarioList.Where(s => s.Verb.Equals(port.Verb) && rx.IsMatch(s.Path)).Any())
             {
                 var error = "No matching paths found";
                 Log.Error(error);
