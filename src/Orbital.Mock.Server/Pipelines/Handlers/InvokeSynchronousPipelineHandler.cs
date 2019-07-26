@@ -26,7 +26,7 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
         private readonly MockServerProcessor mockServerProcessor;
         private readonly IMemoryCache cache;
 
-        internal InvokeSynchronousPipelineHandler(MockServerProcessor mockServerProcessor, IMemoryCache cache)
+        internal InvokeSynchronousPipelineHandler(IMemoryCache cache, MockServerProcessor mockServerProcessor)
         {
             this.mockServerProcessor = mockServerProcessor;
             this.cache = cache;
