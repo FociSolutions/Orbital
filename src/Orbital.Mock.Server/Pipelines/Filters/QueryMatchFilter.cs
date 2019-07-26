@@ -1,4 +1,5 @@
-﻿using Orbital.Mock.Server.Pipelines.Filters.Bases;
+﻿using Microsoft.AspNetCore.Http.Internal;
+using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,19 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             }
 
             var scenarios = port.Scenarios;
-            var query = port.Query;
+            var query = port.Query.Keys.Select(key => new KeyValuePair<string, string>(key, port.Query[key].ToString()));
+            //foreach (var scenario in scenarios)
+            //{
+            //    var queryRules = scenario.RequestMatchRules.QueryRules;
+            //    if (queryRules.Count != query.Count)
+            //    {
+            //        continue;
+            //    }
 
-            var filteredScenarios = scenarios.Where(
-                scenario => query.Count == scenario.RequestMatchRules.QueryRules.Count &&
-                            !scenario.RequestMatchRules.QueryRules.Except(query.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value))).Any()
-                );
+            //}
 
-            port.QueryMatchResults = filteredScenarios.Select(scenario => scenario.Id).ToList<string>();
             return port;
         }
+
     }
 }

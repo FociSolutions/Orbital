@@ -21,21 +21,22 @@ namespace Orbital.Mock.Server.Pipelines
 
         private readonly TODOFilter<ProcessMessagePort> todoFilter;
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
-
+        private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
         public MockServerProcessor()
-            : this(new TODOFilter<ProcessMessagePort>(), new PathValidationFilter<ProcessMessagePort>())
+            : this(new TODOFilter<ProcessMessagePort>(), new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>())
         {
         }
 
 
-        public MockServerProcessor(TODOFilter<ProcessMessagePort> todoFilter, PathValidationFilter<ProcessMessagePort> pathValidationFilter)
+        public MockServerProcessor(TODOFilter<ProcessMessagePort> todoFilter, PathValidationFilter<ProcessMessagePort> pathValidationFilter, QueryMatchFilter<ProcessMessagePort> queryMatchFilter)
         {
             this.todoFilter = todoFilter;
             this.pathValidationFilter = pathValidationFilter;
+            this.queryMatchFilter = queryMatchFilter;
             this.blockFactory = new SyncBlockFactory();
         }
 
@@ -46,10 +47,15 @@ namespace Orbital.Mock.Server.Pipelines
 
             //Initialize blocks
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
+            var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
+            var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
             this.endBlock = this.blockFactory.CreateFinalBlock();
 
             //Broadcast incoming request to all getter blocks
-            this.startBlock.LinkTo(endBlock, linkOptions);
+            this.startBlock.LinkTo(broadCastBlock, linkOptions);
+            //Will need to add a join block when all three filters are added
+            broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
+            queryFilterBlock.LinkTo(this.endBlock, linkOptions);
         }
 
         /// <inheritdoc />
@@ -66,7 +72,8 @@ namespace Orbital.Mock.Server.Pipelines
             var port = new ProcessMessagePort(input.Scenarios)
             {
                 Path = input.ServerHttpRequest.Path,
-                Verb = input.ServerHttpRequest.Method
+                Verb = input.ServerHttpRequest.Method,
+                Query = input.ServerHttpRequest.Query
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
@@ -89,7 +96,7 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 404, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
             }
 
-            return new MockResponse { Status = 200, Body = "Scenario Found", Headers = new Dictionary<string, string>() }; ;
+            return new MockResponse { Status = 200, Body = $"{port.QueryMatchResults.ToString()}", Headers = new Dictionary<string, string>() }; ;
         }
 
         /// <inheritdoc />
