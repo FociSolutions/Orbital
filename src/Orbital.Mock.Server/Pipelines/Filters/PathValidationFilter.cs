@@ -35,7 +35,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return (T)port.AppendFault(new ArgumentNullException(error));
             }
 
-            if (VALIDMETHODS.Contains(verb))
+            if (!VALIDMETHODS.Contains(verb))
             {
                 var error = "Verb not supported";
                 Log.Error(error);

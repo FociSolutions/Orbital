@@ -11,10 +11,11 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
+using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server.Pipelines
 {
-    internal class MockServerProcessor : IPipeline<MessageProcessorInput, Task<string>>
+    internal class MockServerProcessor : IPipeline<MessageProcessorInput, Task<MockResponse>>
     {
         private readonly SyncBlockFactory blockFactory;
 
@@ -52,14 +53,14 @@ namespace Orbital.Mock.Server.Pipelines
         }
 
         /// <inheritdoc />
-        public async Task<string> Push(MessageProcessorInput input)
+        public async Task<MockResponse> Push(MessageProcessorInput input)
         {
             if (input == null ||
                 input.ServerHttpRequest == null ||
                 input.ServerHttpRequest.Body == null ||
                 input.ServerHttpRequest.Headers == null)
             {
-                return "Something went worng";
+                return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             }
 
             var port = new ProcessMessagePort(input.Scenarios)
@@ -79,10 +80,16 @@ namespace Orbital.Mock.Server.Pipelines
             if (port == null)
             {
                 var error = "Pipeline port cannot be null";
-                return CreateFaultPayload(error);
+                return new MockResponse { Status = 400, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
             }
 
-            return "";
+            if (port.IsFaulted)
+            {
+                var error = "Matching response not found";
+                return new MockResponse { Status = 404, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
+            }
+
+            return new MockResponse { Status = 200, Body = "Scenario Found", Headers = new Dictionary<string, string>() }; ;
         }
 
         /// <inheritdoc />
