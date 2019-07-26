@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Models;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -61,17 +60,13 @@ namespace Orbital.Mock.Server.Pipelines
                 input.ServerHttpRequest.Body == null ||
                 input.ServerHttpRequest.Headers == null)
             {
-                return new MockResponse
-                {
-                    Body = "Something went worng"
-                };
+                return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             }
 
             var port = new ProcessMessagePort(input.Scenarios)
             {
                 Path = input.ServerHttpRequest.Path,
-                Verb = input.ServerHttpRequest.Method,
-                Query = input.ServerHttpRequest.Query
+                Verb = input.ServerHttpRequest.Method
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
@@ -85,17 +80,16 @@ namespace Orbital.Mock.Server.Pipelines
             if (port == null)
             {
                 var error = "Pipeline port cannot be null";
-                return new MockResponse
-                {
-                    Body = CreateFaultPayload(error)
-                };
+                return new MockResponse { Status = 400, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
             }
 
-            return new MockResponse
+            if (port.IsFaulted)
             {
-                Status = 200,
-                Body = $"{port.QueryMatchResults}"
-            };
+                var error = "Matching response not found";
+                return new MockResponse { Status = 404, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
+            }
+
+            return new MockResponse { Status = 200, Body = "Scenario Found", Headers = new Dictionary<string, string>() }; ;
         }
 
         /// <inheritdoc />
