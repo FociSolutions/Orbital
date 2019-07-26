@@ -1,4 +1,5 @@
-﻿using Orbital.Mock.Server.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     /// Model class representing a port for message processor pipelines
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ProcessMessagePort : ITODOPort, IFaultablePort, IPathValidationPort, IScenariosPort
+    internal class ProcessMessagePort : ITODOPort, IFaultablePort, IPathValidationPort, IScenariosPort, IQueryMatchPort
     {
 
 
@@ -23,6 +24,9 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public string Verb { get; set; }
 
         public List<Scenario> Scenarios { get; }
+        public List<string> QueryMatchResults { get; set; }
+        public IQueryCollection Query { get; set; }
+
         public ProcessMessagePort(List<Scenario> scenarios)
         {
             this.Scenarios = scenarios;

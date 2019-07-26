@@ -11,10 +11,12 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
+using Orbital.Mock.Server.Models;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Orbital.Mock.Server.Pipelines
 {
-    internal class MockServerProcessor : IPipeline<MessageProcessorInput, Task<string>>
+    internal class MockServerProcessor : IPipeline<MessageProcessorInput, Task<MockResponse>>
     {
         private readonly SyncBlockFactory blockFactory;
 
@@ -52,20 +54,24 @@ namespace Orbital.Mock.Server.Pipelines
         }
 
         /// <inheritdoc />
-        public async Task<string> Push(MessageProcessorInput input)
+        public async Task<MockResponse> Push(MessageProcessorInput input)
         {
             if (input == null ||
                 input.ServerHttpRequest == null ||
                 input.ServerHttpRequest.Body == null ||
                 input.ServerHttpRequest.Headers == null)
             {
-                return "Something went worng";
+                return new MockResponse
+                {
+                    Body = "Something went worng"
+                };
             }
 
             var port = new ProcessMessagePort(input.Scenarios)
             {
                 Path = input.ServerHttpRequest.Path,
-                Verb = input.ServerHttpRequest.Method
+                Verb = input.ServerHttpRequest.Method,
+                Query = input.ServerHttpRequest.Query
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
@@ -79,10 +85,17 @@ namespace Orbital.Mock.Server.Pipelines
             if (port == null)
             {
                 var error = "Pipeline port cannot be null";
-                return CreateFaultPayload(error);
+                return new MockResponse
+                {
+                    Body = CreateFaultPayload(error)
+                };
             }
 
-            return "";
+            return new MockResponse
+            {
+                Status = 200,
+                Body = $"{port.QueryMatchResults}"
+            };
         }
 
         /// <inheritdoc />

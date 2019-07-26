@@ -44,12 +44,7 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
             var mockDefinitions = idList.Select(id => this.cache.Get<MockDefinition>(id));
             var scenarios = mockDefinitions.SelectMany(mockDefinition => mockDefinition.Scenarios);
             var response = this.mockServerProcessor.Push(new MessageProcessorInput(command.Request, scenarios.ToList())).Result;
-            return Task.FromResult(new MockResponse
-            {
-                Status = 200,
-                Body = response,
-                Headers = new Dictionary<string, string>()
-            });
+            return Task.FromResult(response);
         }
     }
 }
