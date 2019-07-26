@@ -21,6 +21,7 @@ using MediatR;
 using Orbital.Mock.Server.Models.Converters;
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Middleware;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Orbital.Mock.Server
 {
@@ -50,17 +51,16 @@ namespace Orbital.Mock.Server
 
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
-            ApiVersionRegistration.ConfigureService(services);
-            SwaggerRegistration.ConfigureService(services);
 
-            services.AddSingleton(s =>
+            services.AddSingleton<MockServerProcessor>(s =>
             {
-                var processor = s.GetService<MockServerProcessor>();
+                var processor = new MockServerProcessor();
                 processor.Start();
                 return processor;
             });
 
-
+            ApiVersionRegistration.ConfigureService(services);
+            SwaggerRegistration.ConfigureService(services);
         }
 
         /// <summary>
