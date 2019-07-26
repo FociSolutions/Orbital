@@ -21,14 +21,9 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             var query = port.Query;
 
             var filteredScenarios = scenarios.Where(
-                scenario =>
-                {
-                    var queryRules = scenario.RequestMatchRules.QueryRules;
-                    if (query.Count != queryRules.Count)
-                    {
-                        return false;
-                    }
-                });
+                scenario => query.Count == scenario.RequestMatchRules.QueryRules.Count &&
+                            !scenario.RequestMatchRules.QueryRules.Except(query.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value))).Any()
+                );
 
             port.QueryMatchResults = filteredScenarios.Select(scenario => scenario.Id).ToList<string>();
             return port;
