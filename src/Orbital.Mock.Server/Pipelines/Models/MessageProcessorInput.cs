@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Orbital.Mock.Server.Models;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Orbital.Mock.Server.Pipelines.Models
@@ -10,12 +12,12 @@ namespace Orbital.Mock.Server.Pipelines.Models
         /// The Request Context
         /// </summary>
         public HttpRequest ServerHttpRequest { get; }
+        public List<Scenario> Scenarios { get; }
 
-
-
-        public MessageProcessorInput(HttpRequest serverHttpRequest)
+        public MessageProcessorInput(HttpRequest serverHttpRequest, List<Scenario> scenarios)
         {
             this.ServerHttpRequest = serverHttpRequest;
+            this.Scenarios = scenarios;
         }
     }
 }

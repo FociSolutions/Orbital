@@ -50,13 +50,15 @@ namespace Orbital.Mock.Server
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddMemoryCache();
+            services.AddMediatR(typeof(Startup).Assembly);
+
             services.AddSingleton<MockServerProcessor>(s =>
             {
-                var processor = new MockServerProcessor(s.GetService<IMemoryCache>());
+                var processor = new MockServerProcessor();
                 processor.Start();
                 return processor;
             });
-            services.AddMediatR(typeof(Startup).Assembly);
+
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
         }

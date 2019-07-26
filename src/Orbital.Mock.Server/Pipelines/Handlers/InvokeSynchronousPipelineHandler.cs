@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Commands;
 using Orbital.Mock.Server.Pipelines.Models;
@@ -20,11 +21,15 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
     /// </summary>
     public class InvokeSynchronousPipelineHandler : IRequestHandler<InvokeSynchronousPipelineCommand, MockResponse>
     {
-        private readonly MockServerProcessor mockServerProcessor;
+        private const string MOCKIDS = "mockids";
 
-        internal InvokeSynchronousPipelineHandler(MockServerProcessor mockServerProcessor)
+        private readonly MockServerProcessor mockServerProcessor;
+        private readonly IMemoryCache cache;
+
+        internal InvokeSynchronousPipelineHandler(MockServerProcessor mockServerProcessor, IMemoryCache cache)
         {
             this.mockServerProcessor = mockServerProcessor;
+            this.cache = cache;
         }
 
         /// <summary>
@@ -35,23 +40,16 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
         /// <returns></returns>
         public Task<MockResponse> Handle(InvokeSynchronousPipelineCommand command, CancellationToken cancellationToken)
         {
-            var response = this.mockServerProcessor.Push(new MessageProcessorInput(command.Request)).Result;
+            var idList = this.cache.GetOrCreate(MOCKIDS, c => new List<string>());
+            var mockDefinitions = idList.Select(id => this.cache.Get<MockDefinition>(id));
+            var scenarios = mockDefinitions.SelectMany(mockDefinition => mockDefinition.Scenarios);
+            var response = this.mockServerProcessor.Push(new MessageProcessorInput(command.Request, scenarios.ToList())).Result;
             return Task.FromResult(new MockResponse
             {
                 Status = 200,
                 Body = response,
                 Headers = new Dictionary<string, string>()
             });
-        }
-
-        private async Task<MockResponse> mockPipeline(HttpRequest context)
-        {
-            return new MockResponse
-            {
-                Body = "mocked pipeline response",
-                Status = StatusCodes.Status200OK,
-                Headers = new Dictionary<string, string>()
-            };
         }
     }
 }

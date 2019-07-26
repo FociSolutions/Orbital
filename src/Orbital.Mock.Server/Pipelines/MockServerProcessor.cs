@@ -25,8 +25,8 @@ namespace Orbital.Mock.Server.Pipelines
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
-        public MockServerProcessor(IMemoryCache cache)
-            : this(new TODOFilter<ProcessMessagePort>(), new PathValidationFilter<ProcessMessagePort>(cache))
+        public MockServerProcessor()
+            : this(new TODOFilter<ProcessMessagePort>(), new PathValidationFilter<ProcessMessagePort>())
         {
         }
 
@@ -62,9 +62,10 @@ namespace Orbital.Mock.Server.Pipelines
                 return "Something went worng";
             }
 
-            var port = new ProcessMessagePort()
+            var port = new ProcessMessagePort(input.Scenarios)
             {
-                TODO = input.ServerHttpRequest.Method,
+                Path = input.ServerHttpRequest.Path,
+                Verb = input.ServerHttpRequest.Method
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();

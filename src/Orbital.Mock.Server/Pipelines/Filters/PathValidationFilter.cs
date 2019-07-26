@@ -13,16 +13,9 @@ using System.Text.RegularExpressions;
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     internal class PathValidationFilter<T> : FaultableBaseFilter<T>
-        where T : IFaultablePort, IPathValidationPort
+        where T : IFaultablePort, IPathValidationPort, IScenariosPort
     {
-        private readonly IMemoryCache cache;
-        private const string MOCKIDS = "mockids";
         private readonly List<string> VALIDMETHODS = new List<string> { HttpMethods.Get, HttpMethods.Put, HttpMethods.Post, HttpMethods.Delete };
-
-        public PathValidationFilter(IMemoryCache cache)
-        {
-            this.cache = cache;
-        }
 
         public override T Process(T port)
         {
@@ -49,19 +42,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return (T)port.AppendFault(new ArgumentNullException(error));
             }
 
-
-
-            cache.TryGetValue(MOCKIDS, out List<string> KeyList);
-
-            if (KeyList == null)
-            {
-                var error = "No Mockdefinitions found";
-                Log.Error(error);
-                return (T)port.AppendFault(new ArgumentNullException(error));
-            }
-
-            var mockDefinitionsList = KeyList.Select(e => cache.Get(e) as MockDefinition).ToList();
-            var scenarioList = mockDefinitionsList.SelectMany(e => e.Scenarios).ToList();
+            var scenarioList = port.Scenarios;
 
             var rx = new Regex(@path);
 
