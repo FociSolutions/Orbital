@@ -17,12 +17,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void BodyMatchFilterMatchSuccess()
         {
             #region
-            var faker = new Faker();
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, n => new RequestMatchRules
                 {
-                    BodyRules = faker.Make(15, () => faker.Random.String()).ToDictionary<string, string>(val => n.Random.String()).ToString()   
+                    BodyRules = n.Random.String()
                 })
                 .RuleFor(m => m.Id, n => n.Random.ToString()
                 );
@@ -49,12 +48,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void BodyMatchFilterMatchFail()
         {
             #region
-            var faker = new Faker();
-
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, n => new RequestMatchRules
                 {
-                    BodyRules = faker.Make(15, () => faker.Random.String()).ToDictionary<string, string>(val => n.Random.String()).ToString()
+                    BodyRules = n.Random.String()
                 })
                 .RuleFor(m => m.Id, n => n.Random.ToString()
                 );
@@ -64,7 +61,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = new List<string>()
+                Body = ""
             };
 
             #endregion
