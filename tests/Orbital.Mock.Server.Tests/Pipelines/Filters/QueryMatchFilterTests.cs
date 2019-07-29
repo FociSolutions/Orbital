@@ -1,8 +1,11 @@
 ﻿using Bogus;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
+using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +17,15 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
     public class QueryMatchFilterTests
     {
         [Fact]
-        public void QueryMatchFilterSuccessTest()
+        public void QueryMatchFilterMatchSuccessTest()
         {
             #region TestSetup
-            var fakeString = new Faker<string>().RuleFor(x => x, f => f.Lorem.Word());
+            var faker = new Faker();
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = fakeString.Generate(10).ToDictionary<string, string>(val => f.Lorem.Word())
+                    QueryRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
                 })
                 .RuleFor(m => m.Id, f => f.Lorem.Word());
 
@@ -31,9 +34,45 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Query = new QueryCollection(fakeScenario.RequestMatchRules.QueryRules.)
-            }
+                Query = new QueryCollection(fakeScenario.RequestMatchRules.QueryRules
+                    .Select(pair => new KeyValuePair<string, StringValues>(pair.Key, new StringValues(pair.Value))).ToDictionary(x => x.Key, x => x.Value))
+            };
             #endregion
+            var Target = new QueryMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Query = input.Query }).QueryMatchResults;
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
+        public void QueryMatchFilterNoMatchTest()
+        {
+            #region TestSetup
+            var faker = new Faker();
+
+            var scenarioFaker = new Faker<Scenario>()
+                .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
+                {
+                    QueryRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
+                })
+                .RuleFor(m => m.Id, f => f.Lorem.Word());
+
+            var fakeScenario = scenarioFaker.Generate();
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Query = new QueryCollection(new Dictionary<string, StringValues>())
+            };
+            #endregion
+            var Target = new QueryMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Query = input.Query }).QueryMatchResults;
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.NotEqual(Expected, Actual);
         }
     }
 }
