@@ -2,6 +2,7 @@
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Orbital.Mock.Server.Pipelines.Ports
@@ -10,7 +11,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     /// Model class representing a port for message processor pipelines
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort
+    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IHeaderMatchPort, IScenariosPort
     {
 
 
@@ -22,6 +23,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public string Verb { get; set; }
 
         public List<Scenario> Scenarios { get; }
+        public List<string> HeaderMatchResults { get; set; }
+        public NameValueCollection Headers { get; set; }
         public ProcessMessagePort(List<Scenario> scenarios)
         {
             this.Scenarios = scenarios;

@@ -21,20 +21,22 @@ namespace Orbital.Mock.Server.Pipelines
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
 
+        private readonly HeaderMatchFilter<ProcessMessagePort> headerMatchFilter;
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
         public MockServerProcessor()
-            : this(new PathValidationFilter<ProcessMessagePort>())
+            : this(new PathValidationFilter<ProcessMessagePort>(), new HeaderMatchFilter<ProcessMessagePort>())
         {
         }
 
 
-        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter)
+        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter, HeaderMatchFilter<ProcessMessagePort> headerMatchFilter)
         {
             this.pathValidationFilter = pathValidationFilter;
             this.blockFactory = new SyncBlockFactory();
+            this.headerMatchFilter = headerMatchFilter;
         }
 
         /// <inheritdoc />
@@ -64,7 +66,7 @@ namespace Orbital.Mock.Server.Pipelines
             var port = new ProcessMessagePort(input.Scenarios)
             {
                 Path = input.ServerHttpRequest.Path,
-                Verb = input.ServerHttpRequest.Method
+                Verb = input.ServerHttpRequest.Method,
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
