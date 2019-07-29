@@ -1,4 +1,5 @@
-﻿using Orbital.Mock.Server.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     /// Model class representing a port for message processor pipelines
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IBodyMatchPort
+    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IQueryMatchPort, IBodyMatchPort
     {
-
-
         public ICollection<string> Faults { get; set; }
 
         public bool IsFaulted => Faults != null && Faults.Count != 0;
@@ -24,6 +23,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public List<Scenario> Scenarios { get; }
         public string Body { get; set; }
         public List<string> BodyMatch { get; set; }
+        public List<string> QueryMatchResults { get; set; }
+        public IQueryCollection Query { get; set; }
 
         public ProcessMessagePort(List<Scenario> scenarios)
         {
