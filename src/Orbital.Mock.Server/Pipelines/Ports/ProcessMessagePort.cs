@@ -10,7 +10,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     /// Model class representing a port for message processor pipelines
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort
+    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IBodyMatchPort
     {
 
 
@@ -22,6 +22,9 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public string Verb { get; set; }
 
         public List<Scenario> Scenarios { get; }
+        public string Body { get; set; }
+        public List<string> BodyMatch { get; set; }
+
         public ProcessMessagePort(List<Scenario> scenarios)
         {
             this.Scenarios = scenarios;

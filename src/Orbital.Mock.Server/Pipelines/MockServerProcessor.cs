@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Models;
+using System.IO;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -20,20 +21,22 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly SyncBlockFactory blockFactory;
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
+        private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
 
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
         public MockServerProcessor()
-            : this(new PathValidationFilter<ProcessMessagePort>())
+            : this(new PathValidationFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>())
         {
         }
 
 
-        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter)
+        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter, BodyMatchFilter<ProcessMessagePort> bodyMatchFilter)
         {
             this.pathValidationFilter = pathValidationFilter;
+            this.bodyMatchFilter = bodyMatchFilter;
             this.blockFactory = new SyncBlockFactory();
         }
 
@@ -44,10 +47,15 @@ namespace Orbital.Mock.Server.Pipelines
 
             //Initialize blocks
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
+            var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
+            var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process);
             this.endBlock = this.blockFactory.CreateFinalBlock();
 
             //Broadcast incoming request to all getter blocks
-            this.startBlock.LinkTo(endBlock, linkOptions);
+            this.startBlock.LinkTo(broadCastBlock, linkOptions);
+
+            broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
+            bodyMatchFilterBlock.LinkTo(this.endBlock, linkOptions);
         }
 
         /// <inheritdoc />
@@ -61,10 +69,18 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             }
 
+            string Body = string.Empty;
+
+            using (var reader = new StreamReader(input.ServerHttpRequest.Body))
+            {
+                Body = reader.ReadToEnd();
+            }
+
             var port = new ProcessMessagePort(input.Scenarios)
             {
                 Path = input.ServerHttpRequest.Path,
-                Verb = input.ServerHttpRequest.Method
+                Verb = input.ServerHttpRequest.Method,
+                Body = Body
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
