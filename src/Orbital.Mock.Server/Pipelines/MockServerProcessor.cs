@@ -66,8 +66,9 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             }
 
-            var port = new ProcessMessagePort(input.Scenarios)
+            var port = new ProcessMessagePort
             {
+                Scenarios = input.Scenarios,
                 Path = input.ServerHttpRequest.Path,
                 Verb = input.ServerHttpRequest.Method,
                 Query = input.ServerHttpRequest.Query

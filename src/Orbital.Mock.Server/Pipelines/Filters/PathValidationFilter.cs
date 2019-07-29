@@ -28,7 +28,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             var path = port.Path;
             var verb = port.Verb;
 
-            if (path == "")
+            if (path == null)
             {
                 var error = "Path cannot be null";
                 Log.Error(error);
@@ -42,16 +42,6 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return (T)port.AppendFault(new ArgumentNullException(error));
             }
 
-            var scenarioList = port.Scenarios;
-
-            var rx = new Regex(@path);
-
-            if (!scenarioList.Where(s => s.Verb.Equals(port.Verb) && rx.IsMatch(s.Path)).Any())
-            {
-                var error = "No matching paths found";
-                Log.Error(error);
-                return (T)port.AppendFault(new ArgumentNullException(error));
-            }
             return port;
         }
     }

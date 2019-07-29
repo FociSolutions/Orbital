@@ -22,14 +22,10 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public string Path { get; set; }
         public string Verb { get; set; }
 
-        public List<Scenario> Scenarios { get; }
+        public List<Scenario> Scenarios { get; set; }
         public List<string> QueryMatchResults { get; set; }
         public IQueryCollection Query { get; set; }
 
-        public ProcessMessagePort(List<Scenario> scenarios)
-        {
-            this.Scenarios = scenarios;
-        }
         public IFaultablePort AppendFault(Exception e)
         {
             var fault = e.Message;

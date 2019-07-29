@@ -8,6 +8,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
     internal interface IScenariosPort
     {
-        List<Scenario> Scenarios { get; }
+        List<Scenario> Scenarios { get; set; }
     }
 }

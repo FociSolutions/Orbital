@@ -27,7 +27,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 {
                     QueryRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
                 })
-                .RuleFor(m => m.Id, f => f.Lorem.Word());
+                .RuleFor(m => m.Id, f => f.Random.Word());
 
             var fakeScenario = scenarioFaker.Generate();
 
@@ -40,7 +40,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Query = input.Query }).QueryMatchResults;
+            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).QueryMatchResults;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.Equal(Expected, Actual);
@@ -57,7 +57,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 {
                     QueryRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
                 })
-                .RuleFor(m => m.Id, f => f.Lorem.Word());
+                .RuleFor(m => m.Id, f => f.Random.Word());
 
             var fakeScenario = scenarioFaker.Generate();
 
@@ -69,10 +69,50 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Query = input.Query }).QueryMatchResults;
+            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).QueryMatchResults;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.NotEqual(Expected, Actual);
+        }
+
+        [Fact]
+        public void QueryMatchFilterNoScenariosMatchTest()
+        {
+            #region TestSetup
+            var input = new
+            {
+                Scenarios = new List<Scenario>(),
+                Query = new QueryCollection(new Dictionary<string, StringValues>())
+            };
+            #endregion
+            var Target = new QueryMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).Scenarios;
+
+            Assert.Empty(Actual);
+        }
+
+        [Fact]
+        public void QueryMatchFilterInvalidPortTest()
+        {
+            #region TestSetup
+            var scenarioFaker = new Faker<Scenario>()
+                .RuleFor(m => m.Id, f => f.Random.Word());
+
+            var fakeScenario = scenarioFaker.Generate();
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Faults = new List<string>() { "fault" }
+            };
+            #endregion
+            var Target = new QueryMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Faults = input.Faults }).Scenarios;
+            var Expected = new List<Scenario> { fakeScenario };
+
+            Assert.Equal(Expected, Actual);
         }
     }
 }
