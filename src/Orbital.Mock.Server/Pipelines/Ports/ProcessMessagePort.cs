@@ -35,5 +35,11 @@ namespace Orbital.Mock.Server.Pipelines.Ports
 
             return this;
         }
+
+        public ProcessMessagePort()
+        {
+            this.Scenarios = new List<Scenario>();
+            this.QueryMatchResults = new List<string>();
+        }
     }
 }
