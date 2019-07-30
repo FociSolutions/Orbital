@@ -21,21 +21,28 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly SyncBlockFactory blockFactory;
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
+        private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
+        private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
-
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
         public MockServerProcessor()
-            : this(new PathValidationFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>())
+            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>(), new EndpointMatchFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>())
         {
         }
 
-
-        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter, BodyMatchFilter<ProcessMessagePort> bodyMatchFilter)
+        public MockServerProcessor(
+            PathValidationFilter<ProcessMessagePort> pathValidationFilter,
+            QueryMatchFilter<ProcessMessagePort> queryMatchFilter,
+            EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter,
+            BodyMatchFilter<ProcessMessagePort> bodyMatchFilter
+        )
         {
             this.pathValidationFilter = pathValidationFilter;
+            this.queryMatchFilter = queryMatchFilter;
+            this.endpointMatchFilter = endpointMatchFilter;
             this.bodyMatchFilter = bodyMatchFilter;
             this.blockFactory = new SyncBlockFactory();
         }
@@ -49,12 +56,19 @@ namespace Orbital.Mock.Server.Pipelines
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
             var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process);
+            var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
+            var endpointFilterBlock = this.blockFactory.CreateTransformBlock(this.endpointMatchFilter.Process);
             this.endBlock = this.blockFactory.CreateFinalBlock();
 
             //Broadcast incoming request to all getter blocks
-            this.startBlock.LinkTo(broadCastBlock, linkOptions);
+            this.startBlock.LinkTo(endpointFilterBlock, linkOptions);
+            //Will need to add a join block when all three filters are added
+            endpointFilterBlock.LinkTo(broadCastBlock, linkOptions);
 
+            //broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
             broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
+
+            //queryFilterBlock.LinkTo(this.endBlock, linkOptions);
             bodyMatchFilterBlock.LinkTo(this.endBlock, linkOptions);
         }
 
@@ -76,8 +90,9 @@ namespace Orbital.Mock.Server.Pipelines
                 Body = reader.ReadToEnd();
             }
 
-            var port = new ProcessMessagePort(input.Scenarios)
+            var port = new ProcessMessagePort()
             {
+                Scenarios = input.Scenarios,
                 Path = input.ServerHttpRequest.Path,
                 Verb = input.ServerHttpRequest.Method,
                 Body = Body
@@ -103,7 +118,7 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 404, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
             }
 
-            return new MockResponse { Status = 200, Body = "Scenario Found", Headers = new Dictionary<string, string>() }; ;
+            return new MockResponse { Status = 200, Body = $"match found: {port.BodyMatch.Count > 0}", Headers = new Dictionary<string, string>() }; ;
         }
 
         /// <inheritdoc />
