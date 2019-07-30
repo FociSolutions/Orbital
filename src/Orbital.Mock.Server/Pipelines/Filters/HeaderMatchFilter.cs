@@ -17,18 +17,14 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return port;
             }
 
-
             var headers = port.Headers.AllKeys.ToDictionary(k => k, k => port.Headers[k]);
             var scenarios = port.Scenarios;
 
             port.HeaderMatchResults = scenarios.Where(
-                scenario => headers.Count() == scenario.RequestMatchRules.HeaderRules.Count && !headers.Except(scenario.RequestMatchRules.HeaderRules).Any()
+                s => s.RequestMatchRules.HeaderRules.All(hr => headers.ContainsKey(hr.Key) && headers[hr.Key].Equals(hr.Value))
             ).Select(scenario => scenario.Id).ToList();
-
 
             return port;
         }
-
-
     }
 }
