@@ -11,21 +11,19 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     /// Model class representing a port for message processor pipelines
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IQueryMatchPort
+    internal class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IQueryMatchPort, IBodyMatchPort
     {
-
-
         public ICollection<string> Faults { get; set; }
 
         public bool IsFaulted => Faults != null && Faults.Count != 0;
 
         public string Path { get; set; }
         public string Verb { get; set; }
-
         public List<Scenario> Scenarios { get; set; }
+        public List<string> BodyMatch { get; set; }
+        public string Body { get; set; }
         public List<string> QueryMatchResults { get; set; }
         public IQueryCollection Query { get; set; }
-
         public IFaultablePort AppendFault(Exception e)
         {
             var fault = e.Message;
