@@ -21,8 +21,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public string Verb { get; set; }
 
         public List<Scenario> Scenarios { get; }
-        public string Body { get; set; }
         public List<string> BodyMatch { get; set; }
+        public string Body { get; set; }
         public List<string> QueryMatchResults { get; set; }
         public IQueryCollection Query { get; set; }
 
@@ -30,6 +30,13 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         {
             this.Scenarios = scenarios;
         }
+
+        public ProcessMessagePort(List<Scenario> scenarios, List<string> bodyMatch)
+        {
+            Scenarios = new List<Scenario> (scenarios);
+            BodyMatch = new List<string> (bodyMatch);
+        }
+
         public IFaultablePort AppendFault(Exception e)
         {
             var fault = e.Message;
