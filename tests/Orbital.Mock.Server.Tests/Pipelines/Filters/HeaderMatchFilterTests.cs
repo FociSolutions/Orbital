@@ -48,7 +48,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new HeaderMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Headers = input.Headers }).HeaderMatchResults;
+            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Headers = input.Headers }).HeaderMatchResults;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.Equal(Expected, Actual);
@@ -88,7 +88,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new HeaderMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Headers = input.Headers }).HeaderMatchResults;
+            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Headers = input.Headers }).HeaderMatchResults;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.NotEqual(Expected, Actual);
@@ -110,7 +110,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new HeaderMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Headers = input.Headers }).Scenarios;
+            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Headers = input.Headers }).Scenarios;
 
             Assert.Empty(Actual);
 
@@ -148,7 +148,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new HeaderMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Faults = input.Faults }).Scenarios;
+            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Faults = input.Faults }).Scenarios;
             var Expected = new List<Scenario> { fakeScenario };
 
             Assert.Equal(Expected, Actual);
