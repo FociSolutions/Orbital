@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
@@ -19,6 +20,10 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         {
             this.Scenarios = new List<Scenario>();
             this.QueryMatchResults = new List<string>();
+            this.HeaderMatchResults = new List<string>();
+            this.BodyMatch = new List<string>();
+            this.Query = new QueryCollection();
+            this.Headers = new NameValueCollection();
         }
 
         public ICollection<string> Faults { get; set; }
