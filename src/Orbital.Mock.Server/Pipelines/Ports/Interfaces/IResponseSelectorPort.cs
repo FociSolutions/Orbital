@@ -8,6 +8,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
     interface IResponseSelectorPort
     {
-        MockResponse selectedResponse { get; set; }
+        MockResponse SelectedResponse { get; set; }
     }
 }
