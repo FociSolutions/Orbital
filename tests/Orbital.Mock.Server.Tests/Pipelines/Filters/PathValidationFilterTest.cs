@@ -12,7 +12,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class PathValidationFilterTest
     {
-        private readonly List<string> VALIDMETHODS = new List<string> { HttpMethods.Get.ToUpper(), HttpMethods.Put.ToUpper(), HttpMethods.Post.ToUpper(), HttpMethods.Delete.ToUpper() };
+        private readonly List<string> VALIDMETHODS = new List<string> { HttpMethods.Get, HttpMethods.Put, HttpMethods.Post, HttpMethods.Delete };
 
         [Fact]
         public void PathValidationFilterSuccessTest()
