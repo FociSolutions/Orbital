@@ -43,6 +43,7 @@ namespace Orbital.Mock.Server.Pipelines
             this.pathValidationFilter = pathValidationFilter;
             this.queryMatchFilter = queryMatchFilter;
             this.endpointMatchFilter = endpointMatchFilter;
+            this.bodyMatchFilter = bodyMatchFilter;
             this.blockFactory = new SyncBlockFactory();
         }
 
@@ -64,7 +65,7 @@ namespace Orbital.Mock.Server.Pipelines
             //Will need to add a join block when all three filters are added
             endpointFilterBlock.LinkTo(broadCastBlock, linkOptions);
 
-            broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
+            //broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
             broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
 
             //queryFilterBlock.LinkTo(this.endBlock, linkOptions);
@@ -117,7 +118,7 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 404, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
             }
 
-            return new MockResponse { Status = 200, Body = "Scenario Found", Headers = new Dictionary<string, string>() }; ;
+            return new MockResponse { Status = 200, Body = $"match found: {port.BodyMatch.Count > 0}", Headers = new Dictionary<string, string>() }; ;
         }
 
         /// <inheritdoc />
