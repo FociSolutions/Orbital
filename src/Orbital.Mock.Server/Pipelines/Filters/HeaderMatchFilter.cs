@@ -22,7 +22,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             var scenarios = port.Scenarios;
 
             port.HeaderMatchResults = scenarios.Where(
-                scenario => headers.Count() == scenario.RequestMatchRules.HeaderRules.Count && !headers.Except(scenario.RequestMatchRules.QueryRules).Any()
+                scenario => headers.Count() == scenario.RequestMatchRules.HeaderRules.Count && !headers.Except(scenario.RequestMatchRules.HeaderRules).Any()
             ).Select(scenario => scenario.Id).ToList();
 
 
