@@ -21,15 +21,19 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly SyncBlockFactory blockFactory;
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
+
+
+        private readonly HeaderMatchFilter<ProcessMessagePort> headerMatchFilter;
         private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
         private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
+
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
         public MockServerProcessor()
-            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>(), new EndpointMatchFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>())
+            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>(), new EndpointMatchFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>(), new HeaderMatchFilter<ProcessMessagePort>())
         {
         }
 
@@ -37,7 +41,8 @@ namespace Orbital.Mock.Server.Pipelines
             PathValidationFilter<ProcessMessagePort> pathValidationFilter,
             QueryMatchFilter<ProcessMessagePort> queryMatchFilter,
             EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter,
-            BodyMatchFilter<ProcessMessagePort> bodyMatchFilter
+            BodyMatchFilter<ProcessMessagePort> bodyMatchFilter,
+            HeaderMatchFilter<ProcessMessagePort> headerMatchFilter
         )
         {
             this.pathValidationFilter = pathValidationFilter;
@@ -45,6 +50,7 @@ namespace Orbital.Mock.Server.Pipelines
             this.endpointMatchFilter = endpointMatchFilter;
             this.bodyMatchFilter = bodyMatchFilter;
             this.blockFactory = new SyncBlockFactory();
+            this.headerMatchFilter = headerMatchFilter;
         }
 
         /// <inheritdoc />
@@ -54,6 +60,7 @@ namespace Orbital.Mock.Server.Pipelines
 
             //Initialize blocks
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
+
             var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
@@ -96,6 +103,7 @@ namespace Orbital.Mock.Server.Pipelines
                 Path = input.ServerHttpRequest.Path,
                 Verb = input.ServerHttpRequest.Method,
                 Body = Body
+
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
@@ -119,6 +127,7 @@ namespace Orbital.Mock.Server.Pipelines
             }
 
             return new MockResponse { Status = 200, Body = $"match found: {port.BodyMatch.Count > 0}", Headers = new Dictionary<string, string>() }; ;
+
         }
 
         /// <inheritdoc />
