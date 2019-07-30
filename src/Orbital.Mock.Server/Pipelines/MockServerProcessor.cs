@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Models;
+using System.IO;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -21,20 +22,33 @@ namespace Orbital.Mock.Server.Pipelines
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
 
+
         private readonly HeaderMatchFilter<ProcessMessagePort> headerMatchFilter;
+        private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
+        private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
+        private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
+
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
         public MockServerProcessor()
-            : this(new PathValidationFilter<ProcessMessagePort>(), new HeaderMatchFilter<ProcessMessagePort>())
+            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>(), new EndpointMatchFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>(), new HeaderMatchFilter<ProcessMessagePort>())
         {
         }
 
-
-        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter, HeaderMatchFilter<ProcessMessagePort> headerMatchFilter)
+        public MockServerProcessor(
+            PathValidationFilter<ProcessMessagePort> pathValidationFilter,
+            QueryMatchFilter<ProcessMessagePort> queryMatchFilter,
+            EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter,
+            BodyMatchFilter<ProcessMessagePort> bodyMatchFilter,
+            HeaderMatchFilter<ProcessMessagePort> headerMatchFilter
+        )
         {
             this.pathValidationFilter = pathValidationFilter;
+            this.queryMatchFilter = queryMatchFilter;
+            this.endpointMatchFilter = endpointMatchFilter;
+            this.bodyMatchFilter = bodyMatchFilter;
             this.blockFactory = new SyncBlockFactory();
             this.headerMatchFilter = headerMatchFilter;
         }
@@ -46,10 +60,23 @@ namespace Orbital.Mock.Server.Pipelines
 
             //Initialize blocks
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
+
+            var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
+            var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process);
+            var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
+            var endpointFilterBlock = this.blockFactory.CreateTransformBlock(this.endpointMatchFilter.Process);
             this.endBlock = this.blockFactory.CreateFinalBlock();
 
             //Broadcast incoming request to all getter blocks
-            this.startBlock.LinkTo(endBlock, linkOptions);
+            this.startBlock.LinkTo(endpointFilterBlock, linkOptions);
+            //Will need to add a join block when all three filters are added
+            endpointFilterBlock.LinkTo(broadCastBlock, linkOptions);
+
+            //broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
+            broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
+
+            //queryFilterBlock.LinkTo(this.endBlock, linkOptions);
+            bodyMatchFilterBlock.LinkTo(this.endBlock, linkOptions);
         }
 
         /// <inheritdoc />
@@ -63,10 +90,20 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             }
 
-            var port = new ProcessMessagePort(input.Scenarios)
+            string Body = string.Empty;
+
+            using (var reader = new StreamReader(input.ServerHttpRequest.Body))
             {
+                Body = reader.ReadToEnd();
+            }
+
+            var port = new ProcessMessagePort()
+            {
+                Scenarios = input.Scenarios,
                 Path = input.ServerHttpRequest.Path,
                 Verb = input.ServerHttpRequest.Method,
+                Body = Body
+
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
@@ -89,7 +126,8 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 404, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
             }
 
-            return new MockResponse { Status = 200, Body = "Scenario Found", Headers = new Dictionary<string, string>() }; ;
+            return new MockResponse { Status = 200, Body = $"match found: {port.BodyMatch.Count > 0}", Headers = new Dictionary<string, string>() }; ;
+
         }
 
         /// <inheritdoc />
