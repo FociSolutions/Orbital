@@ -14,25 +14,27 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class HeaderMatchFilterTests
     {
+        private readonly Faker<Scenario> scenarioFake;
+
+        public HeaderMatchFilterTests()
+        {
+            var requestMatchRulesFake = new Faker<RequestMatchRules>()
+                                        .RuleFor(r => r.HeaderRules, f => f.Make(10, () => f.Random.String()).ToDictionary(k => k));
+
+            scenarioFake = new Faker<Scenario>()
+                                .RuleFor(m => m.RequestMatchRules, requestMatchRulesFake)
+                                .RuleFor(m => m.Id, f => f.Random.Word());
+        }
+
 
         [Fact]
 
         public void HeaderMatchFilterMatchSuccessTest()
         {
             #region Test Setup
-            var faker = new Faker();
-
-            var scenarioFake = new Faker<Scenario>()
-                .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
-                {
-                    HeaderRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
-                }).RuleFor(m => m.Id, f => f.Random.Word());
-
             var fakeScenario = scenarioFake.Generate();
 
             var headers = new NameValueCollection();
-
-
             foreach (var headerRules in fakeScenario.RequestMatchRules.HeaderRules)
             {
                 headers.Add(headerRules.Key, headerRules.Value);
@@ -44,11 +46,16 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = headers
 
             };
-
             #endregion
             var Target = new HeaderMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Headers = input.Headers }).HeaderMatchResults;
+            var port = new ProcessMessagePort()
+            {
+                Scenarios = input.Scenarios,
+                Headers = input.Headers
+            };
+
+            var Actual = Target.Process(port).HeaderMatchResults;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.Equal(Expected, Actual);
@@ -56,27 +63,77 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         }
 
         [Fact]
+        public void HeaderMatchRulesHasMoreHeadersThenRequestHeadersFailure()
+        {
+            #region Test Setup
+            var fakeScenario = scenarioFake.Generate();
+
+            var headers = new NameValueCollection();
+            foreach (var headerRules in fakeScenario.RequestMatchRules.HeaderRules.Skip(3))
+            {
+                headers.Add(headerRules.Key, headerRules.Value);
+            }
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Headers = headers
+            };
+            #endregion
+            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+
+            var port = new ProcessMessagePort()
+            {
+                Scenarios = input.Scenarios,
+                Headers = input.Headers
+            };
+
+            var Actual = Target.Process(port).HeaderMatchResults;
+            var Expected = new List<string>();
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
+        public void HeaderMatchRulesHasLessHeadersThenRequestHeadersSuccess()
+        {
+            #region Test Setup
+            var fakeScenario = scenarioFake.Generate();
+
+            var headers = new NameValueCollection();
+            foreach (var headerRules in fakeScenario.RequestMatchRules.HeaderRules)
+            {
+                headers.Add(headerRules.Key, headerRules.Value);
+            };
+
+            fakeScenario.RequestMatchRules.HeaderRules = new Dictionary<string, string>(fakeScenario.RequestMatchRules.HeaderRules.Skip(3));
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Headers = headers
+            };
+            #endregion
+            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+
+            var port = new ProcessMessagePort()
+            {
+                Scenarios = input.Scenarios,
+                Headers = input.Headers
+            };
+
+            var Actual = Target.Process(port).HeaderMatchResults;
+            var Expected = new List<string>() { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
 
         public void HeaderMatchFilterNoMatchTest()
         {
             #region Test Setup
-            var faker = new Faker();
-
-            var scenarioFake = new Faker<Scenario>()
-                .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
-                {
-                    HeaderRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
-                }).RuleFor(m => m.Id, f => f.Random.Word());
-
             var fakeScenario = scenarioFake.Generate();
-
-            var headers = new NameValueCollection();
-
-
-            foreach (var headerRules in fakeScenario.RequestMatchRules.HeaderRules)
-            {
-                headers.Add(headerRules.Key, headerRules.Value);
-            }
 
             var input = new
             {
@@ -88,11 +145,15 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new HeaderMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Headers = input.Headers }).HeaderMatchResults;
+            var port = new ProcessMessagePort() {
+                Scenarios = input.Scenarios,
+                Headers = input.Headers
+            };
+
+            var Actual = Target.Process(port).HeaderMatchResults;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.NotEqual(Expected, Actual);
-
         }
 
         [Fact]
@@ -106,11 +167,15 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = new NameValueCollection()
 
             };
-
             #endregion
+
             var Target = new HeaderMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Headers = input.Headers }).Scenarios;
+            var port = new ProcessMessagePort() {
+                Scenarios = input.Scenarios,
+                Headers = input.Headers
+            };
+            var Actual = Target.Process(port).Scenarios;
 
             Assert.Empty(Actual);
 
@@ -120,23 +185,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void HeaderMatchFilterInvalidPortTest()
         {
             #region Test Setup
-            var faker = new Faker();
-
-            var scenarioFake = new Faker<Scenario>()
-                .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
-                {
-                    HeaderRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
-                }).RuleFor(m => m.Id, f => f.Random.Word());
-
             var fakeScenario = scenarioFake.Generate();
-
-            var headers = new NameValueCollection();
-
-
-            foreach (var headerRules in fakeScenario.RequestMatchRules.HeaderRules)
-            {
-                headers.Add(headerRules.Key, headerRules.Value);
-            }
 
             var input = new
             {
@@ -144,16 +193,18 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Faults = new List<string> { "fault" }
 
             };
-
             #endregion
             var Target = new HeaderMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Faults = input.Faults }).Scenarios;
-            var Expected = new List<Scenario> { fakeScenario };
+            var port = new ProcessMessagePort() {
+                Scenarios = input.Scenarios,
+                Faults = input.Faults
+            };
+
+            var Actual = Target.Process(port).HeaderMatchResults;
+            var Expected = port.HeaderMatchResults;
 
             Assert.Equal(Expected, Actual);
-
         }
-
     }
 }
