@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Models;
+using System.IO;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -20,20 +21,22 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly SyncBlockFactory blockFactory;
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
-        private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
+        private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
+
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
         public MockServerProcessor()
-            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>())
+            : this(new PathValidationFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>())
         {
         }
 
-        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter, QueryMatchFilter<ProcessMessagePort> queryMatchFilter)
+
+        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter, BodyMatchFilter<ProcessMessagePort> bodyMatchFilter)
         {
             this.pathValidationFilter = pathValidationFilter;
-            this.queryMatchFilter = queryMatchFilter;
+            this.bodyMatchFilter = bodyMatchFilter;
             this.blockFactory = new SyncBlockFactory();
         }
 
@@ -45,14 +48,14 @@ namespace Orbital.Mock.Server.Pipelines
             //Initialize blocks
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
             var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
-            var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
+            var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process);
             this.endBlock = this.blockFactory.CreateFinalBlock();
 
             //Broadcast incoming request to all getter blocks
             this.startBlock.LinkTo(broadCastBlock, linkOptions);
-            //Will need to add a join block when all three filters are added
-            broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
-            queryFilterBlock.LinkTo(this.endBlock, linkOptions);
+
+            broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
+            bodyMatchFilterBlock.LinkTo(this.endBlock, linkOptions);
         }
 
         /// <inheritdoc />
@@ -66,11 +69,18 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             }
 
+            string Body = string.Empty;
+
+            using (var reader = new StreamReader(input.ServerHttpRequest.Body))
+            {
+                Body = reader.ReadToEnd();
+            }
+
             var port = new ProcessMessagePort(input.Scenarios)
             {
                 Path = input.ServerHttpRequest.Path,
                 Verb = input.ServerHttpRequest.Method,
-                Query = input.ServerHttpRequest.Query
+                Body = Body
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
@@ -93,8 +103,7 @@ namespace Orbital.Mock.Server.Pipelines
                 return new MockResponse { Status = 404, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
             }
 
-            var temp = "";
-            return new MockResponse { Status = 200, Body = $"Scenarios Found, id: {String.Join(temp, port.QueryMatchResults)}", Headers = new Dictionary<string, string>() }; ;
+            return new MockResponse { Status = 200, Body = "Scenario Found", Headers = new Dictionary<string, string>() }; ;
         }
 
         /// <inheritdoc />
