@@ -38,7 +38,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             var Target = new BodyMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Body = input.Body }).BodyMatch;
+            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Body = input.Body }).BodyMatch;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.Equal(Expected, Actual);
@@ -68,7 +68,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             var Target = new BodyMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort(input.Scenarios) { Body = input.Body.ToString() }).BodyMatch;
+            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Body = input.Body.ToString() }).BodyMatch;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.NotEqual(Expected, Actual);
