@@ -19,18 +19,11 @@ namespace Orbital.Mock.Server.Pipelines.Ports
 
         public string Path { get; set; }
         public string Verb { get; set; }
-
-        public List<Scenario> Scenarios { get; }
+        public List<Scenario> Scenarios { get; set; }
         public List<string> BodyMatch { get; set; }
         public string Body { get; set; }
         public List<string> QueryMatchResults { get; set; }
         public IQueryCollection Query { get; set; }
-
-        public ProcessMessagePort(List<Scenario> scenarios)
-        {
-            this.Scenarios = scenarios;
-        }
-
         public IFaultablePort AppendFault(Exception e)
         {
             var fault = e.Message;
@@ -39,6 +32,12 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             Faults.Add(fault);
 
             return this;
+        }
+
+        public ProcessMessagePort()
+        {
+            this.Scenarios = new List<Scenario>();
+            this.QueryMatchResults = new List<string>();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     internal class PathValidationFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IPathValidationPort, IScenariosPort
     {
-        private readonly List<string> VALIDMETHODS = new List<string> { HttpMethods.Get, HttpMethods.Put, HttpMethods.Post, HttpMethods.Delete };
+        private readonly List<string> VALIDMETHODS = new List<string> { HttpMethods.Get.ToUpper(), HttpMethods.Put.ToUpper(), HttpMethods.Post.ToUpper(), HttpMethods.Delete.ToUpper() };
 
         public override T Process(T port)
         {
@@ -28,30 +28,20 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             var path = port.Path;
             var verb = port.Verb;
 
-            if (path == "")
+            if (path == null)
             {
                 var error = "Path cannot be null";
                 Log.Error(error);
                 return (T)port.AppendFault(new ArgumentNullException(error));
             }
 
-            if (!VALIDMETHODS.Contains(verb))
+            if (!VALIDMETHODS.Contains(verb.ToUpper()))
             {
                 var error = "Verb not supported";
                 Log.Error(error);
-                return (T)port.AppendFault(new ArgumentNullException(error));
+                return (T)port.AppendFault(new ArgumentException(error));
             }
 
-            var scenarioList = port.Scenarios;
-
-            var rx = new Regex(@path);
-
-            if (!scenarioList.Where(s => s.Verb.Equals(port.Verb) && rx.IsMatch(s.Path)).Any())
-            {
-                var error = "No matching paths found";
-                Log.Error(error);
-                return (T)port.AppendFault(new ArgumentNullException(error));
-            }
             return port;
         }
     }
