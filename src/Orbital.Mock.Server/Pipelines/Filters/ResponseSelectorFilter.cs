@@ -1,4 +1,5 @@
-﻿using Orbital.Mock.Server.Pipelines.Filters.Bases;
+﻿using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,13 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             }
 
             var scenarioIds = port.BodyMatch.Concat(port.HeaderMatchResults).Concat(port.QueryMatchResults).ToList();
-            var scenarioScore = scenarioIds.GroupBy(id => id).ToDictionary(g => g.Key, g => g.Count());
+            if (scenarioIds.Count == 0)
+            {
+                port.SelectedResponse = new MockResponse();
+                return port;
+            }
 
+            var scenarioScore = scenarioIds.GroupBy(id => id).ToDictionary(g => g.Key, g => g.Count());
             var max = scenarioScore.Values.Max();
             scenarioIds = scenarioIds.Where(s => scenarioScore[s] == max).ToList();
 
