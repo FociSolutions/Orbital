@@ -21,19 +21,21 @@ namespace Orbital.Mock.Server.Pipelines
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
         private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
+        private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
         public MockServerProcessor()
-            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>())
+            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>(), new EndpointMatchFilter<ProcessMessagePort>())
         {
         }
 
-        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter, QueryMatchFilter<ProcessMessagePort> queryMatchFilter)
+        public MockServerProcessor(PathValidationFilter<ProcessMessagePort> pathValidationFilter, QueryMatchFilter<ProcessMessagePort> queryMatchFilter, EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter)
         {
             this.pathValidationFilter = pathValidationFilter;
             this.queryMatchFilter = queryMatchFilter;
+            this.endpointMatchFilter = endpointMatchFilter;
             this.blockFactory = new SyncBlockFactory();
         }
 
@@ -46,11 +48,13 @@ namespace Orbital.Mock.Server.Pipelines
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
             var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
+            var endpointFilterBlock = this.blockFactory.CreateTransformBlock(this.endpointMatchFilter.Process);
             this.endBlock = this.blockFactory.CreateFinalBlock();
 
             //Broadcast incoming request to all getter blocks
-            this.startBlock.LinkTo(broadCastBlock, linkOptions);
+            this.startBlock.LinkTo(endpointFilterBlock, linkOptions);
             //Will need to add a join block when all three filters are added
+            endpointFilterBlock.LinkTo(broadCastBlock, linkOptions);
             broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
             queryFilterBlock.LinkTo(this.endBlock, linkOptions);
         }
