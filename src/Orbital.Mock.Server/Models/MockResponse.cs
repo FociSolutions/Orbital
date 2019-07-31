@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,15 @@ namespace Orbital.Mock.Server.Models
 {
     public class MockResponse : IEquatable<MockResponse>
     {
+        /// <summary>
+        /// Constructor, defaults to a 404 response
+        /// </summary>
+        public MockResponse()
+        {
+            Status = StatusCodes.Status404NotFound;
+            Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
+            Headers = new Dictionary<string, string>();
+        }
         [JsonProperty("status")]
         public int Status { get; set; }
         [JsonProperty("body")]
@@ -25,8 +35,8 @@ namespace Orbital.Mock.Server.Models
         {
             return other != null &&
                    Status == other.Status &&
-                   Body == other.Body &&
-                   EqualityComparer<Dictionary<string, string>>.Default.Equals(Headers, other.Headers);
+                   Body.Equals(other.Body) &&
+                   this.Headers.Count == other.Headers.Count && !Headers.Except(other.Headers).Any();
         }
 
         public override int GetHashCode()
