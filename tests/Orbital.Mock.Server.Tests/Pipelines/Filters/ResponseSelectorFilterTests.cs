@@ -94,8 +94,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var Target = new ResponseSelectorFilter<ProcessMessagePort>();
 
             var Actual = Target.Process(port).SelectedResponse;
+            var Expected = new MockResponse();
 
-            Assert.Equal(new MockResponse(), Actual);
+            Assert.Equal(Expected, Actual);
         }
 
         [Fact]
