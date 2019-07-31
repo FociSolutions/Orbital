@@ -23,7 +23,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             this.HeaderMatchResults = new List<string>();
             this.BodyMatch = new List<string>();
             this.Query = new QueryCollection();
-            this.Headers = new HeaderDictionary();
+            this.Headers = new Dictionary<string, string>();
         }
 
         public ICollection<string> Faults { get; set; }
@@ -35,7 +35,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
 
 
         public List<string> HeaderMatchResults { get; set; }
-        public HeaderDictionary Headers { get; set; }
+        public Dictionary<string, string> Headers { get; set; }
 
         public List<Scenario> Scenarios { get; set; }
         public List<string> BodyMatch { get; set; }
