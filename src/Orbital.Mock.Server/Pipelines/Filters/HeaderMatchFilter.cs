@@ -17,7 +17,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return port;
             }
 
-            var headers = port.Headers.AllKeys.ToDictionary(k => k, k => port.Headers[k]);
+            var headers = port.Headers;
             var scenarios = port.Scenarios;
 
             port.HeaderMatchResults = scenarios.Where(

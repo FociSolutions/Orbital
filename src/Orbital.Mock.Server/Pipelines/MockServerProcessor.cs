@@ -78,10 +78,10 @@ namespace Orbital.Mock.Server.Pipelines
             this.startBlock.LinkTo(endpointFilterBlock, linkOptions);
             //Will need to add a join block when all three filters are added
             endpointFilterBlock.LinkTo(broadCastBlock, linkOptions);
-            mergeBlock.LinkTo(endBlock, linkOptions);
 
-            //broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
+            broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
             broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
+            broadCastBlock.LinkTo(headerFilterBlock, linkOptions);
 
 
             bodyMatchFilterBlock.LinkTo(joinRequestPartsBlock.Target1, linkOptions);
@@ -89,6 +89,7 @@ namespace Orbital.Mock.Server.Pipelines
             headerFilterBlock.LinkTo(joinRequestPartsBlock.Target3, linkOptions);
 
             joinRequestPartsBlock.LinkTo(mergeBlock, linkOptions);
+            mergeBlock.LinkTo(endBlock, linkOptions);
 
 
         }
