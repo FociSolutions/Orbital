@@ -18,29 +18,19 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void PathValidationFilterSuccessTest()
         {
             #region TestSetup
-
-            var scenarioFaker = new Faker<Scenario>()
-            .RuleFor(m => m.Path, f => f.Lorem.Text())
-            .RuleFor(m => m.Verb, f => f.PickRandom(VALIDMETHODS))
-            .RuleFor(m => m.Id, f => f.Random.String());
-
-            var fakeScenario = scenarioFaker.Generate();
-
+            var faker = new Faker();
             var input = new
             {
-                Scenarios = new List<Scenario>() { fakeScenario },
-                Path = fakeScenario.Path,
-                Verb = fakeScenario.Verb
+                Path = faker.Random.String(),
+                Verb = faker.PickRandom(VALIDMETHODS)
             };
 
             #endregion
 
             var Target = new PathValidationFilter<ProcessMessagePort>();
+            var Actual = Target.Process(new ProcessMessagePort { Path = input.Path, Verb = input.Verb }).IsFaulted;
 
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Path = input.Path, Verb = input.Verb }).Scenarios;
-            var Expected = new List<Scenario> { fakeScenario };
-
-            Assert.Equal(Expected, Actual);
+            Assert.False(Actual);
 
         }
 
@@ -48,24 +38,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void PathValidationFilterFailTest()
         {
             #region TestSetup
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Path, f => f.Lorem.Word())
-                .RuleFor(m => m.Verb, f => f.PickRandom(VALIDMETHODS))
-                .RuleFor(m => m.Id, f => f.Random.Word());
-
-            var fakeScenario = scenarioFaker.Generate();
-
             var input = new
             {
-                Scenarios = new List<Scenario>() { fakeScenario },
-                Path = fakeScenario.Path,
-                Verb = fakeScenario.Verb,
                 Faults = new List<string>() { "fault" }
             };
             #endregion
             var Target = new PathValidationFilter<ProcessMessagePort>();
-
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Path = input.Path, Verb = input.Verb, Faults = input.Faults }).IsFaulted;
+            var Actual = Target.Process(new ProcessMessagePort {Faults = input.Faults }).IsFaulted;
 
             Assert.True(Actual);
 
@@ -75,81 +54,73 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void PathValidationFilterPathNullTest()
         {
             #region TestSetup
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Path, f => null)
-                .RuleFor(m => m.Verb, f => f.PickRandom(VALIDMETHODS))
-                .RuleFor(m => m.Id, f => f.Random.Word());
-
-            var fakeScenario = scenarioFaker.Generate();
-
+            var faker = new Faker();
             var input = new
             {
-                Scenarios = new List<Scenario>() { fakeScenario },
-                Path = fakeScenario.Path,
-                Verb = fakeScenario.Verb,
-                Faults = new List<string>() { "fault" }
+                Verb = faker.PickRandom(VALIDMETHODS)
             };
+
             #endregion
+
             var Target = new PathValidationFilter<ProcessMessagePort>();
+            var Actual = Target.Process(new ProcessMessagePort { Verb = input.Verb }).IsFaulted;
 
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Path = input.Path, Verb = input.Verb, Faults = input.Faults }).Path;
+            Assert.True(Actual);
+        }
 
-            Assert.Null(Actual);
+        [Fact]
+        public void PathValidationFilterVerbCheckCaseIndependenceTest()
+        {
+            #region TestSetup
+            var faker = new Faker();
+            var input = new
+            {
+                Path = faker.Random.String(),
+                Verb = faker.PickRandom(VALIDMETHODS).ToLower()
+            };
+
+            #endregion
+
+            var Target = new PathValidationFilter<ProcessMessagePort>();
+            var Actual = Target.Process(new ProcessMessagePort { Path = input.Path, Verb = input.Verb }).IsFaulted;
+
+            Assert.False(Actual);
         }
 
         [Fact]
         public void PathValidationFilterInvalidVerbTest()
         {
             #region TestSetup
-
-            var scenarioFaker = new Faker<Scenario>()
-            .RuleFor(m => m.Path, f => f.Lorem.Text())
-            .RuleFor(m => m.Verb, f => f.PickRandom(HttpMethods.Options))
-            .RuleFor(m => m.Id, f => f.Random.String());
-
-            var fakeScenario = scenarioFaker.Generate();
-
+            var faker = new Faker();
             var input = new
             {
-                Scenarios = new List<Scenario>() { fakeScenario },
-                Path = fakeScenario.Path,
-                Verb = fakeScenario.Verb
+                Path = faker.Random.String(),
+                Verb = faker.PickRandom(VALIDMETHODS).ToLower() + "invalid"
             };
 
             #endregion
 
             var Target = new PathValidationFilter<ProcessMessagePort>();
+            var Actual = Target.Process(new ProcessMessagePort { Path = input.Path, Verb = input.Verb }).IsFaulted;
 
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Path = input.Path, Verb = input.Verb }).Verb;
-            var Expected = new List<Scenario> { fakeScenario };
-
-            Assert.NotEqual(Expected.ToString(), Actual);
+            Assert.True(Actual);
         }
 
         [Fact]
         public void PathValidationFilterNullVerbTest()
         {
             #region TestSetup
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Path, f => f.Lorem.Text())
-                .RuleFor(m => m.Verb, f => null)
-                .RuleFor(m => m.Id, f => f.Random.Word());
-
-            var fakeScenario = scenarioFaker.Generate();
-
+            var faker = new Faker();
             var input = new
             {
-                Scenarios = new List<Scenario>() { fakeScenario },
-                Path = fakeScenario.Path,
-                Verb = fakeScenario.Verb,
-                Faults = new List<string>() { "fault" }
+                Path = faker.Random.String(),
             };
             #endregion
+
             var Target = new PathValidationFilter<ProcessMessagePort>();
+            var Actual = Target.Process(new ProcessMessagePort {Path = input.Path }).IsFaulted;
 
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Path = input.Path, Verb = input.Verb, Faults = input.Faults }).Verb;
-
-            Assert.Null(Actual);
+            Assert.True(Actual);
         }
     }
 }
