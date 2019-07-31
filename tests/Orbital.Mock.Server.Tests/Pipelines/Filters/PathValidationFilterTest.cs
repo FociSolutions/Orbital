@@ -1,11 +1,8 @@
 ﻿using Bogus;
 using Microsoft.AspNetCore.Http;
-using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
