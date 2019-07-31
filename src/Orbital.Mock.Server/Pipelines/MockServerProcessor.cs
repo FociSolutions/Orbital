@@ -26,7 +26,6 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
         private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
-        private readonly JoinFilter joinFilter;
 
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
@@ -35,7 +34,7 @@ namespace Orbital.Mock.Server.Pipelines
 
 
         public MockServerProcessor()
-            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>(), new EndpointMatchFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>(), new HeaderMatchFilter<ProcessMessagePort>(), new JoinFilter())
+            : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>(), new EndpointMatchFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>(), new HeaderMatchFilter<ProcessMessagePort>())
         {
         }
 
@@ -44,8 +43,8 @@ namespace Orbital.Mock.Server.Pipelines
             QueryMatchFilter<ProcessMessagePort> queryMatchFilter,
             EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter,
             BodyMatchFilter<ProcessMessagePort> bodyMatchFilter,
-            HeaderMatchFilter<ProcessMessagePort> headerMatchFilter,
-            JoinFilter joinFilter
+            HeaderMatchFilter<ProcessMessagePort> headerMatchFilter
+
         )
         {
             this.pathValidationFilter = pathValidationFilter;
@@ -54,7 +53,7 @@ namespace Orbital.Mock.Server.Pipelines
             this.bodyMatchFilter = bodyMatchFilter;
             this.blockFactory = new SyncBlockFactory();
             this.headerMatchFilter = headerMatchFilter;
-            this.joinFilter = joinFilter;
+
         }
 
         /// <inheritdoc />
@@ -71,7 +70,7 @@ namespace Orbital.Mock.Server.Pipelines
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
             var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false });
-            var joinFiltersBlock = this.blockFactory.CreateJoinTransformBlock(this.joinFilter.MergePorts);
+            var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1);
             this.endBlock = this.blockFactory.CreateFinalBlock();
 
 
@@ -79,7 +78,7 @@ namespace Orbital.Mock.Server.Pipelines
             this.startBlock.LinkTo(endpointFilterBlock, linkOptions);
             //Will need to add a join block when all three filters are added
             endpointFilterBlock.LinkTo(broadCastBlock, linkOptions);
-            joinFiltersBlock.LinkTo(endBlock, linkOptions);
+            mergeBlock.LinkTo(endBlock, linkOptions);
 
             //broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
             broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
@@ -89,7 +88,7 @@ namespace Orbital.Mock.Server.Pipelines
             queryFilterBlock.LinkTo(joinRequestPartsBlock.Target2, linkOptions);
             headerFilterBlock.LinkTo(joinRequestPartsBlock.Target3, linkOptions);
 
-            joinRequestPartsBlock.LinkTo(joinFiltersBlock, linkOptions);
+            joinRequestPartsBlock.LinkTo(mergeBlock, linkOptions);
 
 
         }
