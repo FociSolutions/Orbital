@@ -1,18 +1,17 @@
-﻿using Orbital.Mock.Server.Pipelines.Models;
-using Orbital.Mock.Server.Pipelines.Models.Interfaces;
-using Orbital.Mock.Server.Pipelines.Ports;
+﻿using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Envelopes;
+using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Orbital.Mock.Server.Pipelines.Factories;
 using Orbital.Mock.Server.Pipelines.Filters;
+using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Server.Pipelines.Models.Interfaces;
+using Orbital.Mock.Server.Pipelines.Ports;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.AspNetCore.Http;
-using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
-using Orbital.Mock.Server.Models;
-using System.IO;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -32,6 +31,8 @@ namespace Orbital.Mock.Server.Pipelines
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
 
 
+
+
         public MockServerProcessor()
             : this(new PathValidationFilter<ProcessMessagePort>(), new QueryMatchFilter<ProcessMessagePort>(), new EndpointMatchFilter<ProcessMessagePort>(), new BodyMatchFilter<ProcessMessagePort>(), new HeaderMatchFilter<ProcessMessagePort>())
         {
@@ -43,6 +44,7 @@ namespace Orbital.Mock.Server.Pipelines
             EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter,
             BodyMatchFilter<ProcessMessagePort> bodyMatchFilter,
             HeaderMatchFilter<ProcessMessagePort> headerMatchFilter
+
         )
         {
             this.pathValidationFilter = pathValidationFilter;
@@ -51,6 +53,7 @@ namespace Orbital.Mock.Server.Pipelines
             this.bodyMatchFilter = bodyMatchFilter;
             this.blockFactory = new SyncBlockFactory();
             this.headerMatchFilter = headerMatchFilter;
+
         }
 
         /// <inheritdoc />
@@ -62,21 +65,33 @@ namespace Orbital.Mock.Server.Pipelines
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
 
             var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
+            var endpointFilterBlock = this.blockFactory.CreateTransformBlock(this.endpointMatchFilter.Process);
+            var headerFilterBlock = this.blockFactory.CreateTransformBlock(this.headerMatchFilter.Process);
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
-            var endpointFilterBlock = this.blockFactory.CreateTransformBlock(this.endpointMatchFilter.Process);
+            var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false });
+            var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1);
             this.endBlock = this.blockFactory.CreateFinalBlock();
+
 
             //Broadcast incoming request to all getter blocks
             this.startBlock.LinkTo(endpointFilterBlock, linkOptions);
             //Will need to add a join block when all three filters are added
             endpointFilterBlock.LinkTo(broadCastBlock, linkOptions);
 
-            //broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
+            broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
             broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
+            broadCastBlock.LinkTo(headerFilterBlock, linkOptions);
 
-            //queryFilterBlock.LinkTo(this.endBlock, linkOptions);
-            bodyMatchFilterBlock.LinkTo(this.endBlock, linkOptions);
+
+            bodyMatchFilterBlock.LinkTo(joinRequestPartsBlock.Target1, linkOptions);
+            queryFilterBlock.LinkTo(joinRequestPartsBlock.Target2, linkOptions);
+            headerFilterBlock.LinkTo(joinRequestPartsBlock.Target3, linkOptions);
+
+            joinRequestPartsBlock.LinkTo(mergeBlock, linkOptions);
+            mergeBlock.LinkTo(endBlock, linkOptions);
+
+
         }
 
         /// <inheritdoc />
