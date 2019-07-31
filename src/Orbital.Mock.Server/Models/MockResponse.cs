@@ -10,6 +10,9 @@ namespace Orbital.Mock.Server.Models
 {
     public class MockResponse : IEquatable<MockResponse>
     {
+        /// <summary>
+        /// Constructor, defaults to a 404 response
+        /// </summary>
         public MockResponse()
         {
             Status = StatusCodes.Status404NotFound;

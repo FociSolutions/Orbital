@@ -11,6 +11,11 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     internal class ResponseSelectorFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort
     {
+        /// <summary>
+        /// Selects the response to use based on the match results from the previous filters. Ties are broken randomly.
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))
@@ -25,12 +30,14 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return port;
             }
 
-            var scenarioScore = scenarioIds.GroupBy(id => id).ToDictionary(g => g.Key, g => g.Count());
-            var max = scenarioScore.Values.Max();
-            scenarioIds = scenarioIds.Where(s => scenarioScore[s] == max).ToList();
+            var scenarioScores = scenarioIds.GroupBy(id => id).ToDictionary(g => g.Key, g => g.Count());
+            var max = scenarioScores.Values.Max();
+            var selectedScenarios = scenarioScores.Keys.Where(key => scenarioScores[key] == max)
+                .Select(id => port.Scenarios.First(scenario => scenario.Id == id))
+                .ToList();
 
             Random random = new Random();
-            port.SelectedResponse = port.Scenarios.First(s => s.Id == scenarioIds[random.Next(scenarioIds.Count)]).Response;
+            port.SelectedResponse = selectedScenarios[random.Next(selectedScenarios.Count)].Response;
             return port;
         }
     }
