@@ -34,7 +34,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
 
 
         public List<string> HeaderMatchResults { get; set; }
-        public HeaderDictionary Headers { get; set; }
+        public IHeaderDictionary Headers { get; set; }
 
         public List<Scenario> Scenarios { get; set; }
         public List<string> BodyMatch { get; set; }
