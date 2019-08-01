@@ -55,7 +55,7 @@ namespace Orbital.Mock.Server
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
 
-            services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>, MockServerProcessor>(s =>
+            services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
                 var processor = new MockServerProcessor();
                 processor.Start();
