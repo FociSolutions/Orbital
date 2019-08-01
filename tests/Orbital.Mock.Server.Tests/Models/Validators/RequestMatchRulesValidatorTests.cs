@@ -17,7 +17,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
                 .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+                .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
             var input = new
             {
                 requestMatchRules = requestMatchRulesFake.Generate()
@@ -36,7 +36,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.HeaderRules, f => null)
                 .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+                .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
             var input = new
             {
                 requestMatchRules = requestMatchRulesFake.Generate()
@@ -55,7 +55,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.QueryRules, f => null)
                 .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+                .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
             var input = new
             {
                 requestMatchRules = requestMatchRulesFake.Generate()
