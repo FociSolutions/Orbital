@@ -22,8 +22,8 @@ namespace Orbital.Mock.Server.Pipelines.Models
         {
             this.ServerHttpRequest = serverHttpRequest;
             this.Scenarios = scenarios;
-            this.HeaderDictionary = serverHttpRequest.Headers.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
-            this.QueryDictionary = serverHttpRequest.Query.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+            this.HeaderDictionary = serverHttpRequest == null ? new Dictionary<string, string>() : serverHttpRequest.Headers.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+            this.QueryDictionary = serverHttpRequest == null ? new Dictionary<string, string>() : serverHttpRequest.Query.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
         }
     }
 }
