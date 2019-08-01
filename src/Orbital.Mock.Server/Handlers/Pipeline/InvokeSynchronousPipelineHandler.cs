@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Commands;
 using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -23,10 +24,10 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
     {
         private const string MOCKIDS = "mockids";
 
-        private readonly MockServerProcessor mockServerProcessor;
+        private readonly IPipeline<MessageProcessorInput, Task<MockResponse>> mockServerProcessor;
         private readonly IMemoryCache cache;
 
-        public InvokeSynchronousPipelineHandler(IMemoryCache cache, MockServerProcessor mockServerProcessor)
+        public InvokeSynchronousPipelineHandler(IMemoryCache cache, IPipeline<MessageProcessorInput, Task<MockResponse>> mockServerProcessor)
         {
             this.mockServerProcessor = mockServerProcessor;
             this.cache = cache;
