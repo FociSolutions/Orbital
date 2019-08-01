@@ -1,4 +1,5 @@
-﻿using Orbital.Mock.Server.Models;
+﻿using Microsoft.AspNetCore.Http;
+using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Envelopes;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Orbital.Mock.Server.Pipelines.Factories;
@@ -127,9 +128,8 @@ namespace Orbital.Mock.Server.Pipelines
                 Path = input.ServerHttpRequest.Path,
                 Verb = input.ServerHttpRequest.Method,
                 Query = input.QueryDictionary,
-                Headers = input.ServerHttpRequest.Headers,
+                Headers = input.HeaderDictionary,
                 Body = Body
-
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
