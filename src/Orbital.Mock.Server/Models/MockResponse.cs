@@ -13,17 +13,15 @@ namespace Orbital.Mock.Server.Models
         /// <summary>
         /// Constructor, defaults to a 404 response
         /// </summary>
-        public MockResponse(int Status = StatusCodes.Status404NotFound, string Body = null, IDictionary<string,string> Headers = null)
+        public MockResponse(int Status = StatusCodes.Status404NotFound, string Body = null, IDictionary<string, string> Headers = null)
         {
             if (Body.Equals(null))
             {
                 Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
-                Headers = new Dictionary<string, string>();
             }
 
             if (Headers.Equals(null))
             {
-                Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
                 Headers = new Dictionary<string, string>();
             }
 
