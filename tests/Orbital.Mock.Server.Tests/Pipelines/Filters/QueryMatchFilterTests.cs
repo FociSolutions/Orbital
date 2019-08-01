@@ -34,8 +34,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Query = new QueryCollection(fakeScenario.RequestMatchRules.QueryRules
-                    .Select(pair => new KeyValuePair<string, StringValues>(pair.Key, new StringValues(pair.Value))).ToDictionary(x => x.Key, x => x.Value))
+                Query = fakeScenario.RequestMatchRules.QueryRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString())
             };
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
@@ -64,7 +63,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Query = new QueryCollection(new Dictionary<string, StringValues>())
+                Query = new Dictionary<string, string>()
             };
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
@@ -82,7 +81,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>(),
-                Query = new QueryCollection(new Dictionary<string, StringValues>())
+                Query =new Dictionary<string, string>()
             };
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
