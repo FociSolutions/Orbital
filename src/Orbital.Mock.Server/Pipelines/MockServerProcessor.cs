@@ -110,7 +110,9 @@ namespace Orbital.Mock.Server.Pipelines
             if (input == null ||
                 input.ServerHttpRequest == null ||
                 input.ServerHttpRequest.Body == null ||
-                input.ServerHttpRequest.Headers == null)
+                input.HeaderDictionary == null ||
+                input.QueryDictionary == null ||
+                input.Scenarios == null)
             {
                 return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             }
@@ -143,7 +145,7 @@ namespace Orbital.Mock.Server.Pipelines
             if (port == null)
             {
                 var error = "Pipeline port cannot be null";
-                return new MockResponse { Status = 400, Body = CreateFaultPayload(error), Headers = new Dictionary<string, string>() };
+                return new MockResponse { Status = 400, Body = error, Headers = new Dictionary<string, string>() };
             }
 
             if (port.IsFaulted)
@@ -175,13 +177,6 @@ namespace Orbital.Mock.Server.Pipelines
             }
             return true;
         }
-
-        //create payload containing OrbitalArgumentException
-        private string CreateFaultPayload(string error)
-        {
-            return error;
-        }
-
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 

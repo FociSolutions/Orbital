@@ -22,6 +22,9 @@ using Orbital.Mock.Server.Models.Converters;
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Middleware;
 using Microsoft.Extensions.Caching.Memory;
+using Orbital.Mock.Server.Pipelines.Models.Interfaces;
+using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server
 {
@@ -52,7 +55,7 @@ namespace Orbital.Mock.Server
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
 
-            services.AddSingleton<MockServerProcessor>(s =>
+            services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
                 var processor = new MockServerProcessor();
                 processor.Start();
