@@ -23,12 +23,15 @@ namespace Orbital.Mock.Server.Models
         public MockResponse(int Status)
         {
             this.Status = Status;
+            this.Headers = new Dictionary<string, string>();
+            Body = ReasonPhrases.GetReasonPhrase(Status);
         }
 
         public MockResponse(int Status, IDictionary<string, string> Headers)
         {
             this.Status = Status;
             this.Headers = Headers;
+            Body = ReasonPhrases.GetReasonPhrase(Status);
         }
 
         public MockResponse(int Status, IDictionary<string, string> Headers, string Body)
