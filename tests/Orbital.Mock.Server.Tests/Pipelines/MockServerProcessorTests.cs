@@ -86,6 +86,26 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         }
 
         [Fact]
+        public void MockServerProcessorPushWithValidInputNoMatchTest()
+        {
+            #region TestSetup
+            var scenarios = this.fakerScenario.Generate(10);
+
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Path = "";
+            httpContext.Request.Method = HttpMethods.Get;
+            var input = new MessageProcessorInput(httpContext.Request, scenarios);
+            #endregion
+            var Target = new MockServerProcessor();
+            var Expected = new MockResponse();
+            Target.Start();
+            var Actual = Target.Push(input).Result;
+
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
         public void MockServerProcessorPushWithNullInputTest()
         {
             var Target = new MockServerProcessor();
@@ -105,6 +125,82 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             Target.Start();
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
+        public void MockServerProcessorPushWithInvalidInputNullBodyTest()
+        {
+            #region TestSetup
+            var httpContext = new DefaultHttpContext();
+            var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
+            input.ServerHttpRequest.Body = null;
+            #endregion
+            var Target = new MockServerProcessor();
+            Target.Start();
+            var Actual = Target.Push(input).Result;
+            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
+        public void MockServerProcessorPushWithInvalidInputNullScenariosTest()
+        {
+            #region TestSetup
+            var httpContext = new DefaultHttpContext();
+            var input = new MessageProcessorInput(httpContext.Request, null);
+            #endregion
+            var Target = new MockServerProcessor();
+            Target.Start();
+            var Actual = Target.Push(input).Result;
+            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
+        public void MockServerProcessorPushWithInvalidVerbTest()
+        {
+            #region TestSetup
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Method = HttpMethods.Options;
+            var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
+            #endregion
+            var Target = new MockServerProcessor();
+            Target.Start();
+            var Actual = Target.Push(input).Result;
+            var Expected = new MockResponse();
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
+        public void MockServerProcessorPushWithNullPathTest()
+        {
+            #region TestSetup
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Method = HttpMethods.Get;
+            httpContext.Request.Path = null;
+            var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
+            #endregion
+            var Target = new MockServerProcessor();
+            Target.Start();
+            var Actual = Target.Push(input).Result;
+            var Expected = new MockResponse();
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
+        public void MockServerProcessorPushWithWrongPathTest()
+        {
+            #region TestSetup
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Method = HttpMethods.Get;
+            httpContext.Request.Path = "";
+            var input = new MessageProcessorInput(httpContext.Request, this.fakerScenario.Generate(1));
+            #endregion
+            var Target = new MockServerProcessor();
+            Target.Start();
+            var Actual = Target.Push(input).Result;
+            var Expected = new MockResponse();
             Assert.Equal(Expected, Actual);
         }
     }
