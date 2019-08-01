@@ -128,8 +128,8 @@ namespace Orbital.Mock.Server.Pipelines
                 Scenarios = input.Scenarios,
                 Path = input.ServerHttpRequest.Path,
                 Verb = input.ServerHttpRequest.Method,
-                Query = input.ServerHttpRequest.Query,
-                Headers = input.ServerHttpRequest.Headers,
+                Query = input.QueryDictionary,
+                Headers = input.HeaderDictionary,
                 Body = Body
             };
 
