@@ -24,7 +24,7 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("body")]
         public string Body { get; set; }
         [JsonProperty("headers")]
-        public Dictionary<string, string> Headers { get; set; }
+        public IDictionary<string, string> Headers { get; set; }
 
         public override bool Equals(object obj)
         {

@@ -13,19 +13,15 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     {
         public override T Process(T port)
         {
-            if(!IsPortValid(port, out port))
+            if (!IsPortValid(port, out port))
             {
                 return port;
             }
 
-            var scenarios = port.Scenarios;
-            var body = port.Body;
-            var bodyMatch = scenarios.Where(
-                scenario => scenario.RequestMatchRules.BodyRules.Equals(body)
-                );
-            port.BodyMatch = bodyMatch.Select(
-                scenario => scenario.Id
-                ).ToList();
+            port.BodyMatch = port.Scenarios.Where(
+                s => s.RequestMatchRules.BodyRules.Equals(port.Body)
+                ).Select(s => s.Id)
+                .ToList();
 
             return port;
         }

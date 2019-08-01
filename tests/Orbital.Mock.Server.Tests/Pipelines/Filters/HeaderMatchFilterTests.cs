@@ -35,7 +35,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region Test Setup
             var fakeScenario = scenarioFake.Generate();
 
-            var headers = new HeaderDictionary(fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
+            var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             var input = new
             {
@@ -65,7 +65,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region Test Setup
             var fakeScenario = scenarioFake.Generate();
 
-            var headers = new HeaderDictionary(fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
+            var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 
             var input = new
@@ -94,7 +94,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region Test Setup
             var fakeScenario = scenarioFake.Generate();
 
-            var headers = new HeaderDictionary(fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
+            var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             fakeScenario.RequestMatchRules.HeaderRules = new Dictionary<string, string>(fakeScenario.RequestMatchRules.HeaderRules.Skip(3));
 
@@ -128,7 +128,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Headers = new HeaderDictionary()
+                Headers = new Dictionary<string, string>()
 
             };
 
@@ -155,7 +155,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>(),
-                Headers = new HeaderDictionary()
+                Headers = new Dictionary<string, string>()
 
             };
             #endregion
