@@ -19,6 +19,25 @@ namespace Orbital.Mock.Server.Models
             Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
             Headers = new Dictionary<string, string>();
         }
+
+        public MockResponse(int Status)
+        {
+            this.Status = Status;
+        }
+
+        public MockResponse(int Status, IDictionary<string, string> Headers)
+        {
+            this.Status = Status;
+            this.Headers = Headers;
+        }
+
+        public MockResponse(int Status, IDictionary<string, string> Headers, string Body)
+        {
+            this.Status = Status;
+            this.Headers = Headers;
+            this.Body = Body;
+        }
+
         [JsonProperty("status")]
         public int Status { get; set; }
         [JsonProperty("body")]
