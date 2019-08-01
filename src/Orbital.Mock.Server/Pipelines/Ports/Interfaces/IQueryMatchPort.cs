@@ -10,6 +10,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     {
         List<string> QueryMatchResults { get; set; }
 
-        IQueryCollection Query { get; set; }
+        Dictionary<string, string> Query { get; set; }
     }
 }
