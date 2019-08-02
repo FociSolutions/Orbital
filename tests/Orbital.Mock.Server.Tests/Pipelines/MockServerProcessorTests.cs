@@ -23,19 +23,17 @@ namespace Orbital.Mock.Server.Tests.Pipelines
 
         public MockServerProcessorTests()
         {
-            var bodyRuleFaker = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom(Enum.GetValues(typeof(BodyRuleTypes)).Cast<BodyRuleTypes>()))
-                .RuleFor(m => m.Rule, f => f.Random.Word());
+            var fakerBodyRule = new Faker<BodyRule>()
+                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
+                .RuleFor(m => m.Rule, f => f.Random.String());
             var fakerResponse = new Faker<MockResponse>()
                            .RuleFor(m => m.Status, f => (int)f.PickRandom<HttpStatusCode>())
                            .RuleFor(m => m.Body, f => f.Lorem.Paragraph());
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
-                    .RuleFor(m => m.BodyRules, _ => bodyRuleFaker.Generate(3))
-                    .RuleFor(m => m.HeaderRules, f => Enumerable.Range(1, 5)
-                        .Select(i => f.Random.Word() + $"-{i}")
+                    .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
+                    .RuleFor(m => m.HeaderRules, f => f.Make(5, () => f.Random.String())
                         .ToDictionary(x => x, _ => f.Random.Word()))
-                    .RuleFor(m => m.QueryRules, f => Enumerable.Range(1, 5)
-                        .Select(i => f.Random.Word() + $"-{i}")
+                    .RuleFor(m => m.QueryRules, f => f.Make(5, () => f.Random.String())
                         .ToDictionary(x => x, _ => f.Random.Word()));
             this.fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())

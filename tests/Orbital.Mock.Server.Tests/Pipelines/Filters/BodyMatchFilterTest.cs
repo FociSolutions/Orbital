@@ -17,16 +17,14 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
         public BodyMatchFilterTest()
         {
-            var bodyRuleFaker = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom(Enum.GetValues(typeof(BodyRuleTypes)).Cast<BodyRuleTypes>()))
-                .RuleFor(m => m.Rule, f => f.Random.Word());
+            var fakerBodyRule = new Faker<BodyRule>()
+                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
+                .RuleFor(m => m.Rule, f => f.Random.String());
+            var fakerRequestMatchRules = new Faker<RequestMatchRules>()
+                .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
             this.scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.RequestMatchRules, n => new RequestMatchRules
-                {
-                    BodyRules = bodyRuleFaker.Generate(3)
-                })
-                .RuleFor(m => m.Id, n => n.Random.ToString()
-                );
+                .RuleFor(m => m.RequestMatchRules, _ => fakerRequestMatchRules.Generate())
+                .RuleFor(m => m.Id, n => n.Random.ToString());
         }
 
         [Fact]

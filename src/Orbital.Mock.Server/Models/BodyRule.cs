@@ -8,24 +8,15 @@ namespace Orbital.Mock.Server.Models
 {
     public class BodyRule : IEquatable<BodyRule>
     {
-        /// <summary>
-        /// Constructor for the body rule model
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="rule"></param>
-        public BodyRule(BodyRuleTypes type, string rule)
-        {
-            this.Type = type;
-            this.Rule = rule;
-        }
+
         [JsonProperty("rule")]
-        public string Rule { get; }
+        public string Rule { get; set; }
         [JsonProperty("type")]
-        public BodyRuleTypes Type { get; }
+        public BodyRuleTypes Type { get; set; }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as RequestMatchRules);
+            return Equals(obj as BodyRule);
         }
 
         public bool Equals(BodyRule other)
