@@ -9,7 +9,11 @@ namespace Orbital.Mock.Server.Models
 {
     public class BodyRule : IEquatable<BodyRule>
     {
-
+        public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, JObject Rule = null)
+        {
+            this.Rule = Rule == null ? new JObject(new { }) : Rule;
+            this.Type = Type;
+        }
         [JsonProperty("rule")]
         public JObject Rule { get; set; }
         [JsonProperty("type")]
@@ -35,7 +39,7 @@ namespace Orbital.Mock.Server.Models
         {
             return other != null &&
                 this.Type == other.Type &&
-                this.Rule.Equals(other.Rule);
+                this.Rule.ToString().Equals(other.ToString());
         }
 
         public override int GetHashCode()

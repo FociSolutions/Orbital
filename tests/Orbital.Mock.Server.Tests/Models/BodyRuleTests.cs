@@ -14,11 +14,10 @@ namespace Orbital.Mock.Server.Tests.Models
 
         public BodyRuleTests()
         {
-            var fakerJsonInput = new Faker<JsonInput>()
-                .RuleFor(m => m.Value, f => f.Random.String());
-            var fakerBodyRule = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
-                .RuleFor(m => m.Rule, f => (new JObject(fakerJsonInput.Generate())));
+            var fakerJObject = new Faker<JObject>()
+                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
+            this.fakerBodyRule = new Faker<BodyRule>()
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
         }
         [Fact]
         public void EqualsSuccessTest()
@@ -41,7 +40,7 @@ namespace Orbital.Mock.Server.Tests.Models
             var input = new BodyRule()
             {
                 Type = Target.Type,
-                Rule = new JObject(new { value = "" })
+                Rule = JObject.FromObject(new { Value = "" })
             } as object;
             Assert.False(Target.Equals(input));
         }
@@ -57,11 +56,6 @@ namespace Orbital.Mock.Server.Tests.Models
                 Rule = Target.Rule
             } as object;
             Assert.False(Target.Equals(input));
-        }
-
-        private class JsonInput
-        {
-            public string Value { get; set; }
         }
     }
 }
