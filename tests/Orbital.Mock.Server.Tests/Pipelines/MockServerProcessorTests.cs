@@ -29,8 +29,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                 .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
                 .RuleFor(m => m.Rule, f => (new JObject(fakerJsonInput.Generate())));
             var fakerResponse = new Faker<MockResponse>()
-                           .RuleFor(m => m.Status, f => (int)f.PickRandom<HttpStatusCode>())
-                           .RuleFor(m => m.Body, f => f.Lorem.Paragraph());
+                   .CustomInstantiator(f => new MockResponse(
+                    (int)f.PickRandom<HttpStatusCode>(),
+                    f.Lorem.Paragraph()
+                    ));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                     .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
                     .RuleFor(m => m.HeaderRules, f => f.Make(5, () => f.Random.String())
