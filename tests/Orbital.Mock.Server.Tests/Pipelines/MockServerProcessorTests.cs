@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Pipelines.Models;
@@ -20,12 +21,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         private Faker<Scenario> fakerScenario;
         private readonly List<string> validMethods = new List<string> { HttpMethods.Get, HttpMethods.Put, HttpMethods.Post, HttpMethods.Delete };
 
-
         public MockServerProcessorTests()
         {
+            var fakerJsonInput = new Faker<JsonInput>()
+                .RuleFor(m => m.Value, f => f.Random.String());
             var fakerBodyRule = new Faker<BodyRule>()
                 .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
-                .RuleFor(m => m.Rule, f => f.Random.String());
+                .RuleFor(m => m.Rule, f => (new JObject(fakerJsonInput.Generate())));
             var fakerResponse = new Faker<MockResponse>()
                            .RuleFor(m => m.Status, f => (int)f.PickRandom<HttpStatusCode>())
                            .RuleFor(m => m.Body, f => f.Lorem.Paragraph());
@@ -72,7 +74,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb;
-            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Rule));
+            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Rule.ToString()));
             scenarios[0].RequestMatchRules.HeaderRules.Keys.ToList().ForEach(k => httpContext.Request.Headers.Add(k, scenarios[0].RequestMatchRules.HeaderRules[k]));
             httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
             var input = new MessageProcessorInput(httpContext.Request, scenarios);
@@ -203,6 +205,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse();
             Assert.Equal(Expected, Actual);
+        }
+
+        private class JsonInput
+        {
+            public string Value { get; set; }
         }
     }
 }

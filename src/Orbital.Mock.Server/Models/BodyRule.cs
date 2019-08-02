@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,20 @@ namespace Orbital.Mock.Server.Models
     {
 
         [JsonProperty("rule")]
-        public string Rule { get; set; }
+        public JObject Rule { get; set; }
         [JsonProperty("type")]
         public BodyRuleTypes Type { get; set; }
+
+        /// <summary>
+        /// Method returns true if the json string matches the Rule property
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public bool IsMatch(string json)
+        {
+            var obj = JObject.Parse(json);
+            return this.Rule.ToString().Equals(obj.ToString());
+        }
 
         public override bool Equals(object obj)
         {

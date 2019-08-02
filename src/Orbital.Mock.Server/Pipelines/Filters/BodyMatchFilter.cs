@@ -25,7 +25,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             }
 
             port.BodyMatch = port.Scenarios.Where(
-                s => s.RequestMatchRules.BodyRules.Any(bodyRule => bodyRule.Rule.Equals(port.Body))
+                s => s.RequestMatchRules.BodyRules.Any(bodyRule => bodyRule.IsMatch(port.Body))
                 ).Select(s => s.Id)
                 .ToList();
 
