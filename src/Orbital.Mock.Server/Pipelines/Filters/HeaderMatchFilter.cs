@@ -27,7 +27,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             var scenarios = port.Scenarios;
 
             port.HeaderMatchResults = scenarios.Where(
-                s => headers.All(hr => s.RequestMatchRules.HeaderRules.ContainsKey(hr.Key) && s.RequestMatchRules.HeaderRules[hr.Key].Equals(hr.Value))
+                s => s.RequestMatchRules.HeaderRules.All(hr => headers.ContainsKey(hr.Key) && headers[hr.Key].Equals(hr.Value))
             ).Select(scenario => scenario.Id).ToList();
 
             return port;
