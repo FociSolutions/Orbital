@@ -13,7 +13,7 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("queryRules")]
         public IDictionary<string, string> QueryRules { get; set; }
         [JsonProperty("bodyRules")]
-        public string BodyRules { get; set; }
+        public ICollection<BodyRule> BodyRules { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -25,7 +25,7 @@ namespace Orbital.Mock.Server.Models
             return other != null &&
                 this.HeaderRules.Count == other.HeaderRules.Count && !HeaderRules.Except(other.HeaderRules).Any() &&
                 QueryRules.Count == other.QueryRules.Count && !QueryRules.Except(other.QueryRules).Any() &&
-                BodyRules.Equals(other.BodyRules);
+                BodyRules.Count == other.BodyRules.Count && other.BodyRules.All(br1 => BodyRules.Any(br2 => br1.Equals(br2)));
         }
 
         public override int GetHashCode()

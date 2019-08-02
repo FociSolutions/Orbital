@@ -23,16 +23,17 @@ namespace Orbital.Mock.Server.Tests.Pipelines
 
         public MockServerProcessorTests()
         {
+            var fakerBodyRule = new Faker<BodyRule>()
+                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
+                .RuleFor(m => m.Rule, f => f.Random.String());
             var fakerResponse = new Faker<MockResponse>()
                            .RuleFor(m => m.Status, f => (int)f.PickRandom<HttpStatusCode>())
                            .RuleFor(m => m.Body, f => f.Lorem.Paragraph());
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
-                    .RuleFor(m => m.BodyRules, f => f.Lorem.Paragraph())
-                    .RuleFor(m => m.HeaderRules, f => Enumerable.Range(1, 5)
-                        .Select(i => f.Random.Word() + $"-{i}")
+                    .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
+                    .RuleFor(m => m.HeaderRules, f => f.Make(5, () => f.Random.String())
                         .ToDictionary(x => x, _ => f.Random.Word()))
-                    .RuleFor(m => m.QueryRules, f => Enumerable.Range(1, 5)
-                        .Select(i => f.Random.Word() + $"-{i}")
+                    .RuleFor(m => m.QueryRules, f => f.Make(5, () => f.Random.String())
                         .ToDictionary(x => x, _ => f.Random.Word()));
             this.fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())
@@ -71,7 +72,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb;
-            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules));
+            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Rule));
             scenarios[0].RequestMatchRules.HeaderRules.Keys.ToList().ForEach(k => httpContext.Request.Headers.Add(k, scenarios[0].RequestMatchRules.HeaderRules[k]));
             httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
             var input = new MessageProcessorInput(httpContext.Request, scenarios);

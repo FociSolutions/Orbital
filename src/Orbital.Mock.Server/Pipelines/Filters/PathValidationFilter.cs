@@ -12,7 +12,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     {
         private readonly List<string> VALIDMETHODS = new List<string> { HttpMethods.Get.ToUpper(), HttpMethods.Put.ToUpper(), HttpMethods.Post.ToUpper(), HttpMethods.Delete.ToUpper() };
         /// <summary>
-        /// Checks if a valid path is provided. 
+        /// Checks if a valid path is provided. Throws a fault otherwise
         /// </summary>
         /// <param name="port">Receives the values of Path and Verb and pass them to its port</param>
         /// <returns></returns>

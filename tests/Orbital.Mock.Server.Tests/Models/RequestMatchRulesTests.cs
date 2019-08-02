@@ -18,7 +18,7 @@ namespace Orbital.Mock.Server.Tests.Models
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
                 .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+                .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
 
             var Target = requestMatchRulesFake.Generate();
 
@@ -40,7 +40,7 @@ namespace Orbital.Mock.Server.Tests.Models
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
                 .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+                .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
 
             var Target = requestMatchRulesFake.Generate();
 
@@ -54,7 +54,7 @@ namespace Orbital.Mock.Server.Tests.Models
             };
             #endregion
 
-            var Actual = Target.Equals(requestMatchRulesFake);
+            var Actual = Target.Equals(input.requestMatchRule);
 
             Assert.False(Actual);
         }
@@ -66,7 +66,7 @@ namespace Orbital.Mock.Server.Tests.Models
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
                 .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+                .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
 
             var Target = requestMatchRulesFake.Generate();
 
@@ -80,7 +80,7 @@ namespace Orbital.Mock.Server.Tests.Models
             };
             #endregion
 
-            var Actual = Target.Equals(requestMatchRulesFake);
+            var Actual = Target.Equals(input.requestMatchRule);
 
             Assert.False(Actual);
         }
@@ -92,7 +92,7 @@ namespace Orbital.Mock.Server.Tests.Models
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
                 .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+                .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
 
             var Target = requestMatchRulesFake.Generate();
 
@@ -106,7 +106,7 @@ namespace Orbital.Mock.Server.Tests.Models
             };
             #endregion
 
-            var Actual = Target.Equals(requestMatchRulesFake);
+            var Actual = Target.Equals(input.requestMatchRule);
 
             Assert.False(Actual);
         }
