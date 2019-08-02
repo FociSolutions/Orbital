@@ -15,12 +15,12 @@ namespace Orbital.Mock.Server.Models
         /// </summary>
         public MockResponse(int Status = StatusCodes.Status404NotFound, string Body = null, IDictionary<string, string> Headers = null)
         {
-            if (Body.Equals(null))
+            if (Body == null)
             {
                 Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
             }
 
-            if (Headers.Equals(null))
+            if (Headers == null)
             {
                 Headers = new Dictionary<string, string>();
             }
@@ -29,6 +29,13 @@ namespace Orbital.Mock.Server.Models
             this.Body = Body;
             this.Headers = Headers;
         }
+
+        /*        public MockResponse()
+                {
+                    Status = StatusCodes.Status404NotFound;
+                    Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
+                    Headers = new Dictionary<string, string>();
+                }*/
 
         [JsonProperty("status")]
         public int Status { get; set; }

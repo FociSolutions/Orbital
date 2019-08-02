@@ -24,8 +24,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         public MockServerProcessorTests()
         {
             var fakerResponse = new Faker<MockResponse>()
-                           .RuleFor(m => m.Status, f => (int)f.PickRandom<HttpStatusCode>())
-                           .RuleFor(m => m.Body, f => f.Lorem.Paragraph());
+                   .CustomInstantiator(f => new MockResponse(
+                    (int)f.PickRandom<HttpStatusCode>(),
+                    f.Lorem.Paragraph()
+                    ));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                     .RuleFor(m => m.BodyRules, f => f.Lorem.Paragraph())
                     .RuleFor(m => m.HeaderRules, f => Enumerable.Range(1, 5)

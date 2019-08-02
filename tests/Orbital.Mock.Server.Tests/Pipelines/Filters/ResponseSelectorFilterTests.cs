@@ -19,8 +19,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public ResponseSelectorFilterTests()
         {
             var fakerResponse = new Faker<MockResponse>()
-                           .RuleFor(m => m.Status, f => (int)f.PickRandom<HttpStatusCode>())
-                           .RuleFor(m => m.Body, f => f.Lorem.Paragraph());
+                .CustomInstantiator(f => new MockResponse(
+                    (int)f.PickRandom<HttpStatusCode>(),
+                    f.Lorem.Paragraph()
+                    ));
             this.fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())
                 .RuleFor(m => m.Response, f => fakerResponse.Generate());
