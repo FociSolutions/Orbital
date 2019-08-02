@@ -39,7 +39,7 @@ describe('objectToMap', () => {
     for (let i = 0; i < 10; i++) {
       testObject[faker.random.uuid()] = faker.random.word();
     }
-    const result = Json.objectToMap<any>(testObject, new Map<string, any>());
+    const result = Json.objectToMap(testObject);
     for (const key of result.keys()) {
       expect(result.get(key)).toEqual(testObject[key]);
     }

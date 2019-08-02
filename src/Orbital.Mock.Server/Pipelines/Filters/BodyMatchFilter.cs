@@ -11,6 +11,12 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     internal class BodyMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IBodyMatchPort, IScenariosPort
     {
+        /// <summary>
+        /// Process that returns the port after adding a list of scenario Id's
+        /// that have any body rule that matches the body of the request.
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))

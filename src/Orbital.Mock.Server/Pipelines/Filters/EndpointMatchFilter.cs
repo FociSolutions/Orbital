@@ -11,6 +11,12 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     internal class EndpointMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IPathValidationPort, IScenariosPort
     {
+        /// <summary>
+        /// Process that filters the list of Scenarios, leaving only scenarios
+        /// who's verb and path match the incoming request.
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))

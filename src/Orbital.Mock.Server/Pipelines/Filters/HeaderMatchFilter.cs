@@ -10,6 +10,12 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     internal class HeaderMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IScenariosPort, IHeaderMatchPort
     {
+        /// <summary>
+        /// Process that returns the port after adding a list of scenario Id's
+        /// that have a header rule that matches the header of the request.
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))
