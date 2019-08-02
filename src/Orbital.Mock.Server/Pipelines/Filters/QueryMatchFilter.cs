@@ -11,6 +11,12 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     internal class QueryMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IQueryMatchPort, IScenariosPort
     {
+        /// <summary>
+        /// Process that returns the port after adding a list of scenario Id's
+        /// that have a query rule that matches the query of the request.
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))
@@ -19,9 +25,9 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             }
 
             var scenarios = port.Scenarios;
-            var query = port.Query.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.ToString())).ToDictionary(x => x.Key, x => x.Value);
+            var query = port.Query;
             port.QueryMatchResults = scenarios.Where(
-                 s => s.RequestMatchRules.QueryRules.All(qr => query.ContainsKey(qr.Key) && query[qr.Key].Equals(qr.Value))
+                 s => query.All(qr => s.RequestMatchRules.QueryRules.ContainsKey(qr.Key) && s.RequestMatchRules.QueryRules[qr.Key].Equals(qr.Value))
             ).Select(scenario => scenario.Id).ToList();
 
             return port;
