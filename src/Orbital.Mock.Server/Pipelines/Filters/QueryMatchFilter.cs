@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Internal;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         {
             if (!IsPortValid(port, out port))
             {
+                var error = "Pipeline Port cannot be null";
+                Log.Error("QueryMatchFilter Error: {Error}", error);
                 return port;
             }
 

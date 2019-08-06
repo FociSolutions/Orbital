@@ -30,14 +30,14 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             if (path == null)
             {
                 var error = "Path cannot be null";
-                Log.Error(error);
+                Log.Error("PathValidationFilter error: {Error}", error);
                 return (T)port.AppendFault(new ArgumentNullException(error));
             }
 
             if (verb == null || !VALIDMETHODS.Contains(verb.ToUpper()))
             {
                 var error = "Verb not supported";
-                Log.Error(error);
+                Log.Error("PathValidationFilter error: {Error}", error);
                 return (T)port.AppendFault(new ArgumentException(error));
             }
 
