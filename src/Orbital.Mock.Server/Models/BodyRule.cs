@@ -9,15 +9,31 @@ namespace Orbital.Mock.Server.Models
 {
     public class BodyRule : IEquatable<BodyRule>
     {
-        public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, JObject Rule = null)
+        public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, String Rule = null)
         {
-            this.Rule = Rule == null ? JObject.FromObject(new { }) : Rule;
+            this.Rule = Rule == null ? String.Empty : Rule;
             this.Type = Type;
         }
         [JsonProperty("rule")]
-        public JObject Rule { get; set; }
+        public String Rule { get; set; }
         [JsonProperty("type")]
         public BodyRuleTypes Type { get; set; }
+
+        [JsonIgnore]
+        public JObject JsonRule
+        {
+            get
+            {
+                try
+                {
+                    return JObject.Parse(Rule);
+                }
+                catch (JsonReaderException e)
+                {
+                    return new JObject();
+                }
+            }
+        }
 
         /// <summary>
         /// Method returns true if the json string matches the Rule property
@@ -29,11 +45,11 @@ namespace Orbital.Mock.Server.Models
             try
             {
                 var obj = JObject.Parse(json);
-                return this.Rule.ToString().Equals(obj.ToString());
+                return JObject.DeepEquals(obj, this.JsonRule);
             }
             catch (JsonReaderException e)
             {
-                return false;
+                return JObject.DeepEquals(new JObject(), this.JsonRule);
             }
         }
 
@@ -46,7 +62,7 @@ namespace Orbital.Mock.Server.Models
         {
             return other != null &&
                 this.Type == other.Type &&
-                this.Rule.ToString().Equals(other.Rule.ToString());
+                JObject.DeepEquals(this.JsonRule, other.JsonRule);
         }
 
         public override int GetHashCode()

@@ -21,7 +21,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var fakerJObject = new Faker<JObject>()
                             .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate().ToString()));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
             this.scenarioFaker = new Faker<Scenario>()
