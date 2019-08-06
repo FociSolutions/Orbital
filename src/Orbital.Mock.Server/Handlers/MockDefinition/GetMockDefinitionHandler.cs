@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,6 +33,7 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         /// <param name="request">in comming command</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Task containing the retrieved mock definition</returns>
+        [SwaggerResponse(200, "Blah", typeof(IEnumerable<Scenario>))]
         public Task<MockDefinition> Handle(GetMockDefinitionByTitleCommand request, CancellationToken cancellationToken)
         {
             var mockDefinition = this.Handle(request.MockDefinitionTitle);
