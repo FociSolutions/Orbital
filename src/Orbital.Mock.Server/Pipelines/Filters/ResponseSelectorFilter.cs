@@ -1,6 +1,7 @@
 ﻿using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         {
             if (!IsPortValid(port, out port))
             {
+                var error = "Pipeline port is not valid";
+                Log.Error("ResponceSelectorFilter Error: {Error}", error);
                 return port;
             }
 

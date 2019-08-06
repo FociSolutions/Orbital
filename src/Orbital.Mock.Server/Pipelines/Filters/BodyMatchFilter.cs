@@ -22,7 +22,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         {
             if (!IsPortValid(port, out port))
             {
-                var error = "Pipeline Port cannot be null";
+                var error = "Pipeline port is not valid";
                 Log.Error("BodyMatchFilter Error: {Error}", error);
                 return port;
             }
