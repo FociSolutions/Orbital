@@ -175,10 +175,12 @@ namespace Orbital.Mock.Server.Pipelines
                     }
                 }
             }
-            catch (AggregateException)
+            catch (AggregateException e)
             {
+                Log.Warning(e, "MockServiceProcessor unable to shutdown gracefully");
                 return false;
             }
+            Log.Information("Mockservice Processor succesful shutdown");
             return true;
         }
         #region IDisposable Support
