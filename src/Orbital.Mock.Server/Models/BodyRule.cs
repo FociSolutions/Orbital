@@ -11,7 +11,7 @@ namespace Orbital.Mock.Server.Models
     {
         public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, JObject Rule = null)
         {
-            this.Rule = Rule == null ? new JObject(new { }) : Rule;
+            this.Rule = Rule == null ? JObject.FromObject(new { }) : Rule;
             this.Type = Type;
         }
         [JsonProperty("rule")]
@@ -26,8 +26,15 @@ namespace Orbital.Mock.Server.Models
         /// <returns></returns>
         public bool IsMatch(string json)
         {
-            var obj = JObject.Parse(json);
-            return this.Rule.ToString().Equals(obj.ToString());
+            try
+            {
+                var obj = JObject.Parse(json);
+                return this.Rule.ToString().Equals(obj.ToString());
+            }
+            catch (JsonReaderException e)
+            {
+                return false;
+            }
         }
 
         public override bool Equals(object obj)
@@ -39,7 +46,7 @@ namespace Orbital.Mock.Server.Models
         {
             return other != null &&
                 this.Type == other.Type &&
-                this.Rule.ToString().Equals(other.ToString());
+                this.Rule.ToString().Equals(other.Rule.ToString());
         }
 
         public override int GetHashCode()

@@ -23,11 +23,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines
 
         public MockServerProcessorTests()
         {
-            var fakerJsonInput = new Faker<JsonInput>()
-                .RuleFor(m => m.Value, f => f.Random.String());
+            var fakerJObject = new Faker<JObject>()
+                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
-                .RuleFor(m => m.Rule, f => (new JObject(fakerJsonInput.Generate())));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
             var fakerResponse = new Faker<MockResponse>()
                    .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -207,11 +206,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse();
             Assert.Equal(Expected, Actual);
-        }
-
-        private class JsonInput
-        {
-            public string Value { get; set; }
         }
     }
 }

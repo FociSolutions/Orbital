@@ -18,11 +18,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
         public BodyMatchFilterTest()
         {
-            var fakerJsonInput = new Faker<JsonInput>()
-                .RuleFor(m => m.Value, f => f.Random.String());
+            var fakerJObject = new Faker<JObject>()
+                            .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
-                .RuleFor(m => m.Rule, f => (new JObject(fakerJsonInput.Generate())));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
             this.scenarioFaker = new Faker<Scenario>()
@@ -61,7 +60,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = ""
+                Body = "{}"
             };
 
             #endregion
@@ -73,11 +72,5 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             Assert.NotEqual(Expected, Actual);
         }
-
-        private class JsonInput
-        {
-            public string Value { get; set; }
-        }
-
     }
 }
