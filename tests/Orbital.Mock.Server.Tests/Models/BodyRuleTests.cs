@@ -17,7 +17,7 @@ namespace Orbital.Mock.Server.Tests.Models
             var fakerJObject = new Faker<JObject>()
                 .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
             this.fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate().ToString()));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
         }
         [Fact]
         public void BodyRuleEqualsSuccessTest()
@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Tests.Models
         public void BodyRuleEqualsRuleFailsTest()
         {
             var Target = this.fakerBodyRule.Generate();
-            var input = new BodyRule(Target.Type, "{ Value = \"\" }") as object;
+            var input = new BodyRule(Target.Type, new JObject()) as object;
             Assert.False(Target.Equals(input));
         }
 

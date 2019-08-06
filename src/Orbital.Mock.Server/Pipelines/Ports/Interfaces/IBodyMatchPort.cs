@@ -9,5 +9,5 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     {
         string Body { get; set; }
         List<string> BodyMatch { get; set; }
-    }   
+    }
 }

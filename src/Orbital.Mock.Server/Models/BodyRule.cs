@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Orbital.Mock.Server.Models.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,31 +10,20 @@ namespace Orbital.Mock.Server.Models
 {
     public class BodyRule : IEquatable<BodyRule>
     {
-        public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, String Rule = null)
+        /// <summary>
+        /// BodyRule Constructor
+        /// </summary>
+        /// <param name="Type"></param>
+        /// <param name="Rule"></param>
+        public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, JObject Rule = null)
         {
-            this.Rule = Rule == null ? String.Empty : Rule;
+            this.Rule = Rule == null ? new JObject() : Rule;
             this.Type = Type;
         }
         [JsonProperty("rule")]
-        public String Rule { get; set; }
+        public JObject Rule { get; set; }
         [JsonProperty("type")]
         public BodyRuleTypes Type { get; set; }
-
-        [JsonIgnore]
-        public JObject JsonRule
-        {
-            get
-            {
-                try
-                {
-                    return JObject.Parse(Rule);
-                }
-                catch (JsonReaderException e)
-                {
-                    return new JObject();
-                }
-            }
-        }
 
         /// <summary>
         /// Method returns true if the json string matches the Rule property
@@ -45,11 +35,11 @@ namespace Orbital.Mock.Server.Models
             try
             {
                 var obj = JObject.Parse(json);
-                return JObject.DeepEquals(obj, this.JsonRule);
+                return JObject.DeepEquals(obj, this.Rule);
             }
             catch (JsonReaderException e)
             {
-                return JObject.DeepEquals(new JObject(), this.JsonRule);
+                return JObject.DeepEquals(new JObject(), this.Rule);
             }
         }
 
@@ -62,7 +52,7 @@ namespace Orbital.Mock.Server.Models
         {
             return other != null &&
                 this.Type == other.Type &&
-                JObject.DeepEquals(this.JsonRule, other.JsonRule);
+                JObject.DeepEquals(this.Rule, other.Rule);
         }
 
         public override int GetHashCode()
