@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Commands
 {
-    [ExcludeFromCodeCoverage]
+
     /// <summary>
     /// The command used to invoke the pipeline
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class InvokeSynchronousPipelineCommand : IRequest<MockResponse>
     {
         /// <summary>

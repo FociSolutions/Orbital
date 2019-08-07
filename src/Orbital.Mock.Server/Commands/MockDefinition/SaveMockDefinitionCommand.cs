@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.MockDefinitions.Commands
 {
-    [ExcludeFromCodeCoverage]
     /// <summary>
     /// Class SaveMockDefinitionCommand represents a request for saving a mock definition to the cache
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class SaveMockDefinitionCommand : IRequest
     {
         /// <summary>

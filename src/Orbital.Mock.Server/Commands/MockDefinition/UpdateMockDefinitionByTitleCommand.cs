@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.MockDefinitions.Commands
 {
-    [ExcludeFromCodeCoverage]
     /// <summary>
     /// Request to update a mock definition by its title
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class UpdateMockDefinitionByTitleCommand : IRequest<MockDefinition>
     {
         /// <summary>
