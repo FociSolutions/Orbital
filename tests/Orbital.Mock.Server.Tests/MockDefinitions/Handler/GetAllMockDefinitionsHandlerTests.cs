@@ -5,6 +5,7 @@ using Orbital.Mock.Server.MockDefinitions.Handlers;
 using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Xunit;
@@ -62,7 +63,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var getAllMockDefinitionsCommand = new GetAllMockDefinitionsCommand();
 
             var Target = new GetAllMockDefinitionsHandler(cache, data);
-            var Actual = Target.Handle(getAllMockDefinitionsCommand, CancellationToken.None).Result;
+            var Actual = Target.Handle(getAllMockDefinitionsCommand, CancellationToken.None).Result.ToList();
 
             Assert.Equal(2, Actual.Count);
             Assert.Equal(mockdeffake1.Metadata.Title, Actual[0].Metadata.Title);

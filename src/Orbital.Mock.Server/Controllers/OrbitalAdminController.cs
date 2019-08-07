@@ -6,6 +6,7 @@ using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Orbital.Mock.Server.Controllers
 {
@@ -48,11 +49,11 @@ namespace Orbital.Mock.Server.Controllers
         /// </summary>
         /// <returns>MockDefinition</returns>
         [HttpGet]
-        public ActionResult<List<MockDefinition>> GetAll()
+        public ActionResult<IEnumerable<MockDefinition>> GetAll()
         {
             var command = new GetAllMockDefinitionsCommand();
             var result = this.mediator.Send(command).Result;
-            return result;
+            return result.ToList();
 
         }
 
