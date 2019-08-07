@@ -13,6 +13,6 @@ namespace Orbital.Mock.Server.MockDefinitions.Commands
     /// </summary>
 
     [ExcludeFromCodeCoverage]
-    public class GetAllMockDefinitionsCommand : IRequest<List<MockDefinition>> { }
+    public class GetAllMockDefinitionsCommand : IRequest<IEnumerable<MockDefinition>> { }
 
 }
