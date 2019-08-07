@@ -43,19 +43,22 @@ namespace Orbital.Mock.Server.Registrations
                 });
                 foreach (var version in provider.ApiVersionDescriptions)
                 {
+                    o.ExampleFilters();
+
                     o.SwaggerDoc(version.GroupName, new Info()
                     {
                         Title = $"{assemblyProduct.Product} {version.ApiVersion}",
                         Version = version.ApiVersion.ToString(),
                         Description = version.IsDeprecated ? $"{assemblyDescription.Description} - DEPRECATED" : assemblyDescription.Description
                     });
-                }
 
+                }
                 var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var path = Path.Combine(AppContext.BaseDirectory, file);
                 o.IncludeXmlComments(path);
-                services.AddSwaggerExamplesFromAssemblyOf<MockDefinition>();
             });
+            services.AddSwaggerExamplesFromAssemblyOf<MockDefinition>();
+
         }
     }
 }
