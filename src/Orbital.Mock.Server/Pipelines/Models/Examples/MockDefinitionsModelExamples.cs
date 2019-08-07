@@ -1,7 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
-using Orbital.Mock.Server.Models;
+﻿using Orbital.Mock.Server.Models;
 using Swashbuckle.AspNetCore.Filters;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +11,8 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
     {
         public MockDefinition GetExamples()
         {
-            return new MockDefinition() {
+            return new MockDefinition
+            {
                 Host = "petstore.swagger.io",
                 BasePath = "/api",
                 Metadata = new MetadataInfo
@@ -21,9 +20,6 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                     Title = "Test Title",
                     Description = "Test Description"
                 },
-                OpenApi = new OpenApiDocument(),
-                Scenarios = new List<Scenario>()
-          
             };
         }
     }

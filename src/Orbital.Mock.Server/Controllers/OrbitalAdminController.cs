@@ -39,7 +39,6 @@ namespace Orbital.Mock.Server.Controllers
         /// <returns>MockDefinition</returns>
         // GET api/values/5
         [HttpGet("{id}")]
-        //[SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public ActionResult<MockDefinition> Get(string id)
         {
             var command = new GetMockDefinitionByTitleCommand(id);
@@ -53,7 +52,6 @@ namespace Orbital.Mock.Server.Controllers
         /// </summary>
         /// <returns>MockDefinition</returns>
         [HttpGet]
-        //[SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public ActionResult<List<MockDefinition>> GetAll()
         {
             var command = new GetAllMockDefinitionsCommand();
@@ -68,7 +66,6 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="mockDefinition">The mock defiition to save</param>
         /// <returns></returns>
         [HttpPost]
-        //[SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
             var command = new SaveMockDefinitionCommand(mockDefinition);
@@ -94,7 +91,6 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="mockDefinition"></param>
         /// <returns></returns>
         [HttpPut]
-        //[SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public IActionResult Put([FromBody]MockDefinition mockDefinition)
         {
             var command = new UpdateMockDefinitionByTitleCommand(mockDefinition);
