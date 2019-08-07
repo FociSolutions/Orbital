@@ -15,22 +15,23 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     /// </summary>
     public class GetAllMockDefinitionsHandler : IRequestHandler<GetAllMockDefinitionsCommand, List<MockDefinition>>
     {
-        private const string MOCKIDS = "mockids";
 
         private readonly IMemoryCache cache;
+        private readonly string mockIds;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public GetAllMockDefinitionsHandler(IMemoryCache cache)
+        public GetAllMockDefinitionsHandler(IMemoryCache cache, CommonData data)
         {
             this.cache = cache;
+            this.mockIds = data.mockIds;
         }
 
         public Task<List<MockDefinition>> Handle(GetAllMockDefinitionsCommand request, CancellationToken cancellationToken)
         {
             List<MockDefinition> MockDefinitionsList = new List<MockDefinition>();
-            cache.TryGetValue(MOCKIDS, out List<string> KeyList);
+            cache.TryGetValue(mockIds, out List<string> KeyList);
 
             if (KeyList == null)
             {
