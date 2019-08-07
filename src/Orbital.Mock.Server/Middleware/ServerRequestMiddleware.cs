@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Commands;
-using Serilog;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
@@ -49,7 +48,6 @@ namespace Orbital.Mock.Server.Middleware
                 var command = new InvokeSynchronousPipelineCommand(context.Request);
 
                 var response = await this.mediator.Send(command);
-                Log.Information("Response is {Response}", response.ToString());
                 await context.Response.WriteAsync(response.Body);
                 foreach (KeyValuePair<string, string> header in response.Headers)
                 {
