@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using Serilog;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     internal class PathValidationFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IPathValidationPort
     {
-        private readonly List<string> VALIDMETHODS = new List<string> { HttpMethods.Get.ToUpper(), HttpMethods.Put.ToUpper(), HttpMethods.Post.ToUpper(), HttpMethods.Delete.ToUpper() };
+        private readonly List<HttpMethod> VALIDMETHODS = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete };
         /// <summary>
         /// Checks if a valid path is provided. Throws a fault otherwise
         /// </summary>
@@ -34,7 +35,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return (T)port.AppendFault(new ArgumentNullException(error));
             }
 
-            if (verb == null || !VALIDMETHODS.Contains(verb.ToUpper()))
+            if (!VALIDMETHODS.Contains(verb))
             {
                 var error = "Verb not supported";
                 Log.Error(error);

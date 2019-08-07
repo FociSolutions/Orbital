@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
@@ -30,7 +31,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public bool IsFaulted => Faults != null && Faults.Count != 0;
 
         public string Path { get; set; }
-        public string Verb { get; set; }
+        public HttpMethod Verb { get; set; }
 
 
         public IEnumerable<string> HeaderMatchResults { get; set; }

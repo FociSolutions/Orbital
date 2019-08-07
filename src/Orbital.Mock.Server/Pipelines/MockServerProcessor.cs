@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Envelopes;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
@@ -124,11 +125,13 @@ namespace Orbital.Mock.Server.Pipelines
                 Body = reader.ReadToEnd();
             }
 
+            Enum.TryParse<HttpMethod>(input.ServerHttpRequest.Method, true, out HttpMethod verb);
+
             var port = new ProcessMessagePort()
             {
                 Scenarios = input.Scenarios,
                 Path = input.ServerHttpRequest.Path,
-                Verb = input.ServerHttpRequest.Method,
+                Verb = verb,
                 Query = input.QueryDictionary,
                 Headers = input.HeaderDictionary,
                 Body = Body

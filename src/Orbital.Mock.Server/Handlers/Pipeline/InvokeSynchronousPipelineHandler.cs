@@ -21,13 +21,13 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
     {
         private readonly IPipeline<MessageProcessorInput, Task<MockResponse>> mockServerProcessor;
         private readonly IMemoryCache cache;
-        private object mockIds;
+        private string mockIds;
 
         public InvokeSynchronousPipelineHandler(IMemoryCache cache, IPipeline<MessageProcessorInput, Task<MockResponse>> mockServerProcessor, CommonData data)
         {
             this.mockServerProcessor = mockServerProcessor;
             this.cache = cache;
-            this.mockIds = mockIds;
+            this.mockIds = data.mockIds;
         }
 
         /// <summary>

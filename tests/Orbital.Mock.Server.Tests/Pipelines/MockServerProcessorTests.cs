@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Primitives;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines;
@@ -18,7 +19,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
     public class MockServerProcessorTests
     {
         private Faker<Scenario> fakerScenario;
-        private readonly List<string> validMethods = new List<string> { HttpMethods.Get, HttpMethods.Put, HttpMethods.Post, HttpMethods.Delete };
+        private readonly List<HttpMethod> validMethods = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Put, HttpMethod.Post, HttpMethod.Delete };
 
 
         public MockServerProcessorTests()
@@ -73,7 +74,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
-            httpContext.Request.Method = scenarios[0].Verb;
+            httpContext.Request.Method = scenarios[0].Verb.ToString();
             httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Rule));
             scenarios[0].RequestMatchRules.HeaderRules.Keys.ToList().ForEach(k => httpContext.Request.Headers.Add(k, scenarios[0].RequestMatchRules.HeaderRules[k]));
             httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
