@@ -10,6 +10,7 @@
     <DocumentationFile>obj\Debug\netcoreapp2.2\Orbital.Mock.Server\Orbital.Mock.Server.xml</DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -99,7 +99,7 @@ export class MockDefinition {
   }
 
   /**
-   * Exports the mock defnition as a json string
+   * Exports the mock definition as a json string
    */
   public static exportMockDefinitionAsJson(mockDef: MockDefinition): string {
     const safeMockDef = Json.mapToObject(mockDef);
