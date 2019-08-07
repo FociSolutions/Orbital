@@ -4,8 +4,11 @@ using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Filters;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Pipelines.Models.Examples;
+using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Controllers
 {
@@ -36,6 +39,7 @@ namespace Orbital.Mock.Server.Controllers
         /// <returns>MockDefinition</returns>
         // GET api/values/5
         [HttpGet("{id}")]
+        [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public ActionResult<MockDefinition> Get(string id)
         {
             var command = new GetMockDefinitionByTitleCommand(id);
@@ -49,6 +53,7 @@ namespace Orbital.Mock.Server.Controllers
         /// </summary>
         /// <returns>MockDefinition</returns>
         [HttpGet]
+        [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public ActionResult<List<MockDefinition>> GetAll()
         {
             var command = new GetAllMockDefinitionsCommand();
@@ -63,13 +68,13 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="mockDefinition">The mock defiition to save</param>
         /// <returns></returns>
         [HttpPost]
+        [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
             var command = new SaveMockDefinitionCommand(mockDefinition);
             this.mediator.Send(command);
             return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
         }
-
         /// <summary>
         /// Deletes a mock definition in cache
         /// </summary>
@@ -89,6 +94,7 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="mockDefinition"></param>
         /// <returns></returns>
         [HttpPut]
+        [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public IActionResult Put([FromBody]MockDefinition mockDefinition)
         {
             var command = new UpdateMockDefinitionByTitleCommand(mockDefinition);

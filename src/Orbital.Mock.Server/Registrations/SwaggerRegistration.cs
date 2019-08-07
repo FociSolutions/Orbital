@@ -12,6 +12,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Microsoft.OpenApi.Writers;
 using Newtonsoft.Json.Linq;
+using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server.Registrations
 {
@@ -53,8 +54,7 @@ namespace Orbital.Mock.Server.Registrations
                 var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var path = Path.Combine(AppContext.BaseDirectory, file);
                 o.IncludeXmlComments(path);
-
-
+                services.AddSwaggerExamplesFromAssemblyOf<MockDefinition>();
             });
         }
     }
