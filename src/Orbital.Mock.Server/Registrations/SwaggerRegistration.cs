@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Microsoft.OpenApi.Writers;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Pipelines.Models.Examples;
 
 namespace Orbital.Mock.Server.Registrations
 {
@@ -43,8 +44,6 @@ namespace Orbital.Mock.Server.Registrations
                 });
                 foreach (var version in provider.ApiVersionDescriptions)
                 {
-                    o.ExampleFilters();
-
                     o.SwaggerDoc(version.GroupName, new Info()
                     {
                         Title = $"{assemblyProduct.Product} {version.ApiVersion}",
@@ -56,8 +55,9 @@ namespace Orbital.Mock.Server.Registrations
                 var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var path = Path.Combine(AppContext.BaseDirectory, file);
                 o.IncludeXmlComments(path);
+                o.ExampleFilters();
             });
-            services.AddSwaggerExamplesFromAssemblyOf<MockDefinition>();
+            services.AddSwaggerExamplesFromAssemblyOf<MockDefinitionsModelExamples>();
 
         }
     }
