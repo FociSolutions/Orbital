@@ -27,6 +27,14 @@ export class EditScenarioComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  onBodyRuleEdit(rule: string) {
+    try {
+      this.scenario.requestMatchRules.bodyRules[0].rule = JSON.parse(rule);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   onSave() {
     let scenarios = this.mockDefinitionStore.state.scenarios;
     const index = scenarios.findIndex(s => s.id === this.scenario.id);

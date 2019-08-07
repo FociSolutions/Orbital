@@ -15,11 +15,13 @@ export class ScenarioViewComponent implements OnInit {
 
   constructor(private app: AppStore) {}
 
-  onAdd() {
-    this.app.selectedScenario = newScenario(
-      this.app.state.selectedEndpoint.verb,
-      this.app.state.selectedEndpoint.path
-    );
+  onEditClicked() {
+    if (!this.app.state.selectedScenario) {
+      this.app.selectedScenario = newScenario(
+        this.app.state.selectedEndpoint.verb,
+        this.app.state.selectedEndpoint.path
+      );
+    }
     this.app.showEditor = true;
   }
 

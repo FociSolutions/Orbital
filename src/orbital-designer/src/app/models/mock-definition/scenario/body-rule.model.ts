@@ -5,5 +5,5 @@ import { BodyRuleType } from './body-rule.type';
  */
 export interface BodyRule {
   type: BodyRuleType;
-  rule: string;
+  rule: object;
 }
