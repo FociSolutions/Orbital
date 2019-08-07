@@ -23,7 +23,7 @@ namespace Orbital.Mock.Server.Controllers
         /// <summary>
         /// Default Constructor
         /// </summary>
-        /// <param name="mediator"> MediatR</param>
+        /// <param name="mediator">DI Mediator service used to send commands to appropriate handlers</param>
         public OrbitalAdminController(IMediator mediator)
         {
             this.mediator = mediator;
@@ -34,7 +34,6 @@ namespace Orbital.Mock.Server.Controllers
         /// </summary>
         /// <param name="id"> The mock definition title</param>
         /// <returns>MockDefinition</returns>
-        // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<MockDefinition> Get(string id)
         {
@@ -61,12 +60,12 @@ namespace Orbital.Mock.Server.Controllers
         /// Saves a mock defintiion in cache
         /// </summary>
         /// <param name="mockDefinition">The mock defiition to save</param>
-        /// <returns></returns>
+        /// <returns>CreatedResult containing uri to the created resource</returns>
         [HttpPost]
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
             var command = new SaveMockDefinitionCommand(mockDefinition);
-            this.mediator.Send(command);
+            this.mediator.Send(command).Wait();
             return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
         }
 
@@ -79,7 +78,7 @@ namespace Orbital.Mock.Server.Controllers
         public IActionResult Delete(string id)
         {
             var command = new DeleteMockDefinitionByTitleCommand(id);
-            this.mediator.Send(command);
+            this.mediator.Send(command).Wait();
             return Ok();
         }
 
