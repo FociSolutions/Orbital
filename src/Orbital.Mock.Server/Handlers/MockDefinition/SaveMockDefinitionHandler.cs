@@ -1,9 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,20 +34,15 @@ namespace Orbital.Mock.Server.Handlers
         {
             this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
 
-            var keysCollection = this.cache.GetOrCreate(MOCKTITLEKEY, cacheEntry => {return new List<string>();});
+            var keysCollection = this.cache.GetOrCreate(MOCKTITLEKEY, cacheEntry => { return new List<string>(); });
 
             if (!keysCollection.Contains(request.MockDefinition.Metadata.Title))
             {
                 keysCollection.Add(request.MockDefinition.Metadata.Title);
                 this.cache.Set(MOCKTITLEKEY, keysCollection);
             }
-            
-            return Unit.Task;
-        }
 
-        internal object Handle(object saveMockDefinitionCommand, CancellationToken none)
-        {
-            throw new NotImplementedException();
+            return Unit.Task;
         }
     }
 }
