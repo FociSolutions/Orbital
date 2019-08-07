@@ -33,15 +33,15 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public string Verb { get; set; }
 
 
-        public List<string> HeaderMatchResults { get; set; }
-        public Dictionary<string, string> Headers { get; set; }
+        public IEnumerable<string> HeaderMatchResults { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> Headers { get; set; }
 
-        public List<Scenario> Scenarios { get; set; }
-        public List<string> BodyMatch { get; set; }
+        public IEnumerable<Scenario> Scenarios { get; set; }
+        public IEnumerable<string> BodyMatch { get; set; }
         public string Body { get; set; }
 
-        public List<string> QueryMatchResults { get; set; }
-        public Dictionary<string, string> Query { get; set; }
+        public IEnumerable<string> QueryMatchResults { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> Query { get; set; }
         public MockResponse SelectedResponse { get; set; }
 
         public IFaultablePort AppendFault(Exception e)

@@ -23,6 +23,7 @@ namespace Orbital.Mock.Server.Models.Validators
             RuleFor(x => x.OpenApi).NotEmpty();
             RuleFor(x => x.BasePath).NotEmpty();
             RuleFor(x => x.Scenarios).NotNull();
+            RuleForEach(x => x.Scenarios).InjectValidator();
             RuleFor(x => x.OpenApi).Custom(IsValidOpenAPIDocument);
             RuleFor(x => x.Metadata).InjectValidator();
         }
