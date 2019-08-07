@@ -11,12 +11,15 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
     {
         public MockDefinition GetExamples()
         {
-            return new MockDefinition {
+            return new MockDefinition
+            {
                 Host = "petstore.swagger.io",
                 BasePath = "/api",
-                Metadata = {
-                Title = "Test Title",
-                Description = "Test Description"}
+                Metadata = new MetadataInfo
+                {
+                    Title = "Test Title",
+                    Description = "Test Description"
+                },
             };
         }
     }

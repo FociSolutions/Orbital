@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Microsoft.OpenApi.Writers;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Pipelines.Models.Examples;
 
 namespace Orbital.Mock.Server.Registrations
 {
@@ -50,12 +51,12 @@ namespace Orbital.Mock.Server.Registrations
                         Description = version.IsDeprecated ? $"{assemblyDescription.Description} - DEPRECATED" : assemblyDescription.Description
                     });
                 }
-
                 var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var path = Path.Combine(AppContext.BaseDirectory, file);
+                o.ExampleFilters();
                 o.IncludeXmlComments(path);
-                services.AddSwaggerExamplesFromAssemblyOf<MockDefinition>();
             });
+            services.AddSwaggerExamplesFromAssemblyOf<MockDefinitionsModelExamples>();
         }
     }
 }
