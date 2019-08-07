@@ -180,7 +180,7 @@ namespace Orbital.Mock.Server.Pipelines
                 Log.Warning(e, "MockServiceProcessor unable to shutdown gracefully");
                 return false;
             }
-            Log.Information("Mockservice Processor succesful shutdown");
+            Log.Information("MockserviceProcessor has shutdown successfully");
             return true;
         }
         #region IDisposable Support
