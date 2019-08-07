@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.MockDefinitions.Commands
 {
+    [ExcludeFromCodeCoverage]
     /// <summary>
     /// Class DeleteMockDefinitionByTitleCommand represents a request to delete a mock definition from cache using its title
     /// </summary>

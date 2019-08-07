@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Commands
 {
+    [ExcludeFromCodeCoverage]
     /// <summary>
     /// The command used to invoke the pipeline
     /// </summary>
@@ -16,8 +17,7 @@ namespace Orbital.Mock.Server.Pipelines.Commands
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="context"></param>
+        /// <param name="request">The incomming http request to pass to the handler</param>
         public InvokeSynchronousPipelineCommand(HttpRequest request)
         {
             Request = request;
