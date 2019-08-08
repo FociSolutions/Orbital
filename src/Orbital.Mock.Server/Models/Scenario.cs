@@ -23,6 +23,8 @@ namespace Orbital.Mock.Server.Models
         public RequestMatchRules RequestMatchRules { get; set; }
 
         public override bool Equals(object obj)
+
+
         {
             return this.Equals(obj as Scenario);
         }

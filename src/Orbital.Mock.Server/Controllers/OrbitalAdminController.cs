@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Filters;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
+using Serilog;
 using System;
 using System.Collections.Generic;
 
@@ -40,6 +41,7 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new GetMockDefinitionByTitleCommand(id);
             var result = this.mediator.Send(command).Result;
+            Log.Information("Sent HTTPGet Command for MockDefinition on id: {Id}", id);
             return result;
 
         }
@@ -53,6 +55,7 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new GetAllMockDefinitionsCommand();
             var result = this.mediator.Send(command).Result;
+            Log.Information("Sent HTTPGet Command for all MockDefinitions");
             return result;
 
         }
@@ -67,6 +70,7 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new SaveMockDefinitionCommand(mockDefinition);
             this.mediator.Send(command);
+            Log.Information("Sent HTTPPost Command to save Mockdefinition");
             return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
         }
 
@@ -80,6 +84,7 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new DeleteMockDefinitionByTitleCommand(id);
             this.mediator.Send(command);
+            Log.Information("Sent HTTPDelete Command to delete Mockdefinition on id: {Id}", id);
             return Ok();
         }
 
@@ -97,6 +102,7 @@ namespace Orbital.Mock.Server.Controllers
             {
                 return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
             }
+            Log.Information("Sent HTTPut Command to update Mockdefinition");
             return Ok();
         }
     }
