@@ -2,6 +2,7 @@
 using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace Orbital.Mock.Server.MockDefinitions.Commands
     /// <summary>
     /// Request to update a mock definition by its title
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class UpdateMockDefinitionByTitleCommand : IRequest<MockDefinition>
     {
         /// <summary>

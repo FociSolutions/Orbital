@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class PathValidationFilterTest
     {
-        private readonly List<string> VALIDMETHODS = new List<string> { HttpMethods.Get, HttpMethods.Put, HttpMethods.Post, HttpMethods.Delete };
+        private readonly List<HttpMethod> VALIDMETHODS = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Put, HttpMethod.Post, HttpMethod.Delete };
 
         [Fact]
         public void PathValidationFilterSuccessTest()
@@ -41,7 +42,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
             var Target = new PathValidationFilter<ProcessMessagePort>();
-            var Actual = Target.Process(new ProcessMessagePort {Faults = input.Faults }).IsFaulted;
+            var Actual = Target.Process(new ProcessMessagePort { Faults = input.Faults }).IsFaulted;
 
             Assert.True(Actual);
 
@@ -66,25 +67,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         }
 
         [Fact]
-        public void PathValidationFilterVerbCheckCaseIndependenceTest()
-        {
-            #region TestSetup
-            var faker = new Faker();
-            var input = new
-            {
-                Path = faker.Random.String(),
-                Verb = faker.PickRandom(VALIDMETHODS).ToLower()
-            };
-
-            #endregion
-
-            var Target = new PathValidationFilter<ProcessMessagePort>();
-            var Actual = Target.Process(new ProcessMessagePort { Path = input.Path, Verb = input.Verb }).IsFaulted;
-
-            Assert.False(Actual);
-        }
-
-        [Fact]
         public void PathValidationFilterInvalidVerbTest()
         {
             #region TestSetup
@@ -92,30 +74,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Path = faker.Random.String(),
-                Verb = faker.PickRandom(VALIDMETHODS).ToLower() + "invalid"
+                Verb = HttpMethod.Options
             };
 
             #endregion
 
             var Target = new PathValidationFilter<ProcessMessagePort>();
             var Actual = Target.Process(new ProcessMessagePort { Path = input.Path, Verb = input.Verb }).IsFaulted;
-
-            Assert.True(Actual);
-        }
-
-        [Fact]
-        public void PathValidationFilterNullVerbTest()
-        {
-            #region TestSetup
-            var faker = new Faker();
-            var input = new
-            {
-                Path = faker.Random.String(),
-            };
-            #endregion
-
-            var Target = new PathValidationFilter<ProcessMessagePort>();
-            var Actual = Target.Process(new ProcessMessagePort {Path = input.Path }).IsFaulted;
 
             Assert.True(Actual);
         }

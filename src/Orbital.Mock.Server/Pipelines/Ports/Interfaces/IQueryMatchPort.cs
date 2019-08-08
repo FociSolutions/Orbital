@@ -8,8 +8,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
     interface IQueryMatchPort
     {
-        List<string> QueryMatchResults { get; set; }
+        IEnumerable<string> QueryMatchResults { get; set; }
 
-        Dictionary<string, string> Query { get; set; }
+        IEnumerable<KeyValuePair<string, string>> Query { get; set; }
     }
 }
