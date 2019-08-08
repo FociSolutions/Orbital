@@ -20,7 +20,27 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
 
         public MockDefinition GetExamples()
         {
-            
+            List<Scenario> scenarios = new List<Scenario>();
+            scenarios.Add(new Scenario() {Id ="id01", Metadata = new MetadataInfo{Title = "Scenario 1", Description = "Test Scenario 1" },
+                Verb = "", Path = "", Response = new MockResponse(), RequestMatchRules = new RequestMatchRules()  });
+            scenarios.Add(new Scenario()
+            {
+                Id = "id02",
+                Metadata = new MetadataInfo { Title = "Scenario 2", Description = "Test Scenario 2" },
+                Verb = "",
+                Path = "",
+                Response = new MockResponse { Status = 200, Body = "", Headers = null },
+                RequestMatchRules = new RequestMatchRules()
+            });
+            scenarios.Add(new Scenario()
+            {
+                Id = "id03",
+                Metadata = new MetadataInfo { Title = "Scenario 3", Description = "Test Scenario 3" },
+                Verb = "",
+                Path = "",
+                Response = new MockResponse { Status = 200, Body = "", Headers = null },
+                RequestMatchRules = new RequestMatchRules {HeaderRules = null, BodyRules = "", QueryRules = null }
+            });
             return new MockDefinition
             {
                 Host = "petstore.swagger.io",
@@ -31,8 +51,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                     Description = "Test Description"
                 },
                 OpenApi = new OpenApiDocument(),
-                Scenarios = new List<Scenario>()
-
+                Scenarios = scenarios
             };
         }
     }
