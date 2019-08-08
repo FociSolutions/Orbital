@@ -16,6 +16,10 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
 {
     public class MockDefinitionsModelExamples : IExamplesProvider<MockDefinition>
     {
+        /// <summary>
+        /// Created a json example to show when the server is fired up.
+        /// </summary>
+        /// <returns>A MockDefinition with different scenarios</returns>
         public MockDefinition GetExamples()
         {
             
