@@ -21,7 +21,7 @@ namespace Orbital.Mock.Server.Models.Converters
         /// Checks that the given object type is able to be converted. In this case the object type must be 
         /// an OpenApiDocument. Returns true if it is, false otherwise
         /// </summary>
-        /// <param name="objectType"></param>
+        /// <param name="objectType">Type of the object to check against</param>
         /// <returns></returns>
         public override bool CanConvert(Type objectType)
         {
@@ -32,9 +32,6 @@ namespace Orbital.Mock.Server.Models.Converters
         /// Reads json into an OpenApiDocument Object using the OpenApiStringReader from Microsoft.OpenApi.Readers
         /// </summary>
         /// <param name="reader">The JsonReader that reads the incoming json</param>
-        /// <param name="objectType"></param>
-        /// <param name="existingValue"></param>
-        /// <param name="serializer"></param>
         /// <returns></returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -51,7 +48,6 @@ namespace Orbital.Mock.Server.Models.Converters
         /// </summary>
         /// <param name="writer">The JsonWriter used to write the json output</param>
         /// <param name="value">The object to turn into Json</param>
-        /// <param name="serializer"></param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var openApi = value as OpenApiDocument;

@@ -14,11 +14,11 @@ namespace Orbital.Mock.Server.Pipelines.Models
         /// The Request Context
         /// </summary>
         public HttpRequest ServerHttpRequest { get; }
-        public List<Scenario> Scenarios { get; }
-        public Dictionary<string, string> HeaderDictionary { get; }
-        public Dictionary<string, string> QueryDictionary { get; }
+        public IEnumerable<Scenario> Scenarios { get; }
+        public IEnumerable<KeyValuePair<string, string>> HeaderDictionary { get; }
+        public IEnumerable<KeyValuePair<string, string>> QueryDictionary { get; }
 
-        public MessageProcessorInput(HttpRequest serverHttpRequest, List<Scenario> scenarios)
+        public MessageProcessorInput(HttpRequest serverHttpRequest, IEnumerable<Scenario> scenarios)
         {
             this.ServerHttpRequest = serverHttpRequest;
             this.Scenarios = scenarios;

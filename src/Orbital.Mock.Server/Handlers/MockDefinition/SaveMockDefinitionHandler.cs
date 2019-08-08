@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
+using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +16,16 @@ namespace Orbital.Mock.Server.Handlers
     public class SaveMockDefinitionHandler : IRequestHandler<SaveMockDefinitionCommand>
     {
         private readonly IMemoryCache cache;
-        private const string MOCKTITLEKEY = "mockids";
+        private readonly string mockIds;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="cache">Cache to save the mock definition</param>
-        public SaveMockDefinitionHandler(IMemoryCache cache)
+        public SaveMockDefinitionHandler(IMemoryCache cache, CommonData data)
         {
             this.cache = cache;
+            this.mockIds = data.mockIds;
         }
 
         /// <summary>
@@ -36,20 +38,15 @@ namespace Orbital.Mock.Server.Handlers
         {
             this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
 
-            var keysCollection = this.cache.GetOrCreate(MOCKTITLEKEY, cacheEntry => {return new List<string>();});
+            var keysCollection = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
 
             if (!keysCollection.Contains(request.MockDefinition.Metadata.Title))
             {
                 keysCollection.Add(request.MockDefinition.Metadata.Title);
-                this.cache.Set(MOCKTITLEKEY, keysCollection);
+                this.cache.Set(mockIds, keysCollection);
             }
-            
-            return Unit.Task;
-        }
 
-        internal object Handle(object saveMockDefinitionCommand, CancellationToken none)
-        {
-            throw new NotImplementedException();
+            return Unit.Task;
         }
     }
 }

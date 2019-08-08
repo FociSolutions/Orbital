@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models.Validators
 {
+    /// <summary>
+    /// Validator responsible for validating BodyRule objects
+    /// </summary>
     public class BodyRuleValidator : AbstractValidator<BodyRule>
     {
         public BodyRuleValidator()
