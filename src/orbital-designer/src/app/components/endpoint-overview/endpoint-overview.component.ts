@@ -48,13 +48,14 @@ export class EndpointOverviewComponent implements OnInit {
   /**
    * Handle onClick event for export mock file button
    */
-  onExportClicked() {
-    const yamlContent = MockDefinition.exportMockDefinitionAsYaml(
-      this.mockDefinition
+  onExportClicked(fileType: string) {
+    const content = MockDefinition.exportMockDefinition(
+      this.mockDefinition,
+      fileType
     );
-    const blob = new Blob([yamlContent]);
+    const blob = new Blob([content]);
     const a = document.createElement('a');
-    a.download = this.mockDefinition.metadata.title + '.mock.yml';
+    a.download = this.mockDefinition.metadata.title + `.mock.${fileType}`;
     a.href = URL.createObjectURL(blob);
     a.dataset.downloadurl = [a.download, a.href].join(':');
     a.style.display = 'none';

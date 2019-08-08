@@ -19,7 +19,10 @@
 
 <div class="row">
   <button nbButton (click)="onBack()" class="mr-2">Go Back</button>
-  <button nbButton (click)="onExportClicked()">Export Mock File</button>
+  <button nbButton (click)="onExportClicked('json')" class="mr-2">
+    Export Json
+  </button>
+  <button nbButton (click)="onExportClicked('yml')">Export Yaml</button>
 </div>
 
 <!-- Scenario Overview with edit scenario page -->

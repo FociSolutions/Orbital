@@ -84,7 +84,7 @@ steps:
     displayName: "buildAndPush Orbital"
     inputs:
       command: "buildAndPush"
-      containerRegistry: "OrbitalRegistryDan"
+      containerRegistry: "OrbitalRegistrym"
       repository: "orbitalmock"
       dockerfile: "$(System.DefaultWorkingDirectory)/mock/build/Dockerfile"
       tags: |
@@ -94,7 +94,7 @@ steps:
     displayName: "buildAndPush Orbital Designer"
     inputs:
       command: "buildAndPush"
-      containerRegistry: "OrbitalRegistryDan"
+      containerRegistry: "OrbitalRegistrym"
       repository: "orbitaldesigner"
       buildContext: "$(System.DefaultWorkingDirectory)"
       dockerfile: "$(System.DefaultWorkingDirectory)/docker/designer/Dockerfile"
