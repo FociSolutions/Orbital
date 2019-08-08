@@ -15,33 +15,30 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Handlers
 {
-    [ExcludeFromCodeCoverage]
 
     /// <summary>
     /// Handler for executing the InvokeSynchronousPipelineCommand
     /// </summary>
+
+    [ExcludeFromCodeCoverage]
     internal class InvokeSynchronousPipelineHandler : IRequestHandler<InvokeSynchronousPipelineCommand, MockResponse>
     {
-        private const string MOCKIDS = "mockids";
 
         private readonly IPipeline<MessageProcessorInput, Task<MockResponse>> mockServerProcessor;
         private readonly IMemoryCache cache;
+        private string mockIds;
 
-        public InvokeSynchronousPipelineHandler(IMemoryCache cache, IPipeline<MessageProcessorInput, Task<MockResponse>> mockServerProcessor)
+        public InvokeSynchronousPipelineHandler(IMemoryCache cache, IPipeline<MessageProcessorInput, Task<MockResponse>> mockServerProcessor, CommonData data)
         {
             this.mockServerProcessor = mockServerProcessor;
             this.cache = cache;
+            this.mockIds = data.mockIds;
         }
 
-        /// <summary>
-        /// Invokes the synchronous pipeline and returns the resulting HttpResponse
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Task<MockResponse> Handle(InvokeSynchronousPipelineCommand command, CancellationToken cancellationToken)
         {
-            var idList = this.cache.GetOrCreate(MOCKIDS, c => new List<string>());
+            var idList = this.cache.GetOrCreate(mockIds, c => new List<string>());
             var mockDefinitions = idList.Select(id => this.cache.Get<MockDefinition>(id));
             var scenarios = mockDefinitions.SelectMany(mockDefinition => mockDefinition.Scenarios);
             var response = this.mockServerProcessor.Push(new MessageProcessorInput(command.Request, scenarios.ToList())).Result;

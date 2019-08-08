@@ -8,6 +8,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     interface IBodyMatchPort
     {
         string Body { get; set; }
-        List<string> BodyMatch { get; set; }
-    }   
+        IEnumerable<string> BodyMatch { get; set; }
+    }
 }

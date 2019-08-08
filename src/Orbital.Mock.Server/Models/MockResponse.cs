@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Orbital.Mock.Server.Models
 {
     public class MockResponse : IEquatable<MockResponse>
@@ -29,13 +30,6 @@ namespace Orbital.Mock.Server.Models
             this.Body = Body;
             this.Headers = Headers;
         }
-
-        /*        public MockResponse()
-                {
-                    Status = StatusCodes.Status404NotFound;
-                    Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
-                    Headers = new Dictionary<string, string>();
-                }*/
 
         [JsonProperty("status")]
         public int Status { get; set; }

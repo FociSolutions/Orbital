@@ -40,7 +40,8 @@ namespace Orbital.Mock.Server.Middleware
         /// <returns></returns>
         public async Task InvokeAsync(HttpContext context)
         {
-            Regex rx = new Regex(@"/api/v\d/OrbitalAdmin");
+            Regex rx = new Regex(@"^/api/v\d/OrbitalAdmin");
+
             if (rx.IsMatch(context.Request.Path))
             {
                 await next.Invoke(context);
@@ -50,12 +51,11 @@ namespace Orbital.Mock.Server.Middleware
                 var command = new InvokeSynchronousPipelineCommand(context.Request);
 
                 var response = await this.mediator.Send(command);
-                context.Response.StatusCode = response.Status;
-                await context.Response.WriteAsync(response.Body);
                 foreach (KeyValuePair<string, string> header in response.Headers)
                 {
                     context.Response.Headers.Add(header.Key, header.Value);
                 }
+                await context.Response.WriteAsync(response.Body);
             }
         }
     }

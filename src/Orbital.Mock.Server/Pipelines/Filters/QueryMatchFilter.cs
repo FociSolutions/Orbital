@@ -16,8 +16,9 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// Process that returns the port after adding a list of scenario Id's
         /// that have a query rule that matches the query of the request.
         /// </summary>
-        /// <param name="port"></param>
-        /// <returns></returns>
+        /// <param name="port">The port containing necessary data</param>
+        /// <returns>Port containing processed data</returns>
+
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))
@@ -28,7 +29,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             }
 
             var scenarios = port.Scenarios;
-            var query = port.Query;
+            var query = port.Query.ToDictionary(x => x.Key, x => x.Value);
             port.QueryMatchResults = scenarios.Where(
                  s => s.RequestMatchRules.QueryRules.All(qr => query.ContainsKey(qr.Key) && query[qr.Key].Equals(qr.Value))
             ).Select(scenario => scenario.Id).ToList();

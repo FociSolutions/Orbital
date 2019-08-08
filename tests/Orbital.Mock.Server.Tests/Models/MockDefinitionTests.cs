@@ -10,29 +10,29 @@ namespace Orbital.Mock.Server.Tests.Models
 {
     public class MockDefinitionTests
     {
-        [Fact]
-        public void EqualsSuccessTest()
+        private Faker<MockDefinition> mockDefinitionFake;
+
+        public MockDefinitionTests()
         {
-            #region Test Setup
             var metadataFake = new Faker<MetadataInfo>()
             .RuleFor(m => m.Title, f => f.Lorem.Sentence())
             .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
-            var mockDefinitionFake = new Faker<MockDefinition>()
+            this.mockDefinitionFake = new Faker<MockDefinition>()
             .RuleFor(m => m.Host, f => f.Internet.DomainName())
             .RuleFor(m => m.Metadata, f => metadataFake.Generate())
             .RuleFor(m => m.BasePath, f => f.Random.String())
             .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
-
-
+        }
+        [Fact]
+        public void EqualsSuccessTest()
+        {
             var Target = mockDefinitionFake.Generate();
 
             var input = new
             {
                 objTest = Target as Object
             };
-
-            #endregion
 
             var Actual = Target.Equals(input.objTest);
             Assert.True(Actual);
@@ -42,19 +42,7 @@ namespace Orbital.Mock.Server.Tests.Models
         [Fact]
         public void EqualsFailsNullTest()
         {
-            #region Test Setup
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
-
             var Target = mockDefinitionFake.Generate();
-
-            #endregion
 
             var Actual = Target.Equals(null);
             Assert.False(Actual);
@@ -63,17 +51,6 @@ namespace Orbital.Mock.Server.Tests.Models
         [Fact]
         public void EqualsFailsHostTest()
         {
-            #region Test Setup
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
-            .RuleFor(m => m.BasePath, f => f.Random.String())
-            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
-
             var Target = mockDefinitionFake.Generate();
 
             var input = new
@@ -85,9 +62,6 @@ namespace Orbital.Mock.Server.Tests.Models
                     OpenApi = Target.OpenApi
                 }
             };
-
-
-            #endregion
 
             var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
@@ -96,17 +70,6 @@ namespace Orbital.Mock.Server.Tests.Models
         [Fact]
         public void EqualsFailsMetadataInfoTest()
         {
-            #region Test Setup
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
-            .RuleFor(m => m.BasePath, f => f.Random.String())
-            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
-
             var Target = mockDefinitionFake.Generate();
 
             var input = new
@@ -119,9 +82,6 @@ namespace Orbital.Mock.Server.Tests.Models
                 }
             };
 
-
-            #endregion
-
             var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }
@@ -129,17 +89,6 @@ namespace Orbital.Mock.Server.Tests.Models
         [Fact]
         public void EqualsFailsBasePathTest()
         {
-            #region Test Setup
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
-            .RuleFor(m => m.BasePath, f => f.Random.String())
-            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
-
             var Target = mockDefinitionFake.Generate();
 
             var input = new
@@ -151,7 +100,6 @@ namespace Orbital.Mock.Server.Tests.Models
                     OpenApi = Target.OpenApi
                 }
             };
-            #endregion
             var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }
@@ -159,17 +107,6 @@ namespace Orbital.Mock.Server.Tests.Models
         [Fact]
         public void EqualsFailsOpenApiTest()
         {
-            #region Test Setup
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate())
-            .RuleFor(m => m.BasePath, f => f.Random.String())
-            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
-
             var Target = mockDefinitionFake.Generate();
 
             var input = new
@@ -181,7 +118,6 @@ namespace Orbital.Mock.Server.Tests.Models
                     BasePath = Target.BasePath
                 }
             };
-            #endregion
             var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }

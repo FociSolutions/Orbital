@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Validators;
 using System;
@@ -11,25 +12,25 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
 {
     public class ScenarioValidatorTests
     {
-        [Fact]
-        public void ScenarioValidatorSuccessTest()
-        {
-            #region TestSetup
+        private Faker<Scenario> scenarioFaker;
 
-            var scenarioFake = new Faker<Scenario>()
+        public ScenarioValidatorTests()
+        {
+            this.scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.String())
                 .RuleFor(m => m.Response, f => new MockResponse())
                 .RuleFor(m => m.Path, f => f.Random.String())
                 .RuleFor(m => m.Verb, f => f.PickRandom(
-                    new List<string>{
-                        HttpMethods.Get,
-                        HttpMethods.Put,
-                        HttpMethods.Post,
-                        HttpMethods.Delete }));
-
+                    new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete }
+                    ));
+        }
+        [Fact]
+        public void ScenarioValidatorSuccessTest()
+        {
+            #region TestSetup
             var input = new
             {
-                scenario = scenarioFake.Generate()
+                scenario = scenarioFaker.Generate()
             };
             #endregion
             var Target = new ScenarioValidator();
@@ -41,21 +42,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public void ScenarioValidatorFaildIdNotNullTest()
         {
             #region TestSetup
-
-            var scenarioFake = new Faker<Scenario>()
-                .RuleFor(m => m.Id, f => null)
-                .RuleFor(m => m.Response, f => new MockResponse())
-                .RuleFor(m => m.Path, f => f.Random.String())
-                .RuleFor(m => m.Verb, f => f.PickRandom(
-                    new List<string>{
-                        HttpMethods.Get,
-                        HttpMethods.Put,
-                        HttpMethods.Post,
-                        HttpMethods.Delete }));
-
+            var scenario = scenarioFaker.Generate();
+            scenario.Id = null;
             var input = new
             {
-                scenario = scenarioFake.Generate()
+                scenario = scenario
             };
             #endregion
             var Target = new ScenarioValidator();
@@ -68,20 +59,12 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         {
             #region TestSetup
 
-            var scenarioFake = new Faker<Scenario>()
-                .RuleFor(m => m.Id, f => f.Random.String())
-                .RuleFor(m => m.Response, f => null)
-                .RuleFor(m => m.Path, f => f.Random.String())
-                .RuleFor(m => m.Verb, f => f.PickRandom(
-                    new List<string>{
-                        HttpMethods.Get,
-                        HttpMethods.Put,
-                        HttpMethods.Post,
-                        HttpMethods.Delete }));
+            var scenario = scenarioFaker.Generate();
+            scenario.Response = null;
 
             var input = new
             {
-                scenario = scenarioFake.Generate()
+                scenario = scenario
             };
             #endregion
             var Target = new ScenarioValidator();
@@ -94,41 +77,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         {
             #region TestSetup
 
-            var scenarioFake = new Faker<Scenario>()
-                .RuleFor(m => m.Id, f => f.Random.String())
-                .RuleFor(m => m.Response, f => new MockResponse())
-                .RuleFor(m => m.Path, f => null)
-                .RuleFor(m => m.Verb, f => f.PickRandom(
-                    new List<string>{
-                        HttpMethods.Get,
-                        HttpMethods.Put,
-                        HttpMethods.Post,
-                        HttpMethods.Delete }));
-
+            var scenario = scenarioFaker.Generate();
+            scenario.Path = null;
             var input = new
             {
-                scenario = scenarioFake.Generate()
-            };
-            #endregion
-            var Target = new ScenarioValidator();
-            var Actual = Target.Validate(input.scenario);
-            Assert.False(Actual.IsValid);
-        }
-
-        [Fact]
-        public void ScenarioValidatorVerbNotNullTest()
-        {
-            #region TestSetup
-
-            var scenarioFake = new Faker<Scenario>()
-                .RuleFor(m => m.Id, f => f.Random.String())
-                .RuleFor(m => m.Response, f => new MockResponse())
-                .RuleFor(m => m.Path, f => f.Random.String())
-                .RuleFor(m => m.Verb, f => null);
-
-            var input = new
-            {
-                scenario = scenarioFake.Generate()
+                scenario = scenario
             };
             #endregion
             var Target = new ScenarioValidator();
@@ -140,16 +93,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public void ScenarioValidatorVerbNotSupportedTest()
         {
             #region TestSetup
-
-            var scenarioFake = new Faker<Scenario>()
-                .RuleFor(m => m.Id, f => f.Random.String())
-                .RuleFor(m => m.Response, f => new MockResponse())
-                .RuleFor(m => m.Path, f => f.Random.String())
-                .RuleFor(m => m.Verb, f => HttpMethods.Options);
-
+            var scenario = scenarioFaker.Generate();
+            scenario.Verb = HttpMethod.Options;
             var input = new
             {
-                scenario = scenarioFake.Generate()
+                scenario = scenario
             };
             #endregion
             var Target = new ScenarioValidator();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("metadata")]
         public MetadataInfo Metadata { get; set; }
         [JsonProperty("verb")]
-        public String Verb { get; set; }
+        public HttpMethod Verb { get; set; }
         [JsonProperty("path")]
         public string Path { get; set; }
         [JsonProperty("response")]
@@ -23,8 +24,6 @@ namespace Orbital.Mock.Server.Models
         public RequestMatchRules RequestMatchRules { get; set; }
 
         public override bool Equals(object obj)
-
-
         {
             return this.Equals(obj as Scenario);
         }
