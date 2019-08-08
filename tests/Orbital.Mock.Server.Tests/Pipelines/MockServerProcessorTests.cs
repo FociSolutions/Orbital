@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Pipelines.Models;
@@ -25,9 +26,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines
 
         public MockServerProcessorTests()
         {
+            var fakerJObject = new Faker<JObject>()
+                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
-                .RuleFor(m => m.Rule, f => f.Random.String());
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
             var fakerResponse = new Faker<MockResponse>()
                    .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -77,7 +79,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb.ToString();
-            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Rule));
+            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Rule.ToString()));
             scenarios[0].RequestMatchRules.HeaderRules.Keys.ToList().ForEach(k => httpContext.Request.Headers.Add(k, scenarios[0].RequestMatchRules.HeaderRules[k]));
             httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
             var input = new MessageProcessorInput(httpContext.Request, scenarios);
