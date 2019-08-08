@@ -35,10 +35,6 @@ namespace Orbital.Mock.Server
         {
             Configuration = configuration;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>

@@ -10,6 +10,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     {
         IEnumerable<string> QueryMatchResults { get; set; }
 
-        IEnumerable<KeyValuePair<string, string>> Query { get; set; }
+        IDictionary<string, string> Query { get; set; }
     }
 }
