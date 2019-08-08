@@ -92,6 +92,7 @@ namespace Orbital.Mock.Server
                 }
             });
 
+            app.UseMiddleware<LoggingRequestResponseMiddleware>();
             app.UseMiddleware<ServerRequestMiddleware>();
             app.UseMvc();
         }

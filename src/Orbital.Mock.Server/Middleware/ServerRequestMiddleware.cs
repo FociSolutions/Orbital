@@ -10,12 +10,11 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Middleware
 {
-    [ExcludeFromCodeCoverage]
-
     ///<summary>
     ///ServerRequestMiddleware is the middleware used to route admin requests to the admin endpoints and all other requests
     ///to the pipelines.
     ///</summary>
+    [ExcludeFromCodeCoverage]
     public class ServerRequestMiddleware
     {
         private readonly RequestDelegate next;
