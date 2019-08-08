@@ -15,9 +15,6 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
 {
     public class MockDefinitionsModelExamples : IExamplesProvider<MockDefinition>
     {
-        private object services;
-
-
         public MockDefinition GetExamples()
         {
             DateTime dateTime = new DateTime();
