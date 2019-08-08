@@ -11,10 +11,10 @@ namespace Orbital.Mock.Server.Models
     public class BodyRule : IEquatable<BodyRule>
     {
         /// <summary>
-        /// BodyRule Constructor
+        /// BodyRule Constructor With Optional Parameters
         /// </summary>
-        /// <param name="Type"></param>
-        /// <param name="Rule"></param>
+        /// <param name="Type">Enum representing the type of Body Rule created</param>
+        /// <param name="Rule">The Json object used to compare against request bodies for matching</param>
         public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, JObject Rule = null)
         {
             this.Rule = Rule == null ? new JObject() : Rule;
@@ -28,8 +28,8 @@ namespace Orbital.Mock.Server.Models
         /// <summary>
         /// Method returns true if the json string matches the Rule property
         /// </summary>
-        /// <param name="json"></param>
-        /// <returns></returns>
+        /// <param name="json">The json string of the request body to match against</param>
+        /// <returns>True if the json in the string matches the Rule JObject, false otherwise</returns>
         public bool IsMatch(string json)
         {
             try
