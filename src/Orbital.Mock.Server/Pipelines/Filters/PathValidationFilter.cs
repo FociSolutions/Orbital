@@ -15,8 +15,8 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <summary>
         /// Checks if a valid path is provided. Throws a fault otherwise
         /// </summary>
-        /// <param name="port">Receives the values of Path and Verb and pass them to its port</param>
-        /// <returns></returns>
+        /// <param name="port">The port containing necessary data</param>
+        /// <returns>Port containing processed data</returns>
         public override T Process(T port)
         {
 

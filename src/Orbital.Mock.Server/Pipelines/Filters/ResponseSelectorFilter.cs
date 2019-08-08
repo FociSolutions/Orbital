@@ -14,8 +14,8 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <summary>
         /// Selects the response to use based on the match results from the previous filters. Ties are broken randomly.
         /// </summary>
-        /// <param name="port"></param>
-        /// <returns></returns>
+        /// <param name="port">The port containing necessary data</param>
+        /// <returns>Port containing processed data</returns>
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))

@@ -11,12 +11,10 @@ using System.Threading.Tasks;
 namespace Orbital.Mock.Server.Models.Validators
 {
     /// <summary>
-    /// 
+    /// Validator responsible for validating MockDefinition objects
     /// </summary>
     public class MockDefinitionValidator : AbstractValidator<MockDefinition>
-    {        /// <summary>
-             /// Constructor
-             /// </summary>
+    {
         public MockDefinitionValidator()
         {
             RuleFor(x => x.Host).NotEmpty();
@@ -29,7 +27,7 @@ namespace Orbital.Mock.Server.Models.Validators
         }
 
         /// <summary>
-        /// Runs the OpenApiValidator against the OpenApiDocument. Returns true if the document is valid, false otherwise
+        /// Runs the OpenApiValidator against the OpenApiDocument object. Returns true if the document is valid, false otherwise
         /// </summary>
         /// <param name="doc">The OpenApiDocument to test against</param>
         /// <param name="context"></param>

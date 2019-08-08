@@ -30,12 +30,7 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
             this.mockIds = data.mockIds;
         }
 
-        /// <summary>
-        /// Invokes the synchronous pipeline and returns the resulting HttpResponse
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Task<MockResponse> Handle(InvokeSynchronousPipelineCommand command, CancellationToken cancellationToken)
         {
             var idList = this.cache.GetOrCreate(mockIds, c => new List<string>());

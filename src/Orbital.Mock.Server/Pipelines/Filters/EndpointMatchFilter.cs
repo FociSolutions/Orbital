@@ -15,8 +15,8 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// Process that filters the list of Scenarios, leaving only scenarios
         /// who's verb and path match the incoming request.
         /// </summary>
-        /// <param name="port"></param>
-        /// <returns></returns>
+        /// <param name="port">The port containing necessary data</param>
+        /// <returns>Port containing processed data</returns>
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))

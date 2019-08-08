@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models.Validators
 {
+    /// <summary>
+    /// Validator responsible for validating Scenario objects
+    /// </summary>
     public class ScenarioValidator : AbstractValidator<Scenario>
     {
         private List<HttpMethod> validMethod = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete };

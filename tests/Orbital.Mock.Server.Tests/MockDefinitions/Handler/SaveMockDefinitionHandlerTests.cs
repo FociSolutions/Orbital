@@ -15,27 +15,24 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
     public class SaveMockDefinitionHandlerTests
     {
         private readonly CommonData data;
+        private Faker<MockDefinition> mockDefinitionFake;
 
         public SaveMockDefinitionHandlerTests()
         {
             this.data = new CommonData();
+            var metadataFake = new Faker<MetadataInfo>()
+            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+            this.mockDefinitionFake = new Faker<MockDefinition>()
+            .RuleFor(m => m.Host, f => f.Internet.DomainName())
+            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
         }
         [Fact]
         public void SaveMockDefinitionSuccessTest()
         {
             #region Test Setup
-
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
-
             #endregion
 
             var mockDefinition = mockDefinitionFake.Generate();
@@ -52,19 +49,19 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
         [Fact]
         public void SaveMockDefinitionCacheFailedNullTitleTest()
         {
-            var metadataFake = new Faker<MetadataInfo>()
-            .RuleFor(m => m.Title, f => null)
-            .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
+            #region Test Setup
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
-
             var mockDefinition = mockDefinitionFake.Generate();
-            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
+            mockDefinition.Metadata.Title = null;
+
+            var input = new
+            {
+                mockDefinition
+            };
+            #endregion
+
+            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(input.mockDefinition);
 
 
             var Target = new SaveMockDefinitionHandler(cache, data);
@@ -75,21 +72,11 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
         public void SaveKeysCollectionSuccessTest()
         {
             #region Test Setup
-
-            var metadataFake = new Faker<MetadataInfo>()
-                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-                .RuleFor(m => m.Host, f => f.Internet.DomainName())
-                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
+            #endregion
             var mockDefinition = mockDefinitionFake.Generate();
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
-            #endregion
-
             var Target = new SaveMockDefinitionHandler(cache, data);
             Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
 
@@ -101,17 +88,8 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
         public void SavedTitleExistsInKeyCollections()
         {
             #region test setup
-            var metadataFake = new Faker<MetadataInfo>()
-               .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-               .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
-
-            var mockDefinitionFake = new Faker<MockDefinition>()
-                .RuleFor(m => m.Host, f => f.Internet.DomainName())
-                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
-
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
-
             #endregion
             var mockDefinition = mockDefinitionFake.Generate();
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);

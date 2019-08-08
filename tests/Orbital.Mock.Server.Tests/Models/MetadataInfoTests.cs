@@ -9,15 +9,19 @@ namespace Orbital.Mock.Server.Tests.Models
 {
     public class MetadataInfoTests
     {
+        private Faker<MetadataInfo> metadataInfoFake;
+
+        public MetadataInfoTests()
+        {
+            this.metadataInfoFake = metadataInfoFake = new Faker<MetadataInfo>()
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence());
+        }
 
         [Fact]
         public void EqualsSuccessTest()
         {
             #region Test Setup
-            var metadataInfoFake = new Faker<MetadataInfo>()
-                .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
-                .RuleFor(m => m.Title, f => f.Lorem.Sentence());
-
             var metadataInfo = metadataInfoFake.Generate();
 
             var input = new
@@ -36,10 +40,6 @@ namespace Orbital.Mock.Server.Tests.Models
         public void EqualsFailsNullMetadataTest()
         {
             #region Test Setup
-            var metadataInfoFake = new Faker<MetadataInfo>()
-                .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
-                .RuleFor(m => m.Title, f => f.Lorem.Sentence());
-
             var metadataInfo = metadataInfoFake.Generate();
             #endregion
 
@@ -51,10 +51,6 @@ namespace Orbital.Mock.Server.Tests.Models
         public void EqualsFailsTitleTest()
         {
             #region Test Setup
-            var metadataInfoFake = new Faker<MetadataInfo>()
-                .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
-                .RuleFor(m => m.Title, f => f.Lorem.Sentence());
-
             var metadataInfo = metadataInfoFake.Generate();
 
             var input = new
@@ -76,10 +72,6 @@ namespace Orbital.Mock.Server.Tests.Models
         public void EqualsFailsDescriptionTest()
         {
             #region Test Setup
-            var metadataInfoFake = new Faker<MetadataInfo>()
-                .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
-                .RuleFor(m => m.Title, f => f.Lorem.Sentence());
-
             var metadataInfo = metadataInfoFake.Generate();
 
             var input = new
