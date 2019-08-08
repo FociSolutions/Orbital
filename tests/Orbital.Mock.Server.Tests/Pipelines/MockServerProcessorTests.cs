@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Primitives;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines;
@@ -18,21 +19,25 @@ namespace Orbital.Mock.Server.Tests.Pipelines
     public class MockServerProcessorTests
     {
         private Faker<Scenario> fakerScenario;
-        private readonly List<string> validMethods = new List<string> { HttpMethods.Get, HttpMethods.Put, HttpMethods.Post, HttpMethods.Delete };
+        private MockServerProcessor mockServerProcessor;
+        private readonly List<HttpMethod> validMethods = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Put, HttpMethod.Post, HttpMethod.Delete };
 
 
         public MockServerProcessorTests()
         {
+            var fakerBodyRule = new Faker<BodyRule>()
+                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
+                .RuleFor(m => m.Rule, f => f.Random.String());
             var fakerResponse = new Faker<MockResponse>()
-                           .RuleFor(m => m.Status, f => (int)f.PickRandom<HttpStatusCode>())
-                           .RuleFor(m => m.Body, f => f.Lorem.Paragraph());
+                   .CustomInstantiator(f => new MockResponse(
+                    (int)f.PickRandom<HttpStatusCode>(),
+                    f.Lorem.Paragraph()
+                    ));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
-                    .RuleFor(m => m.BodyRules, f => f.Lorem.Paragraph())
-                    .RuleFor(m => m.HeaderRules, f => Enumerable.Range(1, 5)
-                        .Select(i => f.Random.Word() + $"-{i}")
+                    .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
+                    .RuleFor(m => m.HeaderRules, f => f.Make(5, () => f.Random.String())
                         .ToDictionary(x => x, _ => f.Random.Word()))
-                    .RuleFor(m => m.QueryRules, f => Enumerable.Range(1, 5)
-                        .Select(i => f.Random.Word() + $"-{i}")
+                    .RuleFor(m => m.QueryRules, f => f.Make(5, () => f.Random.String())
                         .ToDictionary(x => x, _ => f.Random.Word()));
             this.fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())
@@ -40,11 +45,12 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(validMethods));
+            this.mockServerProcessor = new MockServerProcessor();
         }
         [Fact]
         public void MockServerProcessorStopAfterStartTest()
         {
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Stop();
 
@@ -54,7 +60,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         [Fact]
         public void MockServerProcessorStopBeforeStartTest()
         {
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             var Actual = Target.Stop();
             Assert.True(Actual);
         }
@@ -70,13 +76,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
-            httpContext.Request.Method = scenarios[0].Verb;
-            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules));
+            httpContext.Request.Method = scenarios[0].Verb.ToString();
+            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Rule));
             scenarios[0].RequestMatchRules.HeaderRules.Keys.ToList().ForEach(k => httpContext.Request.Headers.Add(k, scenarios[0].RequestMatchRules.HeaderRules[k]));
             httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
             var input = new MessageProcessorInput(httpContext.Request, scenarios);
             #endregion
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             var Expected = scenarios[0].Response;
             Target.Start();
             var Actual = Target.Push(input).Result;
@@ -96,7 +102,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Method = HttpMethods.Get;
             var input = new MessageProcessorInput(httpContext.Request, scenarios);
             #endregion
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             var Expected = new MockResponse();
             Target.Start();
             var Actual = Target.Push(input).Result;
@@ -108,7 +114,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         [Fact]
         public void MockServerProcessorPushWithNullInputTest()
         {
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(null).Result;
             var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
@@ -121,7 +127,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             #region TestSetup
             var input = new MessageProcessorInput(null, new List<Scenario>());
             #endregion
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
@@ -136,7 +142,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
             input.ServerHttpRequest.Body = null;
             #endregion
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
@@ -150,7 +156,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var httpContext = new DefaultHttpContext();
             var input = new MessageProcessorInput(httpContext.Request, null);
             #endregion
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
@@ -165,7 +171,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Method = HttpMethods.Options;
             var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
             #endregion
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse();
@@ -181,7 +187,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Path = null;
             var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
             #endregion
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse();
@@ -197,7 +203,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Path = "";
             var input = new MessageProcessorInput(httpContext.Request, this.fakerScenario.Generate(1));
             #endregion
-            var Target = new MockServerProcessor();
+            var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input).Result;
             var Expected = new MockResponse();

@@ -13,6 +13,13 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 {
     public class DeleteMockDefinitionHandlerTests
     {
+        private readonly CommonData data;
+
+        public DeleteMockDefinitionHandlerTests()
+        {
+            this.data = new CommonData();
+        }
+
         [Fact]
         public void DeleteMockDefinitionHandlerSuccessTest()
         {
@@ -34,7 +41,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(mockDefinition.Metadata.Title);
             #endregion
 
-            var Target = new DeleteMockDefinitionHandler(cache);
+            var Target = new DeleteMockDefinitionHandler(cache, data);
             var Actual = Target.Handle(deleteMockDefinitionCommand, CancellationToken.None).Result;
 
             cache.TryGetValue(mockDefinition.Metadata.Title, out var savedDefinition);
@@ -51,7 +58,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var faker = new Faker();
             var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(faker.Random.String());
             #endregion
-            var Target = new DeleteMockDefinitionHandler(cache);
+            var Target = new DeleteMockDefinitionHandler(cache, data);
             var exception = Record.Exception(() => Target.Handle(deleteMockDefinitionCommand, CancellationToken.None).Result);
 
             Assert.Null(exception);
@@ -76,11 +83,11 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             cache.Set(mockDefinition.Metadata.Title, mockDefinition);
 
             var expected = mockDefinition.Metadata.Title;
-            cache.Set("mockids", new List<string>() { mockDefinition.Metadata.Title });
+            cache.Set(data.mockIds, new List<string>() { mockDefinition.Metadata.Title });
 
             var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(mockDefinition.Metadata.Title);
             #endregion
-            var Target = new DeleteMockDefinitionHandler(cache);
+            var Target = new DeleteMockDefinitionHandler(cache, data);
             Target.Handle(deleteMockDefinitionCommand, CancellationToken.None);
 
             cache.TryGetValue(mockDefinition.Metadata.Title, out var Actual);

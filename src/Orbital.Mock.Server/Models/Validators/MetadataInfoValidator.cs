@@ -7,14 +7,10 @@ using System.Threading.Tasks;
 namespace Orbital.Mock.Server.Models.Validators
 {
     /// <summary>
-    /// 
+    /// Validator responsible for validating MetadataInfo objects
     /// </summary>
     public class MetadataInfoValidator : AbstractValidator<MetadataInfo>
     {
-
-        /// <summary>
-        /// 
-        /// </summary>
         public MetadataInfoValidator()
         {
             RuleFor(x => x.Title).NotEmpty();

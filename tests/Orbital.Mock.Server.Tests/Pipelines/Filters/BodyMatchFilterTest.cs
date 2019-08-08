@@ -13,25 +13,30 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class BodyMatchFilterTest
     {
+        private Faker<Scenario> scenarioFaker;
+
+        public BodyMatchFilterTest()
+        {
+            var fakerBodyRule = new Faker<BodyRule>()
+                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
+                .RuleFor(m => m.Rule, f => f.Random.String());
+            var fakerRequestMatchRules = new Faker<RequestMatchRules>()
+                .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
+            this.scenarioFaker = new Faker<Scenario>()
+                .RuleFor(m => m.RequestMatchRules, _ => fakerRequestMatchRules.Generate())
+                .RuleFor(m => m.Id, n => n.Random.ToString());
+        }
+
         [Fact]
         public void BodyMatchFilterMatchSuccess()
         {
             #region
-
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.RequestMatchRules, n => new RequestMatchRules
-                {
-                    BodyRules = n.Random.String()
-                })
-                .RuleFor(m => m.Id, n => n.Random.ToString()
-                );
-
             var fakeScenario = scenarioFaker.Generate();
 
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = fakeScenario.RequestMatchRules.BodyRules
+                Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].Rule
             };
 
             #endregion
@@ -48,14 +53,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void BodyMatchFilterMatchFail()
         {
             #region
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.RequestMatchRules, n => new RequestMatchRules
-                {
-                    BodyRules = n.Random.String()
-                })
-                .RuleFor(m => m.Id, n => n.Random.ToString()
-                );
-
             var fakeScenario = scenarioFaker.Generate();
 
             var input = new

@@ -35,10 +35,6 @@ namespace Orbital.Mock.Server
         {
             Configuration = configuration;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
@@ -61,7 +57,7 @@ namespace Orbital.Mock.Server
                 processor.Start();
                 return processor;
             });
-
+            services.AddSingleton<CommonData>();
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
         }

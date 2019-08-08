@@ -5,6 +5,7 @@ using Orbital.Mock.Server.MockDefinitions.Handlers;
 using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Xunit;
@@ -13,6 +14,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 {
     public class GetAllMockDefinitionsHandlerTests
     {
+        private readonly CommonData data;
+
+        public GetAllMockDefinitionsHandlerTests()
+        {
+            this.data = new CommonData();
+        }
         [Fact]
         public void GetAllNoEntriesListTest()
         {
@@ -24,7 +31,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var getAllMockDefinitionsCommand = new GetAllMockDefinitionsCommand();
             #endregion
 
-            var Target = new GetAllMockDefinitionsHandler(cache);
+            var Target = new GetAllMockDefinitionsHandler(cache, data);
             var Actual = Target.Handle(getAllMockDefinitionsCommand, CancellationToken.None).Result;
 
             Assert.Empty(Actual);
@@ -49,14 +56,14 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var mockdeffake1 = mockDefinitionFake.Generate();
             var mockdeffake2 = new MockDefinition { Host = mockdeffake1.Host + "diff", Metadata = mockdeffake1.Metadata };
 
-            cache.Set("mockids", new List<string> { mockdeffake1.Metadata.Title, mockdeffake2.Metadata.Title });
+            cache.Set(data.mockIds, new List<string> { mockdeffake1.Metadata.Title, mockdeffake2.Metadata.Title });
             cache.Set(mockdeffake1.Metadata.Title, mockdeffake1);
             cache.Set(mockdeffake2.Metadata.Title, mockdeffake2);
 
             var getAllMockDefinitionsCommand = new GetAllMockDefinitionsCommand();
 
-            var Target = new GetAllMockDefinitionsHandler(cache);
-            var Actual = Target.Handle(getAllMockDefinitionsCommand, CancellationToken.None).Result;
+            var Target = new GetAllMockDefinitionsHandler(cache, data);
+            var Actual = Target.Handle(getAllMockDefinitionsCommand, CancellationToken.None).Result.ToList();
 
             Assert.Equal(2, Actual.Count);
             Assert.Equal(mockdeffake1.Metadata.Title, Actual[0].Metadata.Title);

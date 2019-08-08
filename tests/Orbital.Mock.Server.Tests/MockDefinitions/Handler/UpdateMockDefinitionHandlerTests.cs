@@ -13,6 +13,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 {
     public class UpdateMockDefinitionHandlerTests
     {
+        private readonly CommonData data;
+
+        public UpdateMockDefinitionHandlerTests()
+        {
+            this.data = new CommonData();
+        }
         [Fact]
 
         public void UpdateMockDefinitionSuccessTest()
@@ -38,7 +44,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected);
             #endregion
 
-            var Target = new UpdateMockDefinitionHandler(cache);
+            var Target = new UpdateMockDefinitionHandler(cache, data);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
             cache.TryGetValue(Expected.Metadata.Title, out var Actual);
@@ -66,7 +72,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var Expected = mockDefinitionFake.Generate();
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected);
 
-            var Target = new UpdateMockDefinitionHandler(cache);
+            var Target = new UpdateMockDefinitionHandler(cache, data);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
             cache.TryGetValue(Expected.Metadata.Title, out var Actual);
@@ -98,7 +104,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate);
             #endregion
 
-            var Target = new UpdateMockDefinitionHandler(cache);
+            var Target = new UpdateMockDefinitionHandler(cache, data);
             var Actual = Target.Handle(updateMockDefinitionCommand, CancellationToken.None).Result;
 
 
@@ -126,7 +132,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate);
             #endregion
 
-            var Target = new UpdateMockDefinitionHandler(cache);
+            var Target = new UpdateMockDefinitionHandler(cache, data);
             var Actual = Target.Handle(updateMockDefinitionCommand, CancellationToken.None).Result;
 
 
@@ -155,10 +161,10 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition);
             #endregion
 
-            var Target = new UpdateMockDefinitionHandler(cache);
+            var Target = new UpdateMockDefinitionHandler(cache, data);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
-            var Actual = cache.Get<List<string>>("mockids");
+            var Actual = cache.Get<List<string>>(data.mockIds);
 
             Assert.Contains(input.mockDefinition.Metadata.Title, Actual);
         }
@@ -181,17 +187,15 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             var input = new { mockDefinition = mockDefinitionFake.Generate() };
 
-            const string mockIdListKey = "mockids";
-
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition);
             #endregion
 
             cache.Set(input.mockDefinition.Metadata.Title, input.mockDefinition);
-            cache.Set(mockIdListKey, new List<string> { input.mockDefinition.Metadata.Title });
-            var Target = new UpdateMockDefinitionHandler(cache);
+            cache.Set(data.mockIds, new List<string> { input.mockDefinition.Metadata.Title });
+            var Target = new UpdateMockDefinitionHandler(cache, data);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
-            var Actual = cache.Get<List<string>>(mockIdListKey);
+            var Actual = cache.Get<List<string>>(data.mockIds);
 
             Assert.Contains(input.mockDefinition.Metadata.Title, Actual);
         }

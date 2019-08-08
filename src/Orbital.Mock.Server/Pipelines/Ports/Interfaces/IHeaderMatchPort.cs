@@ -8,8 +8,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
     internal interface IHeaderMatchPort
     {
-        Dictionary<string, string> Headers { get; set; }
+        IDictionary<string, string> Headers { get; set; }
 
-        List<string> HeaderMatchResults { get; set; }
+        IEnumerable<string> HeaderMatchResults { get; set; }
     }
 }

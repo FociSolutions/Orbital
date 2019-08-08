@@ -16,16 +16,16 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     public class UpdateMockDefinitionHandler : IRequestHandler<UpdateMockDefinitionByTitleCommand, MockDefinition>
     {
         private readonly IMemoryCache cache;
-
-        private const string MOCKIDS = "mockids";
+        private readonly string mockIds;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="cache">Cache to update with mockdefinition</param>
-        public UpdateMockDefinitionHandler(IMemoryCache cache)
+        public UpdateMockDefinitionHandler(IMemoryCache cache, CommonData data)
         {
             this.cache = cache;
+            this.mockIds = data.mockIds;
         }
 
         /// <summary>
@@ -38,11 +38,11 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         {
             var mockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
             cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-            var KeyList = this.cache.GetOrCreate(MOCKIDS, cacheEntry => { return new List<string>(); });
+            var KeyList = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
             if (!KeyList.Contains(request.MockDefinition.Metadata.Title))
             {
                 KeyList.Add(request.MockDefinition.Metadata.Title);
-                this.cache.Set(MOCKIDS, KeyList);
+                this.cache.Set(mockIds, KeyList);
             }
             return Task.FromResult(mockDefinition);
         }

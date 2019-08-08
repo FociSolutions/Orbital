@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
@@ -13,22 +14,22 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class EndpointMatchFilterTests
     {
+        private Faker<Scenario> scenarioFaker;
+
+        public EndpointMatchFilterTests()
+        {
+            this.scenarioFaker = new Faker<Scenario>()
+                .RuleFor(m => m.Id, f => f.Random.String())
+                .RuleFor(m => m.Response, f => new MockResponse())
+                .RuleFor(m => m.Path, f => f.Random.String())
+                .RuleFor(m => m.Verb, f => f.PickRandom(
+                    new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete }
+                    ));
+        }
         [Fact]
         public void EndpointMatchFilterSuccessTest()
         {
             #region TestSetup
-            var httpMethods = new List<string>
-            {
-                HttpMethods.Get,
-                HttpMethods.Post,
-                HttpMethods.Put,
-                HttpMethods.Delete
-            };
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Path, f => f.Lorem.Word())
-                .RuleFor(m => m.Verb, f => f.PickRandom(httpMethods))
-                .RuleFor(m => m.Id, f => f.Random.Word());
-
             var fakeScenario = scenarioFaker.Generate();
 
             var input = new
@@ -50,18 +51,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void EndpointMatchFilterNoPathMatchTest()
         {
             #region TestSetup
-            var httpMethods = new List<string>
-            {
-                HttpMethods.Get,
-                HttpMethods.Post,
-                HttpMethods.Put,
-                HttpMethods.Delete
-            };
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Path, f => f.Lorem.Word())
-                .RuleFor(m => m.Verb, f => f.PickRandom(httpMethods))
-                .RuleFor(m => m.Id, f => f.Random.Word());
-
             var fakeScenario = scenarioFaker.Generate();
 
             var input = new
@@ -83,18 +72,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region TestSetup
             var faker = new Faker();
-            var httpMethods = new List<string>
+            var httpMethods = new List<HttpMethod>
             {
-                HttpMethods.Get,
-                HttpMethods.Post,
-                HttpMethods.Put,
-                HttpMethods.Delete
+                HttpMethod.Get,
+                HttpMethod.Post,
+                HttpMethod.Put,
+                HttpMethod.Delete
             };
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Path, f => f.Lorem.Word())
-                .RuleFor(m => m.Verb, f => f.PickRandom(httpMethods))
-                .RuleFor(m => m.Id, f => f.Random.Word());
-
             var fakeScenario = scenarioFaker.Generate();
 
             var input = new
@@ -116,19 +100,12 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region TestSetup
             var faker = new Faker();
-            var httpMethods = new List<string>
-            {
-                HttpMethods.Get,
-                HttpMethods.Post,
-                HttpMethods.Put,
-                HttpMethods.Delete
-            };
 
             var input = new
             {
                 Scenarios = new List<Scenario>(),
                 Path = faker.Lorem.Word(),
-                Verb = faker.PickRandom(httpMethods)
+                Verb = HttpMethod.Get
             };
             #endregion
             var Target = new EndpointMatchFilter<ProcessMessagePort>();
@@ -142,18 +119,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void EndpointMatchFilterInvalidPortTest()
         {
             #region TestSetup
-            var httpMethods = new List<string>
-            {
-                HttpMethods.Get,
-                HttpMethods.Post,
-                HttpMethods.Put,
-                HttpMethods.Delete
-            };
-            var scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Path, f => f.Lorem.Word())
-                .RuleFor(m => m.Verb, f => f.PickRandom(httpMethods))
-                .RuleFor(m => m.Id, f => f.Random.Word());
-
             var fakeScenario = scenarioFaker.Generate();
 
             var input = new

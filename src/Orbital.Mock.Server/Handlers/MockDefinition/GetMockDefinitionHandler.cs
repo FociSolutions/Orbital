@@ -2,9 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
-using Swashbuckle.AspNetCore.Annotations;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 

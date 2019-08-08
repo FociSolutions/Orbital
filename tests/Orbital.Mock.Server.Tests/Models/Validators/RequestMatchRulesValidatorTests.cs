@@ -10,14 +10,19 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
 {
     public class RequestMatchRulesValidatorTests
     {
+        private Faker<RequestMatchRules> requestMatchRulesFake;
+
+        public RequestMatchRulesValidatorTests()
+        {
+            this.requestMatchRulesFake = new Faker<RequestMatchRules>()
+                .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
+                .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
+                .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
+        }
         [Fact]
         public void RequestMatchRulesValidatorSuccessTest()
         {
             #region TestSetup
-            var requestMatchRulesFake = new Faker<RequestMatchRules>()
-                .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
             var input = new
             {
                 requestMatchRules = requestMatchRulesFake.Generate()
@@ -33,13 +38,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public void RequestMatchRulesValidatorHeaderRulesNullTest()
         {
             #region TestSetup
-            var requestMatchRulesFake = new Faker<RequestMatchRules>()
-                .RuleFor(m => m.HeaderRules, f => null)
-                .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+            var requestMatchRules = this.requestMatchRulesFake.Generate();
+            requestMatchRules.HeaderRules = null;
             var input = new
             {
-                requestMatchRules = requestMatchRulesFake.Generate()
+                requestMatchRules
             };
             #endregion
             var Target = new RequestMatchRulesValidator();
@@ -52,13 +55,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public void RequestMatchRulesValidatorQueryRulesNullTest()
         {
             #region TestSetup
-            var requestMatchRulesFake = new Faker<RequestMatchRules>()
-                .RuleFor(m => m.QueryRules, f => null)
-                .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => f.Random.String());
+            var requestMatchRules = this.requestMatchRulesFake.Generate();
+            requestMatchRules.QueryRules = null;
             var input = new
             {
-                requestMatchRules = requestMatchRulesFake.Generate()
+                requestMatchRules
             };
             #endregion
             var Target = new RequestMatchRulesValidator();
@@ -71,13 +72,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public void RequestMatchRulesValidatorBodyRulesNullTest()
         {
             #region TestSetup
-            var requestMatchRulesFake = new Faker<RequestMatchRules>()
-                .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.BodyRules, f => null);
+            var requestMatchRules = this.requestMatchRulesFake.Generate();
+            requestMatchRules.BodyRules = null;
             var input = new
             {
-                requestMatchRules = requestMatchRulesFake.Generate()
+                requestMatchRules
             };
             #endregion
             var Target = new RequestMatchRulesValidator();

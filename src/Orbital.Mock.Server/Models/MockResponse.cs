@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models
 {
@@ -13,11 +12,21 @@ namespace Orbital.Mock.Server.Models
         /// <summary>
         /// Constructor, defaults to a 404 response
         /// </summary>
-        public MockResponse()
+        public MockResponse(int Status = StatusCodes.Status404NotFound, string Body = null, IDictionary<string, string> Headers = null)
         {
-            Status = StatusCodes.Status404NotFound;
-            Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
-            Headers = new Dictionary<string, string>();
+            if (Body == null)
+            {
+                Body = ReasonPhrases.GetReasonPhrase(StatusCodes.Status404NotFound);
+            }
+
+            if (Headers == null)
+            {
+                Headers = new Dictionary<string, string>();
+            }
+
+            this.Status = Status;
+            this.Body = Body;
+            this.Headers = Headers;
         }
         [JsonProperty("status")]
         public int Status { get; set; }

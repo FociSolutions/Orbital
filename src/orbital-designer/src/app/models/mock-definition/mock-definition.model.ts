@@ -4,6 +4,7 @@ import * as yaml from 'js-yaml';
 import { OpenAPIV2 } from 'openapi-types';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import Yaml from '../yaml';
+import Json from '../json';
 
 /**
  * Model representation of mock definition
@@ -95,5 +96,27 @@ export class MockDefinition {
   public static exportMockDefinitionAsYaml(mockDef: MockDefinition): string {
     const safeMockDef = Yaml.collectionToArray(mockDef);
     return yaml.safeDump(safeMockDef);
+  }
+
+  /**
+   * Exports the mock definition as a json string
+   */
+  public static exportMockDefinitionAsJson(mockDef: MockDefinition): string {
+    const safeMockDef = Json.mapToObject(mockDef);
+    return JSON.stringify(safeMockDef);
+  }
+
+  public static exportMockDefinition(
+    mockDef: MockDefinition,
+    fileType: string
+  ): string {
+    switch (fileType) {
+      case 'yml':
+        return this.exportMockDefinitionAsYaml(mockDef);
+      case 'json':
+        return this.exportMockDefinitionAsJson(mockDef);
+      default:
+        throw new Error('Unsupported File Type');
+    }
   }
 }

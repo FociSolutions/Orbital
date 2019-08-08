@@ -13,36 +13,31 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     /// <summary>
     /// Class GetAllMockDefinitionHandler handles all requests to retrieve all mock definitions
     /// </summary>
-    public class GetAllMockDefinitionsHandler : IRequestHandler<GetAllMockDefinitionsCommand, List<MockDefinition>>
+    public class GetAllMockDefinitionsHandler : IRequestHandler<GetAllMockDefinitionsCommand, IEnumerable<MockDefinition>>
     {
-        private const string MOCKIDS = "mockids";
 
         private readonly IMemoryCache cache;
+        private readonly string mockIds;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public GetAllMockDefinitionsHandler(IMemoryCache cache)
+        public GetAllMockDefinitionsHandler(IMemoryCache cache, CommonData data)
         {
             this.cache = cache;
+            this.mockIds = data.mockIds;
         }
 
-        public Task<List<MockDefinition>> Handle(GetAllMockDefinitionsCommand request, CancellationToken cancellationToken)
+        public Task<IEnumerable<MockDefinition>> Handle(GetAllMockDefinitionsCommand request, CancellationToken cancellationToken)
         {
-            List<MockDefinition> MockDefinitionsList = new List<MockDefinition>();
-            cache.TryGetValue(MOCKIDS, out List<string> KeyList);
+            cache.TryGetValue(mockIds, out List<string> KeyList);
 
             if (KeyList == null)
             {
-                return Task.FromResult(MockDefinitionsList);
+                return Task.FromResult(new List<MockDefinition>() as IEnumerable<MockDefinition>);
             }
 
-            foreach (var md in KeyList)
-            {
-                MockDefinitionsList.Add(cache.Get<MockDefinition>(md));
-            }
-
-            return Task.FromResult(MockDefinitionsList);
+            return Task.FromResult(KeyList.Select(id => cache.Get<MockDefinition>(id)));
         }
     }
 }
