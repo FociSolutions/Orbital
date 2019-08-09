@@ -4,9 +4,12 @@ using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Filters;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Pipelines.Models.Examples;
+using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace Orbital.Mock.Server.Controllers
 {
@@ -36,6 +39,7 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="id"> The mock definition title</param>
         /// <returns>MockDefinition</returns>
         [HttpGet("{id}")]
+        [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples))]
         public ActionResult<MockDefinition> Get(string id)
         {
             var command = new GetMockDefinitionByTitleCommand(id);
@@ -49,6 +53,7 @@ namespace Orbital.Mock.Server.Controllers
         /// </summary>
         /// <returns>MockDefinition</returns>
         [HttpGet]
+        [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples))]
         public ActionResult<IEnumerable<MockDefinition>> GetAll()
         {
             var command = new GetAllMockDefinitionsCommand();
@@ -63,6 +68,7 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="mockDefinition">The mock defiition to save</param>
         /// <returns>CreatedResult containing uri to the created resource</returns>
         [HttpPost]
+        [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples))]
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
             var command = new SaveMockDefinitionCommand(mockDefinition);
@@ -89,6 +95,7 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="mockDefinition"></param>
         /// <returns></returns>
         [HttpPut]
+        [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples))]
         public IActionResult Put([FromBody]MockDefinition mockDefinition)
         {
             var command = new UpdateMockDefinitionByTitleCommand(mockDefinition);

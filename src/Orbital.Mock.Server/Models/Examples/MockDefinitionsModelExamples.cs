@@ -15,14 +15,15 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Models.Examples
 {
-    public class MockDefinitionsModelExamples : IExamplesProvider<MockDefinition>
+    public class MockDefinitionsModelExamples : IExamplesProvider
     {
+
 
         /// <summary>
         /// Created a json example to show when the server is fired up.
         /// </summary>
         /// <returns>A MockDefinition with different scenarios</returns>
-        public MockDefinition GetExamples()
+        public object GetExamples()
         {
             DateTime dateTime = new DateTime();
             List<Scenario> scenarios = new List<Scenario>();
@@ -97,8 +98,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 RequestMatchRules = new RequestMatchRules { HeaderRules = headersRules[2], QueryRules = queryRules[2], BodyRules = bodyRules[0] }
             });
 
-            return new MockDefinition
-            {
+            return new {
                 Host = "petstore.swagger.io",
                 BasePath = "/api",
                 Metadata = new MetadataInfo
@@ -106,9 +106,10 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                     Title = "Test Title",
                     Description = "Test Description"
                 },
-                OpenApi = new OpenApiDocument(),
+                OpenApi = JsonConvert.DeserializeObject(File.ReadAllText(@"Registrations\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json")),
                 Scenarios = scenarios
             };
+           
         }
     }
 }
