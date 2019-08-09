@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,13 @@ namespace Orbital.Mock.Server.Middleware
 
         private async Task<string> FormatRequest(HttpRequest request)
         {
-            throw new NotImplementedException();
+            var body = request.Body;
+            request.EnableRewind();
+            var buffer = new byte[Convert.ToInt32(request.ContentLength)];
+            await request.Body.ReadAsync(buffer, 0, buffer.Length);
+            var bodyAsText = Encoding.UTF8.GetString(buffer);
+            request.Body = body;
+            request
         }
 
         private async Task<string> FormatResponse(HttpResponse response)
