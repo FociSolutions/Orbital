@@ -121,12 +121,8 @@
           <textarea
             class="form-control"
             id="bodyrequestrule"
-            rows="{4}"
-            [value]="this.scenario.requestMatchRules.bodyRules[0].rule"
-            (change)="
-              this.scenario.requestMatchRules.bodyRules[0].rule =
-                $event.target.value
-            "
+            [value]="this.scenario.requestMatchRules.bodyRules[0].rule | json"
+            (change)="this.onBodyRuleEdit($event.target.value)"
           ></textarea>
         </div>
       </div>

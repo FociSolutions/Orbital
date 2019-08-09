@@ -44,7 +44,7 @@ export function newScenario(verb: VerbType, path: string): Scenario {
       bodyRules: [
         {
           type: BodyRuleType.BodyEquality,
-          rule: ''
+          rule: {}
         }
       ] as Array<BodyRule>
     }
