@@ -31,6 +31,7 @@ namespace Orbital.Mock.Server.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             var request = await FormatRequest(context.Request);
+            Log.Information("Outgoing Raw Request: {Request}", request);
 
             var originalBodyStream = context.Response.Body;
 
@@ -39,15 +40,9 @@ namespace Orbital.Mock.Server.Middleware
                 context.Response.Body = responseBody;
                 await next.Invoke(context);
                 var response = await FormatResponse(context.Response);
+                Log.Information("Incoming Raw Response: {Response}", response);
                 await responseBody.CopyToAsync(originalBodyStream);
             }
-
-            //Logic for request is coming in
-            //   Log.Information("Outgoing Raw Request: {Request}", context.Request.Body);
-            // Call the next delegate/middleware in the pipeline
-            //await next.Invoke(context);
-            //Logic for the response going back
-            // Log.Information("Incoming Raw Response: {Response}", context.Response);
         }
 
         private async Task<string> FormatRequest(HttpRequest request)
@@ -58,16 +53,19 @@ namespace Orbital.Mock.Server.Middleware
             await request.Body.ReadAsync(buffer, 0, buffer.Length);
             var bodyAsText = Encoding.UTF8.GetString(buffer);
             request.Body = body;
-            request
+            return $"{request.Scheme} {request.Host}{request.Path} {request.QueryString} {bodyAsText}";
         }
 
         private async Task<string> FormatResponse(HttpResponse response)
         {
-            throw new NotImplementedException();
+            response.Body.Seek(0, SeekOrigin.Begin);
+            string text = await new StreamReader(response.Body).ReadToEndAsync();
+            response.Body.Seek(0, SeekOrigin.Begin);
+            return $"{response.StatusCode}: {text}";
         }
 
 
     }
 
+    }
 
-}
