@@ -15,7 +15,7 @@ describe('EndpointsStore', () => {
     const acceptedVerbs = Object.keys(VerbType).map(verb => verb.toLowerCase());
     expect(endpointStore.state).toEqual([]);
     MockDefinition.toOpenApiSpec(petStore).then(doc => {
-      endpointStore.addEndpoints(doc);
+      endpointStore.setEndpoints(doc);
       for (const path of Object.keys(doc.paths)) {
         for (const verb of acceptedVerbs) {
           if (!!doc.paths[path][verb]) {
@@ -32,23 +32,5 @@ describe('EndpointsStore', () => {
       }
       done();
     });
-  });
-
-  it('should clear the state when clearStore is called', () => {
-    const store = new EndpointsStore();
-    const mockEndpoint = {
-      path: faker.internet.url(),
-      verb: faker.random.arrayElement([
-        VerbType.GET,
-        VerbType.DELETE,
-        VerbType.POST,
-        VerbType.PUT
-      ]),
-      spec: null
-    };
-    store.setState([mockEndpoint]);
-    expect(store.state).toEqual([mockEndpoint]);
-    store.clearStore();
-    expect(store.state).toEqual([]);
   });
 });
