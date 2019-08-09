@@ -25,8 +25,8 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
         public MockDefinition GetExamples()
         {
             DateTime dateTime = new DateTime();
+            List<Scenario> scenarios = new List<Scenario>();
 
-            //Using arrays
             IDictionary<string, string>[] headers = new Dictionary<string, string>[] 
             {
                 new Dictionary<string, string>(),
@@ -55,7 +55,6 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 new List<BodyRule>()
         };
 
-
             for (int i = 0; i < 2; i++)
             {
                 headers[i].Add("Date", dateTime.ToString());
@@ -75,8 +74,6 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 bodyRules[i].Add(new BodyRule { Rule = "Use Body Equality", Type = BodyRuleTypes.BodyEquality });
             }
 
-
-            List<Scenario> scenarios = new List<Scenario>();
             scenarios.Add(new Scenario() {Id ="id01", Metadata = new MetadataInfo{Title = "Scenario 1", Description = "Test Scenario 1" },
                 Verb = 0, Path = "/pets", Response = new MockResponse { Status = 0, Body = "Scenario 1", Headers = headers[0] },
                 RequestMatchRules = new RequestMatchRules {HeaderRules = headersRules[0], QueryRules = queryRules[0], BodyRules = bodyRules[0] }
@@ -99,7 +96,6 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Response = new MockResponse { Status = 200, Body = "Scenario 3", Headers = headers[2] },
                 RequestMatchRules = new RequestMatchRules { HeaderRules = headersRules[2], QueryRules = queryRules[2], BodyRules = bodyRules[0] }
             });
-
 
             return new MockDefinition
             {
