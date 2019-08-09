@@ -109,7 +109,6 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 OpenApi = JsonConvert.DeserializeObject(File.ReadAllText(@"Registrations\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json")),
                 Scenarios = scenarios
             };
-           
         }
     }
 }
