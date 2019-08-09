@@ -31,6 +31,7 @@ namespace Orbital.Mock.Server.Registrations
                 var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
                 var assemblyProduct = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>();
                 var assemblyDescription = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyDescriptionAttribute>();
+
                 o.MapType<OpenApiDocument>(() =>
                 {
                     using (var stringWriter = new StringWriter())
@@ -42,6 +43,7 @@ namespace Orbital.Mock.Server.Registrations
                         };
                     }
                 });
+                
                 foreach (var version in provider.ApiVersionDescriptions)
                 {
                     o.SwaggerDoc(version.GroupName, new Info()
@@ -50,15 +52,14 @@ namespace Orbital.Mock.Server.Registrations
                         Version = version.ApiVersion.ToString(),
                         Description = version.IsDeprecated ? $"{assemblyDescription.Description} - DEPRECATED" : assemblyDescription.Description
                     });
-
                 }
+
                 var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var path = Path.Combine(AppContext.BaseDirectory, file);
                 o.IncludeXmlComments(path);
                 o.ExampleFilters();
             });
             services.AddSwaggerExamplesFromAssemblyOf<MockDefinitionsModelExamples>();
-
         }
     }
 }
