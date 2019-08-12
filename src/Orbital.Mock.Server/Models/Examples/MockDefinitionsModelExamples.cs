@@ -54,7 +54,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 new List<BodyRule>()
         };
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 headers[i].Add("Date", dateTime.ToString());
                 headers[i].Add("Expires", "Tue, 22 Jan 2020 18:56:00 GMT");
@@ -93,7 +93,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Verb = 0,
                 Path = "/pets",
                 Response = new MockResponse { Status = 200, Body = "Scenario 3", Headers = headers[2] },
-                RequestMatchRules = new RequestMatchRules { HeaderRules = headersRules[2], QueryRules = queryRules[2], BodyRules = bodyRules[0] }
+                RequestMatchRules = new RequestMatchRules { HeaderRules = headersRules[2], QueryRules = queryRules[2], BodyRules = bodyRules[2] }
             });
 
             return new {
