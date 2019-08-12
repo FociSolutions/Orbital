@@ -32,18 +32,6 @@ namespace Orbital.Mock.Server.Registrations
                 var assemblyProduct = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>();
                 var assemblyDescription = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyDescriptionAttribute>();
 
-                o.MapType<OpenApiDocument>(() =>
-                {
-                    using (var stringWriter = new StringWriter())
-                    {
-                        var exampleObject = JsonConvert.DeserializeObject(File.ReadAllText(@"Registrations\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json"));
-                        return new Schema
-                        {
-                            Example = exampleObject
-                        };
-                    }
-                });
-                
                 foreach (var version in provider.ApiVersionDescriptions)
                 {
                     o.SwaggerDoc(version.GroupName, new Info()
