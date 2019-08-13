@@ -71,4 +71,11 @@ export class EndpointOverviewComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
+
+  /**
+   * Handles logic for exporting a mockservice file directly to the server
+   */
+  onServerExport() {
+    console.log('onExport click');
+  }
 }
