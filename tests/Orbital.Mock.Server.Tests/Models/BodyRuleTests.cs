@@ -45,32 +45,5 @@ namespace Orbital.Mock.Server.Tests.Models
             var input = new BodyRule(BodyRuleTypes.JsonPath, Target.Rule) as object;
             Assert.False(Target.Equals(input));
         }
-
-        [Fact]
-        public void BodyRuleIsMatchSuccessTest()
-        {
-            var Target = this.fakerBodyRule.Generate();
-            var input = Target.Rule.ToString();
-
-            Assert.True(Target.IsMatch(input));
-        }
-
-        [Fact]
-        public void BodyRuleIsMatchFailsValidJsonTest()
-        {
-            var Target = this.fakerBodyRule.Generate();
-            var input = "{}";
-
-            Assert.False(Target.IsMatch(input));
-        }
-
-        [Fact]
-        public void BodyRuleIsMatchFailsInvalidJsonTest()
-        {
-            var Target = this.fakerBodyRule.Generate();
-            var input = "";
-
-            Assert.False(Target.IsMatch(input));
-        }
     }
 }

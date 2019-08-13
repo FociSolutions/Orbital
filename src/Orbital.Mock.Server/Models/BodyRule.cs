@@ -25,24 +25,6 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("type")]
         public BodyRuleTypes Type { get; set; }
 
-        /// <summary>
-        /// Method returns true if the json string matches the Rule property
-        /// </summary>
-        /// <param name="json">The json string of the request body to match against</param>
-        /// <returns>True if the json in the string matches the Rule JObject, false otherwise</returns>
-        public bool IsMatch(string json)
-        {
-            try
-            {
-                var obj = JObject.Parse(json);
-                return JObject.DeepEquals(obj, this.Rule);
-            }
-            catch (JsonReaderException e)
-            {
-                return JObject.DeepEquals(new JObject(), this.Rule);
-            }
-        }
-
         public override bool Equals(object obj)
         {
             return Equals(obj as BodyRule);
