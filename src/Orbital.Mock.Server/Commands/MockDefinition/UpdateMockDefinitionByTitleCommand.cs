@@ -11,6 +11,7 @@ namespace Orbital.Mock.Server.MockDefinitions.Commands
     /// <summary>
     /// Request to update a mock definition by its title
     /// </summary>
+
     [ExcludeFromCodeCoverage]
     public class UpdateMockDefinitionByTitleCommand : IRequest<MockDefinition>
     {

@@ -57,6 +57,7 @@ namespace Orbital.Mock.Server
                 processor.Start();
                 return processor;
             });
+
             services.AddSingleton<CommonData>();
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
@@ -91,6 +92,7 @@ namespace Orbital.Mock.Server
                 }
             });
 
+            app.UseMiddleware<LoggingRequestResponseMiddleware>();
             app.UseMiddleware<ServerRequestMiddleware>();
             app.UseMvc();
         }

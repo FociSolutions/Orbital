@@ -5,6 +5,7 @@ using Newtonsoft.Json.Converters;
 using Orbital.Mock.Server.Filters;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
+using Serilog;
 using Orbital.Mock.Server.Pipelines.Models.Examples;
 using Swashbuckle.AspNetCore.Filters;
 using System;
@@ -45,6 +46,7 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new GetMockDefinitionByTitleCommand(id);
             var result = this.mediator.Send(command).Result;
+            Log.Information("OrbitalAdminController: Sent HTTPGet Command for MockDefinition on id: {Id}", id);
             return result;
 
         }
@@ -59,8 +61,8 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new GetAllMockDefinitionsCommand();
             var result = this.mediator.Send(command).Result;
+            Log.Information("OrbitalAdminController: Sent HTTPGet Command for all MockDefinitions");
             return result.ToList();
-
         }
 
         /// <summary>
@@ -68,12 +70,14 @@ namespace Orbital.Mock.Server.Controllers
         /// </summary>
         /// <param name="mockDefinition">The mock defiition to save</param>
         /// <returns>CreatedResult containing uri to the created resource</returns>
+
         [HttpPost]
         [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
             var command = new SaveMockDefinitionCommand(mockDefinition);
             this.mediator.Send(command).Wait();
+            Log.Information("OrbitalAdminController: Sent HTTPPost Command to save Mockdefinition, {MockDefinition}", mockDefinition.Metadata.Title);
             return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
         }
 
@@ -87,6 +91,7 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new DeleteMockDefinitionByTitleCommand(id);
             this.mediator.Send(command).Wait();
+            Log.Information("OrbitalAdminController: Sent HTTPDelete Command to delete Mockdefinition on id: {Id}", id);
             return Ok();
         }
 
@@ -105,6 +110,7 @@ namespace Orbital.Mock.Server.Controllers
             {
                 return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
             }
+            Log.Information("OrbitalAdminController: Sent HTTPut Command to update Mockdefinition, {MockDefinition}", mockDefinition.Metadata.Title);
             return Ok();
         }
     }
