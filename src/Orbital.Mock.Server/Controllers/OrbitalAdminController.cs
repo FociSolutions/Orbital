@@ -76,7 +76,7 @@ namespace Orbital.Mock.Server.Controllers
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
             var command = new SaveMockDefinitionCommand(mockDefinition);
-            this.mediator.Send(command).Wait(); Log.Information("OrbitalAdminController: Sent HTTPPost Command to save Mockdefinition");
+            this.mediator.Send(command).Wait(); Log.Information("OrbitalAdminController: Sent HTTPPost Command to save Mockdefinition, {MockDefinition}", mockDefinition);
             return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
         }
 
@@ -109,7 +109,7 @@ namespace Orbital.Mock.Server.Controllers
             {
                 return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
             }
-            Log.Information("OrbitalAdminController: Sent HTTPut Command to update Mockdefinition");
+            Log.Information("OrbitalAdminController: Sent HTTPut Command to update Mockdefinition, {MockDefinition}", mockDefinition);
             return Ok();
         }
     }
