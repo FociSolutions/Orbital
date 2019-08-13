@@ -9,6 +9,7 @@ import {
   newScenario
 } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { AppStore } from 'src/app/store/app-store';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-endpoint-overview',
@@ -27,6 +28,7 @@ export class EndpointOverviewComponent implements OnInit {
     private mockDefinitionStore: MockDefinitionStore,
     private endpointsStore: EndpointsStore,
     private router: Router,
+    private http: HttpClient,
     private app: AppStore
   ) {
     this.mockDefinitionStore.state$.subscribe(mockDefinition => {
