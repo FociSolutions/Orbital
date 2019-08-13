@@ -1,13 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditScenarioComponent } from './edit-scenario.component';
 import { KeyValueListComponent } from './key-value-list/key-value-list.component';
-import {
-  newScenario,
-  Scenario
-} from 'src/app/models/mock-definition/scenario/scenario.model';
+import { newScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
 import { AppStore } from 'src/app/store/app-store';
 import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
+import * as faker from 'faker';
 
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -83,5 +81,31 @@ describe('EditScenarioComponent.onBodyRuleEdit', () => {
     component = fixture.componentInstance;
     component.scenarioInput = newScenario(VerbType.GET, '/pets');
     fixture.detectChanges();
+  });
+
+  it('Should update body rule object when given valid JSON string', () => {
+    const expectedObj = new Object();
+    for (let x = 0; x < 10; x++) {
+      expectedObj[faker.random.word()] = faker.random.words();
+    }
+    component.onBodyRuleEdit(JSON.stringify(expectedObj));
+    expect(component.scenario.requestMatchRules.bodyRules[0].rule).toEqual(
+      expectedObj
+    );
+  });
+
+  it('Should not update the body rule object when given an invalid JSON string', () => {
+    const expectedObj = new Object();
+    for (let x = 0; x < 10; x++) {
+      expectedObj[faker.random.word()] = faker.random.words();
+    }
+    component.onBodyRuleEdit(JSON.stringify(expectedObj));
+    expect(component.scenario.requestMatchRules.bodyRules[0].rule).toEqual(
+      expectedObj
+    );
+    component.onBodyRuleEdit('{Invalid Json string');
+    expect(component.scenario.requestMatchRules.bodyRules[0].rule).toEqual(
+      expectedObj
+    );
   });
 });
