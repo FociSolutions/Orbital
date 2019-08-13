@@ -9,7 +9,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     internal interface IPathValidationPort
     {
         string Path { get; set; }
-
         HttpMethod Verb { get; set; }
+
     }
 }

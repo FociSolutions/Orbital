@@ -8,6 +8,7 @@ using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Ports;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -115,6 +116,8 @@ namespace Orbital.Mock.Server.Pipelines
                 input.QueryDictionary == null ||
                 input.Scenarios == null)
             {
+                var error = "One or more of the Message Processor Inputs is null";
+                Log.Error("MockServerProcessor Error: {Error}", error);
                 return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             }
 
@@ -124,6 +127,7 @@ namespace Orbital.Mock.Server.Pipelines
             {
                 Body = reader.ReadToEnd();
             }
+
 
             Enum.TryParse<HttpMethod>(input.ServerHttpRequest.Method, true, out HttpMethod verb);
 
@@ -148,6 +152,7 @@ namespace Orbital.Mock.Server.Pipelines
             if (port == null)
             {
                 var error = "Pipeline port cannot be null";
+                Log.Error("MockServerProcessor Error: {Error}", error);
                 return new MockResponse { Status = 400, Body = error, Headers = new Dictionary<string, string>() };
             }
 
@@ -174,10 +179,12 @@ namespace Orbital.Mock.Server.Pipelines
                     }
                 }
             }
-            catch (AggregateException)
+            catch (AggregateException e)
             {
+                Log.Warning(e, "MockServiceProcessor unable to shutdown gracefully");
                 return false;
             }
+            Log.Information("MockserviceProcessor has shutdown successfully");
             return true;
         }
         #region IDisposable Support

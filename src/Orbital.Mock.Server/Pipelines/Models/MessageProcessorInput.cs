@@ -19,6 +19,7 @@ namespace Orbital.Mock.Server.Pipelines.Models
         public IDictionary<string, string> QueryDictionary { get; }
 
         public MessageProcessorInput(HttpRequest serverHttpRequest, IEnumerable<Scenario> scenarios)
+
         {
             this.ServerHttpRequest = serverHttpRequest;
             this.Scenarios = scenarios;
@@ -27,4 +28,3 @@ namespace Orbital.Mock.Server.Pipelines.Models
         }
     }
 }
-

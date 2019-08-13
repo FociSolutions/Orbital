@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Internal;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,13 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// </summary>
         /// <param name="port">The port containing necessary data</param>
         /// <returns>Port containing processed data</returns>
+
         public override T Process(T port)
         {
             if (!IsPortValid(port, out port))
             {
+                var error = "Pipeline port is not valid";
+                Log.Error("QueryMatchFilter Error: {Error}", error);
                 return port;
             }
 
