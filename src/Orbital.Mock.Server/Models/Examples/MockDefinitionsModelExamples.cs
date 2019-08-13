@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Registrations;
 using Swashbuckle.AspNetCore.Filters;
@@ -26,14 +27,14 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
             DateTime dateTime = new DateTime();
             List<Scenario> scenarios = new List<Scenario>();
 
-            IDictionary<string, string>[] headers = new Dictionary<string, string>[] 
+            IDictionary<string, string>[] headers = new Dictionary<string, string>[]
             {
                 new Dictionary<string, string>(),
                 new Dictionary<string, string>(),
                 new Dictionary<string, string>()
             };
 
-            IDictionary<string, string>[] headersRules = new Dictionary<string, string>[] 
+            IDictionary<string, string>[] headersRules = new Dictionary<string, string>[]
             {
                 new Dictionary<string, string>(),
                 new Dictionary<string, string>(),
@@ -47,7 +48,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 new Dictionary<string, string>()
             };
 
-            ICollection<BodyRule>[] bodyRules = new List<BodyRule>[] 
+            ICollection<BodyRule>[] bodyRules = new List<BodyRule>[]
             {
                 new List<BodyRule>(),
                 new List<BodyRule>(),
@@ -68,14 +69,19 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 queryRules[i].Add("alt", "json");
                 queryRules[i].Add("prettyPrint", "true");
 
-                bodyRules[i].Add(new BodyRule { Rule = "Use Json Schema", Type = BodyRuleTypes.JsonSchema });
-                bodyRules[i].Add(new BodyRule { Rule = "Use Json Path", Type = BodyRuleTypes.JsonPath });
-                bodyRules[i].Add(new BodyRule { Rule = "Use Body Equality", Type = BodyRuleTypes.BodyEquality });
+                bodyRules[i].Add(new BodyRule { Rule = JObject.FromObject(new { ruleType = "Use Json Schema" }), Type = BodyRuleTypes.JsonSchema });
+                bodyRules[i].Add(new BodyRule { Rule = JObject.FromObject(new { ruleType = "Use Json Path" }), Type = BodyRuleTypes.JsonPath });
+                bodyRules[i].Add(new BodyRule { Rule = JObject.FromObject(new { ruleType = "Use Body Equality" }), Type = BodyRuleTypes.BodyEquality });
             }
 
-            scenarios.Add(new Scenario() {Id ="id01", Metadata = new MetadataInfo{Title = "Scenario 1", Description = "Test Scenario 1" },
-                Verb = 0, Path = "/pets", Response = new MockResponse { Status = 0, Body = "Scenario 1", Headers = headers[0] },
-                RequestMatchRules = new RequestMatchRules {HeaderRules = headersRules[0], QueryRules = queryRules[0], BodyRules = bodyRules[0] }
+            scenarios.Add(new Scenario()
+            {
+                Id = "id01",
+                Metadata = new MetadataInfo { Title = "Scenario 1", Description = "Test Scenario 1" },
+                Verb = 0,
+                Path = "/pets",
+                Response = new MockResponse { Status = 0, Body = "Scenario 1", Headers = headers[0] },
+                RequestMatchRules = new RequestMatchRules { HeaderRules = headersRules[0], QueryRules = queryRules[0], BodyRules = bodyRules[0] }
             });
             scenarios.Add(new Scenario()
             {
@@ -96,7 +102,8 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 RequestMatchRules = new RequestMatchRules { HeaderRules = headersRules[2], QueryRules = queryRules[2], BodyRules = bodyRules[2] }
             });
 
-            return new {
+            return new
+            {
                 Host = "petstore.swagger.io",
                 BasePath = "/api",
                 Metadata = new MetadataInfo

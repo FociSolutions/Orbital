@@ -27,6 +27,23 @@ export class EditScenarioComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  /**
+   * Attempts to parse a string into JSON and set the body rule to the JSON object
+   * representation. If the string fails to parse to JSON it logs the error in console
+   * and does nothing
+   * @param rule The string to try and parse into a JSON
+   */
+  onBodyRuleEdit(rule: string) {
+    try {
+      this.scenario.requestMatchRules.bodyRules[0].rule = JSON.parse(rule);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  /**
+   * Function that saves the changes made to the scenario by updating the mockDefinitionStore
+   */
   onSave() {
     let scenarios = this.mockDefinitionStore.state.scenarios;
     const index = scenarios.findIndex(s => s.id === this.scenario.id);
@@ -60,6 +77,9 @@ export class EditScenarioComponent implements OnInit {
     this.app.showEditor = false;
   }
 
+  /**
+   * Exposing the enums for use in template
+   */
   get BodyRuleTypes() {
     return BodyRuleType;
   }

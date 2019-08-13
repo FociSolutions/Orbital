@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
@@ -17,9 +18,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
         public BodyMatchFilterTest()
         {
+            var fakerJObject = new Faker<JObject>()
+                            .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
-                .RuleFor(m => m.Rule, f => f.Random.String());
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
             this.scenarioFaker = new Faker<Scenario>()
@@ -43,7 +45,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             var Target = new BodyMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Body = input.Body }).BodyMatch;
+            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Body = input.Body.ToString() }).BodyMatch;
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.Equal(Expected, Actual);
@@ -58,7 +60,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = ""
+                Body = "{}"
             };
 
             #endregion
@@ -70,6 +72,5 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             Assert.NotEqual(Expected, Actual);
         }
-
     }
 }

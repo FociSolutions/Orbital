@@ -11,6 +11,7 @@ import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { componentFactoryName } from '@angular/compiler';
 
 describe('EditScenarioComponent', () => {
   let component: EditScenarioComponent;
@@ -64,3 +65,27 @@ describe('EditScenarioComponent', () => {
     expect(appStore.showEditor).toBeFalsy();
   });
 });
+
+describe('EditScenarioComponent.onBodyRuleEdit', () => {
+  let component: EditScenarioComponent;
+  let fixture: ComponentFixture<EditScenarioComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [BrowserAnimationsModule, ToastrModule.forRoot()],
+      declarations: [EditScenarioComponent, KeyValueListComponent],
+      providers: [AppStore, MockDefinitionStore, ToastrService]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EditScenarioComponent);
+    component = fixture.componentInstance;
+    component.scenarioInput = newScenario(VerbType.GET, '/pets');
+    fixture.detectChanges();
+  });
+
+  it('should update when given valid json') {
+    const mockBody = { value:'test' };
+  }
+})

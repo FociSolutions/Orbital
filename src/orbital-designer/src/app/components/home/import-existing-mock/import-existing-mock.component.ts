@@ -32,7 +32,7 @@ export class ImportExistingMockComponent implements OnInit {
     try {
       const mockDefinition = await this.fileParser.readMockDefinition(file);
       this.mockDefinitionStore.setState(mockDefinition);
-      this.endpointsStore.addEndpoints(mockDefinition.openApi);
+      this.endpointsStore.setEndpoints(mockDefinition.openApi);
       this.router.navigate(['/EndpointOverview']);
       this.showError = false;
     } catch (err) {
