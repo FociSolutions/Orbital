@@ -84,8 +84,4 @@ describe('EditScenarioComponent.onBodyRuleEdit', () => {
     component.scenarioInput = newScenario(VerbType.GET, '/pets');
     fixture.detectChanges();
   });
-
-  it('should update when given valid json') {
-    const mockBody = { value:'test' };
-  }
-})
+});
