@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using Serilog;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
@@ -38,7 +35,9 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                     .ToList();
             }
             catch (JsonReaderException e)
-            { }
+            {
+                Log.Information("Unable to parse request body to JSON, {Body}", port.Body);
+            }
 
             return port;
         }
