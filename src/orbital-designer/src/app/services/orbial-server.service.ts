@@ -7,5 +7,5 @@ import { HttpClient } from '@angular/common/http';
 export class OrbialServerService {
   apiURL = 'https://localhost:5001/api/v1/OrbitalAdmin';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private http: HttpClient) {}
 }
