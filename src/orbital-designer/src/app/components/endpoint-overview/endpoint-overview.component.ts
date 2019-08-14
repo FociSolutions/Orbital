@@ -17,12 +17,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./endpoint-overview.component.scss']
 })
 export class EndpointOverviewComponent implements OnInit {
-  // This is just a placeholder to show component toggle
-  shouldShowOverview = true;
-  mockDefinition: MockDefinition;
-  endpoints: Endpoint[];
-  selectedEndpoint: Endpoint;
-  selectedScenario: Scenario;
 
   constructor(
     private mockDefinitionStore: MockDefinitionStore,
@@ -44,6 +38,18 @@ export class EndpointOverviewComponent implements OnInit {
     });
     this.app.selectedEndpoint = this.endpoints[0];
   }
+  // This is just a placeholder to show component toggle
+  shouldShowOverview = true;
+  mockDefinition: MockDefinition;
+  endpoints: Endpoint[];
+  selectedEndpoint: Endpoint;
+  selectedScenario: Scenario;
+
+  /**
+   * Handles logic for exporting a mockservice file directly to the server
+   */
+
+  tcode: string;
 
   ngOnInit() {}
 
@@ -78,12 +84,6 @@ export class EndpointOverviewComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
-
-  /**
-   * Handles logic for exporting a mockservice file directly to the server
-   */
-
-  tcode : string;
   onServerExport() {
     console.log('onExport click');
 
@@ -95,17 +95,17 @@ export class EndpointOverviewComponent implements OnInit {
           'Content-Type': 'application/json'
         })
       }).subscribe(resp => {
-        alert("The export has been sent successfully!");
+        alert('The export has been sent successfully!');
 
         // this is a hotfix and should be converted to use Angular-bindings instead
-        var element = document.getElementById("CloseButton") as any;
+        const element = document.getElementById('CloseButton') as any;
         element.click();
         console.log(resp);
       }, error => {
         // the window is not closed when there is an error in-case the user mistyped the url
-        alert("An error has occured and the export could not be completed with status: " + error.status);
+        alert('An error has occured and the export could not be completed with status: ' + error.status);
       });
   }
 
-  
-};
+
+}
