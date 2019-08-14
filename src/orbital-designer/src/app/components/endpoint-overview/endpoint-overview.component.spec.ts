@@ -16,6 +16,7 @@ import { KeyValueListComponent } from '../edit-scenario/key-value-list/key-value
 import { Router } from '@angular/router';
 import { AppStore } from 'src/app/store/app-store';
 import { ScenarioViewComponent } from '../scenario-overview/scenario-view/scenario-view.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('EndpointOverviewComponent', () => {
   let component: EndpointOverviewComponent;
@@ -35,7 +36,7 @@ describe('EndpointOverviewComponent', () => {
         ScenarioDetailsComponent,
         KeyValueListComponent
       ],
-      imports: [RouterTestingModule, NbCardModule],
+      imports: [RouterTestingModule, NbCardModule, HttpClientTestingModule],
       providers: [EndpointsStore, MockDefinitionStore, AppStore]
     }).compileComponents();
   }));
