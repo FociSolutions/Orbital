@@ -95,9 +95,15 @@ export class EndpointOverviewComponent implements OnInit {
           'Content-Type': 'application/json'
         })
       }).subscribe(resp => {
+        alert("The export has been sent successfully!");
+
+        // this is a hotfix and should be converted to use Angular-bindings instead
+        var element = document.getElementById("CloseButton") as any;
+        element.click();
         console.log(resp);
       }, error => {
-        console.log("An error has occured and the export could not be completed with status: " + error.status);
+        // the window is not closed when there is an error in-case the user mistyped the url
+        alert("An error has occured and the export could not be completed with status: " + error.status);
       });
   }
 
