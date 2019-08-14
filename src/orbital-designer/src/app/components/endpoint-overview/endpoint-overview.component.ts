@@ -87,17 +87,18 @@ export class EndpointOverviewComponent implements OnInit {
   onServerExport() {
     console.log('onExport click');
 
-  this.http
-.post(this.tcode, this.exportMockDefinition(), {
-  headers: new HttpHeaders({
-    'Access-Control-Allow-Methods': 'GET, POST',
-    'Access-Control-Allow-Origin': '*'
-  })
-}).subscribe(resp => {
-  console.log(resp);
-});
-
-    console.log(this.tcode);
+    this.http
+      .post(this.tcode, this.exportMockDefinition(), {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Methods': 'GET, POST',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        })
+      }).subscribe(resp => {
+        console.log(resp);
+      }, error => {
+        console.log("An error has occured and the export could not be completed with status: " + error.status);
+      });
   }
 
   
