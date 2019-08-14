@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OrbialServerService } from './orbial-server.service';
+import { OrbitalServerService } from './orbital-server.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 
-describe('OrbialServerService', () => {
+describe('OrbitalServerService', () => {
   beforeEach(() => TestBed.configureTestingModule({imports: [HttpClientTestingModule]}));
 
   it('should be created', () => {
-    const service: OrbialServerService = TestBed.get(OrbialServerService);
+    const service: OrbitalServerService = TestBed.get(OrbitalServerService);
     expect(service).toBeTruthy();
   });
 });
