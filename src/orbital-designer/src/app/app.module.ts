@@ -66,9 +66,7 @@ import { ToastrModule } from 'ngx-toastr';
     NbLayoutModule,
     NbEvaIconsModule,
     NbButtonModule,
-    NbCardModule,
-    HttpClient,
-    HttpHeaders
+    NbCardModule
   ],
   providers: [MockDefinitionStore, EndpointsStore, AppStore, HttpClientModule],
   bootstrap: [AppComponent]
