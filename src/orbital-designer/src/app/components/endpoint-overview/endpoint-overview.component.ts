@@ -9,7 +9,7 @@ import {
   newScenario
 } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { AppStore } from 'src/app/store/app-store';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-endpoint-overview',
@@ -51,8 +51,7 @@ export class EndpointOverviewComponent implements OnInit {
    * Handle onClick event for export mock file button
    */
   onExportClicked() {
-    const content = MockDefinition.exportMockDefinition(this.mockDefinition);
-    const blob = new Blob([content]);
+    const blob = this.exportMockDefinition();
     const a = document.createElement('a');
     a.download = this.mockDefinition.metadata.title + `.mock.json`;
     a.href = URL.createObjectURL(blob);
@@ -61,6 +60,12 @@ export class EndpointOverviewComponent implements OnInit {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  }
+
+  private exportMockDefinition() {
+    const content = MockDefinition.exportMockDefinition(this.mockDefinition);
+    const blob = new Blob([content]);
+    return blob;
   }
 
   /**
@@ -77,7 +82,23 @@ export class EndpointOverviewComponent implements OnInit {
   /**
    * Handles logic for exporting a mockservice file directly to the server
    */
+
+  tcode : string;
   onServerExport() {
     console.log('onExport click');
+
+  this.http
+.post(this.tcode, this.exportMockDefinition(), {
+  headers: new HttpHeaders({
+    'Access-Control-Allow-Methods': 'GET, POST',
+    'Access-Control-Allow-Origin': '*'
+  })
+}).subscribe(resp => {
+  console.log(resp);
+});
+
+    console.log(this.tcode);
   }
-}
+
+  
+};

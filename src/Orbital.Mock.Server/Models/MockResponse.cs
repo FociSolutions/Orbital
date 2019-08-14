@@ -26,6 +26,9 @@ namespace Orbital.Mock.Server.Models
                 Headers = new Dictionary<string, string>();
             }
 
+            Headers.Add("Access-Control-Allow-Origin", "*");
+            Headers.Add("Access-Control-Allow-Methods", "GET, POST");
+
             this.Status = Status;
             this.Body = Body;
             this.Headers = Headers;
