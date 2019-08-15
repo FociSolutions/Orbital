@@ -22,10 +22,9 @@ namespace Orbital.Mock.Server.IntegrationTests
             try
             {
                 var mockDefinitionTokens = JArray.Parse(content);
-
-                foreach (var mocdDefinitionToken in mockDefinitionTokens)
+                foreach (var mockDefinitionToken in mockDefinitionTokens)
                 {
-                    var mockId = mocdDefinitionToken.SelectToken("metadata.title").ToString();
+                    var mockId = mockDefinitionToken.SelectToken("metadata.title").ToString();
                     client.DeleteAsync($"{CommonData.ServerBaseUri}/{mockId}").Wait();
                 }
             }
