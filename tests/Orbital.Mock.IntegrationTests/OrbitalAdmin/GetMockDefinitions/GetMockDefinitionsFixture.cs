@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using Xunit;
 
-[assembly: LightBddScope]
 namespace Orbital.Mock.Server.IntegrationTests.OrbitalAdmin.GetMockDefinitions
 {
     public partial class GetMockDefinitions_Feature : FeatureFixture
