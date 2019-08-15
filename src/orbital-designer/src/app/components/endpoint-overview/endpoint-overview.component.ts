@@ -17,7 +17,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./endpoint-overview.component.scss']
 })
 export class EndpointOverviewComponent implements OnInit {
-
   constructor(
     private mockDefinitionStore: MockDefinitionStore,
     private endpointsStore: EndpointsStore,
@@ -85,8 +84,6 @@ export class EndpointOverviewComponent implements OnInit {
     }
   }
   onServerExport() {
-    console.log('onExport click');
-
     this.http
       .post(this.tcode, this.exportMockDefinition(), {
         headers: new HttpHeaders({
@@ -94,18 +91,20 @@ export class EndpointOverviewComponent implements OnInit {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json'
         })
-      }).subscribe(resp => {
-        alert('The export has been sent successfully!');
-
-        // this is a hotfix and should be converted to use Angular-bindings instead
-        const element = document.getElementById('CloseButton') as any;
-        element.click();
-        console.log(resp);
-      }, error => {
-        // the window is not closed when there is an error in-case the user mistyped the url
-        alert('An error has occured and the export could not be completed with status: ' + error.status);
-      });
+      })
+      .subscribe(
+        resp => {
+          alert('The export has been sent successfully!');
+          const element = document.getElementById('CloseButton') as any;
+          element.click();
+        },
+        error => {
+          // the window is not closed when there is an error in-case the user mistyped the url
+          alert(
+            'An error has occurred and the export could not be completed with status: ' +
+              error.status
+          );
+        }
+      );
   }
-
-
 }
