@@ -4,12 +4,9 @@ import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 import { EndpointsStore } from 'src/app/store/endpoints-store';
 import { Router } from '@angular/router';
 import { Endpoint } from 'src/app/models/endpoint.model';
-import {
-  Scenario,
-  newScenario
-} from 'src/app/models/mock-definition/scenario/scenario.model';
+import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { AppStore } from 'src/app/store/app-store';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { OrbitalServerService } from 'src/app/services/orbital-server.service';
 
 @Component({
   selector: 'app-endpoint-overview',
@@ -21,7 +18,7 @@ export class EndpointOverviewComponent implements OnInit {
     private mockDefinitionStore: MockDefinitionStore,
     private endpointsStore: EndpointsStore,
     private router: Router,
-    private http: HttpClient,
+    private orbitalService: OrbitalServerService,
     private app: AppStore
   ) {
     this.mockDefinitionStore.state$.subscribe(mockDefinition => {
@@ -84,14 +81,8 @@ export class EndpointOverviewComponent implements OnInit {
     }
   }
   onServerExport() {
-    this.http
-      .post(this.tcode, this.exportMockDefinition(), {
-        headers: new HttpHeaders({
-          'Access-Control-Allow-Methods': 'GET, POST',
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json'
-        })
-      })
+    this.orbitalService
+      .onServerExport(this.tcode, this.exportMockDefinition())
       .subscribe(
         resp => {
           alert('The export has been sent successfully!');
