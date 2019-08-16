@@ -185,7 +185,6 @@ namespace Orbital.Mock.Server.Pipelines
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private IPipeline<MessageProcessorInput, Task<MockResponse>> pipelineImplementation;
 
         protected virtual void Dispose(bool disposing)
         {
