@@ -1,11 +1,10 @@
-﻿using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
+﻿using Orbital.Mock.Server.Pipelines.Envelopes;
+using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Orbital.Mock.Server.Pipelines.Factories.Bases;
 using Orbital.Mock.Server.Pipelines.Ports;
-using Orbital.Mock.Server.Pipelines.Envelopes;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 namespace Orbital.Mock.Server.Pipelines.Factories
@@ -15,10 +14,9 @@ namespace Orbital.Mock.Server.Pipelines.Factories
     {
         public SyncBlockFactory() : base()
         {
-                
         }
 
-        public SyncBlockFactory(CancellationTokenSource cancellationTokenSource) :base(cancellationTokenSource)
+        public SyncBlockFactory(CancellationTokenSource cancellationTokenSource) : base(cancellationTokenSource)
         {
             this.CancellationTokenSource = cancellationTokenSource;
         }

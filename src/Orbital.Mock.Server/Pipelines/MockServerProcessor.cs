@@ -24,18 +24,13 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly SyncBlockFactory blockFactory;
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
-
-
         private readonly HeaderMatchFilter<ProcessMessagePort> headerMatchFilter;
         private readonly ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter;
         private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
         private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
-
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
-
-
 
 
         public MockServerProcessor()
@@ -71,7 +66,6 @@ namespace Orbital.Mock.Server.Pipelines
         public void Start()
         {
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
             //Initialize blocks
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process, cancellationTokenSource);
@@ -146,17 +140,16 @@ namespace Orbital.Mock.Server.Pipelines
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
-            var envelope = new SyncEnvelope(completionSource, port);
+            var envelope = new SyncEnvelope(completionSource, port, token);
 
             this.startBlock.Post(envelope);
-
             port = await completionSource.Task;
 
             if (port == null)
             {
                 var error = "Pipeline port cannot be null";
                 Log.Error("MockServerProcessor Error: {Error}", error);
-                return new MockResponse { Status = 400, Body = error, Headers = new Dictionary<string, string>() };
+                return new MockResponse { Status = 500, Body = error, Headers = new Dictionary<string, string>() };
             }
 
             if (port.IsFaulted)
@@ -178,6 +171,8 @@ namespace Orbital.Mock.Server.Pipelines
                     this.startBlock.Complete();
                     endBlock?.Completion.Wait();
                 }
+
+                this.cancellationTokenSource.Cancel();
             }
             catch (AggregateException e)
             {
