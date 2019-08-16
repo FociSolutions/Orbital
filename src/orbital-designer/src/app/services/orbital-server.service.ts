@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrbitalServerService {
-  apiURL = 'https://localhost:5001/api/v1/OrbitalAdmin';
-
   constructor(private http: HttpClient) {}
+  onServerExport(uri: string, mockDefinition: Blob) {
+    return this.http.post(uri, mockDefinition, {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Methods': 'GET, POST',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      })
+    });
+  }
 }
