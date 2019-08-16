@@ -128,7 +128,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(null, cancellationToken).Result;
-            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = emptyHeadersWithAllowAllCors };
+            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             Assert.Equal(Expected, Actual);
         }
 
@@ -141,7 +141,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
-            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = emptyHeadersWithAllowAllCors };
+            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             Assert.Equal(Expected, Actual);
         }
 
@@ -156,7 +156,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
-            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = emptyHeadersWithAllowAllCors };
+            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             Assert.Equal(Expected, Actual);
         }
 
@@ -170,7 +170,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
-            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = emptyHeadersWithAllowAllCors};
+            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             Assert.Equal(Expected, Actual);
         }
 
