@@ -14,7 +14,6 @@ trigger:
       
 variables:
   buildConfiguration: 'Release'
-  disable.coverage.autogenerate: 'true'
 
 steps:
 
