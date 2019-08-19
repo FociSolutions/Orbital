@@ -40,6 +40,11 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 .ToList();
 
             // always choose the first scenario if there are multiple valid options
+            if (selectedScenarios.Count > 1)
+            {
+                Log.Logger.Warning("There were {Count} potential valid scenarios, but only the first one was chosen.", selectedScenarios.Count);
+            }
+
             port.SelectedResponse = selectedScenarios[0].Response;
             return port;
         }
