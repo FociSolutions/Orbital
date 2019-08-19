@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace Orbital.Mock.Server.Pipelines.Models
 {
@@ -19,12 +20,15 @@ namespace Orbital.Mock.Server.Pipelines.Models
         public IDictionary<string, string> QueryDictionary { get; }
 
         public MessageProcessorInput(HttpRequest serverHttpRequest, IEnumerable<Scenario> scenarios)
-
         {
             this.ServerHttpRequest = serverHttpRequest;
             this.Scenarios = scenarios;
-            this.HeaderDictionary = serverHttpRequest == null ? new Dictionary<string, string>() : serverHttpRequest.Headers.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
-            this.QueryDictionary = serverHttpRequest == null ? new Dictionary<string, string>() : serverHttpRequest.Query.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+            this.HeaderDictionary = serverHttpRequest == null
+                ? new Dictionary<string, string>()
+                : serverHttpRequest.Headers.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+            this.QueryDictionary = serverHttpRequest == null
+                ? new Dictionary<string, string>()
+                : serverHttpRequest.Query.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
         }
     }
 }
