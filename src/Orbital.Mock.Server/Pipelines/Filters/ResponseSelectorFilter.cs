@@ -39,8 +39,8 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 .Select(id => port.Scenarios.First(scenario => scenario.Id == id))
                 .ToList();
 
-            Random random = new Random();
-            port.SelectedResponse = selectedScenarios[random.Next(selectedScenarios.Count)].Response;
+            // always choose the first scenario if there are multiple valid options
+            port.SelectedResponse = selectedScenarios[0].Response;
             return port;
         }
     }
