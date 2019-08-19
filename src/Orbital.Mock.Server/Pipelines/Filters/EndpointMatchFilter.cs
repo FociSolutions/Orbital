@@ -20,17 +20,12 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <returns>Port containing processed data</returns>
         public override T Process(T port)
         {
-            if (!IsPortValid(port, out port))
-            {
-                var error = "Pipeline port is not valid";
-                Log.Error("EndpointMatchFilter Error: {Error}", error);
-                return port;
-            }
+            if (!IsPipelineValid(ref port, GetType())) return port;
 
             var path = port.Path;
             var verb = port.Verb;
             var rx = new Regex($"{path}$");
-            var scenarioList = port.Scenarios.Where(s => s.Verb == port.Verb && rx.IsMatch(s.Path));
+            var scenarioList = port.Scenarios.Where(s => s.Verb == verb && rx.IsMatch(s.Path));
 
             port.Scenarios = scenarioList.ToList();
             return port;
