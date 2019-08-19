@@ -14,10 +14,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class BodyMatchFilterTest
     {
-        private Faker<Scenario> scenarioFaker;
+        private readonly Faker<Scenario> scenarioFaker;
 
         public BodyMatchFilterTest()
         {
+            Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var fakerJObject = new Faker<JObject>()
                             .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
             var fakerBodyRule = new Faker<BodyRule>()

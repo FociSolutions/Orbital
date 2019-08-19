@@ -14,14 +14,15 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using Orbital.Mock.Server.Tests.Pipelines.Filters;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Pipelines
 {
     public class MockServerProcessorTests
     {
-        private Faker<Scenario> fakerScenario;
-        private MockServerProcessor mockServerProcessor;
+        private readonly Faker<Scenario> fakerScenario;
+        private readonly MockServerProcessor mockServerProcessor;
         private readonly List<HttpMethod> validMethods = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Put, HttpMethod.Post, HttpMethod.Delete };
 
         private readonly Dictionary<string, string> emptyHeadersWithAllowAllCors = new Dictionary<string, string>
@@ -34,6 +35,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         private readonly CancellationToken cancellationToken = new CancellationTokenSource().Token;
         public MockServerProcessorTests()
         {
+            Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var fakerJObject = new Faker<JObject>()
                 .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
             var fakerBodyRule = new Faker<BodyRule>()
