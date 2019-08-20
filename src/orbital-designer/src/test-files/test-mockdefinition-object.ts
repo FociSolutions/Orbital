@@ -1,4 +1,5 @@
 import { VerbType } from '../app/models/verb.type';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 export default {
   scenarios: [
@@ -191,4 +192,4 @@ export default {
     title: 'Pet Store Example',
     description: ''
   }
-};
+} as MockDefinition;

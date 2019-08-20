@@ -21,6 +21,7 @@ import { OrbitalServerService } from 'src/app/services/orbital-server.service';
 import { Subject } from 'rxjs';
 import testMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import Json from 'src/app/models/json';
 
 describe('EndpointOverviewComponent', () => {
   let component: EndpointOverviewComponent;
@@ -101,10 +102,19 @@ describe('EndpointOverviewComponent', () => {
       component.mockDefinition = testMockDefinition;
       const blob = component.exportMockDefinition();
       const filereader = new FileReader();
-      const content = filereader.readAsText(blob);
+      await new Promise(resolve => {
+        filereader.onloadend = () => resolve();
+        filereader.readAsText(blob);
+      });
       // tslint:disable-next-line: semicolon
-      // const mockdefinition = await MockDefinition.toMockDefinition
-      expect(true).toBe(true);
+      const Actual = await MockDefinition.toMockDefinition(
+        filereader.result as string
+      );
+      /* I have to change the maps to objects because for some reason the tests are parsing
+       the headers, headerRules, and queryRules as Objects. Even though they are initiated with new Map()
+       in ../../../test-files/test-mockdefinition-object
+       */
+      expect(Json.mapToObject(Actual)).toEqual(component.mockDefinition);
     });
   });
 });
