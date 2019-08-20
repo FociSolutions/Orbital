@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -55,6 +56,7 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG }),
     CommonModule,
@@ -66,7 +68,7 @@ import { ToastrModule } from 'ngx-toastr';
     NbButtonModule,
     NbCardModule
   ],
-  providers: [MockDefinitionStore, EndpointsStore, AppStore],
+  providers: [MockDefinitionStore, EndpointsStore, AppStore, HttpClientModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -23,7 +23,7 @@ describe('KeyValueListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add tuple to the map', () => {
+  it('should add tuple to the map ', () => {
     expect(component.keyValueMap.size).toBe(0);
     const key = faker.random.word();
     const item = faker.random.word();
