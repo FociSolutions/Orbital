@@ -21,12 +21,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
         public override T Process(T port)
         {
-            if (!IsPortValid(port, out port))
-            {
-                var error = "Pipeline port is not valid";
-                Log.Error("QueryMatchFilter Error: {Error}", error);
-                return port;
-            }
+            if (!IsPipelineValid(ref port, GetType())) return port;
 
             var scenarios = port.Scenarios;
             var query = port.Query.ToDictionary(x => x.Key, x => x.Value);

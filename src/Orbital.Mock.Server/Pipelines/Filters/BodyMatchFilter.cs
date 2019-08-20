@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
@@ -19,12 +20,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <returns>Port containing processed data</returns>
         public override T Process(T port)
         {
-            if (!IsPortValid(port, out port))
-            {
-                var error = "Pipeline port is not valid";
-                Log.Error("BodyMatchFilter Error: {Error}", error);
-                return port;
-            }
+            if (!IsPipelineValid(ref port, GetType())) return port;
 
             try
             {
