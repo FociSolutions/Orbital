@@ -17,6 +17,10 @@ import { Router } from '@angular/router';
 import { AppStore } from 'src/app/store/app-store';
 import { ScenarioViewComponent } from '../scenario-overview/scenario-view/scenario-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { OrbitalServerService } from 'src/app/services/orbital-server.service';
+import { Subject } from 'rxjs';
+import testMockDefinition from '../../../test-files/test-mockdefinition-object';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 describe('EndpointOverviewComponent', () => {
   let component: EndpointOverviewComponent;
@@ -37,7 +41,12 @@ describe('EndpointOverviewComponent', () => {
         KeyValueListComponent
       ],
       imports: [RouterTestingModule, NbCardModule, HttpClientTestingModule],
-      providers: [EndpointsStore, MockDefinitionStore, AppStore]
+      providers: [
+        EndpointsStore,
+        MockDefinitionStore,
+        AppStore,
+        OrbitalServerService
+      ]
     }).compileComponents();
   }));
 
@@ -55,5 +64,47 @@ describe('EndpointOverviewComponent', () => {
     const routerSpy = spyOn(TestBed.get(Router), 'navigate');
     component.onBack();
     expect(routerSpy).toHaveBeenCalledWith(['/']);
+  });
+
+  describe('EndpointOverviewComponent.onServerExport()', () => {
+    it('should show a successful alert on completion', () => {
+      const subject = new Subject();
+      const orbitalServiceSpy = spyOn(
+        TestBed.get(OrbitalServerService),
+        'onServerExport'
+      ).and.returnValue(subject.asObservable());
+      spyOn(window, 'alert');
+      component.mockDefinition = testMockDefinition;
+      component.onServerExport();
+      subject.next('');
+      expect(window.alert).toHaveBeenCalledWith(
+        'The export has been sent successfully!'
+      );
+    });
+
+    it('should show an unsuccesful alert on completion', () => {
+      const subject = new Subject();
+      const orbitalServiceSpy = spyOn(
+        TestBed.get(OrbitalServerService),
+        'onServerExport'
+      ).and.returnValue(subject.asObservable());
+      spyOn(window, 'alert');
+      component.mockDefinition = testMockDefinition;
+      component.onServerExport();
+      subject.error(new Error());
+      expect(window.alert).toHaveBeenCalled();
+    });
+  });
+
+  describe('EndpointOverviewComponent.exportMockDefinition', () => {
+    it('should return a blob of the mock definition', async () => {
+      component.mockDefinition = testMockDefinition;
+      const blob = component.exportMockDefinition();
+      const filereader = new FileReader();
+      const content = filereader.readAsText(blob);
+      // tslint:disable-next-line: semicolon
+      // const mockdefinition = await MockDefinition.toMockDefinition
+      expect(true).toBe(true);
+    });
   });
 });

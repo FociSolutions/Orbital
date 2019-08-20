@@ -64,7 +64,7 @@ export class EndpointOverviewComponent implements OnInit {
     document.body.removeChild(a);
   }
 
-  private exportMockDefinition() {
+  exportMockDefinition() {
     const content = MockDefinition.exportMockDefinition(this.mockDefinition);
     const blob = new Blob([content]);
     return blob;
