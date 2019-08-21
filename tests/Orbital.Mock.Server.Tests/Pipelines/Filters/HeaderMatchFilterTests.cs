@@ -15,14 +15,15 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class HeaderMatchFilterTests
     {
-        private readonly Faker<Scenario> scenarioFake;
+        private readonly Faker<Scenario> scenarioFaker;
 
         public HeaderMatchFilterTests()
         {
+            Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                                         .RuleFor(r => r.HeaderRules, f => f.Make(10, () => f.Random.String()).ToDictionary(k => k));
 
-            scenarioFake = new Faker<Scenario>()
+            scenarioFaker = new Faker<Scenario>()
                                 .RuleFor(m => m.RequestMatchRules, requestMatchRulesFake)
                                 .RuleFor(m => m.Id, f => f.Random.Word());
         }
@@ -33,7 +34,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void HeaderMatchFilterMatchSuccessTest()
         {
             #region Test Setup
-            var fakeScenario = scenarioFake.Generate();
+            var fakeScenario = scenarioFaker.Generate();
 
             var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -63,7 +64,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void HeaderMatchRulesHasMoreHeadersThenRequestHeadersFailure()
         {
             #region Test Setup
-            var fakeScenario = scenarioFake.Generate();
+            var fakeScenario = scenarioFaker.Generate();
 
             var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -92,7 +93,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void HeaderMatchRulesHasLessHeadersThenRequestHeadersSuccess()
         {
             #region Test Setup
-            var fakeScenario = scenarioFake.Generate();
+            var fakeScenario = scenarioFaker.Generate();
 
             var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -123,7 +124,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void HeaderMatchFilterNoMatchTest()
         {
             #region Test Setup
-            var fakeScenario = scenarioFake.Generate();
+            var fakeScenario = scenarioFaker.Generate();
 
             var input = new
             {
@@ -177,7 +178,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void HeaderMatchFilterInvalidPortTest()
         {
             #region Test Setup
-            var fakeScenario = scenarioFake.Generate();
+            var fakeScenario = scenarioFaker.Generate();
 
             var input = new
             {

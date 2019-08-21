@@ -18,6 +18,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
         public ResponseSelectorFilterTests()
         {
+            Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var fakerResponse = new Faker<MockResponse>()
                 .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
