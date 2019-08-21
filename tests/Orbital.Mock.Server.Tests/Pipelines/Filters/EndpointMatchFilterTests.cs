@@ -14,10 +14,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class EndpointMatchFilterTests
     {
-        private Faker<Scenario> scenarioFaker;
+        private readonly Faker<Scenario> scenarioFaker;
 
         public EndpointMatchFilterTests()
         {
+            Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             this.scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.String())
                 .RuleFor(m => m.Response, f => new MockResponse())
