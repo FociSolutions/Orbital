@@ -8,10 +8,12 @@ using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Ports;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -22,18 +24,13 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly SyncBlockFactory blockFactory;
 
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
-
-
         private readonly HeaderMatchFilter<ProcessMessagePort> headerMatchFilter;
         private readonly ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter;
         private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
         private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
-
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
-
-
 
 
         public MockServerProcessor()
@@ -60,7 +57,7 @@ namespace Orbital.Mock.Server.Pipelines
             this.queryMatchFilter = queryMatchFilter;
             this.endpointMatchFilter = endpointMatchFilter;
             this.bodyMatchFilter = bodyMatchFilter;
-            this.blockFactory = new SyncBlockFactory();
+            this.blockFactory = new SyncBlockFactory(this.cancellationTokenSource);
             this.headerMatchFilter = headerMatchFilter;
             this.responseSelectorFilter = responseSelectorFilter;
         }
@@ -71,17 +68,17 @@ namespace Orbital.Mock.Server.Pipelines
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
             //Initialize blocks
-            this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process);
+            this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process, cancellationTokenSource);
 
-            var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope);
-            var endpointFilterBlock = this.blockFactory.CreateTransformBlock(this.endpointMatchFilter.Process);
-            var headerFilterBlock = this.blockFactory.CreateTransformBlock(this.headerMatchFilter.Process);
-            var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process);
-            var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process);
-            var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false });
-            var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1);
-            var responseSelectorBlock = this.blockFactory.CreateTransformBlock(this.responseSelectorFilter.Process);
-            this.endBlock = this.blockFactory.CreateFinalBlock();
+            var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope, cancellationTokenSource);
+            var endpointFilterBlock = this.blockFactory.CreateTransformBlock(this.endpointMatchFilter.Process, cancellationTokenSource);
+            var headerFilterBlock = this.blockFactory.CreateTransformBlock(this.headerMatchFilter.Process, cancellationTokenSource);
+            var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process, cancellationTokenSource);
+            var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process, cancellationTokenSource);
+            var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
+            var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
+            var responseSelectorBlock = this.blockFactory.CreateTransformBlock(this.responseSelectorFilter.Process, cancellationTokenSource);
+            this.endBlock = this.blockFactory.CreateFinalBlock(cancellationTokenSource);
 
 
             //Broadcast incoming request to all getter blocks
@@ -106,8 +103,10 @@ namespace Orbital.Mock.Server.Pipelines
         }
 
         /// <inheritdoc />
-        public async Task<MockResponse> Push(MessageProcessorInput input)
+        public async Task<MockResponse> Push(MessageProcessorInput input, CancellationToken token)
         {
+            token.Register(() => { this.cancellationTokenSource.Cancel(); });
+
             if (input == null ||
                 input.ServerHttpRequest == null ||
                 input.ServerHttpRequest.Body == null ||
@@ -115,17 +114,20 @@ namespace Orbital.Mock.Server.Pipelines
                 input.QueryDictionary == null ||
                 input.Scenarios == null)
             {
-                return new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
+                var error = "One or more of the Message Processor Inputs is null";
+                Log.Error("MockServerProcessor Error: {Error}", error);
+                return new MockResponse { Status = 400, Body = "Something went wrong" };
             }
 
-            string Body = string.Empty;
+            var body = string.Empty;
 
             using (var reader = new StreamReader(input.ServerHttpRequest.Body))
             {
-                Body = reader.ReadToEnd();
+                body = reader.ReadToEnd();
             }
 
-            Enum.TryParse<HttpMethod>(input.ServerHttpRequest.Method, true, out HttpMethod verb);
+
+            Enum.TryParse(input.ServerHttpRequest.Method, true, out HttpMethod verb);
 
             var port = new ProcessMessagePort()
             {
@@ -134,21 +136,20 @@ namespace Orbital.Mock.Server.Pipelines
                 Verb = verb,
                 Query = input.QueryDictionary,
                 Headers = input.HeaderDictionary,
-                Body = Body
+                Body = body
             };
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
-            var envelope = new SyncEnvelope(completionSource, port);
+            var envelope = new SyncEnvelope(completionSource, port, token);
 
             this.startBlock.Post(envelope);
-
-            await completionSource.Task;
             port = await completionSource.Task;
 
             if (port == null)
             {
                 var error = "Pipeline port cannot be null";
-                return new MockResponse { Status = 400, Body = error, Headers = new Dictionary<string, string>() };
+                Log.Error("MockServerProcessor Error: {Error}", error);
+                return new MockResponse { Status = 500, Body = error, Headers = new Dictionary<string, string>() };
             }
 
             if (port.IsFaulted)
@@ -168,20 +169,22 @@ namespace Orbital.Mock.Server.Pipelines
                 if (this.startBlock != null)
                 {
                     this.startBlock.Complete();
-                    if (this.endBlock != null)
-                    {
-                        this.endBlock.Completion.Wait();
-                    }
+                    endBlock?.Completion.Wait();
                 }
+
+                this.cancellationTokenSource.Cancel();
             }
-            catch (AggregateException)
+            catch (AggregateException e)
             {
+                Log.Warning(e, "MockServiceProcessor unable to shutdown gracefully");
                 return false;
             }
+            Log.Information("MockserviceProcessor has shutdown successfully");
             return true;
         }
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         protected virtual void Dispose(bool disposing)
         {

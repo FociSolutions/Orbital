@@ -12,7 +12,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
         /// A collection of faults thrown by filters
         /// </summary>
         ICollection<string> Faults { get; set; }
-
         /// <summary>
         /// True if the collection of faults is not empty
         /// </summary>

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +13,7 @@ import { OrbitalCommonModule } from './components/orbital-common/orbital-common.
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG }),
     CommonModule,

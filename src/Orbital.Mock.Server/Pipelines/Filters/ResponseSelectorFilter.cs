@@ -1,6 +1,7 @@
 ﻿using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <returns>Port containing processed data</returns>
         public override T Process(T port)
         {
-            if (!IsPortValid(port, out port))
-            {
-                return port;
-            }
+            if (!IsPipelineValid(ref port, GetType())) return port;
 
             var scenarioIds = port.BodyMatch.Concat(port.HeaderMatchResults).Concat(port.QueryMatchResults).ToList();
             if (scenarioIds.Count == 0)

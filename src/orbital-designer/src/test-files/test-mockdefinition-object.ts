@@ -1,114 +1,65 @@
 import { VerbType } from '../app/models/verb.type';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 export default {
   scenarios: [
     {
-      id: 'e798eebc-646f-404b-b6b8-bbc6f2ca4ac6',
+      id: 'aaf35b78-4450-47e4-a139-06367dba272c',
       metadata: {
-        title: 'Scenario 1',
-        description: 'Scenario 1 description'
-      },
-      verb: VerbType.GET,
-      path: '/pets',
-      response: {
-        headers: new Map<string, string>([
-          ['Content-Type', 'application/json']
-        ]),
-        status: 200,
-        body: ''
-      },
-      requestMatchRules: {
-        headerRules: new Map<string, string>([
-          ['Content-Type', 'application/json']
-        ]),
-        queryRules: new Map<string, string>([]),
-        bodyRules: [
-          {
-            type: 3,
-            rule: ''
-          }
-        ]
-      }
-    },
-    {
-      id: 'f1cd8240-5d73-488e-a851-d4cad0f4219c',
-      metadata: {
-        title: 'Scenario 2',
-        description: 'Scenario 2 description'
+        title: 'Add pet',
+        description: 'Adds a pet to the pet store list'
       },
       verb: VerbType.POST,
       path: '/pets',
       response: {
-        headers: new Map<string, string>([
-          ['Content-Type', 'application/json']
-        ]),
-        status: 404,
-        body: ''
+        headers: new Map(),
+        status: 201,
+        body: 'Resource Successfully Created'
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>([
-          ['Content-Type', 'application/json']
-        ]),
-        queryRules: new Map<string, string>([]),
+        headerRules: new Map(),
+        queryRules: new Map(),
         bodyRules: [
           {
             type: 3,
-            rule: ''
+            rule: {
+              id: '4',
+              name: 'Snowflake',
+              type: 'cat',
+              description: 'Hates Stuart'
+            }
           }
         ]
       }
     }
   ],
   host: 'petstore.swagger.io',
-  basePath: '/api',
+  basePath: '/v1',
   openApi: {
     swagger: '2.0',
     info: {
       version: '1.0.0',
       title: 'Swagger Petstore',
-      description:
-        'A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification',
-      termsOfService: 'http://swagger.io/terms/',
-      contact: {
-        name: 'Swagger API Team'
-      },
       license: {
         name: 'MIT'
       }
     },
     host: 'petstore.swagger.io',
-    basePath: '/api',
+    basePath: '/v1',
     schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json'],
     paths: {
       '/pets': {
         get: {
-          description:
-            'Returns all pets from the system that the user has access to',
-          operationId: 'findPets',
-          produces: [
-            'application/json',
-            'application/xml',
-            'text/xml',
-            'text/html'
-          ],
+          summary: 'List all pets',
+          operationId: 'listPets',
+          tags: ['pets'],
           parameters: [
-            {
-              name: 'tags',
-              in: 'query',
-              description: 'tags to filter by',
-              required: false,
-              type: 'array',
-              items: {
-                type: 'string'
-              },
-              collectionFormat: 'csv'
-            },
             {
               name: 'limit',
               in: 'query',
-              description: 'maximum number of results to return',
+              description: 'How many items to return at one time (max 100)',
               required: false,
               type: 'integer',
               format: 'int32'
@@ -116,111 +67,83 @@ export default {
           ],
           responses: {
             200: {
-              description: 'pet response',
-              schema: {
-                type: 'array',
-                items: {
-                  $ref: '#/definitions/Pet'
+              description: 'A paged array of pets',
+              headers: {
+                'x-next': {
+                  type: 'string',
+                  description: 'A link to the next page of responses'
                 }
+              },
+              schema: {
+                $ref: '#/definitions/Pets'
               }
             },
             default: {
               description: 'unexpected error',
               schema: {
-                $ref: '#/definitions/ErrorModel'
+                $ref: '#/definitions/Error'
               }
             }
           }
         },
         post: {
-          description:
-            'Creates a new pet in the store.  Duplicates are allowed',
-          operationId: 'addPet',
-          produces: ['application/json'],
-          parameters: [
-            {
-              name: 'pet',
-              in: 'body',
-              description: 'Pet to add to the store',
-              required: true,
-              schema: {
-                $ref: '#/definitions/NewPet'
-              }
-            }
-          ],
+          summary: 'Create a pet',
+          operationId: 'createPets',
+          tags: ['pets'],
           responses: {
-            200: {
-              description: 'pet response',
-              schema: {
-                $ref: '#/definitions/Pet'
-              }
+            201: {
+              description: 'Null response'
             },
             default: {
               description: 'unexpected error',
               schema: {
-                $ref: '#/definitions/ErrorModel'
+                $ref: '#/definitions/Error'
+              }
+            }
+          }
+        },
+        put: {
+          summary: 'Update a pet',
+          operationId: 'updatePets',
+          tags: ['pets'],
+          responses: {
+            201: {
+              description: 'Null response'
+            },
+            default: {
+              description: 'unexpected error',
+              schema: {
+                $ref: '#/definitions/Error'
               }
             }
           }
         }
       },
-      '/pets/{id}': {
+      '/pets/{petId}': {
         get: {
-          description:
-            'Returns a user based on a single ID, if the user does not have access to the pet',
-          operationId: 'findPetById',
-          produces: [
-            'application/json',
-            'application/xml',
-            'text/xml',
-            'text/html'
-          ],
+          summary: 'Info for a specific pet',
+          operationId: 'showPetById',
+          tags: ['pets'],
           parameters: [
             {
-              name: 'id',
+              name: 'petId',
               in: 'path',
-              description: 'ID of pet to fetch',
               required: true,
-              type: 'integer',
-              format: 'int64'
+              description: 'The id of the pet to retrieve',
+              type: 'string'
             }
           ],
           responses: {
             200: {
-              description: 'pet response',
+              description: 'Expected response to a valid request',
               schema: {
-                $ref: '#/definitions/Pet'
+                $ref: '#/definitions/Pets'
               }
             },
             default: {
               description: 'unexpected error',
               schema: {
-                $ref: '#/definitions/ErrorModel'
-              }
-            }
-          }
-        },
-        delete: {
-          description: 'deletes a single pet based on the ID supplied',
-          operationId: 'deletePet',
-          parameters: [
-            {
-              name: 'id',
-              in: 'path',
-              description: 'ID of pet to delete',
-              required: true,
-              type: 'integer',
-              format: 'int64'
-            }
-          ],
-          responses: {
-            204: {
-              description: 'pet deleted'
-            },
-            default: {
-              description: 'unexpected error',
-              schema: {
-                $ref: '#/definitions/ErrorModel'
+                $ref: '#/definitions/Error'
               }
             }
           }
@@ -230,25 +153,12 @@ export default {
     definitions: {
       Pet: {
         type: 'object',
-        allOf: [
-          {
-            $ref: '#/definitions/NewPet'
-          },
-          {
-            required: ['id'],
-            properties: {
-              id: {
-                type: 'integer',
-                format: 'int64'
-              }
-            }
-          }
-        ]
-      },
-      NewPet: {
-        type: 'object',
-        required: ['name'],
+        required: ['id', 'name'],
         properties: {
+          id: {
+            type: 'integer',
+            format: 'int64'
+          },
           name: {
             type: 'string'
           },
@@ -257,7 +167,13 @@ export default {
           }
         }
       },
-      ErrorModel: {
+      Pets: {
+        type: 'array',
+        items: {
+          $ref: '#/definitions/Pet'
+        }
+      },
+      Error: {
         type: 'object',
         required: ['code', 'message'],
         properties: {
@@ -273,7 +189,7 @@ export default {
     }
   },
   metadata: {
-    title: 'test',
+    title: 'Pet Store Example',
     description: ''
   }
-};
+} as MockDefinition;

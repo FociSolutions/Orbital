@@ -11,6 +11,7 @@ namespace Orbital.Mock.Server.MockDefinitions.Commands
     /// <summary>
     /// Class MockDefinitionCommand represents a request for getting a mock definition based on its title
     /// </summary>
+
     [ExcludeFromCodeCoverage]
     public class GetMockDefinitionByTitleCommand : IRequest<MockDefinition>
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Orbital.Mock.Server.Pipelines.Models.Interfaces
 {
@@ -29,8 +30,9 @@ namespace Orbital.Mock.Server.Pipelines.Models.Interfaces
         /// Push input onto pipeline to start processing it
         /// </summary>
         /// <param name="input">Input to be processed by the pipeline</param>
+        /// <param name="token"></param>
         /// <returns>Result from pipeline, if applicable</returns>
-        TOut Push(TIn input);
+        TOut Push(TIn input, CancellationToken token);
     }
 
     /// <summary>

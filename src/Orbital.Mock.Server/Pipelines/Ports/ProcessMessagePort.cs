@@ -33,7 +33,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public string Path { get; set; }
         public HttpMethod Verb { get; set; }
 
-
         public IEnumerable<string> HeaderMatchResults { get; set; }
         public IDictionary<string, string> Headers { get; set; }
 
@@ -43,6 +42,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
 
         public IEnumerable<string> QueryMatchResults { get; set; }
         public IDictionary<string, string> Query { get; set; }
+
         public MockResponse SelectedResponse { get; set; }
 
         public IFaultablePort AppendFault(Exception e)

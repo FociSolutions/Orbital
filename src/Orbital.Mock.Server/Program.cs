@@ -48,6 +48,7 @@ namespace Orbital.Mock.Server
             }
 
             Log.Logger = loggerConfiguration.CreateLogger();
+            Log.Information("Logging Started");
         }
 
     }

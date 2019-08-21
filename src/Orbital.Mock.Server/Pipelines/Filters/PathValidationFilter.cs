@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     internal class PathValidationFilter<T> : FaultableBaseFilter<T>
-        where T : IFaultablePort, IPathValidationPort
+        where T : IFaultablePort, IPathValidationPort, IScenariosPort
     {
         private readonly List<HttpMethod> VALIDMETHODS = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete };
         /// <summary>
@@ -20,10 +20,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         public override T Process(T port)
         {
 
-            if (!IsPortValid(port, out port))
-            {
-                return port;
-            }
+            if (!IsPipelineValid(ref port, GetType())) return port;
 
             var path = port.Path;
             var verb = port.Verb;
@@ -31,14 +28,14 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             if (path == null)
             {
                 var error = "Path cannot be null";
-                Log.Error(error);
+                Log.Error("PathValidationFilter error: {Error}", error);
                 return (T)port.AppendFault(new ArgumentNullException(error));
             }
 
             if (!VALIDMETHODS.Contains(verb))
             {
                 var error = "Verb not supported";
-                Log.Error(error);
+                Log.Error("PathValidationFilter error: {Error}", error);
                 return (T)port.AppendFault(new ArgumentException(error));
             }
 
