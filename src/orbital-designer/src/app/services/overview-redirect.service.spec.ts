@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { OverviewRedirectService } from './overview-redirect.service';
-import DesignerStore from '../store/designer-store';
+import { DesignerStore } from '../store/designer-store';
 
 describe('OverviewRedirectService', () => {
   beforeEach(() =>

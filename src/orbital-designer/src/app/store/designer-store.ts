@@ -14,10 +14,8 @@ export interface State {
   endpoints: Endpoint[];
 }
 
-Injectable({
-  providedIn: 'root'
-});
-export default class DesignerStore extends Store<State> {
+Injectable();
+export class DesignerStore extends Store<State> {
   constructor() {
     super({
       selectedEndpoint: null,

@@ -9,8 +9,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { OrbitalCommonModule } from './components/orbital-common/orbital-common.module';
 
+import { GetEndpointScenariosPipe } from './pipes/get-endpoint-scenarios.pipe';
+import { GetVerbColorPipe } from './pipes/get-verb-color.pipe';
+
+import { DesignerStore } from './store/designer-store';
+
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, GetEndpointScenariosPipe, GetVerbColorPipe],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -20,7 +25,7 @@ import { OrbitalCommonModule } from './components/orbital-common/orbital-common.
     BrowserAnimationsModule,
     OrbitalCommonModule
   ],
-  providers: [],
+  providers: [DesignerStore],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

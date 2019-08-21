@@ -1,4 +1,4 @@
-import DesignerStore from './designer-store';
+import { DesignerStore } from './designer-store';
 import * as faker from 'faker';
 import { VerbType } from '../models/verb.type';
 import {
