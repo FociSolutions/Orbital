@@ -1,0 +1,31 @@
+<mat-card class="create-mock-form row center-hr">
+  <form class="column">
+    <h3 class="capitalize">Create New Mock</h3>
+    <app-text-input
+      class="titleInput"
+      title="Title - Required"
+      maxLength="200"
+      [control]="formGroup.controls.title"
+      [errorMessages]="errorMessages.title"
+    ></app-text-input>
+    <app-text-input
+      class="descriptionInput"
+      title="Description"
+      maxLength="1000"
+      multiLine="true"
+      [control]="formGroup.controls.description"
+      [errorMessages]="errorMessages.description"
+    ></app-text-input>
+    <div class="row center-hr file-input-div">
+      <app-file-input [filename]="test"></app-file-input>
+    </div>
+    <div class="row buttons-div">
+      <button mat-raised-button color="primary">
+        Back
+      </button>
+      <button mat-raised-button color="primary" [disabled]="formGroup.invalid">
+        Next
+      </button>
+    </div>
+  </form>
+</mat-card>

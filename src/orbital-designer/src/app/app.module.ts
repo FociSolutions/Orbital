@@ -16,13 +16,15 @@ import { GetEndpointScenariosPipe } from './pipes/get-endpoint-scenarios.pipe';
 import { GetVerbColorPipe } from './pipes/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
+import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
-    HomeViewComponent
+    HomeViewComponent,
+    CreateNewMockViewComponent
   ],
   imports: [
     BrowserModule,

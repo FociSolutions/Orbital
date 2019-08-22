@@ -1,0 +1,44 @@
+.create-mock-form {
+  min-width: 47.109vw;
+  max-width: 603px;
+  min-height: 60.824vh;
+  margin: 6.824vh auto;
+  align-items: stretch;
+
+  form {
+    align-items: stretch;
+
+    h3 {
+      font-weight: 500;
+      font-size: 1.5em;
+      line-height: 23px;
+      text-align: center;
+    }
+
+    .titleInput {
+      margin-bottom: 1em;
+    }
+
+    .descriptionInput {
+      flex: 1;
+    }
+
+    .buttons-div {
+      justify-content: space-between;
+      justify-self: flex-end;
+      align-items: flex-end;
+      margin-bottom: 2em;
+      flex: 1;
+      button {
+        width: 10.234vw;
+        max-width: 131px;
+      }
+    }
+
+    .file-input-div {
+      height: 100%;
+      align-items: flex-end;
+      padding-bottom: 3em;
+    }
+  }
+}
