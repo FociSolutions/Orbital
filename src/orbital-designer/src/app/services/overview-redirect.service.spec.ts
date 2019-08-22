@@ -2,13 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { OverviewRedirectService } from './overview-redirect.service';
-import { MockDefinitionStore } from '../store/mockdefinitionstore';
+import { DesignerStore } from '../store/designer-store';
 
 describe('OverviewRedirectService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([])],
-      providers: [MockDefinitionStore]
+      providers: [DesignerStore]
     })
   );
 
@@ -33,7 +33,7 @@ describe('OverviewRedirectService', () => {
       OverviewRedirectService
     );
     const routerSpy = spyOn(TestBed.get(Router), 'navigate');
-    const store = TestBed.get(MockDefinitionStore);
+    const store = TestBed.get(DesignerStore);
     store.updateMetadata({
       title: '',
       description: ''
