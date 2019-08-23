@@ -12,16 +12,7 @@ export class TextInputComponent implements OnInit {
   @Input() maxLength?: number;
   @Input() multiLine?: boolean;
   @Input() control: FormControl;
-  @Input() errorMessages: Map<string, string> = new Map<string, string>();
+  @Input() errorMessage: string;
 
   ngOnInit() {}
-
-  private get errorMessage(): string {
-    const errors = Object.keys(this.control.errors);
-    let message = '';
-    for (const error of errors) {
-      message = message.concat(`${this.errorMessages.get(error)}\n`);
-    }
-    return message.trim();
-  }
 }

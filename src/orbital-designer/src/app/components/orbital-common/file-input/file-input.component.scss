@@ -1,13 +1,14 @@
-.fileinput {
-  width: 35.938vw;
-  max-width: 460px;
-}
+mat-form-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: stretch;
 
-.row {
-  justify-content: space-around;
-}
-
-button {
-  width: 13.398vw;
-  max-width: 171.49px;
+  div {
+    display: flex;
+    flex-direction: row;
+    input {
+      flex: 1;
+    }
+  }
 }

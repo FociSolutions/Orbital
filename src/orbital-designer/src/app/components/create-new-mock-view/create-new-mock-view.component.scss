@@ -16,19 +16,14 @@
     }
 
     .titleInput {
-      margin-bottom: 1em;
-    }
-
-    .descriptionInput {
-      flex: 1;
+      margin-bottom: 2em;
     }
 
     .buttons-div {
       justify-content: space-between;
       justify-self: flex-end;
       align-items: flex-end;
-      margin-bottom: 2em;
-      flex: 1;
+      margin: 2em 0;
       button {
         width: 10.234vw;
         max-width: 131px;

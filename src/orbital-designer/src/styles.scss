@@ -47,7 +47,7 @@ body {
 
 .fullscreen {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .column {
@@ -84,4 +84,12 @@ body {
     align-items: center;
     justify-content: center;
   }
+}
+
+.flex-grow {
+  flex: 1;
+}
+
+.flex-shrink {
+  flex: 0 2 auto;
 }

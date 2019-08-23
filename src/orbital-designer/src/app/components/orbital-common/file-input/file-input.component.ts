@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Directive } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-file-input',
@@ -6,8 +7,21 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./file-input.component.scss']
 })
 export class FileInputComponent implements OnInit {
-  @Input() filename: string;
   constructor() {}
+  accept = '*';
+  @Input() control!: FormControl;
+  fileName = '';
+  @Input() fileTypes(types: string) {
+    if (!!types) {
+      this.accept = types;
+    }
+  }
+
+  onFileChange(files: FileList) {
+    const file = files[0];
+    this.fileName = file.name;
+    this.control.setValue(file);
+  }
 
   ngOnInit() {}
 }

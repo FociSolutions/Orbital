@@ -6,24 +6,32 @@
       title="Title - Required"
       maxLength="200"
       [control]="formGroup.controls.title"
-      [errorMessages]="errorMessages.title"
+      [errorMessage]="errorMessage('title')"
     ></app-text-input>
     <app-text-input
-      class="descriptionInput"
+      class="flex-grow"
       title="Description"
       maxLength="1000"
       multiLine="true"
       [control]="formGroup.controls.description"
-      [errorMessages]="errorMessages.description"
+      [errorMessage]="errorMessage('description')"
     ></app-text-input>
-    <div class="row center-hr file-input-div">
-      <app-file-input [filename]="test"></app-file-input>
-    </div>
+    <app-file-input
+      class="row"
+      [control]="formGroup.controls.openApiFile"
+      fileTypes=".yml,.yaml"
+    >
+    </app-file-input>
     <div class="row buttons-div">
-      <button mat-raised-button color="primary">
+      <button mat-raised-button color="primary" (click)="goBack()">
         Back
       </button>
-      <button mat-raised-button color="primary" [disabled]="formGroup.invalid">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="formGroup.invalid"
+        (click)="createMock()"
+      >
         Next
       </button>
     </div>

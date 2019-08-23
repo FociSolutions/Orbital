@@ -1,4 +1,4 @@
-<mat-form-field class="form-field column">
+<mat-form-field>
   <input
     *ngIf="!multiLine"
     matInput
@@ -15,7 +15,7 @@
     [formControl]="control"
     autocomplete="off"
   ></textarea>
-  <mat-error class="errorMessage" *ngIf="control.invalid">
+  <mat-error *ngIf="control.invalid">
     {{ errorMessage }}
   </mat-error>
   <mat-hint *ngIf="!!maxLength" align="end"

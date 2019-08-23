@@ -8,6 +8,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,7 +39,10 @@ import { CreateNewMockViewComponent } from './components/create-new-mock-view/cr
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
-    MatGridListModule
+    MatGridListModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    FormsModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]

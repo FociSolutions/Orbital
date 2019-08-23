@@ -1,6 +1,15 @@
-<mat-form-field class="fileinput">
-  <div class="row">
-    <input matInput placeholder="OpenApi file" [value]="filename" disabled />
-    <button mat-raised-button color="primary">Choose File</button>
+<mat-form-field>
+  <div>
+    <input matInput placeholder="Select File" [value]="fileName" disabled />
+    <button mat-raised-button color="primary" (click)="fileInput.click()">
+      Choose File
+    </button>
+    <input
+      #fileInput
+      type="file"
+      (change)="onFileChange($event.target.files)"
+      style="display:none;"
+      [accept]="fileTypes"
+    />
   </div>
 </mat-form-field>
