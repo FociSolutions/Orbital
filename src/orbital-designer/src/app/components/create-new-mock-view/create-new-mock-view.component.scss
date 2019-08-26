@@ -1,6 +1,7 @@
 .create-mock-form {
   min-width: 47.109vw;
   max-width: 603px;
+  height: auto;
   min-height: 60.824vh;
   margin: 6.824vh auto;
   align-items: stretch;
@@ -28,12 +29,6 @@
         width: 10.234vw;
         max-width: 131px;
       }
-    }
-
-    .file-input-div {
-      height: 100%;
-      align-items: flex-end;
-      padding-bottom: 3em;
     }
   }
 }

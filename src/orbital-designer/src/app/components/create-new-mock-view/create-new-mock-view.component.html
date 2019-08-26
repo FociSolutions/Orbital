@@ -2,14 +2,14 @@
   <form class="column">
     <h3 class="capitalize">Create New Mock</h3>
     <app-text-input
-      class="titleInput"
+      class="titleInput capitalize"
       title="Title - Required"
       maxLength="200"
       [control]="formGroup.controls.title"
       [errorMessage]="errorMessage('title')"
     ></app-text-input>
     <app-text-input
-      class="flex-grow"
+      class="flex-grow capitalize"
       title="Description"
       maxLength="1000"
       multiLine="true"
@@ -17,7 +17,7 @@
       [errorMessage]="errorMessage('description')"
     ></app-text-input>
     <app-file-input
-      class="row"
+      class="row capitalize"
       [control]="formGroup.controls.openApiFile"
       placeholder="Select File - Required"
       fileTypes=".yml,.yaml"
