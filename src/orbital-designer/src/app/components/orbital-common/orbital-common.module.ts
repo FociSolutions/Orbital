@@ -17,6 +17,14 @@ import { FileInputComponent } from './file-input/file-input.component';
     FormsModule,
     MatButtonModule
   ],
-  exports: [TextInputComponent, FileInputComponent]
+  exports: [
+    TextInputComponent,
+    FileInputComponent,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatButtonModule
+  ]
 })
 export class OrbitalCommonModule {}

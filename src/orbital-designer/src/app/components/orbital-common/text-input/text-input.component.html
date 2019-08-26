@@ -1,13 +1,20 @@
-<mat-form-field>
+<mat-form-field *ngIf="!multiLine">
   <input
-    *ngIf="!multiLine"
     matInput
     [placeholder]="title"
     [formControl]="control"
     autocomplete="off"
   />
+  <mat-error *ngIf="control.touched && control.invalid">
+    {{ errorMessage }}
+  </mat-error>
+  <mat-hint *ngIf="!!maxLength" align="end"
+    >{{ control.value?.length }}/{{ maxLength }}</mat-hint
+  >
+</mat-form-field>
+<!--Code duplication required in order to stop matInput from throwing ExpressionChangedAfterItHasBeenCheckedError-->
+<mat-form-field *ngIf="multiLine">
   <textarea
-    *ngIf="multiLine"
     matInput
     cdkTextareaAutosize
     cdkAutosizeMaxRows="8"
@@ -15,7 +22,7 @@
     [formControl]="control"
     autocomplete="off"
   ></textarea>
-  <mat-error *ngIf="control.invalid">
+  <mat-error *ngIf="control.touched && control.invalid">
     {{ errorMessage }}
   </mat-error>
   <mat-hint *ngIf="!!maxLength" align="end"

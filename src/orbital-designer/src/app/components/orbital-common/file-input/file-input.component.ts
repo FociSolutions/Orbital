@@ -9,8 +9,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class FileInputComponent implements OnInit {
   constructor() {}
   accept = '*';
-  @Input() control!: FormControl;
   fileName = '';
+  @Input() control!: FormControl;
+  @Input() errorMessage: string;
+  @Input() placeholder: string;
   @Input() fileTypes(types: string) {
     if (!!types) {
       this.accept = types;

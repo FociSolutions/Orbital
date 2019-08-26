@@ -1,6 +1,6 @@
 <mat-form-field>
   <div>
-    <input matInput placeholder="Select File" [value]="fileName" disabled />
+    <input matInput [placeholder]="placeholder" [value]="fileName" disabled />
     <button mat-raised-button color="primary" (click)="fileInput.click()">
       Choose File
     </button>
@@ -12,4 +12,7 @@
       [accept]="fileTypes"
     />
   </div>
+  <mat-error *ngIf="control.touched && control.invalid">
+    {{ errorMessage }}
+  </mat-error>
 </mat-form-field>
