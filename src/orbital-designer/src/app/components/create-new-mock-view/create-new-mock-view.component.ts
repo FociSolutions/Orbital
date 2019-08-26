@@ -25,12 +25,11 @@ export class CreateNewMockViewComponent implements OnInit {
   }
 
   errorMessage(controlkey: string): string {
-    let errorMessage = '';
     const errors = this.formGroup.controls[controlkey].errors;
     if (!errors) {
-      return errorMessage;
+      return '';
     }
-    errorMessage = Object.keys(errors)
+    const errorMessage = Object.keys(errors)
       .map(err => {
         switch (err) {
           case 'required':
