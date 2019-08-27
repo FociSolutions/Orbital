@@ -1,13 +1,19 @@
-<mat-form-field>
+<mat-form-field *ngIf="!multiLine">
   <input
-    *ngIf="!multiLine"
     matInput
     [placeholder]="title"
     [formControl]="control"
     autocomplete="off"
   />
+  <mat-error *ngIf="control.touched && control.invalid">
+    {{ errorMessage }}
+  </mat-error>
+  <mat-hint *ngIf="!!maxLength" align="end"
+    >{{ control.value?.length }}/{{ maxLength }}</mat-hint
+  >
+</mat-form-field>
+<mat-form-field *ngIf="multiLine">
   <textarea
-    *ngIf="multiLine"
     matInput
     cdkTextareaAutosize
     cdkAutosizeMinRows="8"
