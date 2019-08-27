@@ -29,18 +29,16 @@ export class CreateNewMockViewComponent implements OnInit {
     if (!errors) {
       return '';
     }
+
+    const errorMessages = {
+      required: `${controlkey} is required`,
+      maxlength: 'Max characters exceeded'
+    };
+
     const errorMessage = Object.keys(errors)
-      .map(err => {
-        switch (err) {
-          case 'required':
-            return `${controlkey} is required\n`;
-          case 'maxlength':
-            return 'Max characters exceeded\n';
-          default:
-            return 'Invalid input\n';
-        }
-      })
-      .reduce((acc, curr) => acc.concat(curr));
+      .map(err => (!!errorMessages[err] ? errorMessages[err] : 'Invalid Input'))
+      .join('\n');
+
     return errorMessage.trim();
   }
 
