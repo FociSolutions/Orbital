@@ -1,0 +1,14 @@
+mat-form-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: stretch;
+
+  div {
+    display: flex;
+    flex-direction: row;
+    input {
+      flex: 1;
+    }
+  }
+}

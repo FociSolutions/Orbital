@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,13 +17,15 @@ import { GetEndpointScenariosPipe } from './pipes/get-endpoint-scenarios.pipe';
 import { GetVerbColorPipe } from './pipes/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
+import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
-    HomeViewComponent
+    HomeViewComponent,
+    CreateNewMockViewComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,9 @@ import { HomeViewComponent } from './components/home-view/home-view.component';
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
-    MatGridListModule
+    MatGridListModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]
