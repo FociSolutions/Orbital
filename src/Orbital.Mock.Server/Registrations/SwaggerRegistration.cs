@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Registrations
                 {
                     using (var stringWriter = new StringWriter())
                     {
-                        var exampleObject = JsonConvert.DeserializeObject(File.ReadAllText(@"Registrations\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json"));
+                        var exampleObject = JsonConvert.DeserializeObject(File.ReadAllText(@"Registrations/SwaggerSchemaExamples/OpenApiDocumentSwaggerSchemaExample.json"));
                         return new Schema
                         {
                             Example = exampleObject

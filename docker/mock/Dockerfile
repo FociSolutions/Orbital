@@ -10,15 +10,11 @@ COPY . .
 RUN dotnet publish src/Orbital.Mock.Server/Orbital.Mock.Server.csproj -c Release -o /app/out
 
 # Build runtime image
-FROM microsoft/dotnet:sdk
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 WORKDIR /app
 COPY --from=build-env /app/out .
 RUN chmod -R u+w /app
 
 ENV ASPNETCORE_ENVIROMENT=Production
-ENV ASPNETCORE_URLS="https://*:3971;http://*:3970"
-
-EXPOSE 3970
-EXPOSE 3971
 
 ENTRYPOINT ["dotnet", "Orbital.Mock.Server.dll"]

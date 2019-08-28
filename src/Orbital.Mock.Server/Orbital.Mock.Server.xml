@@ -1,45 +1,45 @@
 <?xml version="1.0"?>
 <doc>
-    <assembly>
-        <name>Orbital.Mock.Server</name>
-    </assembly>
-    <members>
-        <member name="M:Orbital.Mock.Server.Controllers.OrbitalServerController.#ctor(Orbital.Mock.Server.Cache.OrbitalMemoryCache)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="memoryCache"></param>
-        </member>
-        <member name="M:Orbital.Mock.Server.Registrations.ApiVersionRegistration.ConfigureService(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Configures the service for API version
-            </summary>
-            <param name="services">Service collection</param>
-        </member>
-        <member name="M:Orbital.Mock.Server.Registrations.SwaggerRegistration.ConfigureService(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Configures the service for swagger documentation
-            </summary>
-            <param name="services">Service collection</param>
-        </member>
-        <member name="P:Orbital.Mock.Server.Startup.Configuration">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Orbital.Mock.Server.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            This method gets called by the runtime. Use this method to add services to the container.
-            </summary>
-            <param name="services"></param>
-        </member>
-        <member name="M:Orbital.Mock.Server.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
-            <summary>
-            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            </summary>
-            <param name="app"></param>
-            <param name="env"></param>
-            <param name="provider"></param>
-        </member>
-    </members>
+  <assembly>
+    <name>Orbital.Mock.Server</name>
+  </assembly>
+  <members>
+    <member name="M:Orbital.Mock.Server.Controllers.OrbitalServerController.#ctor(Orbital.Mock.Server.Cache.OrbitalMemoryCache)">
+      <summary>
+        Constructor
+      </summary>
+      <param name="memoryCache"></param>
+    </member>
+    <member name="M:Orbital.Mock.Server.Registrations.ApiVersionRegistration.ConfigureService(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+      <summary>
+        Configures the service for API version
+      </summary>
+      <param name="services">Service collection</param>
+    </member>
+    <member name="M:Orbital.Mock.Server.Registrations.SwaggerRegistration.ConfigureService(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+      <summary>
+        Configures the service for swagger documentation
+      </summary>
+      <param name="services">Service collection</param>
+    </member>
+    <member name="P:Orbital.Mock.Server.Startup.Configuration">
+      <summary>
+
+      </summary>
+    </member>
+    <member name="M:Orbital.Mock.Server.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+      <summary>
+        This method gets called by the runtime. Use this method to add services to the container.
+      </summary>
+      <param name="services"></param>
+    </member>
+    <member name="M:Orbital.Mock.Server.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
+      <summary>
+        This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+      </summary>
+      <param name="app"></param>
+      <param name="env"></param>
+      <param name="provider"></param>
+    </member>
+  </members>
 </doc>
