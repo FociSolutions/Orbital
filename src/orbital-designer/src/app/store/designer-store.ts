@@ -31,7 +31,9 @@ export class DesignerStore extends Store<State> {
   set selectedEndpoint(endpoint: Endpoint) {
     this.setState({
       ...this.state,
-      selectedEndpoint: endpoint
+      selectedEndpoint: {
+        ...endpoint
+      }
     });
   }
 
@@ -41,7 +43,9 @@ export class DesignerStore extends Store<State> {
   set selectedScenario(scenario: Scenario) {
     this.setState({
       ...this.state,
-      selectedScenario: scenario
+      selectedScenario: {
+        ...scenario
+      }
     });
   }
 
@@ -68,7 +72,7 @@ export class DesignerStore extends Store<State> {
     this.setState({
       ...this.state,
       endpoints: clearStore
-        ? endpoints
+        ? [...endpoints]
         : [...this.state.endpoints, ...endpoints]
     });
   }
@@ -78,12 +82,14 @@ export class DesignerStore extends Store<State> {
    * @param m The metadata representing the metadata of the MockDefinition in the designer store
    *
    */
-  updateMetadata(m: Metadata): void {
+  updateMetadata(metadata: Metadata): void {
     this.setState({
       ...this.state,
       mockDefinition: {
         ...this.state.mockDefinition,
-        metadata: m
+        metadata: {
+          ...metadata
+        }
       }
     });
   }
@@ -105,7 +111,7 @@ export class DesignerStore extends Store<State> {
         ...this.state.mockDefinition,
         host,
         basePath,
-        openApi
+        openApi: { ...openApi }
       }
     });
   }
@@ -114,12 +120,12 @@ export class DesignerStore extends Store<State> {
    * This method updates scenario array for the MockDefinition in the designer store
    * @param s The scenario array representing the MockDefinition scenarios
    */
-  updateScenarios(s: Scenario[]) {
+  updateScenarios(scenarios: Scenario[]) {
     this.setState({
       ...this.state,
       mockDefinition: {
         ...this.state.mockDefinition,
-        scenarios: s
+        scenarios: [...scenarios]
       }
     });
   }
