@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { openApiFileValidator } from 'src/app/validators/async/async-file-content-validator';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -20,7 +21,11 @@ export class CreateNewMockViewComponent implements OnInit {
         '',
         Validators.compose([Validators.maxLength(1000)])
       ),
-      openApiFile: new FormControl(null, Validators.required)
+      openApiFile: new FormControl(
+        null,
+        Validators.required,
+        openApiFileValidator
+      )
     });
   }
 

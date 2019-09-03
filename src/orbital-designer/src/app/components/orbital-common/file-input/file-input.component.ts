@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, ViewChild, Directive } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  Directive,
+  SimpleChanges
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -7,7 +14,13 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./file-input.component.scss']
 })
 export class FileInputComponent implements OnInit {
-  constructor() {}
+  private reader: FileReader;
+  constructor() {
+    this.reader = new FileReader();
+    this.reader.onloadend = () => {
+      this.control.setValue(this.reader.result);
+    };
+  }
   accept = '*';
   fileName = '';
   @Input() control!: FormControl;
@@ -19,10 +32,10 @@ export class FileInputComponent implements OnInit {
     }
   }
 
-  onFileChange(files: FileList) {
+  async onFileChange(files: FileList) {
     const file = files[0];
     this.fileName = file.name;
-    this.control.setValue(file);
+    this.reader.readAsText(file);
   }
 
   ngOnInit() {}
