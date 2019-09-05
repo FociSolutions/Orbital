@@ -22,7 +22,7 @@ export class CreateNewMockViewComponent implements OnInit {
         Validators.compose([Validators.maxLength(1000)])
       ),
       openApiFile: new FormControl(
-        null,
+        '',
         Validators.required,
         openApiFileValidator
       )
