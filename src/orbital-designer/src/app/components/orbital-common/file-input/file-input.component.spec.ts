@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FileInputComponent } from './file-input.component';
+import * as faker from 'faker';
 
 describe('FileInputComponent', () => {
   let control: FormControl;
@@ -38,17 +39,23 @@ describe('FileInputComponent', () => {
   });
 
   describe('FileInputComponent.OnFileChange', () => {
-    it('updates the control value with the input file', () => {
-      const file = new File([''], 'test.txt', {
+    it('updates the control value with the input file', done => {
+      const Expected = faker.random.word();
+      const file = new File([Expected], 'test.txt', {
         type: 'text/plain',
         lastModified: new Date().getTime()
+      });
+      control.valueChanges.subscribe(value => {
+        if (value !== '') {
+          expect(control.value).toEqual(Expected);
+          done();
+        }
       });
       component.onFileChange({
         length: 1,
         item: x => file,
         0: file
       } as FileList);
-      expect(control.value).toEqual(file);
       expect(component.fileName).toEqual('test.txt');
     });
   });

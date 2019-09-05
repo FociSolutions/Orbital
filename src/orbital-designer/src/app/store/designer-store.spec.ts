@@ -7,6 +7,7 @@ import {
 } from '../models/mock-definition/scenario/scenario.model';
 import { MockDefinition } from '../models/mock-definition/mock-definition.model';
 import validOpenApi from '../../test-files/valid-openapi-spec';
+import validMockDefinition from '../../test-files/test-mockdefinition-object';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { OpenAPIV2 } from 'openapi-types';
 
@@ -64,6 +65,16 @@ describe('DesignerStore', () => {
           }
         }
         done();
+      });
+    });
+
+    describe('setMockDefinition', () => {
+      it('should update the state with the new MockDefinition', () => {
+        const Expected: MockDefinition = {
+          ...validMockDefinition
+        };
+        store.mockDefinition = { ...Expected };
+        expect(store.state.mockDefinition).toEqual(Expected);
       });
     });
 

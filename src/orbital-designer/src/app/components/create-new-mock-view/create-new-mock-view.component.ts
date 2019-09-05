@@ -29,6 +29,10 @@ export class CreateNewMockViewComponent implements OnInit {
     });
   }
 
+  /**
+   * Function used to get the appropriate error message to display for the form control
+   * @param controlkey The key of the control to get the errors from
+   */
   errorMessage(controlkey: string): string {
     const errors = this.formGroup.controls[controlkey].errors;
     if (!errors) {
@@ -41,7 +45,7 @@ export class CreateNewMockViewComponent implements OnInit {
     };
 
     const errorMessage = Object.keys(errors)
-      .map(err => (!!errorMessages[err] ? errorMessages[err] : 'Invalid Input'))
+      .map(err => (!!errorMessages[err] ? errorMessages[err] : errors[err]))
       .join('\n');
 
     return errorMessage.trim();

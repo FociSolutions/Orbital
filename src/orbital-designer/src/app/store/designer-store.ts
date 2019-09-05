@@ -54,7 +54,7 @@ export class DesignerStore extends Store<State> {
    * and updates the state of the designer store.
    * @param doc The parsed Open Api document to extrapolate the endpoints from
    */
-  setEndpoints(doc: OpenAPIV2.Document, clearStore = true) {
+  setEndpoints(doc: OpenAPIV2.Document, clearStore = true): void {
     const pathStrings = Object.keys(doc.paths);
     let endpoints = [];
     for (const path of pathStrings) {
@@ -78,8 +78,21 @@ export class DesignerStore extends Store<State> {
   }
 
   /**
+   * Setter method used to updated the MockDefinition in the designer store
+   * @param mockDefinition The MockDefinition used to update the store
+   */
+  set mockDefinition(mockDefinition: MockDefinition) {
+    this.setState({
+      ...this.state,
+      mockDefinition: {
+        ...mockDefinition
+      }
+    });
+  }
+
+  /**
    * This method updates Metadata for the MockDefinition in the designer store
-   * @param m The metadata representing the metadata of the MockDefinition in the designer store
+   * @param m The metadata used to update the MockDefinition in the designer store
    *
    */
   updateMetadata(metadata: Metadata): void {

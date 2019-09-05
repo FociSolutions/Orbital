@@ -19,8 +19,9 @@
     <app-file-input
       class="row capitalize"
       [control]="formGroup.controls.openApiFile"
-      placeholder="Select File - Required"
+      label="Select File - Required"
       fileTypes=".yml,.yaml"
+      [errorMessage]="errorMessage('openApiFile')"
     >
     </app-file-input>
     <div class="row buttons-div">

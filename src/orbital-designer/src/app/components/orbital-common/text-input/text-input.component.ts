@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'app-text-input',
@@ -8,6 +9,7 @@ import { FormControl } from '@angular/forms';
 })
 export class TextInputComponent implements OnInit {
   constructor() {}
+  private errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   @Input() title = '';
   @Input() maxLength?: number;
   @Input() multiLine?: boolean;

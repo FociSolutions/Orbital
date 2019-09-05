@@ -1,12 +1,8 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  Directive,
-  SimpleChanges
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
+import { Subscription } from 'rxjs';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-file-input',
@@ -15,6 +11,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class FileInputComponent implements OnInit {
   private reader: FileReader;
+  private errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
+  private subscription: Subscription;
   constructor() {
     this.reader = new FileReader();
     this.reader.onloadend = () => {
@@ -25,15 +23,18 @@ export class FileInputComponent implements OnInit {
   fileName = '';
   @Input() control!: FormControl;
   @Input() errorMessage: string;
-  @Input() placeholder: string;
+  @Input() label: string;
   @Input() fileTypes(types: string) {
     if (!!types) {
       this.accept = types;
     }
   }
 
-  async onFileChange(files: FileList) {
+  onFileChange(files: FileList) {
     const file = files[0];
+    if (!file) {
+      return;
+    }
     this.fileName = file.name;
     this.reader.readAsText(file);
   }

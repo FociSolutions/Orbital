@@ -1,18 +1,26 @@
-<mat-form-field>
+<mat-form-field [floatLabel]="always">
+  <mat-label>{{ label }}</mat-label>
   <div>
-    <input matInput [placeholder]="placeholder" [value]="fileName" disabled />
+    <div class="div-file-name">{{ fileName }}</div>
     <button mat-raised-button color="primary" (click)="fileInput.click()">
       Choose File
     </button>
-    <input
-      #fileInput
-      type="file"
-      (change)="onFileChange($event.target.files)"
-      style="display:none;"
-      [accept]="fileTypes"
-    />
   </div>
-  <mat-error *ngIf="control.touched && control.invalid">
-    {{ errorMessage }}
+  <input
+    #fileInput
+    type="file"
+    (change)="onFileChange($event.target.files)"
+    style="display:none;"
+    [accept]="fileTypes"
+  />
+  <input
+    matInput
+    [placeholder]="placeholder"
+    [formControl]="control"
+    style="display:none;"
+    [errorStateMatcher]="errorStateMatcher"
+  />
+  <mat-error *ngFor="let error of errorMessage.split('\n')">
+    {{ error }}
   </mat-error>
 </mat-form-field>

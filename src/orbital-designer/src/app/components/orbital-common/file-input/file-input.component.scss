@@ -7,8 +7,11 @@ mat-form-field {
   div {
     display: flex;
     flex-direction: row;
-    input {
+    .div-file-name {
       flex: 1;
+      color: rgba(0, 0, 0, 0.38);
+      align-items: center;
+      overflow: hidden;
     }
   }
 }

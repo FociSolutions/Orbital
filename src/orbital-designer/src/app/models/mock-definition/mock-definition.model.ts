@@ -65,11 +65,12 @@ export class MockDefinition {
         if (!result.errors || result.errors.length < 1) {
           resolve(content);
         } else {
-          console.log(result.errors);
-          reject(result.errors.map(err => [err.dataPath, err.message]));
+          reject(
+            result.errors.map(err => `${err.dataPath} ${err.message}`.trim())
+          );
         }
       } catch (error) {
-        reject(new Map([['file-content', 'file content is invalid yaml']]));
+        reject(['file content is invalid yaml']);
       }
     });
   }

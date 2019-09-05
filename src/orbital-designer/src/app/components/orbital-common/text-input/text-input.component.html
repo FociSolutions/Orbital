@@ -3,9 +3,10 @@
     matInput
     [placeholder]="title"
     [formControl]="control"
+    [errorStateMatcher]="errorStateMatcher"
     autocomplete="off"
   />
-  <mat-error *ngIf="control.touched && control.invalid">
+  <mat-error>
     {{ errorMessage }}
   </mat-error>
   <mat-hint *ngIf="!!maxLength" align="end"
@@ -19,10 +20,11 @@
     cdkAutosizeMinRows="8"
     [placeholder]="title"
     [formControl]="control"
+    [errorStateMatcher]="errorStateMatcher"
     autocomplete="off"
   ></textarea>
-  <mat-error *ngIf="control.touched && control.invalid">
-    {{ errorMessage }}
+  <mat-error *ngFor="let error of errorMessage.split('\n')">
+    {{ error }}
   </mat-error>
   <mat-hint *ngIf="!!maxLength" align="end"
     >{{ control.value?.length }}/{{ maxLength }}</mat-hint
