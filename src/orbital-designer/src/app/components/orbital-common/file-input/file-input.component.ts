@@ -8,11 +8,11 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
   styleUrls: ['./file-input.component.scss']
 })
 export class FileInputComponent implements OnInit {
-  private errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
-  constructor() {}
+  errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   accept = '*';
   display = '';
   multiFileInput = false;
+
   @Input() control!: FormControl;
   @Input() errorMessages: string[];
   @Input() label: string;
@@ -24,6 +24,8 @@ export class FileInputComponent implements OnInit {
   @Input() allowMultiple(allowMultiple: boolean) {
     this.multiFileInput = allowMultiple;
   }
+
+  constructor() {}
 
   /**
    * Reads the files and sets the value of the control to either the list or the single file
