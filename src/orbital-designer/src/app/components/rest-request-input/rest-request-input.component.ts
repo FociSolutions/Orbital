@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import Json from 'src/app/models/json';
 
 @Component({
   selector: 'app-rest-request-input',
@@ -42,27 +43,20 @@ export class RestRequestInputComponent implements OnInit {
    * Sends the request to the provided URL in the form with the specified
    * method type, headers, and body.
    */
-  public sendRequest(uri?: string): Observable<object> {
+  public sendRequest<R>(uri?: string): Observable<R> {
     if (!!uri) {
       uri = this.formGroup.get('uri').value;
     }
-    let output = new Observable<object>();
     switch (this.httpMethod) {
       case 'GET':
-        output = this.httpClient.get(uri, this.options);
-        break;
+        return this.httpClient.get<R>(uri, this.options);
       case 'POST':
-        output = this.httpClient.post(uri, this.options);
-        break;
+        return this.httpClient.post<R>(uri, this.options);
       case 'DELETE':
-        output = this.httpClient.delete(uri, this.options);
-        break;
+        return this.httpClient.delete<R>(uri, this.options);
       default:
-        output = this.httpClient.get(uri, this.options);
-        break;
+        return this.httpClient.get<R>(uri, this.options);
     }
-
-    return output;
   }
 
   errorMessage(controlkey: string): string {
