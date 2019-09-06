@@ -34,4 +34,11 @@ describe('TextInputComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('TextInputComponent.setDirty', () => {
+    it('should set the controls dirty flag to true', () => {
+      component.setDirty();
+      expect(component.control.dirty).toBeTruthy();
+    });
+  });
 });

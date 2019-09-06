@@ -21,7 +21,7 @@ export class FileInputComponent implements OnInit {
       this.accept = types;
     }
   }
-  @Input() allowMultiple(allowMultiple: boolean) {
+  @Input() set allowMultiple(allowMultiple: boolean) {
     this.multiFileInput = allowMultiple;
   }
 
