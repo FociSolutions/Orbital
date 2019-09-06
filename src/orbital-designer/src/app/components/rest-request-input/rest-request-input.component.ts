@@ -1,25 +1,18 @@
-import { Component, OnInit, Input, Injectable } from "@angular/core";
-import { Location } from "@angular/common";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { HttpMethod } from "blocking-proxy/built/lib/webdriver_commands";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Component, OnInit, Input, Injectable } from '@angular/core';
+import { Location } from '@angular/common';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HttpMethod } from 'blocking-proxy/built/lib/webdriver_commands';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: "app-rest-request-input",
-  templateUrl: "./rest-request-input.component.html",
-  styleUrls: ["./rest-request-input.component.scss"]
+  selector: 'app-rest-request-input',
+  templateUrl: './rest-request-input.component.html',
+  styleUrls: ['./rest-request-input.component.scss']
 })
 @Injectable()
 export class RestRequestInputComponent implements OnInit {
-  @Input() buttonName: string;
-  ngOnInit() {
-    if (!!this.buttonName) {
-      this.buttonName = "Submit";
-    }
-  }
-  formGroup: FormGroup;
   constructor(
     private router: Router,
     private location: Location,
@@ -28,7 +21,7 @@ export class RestRequestInputComponent implements OnInit {
     const urlPattern = /^(http[s]?:\/\/)/;
     this.formGroup = new FormGroup({
       uri: new FormControl(
-        "",
+        '',
         Validators.compose([
           Validators.maxLength(2048),
           Validators.required,
@@ -37,14 +30,21 @@ export class RestRequestInputComponent implements OnInit {
       )
     });
   }
+  @Input() buttonName: string;
+  formGroup: FormGroup;
+  ngOnInit() {
+    if (!!this.buttonName) {
+      this.buttonName = 'Submit';
+    }
+  }
 
   /**
    * Sends the request to the provided URL in the form with the specified
    * method type, headers, and body.
    */
   sendRequest() {
-    let output = this.httpClient.get(this.formGroup.get("uri").value, {
-      responseType: "text"
+    const output = this.httpClient.get(this.formGroup.get('uri').value, {
+      responseType: 'text'
     });
     output.subscribe(data => {
       console.log(data);
@@ -54,17 +54,17 @@ export class RestRequestInputComponent implements OnInit {
   errorMessage(controlkey: string): string {
     const errors = this.formGroup.controls[controlkey].errors;
     if (!errors) {
-      return "";
+      return '';
     }
 
     const errorMessages = {
       required: `${controlkey} is required`,
-      maxlength: "Max characters exceeded"
+      maxlength: 'Max characters exceeded'
     };
 
     const errorMessage = Object.keys(errors)
-      .map(err => (!!errorMessages[err] ? errorMessages[err] : "Invalid Input"))
-      .join("\n");
+      .map(err => (!!errorMessages[err] ? errorMessages[err] : 'Invalid Input'))
+      .join('\n');
 
     return errorMessage.trim();
   }
