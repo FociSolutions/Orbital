@@ -22,7 +22,7 @@ export class FileInputComponent implements OnInit {
   accept = '*';
   fileName = '';
   @Input() control!: FormControl;
-  @Input() errorMessage: string;
+  @Input() errorMessages: string[];
   @Input() label: string;
   @Input() fileTypes(types: string) {
     if (!!types) {
@@ -35,6 +35,7 @@ export class FileInputComponent implements OnInit {
     if (!file) {
       return;
     }
+    this.control.markAsDirty();
     this.fileName = file.name;
     this.reader.readAsText(file);
   }

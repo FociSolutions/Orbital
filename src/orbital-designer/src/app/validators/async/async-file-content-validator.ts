@@ -14,7 +14,7 @@ export function openApiFileValidator(
   return new Promise((resolve, reject) => {
     MockDefinition.toOpenApiSpec(control.value).then(
       doc => resolve(null),
-      errs => resolve({ validateOpenApi: errs.join('\n').trim() })
+      errs => resolve(errs)
     );
   });
 }

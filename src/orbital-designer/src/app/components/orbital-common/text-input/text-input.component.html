@@ -3,11 +3,12 @@
     matInput
     [placeholder]="title"
     [formControl]="control"
+    (focusout)="setDirty()"
     [errorStateMatcher]="errorStateMatcher"
     autocomplete="off"
   />
-  <mat-error>
-    {{ errorMessage }}
+  <mat-error *ngFor="let error of errorMessages">
+    {{ error }}
   </mat-error>
   <mat-hint *ngIf="!!maxLength" align="end"
     >{{ control.value?.length }}/{{ maxLength }}</mat-hint
@@ -23,7 +24,7 @@
     [errorStateMatcher]="errorStateMatcher"
     autocomplete="off"
   ></textarea>
-  <mat-error *ngFor="let error of errorMessage.split('\n')">
+  <mat-error *ngFor="let error of errorMessages">
     {{ error }}
   </mat-error>
   <mat-hint *ngIf="!!maxLength" align="end"

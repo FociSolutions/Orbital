@@ -33,22 +33,22 @@ export class CreateNewMockViewComponent implements OnInit {
    * Function used to get the appropriate error message to display for the form control
    * @param controlkey The key of the control to get the errors from
    */
-  errorMessage(controlkey: string): string {
+  errorMessages(controlkey: string): string[] {
     const errors = this.formGroup.controls[controlkey].errors;
     if (!errors) {
-      return '';
+      return [];
     }
 
-    const errorMessages = {
+    const defaultErrorMappings = {
       required: `${controlkey} is required`,
       maxlength: 'Max characters exceeded'
     };
 
-    const errorMessage = Object.keys(errors)
-      .map(err => (!!errorMessages[err] ? errorMessages[err] : errors[err]))
-      .join('\n');
+    const errorMessages = Object.keys(errors).map(err =>
+      !!defaultErrorMappings[err] ? defaultErrorMappings[err] : errors[err]
+    );
 
-    return errorMessage.trim();
+    return errorMessages;
   }
 
   ngOnInit() {}

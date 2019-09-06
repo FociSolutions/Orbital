@@ -14,7 +14,11 @@ export class TextInputComponent implements OnInit {
   @Input() maxLength?: number;
   @Input() multiLine?: boolean;
   @Input() control: FormControl;
-  @Input() errorMessage: string;
+  @Input() errorMessages: string[];
 
   ngOnInit() {}
+
+  setDirty() {
+    this.control.markAsDirty();
+  }
 }

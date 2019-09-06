@@ -2,7 +2,12 @@
   <mat-label>{{ label }}</mat-label>
   <div>
     <div class="div-file-name">{{ fileName }}</div>
-    <button mat-raised-button color="primary" (click)="fileInput.click()">
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="fileInput.click()"
+    >
       Choose File
     </button>
   </div>
@@ -20,7 +25,7 @@
     style="display:none;"
     [errorStateMatcher]="errorStateMatcher"
   />
-  <mat-error *ngFor="let error of errorMessage.split('\n')">
+  <mat-error *ngFor="let error of errorMessages">
     {{ error }}
   </mat-error>
 </mat-form-field>
