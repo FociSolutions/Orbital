@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { Location } from "@angular/common";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -9,7 +9,13 @@ import { Router } from "@angular/router";
   styleUrls: ["./rest-request-input.component.scss"]
 })
 export class RestRequestInputComponent implements OnInit {
-  ngOnInit() {}
+  @Input() buttonName: string;
+
+  ngOnInit() {
+    if (!!this.buttonName) {
+      this.buttonName = "Submit";
+    }
+  }
   formGroup: FormGroup;
   constructor(private router: Router, private location: Location) {
     const urlPattern = /^(http[s]?:\/\/)/;
