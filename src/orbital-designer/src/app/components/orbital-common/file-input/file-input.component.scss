@@ -7,11 +7,21 @@ mat-form-field {
   div {
     display: flex;
     flex-direction: row;
+    align-items: center;
     .div-file-name {
       flex: 1;
       color: rgba(0, 0, 0, 0.38);
       align-items: center;
       overflow: hidden;
     }
+  }
+
+  ::ng-deep .mat-form-field-underline {
+    position: relative;
+    bottom: auto;
+  }
+
+  ::ng-deep .mat-form-field-subscript-wrapper {
+    position: static !important;
   }
 }
