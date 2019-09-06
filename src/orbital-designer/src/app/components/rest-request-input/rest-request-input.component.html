@@ -1,1 +1,11 @@
-<p>rest-request-input works!</p>
+<mat-card class="rest-request-input">
+  <form class="column">
+    <app-text-input
+      class="capitalize"
+      title="Server URI - Required"
+      maxLength="200"
+      [control]="formGroup.controls.uri"
+      [errorMessage]="errorMessage('uri')"
+    ></app-text-input>
+  </form>
+</mat-card>
