@@ -26,8 +26,7 @@ import { RestRequestInputComponent } from './components/rest-request-input/rest-
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
     HomeViewComponent,
-    CreateNewMockViewComponent,
-    RestRequestInputComponent
+    CreateNewMockViewComponent
   ],
   imports: [
     BrowserModule,

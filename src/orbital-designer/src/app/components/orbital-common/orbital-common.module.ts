@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TextInputComponent } from './text-input/text-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileInputComponent } from './file-input/file-input.component';
+import { RestRequestInputComponent } from '../rest-request-input/rest-request-input.component';
 
 @NgModule({
   declarations: [TextInputComponent, FileInputComponent],
@@ -24,7 +25,8 @@ import { FileInputComponent } from './file-input/file-input.component';
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    RestRequestInputComponent
   ]
 })
 export class OrbitalCommonModule {}
