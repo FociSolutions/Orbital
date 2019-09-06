@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
-import { Subscription } from 'rxjs';
-import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-file-input',
@@ -10,17 +8,11 @@ import { MatInput } from '@angular/material/input';
   styleUrls: ['./file-input.component.scss']
 })
 export class FileInputComponent implements OnInit {
-  private reader: FileReader;
   private errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
-  constructor() {
-    this.reader = new FileReader();
-    // When the reader finishes parsing the string, sets the controls value
-    this.reader.onloadend = () => {
-      this.control.setValue(this.reader.result);
-    };
-  }
+  constructor() {}
   accept = '*';
-  fileName = '';
+  display = '';
+  multiFileInput = false;
   @Input() control!: FormControl;
   @Input() errorMessages: string[];
   @Input() label: string;
@@ -29,19 +21,29 @@ export class FileInputComponent implements OnInit {
       this.accept = types;
     }
   }
+  @Input() allowMultiple(allowMultiple: boolean) {
+    this.multiFileInput = allowMultiple;
+  }
 
   /**
-   * Reads the file and starts parsing the contents into a string.
+   * Reads the files and sets the value of the control to either the list or the single file
+   * depending on the multiFileInput property.
    * @param files The filelist passed in from the file input
    */
   onFileChange(files: FileList) {
-    const file = files[0];
-    if (!file) {
+    if (files.length === 0) {
       return;
     }
     this.control.markAsDirty();
-    this.fileName = file.name;
-    this.reader.readAsText(file);
+    if (this.multiFileInput) {
+      const filesArray = Array.from(files);
+      this.display = filesArray.map(f => f.name).join(', ');
+      this.control.setValue(filesArray);
+    } else {
+      const file = files[0];
+      this.display = file.name;
+      this.control.setValue(file);
+    }
   }
 
   ngOnInit() {}

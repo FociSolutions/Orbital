@@ -23,6 +23,7 @@
     [formControl]="control"
     [errorStateMatcher]="errorStateMatcher"
     autocomplete="off"
+    (focusout)="setDirty()"
   ></textarea>
   <mat-error *ngFor="let error of errorMessages">
     {{ error }}
