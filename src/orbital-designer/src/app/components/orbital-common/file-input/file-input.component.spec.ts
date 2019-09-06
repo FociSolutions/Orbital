@@ -56,7 +56,7 @@ describe('FileInputComponent', () => {
         item: x => file,
         0: file
       } as FileList);
-      expect(component.fileName).toEqual('test.txt');
+      expect(component.display).toEqual('test.txt');
     });
   });
 });
