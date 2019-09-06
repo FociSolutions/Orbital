@@ -18,6 +18,10 @@ export class TextInputComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * Sets the text input to dirty when it becomes out of focus. Required
+   * to show the error messages since the state matcher checks if the input is dirty
+   */
   setDirty() {
     this.control.markAsDirty();
   }

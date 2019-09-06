@@ -12,9 +12,9 @@ import { MatInput } from '@angular/material/input';
 export class FileInputComponent implements OnInit {
   private reader: FileReader;
   private errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
-  private subscription: Subscription;
   constructor() {
     this.reader = new FileReader();
+    // When the reader finishes parsing the string, sets the controls value
     this.reader.onloadend = () => {
       this.control.setValue(this.reader.result);
     };
@@ -30,6 +30,10 @@ export class FileInputComponent implements OnInit {
     }
   }
 
+  /**
+   * Reads the file and starts parsing the contents into a string.
+   * @param files The filelist passed in from the file input
+   */
   onFileChange(files: FileList) {
     const file = files[0];
     if (!file) {
