@@ -8,7 +8,12 @@
       [errorMessage]="errorMessage('uri')"
     ></app-text-input>
     <div id="submit-buttons">
-      <button mat-raised-button color="primary" (click)="sendRequest()">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="sendRequest()"
+        [disabled]="!formGroup.valid"
+      >
         Submit
       </button>
     </div>
