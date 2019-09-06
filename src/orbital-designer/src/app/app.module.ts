@@ -18,6 +18,7 @@ import { GetVerbColorPipe } from './pipes/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
+import { RestRequestInputComponent } from './components/rest-request-input/rest-request-input.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CreateNewMockViewComponent } from './components/create-new-mock-view/cr
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
     HomeViewComponent,
-    CreateNewMockViewComponent
+    CreateNewMockViewComponent,
+    RestRequestInputComponent
   ],
   imports: [
     BrowserModule,
