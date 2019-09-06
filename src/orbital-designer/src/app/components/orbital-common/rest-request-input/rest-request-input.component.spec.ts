@@ -5,10 +5,7 @@ import { OrbitalCommonModule } from '../orbital-common.module';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
-import { promise } from 'protractor';
-import { doesNotThrow } from 'assert';
 
 describe('RestRequestInputComponent', () => {
   let component: RestRequestInputComponent;
@@ -16,7 +13,7 @@ describe('RestRequestInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RestRequestInputComponent],
+      declarations: [],
       imports: [
         OrbitalCommonModule,
         MatCardModule,

@@ -7,16 +7,22 @@ import { TextInputComponent } from './text-input/text-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileInputComponent } from './file-input/file-input.component';
 import { RestRequestInputComponent } from './rest-request-input/rest-request-input.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-  declarations: [TextInputComponent, FileInputComponent],
+  declarations: [
+    TextInputComponent,
+    FileInputComponent,
+    RestRequestInputComponent
+  ],
   imports: [
     CommonModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule
   ],
   exports: [
     TextInputComponent,
