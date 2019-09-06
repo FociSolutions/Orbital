@@ -49,7 +49,7 @@ export class RestRequestInputComponent implements OnInit {
    * Sends the request to the provided URL in the form with the specified
    * method type, headers, and body.
    */
-  sendRequest() {
+  public sendRequest(): Observable<object> {
     const uri = this.formGroup.get('uri').value;
     let output = new Observable<object>();
     switch (this.httpMethod) {
@@ -67,9 +67,7 @@ export class RestRequestInputComponent implements OnInit {
         break;
     }
 
-    output.subscribe(data => {
-      console.log(data);
-    });
+    return output;
   }
 
   errorMessage(controlkey: string): string {
