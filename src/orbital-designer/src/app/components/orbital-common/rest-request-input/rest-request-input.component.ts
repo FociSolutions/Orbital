@@ -24,14 +24,11 @@ export class RestRequestInputComponent implements OnInit {
       )
     });
   }
-  @Input() buttonName: string;
+  @Input() buttonName = 'Submit';
   @Input() options: object;
   @Input() httpMethod: string;
   formGroup: FormGroup;
   ngOnInit() {
-    if (!!this.buttonName) {
-      this.buttonName = 'Submit';
-    }
     if (this.options === undefined) {
       const headers = {};
       const params = {};
