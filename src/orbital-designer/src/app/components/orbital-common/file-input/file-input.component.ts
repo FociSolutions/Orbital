@@ -16,13 +16,13 @@ export class FileInputComponent implements OnInit {
   @Input() control!: FormControl;
   @Input() errorMessages: string[];
   @Input() label: string;
-  @Input() fileTypes(types: string) {
+  @Input() set fileTypes(types: string) {
     if (!!types) {
       this.accept = types;
     }
   }
   @Input() set allowMultiple(allowMultiple: boolean) {
-    this.multiFileInput = allowMultiple;
+    this.multiFileInput = !!allowMultiple;
   }
 
   constructor() {}

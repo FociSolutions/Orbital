@@ -53,25 +53,77 @@ describe('FileInputComponent', () => {
       expect(component.display).toEqual('test.txt');
       expect(component.control.value).toEqual(Expected);
     });
+
+    it('If allowMultiple is true, updates the control value with an array of files and update the display property', () => {
+      component.allowMultiple = true;
+      const content = faker.random.word();
+      const ExpectedList: File[] = [];
+      for (let i = 0; i < 3; i++) {
+        ExpectedList.push(new File([content], `file${i}.txt`));
+      }
+
+      const ExpectedDisplay = 'file0.txt, file1.txt, file2.txt';
+      component.onFileChange({
+        length: 3,
+        item: x => ExpectedList[x],
+        0: ExpectedList[0],
+        1: ExpectedList[1],
+        2: ExpectedList[2]
+      });
+      expect(component.control.value).toEqual(ExpectedList);
+      expect(component.display).toEqual(ExpectedDisplay);
+    });
+
+    it('fileList is empty, does not change value or display', () => {
+      const ExpectedDisplay = `${component.display}`;
+      const ExpectedValue = component.control.value;
+      component.onFileChange({
+        length: 0,
+        item: () => null
+      });
+      expect(component.control.value).toEqual(ExpectedValue);
+      expect(component.display).toEqual(ExpectedDisplay);
+    });
+
+    it('should mark the control as dirty', () => {
+      expect(component.control.dirty).toBeFalsy();
+      const content = faker.random.word();
+      const file = new File([content], 'test.txt', {
+        type: 'text/plain',
+        lastModified: new Date().getTime()
+      });
+      component.onFileChange({
+        length: 1,
+        item: x => file,
+        0: file
+      } as FileList);
+      expect(component.control.dirty).toBeTruthy();
+    });
   });
 
-  it('If allowMultiple is true, updates the control value with an array of files and update the display property', () => {
-    component.allowMultiple = true;
-    const content = faker.random.word();
-    const ExpectedList: File[] = [];
-    for (let i = 0; i < 3; i++) {
-      ExpectedList.push(new File([content], `file${i}.txt`));
-    }
-
-    const ExpectedDisplay = 'file0.txt, file1.txt, file2.txt';
-    component.onFileChange({
-      length: 3,
-      item: x => ExpectedList[x],
-      0: ExpectedList[0],
-      1: ExpectedList[1],
-      2: ExpectedList[2]
+  describe('FileInputComponent.fileTypes', () => {
+    it('should set the accept property if not null input', () => {
+      const Expected = faker.random.word();
+      component.fileTypes = Expected;
+      expect(component.accept).toEqual(Expected);
     });
-    expect(component.control.value).toEqual(ExpectedList);
-    expect(component.display).toEqual(ExpectedDisplay);
+
+    it('should not set the accept property if null input', () => {
+      const Expected = `${component.accept}`;
+      component.fileTypes = Expected;
+      expect(component.accept).toEqual(Expected);
+    });
+  });
+
+  describe('FileInputComponent.allowMultiple', () => {
+    it('should set the multipleFileInput property to false if null', () => {
+      component.allowMultiple = null;
+      expect(component.multiFileInput).toBeFalsy();
+    });
+
+    it('should set the multipleFileInput property to input if not null', () => {
+      component.allowMultiple = true;
+      expect(component.multiFileInput).toBeTruthy();
+    });
   });
 });
