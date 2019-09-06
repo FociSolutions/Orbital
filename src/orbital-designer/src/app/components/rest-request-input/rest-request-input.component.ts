@@ -1,23 +1,30 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Injectable } from "@angular/core";
 import { Location } from "@angular/common";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { HttpMethod } from "blocking-proxy/built/lib/webdriver_commands";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-rest-request-input",
   templateUrl: "./rest-request-input.component.html",
   styleUrls: ["./rest-request-input.component.scss"]
 })
+@Injectable()
 export class RestRequestInputComponent implements OnInit {
   @Input() buttonName: string;
-
   ngOnInit() {
     if (!!this.buttonName) {
       this.buttonName = "Submit";
     }
   }
   formGroup: FormGroup;
-  constructor(private router: Router, private location: Location) {
+  constructor(
+    private router: Router,
+    private location: Location,
+    private httpClient: HttpClient
+  ) {
     const urlPattern = /^(http[s]?:\/\/)/;
     this.formGroup = new FormGroup({
       uri: new FormControl(
@@ -28,6 +35,19 @@ export class RestRequestInputComponent implements OnInit {
           Validators.pattern(urlPattern)
         ])
       )
+    });
+  }
+
+  /**
+   * Sends the request to the provided URL in the form with the specified
+   * method type, headers, and body.
+   */
+  sendRequest() {
+    let output = this.httpClient.get(this.formGroup.get("uri").value, {
+      responseType: "text"
+    });
+    output.subscribe(data => {
+      console.log(data);
     });
   }
 
