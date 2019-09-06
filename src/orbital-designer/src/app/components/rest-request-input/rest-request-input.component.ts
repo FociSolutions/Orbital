@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpMethod } from 'blocking-proxy/built/lib/webdriver_commands';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -31,10 +31,16 @@ export class RestRequestInputComponent implements OnInit {
     });
   }
   @Input() buttonName: string;
+  @Input() options: object;
   formGroup: FormGroup;
   ngOnInit() {
     if (!!this.buttonName) {
       this.buttonName = 'Submit';
+    }
+    if (this.options === undefined) {
+      const headers = {};
+      const params = {};
+      this.options = { headers, params, responseType: 'text' as 'text' };
     }
   }
 
@@ -43,9 +49,11 @@ export class RestRequestInputComponent implements OnInit {
    * method type, headers, and body.
    */
   sendRequest() {
-    const output = this.httpClient.get(this.formGroup.get('uri').value, {
-      responseType: 'text'
-    });
+    const output = this.httpClient.get(
+      this.formGroup.get('uri').value,
+      this.options
+    );
+
     output.subscribe(data => {
       console.log(data);
     });
