@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, Injectable } from '@angular/core';
-import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { HttpMethod } from 'blocking-proxy/built/lib/webdriver_commands';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -13,11 +10,7 @@ import { Observable } from 'rxjs';
 })
 @Injectable()
 export class RestRequestInputComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private location: Location,
-    private httpClient: HttpClient
-  ) {
+  constructor(private httpClient: HttpClient) {
     const urlPattern = /^(http[s]?:\/\/)/;
     this.formGroup = new FormGroup({
       uri: new FormControl(
