@@ -42,7 +42,7 @@ export class RestRequestInputComponent implements OnInit {
    * Sends the request to the provided URL in the form with the specified
    * method type, headers, and body.
    */
-  public sendRequest(uri: string): Observable<object> {
+  public sendRequest(uri?: string): Observable<object> {
     if (!!uri) {
       uri = this.formGroup.get('uri').value;
     }
