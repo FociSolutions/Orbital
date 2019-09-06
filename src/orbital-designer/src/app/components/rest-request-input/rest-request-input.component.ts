@@ -32,7 +32,7 @@ export class RestRequestInputComponent implements OnInit {
   }
   @Input() buttonName: string;
   @Input() options: object;
-  @Input() httpMethod: HttpMethod;
+  @Input() httpMethod: string;
   formGroup: FormGroup;
   ngOnInit() {
     if (!!this.buttonName) {
@@ -43,9 +43,6 @@ export class RestRequestInputComponent implements OnInit {
       const params = {};
       this.options = { headers, params, responseType: 'text' as 'text' };
     }
-    if (this.httpMethod === undefined) {
-      this.httpMethod = 'GET';
-    }
   }
 
   /**
@@ -53,10 +50,22 @@ export class RestRequestInputComponent implements OnInit {
    * method type, headers, and body.
    */
   sendRequest() {
-    const output = this.httpClient.get(
-      this.formGroup.get('uri').value,
-      this.options
-    );
+    const uri = this.formGroup.get('uri').value;
+    let output = new Observable<object>();
+    switch (this.httpMethod) {
+      case 'GET':
+        output = this.httpClient.get(uri, this.options);
+        break;
+      case 'POST':
+        output = this.httpClient.post(uri, this.options);
+        break;
+      case 'DELETE':
+        output = this.httpClient.delete(uri, this.options);
+        break;
+      default:
+        output = this.httpClient.get(uri, this.options);
+        break;
+    }
 
     output.subscribe(data => {
       console.log(data);
