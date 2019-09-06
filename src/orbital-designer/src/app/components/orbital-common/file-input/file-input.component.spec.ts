@@ -114,16 +114,4 @@ describe('FileInputComponent', () => {
       expect(component.accept).toEqual(Expected);
     });
   });
-
-  describe('FileInputComponent.allowMultiple', () => {
-    it('should set the multipleFileInput property to false if null', () => {
-      component.allowMultiple = null;
-      expect(component.multiFileInput).toBeFalsy();
-    });
-
-    it('should set the multipleFileInput property to input if not null', () => {
-      component.allowMultiple = true;
-      expect(component.multiFileInput).toBeTruthy();
-    });
-  });
 });

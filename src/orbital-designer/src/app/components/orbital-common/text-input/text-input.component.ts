@@ -12,9 +12,9 @@ export class TextInputComponent implements OnInit {
   private errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   @Input() title = '';
   @Input() maxLength?: number;
-  @Input() multiLine?: boolean;
-  @Input() control: FormControl;
-  @Input() errorMessages: string[];
+  @Input() multiLine = false;
+  @Input() control!: FormControl;
+  @Input() errorMessages: string[] = [];
 
   ngOnInit() {}
 

@@ -11,19 +11,16 @@ export class FileInputComponent implements OnInit {
   errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   accept = '*';
   display = '';
-  multiFileInput = false;
 
   @Input() control!: FormControl;
-  @Input() errorMessages: string[];
-  @Input() label: string;
+  @Input() errorMessages: string[] = [];
+  @Input() label = '';
   @Input() set fileTypes(types: string) {
     if (!!types) {
       this.accept = types;
     }
   }
-  @Input() set allowMultiple(allowMultiple: boolean) {
-    this.multiFileInput = !!allowMultiple;
-  }
+  @Input() allowMultiple = false;
 
   constructor() {}
 
@@ -37,7 +34,7 @@ export class FileInputComponent implements OnInit {
       return;
     }
     this.control.markAsDirty();
-    if (this.multiFileInput) {
+    if (this.allowMultiple) {
       const filesArray = Array.from(files);
       this.display = filesArray.map(f => f.name).join(', ');
       this.control.setValue(filesArray);
