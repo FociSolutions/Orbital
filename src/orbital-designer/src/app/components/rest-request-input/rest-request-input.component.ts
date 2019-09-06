@@ -32,6 +32,7 @@ export class RestRequestInputComponent implements OnInit {
   }
   @Input() buttonName: string;
   @Input() options: object;
+  @Input() httpMethod: HttpMethod;
   formGroup: FormGroup;
   ngOnInit() {
     if (!!this.buttonName) {
@@ -41,6 +42,9 @@ export class RestRequestInputComponent implements OnInit {
       const headers = {};
       const params = {};
       this.options = { headers, params, responseType: 'text' as 'text' };
+    }
+    if (this.httpMethod === undefined) {
+      this.httpMethod = 'GET';
     }
   }
 
