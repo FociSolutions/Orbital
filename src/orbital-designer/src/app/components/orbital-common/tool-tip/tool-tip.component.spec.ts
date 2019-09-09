@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ToolTipComponent } from './tool-tip.component';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('ToolTipComponent', () => {
   let component: ToolTipComponent;
@@ -8,9 +9,9 @@ describe('ToolTipComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToolTipComponent ]
-    })
-    .compileComponents();
+      imports: [MatTooltipModule, MatIconModule],
+      declarations: [ToolTipComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
