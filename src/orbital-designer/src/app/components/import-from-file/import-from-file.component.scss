@@ -12,3 +12,12 @@
     max-width: 131px;
   }
 }
+
+.import-from-file-container {
+  margin-top: 100px;
+}
+
+// hide the last divider in the list so it doesn't divide the end with no items
+mat-card div:last-child mat-divider {
+  display: none;
+}
