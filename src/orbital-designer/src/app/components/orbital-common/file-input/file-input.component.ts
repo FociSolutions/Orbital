@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 
@@ -21,8 +21,6 @@ export class FileInputComponent implements OnInit {
     }
   }
   @Input() allowMultiple = false;
-
-  constructor() {}
 
   /**
    * Reads the files and sets the value of the control to either the list or the single file

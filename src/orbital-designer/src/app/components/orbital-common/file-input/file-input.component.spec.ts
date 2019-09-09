@@ -66,13 +66,13 @@ describe('FileInputComponent', () => {
         0: ExpectedList[0],
         1: ExpectedList[1],
         2: ExpectedList[2]
-      });
+      } as FileList);
       expect(component.control.value).toEqual(ExpectedList);
       expect(component.fileNames).toEqual(ExpectedDisplay);
     });
 
     it('fileList is empty, does not change value or display', () => {
-      const ExpectedDisplay = `${component.fileNames}`;
+      const ExpectedDisplay = component.fileNames;
       const ExpectedValue = component.control.value;
       component.onFileChange({
         length: 0,

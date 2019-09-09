@@ -62,7 +62,7 @@ export class MockDefinition {
         const validator = new OpenAPISchemaValidator({ version: 2 });
         const content = yaml.safeLoad(openApi);
         const result = validator.validate(content);
-        if (!result.errors || result.errors.length < 1) {
+        if (!result.errors || result.errors.length === 0) {
           resolve(content);
         } else {
           reject(
