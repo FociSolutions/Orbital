@@ -16,14 +16,17 @@
       [control]="formGroup.controls.description"
       [errorMessages]="errorMessages('description')"
     ></app-text-input>
-    <app-file-input
-      class="row capitalize"
-      [control]="formGroup.controls.openApiFile"
-      label="Select File - Required"
-      accept=".yml,.yaml"
-      [errorMessages]="errorMessages('openApiFile')"
-    >
-    </app-file-input>
+    <app-tool-tip
+      message="Find out more about the OpenAPI specs here: https://swagger.io/docs/specification/about/"
+      ><app-file-input
+        class="row capitalize"
+        [control]="formGroup.controls.openApiFile"
+        label="Select File - Required"
+        accept=".yml,.yaml"
+        [errorMessages]="errorMessages('openApiFile')"
+      >
+      </app-file-input
+    ></app-tool-tip>
     <div class="row buttons-div">
       <button mat-raised-button color="primary" (click)="goBack()">
         Back

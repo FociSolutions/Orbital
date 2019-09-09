@@ -9,15 +9,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileInputComponent } from './file-input/file-input.component';
 import { RestRequestInputComponent } from './rest-request-input/rest-request-input.component';
 import { MatCardModule } from '@angular/material/card';
+import { ToolTipComponent } from './tool-tip/tool-tip.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
     TextInputComponent,
     FileInputComponent,
-    RestRequestInputComponent
+    RestRequestInputComponent,
+    ToolTipComponent
   ],
   imports: [
     CommonModule,
+    MatTooltipModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -29,12 +33,14 @@ import { MatCardModule } from '@angular/material/card';
   exports: [
     TextInputComponent,
     FileInputComponent,
+    ToolTipComponent,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule,
     RestRequestInputComponent
   ]
 })
