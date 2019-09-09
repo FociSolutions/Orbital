@@ -7,6 +7,10 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
   styleUrls: ['./import-from-file.component.scss']
 })
 export class ImportFromFileComponent implements OnInit {
+  files: object[] = [
+    { title: 'MockDefinition1', error: 'Invalid File' },
+    { title: 'MockDefinition2' }
+  ];
   formGroup: FormGroup;
   constructor() {
     this.formGroup = new FormGroup({
