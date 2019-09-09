@@ -42,11 +42,7 @@ describe('FileInputComponent', () => {
     it('If allowMultiple is false, updates the control value with the input file and update the display property', () => {
       const content = faker.random.word();
       const Expected = new File([content], 'test.txt');
-      component.onFileChange({
-        length: 1,
-        item: x => Expected,
-        0: Expected
-      } as FileList);
+      component.onFileChange(([Expected] as unknown) as FileList);
       expect(component.fileNames).toEqual('test.txt');
       expect(component.control.value).toEqual(Expected);
     });
@@ -60,13 +56,7 @@ describe('FileInputComponent', () => {
       }
 
       const ExpectedDisplay = 'file0.txt, file1.txt, file2.txt';
-      component.onFileChange({
-        length: 3,
-        item: x => ExpectedList[x],
-        0: ExpectedList[0],
-        1: ExpectedList[1],
-        2: ExpectedList[2]
-      } as FileList);
+      component.onFileChange((ExpectedList as unknown) as FileList);
       expect(component.control.value).toEqual(ExpectedList);
       expect(component.fileNames).toEqual(ExpectedDisplay);
     });
@@ -74,10 +64,7 @@ describe('FileInputComponent', () => {
     it('fileList is empty, does not change value or display', () => {
       const ExpectedDisplay = component.fileNames;
       const ExpectedValue = component.control.value;
-      component.onFileChange({
-        length: 0,
-        item: () => null
-      });
+      component.onFileChange(([] as unknown) as FileList);
       expect(component.control.value).toEqual(ExpectedValue);
       expect(component.fileNames).toEqual(ExpectedDisplay);
     });
@@ -86,11 +73,7 @@ describe('FileInputComponent', () => {
       expect(component.control.dirty).toBeFalsy();
       const content = faker.random.word();
       const file = new File([content], 'test.txt');
-      component.onFileChange({
-        length: 1,
-        item: x => file,
-        0: file
-      } as FileList);
+      component.onFileChange(([File] as unknown) as FileList);
       expect(component.control.dirty).toBeTruthy();
     });
   });
