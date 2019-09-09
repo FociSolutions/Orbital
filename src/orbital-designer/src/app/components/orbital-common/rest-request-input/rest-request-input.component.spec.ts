@@ -43,7 +43,6 @@ describe('RestRequestInputComponent', () => {
   describe('RestRequestInputComponent.sendRequest', () => {
     it('should emit response from request to localhost', async done => {
       component.responseReceived.subscribe(resp => {
-        console.log(resp);
         expect(resp).toBeTruthy();
         done();
       });
