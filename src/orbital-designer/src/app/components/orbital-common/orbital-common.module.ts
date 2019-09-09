@@ -7,10 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { TextInputComponent } from './text-input/text-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileInputComponent } from './file-input/file-input.component';
-import { ToolTipComponent } from './tool-tip/tool-tip.component';
 
 @NgModule({
-  declarations: [TextInputComponent, FileInputComponent, ToolTipComponent],
+  declarations: [TextInputComponent, FileInputComponent],
   imports: [
     CommonModule,
     MatInputModule,
@@ -28,8 +27,7 @@ import { ToolTipComponent } from './tool-tip/tool-tip.component';
     ReactiveFormsModule,
     FormsModule,
     MatButtonModule,
-    MatIconModule,
-    ToolTipComponent
+    MatIconModule
   ]
 })
 export class OrbitalCommonModule {}

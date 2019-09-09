@@ -1,7 +1,7 @@
 <mat-form-field floatLabel="always">
   <mat-label>{{ label }}</mat-label>
   <div>
-    <div class="div-file-name">{{ display }}</div>
+    <div class="div-file-name">{{ fileNames }}</div>
     <button
       mat-raised-button
       color="primary"
@@ -17,6 +17,7 @@
     (change)="onFileChange($event.target.files)"
     style="display:none;"
     [accept]="accept"
+    [multiple]="allowMultiple"
   />
   <input
     matInput

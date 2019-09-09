@@ -16,17 +16,14 @@
       [control]="formGroup.controls.description"
       [errorMessages]="errorMessages('description')"
     ></app-text-input>
-    <app-tool-tip
-      ><app-file-input
-        class="row capitalize"
-        [control]="formGroup.controls.openApiFile"
-        label="Select File - Required"
-        fileTypes=".yml,.yaml"
-        [errorMessages]="errorMessages('openApiFile')"
-        [allowMultiple]="false"
-      >
-      </app-file-input
-    ></app-tool-tip>
+    <app-file-input
+      class="row capitalize"
+      [control]="formGroup.controls.openApiFile"
+      label="Select File - Required"
+      fileTypes=".yml,.yaml"
+      [errorMessages]="errorMessages('openApiFile')"
+    >
+    </app-file-input>
     <div class="row buttons-div">
       <button mat-raised-button color="primary" (click)="goBack()">
         Back

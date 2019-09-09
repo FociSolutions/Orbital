@@ -30,7 +30,7 @@ export class CreateNewMockViewComponent implements OnInit {
   }
 
   /**
-   * Function used to get the appropriate error message to display for the form control
+   * Function used to get the appropriate error messages to display for the form control
    * @param controlkey The key of the control to get the errors from
    */
   errorMessages(controlkey: string): string[] {

@@ -10,7 +10,7 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 export class FileInputComponent implements OnInit {
   errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   accept = '*';
-  display = '';
+  fileNames = '';
 
   @Input() control!: FormControl;
   @Input() errorMessages: string[] = [];
@@ -36,11 +36,11 @@ export class FileInputComponent implements OnInit {
     this.control.markAsDirty();
     if (this.allowMultiple) {
       const filesArray = Array.from(files);
-      this.display = filesArray.map(f => f.name).join(', ');
+      this.fileNames = filesArray.map(f => f.name).join(', ');
       this.control.setValue(filesArray);
     } else {
       const file = files[0];
-      this.display = file.name;
+      this.fileNames = file.name;
       this.control.setValue(file);
     }
   }
