@@ -41,16 +41,13 @@ describe('FileInputComponent', () => {
   describe('FileInputComponent.OnFileChange', () => {
     it('If allowMultiple is false, updates the control value with the input file and update the display property', () => {
       const content = faker.random.word();
-      const Expected = new File([content], 'test.txt', {
-        type: 'text/plain',
-        lastModified: new Date().getTime()
-      });
+      const Expected = new File([content], 'test.txt');
       component.onFileChange({
         length: 1,
         item: x => Expected,
         0: Expected
       } as FileList);
-      expect(component.display).toEqual('test.txt');
+      expect(component.fileNames).toEqual('test.txt');
       expect(component.control.value).toEqual(Expected);
     });
 
@@ -71,27 +68,24 @@ describe('FileInputComponent', () => {
         2: ExpectedList[2]
       });
       expect(component.control.value).toEqual(ExpectedList);
-      expect(component.display).toEqual(ExpectedDisplay);
+      expect(component.fileNames).toEqual(ExpectedDisplay);
     });
 
     it('fileList is empty, does not change value or display', () => {
-      const ExpectedDisplay = `${component.display}`;
+      const ExpectedDisplay = `${component.fileNames}`;
       const ExpectedValue = component.control.value;
       component.onFileChange({
         length: 0,
         item: () => null
       });
       expect(component.control.value).toEqual(ExpectedValue);
-      expect(component.display).toEqual(ExpectedDisplay);
+      expect(component.fileNames).toEqual(ExpectedDisplay);
     });
 
     it('should mark the control as dirty', () => {
       expect(component.control.dirty).toBeFalsy();
       const content = faker.random.word();
-      const file = new File([content], 'test.txt', {
-        type: 'text/plain',
-        lastModified: new Date().getTime()
-      });
+      const file = new File([content], 'test.txt');
       component.onFileChange({
         length: 1,
         item: x => file,
