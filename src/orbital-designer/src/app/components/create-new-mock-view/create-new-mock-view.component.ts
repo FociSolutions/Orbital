@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { openApiFileValidator } from 'src/app/validators/async/async-file-content-validator';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -20,26 +21,34 @@ export class CreateNewMockViewComponent implements OnInit {
         '',
         Validators.compose([Validators.maxLength(1000)])
       ),
-      openApiFile: new FormControl(null, Validators.required)
+      openApiFile: new FormControl(
+        null,
+        Validators.required,
+        openApiFileValidator
+      )
     });
   }
 
-  errorMessage(controlkey: string): string {
+  /**
+   * Function used to get the appropriate error messages to display for the form control
+   * @param controlkey The key of the control to get the errors from
+   */
+  errorMessages(controlkey: string): string[] {
     const errors = this.formGroup.controls[controlkey].errors;
     if (!errors) {
-      return '';
+      return [];
     }
 
-    const errorMessages = {
+    const defaultErrorMappings = {
       required: `${controlkey} is required`,
       maxlength: 'Max characters exceeded'
     };
 
-    const errorMessage = Object.keys(errors)
-      .map(err => (!!errorMessages[err] ? errorMessages[err] : 'Invalid Input'))
-      .join('\n');
+    const errorMessages = Object.keys(errors).map(err =>
+      !!defaultErrorMappings[err] ? defaultErrorMappings[err] : errors[err]
+    );
 
-    return errorMessage.trim();
+    return errorMessages;
   }
 
   ngOnInit() {}

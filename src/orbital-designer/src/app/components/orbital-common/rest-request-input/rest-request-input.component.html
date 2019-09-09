@@ -4,15 +4,15 @@
       class="capitalize"
       title="Server URI - Required"
       maxLength="200"
-      [control]="formGroup.controls.uri"
-      [errorMessage]="errorMessage('uri')"
+      [control]="inputControl"
+      [errorMessages]="errorMessages"
     ></app-text-input>
     <div id="submit-buttons">
       <button
         mat-raised-button
         color="primary"
         (click)="sendRequest()"
-        [disabled]="!formGroup.valid"
+        [disabled]="!inputControl.valid"
       >
         Submit
       </button>

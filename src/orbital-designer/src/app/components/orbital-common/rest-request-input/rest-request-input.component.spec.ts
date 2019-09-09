@@ -5,11 +5,15 @@ import { OrbitalCommonModule } from '../orbital-common.module';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from '@angular/common/http/testing';
 
 describe('RestRequestInputComponent', () => {
   let component: RestRequestInputComponent;
   let fixture: ComponentFixture<RestRequestInputComponent>;
+  let httpMock: HttpTestingController;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -17,11 +21,13 @@ describe('RestRequestInputComponent', () => {
       imports: [
         OrbitalCommonModule,
         MatCardModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         BrowserAnimationsModule,
         RouterTestingModule.withRoutes([])
       ]
     }).compileComponents();
+    // tslint:disable-next-line: deprecation
+    httpMock = TestBed.get(HttpTestingController);
   }));
 
   beforeEach(() => {
@@ -34,12 +40,17 @@ describe('RestRequestInputComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should send a successful get request to localhost', async () => {
-    await component
-      .sendRequest('http://localhost:4200')
-      .toPromise()
-      .then(result => {
-        expect(result).toBeTruthy();
+  describe('RestRequestInputComponent.sendRequest', () => {
+    it('should emit response from request to localhost', async done => {
+      component.responseReceived.subscribe(resp => {
+        expect(resp).toBeTruthy();
+        done();
       });
+      component.inputControl.setValue('http://localhost:4200');
+      component.sendRequest();
+      const mockReq = httpMock.expectOne(component.inputControl.value);
+      expect(mockReq.cancelled).toBeFalsy();
+      mockReq.flush('');
+    });
   });
 });

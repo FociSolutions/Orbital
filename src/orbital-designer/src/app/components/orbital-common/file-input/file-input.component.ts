@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ViewChild, Directive } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'app-file-input',
@@ -7,22 +8,27 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./file-input.component.scss']
 })
 export class FileInputComponent implements OnInit {
-  constructor() {}
-  accept = '*';
-  fileName = '';
-  @Input() control!: FormControl;
-  @Input() errorMessage: string;
-  @Input() placeholder: string;
-  @Input() fileTypes(types: string) {
-    if (!!types) {
-      this.accept = types;
-    }
-  }
+  errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
+  fileNames = '';
 
+  @Input() control!: FormControl;
+  @Input() errorMessages: string[] = [];
+  @Input() label = '';
+  @Input() accept = '';
+  @Input() allowMultiple = false;
+
+  /**
+   * Reads the files and sets the value of the control to either the list or the single file
+   * depending on the multiFileInput property.
+   * @param files The filelist passed in from the file input
+   */
   onFileChange(files: FileList) {
-    const file = files[0];
-    this.fileName = file.name;
-    this.control.setValue(file);
+    if (files.length > 0) {
+      this.control.markAsDirty();
+      const filesArray = Array.from(files);
+      this.fileNames = filesArray.map(f => f.name).join(', ');
+      this.control.setValue(this.allowMultiple ? filesArray : filesArray[0]);
+    }
   }
 
   ngOnInit() {}

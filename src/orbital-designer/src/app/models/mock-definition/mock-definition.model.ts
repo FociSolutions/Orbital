@@ -53,6 +53,7 @@ export class MockDefinition {
 
   /**
    * Return OpenAPI spec
+   * If there were errors in validation it returns them as a map of errors
    * @returns OpenAPIV2.Document
    */
   public static toOpenApiSpec(openApi: string): Promise<OpenAPIV2.Document> {
@@ -61,13 +62,15 @@ export class MockDefinition {
         const validator = new OpenAPISchemaValidator({ version: 2 });
         const content = yaml.safeLoad(openApi);
         const result = validator.validate(content);
-        if (!result.errors || result.errors.length < 1) {
+        if (!result.errors || result.errors.length === 0) {
           resolve(content);
         } else {
-          reject('Invalid OpenAPI spec');
+          reject(
+            result.errors.map(err => `${err.dataPath} ${err.message}`.trim())
+          );
         }
       } catch (error) {
-        reject(error);
+        reject(['file content is invalid yaml']);
       }
     });
   }

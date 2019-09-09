@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FileInputComponent } from './file-input.component';
+import * as faker from 'faker';
 
 describe('FileInputComponent', () => {
   let control: FormControl;
@@ -38,18 +39,42 @@ describe('FileInputComponent', () => {
   });
 
   describe('FileInputComponent.OnFileChange', () => {
-    it('updates the control value with the input file', () => {
-      const file = new File([''], 'test.txt', {
-        type: 'text/plain',
-        lastModified: new Date().getTime()
-      });
-      component.onFileChange({
-        length: 1,
-        item: x => file,
-        0: file
-      } as FileList);
-      expect(control.value).toEqual(file);
-      expect(component.fileName).toEqual('test.txt');
+    it('If allowMultiple is false, updates the control value with the input file and update the display property', () => {
+      const content = faker.random.word();
+      const Expected = new File([content], 'test.txt');
+      component.onFileChange(([Expected] as unknown) as FileList);
+      expect(component.fileNames).toEqual('test.txt');
+      expect(component.control.value).toEqual(Expected);
+    });
+
+    it('If allowMultiple is true, updates the control value with an array of files and update the display property', () => {
+      component.allowMultiple = true;
+      const content = faker.random.word();
+      const ExpectedList: File[] = [];
+      for (let i = 0; i < 3; i++) {
+        ExpectedList.push(new File([content], `file${i}.txt`));
+      }
+
+      const ExpectedDisplay = 'file0.txt, file1.txt, file2.txt';
+      component.onFileChange((ExpectedList as unknown) as FileList);
+      expect(component.control.value).toEqual(ExpectedList);
+      expect(component.fileNames).toEqual(ExpectedDisplay);
+    });
+
+    it('fileList is empty, does not change value or display', () => {
+      const ExpectedDisplay = component.fileNames;
+      const ExpectedValue = component.control.value;
+      component.onFileChange(([] as unknown) as FileList);
+      expect(component.control.value).toEqual(ExpectedValue);
+      expect(component.fileNames).toEqual(ExpectedDisplay);
+    });
+
+    it('should mark the control as dirty', () => {
+      expect(component.control.dirty).toBeFalsy();
+      const content = faker.random.word();
+      const file = new File([content], 'test.txt');
+      component.onFileChange(([File] as unknown) as FileList);
+      expect(component.control.dirty).toBeTruthy();
     });
   });
 });

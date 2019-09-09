@@ -1,8 +1,20 @@
-import { Component, OnInit, Input, Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import Json from 'src/app/models/json';
+import {
+  Component,
+  OnInit,
+  Input,
+  Injectable,
+  Output,
+  EventEmitter
+} from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import {
+  HttpClient,
+  HttpResponse,
+  HttpRequest,
+  HttpEventType,
+  HttpEvent
+} from '@angular/common/http';
+import { Observer } from 'rxjs';
 
 @Component({
   selector: 'app-rest-request-input',
@@ -11,66 +23,60 @@ import Json from 'src/app/models/json';
 })
 @Injectable()
 export class RestRequestInputComponent implements OnInit {
+  static readonly urlMaxLength = 2048;
   constructor(private httpClient: HttpClient) {
     const urlPattern = /^(http[s]?:\/\/)/;
-    this.formGroup = new FormGroup({
-      uri: new FormControl(
-        '',
-        Validators.compose([
-          Validators.maxLength(2048),
-          Validators.required,
-          Validators.pattern(urlPattern)
-        ])
-      )
-    });
-  }
-  @Input() buttonName = 'Submit';
-  @Input() options: object;
-  @Input() httpMethod: string;
-  formGroup: FormGroup;
-  ngOnInit() {
-    if (this.options === undefined) {
-      const headers = {};
-      const params = {};
-      this.options = { headers, params, responseType: 'text' as 'text' };
-    }
-  }
-
-  /**
-   * Sends the request to the provided URL in the form with the specified
-   * method type, headers, and body.
-   */
-  public sendRequest<R>(uri?: string): Observable<R> {
-    if (!!uri) {
-      uri = this.formGroup.get('uri').value;
-    }
-    switch (this.httpMethod) {
-      case 'GET':
-        return this.httpClient.get<R>(uri, this.options);
-      case 'POST':
-        return this.httpClient.post<R>(uri, this.options);
-      case 'DELETE':
-        return this.httpClient.delete<R>(uri, this.options);
-      default:
-        return this.httpClient.get<R>(uri, this.options);
-    }
-  }
-
-  errorMessage(controlkey: string): string {
-    const errors = this.formGroup.controls[controlkey].errors;
-    if (!errors) {
-      return '';
-    }
-
-    const errorMessages = {
-      required: `${controlkey} is required`,
-      maxlength: 'Max characters exceeded'
+    this.inputControl = new FormControl(
+      '',
+      Validators.compose([
+        Validators.pattern(urlPattern),
+        Validators.maxLength(RestRequestInputComponent.urlMaxLength)
+      ])
+    );
+    this.responseReceived = new EventEmitter<HttpResponse<unknown>>();
+    this.requestObserver = {
+      next: event => {
+        if (event.type === HttpEventType.Response) {
+          this.responseReceived.emit(event);
+        }
+      },
+      error: () => {
+        this.errorMessages = ['Server cannot be reached'];
+        this.requestInProgress = false;
+      },
+      complete: () => (this.requestInProgress = false)
     };
+  }
+  requestObserver: Observer<HttpEvent<HttpResponse<unknown>>>;
+  inputControl: FormControl;
+  requestInProgress = false;
+  @Input() buttonName = 'Submit';
+  @Input() errorMessages: string[] = [];
+  @Input() options: object = {};
+  @Input() body?: string = null;
+  @Input() httpMethod:
+    | 'DELETE'
+    | 'GET'
+    | 'HEAD'
+    | 'JSONP'
+    | 'OPTIONS'
+    | 'POST'
+    | 'PUT'
+    | 'PATCH' = 'GET';
+  @Output() responseReceived: EventEmitter<HttpResponse<unknown>>;
 
-    const errorMessage = Object.keys(errors)
-      .map(err => (!!errorMessages[err] ? errorMessages[err] : 'Invalid Input'))
-      .join('\n');
+  ngOnInit() {}
 
-    return errorMessage.trim();
+  sendRequest() {
+    if (this.inputControl.valid) {
+      this.requestInProgress = true;
+      const request = new HttpRequest(
+        this.httpMethod,
+        this.inputControl.value,
+        this.body,
+        this.options
+      );
+      this.httpClient.request(request).subscribe(this.requestObserver);
+    }
   }
 }
