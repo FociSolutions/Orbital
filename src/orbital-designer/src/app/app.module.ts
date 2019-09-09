@@ -21,6 +21,7 @@ import { CreateNewMockViewComponent } from './components/create-new-mock-view/cr
 import { ImportFromFileComponent } from './components/import-from-file/import-from-file.component';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { FileInputComponent } from '../app/components/orbital-common/file-input/file-input.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MatIconModule } from '@angular/material/icon';
     GetVerbColorPipe,
     HomeViewComponent,
     CreateNewMockViewComponent,
-    ImportFromFileComponent
+    ImportFromFileComponent,
+    FileInputComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +48,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatGridListModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]
