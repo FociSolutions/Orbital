@@ -6,7 +6,6 @@ import { CreateNewMockViewComponent } from './create-new-mock-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Location } from '@angular/common';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;

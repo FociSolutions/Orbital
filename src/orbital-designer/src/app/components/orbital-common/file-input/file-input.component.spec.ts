@@ -94,18 +94,4 @@ describe('FileInputComponent', () => {
       expect(component.control.dirty).toBeTruthy();
     });
   });
-
-  describe('FileInputComponent.fileTypes', () => {
-    it('should set the accept property if not null input', () => {
-      const Expected = faker.random.word();
-      component.fileTypes = Expected;
-      expect(component.accept).toEqual(Expected);
-    });
-
-    it('should not set the accept property if null input', () => {
-      const Expected = `${component.accept}`;
-      component.fileTypes = Expected;
-      expect(component.accept).toEqual(Expected);
-    });
-  });
 });

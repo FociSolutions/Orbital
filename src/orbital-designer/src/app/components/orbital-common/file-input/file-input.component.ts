@@ -9,17 +9,12 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 })
 export class FileInputComponent implements OnInit {
   errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
-  accept = '*';
   fileNames = '';
 
   @Input() control!: FormControl;
   @Input() errorMessages: string[] = [];
   @Input() label = '';
-  @Input() set fileTypes(types: string) {
-    if (!!types) {
-      this.accept = types;
-    }
-  }
+  @Input() accept = '';
   @Input() allowMultiple = false;
 
   /**
@@ -28,18 +23,11 @@ export class FileInputComponent implements OnInit {
    * @param files The filelist passed in from the file input
    */
   onFileChange(files: FileList) {
-    if (files.length === 0) {
-      return;
-    }
-    this.control.markAsDirty();
-    if (this.allowMultiple) {
+    if (files.length > 0) {
+      this.control.markAsDirty();
       const filesArray = Array.from(files);
       this.fileNames = filesArray.map(f => f.name).join(', ');
-      this.control.setValue(filesArray);
-    } else {
-      const file = files[0];
-      this.fileNames = file.name;
-      this.control.setValue(file);
+      this.control.setValue(this.allowMultiple ? filesArray : filesArray[0]);
     }
   }
 
