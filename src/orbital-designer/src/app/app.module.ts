@@ -19,6 +19,8 @@ import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
 import { ImportFromFileComponent } from './components/import-from-file/import-from-file.component';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { ImportFromFileComponent } from './components/import-from-file/import-fr
     BrowserAnimationsModule,
     OrbitalCommonModule,
     MatCardModule,
+    MatIconModule,
     MatDividerModule,
+    MatListModule,
     MatButtonModule,
     MatGridListModule,
     ReactiveFormsModule,

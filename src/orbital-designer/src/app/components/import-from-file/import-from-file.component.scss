@@ -1,0 +1,14 @@
+.import-from-file {
+  width: 603px;
+  height: auto;
+}
+.buttons-div {
+  justify-content: space-between;
+  justify-self: flex-end;
+  align-items: flex-end;
+  margin: 2em 0;
+  button {
+    width: 10.234vw;
+    max-width: 131px;
+  }
+}

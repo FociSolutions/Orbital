@@ -1,1 +1,53 @@
-<p>import-from-file works!</p>
+<mat-card class="mat-elevation-z20">
+  <mat-card-title>Import From File</mat-card-title>
+  <mat-card-subtitle
+    >Import an existing Mockdefinition file below</mat-card-subtitle
+  >
+  <app-file-input
+    class="row capitalize"
+    [control]="formGroup.controls.openApiFile"
+    placeholder="Select File - Required"
+    fileTypes=".yml,.yaml"
+  >
+  </app-file-input>
+  <mat-card-subtitle>Imported Mock Definitions</mat-card-subtitle>
+  <mat-card class="import-from-file">
+    <mat-list>
+      <mat-list-item>
+        <h3 matLine>Mockdefinition1</h3>
+        <p matLine></p>
+        <mat-icon matListIcon>check_circle_outline</mat-icon>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <h3 matLine>Mockdefinition2</h3>
+        <p matLine>
+          <span>Uploading...</span>
+        </p>
+        <mat-icon matListIcon>cached</mat-icon>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <h3 matLine>Mockdefinition3</h3>
+        <p matLine>
+          <span>Invalid File</span>
+        </p>
+        <mat-icon matListIcon>highlight_off</mat-icon>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <div class="row buttons-div">
+    <button mat-raised-button color="primary" (click)="goBack()">
+      Back
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="formGroup.invalid"
+      (click)="createMock()"
+    >
+      Next
+    </button>
+  </div>
+</mat-card>

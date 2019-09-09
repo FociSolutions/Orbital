@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-import-from-file',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./import-from-file.component.scss']
 })
 export class ImportFromFileComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  formGroup: FormGroup;
+  constructor() {
+    this.formGroup = new FormGroup({
+      openApiFile: new FormControl(null, Validators.required)
+    });
   }
 
+  ngOnInit() {}
 }
