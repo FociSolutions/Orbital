@@ -9,6 +9,7 @@ export class ToolTipComponent implements OnInit {
   @Input() message!: string;
   @Input() matTooltipClass: any = '';
   @Input() icon = 'help_outline';
+  @Input() delay = 3000;
 
   ngOnInit() {}
 }
