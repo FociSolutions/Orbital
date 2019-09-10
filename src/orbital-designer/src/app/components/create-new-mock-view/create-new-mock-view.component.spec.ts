@@ -6,6 +6,11 @@ import { CreateNewMockViewComponent } from './create-new-mock-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Location } from '@angular/common';
 import { FormControl } from '@angular/forms';
+import validOpenApiText from '../../../test-files/valid-openapi-spec';
+import * as faker from 'faker';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { FileParserService } from 'src/app/services/file-parser.service';
+import { DesignerStore } from 'src/app/store/designer-store';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
@@ -20,7 +25,7 @@ describe('CreateNewMockViewComponent', () => {
         BrowserAnimationsModule,
         RouterTestingModule.withRoutes([])
       ],
-      providers: [Location]
+      providers: [Location, FileParserService, DesignerStore]
     }).compileComponents();
   }));
 
@@ -61,6 +66,43 @@ describe('CreateNewMockViewComponent', () => {
       const locationSpy = spyOn(TestBed.get(Location), 'back');
       component.goBack();
       expect(locationSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('CreateNewMockViewComponent.formToMockDefinition', () => {
+    it('should return a mockdefinition if form is valid', async () => {
+      const mockTitle = faker.random.word();
+      const mockDescription = faker.random.words();
+      const openApi = await MockDefinition.toOpenApiSpec(validOpenApiText);
+      component.formGroup.setValue({
+        ...component.formGroup.value,
+        title: mockTitle,
+        description: mockDescription,
+        openApiFile: new File([validOpenApiText], 'test-file.yml')
+      });
+      const mockDefinition = await component.formToMockDefinition();
+      expect(mockDefinition).toBeTruthy();
+      expect(mockDefinition.metadata).toEqual({
+        title: mockTitle,
+        description: mockDescription
+      });
+      expect(mockDefinition.openApi).toEqual(openApi);
+      expect(mockDefinition.host).toEqual(openApi.host);
+      expect(mockDefinition.basePath).toEqual(openApi.basePath);
+    });
+
+    it('should return null if form is invalid', async () => {
+      const mockTitle = faker.random.word();
+      const mockDescription = faker.random.words();
+      component.formGroup.setValue({
+        ...component.formGroup.value,
+        title: mockTitle,
+        description: mockDescription,
+        openApiFile: new File([validOpenApiText], 'test-file.yml')
+      });
+      component.formGroup.setErrors({ incorrect: true });
+      const mockDefinition = await component.formToMockDefinition();
+      expect(mockDefinition).toBeFalsy();
     });
   });
 });

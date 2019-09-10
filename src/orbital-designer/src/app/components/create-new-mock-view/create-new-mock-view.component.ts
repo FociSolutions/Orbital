@@ -3,6 +3,9 @@ import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { openApiFileValidator } from 'src/app/validators/async/async-file-content-validator';
+import { FileParserService } from 'src/app/services/file-parser.service';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { DesignerStore } from 'src/app/store/designer-store';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -11,7 +14,12 @@ import { openApiFileValidator } from 'src/app/validators/async/async-file-conten
 })
 export class CreateNewMockViewComponent implements OnInit {
   formGroup: FormGroup;
-  constructor(private router: Router, private location: Location) {
+  constructor(
+    private router: Router,
+    private location: Location,
+    private fileParser: FileParserService,
+    private store: DesignerStore
+  ) {
     this.formGroup = new FormGroup({
       title: new FormControl(
         '',
@@ -53,11 +61,32 @@ export class CreateNewMockViewComponent implements OnInit {
 
   ngOnInit() {}
 
-  createMock() {
+  async createMock() {
+    const mockDefinition = await this.formToMockDefinition();
+    this.store.mockDefinition = mockDefinition;
     this.router.navigateByUrl('mock-editor');
   }
 
   goBack() {
     this.location.back();
+  }
+
+  async formToMockDefinition(): Promise<MockDefinition> {
+    if (this.formGroup.invalid) {
+      return null;
+    }
+    const openApi = await this.fileParser.readOpenApiSpec(
+      this.formGroup.value.openApiFile
+    );
+    return {
+      metadata: {
+        title: this.formGroup.value.title,
+        description: this.formGroup.value.description
+      },
+      openApi,
+      host: openApi.host,
+      basePath: openApi.basePath,
+      scenarios: []
+    } as MockDefinition;
   }
 }

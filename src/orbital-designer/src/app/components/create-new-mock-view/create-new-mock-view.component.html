@@ -5,7 +5,7 @@
       class="titleInput capitalize"
       title="Title - Required"
       maxLength="200"
-      [control]="formGroup.controls.title"
+      [control]="formGroup.controls['title']"
       [errorMessages]="errorMessages('title')"
     ></app-text-input>
     <app-text-input
@@ -13,14 +13,14 @@
       title="Description"
       maxLength="1000"
       multiLine="true"
-      [control]="formGroup.controls.description"
+      [control]="formGroup.controls['description']"
       [errorMessages]="errorMessages('description')"
     ></app-text-input>
     <app-tool-tip
       message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
       ><app-file-input
         class="row capitalize"
-        [control]="formGroup.controls.openApiFile"
+        [control]="formGroup.controls['openApiFile']"
         label="Select File - Required"
         accept=".yml,.yaml"
         [errorMessages]="errorMessages('openApiFile')"
