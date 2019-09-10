@@ -12,19 +12,23 @@
   </app-file-input>
   <mat-card-subtitle>Imported Mock Definitions</mat-card-subtitle>
   <mat-card class="import-from-file">
-    <div *ngFor="let file of files">
+    <span *ngIf="!!formGroup.controls.openApiFile.value.name">
       <mat-list>
         <mat-list-item>
-          <h3 matLine>{{ file.title }}</h3>
-          <p matLine>{{ file.error }}</p>
+          <h3 matLine>{{ formGroup.controls.openApiFile.value.name }}</h3>
+          <p matLine>{{ errorMessages('openApiFile') }}</p>
           <mat-icon matListIcon>
-            <span *ngIf="!!file.error">cancel</span>
-            <span *ngIf="!file.error">check_circle_outline</span></mat-icon
+            <span *ngIf="errorMessages('openApiFile').length !== 0"
+              >cancel</span
+            >
+            <span *ngIf="errorMessages('openApiFile').length === 0"
+              >check_circle_outline</span
+            ></mat-icon
           >
         </mat-list-item>
         <mat-divider></mat-divider>
       </mat-list>
-    </div>
+    </span>
   </mat-card>
 
   <div class="row buttons-div">
