@@ -29,9 +29,7 @@ import { FileInputComponent } from '../app/components/orbital-common/file-input/
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
     HomeViewComponent,
-    CreateNewMockViewComponent,
-    ImportFromFileComponent,
-    FileInputComponent
+    CreateNewMockViewComponent
   ],
   imports: [
     BrowserModule,
