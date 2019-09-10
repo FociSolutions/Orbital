@@ -40,7 +40,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule,
     RestRequestInputComponent
   ]
 })

@@ -1,6 +1,9 @@
 <div>
   <ng-content></ng-content>
-  <mat-icon [matTooltip]="message" matTooltipPosition="after"
-    >help_outline</mat-icon
+  <mat-icon
+    [matTooltip]="message"
+    matTooltipPosition="after"
+    [matTooltipClass]="matTooltipClass"
+    >{{ icon }}</mat-icon
   >
 </div>

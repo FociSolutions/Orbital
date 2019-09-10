@@ -7,8 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ToolTipComponent implements OnInit {
   @Input() message!: string;
-  @Input() matTooltipClass: string;
-  constructor() {}
+  @Input() matTooltipClass = '';
+  @Input() icon = 'help_outline';
 
   ngOnInit() {}
 }
