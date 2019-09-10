@@ -61,16 +61,31 @@ export class CreateNewMockViewComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * createMock is a function that is responsible for storing the new MockDefinition
+   * in the designer store and navigating to the mock editor if the form is valid. If
+   * the form is invalid the function does nothing.
+   */
   async createMock() {
     const mockDefinition = await this.formToMockDefinition();
-    this.store.mockDefinition = mockDefinition;
-    this.router.navigateByUrl('mock-editor');
+    if (!!mockDefinition) {
+      this.store.mockDefinition = mockDefinition;
+      this.router.navigateByUrl('mock-editor');
+    }
   }
 
+  /**
+   * Goes back to the previous location in the app
+   */
   goBack() {
     this.location.back();
   }
 
+  /**
+   * formToMockDefinition method is responsible for creating a new MockDefinition from the
+   * form values. If the form is invalid then the function will return null, otherwise it uses
+   * the form values to create and return a new MockDefinition
+   */
   async formToMockDefinition(): Promise<MockDefinition> {
     if (this.formGroup.invalid) {
       return null;

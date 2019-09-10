@@ -11,6 +11,7 @@ import * as faker from 'faker';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { FileParserService } from 'src/app/services/file-parser.service';
 import { DesignerStore } from 'src/app/store/designer-store';
+import { Router } from '@angular/router';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
@@ -100,9 +101,44 @@ describe('CreateNewMockViewComponent', () => {
         description: mockDescription,
         openApiFile: new File([validOpenApiText], 'test-file.yml')
       });
-      component.formGroup.setErrors({ incorrect: true });
+      component.formGroup.setErrors({ incorarect: true });
       const mockDefinition = await component.formToMockDefinition();
       expect(mockDefinition).toBeFalsy();
+    });
+  });
+
+  describe('CreateNewMockViewComponent.createMock', () => {
+    it('should set the mockDefinition store and route to mock editor', async () => {
+      const mockTitle = faker.random.word();
+      const mockDescription = faker.random.words();
+      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+      const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
+      component.formGroup.setValue({
+        ...component.formGroup.value,
+        title: mockTitle,
+        description: mockDescription,
+        openApiFile: new File([validOpenApiText], 'test-file.yml')
+      });
+      await component.createMock();
+      expect(storeSpy).toHaveBeenCalled();
+      expect(routerSpy).toHaveBeenCalledWith('mock-editor');
+    });
+
+    it('should not navigate or change designer store state if the formGroup is invalid', async () => {
+      const mockTitle = faker.random.word();
+      const mockDescription = faker.random.words();
+      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+      const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
+      component.formGroup.setValue({
+        ...component.formGroup.value,
+        title: mockTitle,
+        description: mockDescription,
+        openApiFile: new File([validOpenApiText], 'test-file.yml')
+      });
+      component.formGroup.setErrors({ incorrect: true });
+      await component.createMock();
+      expect(routerSpy).not.toHaveBeenCalled();
+      expect(storeSpy).not.toHaveBeenCalled();
     });
   });
 });
