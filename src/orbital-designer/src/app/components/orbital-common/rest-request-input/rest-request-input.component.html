@@ -13,5 +13,8 @@
     [disabled]="!inputControl.valid"
   >
     Submit</button
-  ><mat-spinner diameter="25"></mat-spinner>
+  ><mat-spinner
+    diameter="25"
+    id="{{ this.requestInProgress ? 'show-spinner' : 'hide-spinner' }}"
+  ></mat-spinner>
 </div>
