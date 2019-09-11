@@ -3,6 +3,9 @@ import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { openApiFileValidator } from 'src/app/validators/async/async-file-content-validator';
+import { FileParserService } from 'src/app/services/file-parser.service';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { DesignerStore } from 'src/app/store/designer-store';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -11,7 +14,12 @@ import { openApiFileValidator } from 'src/app/validators/async/async-file-conten
 })
 export class CreateNewMockViewComponent implements OnInit {
   formGroup: FormGroup;
-  constructor(private router: Router, private location: Location) {
+  constructor(
+    private router: Router,
+    private location: Location,
+    private fileParser: FileParserService,
+    private store: DesignerStore
+  ) {
     this.formGroup = new FormGroup({
       title: new FormControl(
         '',
@@ -53,11 +61,47 @@ export class CreateNewMockViewComponent implements OnInit {
 
   ngOnInit() {}
 
-  createMock() {
-    this.router.navigateByUrl('mock-editor');
+  /**
+   * createMock is a function that is responsible for storing the new MockDefinition
+   * in the designer store and navigating to the mock editor if the form is valid. If
+   * the form is invalid the function does nothing.
+   */
+  async createMock() {
+    const mockDefinition = await this.formToMockDefinition();
+    if (!!mockDefinition) {
+      this.store.mockDefinition = mockDefinition;
+      this.router.navigateByUrl('mock-editor');
+    }
   }
 
+  /**
+   * Goes back to the previous location in the app
+   */
   goBack() {
     this.location.back();
+  }
+
+  /**
+   * formToMockDefinition method is responsible for creating a new MockDefinition from the
+   * form values. If the form is invalid then the function will return null, otherwise it uses
+   * the form values to create and return a new MockDefinition
+   */
+  async formToMockDefinition(): Promise<MockDefinition> {
+    if (this.formGroup.invalid) {
+      return null;
+    }
+    const openApi = await this.fileParser.readOpenApiSpec(
+      this.formGroup.value.openApiFile
+    );
+    return {
+      metadata: {
+        title: this.formGroup.value.title,
+        description: this.formGroup.value.description
+      },
+      openApi,
+      host: openApi.host,
+      basePath: openApi.basePath,
+      scenarios: []
+    } as MockDefinition;
   }
 }
