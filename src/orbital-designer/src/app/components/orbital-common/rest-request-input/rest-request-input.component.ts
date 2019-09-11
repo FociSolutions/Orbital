@@ -30,7 +30,8 @@ export class RestRequestInputComponent implements OnInit {
       '',
       Validators.compose([
         Validators.pattern(urlPattern),
-        Validators.maxLength(RestRequestInputComponent.urlMaxLength)
+        Validators.maxLength(RestRequestInputComponent.urlMaxLength),
+        Validators.required
       ])
     );
     this.responseReceived = new EventEmitter<HttpResponse<unknown>>();
