@@ -13,3 +13,13 @@
     }
   }
 }
+
+div#submit-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+mat-spinner {
+  margin-left: 10px;
+  flex-direction: center;
+}
