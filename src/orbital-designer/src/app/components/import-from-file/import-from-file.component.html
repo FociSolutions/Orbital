@@ -12,10 +12,10 @@
   </app-file-input>
   <mat-card-subtitle>Imported Mock Definitions</mat-card-subtitle>
   <mat-card class="import-from-file">
-    <span *ngIf="!!formGroup.controls.openApiFile.value.name">
+    <span *ngIf="!!formGroup.controls.openApiFile?.value?.name">
       <mat-list>
         <mat-list-item>
-          <h3 matLine>{{ formGroup.controls.openApiFile.value.name }}</h3>
+          <h3 matLine>{{ formGroup.controls.openApiFile?.value?.name }}</h3>
           <p matLine>{{ errorMessages('openApiFile') }}</p>
           <mat-icon matListIcon>
             <span *ngIf="errorMessages('openApiFile').length !== 0"
