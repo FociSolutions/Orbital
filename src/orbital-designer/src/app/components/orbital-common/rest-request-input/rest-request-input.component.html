@@ -10,7 +10,7 @@
     mat-raised-button
     color="primary"
     (click)="sendRequest()"
-    [disabled]="!inputControl.valid"
+    [disabled]="!inputControl.valid || this.requestInProgress"
   >
     Submit</button
   ><mat-spinner
