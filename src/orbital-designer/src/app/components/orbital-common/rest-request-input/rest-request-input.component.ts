@@ -36,12 +36,13 @@ export class RestRequestInputComponent implements OnInit {
     this.responseReceived = new EventEmitter<HttpResponse<unknown>>();
     this.requestObserver = {
       next: event => {
+        this.errorMessages = [];
         if (event.type === HttpEventType.Response) {
           this.responseReceived.emit(event);
         }
       },
-      error: () => {
-        this.errorMessages = ['Server cannot be reached'];
+      error: e => {
+        this.errorMessages = ['Server cannot be reached: ' + e.message];
         this.requestInProgress = false;
       },
       complete: () => (this.requestInProgress = false)
