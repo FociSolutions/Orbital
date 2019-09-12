@@ -82,5 +82,12 @@ export class ImportFromFileComponent implements OnInit {
       .openApiFile.value as File)) as unknown) as MockDefinition;
   }
 
+  /**
+   * Goes back to the previous location in the app
+   */
+  goBack() {
+    this.location.back();
+  }
+
   ngOnInit() {}
 }
