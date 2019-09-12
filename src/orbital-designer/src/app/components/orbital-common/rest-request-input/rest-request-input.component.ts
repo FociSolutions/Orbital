@@ -73,6 +73,10 @@ export class RestRequestInputComponent implements OnInit {
     return !this.inputControl.valid || this.requestInProgress;
   }
 
+  getSpinnerId() {
+    return this.requestInProgress ? 'show-spinner' : 'hide-spinner';
+  }
+
   sendRequest() {
     if (this.inputControl.valid) {
       this.requestInProgress = true;
