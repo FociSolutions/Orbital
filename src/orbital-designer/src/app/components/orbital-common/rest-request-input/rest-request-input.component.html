@@ -10,7 +10,7 @@
     mat-raised-button
     color="primary"
     (click)="sendRequest()"
-    [disabled]="canSendRequest()"
+    [disabled]="sendRequestDisabled()"
   >
     Submit</button
   ><mat-spinner diameter="25" [id]="getSpinnerId()"></mat-spinner>

@@ -69,7 +69,7 @@ export class RestRequestInputComponent implements OnInit {
 
   ngOnInit() {}
 
-  canSendRequest() {
+  sendRequestDisabled() {
     return !this.inputControl.valid || this.requestInProgress;
   }
 
