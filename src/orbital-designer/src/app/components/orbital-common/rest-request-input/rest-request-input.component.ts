@@ -30,7 +30,8 @@ export class RestRequestInputComponent implements OnInit {
       '',
       Validators.compose([
         Validators.pattern(urlPattern),
-        Validators.maxLength(RestRequestInputComponent.urlMaxLength)
+        Validators.maxLength(RestRequestInputComponent.urlMaxLength),
+        Validators.required
       ])
     );
     this.responseReceived = new EventEmitter<HttpResponse<unknown>>();
@@ -40,8 +41,8 @@ export class RestRequestInputComponent implements OnInit {
           this.responseReceived.emit(event);
         }
       },
-      error: () => {
-        this.errorMessages = ['Server cannot be reached'];
+      error: e => {
+        this.errorMessages = ['Server cannot be reached: ' + e.message];
         this.requestInProgress = false;
       },
       complete: () => (this.requestInProgress = false)
@@ -67,9 +68,18 @@ export class RestRequestInputComponent implements OnInit {
 
   ngOnInit() {}
 
+  sendRequestDisabled() {
+    return !this.inputControl.valid || this.requestInProgress;
+  }
+
+  getSpinnerId() {
+    return this.requestInProgress ? 'show-spinner' : 'hide-spinner';
+  }
+
   sendRequest() {
     if (this.inputControl.valid) {
       this.requestInProgress = true;
+      this.errorMessages = [];
       const request = new HttpRequest(
         this.httpMethod,
         this.inputControl.value,

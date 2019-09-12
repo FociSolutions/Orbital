@@ -11,6 +11,7 @@ import { RestRequestInputComponent } from './rest-request-input/rest-request-inp
 import { MatCardModule } from '@angular/material/card';
 import { ToolTipComponent } from './tool-tip/tool-tip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     TextInputComponent,
@@ -40,7 +42,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    RestRequestInputComponent
+    RestRequestInputComponent,
+    MatProgressSpinnerModule
   ]
 })
 export class OrbitalCommonModule {}

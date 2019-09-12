@@ -1,21 +1,17 @@
-<mat-card class="rest-request-input-form row center-hr">
-  <form class="row">
-    <app-text-input
-      class="capitalize"
-      title="Server URI - Required"
-      maxLength="200"
-      [control]="inputControl"
-      [errorMessages]="errorMessages"
-    ></app-text-input>
-    <div id="submit-buttons">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="sendRequest()"
-        [disabled]="!inputControl.valid"
-      >
-        Submit
-      </button>
-    </div>
-  </form>
-</mat-card>
+<app-text-input
+  class="capitalize"
+  title="Server URI - Required"
+  maxLength="200"
+  [control]="inputControl"
+></app-text-input>
+<mat-error>{{ this.errorMessages }}</mat-error>
+<div id="submit-buttons">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="sendRequest()"
+    [disabled]="sendRequestDisabled()"
+  >
+    Submit</button
+  ><mat-spinner diameter="25" [id]="getSpinnerId()"></mat-spinner>
+</div>
