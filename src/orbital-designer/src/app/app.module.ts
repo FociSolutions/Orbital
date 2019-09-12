@@ -20,6 +20,7 @@ import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { ImportFromFileComponent } from './components/import-from-file/import-from-file.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MatIconModule } from '@angular/material/icon';
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
     HomeViewComponent,
-    CreateNewMockViewComponent
+    CreateNewMockViewComponent,
+    ImportFromFileComponent
   ],
   imports: [
     BrowserModule,

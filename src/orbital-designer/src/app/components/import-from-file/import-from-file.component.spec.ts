@@ -14,7 +14,7 @@ describe('ImportFromFileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [ImportFromFileComponent],
       imports: [
         MatCardModule,
         MatListModule,
