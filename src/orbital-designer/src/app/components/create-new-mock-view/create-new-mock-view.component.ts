@@ -6,7 +6,6 @@ import { openApiFileValidator } from 'src/app/validators/async/async-file-conten
 import { FileParserService } from 'src/app/services/file-parser.service';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { FileInputComponent } from '../orbital-common/file-input/file-input.component';
 
 @Component({
   selector: 'app-create-new-mock-view',
