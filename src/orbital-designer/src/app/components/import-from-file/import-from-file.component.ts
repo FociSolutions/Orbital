@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { openApiFileValidator } from '../../../../src/app/validators/async/async-file-content-validator';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { FileParserService } from 'src/app/services/file-parser.service';
-import { DesignerStore } from 'src/app/store/designer-store';
+import { mockFileValidator } from '../../../../src/app/validators/async/async-file-content-validator';
+import { FileParserService } from '../../../../src/app/services/file-parser.service';
+import { DesignerStore } from '../../../../src/app/store/designer-store';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-import-from-file',
@@ -29,11 +29,7 @@ export class ImportFromFileComponent implements OnInit {
     this.fileParser = fileParser;
     this.store = store;
     this.formGroup = new FormGroup({
-      openApiFile: new FormControl(
-        null,
-        Validators.required,
-        openApiFileValidator
-      )
+      openApiFile: new FormControl(null, Validators.required, mockFileValidator)
     });
   }
 

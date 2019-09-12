@@ -5,6 +5,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DesignerStore } from '../../../../src/app/store/designer-store';
 
 describe('ImportFromFileComponent', () => {
   let component: ImportFromFileComponent;
@@ -18,8 +20,10 @@ describe('ImportFromFileComponent', () => {
         MatListModule,
         MatIconModule,
         OrbitalCommonModule,
-        BrowserAnimationsModule
-      ]
+        BrowserAnimationsModule,
+        RouterTestingModule.withRoutes([])
+      ],
+      providers: [DesignerStore]
     }).compileComponents();
   }));
 
