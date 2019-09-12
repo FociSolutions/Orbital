@@ -18,10 +18,8 @@ import { GetVerbColorPipe } from './pipes/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
-import { ImportFromFileComponent } from './components/import-from-file/import-from-file.component';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { FileInputComponent } from '../app/components/orbital-common/file-input/file-input.component';
 
 @NgModule({
   declarations: [
