@@ -17,14 +17,8 @@
         <mat-list-item>
           <h3 matLine>{{ formGroup.controls.openApiFile?.value?.name }}</h3>
           <p matLine>{{ errorMessages('openApiFile') }}</p>
-          <mat-icon
-            matListIcon
-            *ngIf="errorMessages('openApiFile').length !== 0"
-            >cancel</mat-icon
-          >
-          <mat-icon
-            matListIcon
-            *ngIf="errorMessages('openApiFile').length === 0"
+          <mat-icon matListIcon *ngIf="isValid()">cancel</mat-icon>
+          <mat-icon matListIcon *ngIf="!isValid()"
             >check_circle_outline</mat-icon
           >
         </mat-list-item>

@@ -33,6 +33,10 @@ export class ImportFromFileComponent implements OnInit {
     });
   }
 
+  isValid() {
+    return this.errorMessages('openApiFile').length !== 0;
+  }
+
   /**
    * Function used to get the appropriate error messages to display for the form control
    * @param controlkey The key of the control to get the errors from
