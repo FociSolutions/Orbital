@@ -64,7 +64,6 @@ export class ImportFromFileComponent implements OnInit {
     const mockDefinition = await this.formToMockDefinition();
     if (!!mockDefinition) {
       this.store.mockDefinition = mockDefinition;
-      console.log(mockDefinition);
       this.router.navigateByUrl('mock-editor');
     }
   }
@@ -79,7 +78,6 @@ export class ImportFromFileComponent implements OnInit {
       return null;
     }
 
-    console.log(this.formGroup.controls.openApiFile.value);
     return ((await this.fileParser.readOpenApiSpec(this.formGroup.controls
       .openApiFile.value as File)) as unknown) as MockDefinition;
   }
