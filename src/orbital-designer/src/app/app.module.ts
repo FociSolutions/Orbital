@@ -18,6 +18,9 @@ import { GetVerbColorPipe } from './pipes/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { ImportFromFileComponent } from './components/import-from-file/import-from-file.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,8 @@ import { CreateNewMockViewComponent } from './components/create-new-mock-view/cr
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
     HomeViewComponent,
-    CreateNewMockViewComponent
+    CreateNewMockViewComponent,
+    ImportFromFileComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,9 @@ import { CreateNewMockViewComponent } from './components/create-new-mock-view/cr
     BrowserAnimationsModule,
     OrbitalCommonModule,
     MatCardModule,
+    MatIconModule,
     MatDividerModule,
+    MatListModule,
     MatButtonModule,
     MatGridListModule,
     ReactiveFormsModule,
