@@ -37,7 +37,6 @@ export class RestRequestInputComponent implements OnInit {
     this.responseReceived = new EventEmitter<HttpResponse<unknown>>();
     this.requestObserver = {
       next: event => {
-        this.errorMessages = [];
         if (event.type === HttpEventType.Response) {
           this.responseReceived.emit(event);
         }
@@ -80,6 +79,7 @@ export class RestRequestInputComponent implements OnInit {
   sendRequest() {
     if (this.inputControl.valid) {
       this.requestInProgress = true;
+      this.errorMessages = [];
       const request = new HttpRequest(
         this.httpMethod,
         this.inputControl.value,
