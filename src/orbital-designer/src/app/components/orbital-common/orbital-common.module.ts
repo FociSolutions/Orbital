@@ -11,6 +11,7 @@ import { RestRequestInputComponent } from './rest-request-input/rest-request-inp
 import { MatCardModule } from '@angular/material/card';
 import { ToolTipComponent } from './tool-tip/tool-tip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ImportFromFileComponent } from '../import-from-file/import-from-file.component';
 import { MatListModule } from '@angular/material/list';
 
 @NgModule({
@@ -18,7 +19,8 @@ import { MatListModule } from '@angular/material/list';
     TextInputComponent,
     FileInputComponent,
     RestRequestInputComponent,
-    ToolTipComponent
+    ToolTipComponent,
+    ImportFromFileComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { MatListModule } from '@angular/material/list';
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    RestRequestInputComponent
+    RestRequestInputComponent,
+    ImportFromFileComponent
   ]
 })
 export class OrbitalCommonModule {}

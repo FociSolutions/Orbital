@@ -7,7 +7,6 @@ import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from '../../../../src/app/store/designer-store';
-import { FileInputComponent } from '../orbital-common/file-input/file-input.component';
 
 describe('ImportFromFileComponent', () => {
   let component: ImportFromFileComponent;
@@ -15,7 +14,7 @@ describe('ImportFromFileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ImportFromFileComponent],
+      declarations: [],
       imports: [
         MatCardModule,
         MatListModule,
