@@ -17,13 +17,15 @@
         <mat-list-item>
           <h3 matLine>{{ formGroup.controls.openApiFile?.value?.name }}</h3>
           <p matLine>{{ errorMessages('openApiFile') }}</p>
-          <mat-icon matListIcon>
-            <span *ngIf="errorMessages('openApiFile').length !== 0"
-              >cancel</span
-            >
-            <span *ngIf="errorMessages('openApiFile').length === 0"
-              >check_circle_outline</span
-            ></mat-icon
+          <mat-icon
+            matListIcon
+            *ngIf="errorMessages('openApiFile').length !== 0"
+            >cancel</mat-icon
+          >
+          <mat-icon
+            matListIcon
+            *ngIf="errorMessages('openApiFile').length === 0"
+            >check_circle_outline</mat-icon
           >
         </mat-list-item>
         <mat-divider></mat-divider>
