@@ -69,6 +69,10 @@ export class RestRequestInputComponent implements OnInit {
 
   ngOnInit() {}
 
+  canSendRequest() {
+    return !this.inputControl.valid || this.requestInProgress;
+  }
+
   sendRequest() {
     if (this.inputControl.valid) {
       this.requestInProgress = true;
