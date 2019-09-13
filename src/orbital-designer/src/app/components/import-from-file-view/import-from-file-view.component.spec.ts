@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
-import { ImportFromFileComponent } from './import-from-file.component';
+import { ImportFromFileViewComponent } from './import-from-file-view.component';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DesignerStore } from '../../../../src/app/store/designer-store';
+import { DesignerStore } from '../../store/designer-store';
 
 describe('ImportFromFileComponent', () => {
-  let component: ImportFromFileComponent;
-  let fixture: ComponentFixture<ImportFromFileComponent>;
+  let component: ImportFromFileViewComponent;
+  let fixture: ComponentFixture<ImportFromFileViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ImportFromFileComponent],
+      declarations: [ImportFromFileViewComponent],
       imports: [
         MatCardModule,
         MatListModule,
@@ -28,7 +28,7 @@ describe('ImportFromFileComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImportFromFileComponent);
+    fixture = TestBed.createComponent(ImportFromFileViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -20,7 +20,8 @@ import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { ImportFromFileComponent } from './components/import-from-file/import-from-file.component';
+import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';
+import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ImportFromFileComponent } from './components/import-from-file/import-fr
     GetVerbColorPipe,
     HomeViewComponent,
     CreateNewMockViewComponent,
-    ImportFromFileComponent
+    ImportFromFileViewComponent,
+    ImportFromServerViewComponent
   ],
   imports: [
     BrowserModule,
