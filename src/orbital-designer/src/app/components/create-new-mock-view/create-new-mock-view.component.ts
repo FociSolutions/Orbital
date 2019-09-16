@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { openApiFileValidator } from 'src/app/validators/async/async-file-content-validator';
+import { openApiFileValidator } from 'src/app/validators/open-api-file-validator/open-api-file-validator';
 import { FileParserService } from 'src/app/services/file-parser.service';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';

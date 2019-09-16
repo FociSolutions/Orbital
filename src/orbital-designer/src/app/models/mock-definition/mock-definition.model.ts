@@ -79,7 +79,7 @@ export class MockDefinition {
    * Check if the given object is mock definition
    * @param o Object to check if it is mock definition
    */
-  private static isMockDefinition(o: any): o is MockDefinition {
+  public static isMockDefinition(o: any): o is MockDefinition {
     const u: MockDefinition = o;
     return (
       typeof u.basePath === 'string' &&

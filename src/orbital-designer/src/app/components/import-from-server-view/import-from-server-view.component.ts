@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
+import { mockObjectValidator } from '../../validators/mock-object-validator/mock-object-validator';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -14,7 +15,7 @@ export class ImportFromServerViewComponent implements OnInit {
   constructor(private location: Location) {
     this.control = new FormControl(
       [],
-      Validators.compose([Validators.required])
+      Validators.compose([Validators.required, mockObjectValidator])
     );
   }
 

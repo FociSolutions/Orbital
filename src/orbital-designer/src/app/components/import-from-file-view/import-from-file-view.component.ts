@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { mockFileValidator } from '../../validators/async/async-file-content-validator';
+import { mockFileValidator } from '../../validators/mock-file-validator/mock-file-validator';
 import { FileParserService } from '../../services/file-parser.service';
 import { DesignerStore } from '../../store/designer-store';
 import { Router } from '@angular/router';
@@ -29,12 +29,16 @@ export class ImportFromFileViewComponent implements OnInit {
     this.fileParser = fileParser;
     this.store = store;
     this.formGroup = new FormGroup({
-      openApiFile: new FormControl(null, Validators.required, mockFileValidator)
+      mockDefinitionFile: new FormControl(
+        null,
+        Validators.required,
+        mockFileValidator
+      )
     });
   }
 
   isValid() {
-    return this.errorMessages('openApiFile').length !== 0;
+    return this.errorMessages('mockDefinitionFile').length !== 0;
   }
 
   /**
@@ -82,8 +86,8 @@ export class ImportFromFileViewComponent implements OnInit {
       return null;
     }
 
-    return ((await this.fileParser.readOpenApiSpec(this.formGroup.controls
-      .openApiFile.value as File)) as unknown) as MockDefinition;
+    return await this.fileParser.readMockDefinition(this.formGroup.controls
+      .mockDefinitionFile.value as File);
   }
 
   /**
