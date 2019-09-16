@@ -3,7 +3,17 @@
   <mat-card-subtitle
     >Import an existing MockDefinition file from below</mat-card-subtitle
   >
-  <div class="column flex-grow"></div>
+  <div class="column flex-grow div-body">
+    <app-tool-tip
+      message="Enter the Server URI that your MockDefinition files are hosted on"
+    >
+      <app-rest-request-input
+        title="Server URI"
+        buttonName="Fetch"
+        (responseReceived)="onResponse()"
+      ></app-rest-request-input>
+    </app-tool-tip>
+  </div>
   <div class="row button-div">
     <button mat-raised-button color="primary" (click)="onBack()">
       Back

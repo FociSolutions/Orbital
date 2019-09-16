@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { FormControl } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -7,11 +9,18 @@ import { Location } from '@angular/common';
   styleUrls: ['./import-from-server-view.component.scss']
 })
 export class ImportFromServerViewComponent implements OnInit {
-  constructor(private location: Location) {}
+  control: FormControl;
+  constructor(private location: Location) {
+    this.control = new FormControl([]);
+  }
 
   ngOnInit() {}
 
   importMock() {}
+
+  onResponse(response: HttpResponse<unknown>) {
+    console.log(response);
+  }
 
   onBack() {
     this.location.back();

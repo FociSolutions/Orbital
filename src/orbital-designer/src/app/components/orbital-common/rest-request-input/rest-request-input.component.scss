@@ -1,7 +1,4 @@
 .rest-request-input-form {
-  min-width: 48.109vw;
-  max-width: 600px;
-  margin: 6.824vh auto;
   align-items: center;
   form {
     align-items: center;
@@ -15,6 +12,7 @@
 }
 
 div#submit-buttons {
+  margin-left: 1em;
   display: flex;
   flex-direction: row;
 }
@@ -30,4 +28,11 @@ mat-spinner {
 
 #hide-spinner {
   display: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }

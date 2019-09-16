@@ -51,6 +51,7 @@ export class RestRequestInputComponent implements OnInit {
   requestObserver: Observer<HttpEvent<HttpResponse<unknown>>>;
   inputControl: FormControl;
   requestInProgress = false;
+  @Input() title = '';
   @Input() buttonName = 'Submit';
   @Input() errorMessages: string[] = [];
   @Input() options: object = {};
