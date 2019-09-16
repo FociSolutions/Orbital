@@ -10,7 +10,8 @@
       <app-rest-request-input
         title="Server URI"
         buttonName="Fetch"
-        (responseReceived)="onResponse()"
+        (responseReceived)="onResponse($event)"
+        [postFixPath]="getAllEndpoint"
       ></app-rest-request-input>
     </app-tool-tip>
   </div>
@@ -18,7 +19,7 @@
     <button mat-raised-button color="primary" (click)="onBack()">
       Back
     </button>
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" [disabled]="disabled">
       Next
     </button>
   </div>
