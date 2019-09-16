@@ -25,4 +25,12 @@ describe('ImportFromServerViewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('ImportFromServerViewComponent.onBack', () => {
+    it('should call location.back()', () => {
+      const locationSpy = spyOn(TestBed.get(Location), 'back');
+      component.onBack();
+      expect(locationSpy).toHaveBeenCalled();
+    });
+  });
 });
