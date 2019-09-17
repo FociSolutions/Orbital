@@ -6,9 +6,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ImportFromServerViewComponent } from './import-from-server-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import mockDefinitionObject from '../../../test-files/test-mockdefinition-object';
 import { HttpResponse } from '@angular/common/http';
+import { LoggerTestingModule } from 'ngx-logger';
 import * as faker from 'faker';
+import { FormControl } from '@angular/forms';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
@@ -22,7 +23,8 @@ describe('ImportFromServerViewComponent', () => {
         RouterTestingModule,
         OrbitalCommonModule,
         HttpClientTestingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        LoggerTestingModule
       ],
       providers: [Location]
     }).compileComponents();
@@ -47,36 +49,42 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.disabled', () => {
-    it('should return true if the control is invalid', () => {
+    it('should return true if the formArray is empty', () => {
       expect(component.disabled).toBeTruthy();
     });
 
-    it('should return false if the control is valid', () => {
-      component.control.setValue([mockDefinitionObject]);
+    it('should return false if the formArray is notEmpty', () => {
+      component.formArray.push(new FormControl(''));
       expect(component.disabled).toBeFalsy();
     });
   });
 
   describe('ImportFromServerViewComponent.onResponse', () => {
-    it('should set the control value to the response body given an OK response', done => {
+    it('should set the control value to the response body given an OK response with an array body', () => {
       const response = new HttpResponse({
-        body: faker.random.words(),
+        body: [faker.random.words()],
         status: 200
       });
-      component.control.valueChanges.subscribe(value => {
-        expect(value).toEqual(response.body);
-        done();
-      });
       component.onResponse(response);
+      expect(component.formArray.controls[0].value).toEqual(response.body[0]);
     });
 
     it('should not set the control value when given a response whose status is not OK', () => {
       const response = new HttpResponse({
-        body: faker.random.words(),
+        body: [faker.random.words()],
         status: 400
       });
       component.onResponse(response);
-      expect(component.control.value).not.toEqual(response.body);
+      expect(component.formArray.length).toBe(0);
+    });
+
+    it('should not set the control value when given a response whose body is not an array', () => {
+      const response = new HttpResponse({
+        body: faker.random.words(),
+        status: 200
+      });
+      component.onResponse(response);
+      expect(component.formArray.length).toBe(0);
     });
   });
 });
