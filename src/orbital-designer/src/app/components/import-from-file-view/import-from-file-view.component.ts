@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { mockFileValidator } from '../../../../src/app/validators/async/async-file-content-validator';
-import { FileParserService } from '../../../../src/app/services/file-parser.service';
-import { DesignerStore } from '../../../../src/app/store/designer-store';
+import { mockFileValidator } from '../../validators/async/async-file-content-validator';
+import { FileParserService } from '../../services/file-parser.service';
+import { DesignerStore } from '../../store/designer-store';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 
 @Component({
-  selector: 'app-import-from-file',
-  templateUrl: './import-from-file.component.html',
-  styleUrls: ['./import-from-file.component.scss']
+  selector: 'app-import-from-file-view',
+  templateUrl: './import-from-file-view.component.html',
+  styleUrls: ['./import-from-file-view.component.scss']
 })
-export class ImportFromFileComponent implements OnInit {
+export class ImportFromFileViewComponent implements OnInit {
   formGroup: FormGroup;
   private store: DesignerStore;
   private router: Router;

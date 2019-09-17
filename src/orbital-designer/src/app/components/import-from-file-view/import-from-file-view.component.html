@@ -5,7 +5,7 @@
   >
   <app-file-input
     class="capitalize"
-    [control]="formGroup.controls.openApiFile"
+    [control]="formGroup.controls['openApiFile']"
     label="Select File - Required"
     accept=".json"
   >
@@ -14,8 +14,8 @@
   <mat-card class="import-from-file">
     <mat-list *ngIf="!!formGroup.controls.openApiFile?.value?.name">
       <mat-list-item>
-        <h3 matLine>{{ formGroup.controls.openApiFile?.value?.name }}</h3>
-        <p matLine>{{ errorMessages('openApiFile') }}</p>
+        <h3 matLine>{{ formGroup.controls["openApiFile"]?.value?.name }}</h3>
+        <p matLine>{{ errorMessages("openApiFile") }}</p>
         <mat-icon matListIcon *ngIf="isValid()">cancel</mat-icon>
         <mat-icon matListIcon *ngIf="!isValid()">check_circle_outline</mat-icon>
       </mat-list-item>
