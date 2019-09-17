@@ -40,27 +40,6 @@ describe('CreateNewMockViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('CreateNewMockViewComponent.errorMessages', () => {
-    it('should output the correct error message', () => {
-      const errors = {
-        required: true,
-        maxlength: true,
-        custom: 'Custom error message'
-      };
-      component.formGroup.controls.testControl.setErrors(errors);
-      const Expected = [
-        'testControl is required',
-        'Max characters exceeded',
-        'Custom error message'
-      ];
-      expect(component.errorMessages('testControl')).toEqual(Expected);
-    });
-
-    it('should return an empty list if there are no errors', () => {
-      expect(component.errorMessages('testControl')).toEqual([]);
-    });
-  });
-
   describe('CreateNewMockViewComponent.goBack', () => {
     it('should return to the previous location', () => {
       const locationSpy = spyOn(TestBed.get(Location), 'back');
