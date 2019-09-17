@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormControl, Validators, FormGroup, FormArray } from '@angular/forms';
-import { HttpResponse } from '@angular/common/http';
+import {
+  FormControl,
+  Validators,
+  FormGroup,
+  FormArray,
+  ValidatorFn
+} from '@angular/forms';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-definition-object-validator/mock-definition-object-validator';
 
@@ -34,9 +40,9 @@ export class ImportFromServerViewComponent implements OnInit {
    * response body. The control is then responsible for validation.
    * @param response HttpResponse received by the RestRequestInput
    */
-  onResponse(response: HttpResponse<unknown>) {
-    this.logger.debug('Received http response body', response.body);
-    if (response.status === 200 && Array.isArray(response.body)) {
+  onResponse(response: HttpResponse<unknown> | HttpErrorResponse) {
+    this.logger.debug('Received http response', response);
+    if (response.ok && Array.isArray(response.body)) {
       this.formArray.controls = response.body.map(
         () =>
           new FormControl(null, null, [
@@ -44,6 +50,14 @@ export class ImportFromServerViewComponent implements OnInit {
           ])
       );
       this.formArray.setValue(response.body);
+    } else if (!response.ok) {
+      this.formArray.setErrors({
+        statusError: `Error ${response.status}: ${response.statusText}`
+      });
+    } else {
+      this.formArray.setErrors({
+        contentError: 'Expected response body to be an array'
+      });
     }
   }
 

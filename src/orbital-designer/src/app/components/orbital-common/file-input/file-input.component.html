@@ -25,7 +25,7 @@
     style="display:none;"
     [errorStateMatcher]="errorStateMatcher"
   />
-  <mat-error *ngFor="let error of errorMessages">
+  <mat-error *ngFor="let error of getErrors()">
     {{ error }}
   </mat-error>
 </mat-form-field>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OverviewRedirectService } from './services/overview-redirect.service';
+import { OverviewRedirectService } from './services/overview-redirect/overview-redirect.service';
 import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
 import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';

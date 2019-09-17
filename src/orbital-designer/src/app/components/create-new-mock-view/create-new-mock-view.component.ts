@@ -3,9 +3,10 @@ import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { openApiFileValidator } from 'src/app/validators/open-api-file-validator/open-api-file-validator';
-import { FileParserService } from 'src/app/services/file-parser.service';
+import { FileParserService } from 'src/app/services/file-parser/file-parser.service';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
+import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -23,40 +24,22 @@ export class CreateNewMockViewComponent implements OnInit {
     this.formGroup = new FormGroup({
       title: new FormControl(
         '',
-        Validators.compose([Validators.maxLength(200), Validators.required])
+        extendBuiltInValidatorFactory(
+          Validators.compose([Validators.maxLength(200), Validators.required])
+        )
       ),
       description: new FormControl(
         '',
-        Validators.compose([Validators.maxLength(1000)])
+        extendBuiltInValidatorFactory(
+          Validators.compose([Validators.maxLength(1000)])
+        )
       ),
       openApiFile: new FormControl(
         null,
-        Validators.required,
+        extendBuiltInValidatorFactory(Validators.required),
         openApiFileValidator
       )
     });
-  }
-
-  /**
-   * Function used to get the appropriate error messages to display for the form control
-   * @param controlkey The key of the control to get the errors from
-   */
-  errorMessages(controlkey: string): string[] {
-    const errors = this.formGroup.controls[controlkey].errors;
-    if (!errors) {
-      return [];
-    }
-
-    const defaultErrorMappings = {
-      required: `${controlkey} is required`,
-      maxlength: 'Max characters exceeded'
-    };
-
-    const errorMessages = Object.keys(errors).map(err =>
-      !!defaultErrorMappings[err] ? defaultErrorMappings[err] : errors[err]
-    );
-
-    return errorMessages;
   }
 
   ngOnInit() {}

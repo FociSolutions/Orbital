@@ -26,7 +26,7 @@ export class MockDefinition {
       try {
         let content = JSON.parse(mockDefinition);
         if (!this.isMockDefinition(content)) {
-          reject('Invalid mock definition');
+          reject(['Invalid mock definition']);
         } else {
           content = {
             ...content,
@@ -46,7 +46,7 @@ export class MockDefinition {
           resolve(content as MockDefinition);
         }
       } catch (error) {
-        reject(error);
+        reject([error.message]);
       }
     });
   }

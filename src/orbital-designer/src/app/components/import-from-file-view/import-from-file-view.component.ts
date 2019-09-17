@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { mockFileValidator } from '../../validators/mock-file-validator/mock-file-validator';
-import { FileParserService } from '../../services/file-parser.service';
+import { FileParserService } from '../../services/file-parser/file-parser.service';
 import { DesignerStore } from '../../store/designer-store';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
+import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -31,36 +32,14 @@ export class ImportFromFileViewComponent implements OnInit {
     this.formGroup = new FormGroup({
       mockDefinitionFile: new FormControl(
         null,
-        Validators.required,
+        extendBuiltInValidatorFactory(Validators.required),
         mockFileValidator
       )
     });
   }
 
   isValid() {
-    return this.errorMessages('mockDefinitionFile').length !== 0;
-  }
-
-  /**
-   * Function used to get the appropriate error messages to display for the form control
-   * @param controlkey The key of the control to get the errors from
-   */
-  errorMessages(controlkey: string): string[] {
-    const errors = this.formGroup.controls[controlkey].errors;
-    if (!errors) {
-      return [];
-    }
-
-    const defaultErrorMappings = {
-      required: `${controlkey} is required`,
-      maxlength: 'Max characters exceeded'
-    };
-
-    const errorMessages = Object.keys(errors).map(err =>
-      !!defaultErrorMappings[err] ? defaultErrorMappings[err] : errors[err]
-    );
-
-    return errorMessages;
+    return !this.formGroup.invalid;
   }
 
   /**
