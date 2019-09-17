@@ -7,7 +7,7 @@ import { ImportFromServerViewComponent } from './import-from-server-view.compone
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpResponse } from '@angular/common/http';
-import { LoggerTestingModule } from 'ngx-logger';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
 import { FormControl } from '@angular/forms';
 
