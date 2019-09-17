@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { FormControl, Validators, FormGroup, FormArray } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
+import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-definition-object-validator/mock-definition-object-validator';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -36,10 +37,14 @@ export class ImportFromServerViewComponent implements OnInit {
   onResponse(response: HttpResponse<unknown>) {
     this.logger.debug('Received http response body', response.body);
     if (response.status === 200 && Array.isArray(response.body)) {
-      this.formArray.controls = response.body.map(() => new FormControl(null));
+      this.formArray.controls = response.body.map(
+        () =>
+          new FormControl(null, null, [
+            mockDefinitionObjectValidatorFactory(this.logger)
+          ])
+      );
       this.formArray.setValue(response.body);
     }
-    // Else should add to the formArray's errors
   }
 
   /**
