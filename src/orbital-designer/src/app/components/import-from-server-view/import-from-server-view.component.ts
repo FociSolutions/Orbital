@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
-import { mockObjectValidator } from '../../validators/mock-object-validator/mock-object-validator';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -10,23 +9,29 @@ import { mockObjectValidator } from '../../validators/mock-object-validator/mock
   styleUrls: ['./import-from-server-view.component.scss']
 })
 export class ImportFromServerViewComponent implements OnInit {
-  getAllEndpoint = '/api/v1/OrbitalAdmin';
+  readonly getAllEndpoint = '/api/v1/OrbitalAdmin';
   control: FormControl;
   constructor(private location: Location) {
     this.control = new FormControl(
       [],
-      Validators.compose([Validators.required, mockObjectValidator])
+      Validators.compose([Validators.required])
     );
   }
 
   ngOnInit() {}
 
-  importMock() {}
-
+  /**
+   * Getter function that returns true if the form is invalid, false otherwise
+   */
   get disabled(): boolean {
     return this.control.invalid;
   }
 
+  /**
+   * If the response returned is a status 200 it sets the control value to the
+   * response body. The control is then responsible for validation.
+   * @param response HttpResponse received by the RestRequestInput
+   */
   onResponse(response: HttpResponse<unknown>) {
     if (response.status === 200) {
       this.control.setValue(response.body);
@@ -34,6 +39,9 @@ export class ImportFromServerViewComponent implements OnInit {
     console.log(this.control.value);
   }
 
+  /**
+   * Returns to the previous location
+   */
   onBack() {
     this.location.back();
   }

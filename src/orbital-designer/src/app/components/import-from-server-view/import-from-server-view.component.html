@@ -11,7 +11,7 @@
         title="Server URI"
         buttonName="Fetch"
         (responseReceived)="onResponse($event)"
-        [postFixPath]="getAllEndpoint"
+        [concatToURI]="getAllEndpoint"
       ></app-rest-request-input>
     </app-tool-tip>
   </div>
