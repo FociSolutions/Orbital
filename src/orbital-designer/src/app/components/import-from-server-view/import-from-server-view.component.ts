@@ -17,7 +17,7 @@ import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-de
   styleUrls: ['./import-from-server-view.component.scss']
 })
 export class ImportFromServerViewComponent implements OnInit {
-  readonly getAllEndpoint = '';
+  readonly getAllEndpoint = '/api/v1/OrbitalAdmin';
   formArray: FormArray;
   constructor(private location: Location, private logger: NGXLogger) {
     this.formArray = new FormArray([], Validators.required);
