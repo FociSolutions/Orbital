@@ -15,6 +15,15 @@
         [errors]="errors"
       ></app-rest-request-input>
     </app-tool-tip>
+    <div class="row flex-grow shuttle-list-div">
+      <app-searchable-list
+        class="row"
+        [list]="formArray.controls | filterInvalidControls"
+        [itemToStringFn]="controlsMockDefinitionToString"
+        [itemTemplate]="listItemTemplate"
+        [emptyListMessage]="emptyListMessageServerBox"
+      ></app-searchable-list>
+    </div>
   </div>
   <div class="row button-div">
     <button mat-raised-button color="primary" (click)="onBack()">
@@ -25,3 +34,9 @@
     </button>
   </div>
 </mat-card>
+
+<ng-template #listItemTemplate let-control="item">
+  <div>
+    <h5>{{ control.value?.metadata?.title }}</h5>
+  </div>
+</ng-template>

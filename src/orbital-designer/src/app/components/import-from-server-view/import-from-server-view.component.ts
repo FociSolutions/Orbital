@@ -6,11 +6,13 @@ import {
   FormGroup,
   FormArray,
   ValidatorFn,
-  ValidationErrors
+  ValidationErrors,
+  AbstractControl
 } from '@angular/forms';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-definition-object-validator/mock-definition-object-validator';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -20,8 +22,11 @@ import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-de
 export class ImportFromServerViewComponent implements OnInit {
   readonly getAllEndpoint = '/api/v1/OrbitalAdmin';
   formArray: FormArray;
+  emptyListMessageServerBox = 'No valid MockDefinitions Found';
+  controlsMockDefinitionToString = (control: AbstractControl) =>
+    (control.value as MockDefinition).metadata.title
   constructor(private location: Location, private logger: NGXLogger) {
-    this.formArray = new FormArray([], Validators.required);
+    this.formArray = new FormArray([]);
     this.formArray.valueChanges.subscribe(value =>
       logger.debug('ImportFromServerViewComponent formArray value:', value)
     );
