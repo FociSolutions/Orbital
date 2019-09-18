@@ -1,0 +1,8 @@
+<mat-card>
+  <input #searchBar matInput />
+  <mat-list>
+    <mat-list-item *ngFor="let item of getSearchedList()">
+      <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

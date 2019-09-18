@@ -12,13 +12,16 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolTipComponent } from './tool-tip/tool-tip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SearchableListComponent } from './searchable-list/searchable-list.component';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
     TextInputComponent,
     FileInputComponent,
     RestRequestInputComponent,
-    ToolTipComponent
+    ToolTipComponent,
+    SearchableListComponent
   ],
   imports: [
     CommonModule,
@@ -30,18 +33,21 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    MatListModule,
     MatProgressSpinnerModule
   ],
   exports: [
     TextInputComponent,
     FileInputComponent,
     ToolTipComponent,
+    SearchableListComponent,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
     MatButtonModule,
     MatIconModule,
+    MatListModule,
     RestRequestInputComponent,
     MatProgressSpinnerModule
   ]
