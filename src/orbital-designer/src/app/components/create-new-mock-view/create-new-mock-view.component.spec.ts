@@ -71,7 +71,7 @@ describe('CreateNewMockViewComponent', () => {
       await generateMockDefinitionAndSetForm();
       await component.createMock();
       expect(storeSpy).toHaveBeenCalled();
-      expect(routerSpy).toHaveBeenCalledWith('mock-editor');
+      expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
     });
 
     it('should not navigate or change designer store state if the formGroup is invalid', async () => {

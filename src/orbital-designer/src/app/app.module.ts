@@ -22,6 +22,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
+import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ImportFromServerViewComponent } from './components/import-from-server-v
     HomeViewComponent,
     CreateNewMockViewComponent,
     ImportFromFileViewComponent,
-    ImportFromServerViewComponent
+    ImportFromServerViewComponent,
+    EndpointViewComponent
   ],
   imports: [
     BrowserModule,
