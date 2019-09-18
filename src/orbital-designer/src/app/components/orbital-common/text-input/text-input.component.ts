@@ -9,7 +9,7 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 })
 export class TextInputComponent implements OnInit {
   constructor() {}
-  private errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
+  errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   @Input() title = '';
   @Input() maxLength?: number;
   @Input() multiLine = false;

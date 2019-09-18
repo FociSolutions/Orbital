@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { FormControl, Validators, FormGroup, FormArray } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -7,12 +10,41 @@ import { Location } from '@angular/common';
   styleUrls: ['./import-from-server-view.component.scss']
 })
 export class ImportFromServerViewComponent implements OnInit {
-  constructor(private location: Location) {}
+  readonly getAllEndpoint = '/api/v1/OrbitalAdmin';
+  formArray: FormArray;
+  constructor(private location: Location, private logger: NGXLogger) {
+    this.formArray = new FormArray([], Validators.required);
+    this.formArray.valueChanges.subscribe(value =>
+      logger.debug('ImportFromServerViewComponent formArray value:', value)
+    );
+  }
 
   ngOnInit() {}
 
-  importMock() {}
+  /**
+   * Getter function that returns true if the form is invalid, false otherwise
+   */
+  get disabled(): boolean {
+    return this.formArray.invalid;
+  }
 
+  /**
+   * If the response returned is a status 200 it sets the control value to the
+   * response body. The control is then responsible for validation.
+   * @param response HttpResponse received by the RestRequestInput
+   */
+  onResponse(response: HttpResponse<unknown>) {
+    this.logger.debug('Received http response body', response.body);
+    if (response.status === 200 && Array.isArray(response.body)) {
+      this.formArray.controls = response.body.map(() => new FormControl(null));
+      this.formArray.setValue(response.body);
+    }
+    // Else should add to the formArray's errors
+  }
+
+  /**
+   * Returns to the previous location
+   */
   onBack() {
     this.location.back();
   }

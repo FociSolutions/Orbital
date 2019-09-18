@@ -5,17 +5,19 @@
   >
   <app-file-input
     class="capitalize"
-    [control]="formGroup.controls['openApiFile']"
+    [control]="formGroup.controls['mockDefinitionFile']"
     label="Select File - Required"
     accept=".json"
   >
   </app-file-input>
   <mat-card-subtitle>Imported Mock Definitions</mat-card-subtitle>
   <mat-card class="import-from-file">
-    <mat-list *ngIf="!!formGroup.controls.openApiFile?.value?.name">
+    <mat-list *ngIf="!!formGroup.controls.mockDefinitionFile?.value?.name">
       <mat-list-item>
-        <h3 matLine>{{ formGroup.controls["openApiFile"]?.value?.name }}</h3>
-        <p matLine>{{ errorMessages("openApiFile") }}</p>
+        <h3 matLine>
+          {{ formGroup.controls["mockDefinitionFile"]?.value?.name }}
+        </h3>
+        <p matLine>{{ errorMessages("mockDefinitionFile") }}</p>
         <mat-icon matListIcon *ngIf="isValid()">cancel</mat-icon>
         <mat-icon matListIcon *ngIf="!isValid()">check_circle_outline</mat-icon>
       </mat-list-item>
