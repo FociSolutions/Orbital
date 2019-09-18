@@ -84,6 +84,7 @@ export class RestRequestInputComponent implements OnInit {
   }
 
   sendRequest() {
+    this.inputControl.markAsDirty();
     if (this.inputControl.valid) {
       this.requestInProgress = true;
       this.errors = null;

@@ -17,7 +17,7 @@ import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-de
   styleUrls: ['./import-from-server-view.component.scss']
 })
 export class ImportFromServerViewComponent implements OnInit {
-  readonly getAllEndpoint = '/api/v1/OrbitalAdmin';
+  readonly getAllEndpoint = '';
   formArray: FormArray;
   constructor(private location: Location, private logger: NGXLogger) {
     this.formArray = new FormArray([], Validators.required);
@@ -40,9 +40,11 @@ export class ImportFromServerViewComponent implements OnInit {
    * response body. The control is then responsible for validation.
    * @param response HttpResponse received by the RestRequestInput
    */
-  onResponse(response: HttpResponse<unknown> | HttpErrorResponse) {
+  onResponse(
+    response: HttpResponse<unknown> | HttpErrorResponse | DOMException
+  ) {
     this.logger.debug('Received http response', response);
-    if (response.ok && Array.isArray(response.body)) {
+    if (response instanceof HttpResponse && Array.isArray(response.body)) {
       this.formArray.controls = response.body.map(
         () =>
           new FormControl(null, null, [
@@ -50,9 +52,12 @@ export class ImportFromServerViewComponent implements OnInit {
           ])
       );
       this.formArray.setValue(response.body);
-    } else if (!response.ok) {
+    } else if (
+      response instanceof HttpErrorResponse ||
+      response instanceof DOMException
+    ) {
       this.formArray.setErrors({
-        statusError: `Error ${response.status}: ${response.statusText}`
+        statusError: response.message
       });
     } else {
       this.formArray.setErrors({
