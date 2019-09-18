@@ -5,7 +5,8 @@ import {
   Validators,
   FormGroup,
   FormArray,
-  ValidatorFn
+  ValidatorFn,
+  ValidationErrors
 } from '@angular/forms';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
@@ -33,6 +34,13 @@ export class ImportFromServerViewComponent implements OnInit {
    */
   get disabled(): boolean {
     return this.formArray.invalid;
+  }
+
+  /**
+   * Getter function that returns the formArrays validation errors
+   */
+  get errors(): ValidationErrors | null {
+    return this.formArray.errors;
   }
 
   /**

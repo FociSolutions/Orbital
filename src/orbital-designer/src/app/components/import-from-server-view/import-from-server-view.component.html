@@ -12,7 +12,7 @@
         buttonName="Fetch"
         (responseReceived)="onResponse($event)"
         [concatToURI]="getAllEndpoint"
-        [errors]="this.formArray.errors"
+        [errors]="errors"
       ></app-rest-request-input>
     </app-tool-tip>
   </div>
