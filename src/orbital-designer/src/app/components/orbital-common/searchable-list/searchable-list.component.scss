@@ -17,8 +17,9 @@ mat-card {
     }
   }
 
-  mat-list {
+  mat-selection-list {
     flex: 1;
+    overflow-y: scroll;
 
     .emptyMessage {
       font-size: 0.9em;

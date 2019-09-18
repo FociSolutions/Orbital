@@ -1,7 +1,6 @@
 mat-card {
   min-width: 70vw;
-  height: auto;
-  min-height: 70vh;
+  height: 70vh;
   margin: 6.824vh auto;
 
   mat-card-title,
@@ -24,7 +23,7 @@ mat-card {
   }
 
   .shuttle-list-div {
-    padding: 2em;
+    margin: 2em;
     justify-content: flex-start;
     align-self: stretch;
 
