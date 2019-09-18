@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
 import {MatCardModule} from '@angular/material/card';
+import { OverviewComponent } from './overview/overview.component';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -8,8 +9,8 @@ describe('EndpointViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EndpointViewComponent ],
-      imports: [ ]
+      declarations: [ EndpointViewComponent, OverviewComponent ],
+      imports: [ MatCardModule ]
     })
     .compileComponents();
   }));

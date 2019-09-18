@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
+import { OverviewComponent } from './components/endpoint-view/overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.
     CreateNewMockViewComponent,
     ImportFromFileViewComponent,
     ImportFromServerViewComponent,
-    EndpointViewComponent
+    EndpointViewComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule,
