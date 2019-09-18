@@ -70,7 +70,7 @@ export class CreateNewMockViewComponent implements OnInit {
     const mockDefinition = await this.formToMockDefinition();
     if (!!mockDefinition) {
       this.store.mockDefinition = mockDefinition;
-      this.router.navigateByUrl('mock-editor');
+      this.router.navigateByUrl('endpoint-view');
     }
   }
 
