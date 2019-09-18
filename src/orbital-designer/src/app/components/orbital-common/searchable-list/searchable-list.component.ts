@@ -3,9 +3,12 @@ import {
   OnInit,
   Input,
   TemplateRef,
-  Predicate,
   ViewChild,
-  ElementRef
+  ElementRef,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 
 @Component({
@@ -14,8 +17,6 @@ import {
   styleUrls: ['./searchable-list.component.scss']
 })
 export class SearchableListComponent implements OnInit {
-  constructor() {}
-
   @ViewChild('searchBar', { static: false }) input: ElementRef;
   @Input() title?: string = null;
   @Input() list: any[] = [];
@@ -23,7 +24,7 @@ export class SearchableListComponent implements OnInit {
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
   @Input() itemToStringFn: (_: any) => string = x => x as string;
-
+  constructor() {}
   getSearchedList(): any[] {
     if (!!this.input && this.input.nativeElement.value.length > 0) {
       return this.list.filter(item =>
@@ -40,6 +41,5 @@ export class SearchableListComponent implements OnInit {
   static ignoreCaseStartsWithMatch(left: string, right: string): boolean {
     return left.toLowerCase().startsWith(right.toLowerCase());
   }
-
   ngOnInit() {}
 }

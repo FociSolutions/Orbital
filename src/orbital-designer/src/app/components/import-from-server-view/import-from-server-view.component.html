@@ -36,7 +36,8 @@
 </mat-card>
 
 <ng-template #listItemTemplate let-control="item">
-  <div>
-    <h5>{{ control.value?.metadata?.title }}</h5>
+  <div class="list-item">
+    <h5 class="capitalize">{{ control.value?.metadata?.title }}</h5>
+    <mat-divider></mat-divider>
   </div>
 </ng-template>
