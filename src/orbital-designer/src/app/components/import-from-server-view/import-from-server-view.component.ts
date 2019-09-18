@@ -36,7 +36,7 @@ export class ImportFromServerViewComponent implements OnInit {
   }
 
   /**
-   * If the response returned is a status 200 it sets the control value to the
+   * If the response returned is a status 200 it sets the controls values to the
    * response body. The control is then responsible for validation.
    * @param response HttpResponse received by the RestRequestInput
    */
