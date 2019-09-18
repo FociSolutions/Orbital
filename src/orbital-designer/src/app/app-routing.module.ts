@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'create-new-mock', component: CreateNewMockViewComponent },
   { path: 'import-from-file', component: ImportFromFileViewComponent },
   { path: 'import-from-server', component: ImportFromServerViewComponent },
-  { path: 'endpoint-view', component: EndpointViewComponent },
+  { path: 'endpoint-view', component: EndpointViewComponent, canActivate: [OverviewRedirectService] },
   { path: '**', component: HomeViewComponent }
 ];
 
