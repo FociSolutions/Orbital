@@ -16,5 +16,6 @@ export function extendBuiltInValidatorFactory(fn: ValidatorFn): ValidatorFn {
       }
       return errors;
     }
+    return null;
   };
 }

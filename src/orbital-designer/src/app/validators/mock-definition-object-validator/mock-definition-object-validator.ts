@@ -13,5 +13,6 @@ export function mockDefinitionObjectValidatorFactory(logger: NGXLogger) {
       };
     }
     logger.debug('Valid Mock Definition');
+    return null;
   };
 }
