@@ -2,8 +2,8 @@
   <div class="search-bar-div">
     <mat-icon>search</mat-icon><input #searchBar matInput />
   </div>
-  <mat-selection-list>
-    <mat-list-option *ngFor="let item of getSearchedList()">
+  <mat-selection-list (selectionChange)="optionSelected($event)">
+    <mat-list-option *ngFor="let item of getSearchedList()" [value]="item">
       <ng-container
         *ngTemplateOutlet="itemTemplate; context: { item: item }"
       ></ng-container>

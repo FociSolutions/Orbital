@@ -2,8 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { SearchableListComponent } from './searchable-list.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import {
+  MatListModule,
+  MatSelectionList,
+  MatSelectionListChange
+} from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { By } from '@angular/platform-browser';
 
 describe('SearchableListComponent', () => {
   let component: SearchableListComponent;
@@ -45,6 +50,21 @@ describe('SearchableListComponent', () => {
       for (const item of filteredList) {
         expect(item.toLowerCase()).toContain(component.list[0].toLowerCase());
       }
+    });
+  });
+
+  describe('SearchableListComponent.onSelect()', () => {
+    it('should emit the mat-list selected options', async done => {
+      component.list = faker.random.words().split(' ');
+      fixture.detectChanges();
+      const matList = fixture.debugElement.query(By.directive(MatSelectionList))
+        .context;
+      component.itemSelected.subscribe(list => {
+        expect(list).toEqual(component.list);
+        done();
+      });
+      matList.selectAll();
+      component.optionSelected(new MatSelectionListChange(matList, null));
     });
   });
 

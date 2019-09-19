@@ -6,10 +6,9 @@ import {
   ViewChild,
   ElementRef,
   Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges
+  EventEmitter
 } from '@angular/core';
+import { MatListOption, MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'app-searchable-list',
@@ -18,13 +17,28 @@ import {
 })
 export class SearchableListComponent implements OnInit {
   @ViewChild('searchBar', { static: false }) input: ElementRef;
+
+  @Output() itemSelected: EventEmitter<any[]>;
+
   @Input() title?: string = null;
   @Input() list: any[] = [];
   @Input() itemTemplate!: TemplateRef<any>;
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
   @Input() itemToStringFn: (_: any) => string = x => x as string;
-  constructor() {}
+
+  constructor() {
+    this.itemSelected = new EventEmitter<any[]>();
+  }
+
+  /**
+   * Outputs the selected items through the itemSelected emitter
+   * @param event The MatSelectionListChange emitted from the material selection list component
+   */
+  optionSelected(event: MatSelectionListChange) {
+    const selected = event.source.selectedOptions.selected;
+    this.itemSelected.emit(selected.map(option => option.value));
+  }
 
   /**
    * Function that applies the ignore-case starts with string filter to the list of items.
