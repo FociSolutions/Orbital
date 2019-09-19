@@ -1,9 +1,8 @@
 div {
   display: flex;
   flex-direction: row;
-  width: auto;
 
-  ::ng-deep *:first-child {
+  ::ng-deep > * {
     flex: 1;
   }
 

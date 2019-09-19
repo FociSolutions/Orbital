@@ -43,6 +43,8 @@ export class RestRequestInputComponent implements OnInit {
   requestObserver: Observer<
     HttpEvent<HttpResponse<unknown> | HttpErrorResponse>
   >;
+  protocols: string[] = ['http://', 'https://'];
+  selectedProtocol: string = this.protocols[0];
   inputControl: FormControl;
   requestInProgress = false;
   @Input() title = '';
@@ -76,7 +78,11 @@ export class RestRequestInputComponent implements OnInit {
   }
 
   sendRequestDisabled() {
-    return !this.inputControl.valid || this.requestInProgress;
+    return (
+      !this.inputControl.valid ||
+      this.inputControl.value.length === 0 ||
+      this.requestInProgress
+    );
   }
 
   getSpinnerId() {
@@ -88,12 +94,9 @@ export class RestRequestInputComponent implements OnInit {
     if (this.inputControl.valid) {
       this.requestInProgress = true;
       this.errors = null;
-      const urlPattern = /^(http[s]?:\/\/)/;
       const request = new HttpRequest(
         this.httpMethod,
-        `${urlPattern.test(this.inputControl.value) ? '' : 'http://'}${
-          this.inputControl.value
-        }${this.concatToURI}`,
+        `${this.selectedProtocol}${this.inputControl.value}${this.concatToURI}`,
         this.body,
         this.options
       );
