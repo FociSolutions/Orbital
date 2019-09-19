@@ -19,7 +19,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 export class ImportFromServerViewComponent implements OnInit {
   readonly getAllEndpoint = '/api/v1/OrbitalAdmin';
   formArray: FormArray;
-  emptyListMessageServerBox = 'No valid MockDefinitions Found';
+  emptyListMessageServerBox = 'No Valid MockDefinitions Found';
   controlsMockDefinitionToString = (control: AbstractControl) =>
     (control.value as MockDefinition).metadata.title
   constructor(private location: Location, private logger: NGXLogger) {
