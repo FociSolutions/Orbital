@@ -10,8 +10,8 @@ import Json from '../json';
  */
 export class MockDefinition {
   metadata: Metadata;
-  host: string;
-  basePath: string;
+  host?: string;
+  basePath?: string;
   scenarios: Scenario[] = [];
   openApi: any;
 
@@ -26,7 +26,7 @@ export class MockDefinition {
       try {
         let content = JSON.parse(mockDefinition);
         if (!this.isMockDefinition(content)) {
-          reject('Invalid mock definition');
+          reject(['Invalid mock definition']);
         } else {
           content = {
             ...content,
@@ -46,7 +46,7 @@ export class MockDefinition {
           resolve(content as MockDefinition);
         }
       } catch (error) {
-        reject(error);
+        reject([error.message]);
       }
     });
   }
@@ -82,9 +82,7 @@ export class MockDefinition {
   public static isMockDefinition(o: any): o is MockDefinition {
     const u: MockDefinition = o;
     return (
-      typeof u.basePath === 'string' &&
       Array.isArray(u.scenarios) &&
-      typeof u.host === 'string' &&
       typeof u.metadata === 'object' &&
       u.metadata !== null &&
       typeof u.openApi === 'object' &&

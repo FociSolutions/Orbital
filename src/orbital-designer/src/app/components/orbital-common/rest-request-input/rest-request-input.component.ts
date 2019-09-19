@@ -12,7 +12,8 @@ import {
   HttpResponse,
   HttpRequest,
   HttpEventType,
-  HttpEvent
+  HttpEvent,
+  HttpErrorResponse
 } from '@angular/common/http';
 import { Observer } from 'rxjs';
 
@@ -25,15 +26,6 @@ import { Observer } from 'rxjs';
 export class RestRequestInputComponent implements OnInit {
   static readonly urlMaxLength = 2048;
   constructor(private httpClient: HttpClient) {
-    const urlPattern = /^(http[s]?:\/\/)/;
-    this.inputControl = new FormControl(
-      '',
-      Validators.compose([
-        Validators.pattern(urlPattern),
-        Validators.maxLength(RestRequestInputComponent.urlMaxLength),
-        Validators.required
-      ])
-    );
     this.responseReceived = new EventEmitter<HttpResponse<unknown>>();
     this.requestObserver = {
       next: event => {
@@ -42,18 +34,26 @@ export class RestRequestInputComponent implements OnInit {
         }
       },
       error: e => {
-        this.errorMessages = ['Server cannot be reached: ' + e.message];
+        this.responseReceived.emit(e);
         this.requestInProgress = false;
       },
       complete: () => (this.requestInProgress = false)
     };
   }
-  requestObserver: Observer<HttpEvent<HttpResponse<unknown>>>;
+  requestObserver: Observer<
+    HttpEvent<HttpResponse<unknown> | HttpErrorResponse>
+  >;
+  protocols: string[] = ['http://', 'https://'];
+  selectedProtocol: string = this.protocols[0];
   inputControl: FormControl;
   requestInProgress = false;
   @Input() title = '';
   @Input() buttonName = 'Submit';
-  @Input() errorMessages: string[] = [];
+  @Input() set errors(errors: object) {
+    if (!!this.inputControl) {
+      this.inputControl.setErrors(errors);
+    }
+  }
   @Input() options: object = {};
   @Input() body?: string = null;
   @Input() httpMethod:
@@ -68,10 +68,21 @@ export class RestRequestInputComponent implements OnInit {
   @Input() concatToURI = '';
   @Output() responseReceived: EventEmitter<HttpResponse<unknown>>;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.inputControl = new FormControl(
+      '',
+      Validators.compose([
+        Validators.maxLength(RestRequestInputComponent.urlMaxLength)
+      ])
+    );
+  }
 
   sendRequestDisabled() {
-    return !this.inputControl.valid || this.requestInProgress;
+    return (
+      !this.inputControl.valid ||
+      this.inputControl.value.length === 0 ||
+      this.requestInProgress
+    );
   }
 
   getSpinnerId() {
@@ -79,12 +90,13 @@ export class RestRequestInputComponent implements OnInit {
   }
 
   sendRequest() {
+    this.inputControl.markAsDirty();
     if (this.inputControl.valid) {
       this.requestInProgress = true;
-      this.errorMessages = [];
+      this.errors = null;
       const request = new HttpRequest(
         this.httpMethod,
-        `${this.inputControl.value}${this.concatToURI}`,
+        `${this.selectedProtocol}${this.inputControl.value}${this.concatToURI}`,
         this.body,
         this.options
       );

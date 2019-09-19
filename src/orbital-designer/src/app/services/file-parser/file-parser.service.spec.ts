@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
-import validOpenApiTest from '../../test-files/valid-openapi-spec';
+import validOpenApiTest from '../../../test-files/valid-openapi-spec';
 import { FileParserService } from './file-parser.service';
 
 describe('FileParserService', () => {

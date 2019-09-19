@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { DesignerStore } from '../store/designer-store';
+import { DesignerStore } from '../../store/designer-store';
 
 @Injectable({
   providedIn: 'root'

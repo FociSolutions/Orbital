@@ -41,14 +41,12 @@ describe('RestRequestInputComponent', () => {
   });
 
   describe('RestRequestInputComponent.sendRequest', () => {
-    it('should emit response from request to localhost', async done => {
-      component.responseReceived.subscribe(resp => {
-        expect(resp).toBeTruthy();
-        done();
-      });
-      component.inputControl.setValue('http://localhost:4200');
+    it('should send request to localhost', () => {
+      component.inputControl.setValue('localhost:4200');
       component.sendRequest();
-      const mockReq = httpMock.expectOne(component.inputControl.value);
+      const mockReq = httpMock.expectOne(
+        `http://${component.inputControl.value}`
+      );
       expect(mockReq.cancelled).toBeFalsy();
       mockReq.flush('');
     });
