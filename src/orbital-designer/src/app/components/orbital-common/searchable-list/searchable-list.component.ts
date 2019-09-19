@@ -8,7 +8,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { MatListOption, MatSelectionListChange } from '@angular/material/list';
+import { MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'app-searchable-list',
