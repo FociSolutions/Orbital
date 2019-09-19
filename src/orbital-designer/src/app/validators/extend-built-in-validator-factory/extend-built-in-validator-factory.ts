@@ -12,6 +12,7 @@ import { NGXLogger } from 'ngx-logger';
  * meaningful messages to let a user know why the validation failed (ex: when the required validator fails
  * a control it returns {required: true})
  * @param fn The validator function to extend
+ * @param logger The NGXLogger to use
  */
 export function extendBuiltInValidatorFactory(
   fn: ValidatorFn,
