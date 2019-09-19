@@ -5,7 +5,6 @@ import { DesignerStore} from 'src/app/store/designer-store';
 import { OverviewComponent } from './overview/overview.component';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { CommonModule } from '@angular/common';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;

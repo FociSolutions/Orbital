@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {MatCardModule} from '@angular/material/card';
 import { OverviewComponent } from './overview.component';
-import { EndpointViewComponent } from '../endpoint-view.component';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;

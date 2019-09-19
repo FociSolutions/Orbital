@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DesignerStore} from 'src/app/store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+
 @Component({
   selector: 'app-endpoint-view',
   templateUrl: './endpoint-view.component.html',
