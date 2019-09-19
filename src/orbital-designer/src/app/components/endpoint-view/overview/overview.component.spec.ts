@@ -24,7 +24,15 @@ describe('OverviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render title in h3 tag', async(() => {
+  it('should render title in h1 tag', async(() => {
+    // tslint:disable-next-line: no-shadowed-variable
+    const fixture = TestBed.createComponent(OverviewComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('Overview');
+  }));
+
+  it('should render mock definition name in h3 tag', async(() => {
     // tslint:disable-next-line: no-shadowed-variable
     const fixture = TestBed.createComponent(OverviewComponent);
     fixture.detectChanges();
