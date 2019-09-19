@@ -19,6 +19,7 @@ mat-card {
 
   mat-selection-list {
     flex: 1;
+    margin-top: 1em;
     overflow-y: scroll;
 
     .emptyMessage {
@@ -33,4 +34,12 @@ mat-card {
   mat-list-option {
     padding: 1em 0;
   }
+}
+
+mat-selection-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+mat-selection-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.26);
 }
