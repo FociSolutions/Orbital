@@ -2,7 +2,16 @@
   <div class="search-bar-div">
     <mat-icon>search</mat-icon><input #searchBar matInput />
   </div>
-  <mat-selection-list (selectionChange)="optionSelected($event)">
+  <div *ngIf="!!this.list.length" class="checkbox-div">
+    <mat-checkbox
+      labelPosition="before"
+      (change)="onSelectAll($event)"
+      [checked]="selectAllChecked"
+    >
+      {{ checkboxLabel }}
+    </mat-checkbox>
+  </div>
+  <mat-selection-list #matList (selectionChange)="optionSelected($event)">
     <mat-list-option *ngFor="let item of getSearchedList()" [value]="item">
       <ng-container
         *ngTemplateOutlet="itemTemplate; context: { item: item }"

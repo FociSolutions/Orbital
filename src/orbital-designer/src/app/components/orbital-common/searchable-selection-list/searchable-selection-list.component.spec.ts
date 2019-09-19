@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
-import { SearchableListComponent } from './searchable-list.component';
+import { SearchableSelectionListComponent } from './searchable-selection-list.component';
 import { MatIconModule } from '@angular/material/icon';
 import {
   MatListModule,
@@ -10,19 +10,19 @@ import {
 import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
 
-describe('SearchableListComponent', () => {
-  let component: SearchableListComponent;
-  let fixture: ComponentFixture<SearchableListComponent>;
+describe('SearchableSelectionListComponent', () => {
+  let component: SearchableSelectionListComponent;
+  let fixture: ComponentFixture<SearchableSelectionListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchableListComponent],
+      declarations: [SearchableSelectionListComponent],
       imports: [MatIconModule, MatListModule, MatCardModule]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchableListComponent);
+    fixture = TestBed.createComponent(SearchableSelectionListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -31,7 +31,7 @@ describe('SearchableListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('SearchableListComponent.getSearchedList()', () => {
+  describe('SearchableSelectionListComponent.getSearchedList()', () => {
     it('should return the original list if nothing is entered in the input', () => {
       component.list = faker.random.words().split(' ');
       expect(component.getSearchedList()).toEqual(component.list);
@@ -53,7 +53,7 @@ describe('SearchableListComponent', () => {
     });
   });
 
-  describe('SearchableListComponent.onSelect()', () => {
+  describe('SearchableSelectionListComponent.onSelect()', () => {
     it('should emit the mat-list selected options', async done => {
       component.list = faker.random.words().split(' ');
       fixture.detectChanges();
@@ -72,7 +72,7 @@ describe('SearchableListComponent', () => {
     it('should return true if the first parameter string start with the second parameter', () => {
       const targetString: string = faker.random.word();
       expect(
-        SearchableListComponent.ignoreCaseContainsMatch(
+        SearchableSelectionListComponent.ignoreCaseContainsMatch(
           targetString,
           targetString.substr(0, 1)
         )
@@ -82,7 +82,7 @@ describe('SearchableListComponent', () => {
     it('should return false if the first parameter string does not start with in the second parameter', () => {
       const targetString: string = faker.random.word();
       expect(
-        SearchableListComponent.ignoreCaseContainsMatch(
+        SearchableSelectionListComponent.ignoreCaseContainsMatch(
           targetString.substr(0, 1),
           targetString
         )
@@ -92,7 +92,7 @@ describe('SearchableListComponent', () => {
     it('should ignore case', () => {
       const targetString: string = faker.random.word();
       expect(
-        SearchableListComponent.ignoreCaseContainsMatch(
+        SearchableSelectionListComponent.ignoreCaseContainsMatch(
           targetString.toUpperCase(),
           targetString.substr(0, 1).toLowerCase()
         )

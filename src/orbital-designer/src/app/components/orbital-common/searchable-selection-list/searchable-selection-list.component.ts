@@ -8,15 +8,20 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { MatSelectionListChange } from '@angular/material/list';
+import {
+  MatSelectionListChange,
+  MatSelectionList
+} from '@angular/material/list';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-searchable-list',
-  templateUrl: './searchable-list.component.html',
-  styleUrls: ['./searchable-list.component.scss']
+  selector: 'app-searchable-selection-list',
+  templateUrl: './searchable-selection-list.component.html',
+  styleUrls: ['./searchable-selection-list.component.scss']
 })
-export class SearchableListComponent implements OnInit {
+export class SearchableSelectionListComponent implements OnInit {
   @ViewChild('searchBar', { static: false }) input: ElementRef;
+  @ViewChild('matList', { static: false }) matList: MatSelectionList;
 
   @Output() itemSelected: EventEmitter<any[]>;
 
@@ -29,6 +34,22 @@ export class SearchableListComponent implements OnInit {
 
   constructor() {
     this.itemSelected = new EventEmitter<any[]>();
+  }
+
+  get checkboxLabel() {
+    return this.selectAllChecked ? 'Deselect All' : 'Select All';
+  }
+
+  get selectAllChecked() {
+    return !!this.matList && this.matList.selectedOptions.selected.length > 0;
+  }
+
+  onSelectAll(event: MatCheckboxChange) {
+    if (event.checked) {
+      this.matList.selectAll();
+    } else {
+      this.matList.deselectAll();
+    }
   }
 
   /**
@@ -48,7 +69,7 @@ export class SearchableListComponent implements OnInit {
   getSearchedList(): any[] {
     if (!!this.input && this.input.nativeElement.value.length > 0) {
       return this.list.filter(item =>
-        SearchableListComponent.ignoreCaseContainsMatch(
+        SearchableSelectionListComponent.ignoreCaseContainsMatch(
           this.itemToStringFn(item),
           this.input.nativeElement.value
         )

@@ -17,10 +17,17 @@ mat-card {
     }
   }
 
+  .checkbox-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 0.5em 0;
+  }
+
   mat-selection-list {
     flex: 1;
-    margin-top: 1em;
     overflow-y: scroll;
+    outline-width: 0;
 
     .emptyMessage {
       font-size: 0.9em;
