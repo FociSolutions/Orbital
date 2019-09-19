@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import {
   FormControl,
-  Validators,
-  FormGroup,
   FormArray,
-  ValidatorFn,
   ValidationErrors,
   AbstractControl
 } from '@angular/forms';
@@ -38,7 +35,10 @@ export class ImportFromServerViewComponent implements OnInit {
    * Getter function that returns true if the form is invalid, false otherwise
    */
   get disabled(): boolean {
-    return this.formArray.invalid;
+    /* Until the shuttle list is created and added to this component the
+    disabled getter will always return false */
+    return false;
+    // return this.formArray.invalid;
   }
 
   /**
