@@ -1,17 +1,18 @@
 <mat-card class="example-card">
-    <mat-card-header class="header-title">
-      <div>
-        <h1 class="card-title">Overview</h1>
+    <div class="header-title">
+      <div class="title-container">
+        <h1 class="card-title">
+          Overview
+        </h1>
       </div>
       
-    </mat-card-header>
+    </div>
     
-    <mat-card-content class="mock-description">
-        <h3>Mock Definition3</h3>
+    <mat-card-content class="mock-description"   
+      >
+        <h3>{{metadata?.title}}</h3>
         <p>
-            The mockdefinition description goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris luctus sed diam sit amet ornare. 
-            Vestibulum tellus tortor, malesuada sed erat sed, condimentum convallis sapien. Integer sed volutpat ex. 
-            Nulla tristique ipsum sit amet ullamcorper laoreet. Etiam eu tortor id leo accumsan porta. 
+            {{metadata?.description}}
         </p>
     </mat-card-content>
 </mat-card>

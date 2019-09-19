@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {MatCardModule} from '@angular/material/card';
 import { OverviewComponent } from './overview.component';
+import { EndpointViewComponent } from '../endpoint-view.component';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
@@ -30,13 +31,5 @@ describe('OverviewComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('Overview');
-  }));
-
-  it('should render mock definition name in h3 tag', async(() => {
-    // tslint:disable-next-line: no-shadowed-variable
-    const fixture = TestBed.createComponent(OverviewComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h3').textContent).toContain('Mock Definition3');
   }));
 });

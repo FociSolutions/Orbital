@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { DesignerStore} from 'src/app/store/designer-store';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 @Component({
   selector: 'app-endpoint-view',
   templateUrl: './endpoint-view.component.html',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EndpointViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: DesignerStore) {
+    this.store.state$.subscribe(
+      state => (
+        this.mockDefinition = state.mockDefinition
+      )
+    );
+  }
+
+  mockDefinition: MockDefinition;
 
   ngOnInit() {
   }
