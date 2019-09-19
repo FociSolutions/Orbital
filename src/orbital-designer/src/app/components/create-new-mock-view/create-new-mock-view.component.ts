@@ -7,6 +7,7 @@ import { FileParserService } from 'src/app/services/file-parser/file-parser.serv
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -19,24 +20,27 @@ export class CreateNewMockViewComponent implements OnInit {
     private router: Router,
     private location: Location,
     private fileParser: FileParserService,
-    private store: DesignerStore
+    private store: DesignerStore,
+    private logger: NGXLogger
   ) {
     this.formGroup = new FormGroup({
       title: new FormControl(
         '',
         extendBuiltInValidatorFactory(
-          Validators.compose([Validators.maxLength(200), Validators.required])
+          Validators.compose([Validators.maxLength(200), Validators.required]),
+          logger
         )
       ),
       description: new FormControl(
         '',
         extendBuiltInValidatorFactory(
-          Validators.compose([Validators.maxLength(1000)])
+          Validators.compose([Validators.maxLength(1000)]),
+          logger
         )
       ),
       openApiFile: new FormControl(
         null,
-        extendBuiltInValidatorFactory(Validators.required),
+        extendBuiltInValidatorFactory(Validators.required, logger),
         openApiFileValidator
       )
     });

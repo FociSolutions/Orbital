@@ -2,6 +2,10 @@ import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { NGXLogger } from 'ngx-logger';
 
+/**
+ * Returns a validator function used to validate whether or not an object is a MockDefinition
+ * @param logger The NGXLogger to use
+ */
 export function mockDefinitionObjectValidatorFactory(logger: NGXLogger) {
   return async function mockDefinitionObjectValidator(
     control: AbstractControl

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -23,7 +24,8 @@ export class ImportFromFileViewComponent implements OnInit {
     router: Router,
     location: Location,
     fileParser: FileParserService,
-    store: DesignerStore
+    store: DesignerStore,
+    logger: NGXLogger
   ) {
     this.router = router;
     this.location = location;
@@ -32,7 +34,7 @@ export class ImportFromFileViewComponent implements OnInit {
     this.formGroup = new FormGroup({
       mockDefinitionFile: new FormControl(
         null,
-        extendBuiltInValidatorFactory(Validators.required),
+        extendBuiltInValidatorFactory(Validators.required, logger),
         mockFileValidator
       )
     });
