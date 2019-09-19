@@ -65,7 +65,7 @@ export class ImportFromServerViewComponent implements OnInit {
       response instanceof DOMException
     ) {
       this.formArray.setErrors({
-        responseError: 'Returned with error response'
+        responseError: 'Response returned an error'
       });
     } else {
       this.formArray.setErrors({
