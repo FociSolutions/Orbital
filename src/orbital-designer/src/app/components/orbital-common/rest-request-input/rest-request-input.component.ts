@@ -78,11 +78,7 @@ export class RestRequestInputComponent implements OnInit {
   }
 
   sendRequestDisabled() {
-    return (
-      !this.inputControl.valid ||
-      this.inputControl.value.length === 0 ||
-      this.requestInProgress
-    );
+    return this.inputControl.value.length === 0 || this.requestInProgress;
   }
 
   getSpinnerId() {

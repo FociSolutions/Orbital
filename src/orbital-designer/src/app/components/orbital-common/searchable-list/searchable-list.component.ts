@@ -48,7 +48,7 @@ export class SearchableListComponent implements OnInit {
   getSearchedList(): any[] {
     if (!!this.input && this.input.nativeElement.value.length > 0) {
       return this.list.filter(item =>
-        SearchableListComponent.ignoreCaseStartsWithMatch(
+        SearchableListComponent.ignoreCaseContainsMatch(
           this.itemToStringFn(item),
           this.input.nativeElement.value
         )
@@ -58,15 +58,12 @@ export class SearchableListComponent implements OnInit {
   }
 
   /**
-   * Returns true if the target string starts with the startsWith string. It sets
-   * both of them to lowercase before perfoming the compares in order to ignore case.
+   * Returns true if the target parameter contains the substring parameter. It sets
+   * both of them to lowercase before performing the compares in order to ignore case.
    */
   // tslint:disable-next-line: member-ordering
-  static ignoreCaseStartsWithMatch(
-    target: string,
-    startsWith: string
-  ): boolean {
-    return target.toLowerCase().startsWith(startsWith.toLowerCase());
+  static ignoreCaseContainsMatch(target: string, substring: string): boolean {
+    return target.toLowerCase().includes(substring.toLowerCase());
   }
   ngOnInit() {}
 }

@@ -72,7 +72,7 @@ describe('SearchableListComponent', () => {
     it('should return true if the first parameter string start with the second parameter', () => {
       const targetString: string = faker.random.word();
       expect(
-        SearchableListComponent.ignoreCaseStartsWithMatch(
+        SearchableListComponent.ignoreCaseContainsMatch(
           targetString,
           targetString.substr(0, 1)
         )
@@ -82,7 +82,7 @@ describe('SearchableListComponent', () => {
     it('should return false if the first parameter string does not start with in the second parameter', () => {
       const targetString: string = faker.random.word();
       expect(
-        SearchableListComponent.ignoreCaseStartsWithMatch(
+        SearchableListComponent.ignoreCaseContainsMatch(
           targetString.substr(0, 1),
           targetString
         )
@@ -92,7 +92,7 @@ describe('SearchableListComponent', () => {
     it('should ignore case', () => {
       const targetString: string = faker.random.word();
       expect(
-        SearchableListComponent.ignoreCaseStartsWithMatch(
+        SearchableListComponent.ignoreCaseContainsMatch(
           targetString.toUpperCase(),
           targetString.substr(0, 1).toLowerCase()
         )
