@@ -1,11 +1,18 @@
 import { extendBuiltInValidatorFactory } from './extend-built-in-validator-factory';
 import { Validators, FormControl } from '@angular/forms';
+import { NGXLoggerMock } from 'ngx-logger/testing';
+import { NGXLogger } from 'ngx-logger';
 
 describe('extendBuiltInValidatorFactory', () => {
   let validatorFn;
+  const mockLogger = new NGXLoggerMock();
+
   describe('extendBuiltInValidatorFactory(Validators.required)', () => {
     beforeEach(() => {
-      validatorFn = extendBuiltInValidatorFactory(Validators.required);
+      validatorFn = extendBuiltInValidatorFactory(
+        Validators.required,
+        mockLogger as NGXLogger
+      );
     });
     it(`should return a validator function that modifies the return of the
     Validators.required validator function to contain a string instead of a boolean`, async () => {
@@ -21,7 +28,10 @@ describe('extendBuiltInValidatorFactory', () => {
 
   describe('extendBuiltInValidatorFactory(Validators.maxlength', () => {
     beforeEach(() => {
-      validatorFn = extendBuiltInValidatorFactory(Validators.maxLength(1));
+      validatorFn = extendBuiltInValidatorFactory(
+        Validators.maxLength(1),
+        mockLogger as NGXLogger
+      );
     });
     it(`should return a validator function that modifies the return of the
     Validators.maxlength validator function to contain a string instead of an object`, async () => {
@@ -37,7 +47,10 @@ describe('extendBuiltInValidatorFactory', () => {
 
   describe('extendBuiltInValidatorFactory(Validators.minlength', () => {
     beforeEach(() => {
-      validatorFn = extendBuiltInValidatorFactory(Validators.minLength(2));
+      validatorFn = extendBuiltInValidatorFactory(
+        Validators.minLength(2),
+        mockLogger as NGXLogger
+      );
     });
     it(`should return a validator function that modifies the return of the
     Validators.minlength validator function to contain a string instead of an object`, async () => {

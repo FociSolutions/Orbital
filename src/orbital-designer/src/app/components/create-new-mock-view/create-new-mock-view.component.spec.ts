@@ -12,6 +12,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { FileParserService } from 'src/app/services/file-parser/file-parser.service';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
@@ -23,6 +24,7 @@ describe('CreateNewMockViewComponent', () => {
         OrbitalCommonModule,
         MatCardModule,
         BrowserAnimationsModule,
+        LoggerTestingModule,
         RouterTestingModule.withRoutes([])
       ],
       providers: [Location, FileParserService, DesignerStore]
