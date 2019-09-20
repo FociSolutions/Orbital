@@ -20,6 +20,9 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   styleUrls: ['./searchable-selection-list.component.scss']
 })
 export class SearchableSelectionListComponent implements OnInit {
+  static readonly selectAllString = 'Select All';
+  static readonly deselectAllString = 'Deselect All';
+
   @ViewChild('searchBar', { static: false }) input: ElementRef;
   @ViewChild('matList', { static: false }) matList: MatSelectionList;
 
@@ -36,14 +39,32 @@ export class SearchableSelectionListComponent implements OnInit {
     this.itemSelected = new EventEmitter<any[]>();
   }
 
+  /**
+   * Returns the label for the check box based upon whether or not
+   * the checkbox should be selected or not. If the check box should be selected then
+   * it returns the deselectAllString, else it returns the selectAllString
+   */
   get checkboxLabel() {
-    return this.selectAllChecked ? 'Deselect All' : 'Select All';
+    return this.selectAllChecked
+      ? SearchableSelectionListComponent.deselectAllString
+      : SearchableSelectionListComponent.selectAllString;
   }
 
+  /**
+   * Returns true if the selection check box should be marked as checked, false otherwise
+   * This is determined by checking to see if any of the options are selected. If any
+   * of the options are selected then the checkbox should be selected because it's
+   * functionality is now to deselect the selected options.
+   */
   get selectAllChecked() {
     return !!this.matList && this.matList.selectedOptions.selected.length > 0;
   }
 
+  /**
+   * A function that selects or deselects all options depending on wether the checkbox is
+   * being selected or deselected.
+   * @param event The checkbox change event emitted by the select/deselect all checkbox
+   */
   onSelectAll(event: MatCheckboxChange) {
     if (event.checked) {
       this.matList.selectAll();

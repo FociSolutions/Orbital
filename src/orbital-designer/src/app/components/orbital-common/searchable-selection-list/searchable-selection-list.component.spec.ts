@@ -9,7 +9,10 @@ import {
 } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  MatCheckboxModule,
+  MatCheckboxChange
+} from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 
 describe('SearchableSelectionListComponent', () => {
@@ -32,6 +35,7 @@ describe('SearchableSelectionListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchableSelectionListComponent);
     component = fixture.componentInstance;
+    component.list = faker.random.words().split(' ');
     fixture.detectChanges();
   });
 
@@ -41,18 +45,15 @@ describe('SearchableSelectionListComponent', () => {
 
   describe('SearchableSelectionListComponent.getSearchedList()', () => {
     it('should return the original list if nothing is entered in the input', () => {
-      component.list = faker.random.words().split(' ');
       expect(component.getSearchedList()).toEqual(component.list);
     });
 
     it('should return the original list if the input is null', () => {
       component.input = null;
-      component.list = faker.random.words().split(' ');
       expect(component.getSearchedList()).toEqual(component.list);
     });
 
     it('should return a filtered list given the input', () => {
-      component.list = faker.random.words().split(' ');
       component.input.nativeElement.value = component.list[0];
       const filteredList = component.getSearchedList();
       for (const item of filteredList) {
@@ -63,16 +64,64 @@ describe('SearchableSelectionListComponent', () => {
 
   describe('SearchableSelectionListComponent.onSelect()', () => {
     it('should emit the mat-list selected options', async done => {
-      component.list = faker.random.words().split(' ');
-      fixture.detectChanges();
-      const matList = fixture.debugElement.query(By.directive(MatSelectionList))
-        .context;
+      const matList: MatSelectionList = getMatList(fixture);
       component.itemSelected.subscribe(list => {
         expect(list).toEqual(component.list);
         done();
       });
       matList.selectAll();
       component.optionSelected(new MatSelectionListChange(matList, null));
+    });
+  });
+
+  describe('SearchableSelectionListComponent.checkboxLabel', () => {
+    it(`should return the select all string if none of the lists options are selected`, () => {
+      expect(component.checkboxLabel).toEqual(
+        SearchableSelectionListComponent.selectAllString
+      );
+    });
+
+    it(`should return the deselect all string if any of the lists options are selected`, () => {
+      const matList: MatSelectionList = getMatList(fixture);
+      matList.options.first.toggle();
+      expect(component.checkboxLabel).toEqual(
+        SearchableSelectionListComponent.deselectAllString
+      );
+    });
+  });
+
+  describe('SearchableSelectionListComponent.selectAllChecked', () => {
+    it('should return true if any of the options are selected', () => {
+      const matList: MatSelectionList = getMatList(fixture);
+      matList.options.first.toggle();
+      expect(component.selectAllChecked).toBeTruthy();
+    });
+
+    it('should return false if none of the options are selected', () => {
+      expect(component.selectAllChecked).toBeFalsy();
+    });
+  });
+
+  describe('SearchableSelectionListComponent.onSelectAll', () => {
+    it('should select all the options if the checkbox is being checked', () => {
+      const matList: MatSelectionList = getMatList(fixture);
+      const event = new MatCheckboxChange();
+      event.checked = true;
+      component.onSelectAll(event);
+      expect(matList.selectedOptions.selected).toEqual(
+        matList.options.toArray()
+      );
+    });
+
+    it('should deselect all the options if the checkbox is being checked', () => {
+      const matList: MatSelectionList = getMatList(fixture);
+      matList.selectAll();
+      const event = new MatCheckboxChange();
+      event.checked = false;
+      component.onSelectAll(event);
+      expect(matList.selectedOptions.selected).toEqual(
+        matList.options.toArray()
+      );
     });
   });
 
@@ -108,3 +157,9 @@ describe('SearchableSelectionListComponent', () => {
     });
   });
 });
+
+function getMatList(
+  fixture: ComponentFixture<SearchableSelectionListComponent>
+): MatSelectionList {
+  return fixture.debugElement.query(By.directive(MatSelectionList)).context;
+}
