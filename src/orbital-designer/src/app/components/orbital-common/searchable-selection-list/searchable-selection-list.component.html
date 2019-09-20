@@ -1,13 +1,14 @@
 <mat-card>
   <div class="search-bar-div">
-    <mat-icon>search</mat-icon><input #searchBar matInput />
+    <mat-icon>search</mat-icon
+    ><input #searchBar matInput (keyup)="onSearchInput()" />
   </div>
   <div *ngIf="!!this.list.length" class="checkbox-div">
     <mat-checkbox
       color="primary"
       (change)="onSelectAll($event)"
       [checked]="selectAllChecked"
-      [disabled]="searchedList.length === 0"
+      [disabled]="noSearchResults"
     >
       {{ checkboxLabel }}
     </mat-checkbox>
@@ -19,8 +20,9 @@
     (selectionChange)="optionSelected($event)"
   >
     <mat-list-option
-      *ngFor="let item of searchedList"
+      *ngFor="let item of list"
       [value]="item"
+      [ngClass]="{ filtered: hideOption(item) }"
       color="primary"
       checkboxPosition="before"
     >
@@ -28,13 +30,10 @@
         *ngTemplateOutlet="itemTemplate; context: { item: item }"
       ></ng-container>
     </mat-list-option>
-    <mat-list-item class="emptyMessage" *ngIf="list.length === 0">
+    <mat-list-item class="emptyMessage" *ngIf="isEmpty">
       <span>{{ emptyListMessage }}</span>
     </mat-list-item>
-    <mat-list-item
-      class="emptyMessage"
-      *ngIf="list.length > 0 && searchedList.length === 0"
-    >
+    <mat-list-item class="emptyMessage" *ngIf="noSearchResults">
       <span>{{ noSearchResultsMessage }}</span>
     </mat-list-item>
   </mat-selection-list>

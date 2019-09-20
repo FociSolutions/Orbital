@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 import {
   MatSelectionListChange,
-  MatSelectionList
+  MatSelectionList,
+  MatListOption
 } from '@angular/material/list';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
@@ -22,6 +23,8 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 export class SearchableSelectionListComponent implements OnInit {
   static readonly selectAllString = 'Select All';
   static readonly deselectAllString = 'Deselect All';
+
+  filteredOptions: MatListOption[] = [];
 
   @ViewChild('searchBar', { static: false }) input: ElementRef;
   @ViewChild('matList', { static: false }) matList: MatSelectionList;
@@ -57,7 +60,12 @@ export class SearchableSelectionListComponent implements OnInit {
    * functionality is now to deselect the selected options.
    */
   get selectAllChecked() {
-    return !!this.matList && this.matList.selectedOptions.selected.length > 0;
+    return (
+      !!this.matList &&
+      this.matList.selectedOptions.selected.filter(
+        opt => !this.hideOption(opt.value)
+      ).length > 0
+    );
   }
 
   /**
@@ -66,11 +74,12 @@ export class SearchableSelectionListComponent implements OnInit {
    * @param event The checkbox change event emitted by the select/deselect all checkbox
    */
   onSelectAll(event: MatCheckboxChange) {
-    if (event.checked) {
-      this.matList.selectAll();
-    } else {
-      this.matList.deselectAll();
-    }
+    this.matList.options.forEach(
+      option =>
+        (option.selected = this.hideOption(option.value)
+          ? option.selected
+          : event.checked)
+    );
   }
 
   /**
@@ -83,20 +92,38 @@ export class SearchableSelectionListComponent implements OnInit {
   }
 
   /**
-   * getter function that applies the ignore-case starts with string filter to the list of items.
-   * It uses the itemToStringFn property to convert the items into searchable strings to search
-   * against. Returns a filtered list of options
+   * Returns true if the item should be hidden from view (filtered),
+   * false otherwise
+   * @param item The item being checked against
    */
-  get searchedList(): any[] {
-    if (!!this.input && this.input.nativeElement.value.length > 0) {
-      return this.list.filter(item =>
-        SearchableSelectionListComponent.ignoreCaseContainsMatch(
-          this.itemToStringFn(item),
+  hideOption(item: any): boolean {
+    if (this.filteredOptions.length > 0) {
+      return !!this.filteredOptions.find(option => option.value === item);
+    }
+    return false;
+  }
+
+  /**
+   * function run that updates the filteredOptions property based on the inputs value
+   */
+  onSearchInput() {
+    this.filteredOptions = this.matList.options.filter(
+      option =>
+        !SearchableSelectionListComponent.ignoreCaseContainsMatch(
+          this.itemToStringFn(option.value),
           this.input.nativeElement.value
         )
-      );
-    }
-    return this.list;
+    );
+  }
+
+  get isEmpty() {
+    return this.list.length === 0;
+  }
+
+  get noSearchResults() {
+    return (
+      this.list.length > 0 && this.list.length === this.filteredOptions.length
+    );
   }
 
   /**

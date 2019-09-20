@@ -43,25 +43,6 @@ describe('SearchableSelectionListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('SearchableSelectionListComponent.searchedList', () => {
-    it('should return the original list if nothing is entered in the input', () => {
-      expect(component.searchedList).toEqual(component.list);
-    });
-
-    it('should return the original list if the input is null', () => {
-      component.input = null;
-      expect(component.searchedList).toEqual(component.list);
-    });
-
-    it('should return a filtered list given the input', () => {
-      component.input.nativeElement.value = component.list[0];
-      const filteredList = component.searchedList;
-      for (const item of filteredList) {
-        expect(item.toLowerCase()).toContain(component.list[0].toLowerCase());
-      }
-    });
-  });
-
   describe('SearchableSelectionListComponent.onSelect()', () => {
     it('should emit the mat-list selected options', async done => {
       const matList: MatSelectionList = getMatList(fixture);
