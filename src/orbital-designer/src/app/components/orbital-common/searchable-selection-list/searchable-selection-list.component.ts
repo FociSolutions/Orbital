@@ -83,11 +83,11 @@ export class SearchableSelectionListComponent implements OnInit {
   }
 
   /**
-   * Function that applies the ignore-case starts with string filter to the list of items.
+   * getter function that applies the ignore-case starts with string filter to the list of items.
    * It uses the itemToStringFn property to convert the items into searchable strings to search
-   * against
+   * against. Returns a filtered list of options
    */
-  getSearchedList(): any[] {
+  get searchedList(): any[] {
     if (!!this.input && this.input.nativeElement.value.length > 0) {
       return this.list.filter(item =>
         SearchableSelectionListComponent.ignoreCaseContainsMatch(

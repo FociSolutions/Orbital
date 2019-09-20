@@ -43,19 +43,19 @@ describe('SearchableSelectionListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('SearchableSelectionListComponent.getSearchedList()', () => {
+  describe('SearchableSelectionListComponent.searchedList', () => {
     it('should return the original list if nothing is entered in the input', () => {
-      expect(component.getSearchedList()).toEqual(component.list);
+      expect(component.searchedList).toEqual(component.list);
     });
 
     it('should return the original list if the input is null', () => {
       component.input = null;
-      expect(component.getSearchedList()).toEqual(component.list);
+      expect(component.searchedList).toEqual(component.list);
     });
 
     it('should return a filtered list given the input', () => {
       component.input.nativeElement.value = component.list[0];
-      const filteredList = component.getSearchedList();
+      const filteredList = component.searchedList;
       for (const item of filteredList) {
         expect(item.toLowerCase()).toContain(component.list[0].toLowerCase());
       }

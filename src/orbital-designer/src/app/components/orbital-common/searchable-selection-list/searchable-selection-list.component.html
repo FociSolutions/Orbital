@@ -7,6 +7,7 @@
       color="primary"
       (change)="onSelectAll($event)"
       [checked]="selectAllChecked"
+      [disabled]="searchedList.length === 0"
     >
       {{ checkboxLabel }}
     </mat-checkbox>
@@ -18,7 +19,7 @@
     (selectionChange)="optionSelected($event)"
   >
     <mat-list-option
-      *ngFor="let item of getSearchedList()"
+      *ngFor="let item of searchedList"
       [value]="item"
       color="primary"
       checkboxPosition="before"
@@ -32,7 +33,7 @@
     </mat-list-item>
     <mat-list-item
       class="emptyMessage"
-      *ngIf="list.length > 0 && getSearchedList().length === 0"
+      *ngIf="list.length > 0 && searchedList.length === 0"
     >
       <span>{{ noSearchResultsMessage }}</span>
     </mat-list-item>
