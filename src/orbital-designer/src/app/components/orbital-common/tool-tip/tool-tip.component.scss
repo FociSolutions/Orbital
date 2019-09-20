@@ -2,7 +2,7 @@ div {
   display: flex;
   flex-direction: row;
 
-  ::ng-deep > * {
+  ::ng-deep > *:first-child {
     flex: 1;
   }
 
