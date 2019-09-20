@@ -108,6 +108,7 @@ describe('SearchableSelectionListComponent', () => {
       const event = new MatCheckboxChange();
       event.checked = true;
       component.onSelectAll(event);
+      fixture.detectChanges();
       expect(matList.selectedOptions.selected).toEqual(
         matList.options.toArray()
       );
@@ -119,7 +120,7 @@ describe('SearchableSelectionListComponent', () => {
       const event = new MatCheckboxChange();
       event.checked = false;
       component.onSelectAll(event);
-      expect(matList.selectedOptions.selected).toEqual(
+      expect(matList.selectedOptions.selected).not.toEqual(
         matList.options.toArray()
       );
     });
