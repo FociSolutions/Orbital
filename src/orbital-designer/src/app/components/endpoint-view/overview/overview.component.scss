@@ -1,6 +1,4 @@
 .example-card {
-    width: 80%;
-    height: 30% !important;
     border-radius: 0;
     padding: 0 !important;
     -webkit-box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
@@ -9,15 +7,10 @@
     display: flex;
     flex-direction: column;
     float: right;
-    margin-top: 0.5%;
-    margin-right: 2%;
   }
 
   .header-title {
     background-color: grayscale($color: #616161);
-    width: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
   }
 
   .title-container{
@@ -36,21 +29,10 @@
   }
 
   .mock-description{
-    width: 95%;
-    height: 75% !important;
-    display: inline-flex;
-    margin-left: auto;
-    margin-right: auto;
     text-align: center;
     flex-direction: column;
-    text-justify: inter-word;
   }
-
-  .tilte-h3{
-    height: 15%;
-    width: 100%;
-    padding-bottom: 1em;
-  }
+  
   .mock-description h3{
     margin-top: 0.2em !important;
     font-family: Roboto;
