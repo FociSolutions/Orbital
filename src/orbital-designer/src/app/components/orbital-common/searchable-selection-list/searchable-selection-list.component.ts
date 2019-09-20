@@ -24,7 +24,7 @@ export class SearchableSelectionListComponent implements OnInit {
   static readonly selectAllString = 'Select All';
   static readonly deselectAllString = 'Deselect All';
 
-  filteredOptions: MatListOption[] = [];
+  filteredOutOptions: MatListOption[] = [];
 
   @ViewChild('searchBar', { static: false }) input: ElementRef;
   @ViewChild('matList', { static: false }) matList: MatSelectionList;
@@ -97,8 +97,8 @@ export class SearchableSelectionListComponent implements OnInit {
    * @param item The item being checked against
    */
   hideOption(item: any): boolean {
-    if (this.filteredOptions.length > 0) {
-      return !!this.filteredOptions.find(option => option.value === item);
+    if (this.filteredOutOptions.length > 0) {
+      return !!this.filteredOutOptions.find(option => option.value === item);
     }
     return false;
   }
@@ -107,7 +107,7 @@ export class SearchableSelectionListComponent implements OnInit {
    * function run that updates the filteredOptions property based on the inputs value
    */
   onSearchInput() {
-    this.filteredOptions = this.matList.options.filter(
+    this.filteredOutOptions = this.matList.options.filter(
       option =>
         !SearchableSelectionListComponent.ignoreCaseContainsMatch(
           this.itemToStringFn(option.value),
@@ -122,7 +122,8 @@ export class SearchableSelectionListComponent implements OnInit {
 
   get noSearchResults() {
     return (
-      this.list.length > 0 && this.list.length === this.filteredOptions.length
+      this.list.length > 0 &&
+      this.list.length === this.filteredOutOptions.length
     );
   }
 

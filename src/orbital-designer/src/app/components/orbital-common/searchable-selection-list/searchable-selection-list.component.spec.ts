@@ -107,6 +107,39 @@ describe('SearchableSelectionListComponent', () => {
     });
   });
 
+  describe('SearchableSelectionListComponent.hideOption', () => {
+    it('should return false if no options have been filtered', () => {
+      expect(component.hideOption(component.list[0])).toBeFalsy();
+    });
+
+    it('should return false if there are filtered options but the option passed is not filtered', () => {
+      expect(component.hideOption(`${component.list[0]}-diff`)).toBeFalsy();
+    });
+
+    it('should return true if the option passed has been filtered out', () => {
+      const matList: MatSelectionList = getMatList(fixture);
+      component.filteredOutOptions = [matList.options.first];
+      expect(component.hideOption(component.list[0])).toBeTruthy();
+    });
+  });
+
+  describe('SearchableSelectionListComponent.onSearchInput()', () => {
+    it('should set the filtered options to only options that include text from the input', () => {
+      const input = component.input;
+      const filteredString = `${component.list[0]}`.substr(0, 1);
+      component.list = [...component.list, filteredString];
+      input.nativeElement.value = component.list[0];
+      fixture.detectChanges();
+      component.onSearchInput();
+      expect(
+        component.filteredOutOptions.map(option => option.value)
+      ).toContain(filteredString);
+      expect(
+        component.filteredOutOptions.map(option => option.value)
+      ).not.toContain(component.list[0]);
+    });
+  });
+
   describe('ignoreCaseStartsWithMatch', () => {
     it('should return true if the first parameter string start with the second parameter', () => {
       const targetString: string = faker.random.word();
