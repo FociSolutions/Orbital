@@ -9,6 +9,8 @@ import {
 } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
 
 describe('SearchableSelectionListComponent', () => {
   let component: SearchableSelectionListComponent;
@@ -17,7 +19,13 @@ describe('SearchableSelectionListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchableSelectionListComponent],
-      imports: [MatIconModule, MatListModule, MatCardModule]
+      imports: [
+        MatIconModule,
+        MatListModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatDividerModule
+      ]
     }).compileComponents();
   }));
 

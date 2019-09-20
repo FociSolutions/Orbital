@@ -4,15 +4,25 @@
   </div>
   <div *ngIf="!!this.list.length" class="checkbox-div">
     <mat-checkbox
-      labelPosition="before"
+      color="primary"
       (change)="onSelectAll($event)"
       [checked]="selectAllChecked"
     >
       {{ checkboxLabel }}
     </mat-checkbox>
+    <mat-divider></mat-divider>
   </div>
-  <mat-selection-list #matList (selectionChange)="optionSelected($event)">
-    <mat-list-option *ngFor="let item of getSearchedList()" [value]="item">
+  <mat-selection-list
+    #matList
+    class="matList"
+    (selectionChange)="optionSelected($event)"
+  >
+    <mat-list-option
+      *ngFor="let item of getSearchedList()"
+      [value]="item"
+      color="primary"
+      checkboxPosition="before"
+    >
       <ng-container
         *ngTemplateOutlet="itemTemplate; context: { item: item }"
       ></ng-container>

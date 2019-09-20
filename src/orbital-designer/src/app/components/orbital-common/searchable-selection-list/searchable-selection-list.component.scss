@@ -18,16 +18,19 @@ mat-card {
   }
 
   .checkbox-div {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    padding: 0.5em 0;
+    padding: 1em 0 0 0;
   }
 
-  mat-selection-list {
+  mat-divider {
+    position: static;
+    margin-top: 0.3em;
+  }
+
+  .matList {
     flex: 1;
     overflow-y: scroll;
     outline-width: 0;
+    padding-top: 0;
 
     .emptyMessage {
       font-size: 0.9em;
@@ -36,10 +39,14 @@ mat-card {
         margin: auto;
       }
     }
-  }
 
-  mat-list-option {
-    padding: 1em 0;
+    ::ng-deep mat-list-option > .mat-list-item-content {
+      padding-left: 0 !important;
+    }
+
+    mat-list-option {
+      padding: 0.5em 0;
+    }
   }
 }
 
