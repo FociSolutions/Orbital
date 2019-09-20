@@ -21,7 +21,7 @@ export function extendBuiltInValidatorFactory(
   const errorMessageMap = {
     required: () => 'Input is required',
     maxlength: ({ requiredLength }) =>
-      `Max character length of ${requiredLength}exceeded`,
+      `Max character length of ${requiredLength} exceeded`,
     minlength: ({ requiredLength }) =>
       `Required min length of ${requiredLength}`
   };
