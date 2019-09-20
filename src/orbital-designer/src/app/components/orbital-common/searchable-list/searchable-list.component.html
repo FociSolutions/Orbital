@@ -1,0 +1,21 @@
+<mat-card>
+  <div class="search-bar-div">
+    <mat-icon>search</mat-icon><input #searchBar matInput />
+  </div>
+  <mat-selection-list (selectionChange)="optionSelected($event)">
+    <mat-list-option *ngFor="let item of getSearchedList()" [value]="item">
+      <ng-container
+        *ngTemplateOutlet="itemTemplate; context: { item: item }"
+      ></ng-container>
+    </mat-list-option>
+    <mat-list-item class="emptyMessage" *ngIf="list.length === 0">
+      <span>{{ emptyListMessage }}</span>
+    </mat-list-item>
+    <mat-list-item
+      class="emptyMessage"
+      *ngIf="list.length > 0 && getSearchedList().length === 0"
+    >
+      <span>{{ noSearchResultsMessage }}</span>
+    </mat-list-item>
+  </mat-selection-list>
+</mat-card>

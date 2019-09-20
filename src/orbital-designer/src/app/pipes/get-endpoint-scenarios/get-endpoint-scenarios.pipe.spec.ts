@@ -1,7 +1,7 @@
 import { GetEndpointScenariosPipe } from './get-endpoint-scenarios.pipe';
 import * as faker from 'faker';
-import { VerbType } from '../models/verb.type';
-import { newScenario } from '../models/mock-definition/scenario/scenario.model';
+import { VerbType } from '../../models/verb.type';
+import { newScenario } from '../../models/mock-definition/scenario/scenario.model';
 
 describe('GetEndpointScenariosPipe', () => {
   it('create an instance', () => {

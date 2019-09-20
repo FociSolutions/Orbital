@@ -7,6 +7,7 @@ import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from '../../store/designer-store';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('ImportFromFileComponent', () => {
   let component: ImportFromFileViewComponent;
@@ -21,6 +22,7 @@ describe('ImportFromFileComponent', () => {
         MatIconModule,
         OrbitalCommonModule,
         BrowserAnimationsModule,
+        LoggerTestingModule,
         RouterTestingModule.withRoutes([])
       ],
       providers: [DesignerStore]

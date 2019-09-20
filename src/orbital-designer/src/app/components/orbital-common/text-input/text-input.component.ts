@@ -8,13 +8,16 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
   styleUrls: ['./text-input.component.scss']
 })
 export class TextInputComponent implements OnInit {
-  constructor() {}
   errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   @Input() title = '';
   @Input() maxLength?: number;
   @Input() multiLine = false;
   @Input() control!: FormControl;
-  @Input() errorMessages: string[] = [];
+  constructor() {}
+
+  getErrors(): string[] {
+    return !!this.control.errors ? Object.values(this.control.errors) : [];
+  }
 
   ngOnInit() {}
 

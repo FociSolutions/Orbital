@@ -9,9 +9,10 @@ import { FormControl } from '@angular/forms';
 import validOpenApiText from '../../../test-files/valid-openapi-spec';
 import * as faker from 'faker';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { FileParserService } from 'src/app/services/file-parser.service';
+import { FileParserService } from 'src/app/services/file-parser/file-parser.service';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
@@ -23,6 +24,7 @@ describe('CreateNewMockViewComponent', () => {
         OrbitalCommonModule,
         MatCardModule,
         BrowserAnimationsModule,
+        LoggerTestingModule,
         RouterTestingModule.withRoutes([])
       ],
       providers: [Location, FileParserService, DesignerStore]
@@ -38,27 +40,6 @@ describe('CreateNewMockViewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('CreateNewMockViewComponent.errorMessages', () => {
-    it('should output the correct error message', () => {
-      const errors = {
-        required: true,
-        maxlength: true,
-        custom: 'Custom error message'
-      };
-      component.formGroup.controls.testControl.setErrors(errors);
-      const Expected = [
-        'testControl is required',
-        'Max characters exceeded',
-        'Custom error message'
-      ];
-      expect(component.errorMessages('testControl')).toEqual(Expected);
-    });
-
-    it('should return an empty list if there are no errors', () => {
-      expect(component.errorMessages('testControl')).toEqual([]);
-    });
   });
 
   describe('CreateNewMockViewComponent.goBack', () => {

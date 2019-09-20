@@ -12,10 +12,13 @@ export class FileInputComponent implements OnInit {
   fileNames = '';
 
   @Input() control!: FormControl;
-  @Input() errorMessages: string[] = [];
   @Input() label = '';
   @Input() accept = '';
   @Input() allowMultiple = false;
+
+  getErrors(): string[] {
+    return !!this.control.errors ? Object.values(this.control.errors) : [];
+  }
 
   /**
    * Reads the files and sets the value of the control to either the list or the single file

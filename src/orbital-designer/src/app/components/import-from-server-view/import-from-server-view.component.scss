@@ -1,20 +1,18 @@
 mat-card {
-  min-width: 47.109vw;
-  max-width: 603px;
-  height: auto;
-  min-height: 60.824vh;
+  min-width: 70vw;
+  height: 70vh;
   margin: 6.824vh auto;
 
   mat-card-title,
   mat-card-subtitle {
     align-self: center;
     color: #000;
-    margin-top: 0.6em;
+    padding-top: 0.6em;
   }
 
   .button-div {
     justify-content: space-between;
-    margin: 0 2em;
+    padding: 0 4em;
     button {
       padding: 0 2.5em;
     }
@@ -22,5 +20,33 @@ mat-card {
 
   .div-body {
     margin: 0 2em;
+    overflow: hidden;
+
+    .shuttle-list-div {
+      padding: 2em;
+      max-height: calc(85% - 4em);
+      justify-content: flex-start;
+      align-self: stretch;
+
+      app-searchable-list {
+        max-height: 100%;
+        width: 40%;
+        box-shadow: 0px 19px 38px rgba(0, 0, 0, 0.1),
+          0px 15px 12px rgba(0, 0, 0, 0.15);
+
+        ::ng-deep > * {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.list-item {
+  width: 100%;
+  h5 {
+    font-weight: 400;
+    font-size: 1.2em;
+    margin: 0;
   }
 }

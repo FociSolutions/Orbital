@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MockDefinition } from '../models/mock-definition/mock-definition.model';
+import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { OpenAPIV2 } from 'openapi-types';
 
 @Injectable({
