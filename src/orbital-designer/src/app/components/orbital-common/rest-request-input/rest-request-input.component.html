@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-select #protocolSelect [value]="selectedProtocol">
+  <mat-select #protocolSelect [(value)]="selectedProtocol">
     <mat-option *ngFor="let protocol of protocols" [value]="protocol">
       {{ protocol }}
     </mat-option>

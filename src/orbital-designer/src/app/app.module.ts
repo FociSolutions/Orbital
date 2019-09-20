@@ -13,8 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OrbitalCommonModule } from './components/orbital-common/orbital-common.module';
-import { GetEndpointScenariosPipe } from './pipes/get-endpoint-scenarios.pipe';
-import { GetVerbColorPipe } from './pipes/get-verb-color.pipe';
+import { GetEndpointScenariosPipe } from './pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
+import { GetVerbColorPipe } from './pipes/get-verb-color/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
+import { FilterInvalidControlsPipe } from './pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.
     CreateNewMockViewComponent,
     ImportFromFileViewComponent,
     ImportFromServerViewComponent,
-    EndpointViewComponent
+    EndpointViewComponent,
+    FilterInvalidControlsPipe
   ],
   imports: [
     BrowserModule,

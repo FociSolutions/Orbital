@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Scenario } from '../models/mock-definition/scenario/scenario.model';
-import { Endpoint } from '../models/endpoint.model';
+import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
+import { Endpoint } from '../../models/endpoint.model';
 
 @Pipe({
   name: 'getEndpointScenarios'

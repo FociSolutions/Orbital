@@ -12,6 +12,8 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolTipComponent } from './tool-tip/tool-tip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SearchableListComponent } from './searchable-list/searchable-list.component';
+import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
@@ -19,7 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
     TextInputComponent,
     FileInputComponent,
     RestRequestInputComponent,
-    ToolTipComponent
+    ToolTipComponent,
+    SearchableListComponent
   ],
   imports: [
     CommonModule,
@@ -31,6 +34,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    MatListModule,
     MatProgressSpinnerModule,
     MatSelectModule
   ],
@@ -38,12 +42,14 @@ import { MatSelectModule } from '@angular/material/select';
     TextInputComponent,
     FileInputComponent,
     ToolTipComponent,
+    SearchableListComponent,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
     MatButtonModule,
     MatIconModule,
+    MatListModule,
     RestRequestInputComponent,
     MatProgressSpinnerModule,
     MatSelectModule
