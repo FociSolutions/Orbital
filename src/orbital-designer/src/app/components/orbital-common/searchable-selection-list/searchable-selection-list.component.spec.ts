@@ -105,6 +105,53 @@ describe('SearchableSelectionListComponent', () => {
         matList.options.toArray()
       );
     });
+
+    it('should only select options that pass the filtering', () => {
+      const matList: MatSelectionList = getMatList(fixture);
+      // Append a string to the list of items that will be filtered out
+      const originalString = component.list[0] as string;
+      const newString = originalString.substring(0, originalString.length / 2);
+      component.list = [...component.list, newString];
+      fixture.detectChanges();
+
+      const event = new MatCheckboxChange();
+      event.checked = true;
+
+      // Apply filter & select all
+      component.onSearchInput(originalString);
+      component.onSelectAll(event);
+
+      expect(
+        matList.selectedOptions.selected.map(option => option.value)
+      ).not.toContain(newString);
+    });
+
+    it('should only deselect options that pass the filtering', () => {
+      const matList: MatSelectionList = getMatList(fixture);
+      // Append a string to the list of items that will be filtered out
+      const originalString = component.list[0] as string;
+      const newString = originalString.substring(0, originalString.length / 2);
+      component.list = [...component.list, newString];
+      fixture.detectChanges();
+
+      // Select all options to start
+      const event = new MatCheckboxChange();
+      event.checked = true;
+      component.onSelectAll(event);
+      // Check that everything has been selected
+      expect(
+        matList.selectedOptions.selected.map(option => option.value)
+      ).toEqual(component.list);
+
+      // Apply filter & deselect all
+      component.onSearchInput(originalString);
+      event.checked = false;
+      component.onSelectAll(event);
+
+      expect(
+        matList.selectedOptions.selected.map(option => option.value)
+      ).toContain(newString);
+    });
   });
 
   describe('SearchableSelectionListComponent.hideOption', () => {
@@ -125,12 +172,10 @@ describe('SearchableSelectionListComponent', () => {
 
   describe('SearchableSelectionListComponent.onSearchInput()', () => {
     it('should set the filtered options to only options that include text from the input', () => {
-      const input = component.input;
       const filteredString = `${component.list[0]}`.substr(0, 1);
       component.list = [...component.list, filteredString];
-      input.nativeElement.value = component.list[0];
       fixture.detectChanges();
-      component.onSearchInput();
+      component.onSearchInput(component.list[0]);
       expect(
         component.filteredOutOptions.map(option => option.value)
       ).toContain(filteredString);

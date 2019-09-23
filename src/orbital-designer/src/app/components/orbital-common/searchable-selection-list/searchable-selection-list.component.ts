@@ -26,7 +26,6 @@ export class SearchableSelectionListComponent implements OnInit {
 
   filteredOutOptions: MatListOption[] = [];
 
-  @ViewChild('searchBar', { static: false }) input: ElementRef;
   @ViewChild('matList', { static: false }) matList: MatSelectionList;
 
   @Output() itemSelected: EventEmitter<any[]>;
@@ -105,13 +104,14 @@ export class SearchableSelectionListComponent implements OnInit {
 
   /**
    * function run that updates the filteredOptions property based on the inputs value
+   * @param value The string value from the input
    */
-  onSearchInput() {
+  onSearchInput(value: string) {
     this.filteredOutOptions = this.matList.options.filter(
       option =>
         !SearchableSelectionListComponent.ignoreCaseContainsMatch(
           this.itemToStringFn(option.value),
-          this.input.nativeElement.value
+          value
         )
     );
   }
