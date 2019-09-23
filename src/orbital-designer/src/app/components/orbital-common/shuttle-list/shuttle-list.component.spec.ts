@@ -68,22 +68,32 @@ describe('ShuttleListComponent', () => {
 
     it('should append to the rightList and not overwrite', () => {
       const fakedList = faker.random.words().split(' ');
-      const originalList = [fakedList[0].substring(0, fakedList[0].length / 2)];
-      component.rightList = [...originalList];
+      const originalListItem = fakedList[0].substring(
+        0,
+        fakedList[0].length / 2
+      );
+      component.rightList = [originalListItem];
       component.leftSelected = [...fakedList];
       component.onMove();
-      expect(component.rightList).toContain(fakedList);
-      expect(component.rightList).toContain(originalList);
+      for (const item of fakedList) {
+        expect(component.rightList).toContain(item);
+      }
+      expect(component.rightList).toContain(originalListItem);
     });
 
     it('should append to the leftList and not overwrite', () => {
       const fakedList = faker.random.words().split(' ');
-      const originalList = [fakedList[0].substring(0, fakedList[0].length / 2)];
-      component.leftList = [...originalList];
+      const originalListItem = fakedList[0].substring(
+        0,
+        fakedList[0].length / 2
+      );
+      component.leftList = [originalListItem];
       component.rightSelected = [...fakedList];
       component.onMove(false);
-      expect(component.leftList).toContain(fakedList);
-      expect(component.leftList).toContain(originalList);
+      for (const item of fakedList) {
+        expect(component.leftList).toContain(item);
+      }
+      expect(component.leftList).toContain(originalListItem);
     });
 
     it('should clear the leftSelected', () => {
