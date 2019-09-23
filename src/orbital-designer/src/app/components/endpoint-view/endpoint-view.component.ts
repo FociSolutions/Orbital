@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EndpointListItemComponent } from '../endpoint-list-item/endpoint-list-item.component';
 
 @Component({
   selector: 'app-endpoint-view',
