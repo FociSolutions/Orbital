@@ -40,12 +40,24 @@ export class ShuttleListComponent implements OnInit {
     this.outputList = new EventEmitter<any[]>();
   }
 
+  /**
+   * It should set the appropriate list of selected items to the passed in value of items
+   * @param items The list of items to set the list to
+   * @param isLeftList If true the function sets the leftSelected list of items, otherwise
+   * it sets the rightSelected list of items
+   */
   onSelect(items: any[], isLeftList: boolean = true): void {
     isLeftList
       ? (this.leftSelected = [...items])
       : (this.rightSelected = [...items]);
   }
 
+  /**
+   * Responsible for moving the selected list of items between lists when the left or right button
+   * is pressed.
+   * @param toRight If true the function moves the leftSelected list of items to the rightList
+   * otherwise it moves the rightSelected list of items to the leftList
+   */
   onMove(toRight: boolean = true): void {
     if (toRight) {
       this.rightList = [...this.rightList, ...this.leftSelected];
