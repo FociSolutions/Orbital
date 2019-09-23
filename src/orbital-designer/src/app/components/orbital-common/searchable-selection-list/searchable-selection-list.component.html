@@ -1,4 +1,4 @@
-<mat-card>
+<div class="container">
   <div class="search-bar-div">
     <mat-icon>search</mat-icon
     ><input #searchBar matInput (keyup)="onSearchInput($event.target.value)" />
@@ -37,4 +37,4 @@
       <span>{{ noSearchResultsMessage }}</span>
     </mat-list-item>
   </mat-selection-list>
-</mat-card>
+</div>
