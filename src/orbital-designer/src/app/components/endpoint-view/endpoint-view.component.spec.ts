@@ -1,15 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
 import {MatCardModule} from '@angular/material/card';
+import { DesignerStore} from 'src/app/store/designer-store';
+import { OverviewComponent } from './overview/overview.component';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
+  let store: DesignerStore;
   let fixture: ComponentFixture<EndpointViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EndpointViewComponent ],
-      imports: [ ]
+      declarations: [ EndpointViewComponent, OverviewComponent ],
+      imports: [ MatCardModule ],
+      providers: [ DesignerStore ]
     })
     .compileComponents();
   }));
@@ -17,6 +23,8 @@ describe('EndpointViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EndpointViewComponent);
     component = fixture.componentInstance;
+    store = TestBed.get(DesignerStore);
+    store.mockDefinition = validMockDefinition as MockDefinition;
     fixture.detectChanges();
   });
 
@@ -24,11 +32,4 @@ describe('EndpointViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render title in h1 tag', async(() => {
-    // tslint:disable-next-line: no-shadowed-variable
-    const fixture = TestBed.createComponent(EndpointViewComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Endpoint View Component');
-  }));
 });
