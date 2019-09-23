@@ -13,7 +13,11 @@
     }
 
     app-endpoint-list-item {
-        justify-content: center;
-        justify-items: center;
+        width: 80%;
+        align-content: center;
+        align-items: center;
+        align-self: center;
+        display: flex;
+        flex-direction: column;
     }
 }
