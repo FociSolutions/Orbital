@@ -11,18 +11,17 @@
         title="Server URI"
         buttonName="Fetch"
         (responseReceived)="onResponse($event)"
-        [concatToURI]="getAllEndpoint"
         [errors]="errors"
       ></app-rest-request-input>
     </app-tool-tip>
     <div class="row flex-grow shuttle-list-div">
-      <app-searchable-list
+      <app-searchable-selection-list
         class="row"
         [list]="formArray.controls | filterInvalidControls"
         [itemToStringFn]="controlsMockDefinitionToString"
         [itemTemplate]="listItemTemplate"
         [emptyListMessage]="emptyListMessageServerBox"
-      ></app-searchable-list>
+      ></app-searchable-selection-list>
     </div>
   </div>
   <div class="row button-div">

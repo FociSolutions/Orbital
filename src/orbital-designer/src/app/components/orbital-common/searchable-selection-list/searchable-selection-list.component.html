@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="search-bar-div">
+    <mat-icon>search</mat-icon
+    ><input #searchBar matInput (keyup)="onSearchInput($event.target.value)" />
+  </div>
+  <div *ngIf="!!this.list.length" class="checkbox-div">
+    <mat-checkbox
+      color="primary"
+      (change)="onSelectAll($event)"
+      [checked]="selectAllChecked"
+      [disabled]="noSearchResults"
+    >
+      {{ checkboxLabel }}
+    </mat-checkbox>
+    <mat-divider></mat-divider>
+  </div>
+  <mat-selection-list
+    #matList
+    class="matList"
+    (selectionChange)="optionSelected($event)"
+  >
+    <mat-list-option
+      *ngFor="let item of list"
+      [value]="item"
+      [ngClass]="{ filtered: hideOption(item) }"
+      color="primary"
+      checkboxPosition="before"
+    >
+      <ng-container
+        *ngTemplateOutlet="itemTemplate; context: { item: item }"
+      ></ng-container>
+    </mat-list-option>
+    <mat-list-item class="emptyMessage" *ngIf="isEmpty">
+      <span>{{ emptyListMessage }}</span>
+    </mat-list-item>
+    <mat-list-item class="emptyMessage" *ngIf="noSearchResults">
+      <span>{{ noSearchResultsMessage }}</span>
+    </mat-list-item>
+  </mat-selection-list>
+</div>
