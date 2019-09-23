@@ -30,7 +30,6 @@ export class SearchableSelectionListComponent implements OnInit {
 
   @Output() itemSelected: EventEmitter<any[]>;
 
-  @Input() title?: string = null;
   @Input() list: any[] = [];
   @Input() itemTemplate!: TemplateRef<any>;
   @Input() emptyListMessage = 'List is empty';

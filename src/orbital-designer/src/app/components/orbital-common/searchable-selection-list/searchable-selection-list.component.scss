@@ -1,4 +1,4 @@
-mat-card {
+.container {
   display: flex;
   flex-direction: column;
   padding: 1em 2em;
@@ -18,7 +18,7 @@ mat-card {
   }
 
   .checkbox-div {
-    padding: 1em 0 0 0;
+    padding-top: 1em;
   }
 
   mat-divider {
@@ -40,18 +40,19 @@ mat-card {
       }
     }
 
-    ::ng-deep mat-list-option > .mat-list-item-content {
-      padding-left: 0 !important;
-    }
-
     mat-list-option {
-      padding: 0.5em 0;
+      height: auto !important;
 
       &.filtered {
         display: none;
       }
     }
   }
+}
+
+mat-checkbox,
+::ng-deep mat-list-option > .mat-list-item-content {
+  padding-left: 1em;
 }
 
 mat-selection-list::-webkit-scrollbar {
