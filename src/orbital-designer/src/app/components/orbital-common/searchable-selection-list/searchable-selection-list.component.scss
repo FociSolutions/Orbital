@@ -41,7 +41,7 @@
     }
 
     mat-list-option {
-      padding-top: 0.5em;
+      height: auto !important;
 
       &.filtered {
         display: none;
