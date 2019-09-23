@@ -1,4 +1,25 @@
-.endpointlistitemcontainer {
+.endpoint-list-item-container {
     flex-grow: 2;
-    flex-direction: column;   
+    flex-direction: column; 
+    width: 60em; 
+    padding: 0em;
+
+    .post-verb {
+        background-color: aquamarine; 
+        font-weight: bold;
+        width: 10em;
+    }
+
+    .endpoint-uri {
+        width: 50em; 
+        padding: 2em;
+    }
+
+    .subtitle-left {
+        float: left;
+    }
+
+    .subtitle-right {
+        float: right;
+    }
 }
