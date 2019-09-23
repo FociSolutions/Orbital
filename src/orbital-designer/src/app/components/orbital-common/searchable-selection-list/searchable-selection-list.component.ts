@@ -78,6 +78,9 @@ export class SearchableSelectionListComponent implements OnInit {
           ? option.selected
           : event.checked)
     );
+    this.itemSelected.emit(
+      this.matList.selectedOptions.selected.map(option => option.value)
+    );
   }
 
   /**

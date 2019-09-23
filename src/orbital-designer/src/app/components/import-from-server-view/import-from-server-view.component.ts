@@ -20,8 +20,10 @@ export class ImportFromServerViewComponent implements OnInit {
   readonly getAllEndpoint = '/api/v1/OrbitalAdmin';
   formArray: FormArray;
   emptyListMessageServerBox = 'No Valid MockDefinitions Found';
+  mockDefinitions: MockDefinition[] = [];
   controlsMockDefinitionToString = (control: AbstractControl) =>
     (control.value as MockDefinition).metadata.title
+
   constructor(private location: Location, private logger: NGXLogger) {
     this.formArray = new FormArray([]);
     this.formArray.valueChanges.subscribe(value =>
@@ -32,13 +34,20 @@ export class ImportFromServerViewComponent implements OnInit {
   ngOnInit() {}
 
   /**
-   * Getter function that returns true if the form is invalid, false otherwise
+   * Sets the mockDefinitions property equal to the list of MockDefinitions derived from the
+   * FormControl values.
+   * @param list The list of FormControls given by the shuttle list when the user moves items from
+   * one list to the other.
+   */
+  onListOutput(list: FormControl[]) {
+    this.mockDefinitions = list.map(control => control.value);
+  }
+
+  /**
+   * Getter function that returns true if no Mock Definitions have been selected for
    */
   get disabled(): boolean {
-    /* Until the shuttle list is created and added to this component the
-    disabled getter will always return false */
-    return false;
-    // return this.formArray.invalid;
+    return this.mockDefinitions.length === 0;
   }
 
   /**

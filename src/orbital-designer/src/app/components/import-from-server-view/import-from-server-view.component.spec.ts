@@ -9,8 +9,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
-import { FormControl } from '@angular/forms';
+import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
+import { FormControl } from '@angular/forms';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
@@ -49,17 +50,28 @@ describe('ImportFromServerViewComponent', () => {
     });
   });
 
-  // These tests will be added back in after the shuttle list is created
-  /*  describe('ImportFromServerViewComponent.disabled', () => {
-    it('should return true if the formArray is invalid', () => {
+  describe('ImportFromServerViewComponent.onListOutput', () => {
+    it('should update the list of MockDefinitions using the values from the list of controls', () => {
+      const expectedList = new Array(3).map(
+        () => new FormControl(validMockDefinition)
+      );
+      component.onListOutput(expectedList);
+      expect(component.mockDefinitions).toEqual(
+        expectedList.map(control => control.value)
+      );
+    });
+  });
+
+  describe('ImportFromServerViewComponent.disabled', () => {
+    it('should return true if the mockDefinitions list is empty', () => {
       expect(component.disabled).toBeTruthy();
     });
 
-    it('should return false if the formArray is notEmpty', () => {
-      component.formArray.push(new FormControl(''));
+    it('should return false if the mockDefinitions list is not empty', () => {
+      component.mockDefinitions = [validMockDefinition];
       expect(component.disabled).toBeFalsy();
     });
-  }); */
+  });
 
   describe('ImportFromServerViewComponent.onResponse', () => {
     it('should set the control value to the response body given an http response with an array body', () => {
