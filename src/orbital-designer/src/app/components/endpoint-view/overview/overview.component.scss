@@ -1,0 +1,60 @@
+.example-card {
+    border-radius: 0;
+    padding: 0 !important;
+    -webkit-box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
+    -moz-box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
+    box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
+    display: flex;
+    flex-direction: column;
+    float: right;
+  }
+
+  .header-title {
+    background-color: grayscale($color: #616161);
+  }
+
+  .title-container{
+    display: inline-flex;
+    padding-left: 2% !important;
+  }
+
+  .card-title
+  {
+    color: white; 
+    font-family: Roboto;
+    font-size: 1.4em;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0.0357143em;
+  }
+
+  .mock-description{
+    text-align: center;
+    flex-direction: column;
+  }
+  
+  .mock-description h3{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.4em;
+    color: rgba(0, 0, 0, 0.87);
+    overflow-y: auto;
+    word-wrap: break-word;
+  }
+
+  .mock-description p{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 1.6em;
+    font-size: 1.2em;
+    overflow-y: auto;
+    color: rgba(0, 0, 0, 0.541327);
+    word-wrap: break-word;
+    text-align: justify;
+    padding-right: 7%;
+    padding-left: 7%;
+    padding-bottom: 2.5%;
+    letter-spacing: 0.05em;
+    line-height: 1.6em;
+  }
