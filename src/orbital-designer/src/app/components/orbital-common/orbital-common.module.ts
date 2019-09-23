@@ -16,6 +16,7 @@ import { SearchableSelectionListComponent } from './searchable-selection-list/se
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     FileInputComponent,
     RestRequestInputComponent,
     ToolTipComponent,
-    SearchableSelectionListComponent
+    SearchableSelectionListComponent,
+    ShuttleListComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     RestRequestInputComponent,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    ShuttleListComponent
   ]
 })
 export class OrbitalCommonModule {}
