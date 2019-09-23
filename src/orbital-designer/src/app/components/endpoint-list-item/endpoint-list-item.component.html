@@ -1,7 +1,18 @@
-<mat-card>
-        <mat-card-title>/pets/</mat-card-title>
-        <mat-card-subtitle>	Card subtitle </mat-card-subtitle>
-        <mat-card-content>	Primary card content. Intended for blocks of text </mat-card-content>
-        <mat-card-actions>	Container for buttons at the bottom of the card </mat-card-actions>
-        <mat-card-footer> Footer </mat-card-footer>
- </mat-card>   
+<mat-card class="endpointlistitemcontainer" style="width: 30em;">
+    <mat-grid-list [cols]="12" [rowHeight]="50">
+        <mat-grid-tile [colspan]="1" style="background-color: aquamarine; font-weight: bold; width: 5em;">
+            POST
+        </mat-grid-tile>
+    <mat-grid-tile [colspan]="11">
+       <div style="width: 25em;">           
+          <mat-card-title> /pets </mat-card-title>
+          <mat-card-subtitle>	
+            <div class="subtitle">   
+                 <div style="float: left;">Example Description 1</div>
+                 <div style="float: right;">3 Scenarios</div>
+            </div>        
+          </mat-card-subtitle>
+    </div>
+     </mat-grid-tile>
+</mat-grid-list>            
+</mat-card>

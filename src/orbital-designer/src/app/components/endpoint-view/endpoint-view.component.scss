@@ -11,4 +11,9 @@
         display: flex;
         flex-direction: column;
     }
+
+    app-endpoint-list-item {
+        justify-content: center;
+        justify-items: center;
+    }
 }

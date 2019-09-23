@@ -1,0 +1,10 @@
+.endpointlistitemcontainer {
+    flex-grow: 1;
+    flex-direction: column;
+    mat-grid-list {
+        justify-items: center;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+    }    
+}
