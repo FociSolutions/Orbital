@@ -47,14 +47,15 @@
   .mock-description p{
     font-family: Roboto;
     font-style: normal;
-    font-weight: normal;
-    letter-spacing: 0.08em;
+    font-weight: 1.6em;
     font-size: 1.2em;
-    line-height: 1.8em;
     overflow-y: auto;
     color: rgba(0, 0, 0, 0.541327);
     word-wrap: break-word;
     text-align: justify;
-    padding-right: 5%;
-    padding-left: 5%;
+    padding-right: 7%;
+    padding-left: 7%;
+    padding-bottom: 2.5%;
+    letter-spacing: 0.08em;
+    line-height: 1.6em;
   }
