@@ -1,5 +1,8 @@
+.side-bar-container {
+    min-width: 14vw;
+}
 .side-bar-top {
-    min-width: 17vw !important;
+    min-width: 14vw !important;
     min-height: 2.9vw !important;
     display: flex;
     align-items: left;
@@ -18,12 +21,12 @@
 }
 
 .side-bar-middle {
-    width: 17vw !important;    
+    min-width: 14vw !important;      
     height: 33% !important;
 }
 
 .side-bar-bottom {
-    width: 17vw !important;    
+    min-width: 14vw !important;       
     height: 33% !important;
     margin-top: 3vw;
 }
@@ -37,11 +40,9 @@ mat-action-list button h4 {
 }
 
 mat-action-list:hover {
-    opacity: 0.54;
-    background: black;
+    background: #F0F0F0;
     cursor: pointer;
-    h4, mat-icon {
-        color: white !important;
-        opacity: 1 !important;
+    button {
+        background: #F0F0F0;        
     }
 }
