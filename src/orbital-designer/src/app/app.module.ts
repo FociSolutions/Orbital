@@ -25,6 +25,8 @@ import { ImportFromServerViewComponent } from './components/import-from-server-v
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
 import { FilterInvalidControlsPipe } from './pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 import { OverviewComponent } from './components/endpoint-view/overview/overview.component';
+import { SideBarComponent } from './components/side-bar/side-bar.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { OverviewComponent } from './components/endpoint-view/overview/overview.
     ImportFromServerViewComponent,
     EndpointViewComponent,
     FilterInvalidControlsPipe,
-    OverviewComponent
+    OverviewComponent,
+    SideBarComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { OverviewComponent } from './components/endpoint-view/overview/overview.
     MatButtonModule,
     MatGridListModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatSidenavModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]

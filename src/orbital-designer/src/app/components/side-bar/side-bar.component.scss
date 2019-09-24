@@ -1,0 +1,28 @@
+.side-bar-top {
+    width: 17vw !important;
+    height: 6.1% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+     
+    h1 {
+       opacity: 0.54;
+       font-size: 1em; 
+    }
+}
+
+.divider {
+    width: 90% !important;
+    margin-left: 5% !important;
+}
+
+.side-bar-middle {
+    width: 17vw !important;    
+    height: 33% !important;
+}
+
+.side-bar-bottom {
+    width: 17vw !important;    
+    height: 33% !important;
+}

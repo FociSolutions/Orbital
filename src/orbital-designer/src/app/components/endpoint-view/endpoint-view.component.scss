@@ -1,11 +1,23 @@
 .endpointviewcontainer {
     width: 100vw;
-    height: 100%;
+    height: 98%;
+    display: flex;
+    flex-direction: column;
     flex-grow: 2;
     align-self: auto;
     flex-wrap: wrap;
+    app-side-bar {
+        width: 17% !important;
+        margin-left: 1%;
+        min-height: 100% !important;
+        border: 2px solid red;
+        margin-top: 0.5%;
+        display: flex !important;
+        flex-direction: row !important;
+        align-self: auto;
+    }
     app-overview {
-        width: 80%;
+        width: 81%;
         height: 19% !important;
         margin-top: 0.5%;
         display: flex;
