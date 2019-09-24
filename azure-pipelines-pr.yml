@@ -26,8 +26,8 @@ steps:
     inputs:
       versionSpec: "12.x"
 
-  - script: npm install
-    displayName: "npm install"
+  - script: npm
+    displayName: "npm ci"
     workingDirectory: src/orbital-designer
 
   - script: npm run build -- --prod
@@ -51,7 +51,7 @@ steps:
       workingDirectory: src/Orbital.Mock.Server/
       publishWebProjects: false
       modifyOutputPath: true
-      zipAfterPublish: false
+      zipAfterPublish: true
 
   - task: DotNetCoreCLI@2
     displayName: "Run publish on the mock server with win-x64 runtime"
@@ -61,7 +61,7 @@ steps:
       workingDirectory: src/Orbital.Mock.Server/
       publishWebProjects: false
       modifyOutputPath: true
-      zipAfterPublish: yes
+      zipAfterPublish: true
 
   - task: DotNetCoreCLI@2
     displayName: "Run publish on the mock server with linux-x64 runtime"
@@ -71,7 +71,7 @@ steps:
       workingDirectory: src/Orbital.Mock.Server/
       publishWebProjects: false
       modifyOutputPath: true
-      zipAfterPublish: yes
+      zipAfterPublish: true
 
   - task: DotNetCoreCLI@2
     displayName: "Run publish on hte mock server with osx-x64 runtime"
@@ -81,7 +81,7 @@ steps:
       workingDirectory: src/Orbital.Mock.Server/
       publishWebProjects: false
       modifyOutputPath: true
-      zipAfterPublish: yes
+      zipAfterPublish: true
 
   - task: Docker@2
     displayName: "Build the mock server Dockerfile and publish to Private ACR"
