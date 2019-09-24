@@ -15,7 +15,7 @@ variables:
 stages:
 - stage: build   
   jobs:
-  - job: install and build
+  - job: install_and_build
     pool:
       vmImage: 'Ubuntu 16.04'
     steps:
@@ -46,7 +46,7 @@ stages:
 
 - stage: test
   jobs:
-  - job: test and publish
+  - job: test_and_publish
     pool:
       vmImage: 'Ubuntu 16.04'
     steps:
