@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Endpoint } from 'src/app/models/endpoint.model';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 @Component({
@@ -7,11 +8,19 @@ import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model
   styleUrls: ['./endpoint-list-item.component.scss']
 })
 export class EndpointListItemComponent implements OnInit {
-  @Input() scenario: Scenario;
+  @Input() endpoint: Endpoint;
+  @Input() scenarioCount: number;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  get endpointDescription(): string {
+    if (!this.endpoint || !this.endpoint.spec.description) {
+      return 'No description';
+    }
+    return this.endpoint.spec.description;
+  }
+ 
 }

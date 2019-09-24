@@ -88,6 +88,7 @@ export class DesignerStore extends Store<State> {
         ...mockDefinition
       }
     });
+    this.setEndpoints(mockDefinition.openApi);
   }
 
   /**

@@ -1,5 +1,5 @@
-<div class="endpoint-list-container">
-    <div class="endpoint-list" *ngFor="let scenario of scenarios"> 
-        <app-endpoint-list-item [scenario] = '{scenario}'></app-endpoint-list-item>
-    </div>    
-</div>
+<mat-action-list class="endpoint-list-container">
+    <mat-list-item *ngFor="let endpoint of endpoints">
+        <app-endpoint-list-item [endpoint] = 'endpoint' [scenarioCount] = '(scenarios | getEndpointScenarios: endpoint).length'></app-endpoint-list-item>
+    </mat-list-item>    
+</mat-action-list>
