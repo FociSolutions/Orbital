@@ -31,9 +31,9 @@ stages:
         Contents: 'TEST*.xml'
 
     - task: Npm@1
-      displayName: 'npm install'
+      displayName: 'npm ci'
       inputs:
-        command: install   
+        command: ci   
         workingDir: './src/orbital-designer' 
 
     - task: Npm@1
@@ -55,6 +55,12 @@ stages:
     displayName: test and publish
     container: node
     steps:
+    - task: Npm@1
+      displayName: 'npm ci'
+      inputs:
+        command: ci   
+        workingDir: './src/orbital-designer' 
+  
     - task: Npm@1
       displayName: 'npm run test-ci'
       inputs:
