@@ -17,7 +17,6 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
   styleUrls: ['./import-from-server-view.component.scss']
 })
 export class ImportFromServerViewComponent implements OnInit {
-  readonly getAllEndpoint = '/api/v1/OrbitalAdmin';
   formArray: FormArray;
   emptyListMessageServerBox = 'No Valid MockDefinitions Found';
   mockDefinitions: MockDefinition[] = [];

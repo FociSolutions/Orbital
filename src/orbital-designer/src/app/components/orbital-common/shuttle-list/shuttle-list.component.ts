@@ -41,37 +41,42 @@ export class ShuttleListComponent implements OnInit {
   }
 
   /**
-   * It should set the appropriate list of selected items to the passed in value of items
-   * @param items The list of items to set the list to
-   * @param isLeftList If true the function sets the leftSelected list of items, otherwise
-   * it sets the rightSelected list of items
+   * Sets the leftSelected list to the items passed into it
+   * @param items The list of items to set as selected from the left list
    */
-  onSelect(items: any[], isLeftList: boolean = true): void {
-    isLeftList
-      ? (this.leftSelected = [...items])
-      : (this.rightSelected = [...items]);
+  onSelectLeft(items: any[]): void {
+    this.leftSelected = [...items];
   }
 
   /**
-   * Responsible for moving the selected list of items between lists when the left or right button
-   * is pressed.
-   * @param toRight If true the function moves the leftSelected list of items to the rightList
-   * otherwise it moves the rightSelected list of items to the leftList
+   * Sets the rightSelected list to the items passed into it
+   * @param items The list of items to set as selected from the right list
    */
-  onMove(toRight: boolean = true): void {
-    if (toRight) {
-      this.rightList = [...this.rightList, ...this.leftSelected];
-      this.leftList = this.leftList.filter(
-        item => !this.leftSelected.includes(item)
-      );
-      this.leftSelected = [];
-    } else {
-      this.leftList = [...this.leftList, ...this.rightSelected];
-      this.rightList = this.rightList.filter(
-        item => !this.rightSelected.includes(item)
-      );
-      this.rightSelected = [];
-    }
+  onSelectRight(items: any[]): void {
+    this.rightSelected = [...items];
+  }
+
+  /**
+   * Responsible for moving the selected list items from the left list to the right list.
+   */
+  onMoveRight(): void {
+    this.rightList = [...this.rightList, ...this.leftSelected];
+    this.leftList = this.leftList.filter(
+      item => !this.leftSelected.includes(item)
+    );
+    this.leftSelected = [];
+    this.outputList.emit(this.rightList);
+  }
+
+  /**
+   * Responsible for moving the selected list items form the right list to the left list
+   */
+  onMoveLeft(): void {
+    this.leftList = [...this.leftList, ...this.rightSelected];
+    this.rightList = this.rightList.filter(
+      item => !this.rightSelected.includes(item)
+    );
+    this.rightSelected = [];
     this.outputList.emit(this.rightList);
   }
 

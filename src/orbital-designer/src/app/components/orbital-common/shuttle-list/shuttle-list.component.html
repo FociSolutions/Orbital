@@ -9,13 +9,13 @@
         [itemToStringFn]="itemToStringFn"
         [emptyListMessage]="emptyListMessage"
         [noSearchResultsMessage]="noSearchResultsMessage"
-        (itemSelected)="onSelect($event)"
+        (itemSelected)="onSelectLeft($event)"
       ></app-searchable-selection-list>
     </mat-card>
   </div>
   <div class="button-div">
-    <button mat-raised-button color="primary" (click)="onMove()">></button>
-    <button mat-raised-button color="primary" (click)="onMove(false)"><</button>
+    <button mat-raised-button color="primary" (click)="onMoveRight()">></button>
+    <button mat-raised-button color="primary" (click)="onMoveLeft()"><</button>
   </div>
   <div class="selectionList">
     <label class="list-label">{{ rightTitle }}</label>
@@ -27,7 +27,7 @@
         [itemToStringFn]="itemToStringFn"
         [emptyListMessage]="emptyListMessage"
         [noSearchResultsMessage]="noSearchResultsMessage"
-        (itemSelected)="onSelect($event, false)"
+        (itemSelected)="onSelectRight($event)"
       ></app-searchable-selection-list
     ></mat-card>
   </div>
