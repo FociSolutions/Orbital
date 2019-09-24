@@ -16,7 +16,7 @@ stages:
 - stage: build   
   jobs:
   - job: install_and_build
-    container: angular/ngcontainer:latest
+    container: selenium/node-chrome:latest
     steps:
     - task: DeleteFiles@1
       displayName: 'Cleanup JUnit files'
@@ -47,7 +47,7 @@ stages:
   jobs:
   - job: test_and_publish
     displayName: test and publish
-    container: angular/ngcontainer:latest
+    container: selenium/node-chrome:latest
     steps:
     - task: Npm@1
       displayName: 'npm run test-ci'
