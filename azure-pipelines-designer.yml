@@ -51,6 +51,7 @@ stages:
         ArtifactName: orbital-designer
 
 - stage: test
+  dependsOn: [] 
   jobs:
   - job: test_and_publish
     displayName: test and publish
