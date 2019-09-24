@@ -7,6 +7,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -20,7 +21,7 @@ describe('EndpointViewComponent', () => {
         OverviewComponent,
         EndpointListItemComponent
       ],
-      imports: [OrbitalCommonModule, MatCardModule],
+      imports: [OrbitalCommonModule, MatCardModule, MatGridListModule],
       providers: [DesignerStore]
     }).compileComponents();
   }));

@@ -1,21 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
-import { SearchableListComponent } from './searchable-list.component';
 import { MatIconModule } from '@angular/material/icon';
+import { SearchBarComponent } from './search-bar.component';
 
-describe('SearchableListComponent', () => {
-  let component: SearchableListComponent;
-  let fixture: ComponentFixture<SearchableListComponent>;
+describe('SearchBarComponent', () => {
+  let component: SearchBarComponent;
+  let fixture: ComponentFixture<SearchBarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchableListComponent],
+      declarations: [SearchBarComponent],
       imports: [MatIconModule]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchableListComponent);
+    fixture = TestBed.createComponent(SearchBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
