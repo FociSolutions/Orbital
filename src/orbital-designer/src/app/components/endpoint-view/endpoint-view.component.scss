@@ -7,17 +7,16 @@
     align-self: auto;
     flex-wrap: wrap;
     app-side-bar {
-        width: 17% !important;
+        width: 15% !important;
         margin-left: 1%;
         min-height: 100% !important;
-        border: 2px solid red;
         margin-top: 0.5%;
         display: flex !important;
         flex-direction: row !important;
         align-self: auto;
     }
     app-overview {
-        width: 81%;
+        width: 79.5%;
         height: 19% !important;
         margin-top: 0.5%;
         display: flex;

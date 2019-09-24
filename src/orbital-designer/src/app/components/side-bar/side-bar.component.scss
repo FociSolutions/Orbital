@@ -1,14 +1,14 @@
 .side-bar-top {
-    width: 17vw !important;
-    height: 6.1% !important;
+    min-width: 17vw !important;
+    min-height: 2.9vw !important;
     display: flex;
-    align-items: center;
+    align-items: left;
     justify-content: center;
     flex-direction: column;
-     
     h1 {
        opacity: 0.54;
        font-size: 1em; 
+       margin-left: 1.5em;
     }
 }
 
@@ -25,4 +25,23 @@
 .side-bar-bottom {
     width: 17vw !important;    
     height: 33% !important;
+    margin-top: 3vw;
+}
+
+mat-action-list button mat-icon {
+    opacity: 0.54;
+}
+
+mat-action-list button h4 {
+    font-size: 0.9em !important;    
+}
+
+mat-action-list:hover {
+    opacity: 0.54;
+    background: black;
+    cursor: pointer;
+    h4, mat-icon {
+        color: white !important;
+        opacity: 1 !important;
+    }
 }
