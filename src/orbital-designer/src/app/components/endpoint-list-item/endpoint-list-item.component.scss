@@ -1,25 +1,26 @@
 .endpoint-list-item-container {
+    display: flex;
     flex-grow: 2;
     flex-direction: column; 
-    width: 60em; 
     padding: 0em;
 
     .post-verb {
+        flex-grow: 1;
+        width: 20%;
         background-color: aquamarine; 
         font-weight: bold;
-        width: 10em;
     }
 
     .endpoint-uri {
-        width: 50em; 
+        flex-grow: 5;
+        width: 80%; 
         padding: 2em;
     }
 
-    .subtitle-left {
-        float: left;
+    .subtitle {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
-    .subtitle-right {
-        float: right;
-    }
 }

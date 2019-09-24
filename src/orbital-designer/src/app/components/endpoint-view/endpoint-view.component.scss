@@ -13,11 +13,9 @@
     }
 
     app-endpoint-list-item {
-        width: 80%;
-        align-content: center;
-        align-items: center;
+        width: 60%;
         align-self: center;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
     }
 }
