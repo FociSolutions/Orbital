@@ -7,6 +7,10 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
+import { SideBarComponent } from '../side-bar/side-bar.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 
 describe('EndpointViewComponent', () => {
@@ -16,14 +20,11 @@ describe('EndpointViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        EndpointViewComponent,
-        OverviewComponent,
-        EndpointListItemComponent
-      ],
-      imports: [OrbitalCommonModule, MatCardModule, MatGridListModule],
-      providers: [DesignerStore]
-    }).compileComponents();
+      declarations: [ EndpointViewComponent, OverviewComponent, EndpointListItemComponent, SideBarComponent ],
+      imports: [ OrbitalCommonModule, MatCardModule, MatGridListModule, MatDividerModule, MatIconModule, MatListModule ],
+      providers: [ DesignerStore ]
+    })
+    .compileComponents();
   }));
 
   beforeEach(() => {
