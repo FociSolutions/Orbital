@@ -6,6 +6,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { EndpointListItemComponent } from '../endpoint-list-item/endpoint-list-item.component';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -14,7 +15,7 @@ describe('EndpointViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EndpointViewComponent, OverviewComponent ],
+      declarations: [ EndpointViewComponent, OverviewComponent, EndpointListItemComponent ],
       imports: [ MatCardModule, MatGridListModule ],
       providers: [ DesignerStore ]
     })
