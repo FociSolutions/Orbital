@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Endpoint } from 'src/app/models/endpoint.model';
-import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 @Component({
   selector: 'app-endpoint-list-item',
