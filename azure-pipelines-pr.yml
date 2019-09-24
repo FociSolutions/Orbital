@@ -35,7 +35,7 @@ steps:
     workingDirectory: src/orbital-designer
 
   - task: CopyFiles@2
-    displayName: "Archive source code needed for integratoin tests"
+    displayName: "Archive source code needed for integration tests"
     inputs:
       SourceFolder: "$(System.DefaultWorkingDirectory)/src/orbital-designer/dist"
       Contents: |
@@ -84,7 +84,7 @@ steps:
       zipAfterPublish: yes
 
   - task: Docker@2
-    displayName: "Build the mock server Dockerfile nad publish to Private ACR"
+    displayName: "Build the mock server Dockerfile and publish to Private ACR"
     inputs:
       command: "buildAndPush"
       containerRegistry: "Foci Container Registry"
@@ -94,7 +94,7 @@ steps:
         $(GitVersion.SemVer)
 
   - task: Docker@2
-    displayName: "Build the designer Dockerfile nad publish to Private ACR"
+    displayName: "Build the designer Dockerfile and publish to Private ACR"
     inputs:
       command: "buildAndPush"
       containerRegistry: "Foci Container Registry"
