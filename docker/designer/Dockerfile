@@ -1,5 +1,5 @@
 # Label the stage as build
-FROM node:latest as build
+FROM node:12.10.0-alpine as build
 
 # Set Working directory
 WORKDIR /app
@@ -11,13 +11,12 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY ./src/orbital-designer/package.json /app/package.json
 COPY ./src/orbital-designer/package-lock.json /app/package-lock.json
 RUN npm ci
-RUN npm install -g @angular/cli@latest
 
 # add app
 COPY ./src/orbital-designer /app
 
 # start app
-RUN ng build --prod --source-map=false --output-path=dist
+RUN npm run build-ci --output-path=dist
 
 ############
 ### prod ###
