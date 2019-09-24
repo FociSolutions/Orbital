@@ -46,7 +46,7 @@ stages:
 
 - stage: test
   jobs:
-  - job: test_and_publish
+  - job: "test and publish"
     pool:
       vmImage: 'Ubuntu 16.04'
     steps:
