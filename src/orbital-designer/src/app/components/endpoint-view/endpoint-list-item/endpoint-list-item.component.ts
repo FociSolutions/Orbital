@@ -16,10 +16,7 @@ export class EndpointListItemComponent implements OnInit {
   }
 
   get endpointDescription(): string {
-    if (!this.endpoint || !this.endpoint.spec.description) {
-      return 'No description';
-    }
-    return this.endpoint.spec.description;
+    return (!this.endpoint || !this.endpoint.spec.description) ? 'No description' :  this.endpoint.spec.description;
   }
  
 }
