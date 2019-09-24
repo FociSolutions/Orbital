@@ -1,4 +1,4 @@
-mat-card {
+.container {
   display: flex;
   flex-direction: column;
   padding: 1em 2em;
@@ -17,10 +17,20 @@ mat-card {
     }
   }
 
-  mat-selection-list {
+  .checkbox-div {
+    padding-top: 1em;
+  }
+
+  mat-divider {
+    position: static;
+    margin-top: 0.3em;
+  }
+
+  .matList {
     flex: 1;
-    margin-top: 1em;
     overflow-y: scroll;
+    outline-width: 0;
+    padding-top: 0;
 
     .emptyMessage {
       font-size: 0.9em;
@@ -29,11 +39,20 @@ mat-card {
         margin: auto;
       }
     }
-  }
 
-  mat-list-option {
-    padding: 1em 0;
+    mat-list-option {
+      height: auto !important;
+
+      &.filtered {
+        display: none;
+      }
+    }
   }
+}
+
+mat-checkbox,
+::ng-deep mat-list-option > .mat-list-item-content {
+  padding-left: 1em;
 }
 
 mat-selection-list::-webkit-scrollbar {

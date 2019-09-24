@@ -12,9 +12,10 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolTipComponent } from './tool-tip/tool-tip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SearchableListComponent } from './searchable-list/searchable-list.component';
+import { SearchableSelectionListComponent } from './searchable-selection-list/searchable-selection-list.component';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
     FileInputComponent,
     RestRequestInputComponent,
     ToolTipComponent,
-    SearchableListComponent
+    SearchableSelectionListComponent
   ],
   imports: [
     CommonModule,
@@ -36,13 +37,14 @@ import { MatSelectModule } from '@angular/material/select';
     MatCardModule,
     MatListModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ],
   exports: [
     TextInputComponent,
     FileInputComponent,
     ToolTipComponent,
-    SearchableListComponent,
+    SearchableSelectionListComponent,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -52,7 +54,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatListModule,
     RestRequestInputComponent,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ]
 })
 export class OrbitalCommonModule {}

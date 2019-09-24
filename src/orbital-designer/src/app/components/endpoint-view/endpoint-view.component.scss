@@ -22,4 +22,11 @@
         display: flex;
         flex-direction: column;
     }
+
+    app-endpoint-list-item {
+        width: 60%;
+        align-self: center;
+        display: flex;
+        flex-direction: row;
+    }
 }
