@@ -5,6 +5,11 @@ import { DesignerStore} from 'src/app/store/designer-store';
 import { OverviewComponent } from './overview/overview.component';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
+import { SideBarComponent } from '../side-bar/side-bar.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -13,8 +18,8 @@ describe('EndpointViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EndpointViewComponent, OverviewComponent ],
-      imports: [ MatCardModule ],
+      declarations: [ EndpointViewComponent, OverviewComponent, SideBarComponent ],
+      imports: [ MatCardModule, MatDividerModule, MatIconModule, MatListModule ],
       providers: [ DesignerStore ]
     })
     .compileComponents();
