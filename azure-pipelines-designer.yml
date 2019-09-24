@@ -16,8 +16,7 @@ stages:
 - stage: build   
   jobs:
   - job: install_and_build
-    pool:
-      vmImage: 'Ubuntu 16.04'
+    container: circleci/node:latest-browsers
     steps:
     - task: DeleteFiles@1
       displayName: 'Cleanup JUnit files'
@@ -46,9 +45,9 @@ stages:
 
 - stage: test
   jobs:
-  - job: "test and publish"
-    pool:
-      vmImage: 'Ubuntu 16.04'
+  - job: test_and_publish
+    displayName: test and publish
+    container: circleci/node:latest-browsers
     steps:
     - task: Npm@1
       displayName: 'npm run test-ci'
