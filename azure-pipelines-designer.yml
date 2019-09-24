@@ -12,11 +12,17 @@ trigger:
 variables:
   buildConfiguration: 'Release'
 
+resources:
+  containers:
+  - container: node
+    image: circleci/node:latest-browsers
+    options: --user 0:0
+
 stages:
 - stage: build   
   jobs:
   - job: install_and_build
-    container: selenium/node-chrome:latest
+    container: node
     steps:
     - task: DeleteFiles@1
       displayName: 'Cleanup JUnit files'
@@ -47,7 +53,7 @@ stages:
   jobs:
   - job: test_and_publish
     displayName: test and publish
-    container: selenium/node-chrome:latest
+    container: node
     steps:
     - task: Npm@1
       displayName: 'npm run test-ci'
