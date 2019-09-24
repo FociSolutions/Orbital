@@ -19,7 +19,7 @@ steps:
       mkdir $(System.DefaultWorkingDirectory)/gitversion && touch $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
       mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
       mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output buildserver /nofetch
-      displayName: "Set version information as environment variables"
+    displayName: "Set version information as environment variables"
 
   - task: NodeTool@0
     displayName: "Set the node version"
@@ -117,6 +117,6 @@ steps:
       pathtoPublish: $(System.DefaultWorkingDirectory)/scripts
       artifactName: Scripts
     displayName: "Publish scripts needed for release"
-    
+
   - task: PublishBuildArtifacts@1
     displayName: "Publish all build artifacts"
