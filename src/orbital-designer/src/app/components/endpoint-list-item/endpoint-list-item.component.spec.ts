@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EndpointListItemComponent } from './endpoint-list-item.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 describe('EndpointListItemComponent', () => {
   let component: EndpointListItemComponent;
@@ -8,7 +9,11 @@ describe('EndpointListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EndpointListItemComponent ]
+      declarations: [ EndpointListItemComponent ],
+      imports: [
+        MatCardModule,
+        MatGridListModule
+      ],
     })
     .compileComponents();
   }));
