@@ -17,7 +17,7 @@ RUN npm install -g @angular/cli@latest
 COPY ./src/orbital-designer /app
 
 # start app
-RUN ng build --output-path=dist
+RUN ng build --prod --source-map=false --output-path=dist
 
 ############
 ### prod ###
