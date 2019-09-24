@@ -22,6 +22,7 @@ stages:
 - stage: build   
   jobs:
   - job: install_and_build
+    displayName: install and build
     pool:
       vmImage: 'Ubuntu 16.04'
     steps:
