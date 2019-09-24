@@ -4,7 +4,8 @@ import {
   Input,
   TemplateRef,
   Output,
-  EventEmitter
+  EventEmitter,
+  OnDestroy
 } from '@angular/core';
 
 @Component({
@@ -12,7 +13,7 @@ import {
   templateUrl: './shuttle-list.component.html',
   styleUrls: ['./shuttle-list.component.scss']
 })
-export class ShuttleListComponent implements OnInit {
+export class ShuttleListComponent implements OnInit, OnDestroy {
   @Input() leftTitle = '';
   @Input() rightTitle = '';
 
@@ -38,6 +39,13 @@ export class ShuttleListComponent implements OnInit {
 
   constructor() {
     this.outputList = new EventEmitter<any[]>();
+  }
+
+  /**
+   * completes event emitter
+   */
+  ngOnDestroy() {
+    this.outputList.complete();
   }
 
   /**
