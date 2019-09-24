@@ -14,14 +14,6 @@
         [errors]="errors"
       ></app-rest-request-input>
     </app-tool-tip>
-    <!-- <app-searchable-selection-list
-        class="row"
-        [list]="formArray.controls | filterInvalidControls"
-        [itemToStringFn]="controlsMockDefinitionToString"
-        [itemTemplate]="listItemTemplate"
-        [emptyListMessage]="emptyListMessageServerBox"
-        (itemSelected)="debug($event)"
-      ></app-searchable-selection-list> -->
     <app-shuttle-list
       class="column flex-grow"
       [list]="formArray.controls | filterInvalidControls"

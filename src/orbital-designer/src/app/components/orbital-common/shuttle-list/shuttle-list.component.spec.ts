@@ -51,6 +51,23 @@ describe('ShuttleListComponent', () => {
     });
   });
 
+  describe('ShuttleListComponent.list', () => {
+    it('if the list is not null, should set the leftList to the incoming list and the rightList to an empty list', () => {
+      const expectedList = faker.random.words().split(' ');
+      component.list = [...expectedList];
+      expect(component.leftList).toEqual(expectedList);
+      expect(component.rightList).toEqual([]);
+    })
+
+    it('if the list is null, should not set the leftList and not change the rightList', () => {
+      const fakedList = faker.random.words().split(' ');
+      component.rightList  = [...fakedList];
+      component.list = null;
+      expect(component.leftList).not.toBeNull();
+      expect(component.rightList).toEqual(fakedList)
+    })
+  })
+
   describe('ShuttleListComponent.onMove', () => {
     it('should move the items in leftSelected to the rightList when the first parameter is true or empty', () => {
       const expectedList = faker.random.words().split(' ');

@@ -1,28 +1,34 @@
 <div class="container">
-  <mat-card class="selectionList">
-    <label>{{ leftTitle }}</label>
-    <app-searchable-selection-list
-      [list]="leftList"
-      [itemTemplate]="itemTemplate"
-      [itemToStringFn]="itemToStringFn"
-      [emptyListMessage]="emptyListMessage"
-      [noSearchResultsMessage]="noSearchResultsMessage"
-      (itemSelected)="onSelect($event)"
-    ></app-searchable-selection-list>
-  </mat-card>
+  <div class="selectionList">
+    <label class="list-label">{{ leftTitle }}</label>
+    <mat-card class="list-card">
+      <app-searchable-selection-list
+        class="list"
+        [list]="leftList"
+        [itemTemplate]="itemTemplate"
+        [itemToStringFn]="itemToStringFn"
+        [emptyListMessage]="emptyListMessage"
+        [noSearchResultsMessage]="noSearchResultsMessage"
+        (itemSelected)="onSelect($event)"
+      ></app-searchable-selection-list>
+    </mat-card>
+  </div>
   <div class="button-div">
     <button mat-raised-button color="primary" (click)="onMove()">></button>
     <button mat-raised-button color="primary" (click)="onMove(false)"><</button>
   </div>
-  <mat-card class="selectionList">
-    <label>{{ rightTitle }}</label>
-    <app-searchable-selection-list
-      [list]="rightList"
-      [itemTemplate]="itemTemplate"
-      [itemToStringFn]="itemToStringFn"
-      [emptyListMessage]="emptyListMessage"
-      [noSearchResultsMessage]="noSearchResultsMessage"
-      (itemSelected)="onSelect($event, false)"
-    ></app-searchable-selection-list>
-  </mat-card>
+  <div class="selectionList">
+    <label class="list-label">{{ rightTitle }}</label>
+    <mat-card class="list-card">
+      <app-searchable-selection-list
+        class="list"
+        [list]="rightList"
+        [itemTemplate]="itemTemplate"
+        [itemToStringFn]="itemToStringFn"
+        [emptyListMessage]="emptyListMessage"
+        [noSearchResultsMessage]="noSearchResultsMessage"
+        (itemSelected)="onSelect($event, false)"
+      ></app-searchable-selection-list
+    ></mat-card>
+  </div>
 </div>
