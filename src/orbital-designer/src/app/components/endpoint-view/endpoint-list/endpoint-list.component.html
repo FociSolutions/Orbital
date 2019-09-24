@@ -1,1 +1,5 @@
-<p>endpoint-list works!</p>
+<div class="endpoint-list-container">
+    <div class="endpoint-list" *ngFor="let scenario of scenarios"> 
+        <app-endpoint-list-item [scenario] = '{scenario}'></app-endpoint-list-item>
+    </div>    
+</div>

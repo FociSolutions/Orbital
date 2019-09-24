@@ -1,15 +1,15 @@
 <mat-card class="endpoint-list-item-container">
     <mat-grid-list [cols]="12" [rowHeight]="100">
-        <mat-grid-tile [colspan]="2" class="post-verb">
-            POST
+        <mat-grid-tile [colspan]="2" class="{{scenario.verb}}-verb">
+            {{scenario.verb}}
         </mat-grid-tile>
         <mat-grid-tile [colspan]="10">
             <div class="endpoint-uri">           
-                <mat-card-title> /pets </mat-card-title>
+                <mat-card-title> {{scenario.path}} </mat-card-title>
                 <mat-card-subtitle>
                     <div class="subtitle">   
-                        <div class="subtitle-left">Example Description 1</div>
-                        <div class="subtitle-right">3 Scenarios</div>
+                        <div class="subtitle-left">{{scenario.metadata.description}}</div>
+                        <div class="subtitle-right"># Scenarios</div>
                     </div>        
                 </mat-card-subtitle>
             </div>

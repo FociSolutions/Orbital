@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 @Component({
   selector: 'app-endpoint-list-item',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./endpoint-list-item.component.scss']
 })
 export class EndpointListItemComponent implements OnInit {
+  @Input() scenario: Scenario;
 
   constructor() { }
 
