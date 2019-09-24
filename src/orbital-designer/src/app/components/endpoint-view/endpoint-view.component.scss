@@ -1,33 +1,18 @@
-.endpointviewcontainer {
-    width: 100vw;
-    height: 98%;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 2;
-    align-self: auto;
-    flex-wrap: wrap;
-    app-side-bar {
-        min-width: 14vw !important;
-        margin-left: 1%;
-        min-height: 100% !important;
-        margin-top: 0.5%;
-        margin-right: 0 !important;
-        display: flex !important;
-        flex-direction: row !important;
-        align-self: auto;
-    }
-    app-overview {
-        width: 78%;
-        height: 19% !important;
-        margin-top: 0.5%;
-        display: flex;
-        flex-direction: column;
-    }
+app-overview {
+  width: 80%;
+  height: 19% !important;
+  margin-top: 0.5%;
+  display: flex;
+  flex-direction: column;
+}
 
-    app-endpoint-list-item {
-        width: 60%;
-        align-self: center;
-        display: flex;
-        flex-direction: row;
-    }
+app-search-bar {
+  width: 75vw;
+}
+
+app-endpoint-list-item {
+  width: 60%;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
 }

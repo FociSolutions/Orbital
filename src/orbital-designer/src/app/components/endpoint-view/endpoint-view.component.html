@@ -1,6 +1,5 @@
-<div class="endpointviewcontainer">
-    <app-side-bar></app-side-bar>
-    <app-overview
-    [metadata] = "mockDefinition?.metadata"></app-overview>
-    <app-endpoint-list-item></app-endpoint-list-item>
+<div class="fullscreen column center-hr">
+  <app-overview [metadata]="mockDefinition?.metadata"></app-overview>
+  <app-search-bar> </app-search-bar>
+  <app-endpoint-list-item></app-endpoint-list-item>
 </div>

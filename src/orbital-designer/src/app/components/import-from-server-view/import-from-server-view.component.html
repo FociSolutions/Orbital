@@ -14,15 +14,16 @@
         [errors]="errors"
       ></app-rest-request-input>
     </app-tool-tip>
-    <div class="row flex-grow shuttle-list-div">
-      <app-searchable-selection-list
-        class="row"
-        [list]="formArray.controls | filterInvalidControls"
-        [itemToStringFn]="controlsMockDefinitionToString"
-        [itemTemplate]="listItemTemplate"
-        [emptyListMessage]="emptyListMessageServerBox"
-      ></app-searchable-selection-list>
-    </div>
+    <app-shuttle-list
+      class="column flex-grow"
+      [list]="formArray.controls | filterInvalidControls"
+      [itemToStringFn]="controlsMockDefinitionToString"
+      [itemTemplate]="listItemTemplate"
+      [emptyListMessage]="emptyListMessageServerBox"
+      leftTitle="Mock Definitions from Server"
+      rightTitle="Mock Definition To Import"
+      (outputList)="onListOutput($event)"
+    ></app-shuttle-list>
   </div>
   <div class="row button-div">
     <button mat-raised-button color="primary" (click)="onBack()">
