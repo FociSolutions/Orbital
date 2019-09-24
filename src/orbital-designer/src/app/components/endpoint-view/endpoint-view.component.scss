@@ -9,3 +9,10 @@ app-overview {
 app-searchable-list {
   width: 75vw;
 }
+
+app-endpoint-list-item {
+  width: 60%;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+}
