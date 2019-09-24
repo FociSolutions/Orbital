@@ -54,7 +54,8 @@ stages:
   jobs:
   - job: test_and_publish
     displayName: test and publish
-    container: node
+    pool:
+      vmImage: 'Ubuntu 16.04'
     steps:
     - task: Npm@1
       displayName: 'npm ci'
