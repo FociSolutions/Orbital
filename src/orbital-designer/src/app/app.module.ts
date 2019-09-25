@@ -26,7 +26,6 @@ import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.
 import { FilterInvalidControlsPipe } from './pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
 import { OverviewComponent } from './components/endpoint-view/overview/overview.component';
-import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
@@ -40,8 +39,7 @@ import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.
     EndpointViewComponent,
     FilterInvalidControlsPipe,
     EndpointListItemComponent,
-    OverviewComponent,
-    SideBarComponent
+    OverviewComponent
   ],
   imports: [
     BrowserModule,
