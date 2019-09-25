@@ -1,34 +1,38 @@
 .side-bar-container {
     min-width: 14vw;
+    background-color: white;
+    border-right: 0.1em solid rgba(0, 0, 0, 0.12);
 }
 .side-bar-top {
     min-width: 14vw !important;
-    min-height: 2.9vw !important;
     display: flex;
-    align-items: left;
     justify-content: center;
     flex-direction: column;
+    margin-bottom: 0.4vh !important;
     h1 {
        opacity: 0.54;
        font-size: 1em; 
        margin-left: 1.5em;
+        margin-top: 2vh !important;
     }
 }
 
 .divider {
     width: 90% !important;
-    margin-left: 5% !important;
+    margin: auto;
 }
 
 .side-bar-middle {
     min-width: 14vw !important;      
     height: 33% !important;
+    margin-bottom: 2vh !important;
 }
 
 .side-bar-bottom {
     min-width: 14vw !important;       
     height: 33% !important;
-    margin-top: 3vw;
+    margin-top: 1vh !important;
+
 }
 
 mat-action-list button mat-icon {

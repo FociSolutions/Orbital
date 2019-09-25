@@ -1,9 +1,10 @@
 .example-card {
     border-radius: 0;
     padding: 0 !important;
-    -webkit-box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
-    -moz-box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
-    box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
+    // -webkit-box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
+    // -moz-box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
+    // box-shadow: 10px 0px 10px -5px rgba(153,148,153,1);
+    box-shadow: none;
     display: flex;
     flex-direction: column;
   }
