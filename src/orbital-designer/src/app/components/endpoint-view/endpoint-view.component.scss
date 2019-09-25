@@ -19,9 +19,10 @@ app-overview {
 }
 
 app-endpoint-list {
-    min-width: 80%;
+    max-width: 70%;
     margin-top: 0.5%;
     display: flex;
     flex-direction: column;
+    margin-left: 15%;
 }
     
