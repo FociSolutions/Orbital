@@ -58,9 +58,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatListModule,
     MatButtonModule,
     MatGridListModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatSidenavModule
+    ReactiveFormsModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]
