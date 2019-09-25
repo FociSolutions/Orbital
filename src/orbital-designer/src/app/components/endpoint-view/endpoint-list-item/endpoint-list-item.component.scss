@@ -1,37 +1,41 @@
-.endpoint-list-item-container {
-    display: flex;
-    flex-direction: row;
+.endpointlistitemcontainer {
     padding: 0em;
     width: 100%;
+    align-content: center;
 
-    .post-verb {
-        width: 20%;
-        background-color: aquamarine; 
+    .endpointlistitem {
+        display: flex;
+        flex-direction: row;
+        min-width: 80%;
+        min-height: 30%;
+    }
+
+    .postverb {
+        flex-grow: 2;
+        background-color: aquamarine !important; 
         font-weight: bold;
     }
 
-    .get-verb {
-        width: 20%;
-        background-color: rgb(107, 180, 240); 
+    .getverb {
+        flex-grow: 2;
+        background-color: rgb(107, 180, 240) !important; 
         font-weight: bold;
     }
 
-    .put-verb {
-        width: 20%;
-        background-color: rgb(231, 231, 154); 
+    .putverb {    
+        flex-grow: 2; 
+        background-color: rgb(231, 231, 154) !important; 
         font-weight: bold;
     }
 
-    .delete-verb {
-        width: 20%;
-        background-color: lightcoral; 
+    .deleteverb { 
+        flex-grow: 2;
+        background-color: lightcoral !important;  
         font-weight: bold;
     }
 
     .endpoint-uri {
-        flex-grow: 5;
-        width: 80%; 
-        padding: 2em;
+        flex-grow: 10;
     }
 
     .subtitle {

@@ -12,10 +12,11 @@
         flex-direction: column;
     }
 
-    app-endpoint-list-item {
-        width: 60%;
+    app-endpoint-list {
+        min-width: 80%;
+        min-height: 81% !important;
         align-self: center;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
     }
 }

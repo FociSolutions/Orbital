@@ -1,8 +1,17 @@
 .endpoint-list-container {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
+    align-self: center;
 
     mat-list-item {
-        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        width: 50% !important;
+        height: 30% !important;  
+
+        app-endpoint-list-item {
+            min-width: 100%;
+            min-height: 100%;
+        }
     }
 }

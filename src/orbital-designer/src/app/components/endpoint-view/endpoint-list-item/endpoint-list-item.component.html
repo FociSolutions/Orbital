@@ -1,6 +1,6 @@
-<mat-card class="endpoint-list-item-container">
-    <mat-grid-list [cols]="12" [rowHeight]="100">
-        <mat-grid-tile [colspan]="2" class="{{endpoint.verb | lowercase}}-verb">
+<mat-card class="endpointlistitemcontainer">
+    <mat-grid-list [cols]="12" class="endpointlistitem">
+        <mat-grid-tile [colspan]="2" class="{{endpoint.verb | lowercase}}verb">
             {{endpoint.verb}}
         </mat-grid-tile>
         <mat-grid-tile [colspan]="10">

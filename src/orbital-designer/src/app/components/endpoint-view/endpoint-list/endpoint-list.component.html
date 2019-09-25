@@ -1,5 +1,5 @@
-<mat-action-list class="endpoint-list-container">
+<mat-list class="endpoint-list-container">
     <mat-list-item *ngFor="let endpoint of endpoints">
         <app-endpoint-list-item [endpoint] = 'endpoint' [scenarioCount] = '(scenarios | getEndpointScenarios: endpoint).length'></app-endpoint-list-item>
     </mat-list-item>    
-</mat-action-list>
+</mat-list>
