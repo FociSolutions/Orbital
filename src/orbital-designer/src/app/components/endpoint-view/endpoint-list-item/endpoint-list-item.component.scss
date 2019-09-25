@@ -5,12 +5,16 @@
     flex-direction: row;
     margin-left: 30%;
 
+    mat-card-content {
+        margin-left: 5%;
+    }
     .verb {
         flex-grow: 2;
         width: 5vw;
         font-weight: bold;
         text-align: center;
         vertical-align: 50%;
+        font-size: 0.75em;
     }
 
     .post {
@@ -29,15 +33,10 @@
         background-color: lightsalmon;
     }
 
-    .endpoint-uri {
-        flex-grow: 5;
-        width: 45vw;
-    }
-
     .subtitle {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        padding: 1%;
     }
-
 }
