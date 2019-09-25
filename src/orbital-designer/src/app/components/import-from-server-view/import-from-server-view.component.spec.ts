@@ -12,7 +12,7 @@ import * as faker from 'faker';
 import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 describe('ImportFromServerViewComponent', () => {
@@ -49,6 +49,17 @@ describe('ImportFromServerViewComponent', () => {
       const locationSpy = spyOn(TestBed.get(Location), 'back');
       component.onBack();
       expect(locationSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('ImportFromServerViewComponent.onFormArrayChange', () => {
+    it('should set the formArray.errors value if any of the formArray controls are invalid', () => {
+      expect(component.formArray.errors).toBeFalsy();
+      component.formArray.controls = [
+        new FormControl(null, Validators.required)
+      ];
+      component.onFormArrayChange('');
+      expect(component.formArray.errors).toBeTruthy();
     });
   });
 
