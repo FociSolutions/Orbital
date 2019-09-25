@@ -16,6 +16,7 @@ import { SearchableSelectionListComponent } from './searchable-selection-list/se
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
     RestRequestInputComponent,
     ToolTipComponent,
     SearchableSelectionListComponent,
+    SearchBarComponent,
     ShuttleListComponent
   ],
   imports: [
@@ -58,6 +60,7 @@ import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatCheckboxModule,
+    SearchBarComponent,
     ShuttleListComponent
   ]
 })

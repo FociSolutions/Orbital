@@ -5,9 +5,10 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { OverviewComponent } from './overview/overview.component';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -21,7 +22,12 @@ describe('EndpointViewComponent', () => {
         OverviewComponent,
         EndpointListItemComponent
       ],
-      imports: [MatCardModule, MatGridListModule, LoggerTestingModule],
+      imports: [
+        OrbitalCommonModule,
+        MatCardModule,
+        MatGridListModule,
+        LoggerTestingModule
+      ],
       providers: [DesignerStore]
     }).compileComponents();
   }));

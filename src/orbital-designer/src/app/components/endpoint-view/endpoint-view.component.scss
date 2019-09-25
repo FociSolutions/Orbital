@@ -1,21 +1,18 @@
-.endpointviewcontainer {
-    width: 100vw;
-    height: 100%;
-    flex-grow: 2;
-    align-self: auto;
-    flex-wrap: wrap;
-    app-overview {
-        width: 80%;
-        height: 19% !important;
-        margin-top: 0.5%;
-        display: flex;
-        flex-direction: column;
-    }
+app-overview {
+  width: 80%;
+  height: 19% !important;
+  margin-top: 0.5%;
+  display: flex;
+  flex-direction: column;
+}
 
-    app-endpoint-list-item {
-        width: 60%;
-        align-self: center;
-        display: flex;
-        flex-direction: row;
-    }
+app-search-bar {
+  width: 75vw;
+}
+
+app-endpoint-list-item {
+  width: 60%;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
 }
