@@ -1,5 +1,18 @@
 <div class="fullscreen column center-hr">
-  <app-overview [metadata]="mockDefinition?.metadata"></app-overview>
-  <app-search-bar> </app-search-bar>
-  <app-endpoint-list></app-endpoint-list>
+  <div class="container endpointview">
+    <div class="row">
+      <div class="col-sm endpoint">
+        <app-side-bar></app-side-bar>
+      </div>
+      <div class="col-xl endpoint">
+        <div class="col-9">
+          <app-overview [metadata]="mockDefinition?.metadata"></app-overview>
+        </div>
+        <div class="col-9">
+          <app-search-bar> </app-search-bar>
+          <app-endpoint-list></app-endpoint-list>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
