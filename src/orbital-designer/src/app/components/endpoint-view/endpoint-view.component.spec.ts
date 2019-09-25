@@ -1,11 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
-import { DesignerStore} from 'src/app/store/designer-store';
+import { MatCardModule } from '@angular/material/card';
+import { DesignerStore } from 'src/app/store/designer-store';
 import { OverviewComponent } from './overview/overview.component';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
+import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { EndpointListComponent } from './endpoint-list/endpoint-list.component';
+import { GetEndpointScenariosPipe } from '../../pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
+import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -14,11 +19,21 @@ describe('EndpointViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EndpointViewComponent, OverviewComponent, EndpointListComponent ],
-      imports: [ MatGridListModule ],
-      providers: [ DesignerStore ]
-    })
-    .compileComponents();
+      declarations: [
+        EndpointViewComponent,
+        OverviewComponent,
+        EndpointListComponent,
+        EndpointListItemComponent,
+        GetEndpointScenariosPipe
+      ],
+      imports: [
+        OrbitalCommonModule,
+        MatCardModule,
+        MatGridListModule,
+        LoggerTestingModule
+      ],
+      providers: [DesignerStore]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -32,5 +47,4 @@ describe('EndpointViewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

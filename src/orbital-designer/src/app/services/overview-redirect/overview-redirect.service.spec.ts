@@ -3,11 +3,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { OverviewRedirectService } from './overview-redirect.service';
 import { DesignerStore } from '../../store/designer-store';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('OverviewRedirectService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([])],
+      imports: [RouterTestingModule.withRoutes([]), LoggerTestingModule],
       providers: [DesignerStore]
     })
   );

@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { EndpointListItemComponent } from '../endpoint-list-item/endpoint-list-item.component';
 import { EndpointListComponent } from './endpoint-list.component';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { GetEndpointScenariosPipe } from '../../../pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
+import { DesignerStore } from '../../../store/designer-store';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+
 
 describe('EndpointListComponent', () => {
   let component: EndpointListComponent;
@@ -8,7 +14,9 @@ describe('EndpointListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EndpointListComponent ]
+      declarations: [ EndpointListComponent, EndpointListItemComponent, GetEndpointScenariosPipe ],
+      imports: [ MatListModule, MatCardModule, LoggerTestingModule ],
+      providers: [ DesignerStore ]
     })
     .compileComponents();
   }));

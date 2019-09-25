@@ -56,7 +56,8 @@ export class CreateNewMockViewComponent implements OnInit {
   async createMock() {
     const mockDefinition = await this.formToMockDefinition();
     if (!!mockDefinition) {
-      this.store.mockDefinition = mockDefinition;
+      this.logger.debug('MockDefinition created from form ', mockDefinition);
+      this.store.mockDefinitions = [mockDefinition];
       this.router.navigateByUrl('endpoint-view');
     }
   }
@@ -75,6 +76,7 @@ export class CreateNewMockViewComponent implements OnInit {
    */
   async formToMockDefinition(): Promise<MockDefinition> {
     if (this.formGroup.invalid) {
+      this.logger.debug('Form is invalid');
       return null;
     }
     const openApi = await this.fileParser.readOpenApiSpec(
