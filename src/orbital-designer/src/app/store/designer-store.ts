@@ -6,29 +6,52 @@ import { Injectable } from '@angular/core';
 import { OpenAPIV2 } from 'openapi-types';
 import { VerbType } from '../models/verb.type';
 import { Metadata } from '../models/mock-definition/metadata.model';
+import { NGXLogger } from 'ngx-logger';
 
 export interface State {
   selectedEndpoint: Endpoint;
   selectedScenario: Scenario;
   mockDefinition: MockDefinition;
+  mockDefinitions: Map<string, MockDefinition>;
   endpoints: Endpoint[];
 }
 
 Injectable();
 export class DesignerStore extends Store<State> {
-  constructor() {
+  constructor(private logger: NGXLogger) {
     super({
       selectedEndpoint: null,
       selectedScenario: null,
       mockDefinition: null,
+      mockDefinitions: null,
       endpoints: []
     });
+  }
+
+  /**
+   * This setter updates the mockDefinitions map with the mockDefinitions parameter
+   * It creates a new Map for the store in order to trigger any render changes relying on this map.
+   * Also updates the mockDefinition to the first mockDefinition in the list
+   */
+  set mockDefinitions(mockDefinitions: MockDefinition[]) {
+    this.logger.debug('Setting mockDefinitions to ', mockDefinitions);
+    this.setState({
+      ...this.state,
+      mockDefinitions: new Map<string, MockDefinition>(
+        mockDefinitions.map(mockDefinition => [
+          mockDefinition.metadata.title,
+          mockDefinition
+        ])
+      )
+    });
+    this.mockDefinition = mockDefinitions[0];
   }
 
   /**
    * This setter updates the selected endpoint for the designer store
    */
   set selectedEndpoint(endpoint: Endpoint) {
+    this.logger.debug('setting selectedEndpoint to ', endpoint);
     this.setState({
       ...this.state,
       selectedEndpoint: {
@@ -41,6 +64,7 @@ export class DesignerStore extends Store<State> {
    * This setter updates the selected scenario for the designer store
    */
   set selectedScenario(scenario: Scenario) {
+    this.logger.debug('setting selectedScenario to ', scenario);
     this.setState({
       ...this.state,
       selectedScenario: {
@@ -55,6 +79,7 @@ export class DesignerStore extends Store<State> {
    * @param doc The parsed Open Api document to extrapolate the endpoints from
    */
   setEndpoints(doc: OpenAPIV2.Document, clearStore = true): void {
+    this.logger.debug('Clearing current endpoints: ', clearStore);
     const pathStrings = Object.keys(doc.paths);
     let endpoints = [];
     for (const path of pathStrings) {
@@ -69,6 +94,7 @@ export class DesignerStore extends Store<State> {
         .filter(endpoint => !!endpoint);
       endpoints = [...endpoints, ...newEndpoints];
     }
+    this.logger.debug('Endpoints from openApi document ', endpoints);
     this.setState({
       ...this.state,
       endpoints: clearStore
@@ -78,16 +104,18 @@ export class DesignerStore extends Store<State> {
   }
 
   /**
-   * Setter method used to updated the MockDefinition in the designer store
+   * Setter method used to updated the MockDefinition in the designer store and the endpoints list
    * @param mockDefinition The MockDefinition used to update the store
    */
   set mockDefinition(mockDefinition: MockDefinition) {
+    this.logger.debug('Setting mockDefinition to ', mockDefinition);
     this.setState({
       ...this.state,
       mockDefinition: {
         ...mockDefinition
       }
     });
+    this.setEndpoints(mockDefinition.openApi);
   }
 
   /**
@@ -96,6 +124,7 @@ export class DesignerStore extends Store<State> {
    *
    */
   updateMetadata(metadata: Metadata): void {
+    this.logger.debug('Setting metadata to ', metadata);
     this.setState({
       ...this.state,
       mockDefinition: {
@@ -118,6 +147,9 @@ export class DesignerStore extends Store<State> {
     basePath: string,
     openApi: OpenAPIV2.Document
   ): void {
+    this.logger.debug('Setting host to ', host);
+    this.logger.debug('Setting basePath to ', basePath);
+    this.logger.debug('Setting openApi to ', openApi);
     this.setState({
       ...this.state,
       mockDefinition: {
@@ -134,6 +166,7 @@ export class DesignerStore extends Store<State> {
    * @param s The scenario array representing the MockDefinition scenarios
    */
   updateScenarios(scenarios: Scenario[]) {
+    this.logger.debug('Setting scenarios to ', scenarios);
     this.setState({
       ...this.state,
       mockDefinition: {

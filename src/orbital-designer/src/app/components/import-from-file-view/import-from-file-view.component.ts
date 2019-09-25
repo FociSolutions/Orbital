@@ -52,7 +52,7 @@ export class ImportFromFileViewComponent implements OnInit {
   async createMock() {
     const mockDefinition = await this.formToMockDefinition();
     if (!!mockDefinition) {
-      this.store.mockDefinition = mockDefinition;
+      this.store.mockDefinitions = [mockDefinition];
       this.router.navigateByUrl('endpoint-view');
     }
   }

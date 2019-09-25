@@ -10,6 +10,8 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-definition-object-validator/mock-definition-object-validator';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -23,7 +25,12 @@ export class ImportFromServerViewComponent implements OnInit {
   controlsMockDefinitionToString = (control: AbstractControl) =>
     (control.value as MockDefinition).metadata.title
 
-  constructor(private location: Location, private logger: NGXLogger) {
+  constructor(
+    private location: Location,
+    private logger: NGXLogger,
+    private designerStore: DesignerStore,
+    private router: Router
+  ) {
     this.formArray = new FormArray([]);
     this.formArray.valueChanges.subscribe(value =>
       logger.debug('ImportFromServerViewComponent formArray value:', value)
@@ -31,6 +38,11 @@ export class ImportFromServerViewComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  onSubmit() {
+    this.designerStore.mockDefinitions = this.mockDefinitions;
+    this.router.navigateByUrl('endpoint-view');
+  }
 
   /**
    * Sets the mockDefinitions property equal to the list of MockDefinitions derived from the

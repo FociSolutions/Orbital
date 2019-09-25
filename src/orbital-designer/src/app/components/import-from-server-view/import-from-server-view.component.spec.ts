@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
+import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 import { FormControl } from '@angular/forms';
@@ -28,7 +29,7 @@ describe('ImportFromServerViewComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule
       ],
-      providers: [Location]
+      providers: [Location, DesignerStore]
     }).compileComponents();
   }));
 
