@@ -1,19 +1,21 @@
 .side-bar-container {
     min-width: 14vw;
+    min-height: 85vh ;
+    max-height: 94.5vh ;
     background-color: white;
     border-right: 0.1em solid rgba(0, 0, 0, 0.12);
 }
 .side-bar-top {
-    min-width: 14vw !important;
+    min-width: 14vw;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-bottom: 0.4vh !important;
+    margin-bottom: 0.4vh;
     h1 {
        opacity: 0.54;
        font-size: 1em; 
        margin-left: 1.5em;
-        margin-top: 2vh !important;
+        margin-top: 2vh;
     }
 }
 
@@ -23,16 +25,15 @@
 }
 
 .side-bar-middle {
-    min-width: 14vw !important;      
-    height: 33% !important;
-    margin-bottom: 2vh !important;
+    min-width: 14vw;      
+    //height: 33%;
+    margin-bottom: 2vh;
 }
 
 .side-bar-bottom {
-    min-width: 14vw !important;       
-    height: 33% !important;
-    margin-top: 1vh !important;
-
+    min-width: 14vw;       
+    //height: 33%;
+    margin-top: 1vh;
 }
 
 mat-action-list button mat-icon {
