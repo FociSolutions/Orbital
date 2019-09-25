@@ -1,9 +1,15 @@
 .endpointlistcontainer {
-    width: 60vh;
-
+    display: flex;
+    flex-direction: column;
+    margin-top: 15%;
+    width: 100%;
+    
     mat-list-item {
-        display: flex;
-        flex-direction: row;
-        margin-top: 5%;
+        margin-top: 15%;
+        width: 100%;
+    }
+
+    app-endpoint-list-item {
+        width: 100%;
     }
 }

@@ -1,16 +1,15 @@
 .endpointlistitemcontainer {
     padding: 0em;
-    width: 50vw;
     display: flex;
     flex-direction: row;
-    margin-left: 30%;
+    width: 200%;
 
     mat-card-content {
+        width: 120%;
         margin-left: 5%;
     }
+
     .verb {
-        flex-grow: 2;
-        width: 5vw;
         font-weight: bold;
         text-align: center;
         vertical-align: 50%;
@@ -19,18 +18,22 @@
 
     .post {
         background-color: aquamarine;
+        width: 20%;
     }
 
     .put {
         background-color: yellow;
+        width: 20%;
     }
 
     .get {
         background-color: lightskyblue;
+        width: 20%;
     }
 
     .delete {
         background-color: lightsalmon;
+        width: 20%;
     }
 
     .subtitle {
@@ -38,6 +41,6 @@
         flex-direction: row;
         justify-content: space-between;
         padding: 1%;
-        width: 35vw;
+        width: 80%;
     }
 }
