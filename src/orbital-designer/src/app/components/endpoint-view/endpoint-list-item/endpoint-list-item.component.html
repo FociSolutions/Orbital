@@ -1,10 +1,8 @@
 <mat-card class="endpointlistitemcontainer">
-    <mat-grid-list [cols]="12" class="endpointlistitem">
-        <mat-grid-tile [colspan]="2" class="{{endpoint.verb | lowercase}}verb">
-            {{endpoint.verb}}
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="10">
-            <div class="endpoint-uri">           
+        <mat-card-header class="{{endpoint.verb | lowercase}}">
+            <div class="verb">{{endpoint.verb}}</div> 
+        </mat-card-header>
+        <mat-card-content>       
                 <mat-card-title> {{endpoint.path}} </mat-card-title>
                 <mat-card-subtitle>
                     <div class="subtitle">   
@@ -12,7 +10,5 @@
                         <div class="subtitle-right">{{scenarioCount}} Scenarios</div>
                     </div>        
                 </mat-card-subtitle>
-            </div>
-        </mat-grid-tile>
-    </mat-grid-list>            
+        </mat-card-content>          
 </mat-card>

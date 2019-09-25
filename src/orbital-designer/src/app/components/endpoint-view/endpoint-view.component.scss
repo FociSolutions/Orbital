@@ -4,6 +4,7 @@
     flex-grow: 2;
     align-self: auto;
     flex-wrap: wrap;
+
     app-overview {
         width: 80%;
         height: 19% !important;
@@ -13,9 +14,6 @@
     }
 
     app-endpoint-list {
-        min-width: 80%;
-        min-height: 81% !important;
-        align-self: center;
         display: flex;
         flex-direction: column;
     }

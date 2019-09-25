@@ -1,41 +1,37 @@
 .endpointlistitemcontainer {
     padding: 0em;
-    width: 100%;
-    align-content: center;
+    width: 50vw;
+    display: flex;
+    flex-direction: row;
+    margin-left: 30%;
 
-    .endpointlistitem {
-        display: flex;
-        flex-direction: row;
-        min-width: 80%;
-        min-height: 30%;
-    }
-
-    .postverb {
+    .verb {
         flex-grow: 2;
-        background-color: aquamarine !important; 
+        width: 5vw;
         font-weight: bold;
+        text-align: center;
+        vertical-align: 50%;
     }
 
-    .getverb {
-        flex-grow: 2;
-        background-color: rgb(107, 180, 240) !important; 
-        font-weight: bold;
+    .post {
+        background-color: aquamarine;
     }
 
-    .putverb {    
-        flex-grow: 2; 
-        background-color: rgb(231, 231, 154) !important; 
-        font-weight: bold;
+    .put {
+        background-color: yellow;
     }
 
-    .deleteverb { 
-        flex-grow: 2;
-        background-color: lightcoral !important;  
-        font-weight: bold;
+    .get {
+        background-color: lightskyblue;
+    }
+
+    .delete {
+        background-color: lightsalmon;
     }
 
     .endpoint-uri {
-        flex-grow: 10;
+        flex-grow: 5;
+        width: 45vw;
     }
 
     .subtitle {
