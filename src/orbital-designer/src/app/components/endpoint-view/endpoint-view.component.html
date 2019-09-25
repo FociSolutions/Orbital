@@ -1,14 +1,14 @@
 <div class="fullscreen column center-hr">
   <div class="container endpointview">
     <div class="row">
-      <div class="col-sm endpoint">
+      <div class="sidebar">
         <app-side-bar></app-side-bar>
       </div>
-      <div class="col-xl endpoint">
-        <div class="col-9">
+      <div class="endpoint">
+        <div>
           <app-overview [metadata]="mockDefinition?.metadata"></app-overview>
         </div>
-        <div class="col-9">
+        <div>
           <app-search-bar> </app-search-bar>
           <app-endpoint-list></app-endpoint-list>
         </div>
