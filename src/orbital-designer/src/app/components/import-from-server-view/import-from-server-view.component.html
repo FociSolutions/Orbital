@@ -29,7 +29,12 @@
     <button mat-raised-button color="primary" (click)="onBack()">
       Back
     </button>
-    <button mat-raised-button color="primary" [disabled]="disabled">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="disabled"
+      (click)="onSubmit()"
+    >
       Next
     </button>
   </div>

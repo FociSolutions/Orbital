@@ -10,18 +10,24 @@ import validOpenApi from '../../test-files/valid-openapi-spec';
 import validMockDefinition from '../../test-files/test-mockdefinition-object';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { OpenAPIV2 } from 'openapi-types';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { NGXLogger } from 'ngx-logger';
+import { TestBed } from '@angular/core/testing';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
+  const acceptedVerbs = Object.keys(VerbType).map(verb => verb.toLowerCase());
+
   beforeEach(() => {
-    store = new DesignerStore();
+    TestBed.configureTestingModule({ imports: [LoggerTestingModule] });
+    store = new DesignerStore(TestBed.get(NGXLogger));
   });
 
   it('should create an instance', () => {
-    expect(new DesignerStore()).toBeTruthy();
+    expect(store).toBeTruthy();
   });
 
-  describe('set selectedEndpoint', () => {
+  describe('DesignerStore.selectedEndpoint', () => {
     it('should set the selectedEndpoint', () => {
       const Expected = {
         path: faker.random.words(),
@@ -33,7 +39,7 @@ describe('DesignerStore', () => {
     });
   });
 
-  describe('set selectedScenario', () => {
+  describe('DesignerStore.selectedScenario', () => {
     it('should set the selectedScenario', () => {
       const Expected = newScenario(VerbType.GET, faker.random.words());
       store.selectedScenario = Expected;
@@ -41,41 +47,28 @@ describe('DesignerStore', () => {
     });
   });
 
-  describe('setEndpoints', () => {
-    it('should update the state with new endpoints', done => {
-      const petStore = validOpenApi;
-      const acceptedVerbs = Object.keys(VerbType).map(verb =>
-        verb.toLowerCase()
-      );
+  describe('DesignerStore.setEndpoints()', () => {
+    it('should update the state with new endpoints', () => {
+      const Expected: MockDefinition = {
+        ...validMockDefinition
+      };
       expect(store.state.endpoints).toEqual([]);
-      MockDefinition.toOpenApiSpec(petStore).then(doc => {
-        store.setEndpoints(doc);
-        for (const path of Object.keys(doc.paths)) {
-          for (const verb of acceptedVerbs) {
-            if (!!doc.paths[path][verb]) {
-              expect(
-                store.state.endpoints.findIndex(
-                  endpoint =>
-                    endpoint.path === path &&
-                    endpoint.verb === VerbType[verb.toUpperCase()] &&
-                    endpoint.spec === doc.paths[path][verb]
-                )
-              ).toBeGreaterThan(-1);
-            }
+      store.setEndpoints(Expected.openApi);
+
+      for (const path of Object.keys(Expected.openApi.paths)) {
+        for (const verb of acceptedVerbs) {
+          if (!!Expected.openApi.paths[path][verb]) {
+            expect(
+              store.state.endpoints.findIndex(
+                endpoint =>
+                  endpoint.path === path &&
+                  endpoint.verb === VerbType[verb.toUpperCase()] &&
+                  endpoint.spec === Expected.openApi.paths[path][verb]
+              )
+            ).toBeGreaterThan(-1);
           }
         }
-        done();
-      });
-    });
-
-    describe('setMockDefinition', () => {
-      it('should update the state with the new MockDefinition', () => {
-        const Expected: MockDefinition = {
-          ...validMockDefinition
-        };
-        store.mockDefinition = { ...Expected };
-        expect(store.state.mockDefinition).toEqual(Expected);
-      });
+      }
     });
 
     it('should update the state with new endpoints without clearing old ones', done => {
@@ -86,9 +79,6 @@ describe('DesignerStore', () => {
         spec: null
       };
       store.setState({ ...store.state, endpoints: [originalEndpoint] });
-      const acceptedVerbs = Object.keys(VerbType).map(verb =>
-        verb.toLowerCase()
-      );
       expect(store.state.endpoints).toEqual([originalEndpoint]);
       MockDefinition.toOpenApiSpec(petStore).then(doc => {
         store.setEndpoints(doc, false);
@@ -114,7 +104,48 @@ describe('DesignerStore', () => {
     });
   });
 
-  describe('updateMetadata', () => {
+  describe('DesignerStore.mockDefinition', () => {
+    it('should update the state with the new MockDefinition and endpoints', () => {
+      const Expected: MockDefinition = {
+        ...validMockDefinition
+      };
+      store.mockDefinition = { ...Expected };
+      expect(store.state.mockDefinition).toEqual(Expected);
+      for (const path of Object.keys(Expected.openApi.paths)) {
+        for (const verb of acceptedVerbs) {
+          if (!!Expected.openApi.paths[path][verb]) {
+            expect(
+              store.state.endpoints.findIndex(
+                endpoint =>
+                  endpoint.path === path &&
+                  endpoint.verb === VerbType[verb.toUpperCase()] &&
+                  endpoint.spec === Expected.openApi.paths[path][verb]
+              )
+            ).toBeGreaterThan(-1);
+          }
+        }
+      }
+    });
+  });
+
+  describe('DesignerStore.mockDefinitions', () => {
+    it('should update the list of MockDefinitions', () => {
+      const mockDef = validMockDefinition;
+      const expectedMap = new Map([[mockDef.metadata.title, mockDef]]);
+      expect(store.state.mockDefinitions).toBeNull();
+      store.mockDefinitions = [mockDef];
+      expect(store.state.mockDefinitions).toEqual(expectedMap);
+    });
+
+    it('should set the mockDefinition property of the state to be the first mock definition in the list', () => {
+      const mockDef = validMockDefinition;
+      expect(store.state.mockDefinitions).toBeNull();
+      store.mockDefinitions = [mockDef];
+      expect(store.state.mockDefinition).toEqual(mockDef);
+    });
+  });
+
+  describe('DesignerStore.updateMetadata()', () => {
     it('should update MetaData', () => {
       const newMetaData: Metadata = {
         title: faker.random.word(),
@@ -125,7 +156,7 @@ describe('DesignerStore', () => {
     });
   });
 
-  describe('updateApiInformation', () => {
+  describe('DesignerStore.updateApiInformation()', () => {
     it('should update openApi, host, and basepath', () => {
       const fakeDocument = { basePath: '', host: '' } as OpenAPIV2.Document;
       const apiInfo = {
@@ -144,7 +175,7 @@ describe('DesignerStore', () => {
     });
   });
 
-  describe('updateScenarios', () => {
+  describe('DesignerStore.updateScenarios()', () => {
     it('should update scenarios', () => {
       const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
