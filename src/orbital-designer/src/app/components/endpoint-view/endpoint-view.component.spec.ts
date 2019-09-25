@@ -33,9 +33,9 @@ describe('EndpointViewComponent', () => {
         OrbitalCommonModule,
         MatCardModule,
         MatGridListModule,
-        LoggerTestingModule, 
+        LoggerTestingModule,
         MatDividerModule,
-        MatIconModule, 
+        MatIconModule,
         MatListModule
       ],
       providers: [DesignerStore]
