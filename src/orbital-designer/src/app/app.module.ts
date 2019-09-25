@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {  ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,8 +26,7 @@ import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.
 import { FilterInvalidControlsPipe } from './pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
 import { OverviewComponent } from './components/endpoint-view/overview/overview.component';
-import { SideBarComponent } from './components/side-bar/side-bar.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [

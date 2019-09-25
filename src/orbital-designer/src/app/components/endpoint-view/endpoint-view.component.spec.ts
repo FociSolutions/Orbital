@@ -8,7 +8,7 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { SideBarComponent } from '../side-bar/side-bar.component';
+import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
