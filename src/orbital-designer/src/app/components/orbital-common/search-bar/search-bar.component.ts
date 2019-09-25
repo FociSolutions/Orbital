@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { MatListOption } from '@angular/material/list';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatListOption, MatListItem } from '@angular/material/list';
 
 @Component({
   selector: 'app-search-bar',
@@ -7,11 +7,13 @@ import { MatListOption } from '@angular/material/list';
   styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent implements OnInit {
-  @Output() filteredList: MatListOption[] = [];
+  @Output() filteredList: EventEmitter<any[]>;
 
   @Input() list: any[] = [];
   @Input() itemToStringFn: (_: any) => string = x => x as string;
-  constructor() {}
+  constructor() {
+    this.filteredList = new EventEmitter<any[]>();
+  }
 
   /**
    * Function that takes a string and a list as input and filters out the matlist
@@ -21,12 +23,14 @@ export class SearchBarComponent implements OnInit {
    */
 
   onSearchInput(value: string) {
-    this.filteredList = this.list.filter(
-      option =>
-        !SearchBarComponent.ignoreCaseContainsMatch(
-          this.itemToStringFn(option.value),
-          value
-        )
+    this.filteredList.emit(
+      this.list.filter(
+        option =>
+          !SearchBarComponent.ignoreCaseContainsMatch(
+            this.itemToStringFn(option.value),
+            value
+          )
+      )
     );
   }
 
