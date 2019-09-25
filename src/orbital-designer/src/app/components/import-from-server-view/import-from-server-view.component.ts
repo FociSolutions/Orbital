@@ -49,7 +49,8 @@ export class ImportFromServerViewComponent implements OnInit {
     if (this.formArray.controls.findIndex(control => !control.valid) > -1) {
       this.logger.debug('Invalid MockDefinition Found');
       this.formArray.setErrors({
-        invalidMockDefinitionFound: 'One or more invalid Mock Definitions found'
+        invalidMockDefinitionFound:
+          'One or more invalid Mock Definitions found, valid mock definitions listed below'
       });
     }
   }
