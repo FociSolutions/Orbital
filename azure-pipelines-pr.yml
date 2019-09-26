@@ -154,21 +154,35 @@ stages:
       vmImage: 'Ubuntu 16.04'
     environment: development
     variables:
-      orbital: 'orbital'
-      env: 'dev'
-      mock: 'mock'
-      designer: 'designer'
-      acrfoci: 'focicontainerregistry'
-      dockerhubfoci: 'fociopensource'
-      imagenamedesigner: 'orbitaldesigner'
-      imagenamemock: 'orbitalmock'
-      location: 'canadacentral'
-      registry: 'focicontainerregistry'
-      resourcegroup: 'rg'
-      runtimeenv: 'DOTNETCORE|2.2'
-      serviceplan: 'sp'
-      system.debug: 'true'
-    - group: "Foci Secrets"
+    - name: orbital
+      value: orbital
+    - name: env
+      value: dev
+    - name: mock
+      value: mock
+    - name: designer
+      valeu: designer
+    - name: acrfoci
+      value: focicontainerregistry
+    - name: dockerhubfoci
+      value: fociopensource
+    - name: imagenamedesigner
+      value: orbitaldesigner
+    - name: imagenamemock
+      value: orbitalmock
+    - name: location
+      value: canadacentral
+    - name: registry
+      value: focicontainerregistry
+    - name: resourcegroup
+      value: rg
+    - name: runtimeenv
+      value: DOTNETCORE|2.2
+    - name: serviceplan
+      value: sp
+    - name: system.debug
+      value: true
+    - group: Foci Secrets
     strategy:
       runOnce:
         deploy:
