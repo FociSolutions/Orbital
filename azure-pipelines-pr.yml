@@ -34,13 +34,13 @@ stages:
       displayName: publish designer build to artifacts
   - job: publish_release_scripts
     dispalyName: publish release scripts
-     - task: CopyFiles@2
+    - task: CopyFiles@2
       displayName: move scripts to artifacts
       inputs:
         SourceFolder: "$(System.DefaultWorkingDirectory)/scripts"
         Contents: *
-      - task: PublishBuildArtifacts@1
-        displayName: publish scripts build to artifacts
+    - task: PublishBuildArtifacts@1
+      displayName: publish scripts build to artifacts
   - job: build_dotnet_mock_server
     displayName: build dotnet mock server
     steps:
