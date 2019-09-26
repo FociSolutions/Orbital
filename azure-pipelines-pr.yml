@@ -31,7 +31,7 @@ stages:
   - job: publish_release_scripts
     pool:
       vmImage: "Ubuntu 16.04"
-    dispalyName: publish release scripts
+    displayName: publish release scripts
     steps:
     - task: CopyFiles@2
       displayName: move scripts to artifacts
