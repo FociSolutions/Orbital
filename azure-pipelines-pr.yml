@@ -165,13 +165,13 @@ stages:
           - task: OneLuckiDev.json2variable.vsts-release-web-test.oneLuckiDevJson2Variable@1
             displayName: 'set git variables to environment variables'
             inputs:
-              jsonFile: '$(System.DefaultWorkingDirectory)/_Orbital-CI-PR/drop/gitversionvariables.json'
+              jsonFile: '$(System.DefaultWorkingDirectory)/drop/gitversionvariables.json'
               variablePrefix: GitVersion
           - task: AzureCLI@1
             displayName: 'run azure provision script'
             inputs:
               azureSubscription: 'Dans Subscription'
-              scriptPath: '$(System.DefaultWorkingDirectory)/_Orbital_CI/Scripts/azcliscript.sh'
+              scriptPath: '$(System.DefaultWorkingDirectory)/Scripts/azcliscript.sh'
               arguments: '"$(GitVersion.SemVer)"'
           - task: AzureRmWebAppDeployment@4
             displayName: 'deploy designer to azure'
