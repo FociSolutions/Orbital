@@ -161,7 +161,7 @@ stages:
     - name: mock
       value: mock
     - name: designer
-      valeu: designer
+      value: designer
     - name: acrfoci
       value: focicontainerregistry
     - name: dockerhubfoci
