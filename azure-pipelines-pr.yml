@@ -5,6 +5,21 @@ variables:
   buildConfiguration: "Release"
 
 stages:
+- stage: mirror_to_github
+  displayName: mirror to github
+  dependsOn: []
+  jobs:
+  - job: mirror_to_github
+    displayName: mirror to github
+    pool:
+      vmImage: "Ubuntu 16.04"
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: $(githubKnownHosts)
+        sshPublicKey: $(githubOrbitalDeployPublicKey)
+        sshKeySecureFile: orbital_github_deploy_key
+    - script: |
+        git push --mirror git@github.com:FociSolutions/Orbital.git
 - stage: build_source
   displayName: build source
   dependsOn: [] 
@@ -183,3 +198,41 @@ stages:
               csmFile: '$(Pipeline.Workspace)/Scripts/orbitalARMTemplate.json'
               deploymentName: '$(GitVersion.SemVer)'
               deploymentOutputs: 'ARM_OUTPUTS'
+- stage: production
+  dependsOn:
+  - development
+  jobs:
+  - deployment: deploy_production
+    displayName: deploy production
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    environment: production
+    variables:
+    - group: Foci Secrets
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - download: current
+            artifact: Scripts
+          - task: OneLuckiDev.json2variable.vsts-release-web-test.oneLuckiDevJson2Variable@1
+            displayName: 'set git variables to environment variables'
+            inputs:
+              jsonFile: '$(Pipeline.Workspace)/drop/gitversionvariables.json'
+              variablePrefix: GitVersion
+          - task: DockerInstaller@0
+            displayName: install docker 17.09.0-ce
+          - task: Bash@3
+            displayName: pull images from foci azure container registry
+            inputs:
+              targetType: filePath
+              filePath: '$(Pipeline.Workspace)/Scripts/acrprodscript'
+              arguments: '"$(GitVersion.SemVer)" "$(variables.azureregistrypassword)"'
+          - task: Bash@3
+            displayName: 'push images to docker hub'
+            inputs:
+              targetType: filePath
+              filePath: '$(Pipeline.Workspace)/Scripts/dockerprod'
+              arguments: '"$(GitVersion.SemVer)" "$(GitVersion.Major)" "$(GitVersion.Minor)" "$(GitVersion.MajorMinorPatch)" "$(docker-hub-password)"'
