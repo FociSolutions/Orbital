@@ -162,6 +162,12 @@ stages:
       runOnce:
         deploy:
           steps:
+          - download: current
+            artifact: drop
+            path: $(System.DefaultWorkingDirectory)
+          - download: current
+            artifact: Scripts
+            path: $(System.DefaultWorkingDirectory)
           - task: OneLuckiDev.json2variable.vsts-release-web-test.oneLuckiDevJson2Variable@1
             displayName: 'set git variables to environment variables'
             inputs:
