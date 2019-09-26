@@ -67,10 +67,10 @@ stages:
         publishWebProjects: false
         modifyOutputPath: true
         zipAfterPublish: true
-  - job: build_dotnet_mock_server_win_x64
+  - job: build_dotnet_mock_server_lin_x64
     pool:
       vmImage: "Ubuntu 16.04"
-    displayName: build dotnet mock server win x64
+    displayName: build dotnet mock server linux x64
     steps:
     - task: DotNetCoreCLI@2
       displayName: dotnet publish linux x64
@@ -81,10 +81,10 @@ stages:
         publishWebProjects: false
         modifyOutputPath: true
         zipAfterPublish: true
-  - job: build_dotnet_mock_server_win_x64
+  - job: build_dotnet_mock_server_osx_x64
     pool:
       vmImage: "Ubuntu 16.04"
-    displayName: build dotnet mock server win x64
+    displayName: build dotnet mock server osx x64
     steps:
     - task: DotNetCoreCLI@2
       displayName: dotnet publish osx x64
