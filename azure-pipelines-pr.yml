@@ -18,6 +18,9 @@ stages:
       displayName: set node to version 12.x
       inputs:
         versionSpec: "12.x"
+    - script: npm ci
+      displayName: npm ci
+      workingDirectory: src/orbital-designer
     - script: npm run build -- --prod
       displayName: npm build --prod
       workingDirectory: src/orbital-designer
@@ -37,6 +40,7 @@ stages:
       displayName: move scripts to artifacts
       inputs:
         sourceFolder: "$(System.DefaultWorkingDirectory)/scripts"
+        targetFolder: "$(Build.ArtifactStagingDirectory)"
     - task: PublishBuildArtifacts@1
       displayName: publish scripts build to artifacts
   - job: build_dotnet_mock_server
