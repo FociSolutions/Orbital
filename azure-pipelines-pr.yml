@@ -155,9 +155,22 @@ stages:
     environment: development
     variables:
       orbital: 'orbital'
-      env: 'prod'
+      env: 'dev'
       mock: 'mock'
       designer: 'designer'
+      acrfoci: 'focicontainerregistry'
+      dockerhubfoci: 'fociopensource'
+      imagenamedesigner: 'orbitaldesigner'
+      imagenamemock: 'orbitalmock'
+      location: 'canadacentral'
+      mock: 'mock'
+      orbital: 'orbital'
+      registry: 'focicontainerregistry'
+      resourcegroup: 'rg'
+      runtimeenv: 'DOTNETCORE|2.2'
+      serviceplan: 'sp'
+      system.debug: 'true'
+    - group: "Foci Secrets"
     strategy:
       runOnce:
         deploy:
