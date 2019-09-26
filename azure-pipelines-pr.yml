@@ -20,6 +20,8 @@ stages:
         sshPublicKey: $(githubOrbitalDeployPublicKey)
         sshKeySecureFile: orbital_github_deploy_key
     - script: |
+        git clone --mirror https://dev.azure.com/focisolutions/Orbital/_git/Orbital $(Pipeline.Workspace)
+        cd $(Pipeline.Workspace)
         git remote add --mirror=push github git@github.com:FociSolutions/Orbital.git
         git push --quiet github
 - stage: build_source
