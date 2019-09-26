@@ -9,7 +9,8 @@
         "azureregistryurl": "",
         "azureregistryusername": "",
         "azureregistry": "",
-        "azureimage": "",
+        "azuremockimage": "",
+        "azuredesignerimage": "",
         "azuretag": "",
         "azureregistrypassword": "",
         "appServiceSkuName": "",
@@ -66,7 +67,7 @@
                     }
                 ],
                 "siteConfig": {
-                    "linuxFxVersion": "[concat('/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('resourceGroupName') ,'/providers/Microsoft.Web/serverfarms/', variables('serverfarms_orbital_sp_name'))]",
+                    "linuxFxVersion": "[concat('DOCKER|',variables('azureregistry'),'.azurecr.io/',variables('azuredesignerimage'),':',variables('azuretag'))]",
                     "appSettings": [
                       {
                         "name": "DOCKER_REGISTRY_SERVER_URL",
@@ -116,7 +117,7 @@
                     }
                 ],
                 "siteConfig": {
-                    "linuxFxVersion": "[concat('DOCKER|',variables('azureregistry'),'.azurecr.io/',variables('azureimage'),':',variables('azuretag'))]",
+                    "linuxFxVersion": "[concat('DOCKER|',variables('azureregistry'),'.azurecr.io/',variables('azuremockimage'),':',variables('azuretag'))]",
                     "appSettings": [
                       {
                         "name": "DOCKER_REGISTRY_SERVER_URL",
