@@ -25,10 +25,7 @@ stages:
     - task: CopyFiles@2
       displayName: move designer build to artifacts
       inputs:
-        SourceFolder: "$(System.DefaultWorkingDirectory)/src/orbital-designer/dist"
-        Contents: |
-          *
-          orbital-designer/**
+        sourceFolder: "$(System.DefaultWorkingDirectory)/src/orbital-designer/dist"
       TargetFolder: "$(Build.ArtifactStagingDirectory)"
     - task: PublishBuildArtifacts@1
       displayName: publish designer build to artifacts
@@ -38,8 +35,7 @@ stages:
     - task: CopyFiles@2
       displayName: move scripts to artifacts
       inputs:
-        SourceFolder: "$(System.DefaultWorkingDirectory)/scripts"
-        Contents: *
+        sourceFolder: "$(System.DefaultWorkingDirectory)/scripts"
     - task: PublishBuildArtifacts@1
       displayName: publish scripts build to artifacts
   - job: build_dotnet_mock_server
@@ -120,10 +116,8 @@ stages:
     - task: CopyFiles@2
       displayName: Move gitversion variables to artifact directory
       inputs:
-        SourceFolder: "$(System.DefaultWorkingDirectory)/gitversion"
-        Contents: |
-          *
-        TargetFolder: "$(Build.ArtifactStagingDirectory)"
+        sourceFolder: "$(System.DefaultWorkingDirectory)/gitversion"
+        targetFolder: "$(Build.ArtifactStagingDirectory)"
     - task: PublishBuildArtifacts@1
       displayName: publish git version to artifacts
   - job: build mock server container
