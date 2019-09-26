@@ -57,7 +57,7 @@ stages:
       displayName: dotnet publish win x64
       inputs:
         command: publish
-        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build" --runtime win-x64"
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build --runtime win-x64"
         workingDirectory: src/Orbital.Mock.Server/
         publishWebProjects: false
         modifyOutputPath: true
@@ -69,7 +69,7 @@ stages:
       displayName: dotnet publish linux x64
       inputs:
         command: publish
-        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build" --runtime linux-x64"
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build --runtime linux-x64"
         workingDirectory: src/Orbital.Mock.Server/
         publishWebProjects: false
         modifyOutputPath: true
@@ -81,7 +81,7 @@ stages:
       displayName: dotnet publish osx x64
       inputs:
         command: publish
-        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build" --runtime osx-x64"
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build --runtime osx-x64"
         workingDirectory: src/Orbital.Mock.Server/
         publishWebProjects: false
         modifyOutputPath: true
