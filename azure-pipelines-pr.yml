@@ -24,14 +24,8 @@ stages:
     - script: npm run build -- --prod
       displayName: npm build --prod
       workingDirectory: src/orbital-designer
-    - task: CopyFiles@2
-      displayName: move designer build to artifacts
-      inputs:
-        sourceFolder: "$(System.DefaultWorkingDirectory)/src/orbital-designer/dist"
-        targetFolder: "$(Build.ArtifactStagingDirectory)"
-    - task: PublishBuildArtifacts@1
-      displayName: publish designer build to artifacts
-      artifactName: orbital-designer
+    - publish: $(System.DefaultWorkingDirectory)/src/orbital-designer/dist
+      artifact: orbital-designer
   - job: publish_release_scripts
     pool:
       vmImage: "Ubuntu 16.04"
