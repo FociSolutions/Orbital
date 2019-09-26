@@ -37,14 +37,8 @@ stages:
       vmImage: "Ubuntu 16.04"
     displayName: publish release scripts
     steps:
-    - task: CopyFiles@2
-      displayName: move scripts to artifacts
-      inputs:
-        sourceFolder: "$(System.DefaultWorkingDirectory)/scripts"
-        targetFolder: "$(Build.ArtifactStagingDirectory)"
-    - task: PublishBuildArtifacts@1
-      displayName: publish scripts build to artifacts
-      artifactName: scripts
+    - publish: $(System.DefaultWorkingDirectory)/scripts
+      artifact: scripts
   - job: build_dotnet_mock_server
     pool:
       vmImage: "Ubuntu 16.04"
@@ -54,14 +48,10 @@ stages:
       displayName: dotnet publish
       inputs:
         command: publish
-        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)"
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output"
         workingDirectory: src/Orbital.Mock.Server/
-        publishWebProjects: false
-        modifyOutputPath: true
-        zipAfterPublish: true
-    - task: PublishBuildArtifacts@1
-      displayName: publish mock server build to artifacts
-      artifactName: mock server
+    - publish: $(System.DefaultWorkingDirectory)/output
+      artifact: mock server
   - job: build_dotnet_mock_server_win_x64
     pool:
       vmImage: "Ubuntu 16.04"
@@ -71,14 +61,10 @@ stages:
       displayName: dotnet publish win x64
       inputs:
         command: publish
-        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build --runtime win-x64"
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output --runtime win-x64"
         workingDirectory: src/Orbital.Mock.Server/
-        publishWebProjects: false
-        modifyOutputPath: true
-        zipAfterPublish: true
-    - task: PublishBuildArtifacts@1
-      displayName: publish mock server win x64 build to artifacts
-      artifactName: mock server win x614
+    - publish: $(System.DefaultWorkingDirectory)/output
+      artifact: mock server win x64
   - job: build_dotnet_mock_server_lin_x64
     pool:
       vmImage: "Ubuntu 16.04"
@@ -88,14 +74,10 @@ stages:
       displayName: dotnet publish linux x64
       inputs:
         command: publish
-        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build --runtime linux-x64"
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output --runtime linux-x64"
         workingDirectory: src/Orbital.Mock.Server/
-        publishWebProjects: false
-        modifyOutputPath: true
-        zipAfterPublish: true
-    - task: PublishBuildArtifacts@1
-      displayName: publish mock server linux x64 build to artifacts
-      artifactName: mock server linux x64
+    - publish: $(System.DefaultWorkingDirectory)/output
+      artifact: mock server lin x64
   - job: build_dotnet_mock_server_osx_x64
     pool:
       vmImage: "Ubuntu 16.04"
@@ -107,12 +89,8 @@ stages:
         command: publish
         arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build --runtime osx-x64"
         workingDirectory: src/Orbital.Mock.Server/
-        publishWebProjects: false
-        modifyOutputPath: true
-        zipAfterPublish: true
-    - task: PublishBuildArtifacts@1
-      displayName: publish mock server osx x64 build to artifacts
-      artifactName: mock server osx x64
+    - publish: $(System.DefaultWorkingDirectory)/output
+      artifact: mock server osx 64
 - stage: build_containers
   displayName: build containers
   dependsOn: [] 
@@ -143,13 +121,8 @@ stages:
         dockerfile: "$(System.DefaultWorkingDirectory)/docker/mock/Dockerfile"
         tags: |
           $(GitVersion.SemVer)
-    - task: CopyFiles@2
-      displayName: Move gitversion variables to artifact directory
-      inputs:
-        sourceFolder: "$(System.DefaultWorkingDirectory)/gitversion"
-        targetFolder: "$(Build.ArtifactStagingDirectory)"
-    - task: PublishBuildArtifacts@1
-      displayName: publish git version to artifacts
+    - publish: $(System.DefaultWorkingDirectory)/gitversion
+      artifact: drop
   - job: build_designer_container
     pool:
       vmImage: "Ubuntu 16.04"
