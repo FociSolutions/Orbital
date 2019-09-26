@@ -20,9 +20,8 @@ stages:
         sshPublicKey: $(githubOrbitalDeployPublicKey)
         sshKeySecureFile: orbital_github_deploy_key
     - script: |
-        git remote set-url --push origin git@github.com:FociSolutions/Orbital.git
-        git fetch -p origin
-        git push --mirror
+        git remote add --mirror=push github git@github.com:FociSolutions/Orbital.git
+        git push --quiet github
 - stage: build_source
   displayName: build source
   dependsOn: [] 
