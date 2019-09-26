@@ -27,6 +27,7 @@ import { FilterInvalidControlsPipe } from './pipes/filter-invalid-controls/filte
 import { EndpointListComponent } from './components/endpoint-view/endpoint-list/endpoint-list.component';
 import { OverviewComponent } from './components/endpoint-view/overview/overview.component';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
+import { SideBarComponent } from './components/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { EndpointListItemComponent } from './components/endpoint-view/endpoint-l
     FilterInvalidControlsPipe,
     EndpointListComponent,
     EndpointListItemComponent,
-    OverviewComponent
+    OverviewComponent,
+    SideBarComponent
   ],
   imports: [
     BrowserModule,
