@@ -31,6 +31,7 @@ stages:
         targetFolder: "$(Build.ArtifactStagingDirectory)"
     - task: PublishBuildArtifacts@1
       displayName: publish designer build to artifacts
+      artifactName: orbital-designer
   - job: publish_release_scripts
     pool:
       vmImage: "Ubuntu 16.04"
@@ -43,6 +44,7 @@ stages:
         targetFolder: "$(Build.ArtifactStagingDirectory)"
     - task: PublishBuildArtifacts@1
       displayName: publish scripts build to artifacts
+      artifactName: scripts
   - job: build_dotnet_mock_server
     pool:
       vmImage: "Ubuntu 16.04"
@@ -52,11 +54,14 @@ stages:
       displayName: dotnet publish
       inputs:
         command: publish
-        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build"
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)"
         workingDirectory: src/Orbital.Mock.Server/
         publishWebProjects: false
         modifyOutputPath: true
         zipAfterPublish: true
+    - task: PublishBuildArtifacts@1
+      displayName: publish mock server build to artifacts
+      artifactName: mock server
   - job: build_dotnet_mock_server_win_x64
     pool:
       vmImage: "Ubuntu 16.04"
@@ -71,6 +76,9 @@ stages:
         publishWebProjects: false
         modifyOutputPath: true
         zipAfterPublish: true
+    - task: PublishBuildArtifacts@1
+      displayName: publish mock server win x64 build to artifacts
+      artifactName: mock server win x614
   - job: build_dotnet_mock_server_lin_x64
     pool:
       vmImage: "Ubuntu 16.04"
@@ -85,6 +93,9 @@ stages:
         publishWebProjects: false
         modifyOutputPath: true
         zipAfterPublish: true
+    - task: PublishBuildArtifacts@1
+      displayName: publish mock server linux x64 build to artifacts
+      artifactName: mock server linux x64
   - job: build_dotnet_mock_server_osx_x64
     pool:
       vmImage: "Ubuntu 16.04"
@@ -99,6 +110,9 @@ stages:
         publishWebProjects: false
         modifyOutputPath: true
         zipAfterPublish: true
+    - task: PublishBuildArtifacts@1
+      displayName: publish mock server osx x64 build to artifacts
+      artifactName: mock server osx x64
 - stage: build_containers
   displayName: build containers
   dependsOn: [] 

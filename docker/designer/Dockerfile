@@ -13,7 +13,7 @@ COPY ./src/orbital-designer/package-lock.json /app/package-lock.json
 RUN npm ci
 
 # add app
-COPY ./src/orbital-designer /app
+COPY ./src/orbital-designer .
 
 # start app
 RUN npm run build-ci --output-path=dist
