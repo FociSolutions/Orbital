@@ -25,7 +25,7 @@ stages:
       displayName: move designer build to artifacts
       inputs:
         sourceFolder: "$(System.DefaultWorkingDirectory)/src/orbital-designer/dist"
-      TargetFolder: "$(Build.ArtifactStagingDirectory)"
+        targetFolder: "$(Build.ArtifactStagingDirectory)"
     - task: PublishBuildArtifacts@1
       displayName: publish designer build to artifacts
   - job: publish_release_scripts
