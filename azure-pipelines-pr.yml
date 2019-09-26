@@ -34,6 +34,7 @@ stages:
       displayName: publish designer build to artifacts
   - job: publish_release_scripts
     dispalyName: publish release scripts
+    steps:
     - task: CopyFiles@2
       displayName: move scripts to artifacts
       inputs:
