@@ -1,6 +1,3 @@
-pool:
-  vmImage: "Ubuntu 16.04"
-
 pr:
   - master
 
@@ -13,6 +10,8 @@ stages:
   dependsOn: [] 
   jobs:
   - job: build_angular_designer
+    pool:
+      vmImage: "Ubuntu 16.04"
     displayName: build angular designer
     steps:
     - task: NodeTool@0
@@ -30,6 +29,8 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: publish designer build to artifacts
   - job: publish_release_scripts
+    pool:
+      vmImage: "Ubuntu 16.04"
     dispalyName: publish release scripts
     steps:
     - task: CopyFiles@2
@@ -39,6 +40,8 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: publish scripts build to artifacts
   - job: build_dotnet_mock_server
+    pool:
+      vmImage: "Ubuntu 16.04"
     displayName: build dotnet mock server
     steps:
     - task: DotNetCoreCLI@2
@@ -51,6 +54,8 @@ stages:
         modifyOutputPath: true
         zipAfterPublish: true
   - job: build_dotnet_mock_server_win_x64
+    pool:
+      vmImage: "Ubuntu 16.04"
     displayName: build dotnet mock server win x64
     steps:
     - task: DotNetCoreCLI@2
@@ -63,6 +68,8 @@ stages:
         modifyOutputPath: true
         zipAfterPublish: true
   - job: build_dotnet_mock_server_win_x64
+    pool:
+      vmImage: "Ubuntu 16.04"
     displayName: build dotnet mock server win x64
     steps:
     - task: DotNetCoreCLI@2
@@ -75,6 +82,8 @@ stages:
         modifyOutputPath: true
         zipAfterPublish: true
   - job: build_dotnet_mock_server_win_x64
+    pool:
+      vmImage: "Ubuntu 16.04"
     displayName: build dotnet mock server win x64
     steps:
     - task: DotNetCoreCLI@2
@@ -90,7 +99,10 @@ stages:
   displayName: build containers
   dependsOn: [] 
   jobs:
-  - job: build mock server container
+  - job: build_mock_server_container
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build mock server container
     steps:
     - task: NuGetCommand@2
       displayName: install git version tool
@@ -120,7 +132,10 @@ stages:
         targetFolder: "$(Build.ArtifactStagingDirectory)"
     - task: PublishBuildArtifacts@1
       displayName: publish git version to artifacts
-  - job: build mock server container
+  - job: build_designer_container
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build designer container
     steps:
     - task: NuGetCommand@2
       displayName: install git version tool
