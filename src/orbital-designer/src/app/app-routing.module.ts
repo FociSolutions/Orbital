@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OverviewRedirectService } from './services/overview-redirect/overview-redirect.service';
 import { HomeViewComponent } from './components/home-view/home-view.component';
@@ -6,7 +6,6 @@ import { CreateNewMockViewComponent } from './components/create-new-mock-view/cr
 import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
-import { OverviewComponent } from './components/endpoint-view/overview/overview.component';
 
 const routes: Routes = [
   { path: '', component: HomeViewComponent },
@@ -14,7 +13,6 @@ const routes: Routes = [
   { path: 'import-from-file', component: ImportFromFileViewComponent },
   { path: 'import-from-server', component: ImportFromServerViewComponent },
   { path: 'endpoint-view', component: EndpointViewComponent, canActivate: [OverviewRedirectService] },
-  {path: 'overview', component: OverviewComponent, canActivate: [OverviewRedirectService]},
   { path: '**', component: HomeViewComponent }
 ];
 

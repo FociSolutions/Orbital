@@ -6,8 +6,14 @@ import { OverviewComponent } from './overview/overview.component';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
-import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { EndpointListComponent } from './endpoint-list/endpoint-list.component';
+import { GetEndpointScenariosPipe } from '../../pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
+import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -19,9 +25,19 @@ describe('EndpointViewComponent', () => {
       declarations: [
         EndpointViewComponent,
         OverviewComponent,
-        EndpointListItemComponent
+        EndpointListComponent,
+        EndpointListItemComponent,
+        GetEndpointScenariosPipe
       ],
-      imports: [OrbitalCommonModule, MatCardModule, MatGridListModule],
+      imports: [
+        OrbitalCommonModule,
+        MatCardModule,
+        MatGridListModule,
+        LoggerTestingModule,
+        MatDividerModule,
+        MatIconModule,
+        MatListModule
+      ],
       providers: [DesignerStore]
     }).compileComponents();
   }));

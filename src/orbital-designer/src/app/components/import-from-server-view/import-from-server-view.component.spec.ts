@@ -9,9 +9,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
+import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
@@ -28,7 +30,7 @@ describe('ImportFromServerViewComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule
       ],
-      providers: [Location]
+      providers: [Location, DesignerStore]
     }).compileComponents();
   }));
 
@@ -47,6 +49,31 @@ describe('ImportFromServerViewComponent', () => {
       const locationSpy = spyOn(TestBed.get(Location), 'back');
       component.onBack();
       expect(locationSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('ImportFromServerViewComponent.onFormArrayChange', () => {
+    it('should set the formArray.errors value if any of the formArray controls are invalid', () => {
+      expect(component.formArray.errors).toBeFalsy();
+      component.formArray.controls = [
+        new FormControl(null, Validators.required)
+      ];
+      component.onFormArrayChange('');
+      expect(component.formArray.errors).toBeTruthy();
+    });
+  });
+
+  describe('ImportFromServerViewComponent.onSubmit', () => {
+    it('should set the designer stores mockDefinitions and navigate to the endpoint-view', () => {
+      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+      const store = TestBed.get(DesignerStore);
+      const expectedMap = new Map([
+        [validMockDefinition.metadata.title, validMockDefinition]
+      ]);
+      component.mockDefinitions = [validMockDefinition];
+      component.onSubmit();
+      expect(store.state.mockDefinitions).toEqual(expectedMap);
+      expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
     });
   });
 

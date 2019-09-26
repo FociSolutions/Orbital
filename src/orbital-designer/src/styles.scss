@@ -97,3 +97,12 @@ body {
 .mat-tooltip {
   font-size: 12px;
 }
+
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.26);
+}
+
