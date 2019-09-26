@@ -81,7 +81,7 @@ stages:
       displayName: dotnet publish osx x64
       inputs:
         command: publish
-        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build --runtime osx-x64"
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output --runtime osx-x64"
         workingDirectory: src/Orbital.Mock.Server/
     - publish: $(System.DefaultWorkingDirectory)/output
       artifact: mock server osx 64
