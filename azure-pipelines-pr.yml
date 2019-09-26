@@ -143,3 +143,51 @@ stages:
         dockerfile: "$(System.DefaultWorkingDirectory)/docker/designer/Dockerfile"
         tags: |
           $(GitVersion.SemVer)
+- stage: development
+  dependsOn:
+  - build_source
+  - build_containers
+  jobs:
+  - deployment: deploy_development
+    displayName: deploy developmnet
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    environment: development
+    variables:
+      orbital: 'orbital'
+      env: 'prod'
+      mock: 'mock'
+      designer: 'designer'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: OneLuckiDev.json2variable.vsts-release-web-test.oneLuckiDevJson2Variable@1
+            displayName: 'set git variables to environment variables'
+            inputs:
+              jsonFile: '$(System.DefaultWorkingDirectory)/_Orbital-CI-PR/drop/gitversionvariables.json'
+              variablePrefix: GitVersion
+          - task: AzureCLI@1
+            displayName: 'run azure provision script'
+            inputs:
+              azureSubscription: 'Dans Subscription'
+              scriptPath: '$(System.DefaultWorkingDirectory)/_Orbital_CI/Scripts/azcliscript.sh'
+              arguments: '"$(GitVersion.SemVer)"'
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'deploy designer to azure'
+            inputs:
+              azureSubscription: 'Dans Subscription'
+              appType: webAppContainer
+              WebAppName: '$(orbital)-$(env)-$(designer)'
+              DockerNamespace: focicontainerregistry.azurecr.io
+              DockerRepository: orbitaldesigner
+              DockerImageTag: '$(GitVersion.SemVer)'
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: $(orbital)-$(env)-$(mock)'
+            inputs:
+              azureSubscription: 'Dans Subscription'
+              appType: webAppContainer
+              WebAppName: '$(orbital)-$(env)-$(mock)'
+              DockerNamespace: focicontainerregistry.azurecr.io
+              DockerRepository: orbitalmock
+              DockerImageTag: '$(GitVersion.SemVer)'
