@@ -163,8 +163,6 @@ stages:
       imagenamedesigner: 'orbitaldesigner'
       imagenamemock: 'orbitalmock'
       location: 'canadacentral'
-      mock: 'mock'
-      orbital: 'orbital'
       registry: 'focicontainerregistry'
       resourcegroup: 'rg'
       runtimeenv: 'DOTNETCORE|2.2'
