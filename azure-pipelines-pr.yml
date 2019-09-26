@@ -154,34 +154,6 @@ stages:
       vmImage: 'Ubuntu 16.04'
     environment: development
     variables:
-    - name: orbital
-      value: orbital
-    - name: env
-      value: dev
-    - name: mock
-      value: mock
-    - name: designer
-      value: designer
-    - name: acrfoci
-      value: focicontainerregistry
-    - name: dockerhubfoci
-      value: fociopensource
-    - name: imagenamedesigner
-      value: orbitaldesigner
-    - name: imagenamemock
-      value: orbitalmock
-    - name: location
-      value: canadacentral
-    - name: registry
-      value: focicontainerregistry
-    - name: resourcegroup
-      value: rg
-    - name: runtimeenv
-      value: DOTNETCORE|2.2
-    - name: serviceplan
-      value: sp
-    - name: system.debug
-      value: true
     - group: Foci Secrets
     strategy:
       runOnce:
@@ -196,27 +168,18 @@ stages:
             inputs:
               jsonFile: '$(Pipeline.Workspace)/drop/gitversionvariables.json'
               variablePrefix: GitVersion
-          - task: AzureCLI@1
-            displayName: 'run azure provision script'
+          - task: FileTransform@1
+            displayName: 'file transform arm template'
+            inputs:
+              folderPath: '$(Pipeline.Workspace)/Scripts/'
+              fileType: json
+              targetFiles: orbitalARMTemplate.json
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'deploy azure arm template'
             inputs:
               azureSubscription: 'Dans Subscription'
-              scriptPath: '$(Pipeline.Workspace)/Scripts/azcliscript.sh'
-              arguments: '"$(GitVersion.SemVer)"'
-          - task: AzureRmWebAppDeployment@4
-            displayName: 'deploy designer to azure'
-            inputs:
-              azureSubscription: 'Dans Subscription'
-              appType: webAppContainer
-              WebAppName: '$(orbital)-$(env)-$(designer)'
-              DockerNamespace: focicontainerregistry.azurecr.io
-              DockerRepository: orbitaldesigner
-              DockerImageTag: '$(GitVersion.SemVer)'
-          - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure App Service Deploy: $(orbital)-$(env)-$(mock)'
-            inputs:
-              azureSubscription: 'Dans Subscription'
-              appType: webAppContainer
-              WebAppName: '$(orbital)-$(env)-$(mock)'
-              DockerNamespace: focicontainerregistry.azurecr.io
-              DockerRepository: orbitalmock
-              DockerImageTag: '$(GitVersion.SemVer)'
+              resourceGroupName: '$(variables.resourceGroupName)'
+              location: 'Canada Central'
+              csmFile: '$(Pipeline.Workspace)/Scripts/orbitalARMTemplate.json'
+              deploymentName: '$(GitVersion.SemVer)'
+              deploymentOutputs: 'ARM_OUTPUTS'
