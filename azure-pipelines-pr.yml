@@ -84,7 +84,7 @@ stages:
         arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output --runtime osx-x64"
         workingDirectory: src/Orbital.Mock.Server/
     - publish: $(System.DefaultWorkingDirectory)/output
-      artifact: mock server osx 64
+      artifact: mock server osx x64
 - stage: build_containers
   displayName: build containers
   dependsOn: [] 
