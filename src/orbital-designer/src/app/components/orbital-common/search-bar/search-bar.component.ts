@@ -24,12 +24,11 @@ export class SearchBarComponent implements OnInit {
 
   onSearchInput(value: string) {
     this.filteredList.emit(
-      this.list.filter(
-        option =>
-          !SearchBarComponent.ignoreCaseContainsMatch(
-            this.itemToStringFn(option.value),
-            value
-          )
+      this.list.filter(option =>
+        SearchBarComponent.ignoreCaseContainsMatch(
+          this.itemToStringFn(option),
+          value
+        )
       )
     );
   }

@@ -9,8 +9,13 @@
           <app-overview [metadata]="mockDefinition?.metadata"></app-overview>
         </div>
         <div>
-          <app-search-bar> </app-search-bar>
-          <app-endpoint-list></app-endpoint-list>
+          <app-search-bar
+            [list]="endpointList"
+            (filteredList)="setFilteredList($event)"
+            [itemToStringFn]="endpointToString"
+          >
+          </app-search-bar>
+          <app-endpoint-list [endpoints]="filteredList"></app-endpoint-list>
         </div>
       </div>
     </div>

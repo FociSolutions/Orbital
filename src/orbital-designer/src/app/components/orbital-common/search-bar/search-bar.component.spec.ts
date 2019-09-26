@@ -23,4 +23,18 @@ describe('SearchBarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('SearchBarComponent.onSearch', () => {
+    it("should remove any items that don't match the criteria", done => {
+      const unfilteredList: string[] = faker.random.words().split(' ');
+      component.list = unfilteredList;
+      component.filteredList.subscribe(filteredList => {
+        expect(filteredList.findIndex(item => item === unfilteredList[0])).toBe(
+          -1
+        );
+        done();
+      });
+      component.onSearchInput(unfilteredList[0] + 'sample');
+    });
+  });
 });
