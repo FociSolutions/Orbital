@@ -26,7 +26,6 @@ export class SideBarComponent implements OnInit {
   updateSelected(mockDefinition: MockDefinition) {
     this.store.mockDefinition = mockDefinition;
   }
-
   ngOnInit() {
   }
 

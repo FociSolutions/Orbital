@@ -45,10 +45,11 @@ describe('EndpointViewComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EndpointViewComponent);
-    component = fixture.componentInstance;
     store = TestBed.get(DesignerStore);
     store.mockDefinition = validMockDefinition as MockDefinition;
+    fixture = TestBed.createComponent(EndpointViewComponent);
+    component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
