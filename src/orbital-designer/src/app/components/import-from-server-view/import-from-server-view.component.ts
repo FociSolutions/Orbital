@@ -22,6 +22,7 @@ export class ImportFromServerViewComponent implements OnInit {
   formArray: FormArray;
   emptyListMessageServerBox = 'No MockDefinitions';
   mockDefinitions: MockDefinition[] = [];
+
   controlsMockDefinitionToString = (control: AbstractControl) =>
     (control.value as MockDefinition).metadata.title
 
@@ -32,26 +33,16 @@ export class ImportFromServerViewComponent implements OnInit {
     private router: Router
   ) {
     this.formArray = new FormArray([]);
-    this.formArray.valueChanges.subscribe(value =>
-      this.onFormArrayChange(value)
-    );
   }
 
   ngOnInit() {}
 
+  /**
+   * The function called on submit. Sets the mockDefinitions in the DesignerStore
+   */
   onSubmit() {
     this.designerStore.mockDefinitions = this.mockDefinitions;
     this.router.navigateByUrl('endpoint-view');
-  }
-
-  onFormArrayChange(value) {
-    this.logger.debug('ImportFromServerViewComponent formArray value:', value);
-    if (this.formArray.controls.findIndex(control => control.invalid) > -1) {
-      this.logger.debug('Invalid MockDefinition Found');
-      this.formArray.setErrors({
-        invalidMockDefinitionFound: 'One or more invalid Mock Definitions found'
-      });
-    }
   }
 
   /**
@@ -75,6 +66,11 @@ export class ImportFromServerViewComponent implements OnInit {
    * Getter function that returns the formArrays validation errors
    */
   get errors(): ValidationErrors | null {
+    if (this.formArray.invalid && this.formArray.errors === null) {
+      this.formArray.setErrors({
+        invalidMockDefinitionFound: 'One or more invalid Mock Definitions found'
+      });
+    }
     return this.formArray.errors;
   }
 
@@ -88,13 +84,18 @@ export class ImportFromServerViewComponent implements OnInit {
   ) {
     this.logger.debug('Received http response', response);
     if (response instanceof HttpResponse && Array.isArray(response.body)) {
-      this.formArray.controls = response.body.map(
-        () =>
-          new FormControl(null, null, [
-            mockDefinitionObjectValidatorFactory(this.logger)
-          ])
+      this.formArray = new FormArray(
+        response.body.map(
+          obj =>
+            new FormControl(obj, null, [
+              mockDefinitionObjectValidatorFactory(this.logger)
+            ])
+        )
       );
-      this.formArray.setValue(response.body);
+      this.logger.debug(
+        'ImportFormServerViewComponent FormArray',
+        this.formArray
+      );
     } else if (
       response instanceof HttpErrorResponse ||
       response instanceof DOMException
