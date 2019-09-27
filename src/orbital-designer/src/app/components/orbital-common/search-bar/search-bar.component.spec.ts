@@ -37,4 +37,28 @@ describe('SearchBarComponent', () => {
       component.onSearchInput(unfilteredList[0] + 'sample');
     });
   });
+
+  describe('SearchBarComponent.ignoreCaseContainsMatch', () => {
+    it('Should return true if a substring matches', () => {
+      const teststring: string = faker.random.word();
+      expect(
+        SearchBarComponent.ignoreCaseContainsMatch(
+          teststring,
+          teststring.substring(0, 1)
+        )
+      ).toBeTruthy();
+    });
+  });
+
+  describe('SearchBarComponent.ignoreCaseContainsMatch', () => {
+    it('Should return false if no substring is found', () => {
+      const teststring: string = faker.random.word();
+      expect(
+        SearchBarComponent.ignoreCaseContainsMatch(
+          teststring,
+          faker.random.word() + teststring
+        )
+      ).toBeFalsy();
+    });
+  });
 });

@@ -13,6 +13,9 @@ export class EndpointListComponent implements OnInit {
 
   constructor(private designerStore: DesignerStore) {}
 
+  /**
+   * Retrieves the list of scenarios from the store
+   */
   get scenarios(): Scenario[] {
     return this.designerStore.state.mockDefinition.scenarios;
   }
