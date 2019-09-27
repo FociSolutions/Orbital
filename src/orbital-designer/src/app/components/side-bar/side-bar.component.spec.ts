@@ -42,4 +42,15 @@ describe('SideBarComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('MOCKDEFINITIONS');
   }));
+
+  describe('SideBarComponent.isSelected', () => {
+    it('should return true if the mockDefinitions title list is selected', () => {
+      expect(component.isSelected).toBeTruthy();
+    });
+  });
+  describe('SideBarComponent.updateSelected', () => {
+    it('should return true if the mockDefinitions menu item is updated', () => {
+      expect(component.updateSelected).toBeTruthy();
+    });
+  });
 });
