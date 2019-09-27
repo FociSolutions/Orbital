@@ -19,9 +19,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./import-from-server-view.component.scss']
 })
 export class ImportFromServerViewComponent implements OnInit {
-  formArray: FormArray;
-  emptyListMessageServerBox = 'No MockDefinitions';
+  readonly emptyListMessageServerBox = 'No MockDefinitions';
+  readonly invalidMockDefinitionsFoundErrorMessage =
+    'One or more invalid Mock Definitions found';
   mockDefinitions: MockDefinition[] = [];
+  formArray: FormArray;
 
   controlsMockDefinitionToString = (control: AbstractControl) =>
     (control.value as MockDefinition).metadata.title
@@ -68,7 +70,7 @@ export class ImportFromServerViewComponent implements OnInit {
   get errors(): ValidationErrors | null {
     if (this.formArray.invalid && this.formArray.errors === null) {
       this.formArray.setErrors({
-        invalidMockDefinitionFound: 'One or more invalid Mock Definitions found'
+        invalidMockDefinitionFound: this.invalidMockDefinitionsFoundErrorMessage
       });
     }
     return this.formArray.errors;
@@ -93,7 +95,7 @@ export class ImportFromServerViewComponent implements OnInit {
         )
       );
       this.logger.debug(
-        'ImportFormServerViewComponent FormArray',
+        'ImportFormServerViewComponent FormArray value:',
         this.formArray
       );
     } else if (

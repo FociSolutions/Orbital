@@ -12,7 +12,7 @@ import * as faker from 'faker';
 import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 
 describe('ImportFromServerViewComponent', () => {
@@ -53,7 +53,15 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.errors', () => {
-    it('should return the ');
+    it('if the formArray errors are null and the formArray is invalid should set the invalid mock definition error message', () => {
+      component.formArray = new FormArray([
+        new FormControl(null, Validators.required)
+      ]);
+      const actual = component.errors;
+      expect(Array.from(Object.values(actual))).toContain(
+        component.invalidMockDefinitionsFoundErrorMessage
+      );
+    });
   });
 
   describe('ImportFromServerViewComponent.onSubmit', () => {
