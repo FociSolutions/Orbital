@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
 import { MatCardModule } from '@angular/material/card';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { OverviewComponent } from './overview/overview.component';
+import { OverviewComponent } from '../overview/overview.component';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';

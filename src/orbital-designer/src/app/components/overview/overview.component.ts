@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Metadata } from '../../../models/mock-definition/metadata.model';
+import { Metadata } from '../../models/mock-definition/metadata.model';
 
 @Component({
   selector: 'app-overview',
@@ -9,9 +9,7 @@ import { Metadata } from '../../../models/mock-definition/metadata.model';
 export class OverviewComponent implements OnInit {
   @Input() metadata: Metadata;
 
-  constructor() {
-   }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }
