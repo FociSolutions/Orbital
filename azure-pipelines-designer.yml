@@ -1,6 +1,3 @@
-pool:
-  vmImage: 'Ubuntu 16.04'
-
 trigger:
   branches:
     include:
@@ -15,76 +12,103 @@ trigger:
 variables:
   buildConfiguration: 'Release'
 
-steps:
+resources:
+  containers:
+  - container: node
+    image: selenium/node-chrome:latest
+    options: --user 0:0
 
-- task: DeleteFiles@1
-  displayName: 'Delete JUnit files'
-  inputs:
-    SourceFolder: ./junit
-    Contents: 'TEST*.xml'
+stages:
+- stage: build   
+  jobs:
+  - job: install_and_build
+    displayName: install and build
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    steps:
+    - task: DeleteFiles@1
+      displayName: 'Cleanup JUnit files'
+      inputs:
+        SourceFolder: ./junit
+        Contents: 'TEST*.xml'
 
-- task: Npm@1
-  displayName: 'npm install'
-  inputs:
-    command: install   
-    workingDir: './src/orbital-designer' 
+    - task: Npm@1
+      displayName: 'npm ci'
+      inputs:
+        command: ci   
+        workingDir: './src/orbital-designer' 
 
-- task: Npm@1
-  displayName: 'Build Angular'
-  inputs:
-    command: custom
-    customCommand: run build -- --prod    
-    workingDir: './src/orbital-designer' 
+    - task: Npm@1
+      displayName: 'npm run build --prod'
+      inputs:
+        command: custom
+        customCommand: run build -- --prod    
+        workingDir: './src/orbital-designer' 
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: './src/orbital-designer/dist'
-    ArtifactName: orbital-designer
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish angular build artifact orbital-designer'
+      inputs:
+        PathtoPublish: './src/orbital-designer/dist'
+        ArtifactName: orbital-designer
 
-- task: Npm@1
-  displayName: 'Test Angular'
-  inputs:
-    command: custom
-    customCommand: run test-ci
-    workingDir: './src/orbital-designer' 
+- stage: test
+  dependsOn: [] 
+  jobs:
+  - job: test_and_publish
+    displayName: test and publish
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    steps:
+    - task: Npm@1
+      displayName: 'npm ci'
+      inputs:
+        command: ci   
+        workingDir: './src/orbital-designer' 
+  
+    - task: Npm@1
+      displayName: 'npm run test-ci'
+      inputs:
+        command: custom
+        customCommand: run test-ci
+        workingDir: './src/orbital-designer' 
 
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage Angular results'
-  condition: succeededOrFailed()
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: './src/coverage/cobertura-coverage.xml'
-    reportDirectory: ./src/coverage
-    failIfCoverageEmpty: true
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish angular code coverage results'
+      condition: succeededOrFailed()
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: './src/coverage/cobertura-coverage.xml'
+        reportDirectory: './src/coverage'
+        failIfCoverageEmpty: true
 
-- task: PublishTestResults@2
-  displayName: 'Publish Angular test results'
-  condition: succeededOrFailed()
-  inputs:
-    searchFolder: $(System.DefaultWorkingDirectory)/src/junit
-    testRunTitle: Angular
-    testResultsFormat: JUnit
-    testResultsFiles: "**/TESTS*.xml"
+    - task: PublishTestResults@2
+      displayName: 'Publish angular test results'
+      condition: succeededOrFailed()
+      inputs:
+        searchFolder: $(System.DefaultWorkingDirectory)/src/junit
+        testRunTitle: Angular
+        testResultsFormat: JUnit
+        testResultsFiles: "**/TESTS*.xml"
 
-- task: Npm@1
-  displayName: 'Lint Angular'
-  inputs:
-    command: custom
-    customCommand: run lint --  --format=stylish
-    workingDir: './src/orbital-designer' 
+    - task: Npm@1
+      displayName: 'npm run lint --format=stylish'
+      inputs:
+        command: custom
+        customCommand: run lint --  --format=stylish
+        workingDir: './src/orbital-designer' 
 
-- task: Npm@1
-  displayName: 'E2E Test Angular'
-  inputs:
-    command: custom
-    customCommand: run e2e
-    workingDir: './src/orbital-designer' 
+    - task: Npm@1
+      displayName: 'Run angular E2E tests'
+      inputs:
+        command: custom
+        customCommand: run e2e
+        workingDir: '$(System.DefaultWorkingDirectory)/src/orbital-designer' 
 
-- task: PublishTestResults@2
-  displayName: 'Publish Angular E2E test results'
-  condition: succeededOrFailed()
-  inputs:
-    searchFolder: $(System.DefaultWorkingDirectory)/src/orbital-designer/e2e/junit
-    testRunTitle: Angular_E2E
-    testResultsFormat: JUnit
-    testResultsFiles: "**/junit*.xml"
+    - task: PublishTestResults@2
+      displayName: 'Publish angular E2E test results'
+      condition: succeededOrFailed()
+      inputs:
+        searchFolder: $(System.DefaultWorkingDirectory)/src/orbital-designer/e2e/junit
+        testRunTitle: Angular_E2E
+        testResultsFormat: JUnit
+        testResultsFiles: "**/junit*.xml"
