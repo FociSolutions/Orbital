@@ -25,7 +25,7 @@ describe('SearchBarComponent', () => {
   });
 
   describe('SearchBarComponent.onSearch', () => {
-    it("should remove any items that don't match the criteria", done => {
+    it('should remove any items that do not match the criteria', done => {
       const unfilteredList: string[] = faker.random.words().split(' ');
       component.list = unfilteredList;
       component.filteredList.subscribe(filteredList => {
