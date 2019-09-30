@@ -12,21 +12,20 @@
         flex-direction: column;
         margin-bottom: 0.4vh;
         h1 {
-        opacity: 0.54;
-        font-size: 1em; 
-        margin-left: 1.5em;
+            opacity: 0.54;
+            font-size: 1em; 
+            margin-left: 1.5em;
             margin-top: 2vh;
         }
     }
 
     .divider {
-    width: 90% !important;
-    margin: auto;
-}
+        width: 90% !important;
+        margin: auto;
+    }
 
     .side-bar-middle {
         min-width: 14vw;      
-        //height: 33%;
         margin-bottom: 2vh;
         
         .selected {
@@ -42,7 +41,6 @@
 
     .side-bar-bottom {
         min-width: 14vw;       
-        //height: 33%;
         margin-top: 1vh;
     }
 }
