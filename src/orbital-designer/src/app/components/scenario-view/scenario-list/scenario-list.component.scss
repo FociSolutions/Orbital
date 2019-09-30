@@ -1,0 +1,15 @@
+.scenariolistcontainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: scroll;
+
+  mat-list-item {
+    margin-top: 2em;
+    width: 100%;
+  }
+
+  app-scenario-list-item {
+    width: 100%;
+  }
+}
