@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-scenario-view',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./scenario-view.component.scss']
 })
 export class ScenarioViewComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private store: DesignerStore) {
+    this.store.state$.subscribe(
+      state => (this.mockDefinition = state.mockDefinition)
+    );
   }
 
+  mockDefinition: MockDefinition;
+
+  ngOnInit() {}
 }

@@ -1,1 +1,25 @@
-<p>scenario-view works!</p>
+<div class="fullscreen column center-hr">
+  <div class="container scenarioview">
+    <div class="row">
+      <div class="sidebar">
+        <app-side-bar></app-side-bar>
+      </div>
+      <div class="endpoint">
+        <div>
+          <app-overview [header]="headerContent"></app-overview>
+        </div>
+        <div>
+          <app-search-bar> </app-search-bar>
+          <app-scenario-list></app-scenario-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #headerContent>
+  <div class="title">
+    <h3>{{ this.mockDefinition.metadata?.title }}</h3>
+  </div>
+  <p>{{ this.mockDefinition.metadata?.description }}</p>
+</ng-template>

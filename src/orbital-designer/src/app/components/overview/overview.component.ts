@@ -9,7 +9,7 @@ import { Metadata } from '../../models/mock-definition/metadata.model';
 export class OverviewComponent implements OnInit {
   @Input() metadata: Metadata;
   @Input() header: TemplateRef<any>;
-
+  @Input() scenarios: TemplateRef<any>;
   constructor() {}
 
   ngOnInit() {}
