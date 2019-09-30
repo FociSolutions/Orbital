@@ -45,7 +45,8 @@ describe('SideBarComponent', () => {
 
   describe('SideBarComponent.isSelected', () => {
     it('should return true if the mockDefinitions title list is selected', () => {
-      expect(component.isSelected).toBeTruthy();
+      const title = component.selectedMockDefinition;
+      expect(component.isSelected(title)).toBeTruthy();
     });
   });
   describe('SideBarComponent.updateSelected', () => {
