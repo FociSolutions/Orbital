@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-ci": "ng build --prod --source-map=false",
     "test": "ng test",
     "test-ci": "ng test --code-coverage --karmaConfig=./karma.ci.conf.js",
     "lint": "ng lint",
@@ -50,7 +51,6 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "karma-junit-reporter": "^1.2.0",
     "protractor": "~5.4.0",
-    "puppeteer": "^1.19.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.4.3"
