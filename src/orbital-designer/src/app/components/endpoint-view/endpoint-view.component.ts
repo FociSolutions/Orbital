@@ -21,7 +21,7 @@ export class EndpointViewComponent implements OnInit {
     this.filteredList = this.endpointList;
   }
   /**
-   * This function takes an endpoint object and return it's path as a string
+   * This function takes an endpoint object and return its path as a string
    * @param endpoint The endpoint to be converted to string
    */
   endpointToString(endpoint: Endpoint): string {
