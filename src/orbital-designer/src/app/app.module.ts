@@ -28,6 +28,7 @@ import { EndpointListComponent } from './components/endpoint-view/endpoint-list/
 import { OverviewComponent } from './components/overview/overview.component';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { SideBarComponent } from './components/side-bar/side-bar.component';
     EndpointListComponent,
     EndpointListItemComponent,
     OverviewComponent,
-    SideBarComponent
+    SideBarComponent,
+    ScenarioViewComponent
   ],
   imports: [
     BrowserModule,
