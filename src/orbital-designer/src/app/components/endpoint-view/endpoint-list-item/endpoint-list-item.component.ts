@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Endpoint } from 'src/app/models/endpoint.model';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { GetEndpointScenariosPipe } from '../../../pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
+import * as HttpStatus from 'http-status-codes';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-endpoint-list-item',
@@ -7,16 +11,46 @@ import { Endpoint } from 'src/app/models/endpoint.model';
   styleUrls: ['./endpoint-list-item.component.scss']
 })
 export class EndpointListItemComponent implements OnInit {
+  private store: DesignerStore;
   @Input() endpoint: Endpoint;
   @Input() scenarioCount: number;
 
-  constructor() { }
+  constructor(private designerStore: DesignerStore, private logger: NGXLogger) {
+    this.store = designerStore;
+  }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  /**
+   * Returns a list of scenarios for the clicked endpoint
+   */
+  public onClickEndpoint() {
+    const pipe = new GetEndpointScenariosPipe();
+    const scenarios = pipe.transform(
+      this.store.state.mockDefinition.scenarios,
+      this.endpoint
+    );
+
+    let alertText = 'List of scenarios within this endpoint:\n';
+
+    scenarios.forEach(scenario => {
+      alertText +=
+        scenario.metadata.title +
+        ': ' +
+        scenario.metadata.description +
+        ', code: ' +
+        scenario.response.status +
+        ': ' +
+        HttpStatus.getStatusText(scenario.response.status) +
+        '\n';
+    });
+
+    alert(alertText);
   }
 
   get endpointDescription(): string {
-    return (!this.endpoint || !this.endpoint.spec.description) ? 'No description' :  this.endpoint.spec.description;
+    return !this.endpoint || !this.endpoint.spec.description
+      ? 'No description'
+      : this.endpoint.spec.description;
   }
-
 }
