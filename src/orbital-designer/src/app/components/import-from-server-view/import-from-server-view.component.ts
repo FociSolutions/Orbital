@@ -72,6 +72,10 @@ export class ImportFromServerViewComponent implements OnInit {
       this.formArray.setErrors({
         invalidMockDefinitionFound: this.invalidMockDefinitionsFoundErrorMessage
       });
+      this.logger.debug(
+        'ImportFromServerViewComponent invalidMockDefinitions in formArray',
+        this.formArray
+      );
     }
     return this.formArray.errors;
   }
@@ -105,10 +109,18 @@ export class ImportFromServerViewComponent implements OnInit {
       this.formArray.setErrors({
         responseError: 'Response returned an error'
       });
+      this.logger.debug(
+        'ImportFromServerViewComponent formArray.errors: ',
+        this.formArray.errors
+      );
     } else {
       this.formArray.setErrors({
         contentError: 'Expected response body to be an array'
       });
+      this.logger.debug(
+        'ImportFromServerViewComponent formArray.errors: ',
+        this.formArray.errors
+      );
     }
   }
 
