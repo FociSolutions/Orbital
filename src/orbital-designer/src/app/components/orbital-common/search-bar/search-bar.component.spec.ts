@@ -44,7 +44,10 @@ describe('SearchBarComponent', () => {
       expect(
         SearchBarComponent.ignoreCaseContainsMatch(
           teststring,
-          teststring.substring(0, 1)
+          teststring.substring(
+            0,
+            faker.random.number({ min: 1, max: teststring.length - 1 })
+          )
         )
       ).toBeTruthy();
     });
