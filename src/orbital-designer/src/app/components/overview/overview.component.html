@@ -5,11 +5,8 @@
         Overview
       </h1>
     </div>
-  </div>      
+  </div>
   <mat-card-content class="mock-description">
-    <div class="title">
-      <h3>{{metadata?.title}}</h3>
-    </div>
-    <p>{{metadata?.description}}</p>
+    <ng-container *ngTemplateOutlet="header"> </ng-container>
   </mat-card-content>
 </mat-card>
