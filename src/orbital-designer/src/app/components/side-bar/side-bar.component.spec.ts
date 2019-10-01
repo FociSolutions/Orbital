@@ -44,14 +44,17 @@ describe('SideBarComponent', () => {
   }));
 
   describe('SideBarComponent.isSelected', () => {
-    it('should return true if the mockDefinitions title list is selected', () => {
+    it('should return true if selected a valid Mock Defintion', () => {
       const title = component.selectedMockDefinition;
+      const expected = validMockDefinition.metadata.title;
+      expect(expected).toEqual(title);
       expect(component.isSelected(title)).toBeTruthy();
     });
   });
-  describe('SideBarComponent.updateSelected', () => {
-    it('should return true if the mockDefinitions menu item is updated', () => {
-      expect(component.updateSelected).toBeTruthy();
+  describe('SideBarComponent.isSelected', () => {
+    it('should return false if the mockDefinitions title list is not selected', () => {
+      const title = null;
+      expect(component.isSelected(title)).toBeFalsy();
     });
   });
 });
