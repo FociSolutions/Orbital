@@ -17,8 +17,8 @@ export class EndpointViewComponent implements OnInit {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
       this.endpointList = [...state.endpoints];
+      this.filteredList = this.endpointList;
     });
-    this.filteredList = this.endpointList;
   }
   /**
    * This function takes an endpoint object and return its path as a string
