@@ -4,7 +4,6 @@
     {
       "type": "npm",
       "script": "start",
-      "path": "src/orbital-designer/",
       "isBackground": true,
       "presentation": {
         "focus": true,
@@ -30,6 +29,20 @@
           }
         }
       }
+    },
+    {
+      "type": "npm",
+      "label": "generate component",
+      "script": "ng generate component components/${input:componentName}",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "componentName",
+      "description": "name of component",
+      "default": "BADCOMPONENT",
+      "type": "promptString"
     }
   ]
 }

@@ -5,12 +5,24 @@
         <app-side-bar></app-side-bar>
       </div>
       <div class="endpoint">
-        <div>
-          <app-overview [metadata]="mockDefinition?.metadata"></app-overview>
+        <div class="row">
+          <app-overview
+            class="flex-grow"
+            [metadata]="mockDefinition?.metadata"
+          ></app-overview>
         </div>
-        <div>
-          <app-search-bar> </app-search-bar>
-          <app-endpoint-list></app-endpoint-list>
+        <div class="column">
+          <app-search-bar
+            class="column flex-grow"
+            [list]="endpointList"
+            (filteredList)="setFilteredList($event)"
+            [itemToStringFn]="endpointToString"
+          >
+          </app-search-bar>
+          <app-endpoint-list
+            class="row flex-grow"
+            [endpoints]="filteredList"
+          ></app-endpoint-list>
         </div>
       </div>
     </div>

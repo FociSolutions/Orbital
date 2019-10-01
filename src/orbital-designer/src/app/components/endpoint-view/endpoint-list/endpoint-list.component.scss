@@ -1,15 +1,17 @@
 .endpointlistcontainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    overflow-y: scroll;
-    
-    mat-list-item {
-        margin-top: 2em;
-        width: 100%;
-    }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
-    app-endpoint-list-item {
-        width: 100%;
-    }
+  mat-list-item {
+    margin-top: 0.6em;
+    width: 100%;
+    height: auto;
+  }
+
+  app-endpoint-list-item {
+    width: 100%;
+  }
 }

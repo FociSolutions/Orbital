@@ -23,4 +23,45 @@ describe('SearchBarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('SearchBarComponent.onSearch', () => {
+    it('should remove any items that do not match the criteria', done => {
+      const unfilteredList: string[] = faker.random.words().split(' ');
+      component.list = unfilteredList;
+      component.filteredList.subscribe(filteredList => {
+        expect(filteredList.findIndex(item => item === unfilteredList[0])).toBe(
+          -1
+        );
+        done();
+      });
+      component.onSearchInput(unfilteredList[0] + 'sample');
+    });
+  });
+
+  describe('SearchBarComponent.ignoreCaseContainsMatch', () => {
+    it('Should return true if a substring matches', () => {
+      const teststring: string = faker.random.word();
+      expect(
+        SearchBarComponent.ignoreCaseContainsMatch(
+          teststring,
+          teststring.substring(
+            0,
+            faker.random.number({ min: 1, max: teststring.length - 1 })
+          )
+        )
+      ).toBeTruthy();
+    });
+  });
+
+  describe('SearchBarComponent.ignoreCaseContainsMatch', () => {
+    it('Should return false if no substring is found', () => {
+      const teststring: string = faker.random.word();
+      expect(
+        SearchBarComponent.ignoreCaseContainsMatch(
+          teststring,
+          faker.random.word() + teststring
+        )
+      ).toBeFalsy();
+    });
+  });
 });
