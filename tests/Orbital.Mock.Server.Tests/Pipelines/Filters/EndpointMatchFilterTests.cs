@@ -8,20 +8,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class EndpointMatchFilterTests
     {
-        private Faker<Scenario> scenarioFaker;
+        private readonly Faker<Scenario> scenarioFaker;
 
         public EndpointMatchFilterTests()
         {
+            Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             this.scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Id, f => f.Random.String())
+                .RuleFor(m => m.Id, f => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                 .RuleFor(m => m.Response, f => new MockResponse())
-                .RuleFor(m => m.Path, f => f.Random.String())
+                .RuleFor(m => m.Path, f => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                 .RuleFor(m => m.Verb, f => f.PickRandom(
                     new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete }
                     ));

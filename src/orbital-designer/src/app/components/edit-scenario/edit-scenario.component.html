@@ -1,4 +1,4 @@
-<div class="col-12 m-2">
+<div class="col-12 m-2" *ngIf="!!this.scenario">
   <form>
     <div class="row m-2">
       <label>
@@ -32,6 +32,7 @@
 
     <div class="pl-4 row mb-3">
       <label>
+        <!-- Implementing AutoComplete Component (Material)-->
         <h4>Header Equality Rules</h4>
       </label>
       <div class="col-sm-12">
@@ -39,6 +40,7 @@
           keysTitle="Header Key"
           valuesTitle="Header Value"
           [keyValueMap]="this.scenario.requestMatchRules.headerRules"
+          [autoCompleteKeySuggestion]="headerKeysList"
         ></app-key-value-list>
       </div>
     </div>
@@ -49,8 +51,8 @@
       </label>
       <div class="col-sm-12">
         <app-key-value-list
-          keysTitle="Header Key"
-          valuesTitle="Header Value"
+          keysTitle="Query Key"
+          valuesTitle="Query Value"
           [keyValueMap]="this.scenario.requestMatchRules.queryRules"
         ></app-key-value-list>
       </div>
@@ -65,55 +67,24 @@
         <select
           class="custom-select"
           id="inputGroupSelect02"
-          (change)="this.bodyRuleType = $event.target.value"
+          (change)="onSelectBodyRuleType($event.target.value)"
         >
-          <!--
-          <option value="{{ this.BodyRuleTypes.JsonSchema }}"
-            >JSON Schema</option
-          >
-          <option value="{{ this.BodyRuleTypes.JsonPath }}">JSON Path</option>
-          -->
           <option
-            selected="{{
-              this.bodyRuleType === this.BodyRuleTypes.BodyEquality
-            }}"
-            value="{{ this.BodyRuleTypes.BodyEquality }}"
+            [selected]="
+              this.bodyRuleType === this.BodyRuleTypes.BodyEquality.toString()
+            "
+            [value]="this.BodyRuleTypes.BodyEquality.toString()"
             >Body Equality</option
+          >
+          <option [selected]="this.bodyRuleType === ''" value=""
+            >Body Ignore</option
           >
         </select>
       </div>
       <div class="form-row col-sm-12" [ngSwitch]="this.bodyRuleType">
         <div
-          *ngSwitchCase="this.BodyRuleTypes.JsonSchema"
-          class="form-group col-sm-4"
-        >
-          <label htmlFor="schemaSpec">
-            Schema File
-          </label>
-          <input type="file" accept=".yml,.yaml" id="schemaSpec" />
-        </div>
-        <div *ngSwitchCase="this.BodyRuleTypes.JsonPath">
-          <div class="form-group col-sm-12">
-            <label htmlFor="headerkey">Selector</label>
-            <select
-              class="custom-select"
-              id="inputGroupSelect01"
-              defaultValue="Choose..."
-            >
-              <option>Choose...</option>
-              <option value="==">==</option>
-              <option value="!=">!=</option>
-              <option value=">">></option>
-            </select>
-          </div>
-          <div class="form-group col-sm-12">
-            <label htmlFor="headervalue">Value</label>
-            <input class="form-control " defaultValue="34" id="headervalue" />
-          </div>
-        </div>
-        <div
           class="row col-sm-12 mb-2"
-          *ngSwitchCase="this.BodyRuleTypes.BodyEquality"
+          *ngSwitchCase="this.BodyRuleTypes.BodyEquality.toString()"
         >
           <label class="col-form-label" htmlFor="bodyrequestrule">
             Body
@@ -121,12 +92,8 @@
           <textarea
             class="form-control"
             id="bodyrequestrule"
-            rows="{4}"
-            [value]="this.scenario.requestMatchRules.bodyRules[0].rule"
-            (change)="
-              this.scenario.requestMatchRules.bodyRules[0].rule =
-                $event.target.value
-            "
+            [value]="this.scenario.requestMatchRules.bodyRules[0].rule | json"
+            (change)="this.onBodyRuleEdit($event.target.value)"
           ></textarea>
         </div>
       </div>
@@ -150,10 +117,12 @@
           />
         </div>
       </div>
+      <!-- Implementing AutoComplete Component (Material)-->
       <app-key-value-list
         keysTitle="Header Key"
         valuesTitle="Header Value"
         [keyValueMap]="this.scenario.response.headers"
+        [autoCompleteKeySuggestion]="headerKeysList"
       ></app-key-value-list>
       <div class="form-group row m-3">
         <label class="col-form-label" htmlFor="bodyrequest">

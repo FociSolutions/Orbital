@@ -1,19 +1,20 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Commands;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Middleware
 {
-    [ExcludeFromCodeCoverage]
-
     ///<summary>
     ///ServerRequestMiddleware is the middleware used to route admin requests to the admin endpoints and all other requests
     ///to the pipelines.
     ///</summary>
+    [ExcludeFromCodeCoverage]
     public class ServerRequestMiddleware
     {
         private readonly RequestDelegate next;
@@ -39,6 +40,7 @@ namespace Orbital.Mock.Server.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             Regex rx = new Regex(@"^/api/v\d/OrbitalAdmin");
+
             if (rx.IsMatch(context.Request.Path))
             {
                 await next.Invoke(context);
@@ -48,6 +50,7 @@ namespace Orbital.Mock.Server.Middleware
                 var command = new InvokeSynchronousPipelineCommand(context.Request);
 
                 var response = await this.mediator.Send(command);
+                context.Response.StatusCode = response.Status;
                 foreach (KeyValuePair<string, string> header in response.Headers)
                 {
                     context.Response.Headers.Add(header.Key, header.Value);

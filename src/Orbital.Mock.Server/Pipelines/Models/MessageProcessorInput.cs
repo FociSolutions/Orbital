@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace Orbital.Mock.Server.Pipelines.Models
 {
     [ExcludeFromCodeCoverage]
-    internal class MessageProcessorInput
+    public class MessageProcessorInput
     {
         /// <summary>
         /// The Request Context
@@ -22,9 +23,12 @@ namespace Orbital.Mock.Server.Pipelines.Models
         {
             this.ServerHttpRequest = serverHttpRequest;
             this.Scenarios = scenarios;
-            this.HeaderDictionary = serverHttpRequest == null ? new Dictionary<string, string>() : serverHttpRequest.Headers.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
-            this.QueryDictionary = serverHttpRequest == null ? new Dictionary<string, string>() : serverHttpRequest.Query.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+            this.HeaderDictionary = serverHttpRequest == null
+                ? new Dictionary<string, string>()
+                : serverHttpRequest.Headers.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+            this.QueryDictionary = serverHttpRequest == null
+                ? new Dictionary<string, string>()
+                : serverHttpRequest.Query.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
         }
     }
 }
-

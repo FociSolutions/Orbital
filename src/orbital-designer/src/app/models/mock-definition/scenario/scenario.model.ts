@@ -41,12 +41,7 @@ export function newScenario(verb: VerbType, path: string): Scenario {
     requestMatchRules: {
       headerRules: new Map<string, string>(),
       queryRules: new Map<string, string>(),
-      bodyRules: [
-        {
-          type: BodyRuleType.BodyEquality,
-          rule: ''
-        }
-      ] as Array<BodyRule>
+      bodyRules: [] as Array<BodyRule>
     }
   };
 }

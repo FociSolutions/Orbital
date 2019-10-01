@@ -22,7 +22,6 @@ namespace Orbital.Mock.Server.Models.Converters
         /// an OpenApiDocument. Returns true if it is, false otherwise
         /// </summary>
         /// <param name="objectType">Type of the object to check against</param>
-        /// <returns></returns>
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(OpenApiDocument);

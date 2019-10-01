@@ -45,7 +45,7 @@ describe('NewMockFormComponent', () => {
       TestBed.get(MockDefinitionStore),
       'updateApiInformation'
     );
-    const endpointStoreSpy = spyOn(TestBed.get(EndpointsStore), 'addEndpoints');
+    const endpointStoreSpy = spyOn(TestBed.get(EndpointsStore), 'setEndpoints');
     await component.onFileChange({
       0: file,
       length: 1,

@@ -2,13 +2,11 @@
   <div class="form-row d-flex align-items-end">
     <div class="form-group col-sm-5">
       <label htmlFor="headerkey">{{ this.keysTitle }}</label>
-      <input
-        class="form-control "
-        id="headerkeyrule"
-        (change)="this.key = $event.target.value"
-        [value]="this.key"
-        placeholder="key"
-      />
+      <app-autocomplete-input 
+        [keys]="autoCompleteKeySuggestion" 
+        (changeData)="this.key = $event"
+        [value] = "this.key">
+      </app-autocomplete-input>
     </div>
     <div class="form-group col-sm-5">
       <label htmlFor="headervalue">{{ this.valuesTitle }}</label>
@@ -29,12 +27,11 @@
   <div class="col-sm-12 p-2 overflow-auto">
     <div class="form-row" *ngFor="let tuple of this.keyValueMap | keyvalue">
       <div class="form-group col-sm-6">
-        <input
-          class="form-control "
-          [defaultValue]="tuple.key"
-          id="headerkeyrule"
-          (change)="this.changeKey(tuple.key, $event.target.value)"
-        />
+        <app-autocomplete-input 
+        [keys]="autoCompleteKeySuggestion" 
+        (changeData)="this.changeKey(tuple.key, $event)"
+        [value] = "tuple.key">
+      </app-autocomplete-input>
       </div>
       <div class="form-group col-sm-6">
         <input

@@ -1,9 +1,12 @@
-﻿using Bogus;
+﻿using System;
+using Bogus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
 using System.Collections.Generic;
+using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
@@ -19,10 +22,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var faker = new Faker();
             var input = new
             {
-                Path = faker.Random.String(),
+                Path = faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength()),
                 Verb = faker.PickRandom(VALIDMETHODS)
             };
-
+            
             #endregion
 
             var Target = new PathValidationFilter<ProcessMessagePort>();
@@ -73,7 +76,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var faker = new Faker();
             var input = new
             {
-                Path = faker.Random.String(),
+                Path = faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength()),
                 Verb = HttpMethod.Options
             };
 

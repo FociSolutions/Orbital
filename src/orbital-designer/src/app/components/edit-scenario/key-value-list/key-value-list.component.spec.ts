@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KeyValueListComponent } from './key-value-list.component';
+import { AutocompleteInputComponent } from './autocomplete-input/autocomplete-input.component';
+import {MatAutocompleteModule} from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('KeyValueListComponent', () => {
   let component: KeyValueListComponent;
@@ -8,7 +11,8 @@ describe('KeyValueListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [KeyValueListComponent]
+      declarations: [KeyValueListComponent, AutocompleteInputComponent],
+      imports: [MatAutocompleteModule, BrowserAnimationsModule]
     }).compileComponents();
   }));
 
@@ -23,7 +27,7 @@ describe('KeyValueListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add tuple to the map', () => {
+  it('should add tuple to the map ', () => {
     expect(component.keyValueMap.size).toBe(0);
     const key = faker.random.word();
     const item = faker.random.word();

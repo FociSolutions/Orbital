@@ -1,13 +1,10 @@
 ﻿using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
-    internal class HeaderMatchFilter<T> : FaultableBaseFilter<T>
+    public class HeaderMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IScenariosPort, IHeaderMatchPort
     {
         /// <summary>
@@ -18,17 +15,15 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <returns>Port containing processed data</returns>
         public override T Process(T port)
         {
-            if (!IsPortValid(port, out port))
+            if (!IsPipelineValid(ref port, GetType())) return port;
+
+            foreach (var scenario in port.Scenarios)
             {
-                return port;
+                port.HeaderMatchResults.Add(Matcher.MatchByKeyValuePair(
+                    scenario.RequestMatchRules.HeaderRules,
+                    port.Headers,
+                    scenario.Id));
             }
-
-            var headers = port.Headers.ToDictionary(x => x.Key, x => x.Value);
-            var scenarios = port.Scenarios;
-
-            port.HeaderMatchResults = scenarios.Where(
-                s => s.RequestMatchRules.HeaderRules.All(hr => headers.ContainsKey(hr.Key) && headers[hr.Key].Equals(hr.Value))
-            ).Select(scenario => scenario.Id).ToList();
 
             return port;
         }

@@ -4,6 +4,7 @@ using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Models
@@ -21,7 +22,7 @@ namespace Orbital.Mock.Server.Tests.Models
             this.mockDefinitionFake = new Faker<MockDefinition>()
             .RuleFor(m => m.Host, f => f.Internet.DomainName())
             .RuleFor(m => m.Metadata, f => metadataFake.Generate())
-            .RuleFor(m => m.BasePath, f => f.Random.String())
+            .RuleFor(m => m.BasePath, f => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
             .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
         }
         [Fact]

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -34,6 +35,8 @@ import { ScenarioViewComponent } from './components/scenario-overview/scenario-v
 import { CommonModule } from '@angular/common';
 
 import { ToastrModule } from 'ngx-toastr';
+import { AutocompleteInputComponent } from './components/edit-scenario/key-value-list/autocomplete-input/autocomplete-input.component';
+import { MatAutocompleteModule } from '@angular/material';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,10 +54,12 @@ import { ToastrModule } from 'ngx-toastr';
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
     KeyValueListComponent,
-    ScenarioViewComponent
+    ScenarioViewComponent,
+    AutocompleteInputComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG }),
     CommonModule,
@@ -64,9 +69,10 @@ import { ToastrModule } from 'ngx-toastr';
     NbLayoutModule,
     NbEvaIconsModule,
     NbButtonModule,
-    NbCardModule
+    NbCardModule,
+    MatAutocompleteModule
   ],
-  providers: [MockDefinitionStore, EndpointsStore, AppStore],
+  providers: [MockDefinitionStore, EndpointsStore, AppStore, HttpClientModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

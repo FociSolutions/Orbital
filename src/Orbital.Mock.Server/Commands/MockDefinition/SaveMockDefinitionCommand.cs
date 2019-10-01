@@ -11,6 +11,7 @@ namespace Orbital.Mock.Server.MockDefinitions.Commands
     /// <summary>
     /// Class SaveMockDefinitionCommand represents a request for saving a mock definition to the cache
     /// </summary>
+
     [ExcludeFromCodeCoverage]
     public class SaveMockDefinitionCommand : IRequest
     {

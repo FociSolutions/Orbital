@@ -6,13 +6,12 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     /// <summary>
     /// Interface representation of a port that is capable to become faulted
     /// </summary>
-    internal interface IFaultablePort
+    public interface IFaultablePort
     {
         /// <summary>
         /// A collection of faults thrown by filters
         /// </summary>
         ICollection<string> Faults { get; set; }
-
         /// <summary>
         /// True if the collection of faults is not empty
         /// </summary>

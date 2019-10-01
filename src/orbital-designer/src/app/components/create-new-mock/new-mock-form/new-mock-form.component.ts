@@ -25,10 +25,7 @@ export class NewMockFormComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.mockDefinitionstore.clearStore();
-    this.endpointStore.clearStore();
-  }
+  ngOnInit() {}
 
   /**
    * Updates the MockDefinitionsStore's metadata description
@@ -56,6 +53,7 @@ export class NewMockFormComponent implements OnInit {
    * The function that is triggered when the New Mock Form is submitted
    */
   onFormSubmit() {
+    this.mockDefinitionstore.updateScenarios([]);
     this.mockDefinitionstore.updateMetadata(this.metaData);
     this.router.navigate(['/EndpointOverview']);
   }
@@ -76,7 +74,7 @@ export class NewMockFormComponent implements OnInit {
         openApi.basePath,
         openApi
       );
-      this.endpointStore.addEndpoints(openApi);
+      this.endpointStore.setEndpoints(openApi);
       this.showError = false;
     } catch (err) {
       this.showError = true;

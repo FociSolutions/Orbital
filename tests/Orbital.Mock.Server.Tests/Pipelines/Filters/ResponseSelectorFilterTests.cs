@@ -18,6 +18,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
         public ResponseSelectorFilterTests()
         {
+            Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var fakerResponse = new Faker<MockResponse>()
                 .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -34,22 +35,25 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var Scenarios = fakerScenario.Generate(10);
             var ScenarioIds = Scenarios.Select(s => s.Id).ToList();
 
-            var random = new Random();
+            var random = new Random(42);
             var SelectedScenarioIndex = random.Next(Scenarios.Count);
             #endregion
+
+            List<MatchResult> rules = new List<MatchResult>();
+            rules.AddRange(ScenarioIds.Select(scenario => new MatchResult(MatchResultType.Success, scenario)));
 
             var port = new ProcessMessagePort()
             {
                 Scenarios = Scenarios,
-                HeaderMatchResults = ScenarioIds,
-                QueryMatchResults = ScenarioIds.Take(SelectedScenarioIndex + 1).ToList(),
-                BodyMatch = ScenarioIds.Skip(SelectedScenarioIndex).Take(ScenarioIds.Count - SelectedScenarioIndex).ToList()
+                HeaderMatchResults = rules,
+                QueryMatchResults = ScenarioIds.Take(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario)).ToList(),
+                BodyMatchResults = ScenarioIds.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario)).ToList(),
             };
 
             var Target = new ResponseSelectorFilter<ProcessMessagePort>();
 
             var Actual = Target.Process(port).SelectedResponse;
-            var Expected = Scenarios[SelectedScenarioIndex].Response;
+            var Expected = Scenarios[0].Response;
             Assert.Equal(Expected, Actual);
         }
 
@@ -59,11 +63,12 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region TestSetup
             var Scenarios = fakerScenario.Generate(10);
 
-            var random = new Random();
+            var random = new Random(42);
 
             var SelectedScenariosRange = random.Next(2, Scenarios.Count);
             var SelectedScenariosStartIndex = random.Next(Scenarios.Count - SelectedScenariosRange);
             var SelectedScenarios = Scenarios.Skip(SelectedScenariosStartIndex).Take(SelectedScenariosRange).ToList();
+            var SelectedScenarioIndex = random.Next(Scenarios.Count);
 
             var PossibleResponses = SelectedScenarios.Select(s => s.Response);
             #endregion
@@ -71,9 +76,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var port = new ProcessMessagePort()
             {
                 Scenarios = Scenarios,
-                HeaderMatchResults = Scenarios.Select(s => s.Id).ToList(),
-                QueryMatchResults = SelectedScenarios.Select(s => s.Id).ToList(),
-                BodyMatch = SelectedScenarios.Select(s => s.Id).ToList()
+                HeaderMatchResults = Scenarios.Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id)).ToList(),
+                QueryMatchResults = Scenarios.Skip(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id)).ToList(),
+                BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id)).ToList(),
             };
 
             var Target = new ResponseSelectorFilter<ProcessMessagePort>();

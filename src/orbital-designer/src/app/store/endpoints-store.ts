@@ -11,12 +11,13 @@ export class EndpointsStore extends Store<Endpoint[]> {
   }
 
   /**
-   * addEndpoints reads the details of the endpoints specified in the Open Api document
+   * setEndpoints reads the details of the endpoints specified in the Open Api document
    * and updates the state of the endpointStore.
    * @param doc The parsed Open Api document to extrapolate the endpoints from
    */
-  addEndpoints(doc: OpenAPIV2.Document) {
+  setEndpoints(doc: OpenAPIV2.Document, clearStore = true) {
     const pathStrings = Object.keys(doc.paths);
+    let endpoints = [];
     for (const path of pathStrings) {
       const pathObject: OpenAPIV2.PathItemObject = doc.paths[path];
       const newEndpoints = Object.keys(VerbType)
@@ -27,14 +28,8 @@ export class EndpointsStore extends Store<Endpoint[]> {
             : null
         )
         .filter(endpoint => !!endpoint);
-      this.setState([...this.state, ...newEndpoints]);
+      endpoints = [...endpoints, ...newEndpoints];
     }
-  }
-
-  /**
-   * Clears the endpoint store
-   */
-  clearStore() {
-    this.setState([]);
+    this.setState(clearStore ? endpoints : [...this.state, ...endpoints]);
   }
 }

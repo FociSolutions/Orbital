@@ -15,11 +15,19 @@ export class ScenarioViewComponent implements OnInit {
 
   constructor(private app: AppStore) {}
 
-  onAdd() {
-    this.app.selectedScenario = newScenario(
-      this.app.state.selectedEndpoint.verb,
-      this.app.state.selectedEndpoint.path
-    );
+  /**
+   * The function used to set the selected Scenario before showing the editor.
+   * If there is not scenario selected this function creates a new scenario and sets the
+   * selectedScenario in appstate to the scenario's id. Otherwise it doesn't change anything
+   * and proceeds to set the showEditor flag to true.
+   */
+  onEditClicked() {
+    if (!this.app.state.selectedScenario) {
+      this.app.selectedScenario = newScenario(
+        this.app.state.selectedEndpoint.verb,
+        this.app.state.selectedEndpoint.path
+      );
+    }
     this.app.showEditor = true;
   }
 

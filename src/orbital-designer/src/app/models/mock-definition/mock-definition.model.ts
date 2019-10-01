@@ -3,7 +3,6 @@ import { Scenario } from './scenario/scenario.model';
 import * as yaml from 'js-yaml';
 import { OpenAPIV2 } from 'openapi-types';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
-import Yaml from '../yaml';
 import Json from '../json';
 
 /**
@@ -25,7 +24,7 @@ export class MockDefinition {
   ): Promise<MockDefinition> {
     return new Promise((resolve, reject) => {
       try {
-        let content = yaml.safeLoad(mockDefinition);
+        let content = JSON.parse(mockDefinition);
         if (!this.isMockDefinition(content)) {
           reject('Invalid mock definition');
         } else {
@@ -35,11 +34,11 @@ export class MockDefinition {
               ...s,
               response: {
                 ...s.response,
-                headers: new Map(s.response.headers)
+                headers: Json.objectToMap(s.response.headers)
               },
               requestMatchRules: {
-                headerRules: new Map(s.requestMatchRules.headerRules),
-                queryRules: new Map(s.requestMatchRules.queryRules),
+                headerRules: Json.objectToMap(s.requestMatchRules.headerRules),
+                queryRules: Json.objectToMap(s.requestMatchRules.queryRules),
                 bodyRules: s.requestMatchRules.bodyRules
               }
             }))
@@ -75,14 +74,13 @@ export class MockDefinition {
 
   /**
    * Check if the given object is mock definition
+   * Supports OpenApiV2 Documents optional basePath and host properties
    * @param o Object to check if it is mock definition
    */
   private static isMockDefinition(o: any): o is MockDefinition {
     const u: MockDefinition = o;
     return (
-      typeof u.basePath === 'string' &&
       Array.isArray(u.scenarios) &&
-      typeof u.host === 'string' &&
       typeof u.metadata === 'object' &&
       u.metadata !== null &&
       typeof u.openApi === 'object' &&
@@ -91,32 +89,10 @@ export class MockDefinition {
   }
 
   /**
-   * Exports the mock definition as a yaml string
+   * Exports the mock defnition as a json string
    */
-  public static exportMockDefinitionAsYaml(mockDef: MockDefinition): string {
-    const safeMockDef = Yaml.collectionToArray(mockDef);
-    return yaml.safeDump(safeMockDef);
-  }
-
-  /**
-   * Exports the mock definition as a json string
-   */
-  public static exportMockDefinitionAsJson(mockDef: MockDefinition): string {
+  public static exportMockDefinition(mockDef: MockDefinition): string {
     const safeMockDef = Json.mapToObject(mockDef);
     return JSON.stringify(safeMockDef);
-  }
-
-  public static exportMockDefinition(
-    mockDef: MockDefinition,
-    fileType: string
-  ): string {
-    switch (fileType) {
-      case 'yml':
-        return this.exportMockDefinitionAsYaml(mockDef);
-      case 'json':
-        return this.exportMockDefinitionAsJson(mockDef);
-      default:
-        throw new Error('Unsupported File Type');
-    }
   }
 }

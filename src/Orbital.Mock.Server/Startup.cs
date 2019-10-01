@@ -57,6 +57,7 @@ namespace Orbital.Mock.Server
                 processor.Start();
                 return processor;
             });
+
             services.AddSingleton<CommonData>();
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
@@ -71,6 +72,7 @@ namespace Orbital.Mock.Server
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider provider)
 
         {
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -91,6 +93,7 @@ namespace Orbital.Mock.Server
                 }
             });
 
+            app.UseMiddleware<LoggingRequestResponseMiddleware>();
             app.UseMiddleware<ServerRequestMiddleware>();
             app.UseMvc();
         }

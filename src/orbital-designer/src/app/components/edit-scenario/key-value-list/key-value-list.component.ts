@@ -9,6 +9,8 @@ export class KeyValueListComponent implements OnInit {
   @Input() keysTitle: string;
   @Input() valuesTitle: string;
   @Input() keyValueMap: Map<string, string>;
+  @Input() keys: string[];
+  @Input() autoCompleteKeySuggestion?: string[];
   key = '';
   val = '';
 

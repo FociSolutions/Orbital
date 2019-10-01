@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
-    interface IQueryMatchPort
+    public interface IQueryMatchPort
     {
-        IEnumerable<string> QueryMatchResults { get; set; }
-
+        ICollection<MatchResult> QueryMatchResults { get; set; }
         IDictionary<string, string> Query { get; set; }
+
     }
 }

@@ -22,14 +22,14 @@ export class AppStore extends Store<AppState> {
   set selectedEndpoint(endpoint: Endpoint) {
     this.setState({
       ...this.state,
-      selectedEndpoint: endpoint
+      selectedEndpoint: { ...endpoint }
     });
   }
 
   set selectedScenario(scenario: Scenario) {
     this.setState({
       ...this.state,
-      selectedScenario: scenario
+      selectedScenario: { ...scenario }
     });
   }
 

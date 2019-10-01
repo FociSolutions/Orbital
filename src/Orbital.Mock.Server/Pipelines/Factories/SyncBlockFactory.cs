@@ -1,9 +1,10 @@
-﻿using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
+﻿using Orbital.Mock.Server.Pipelines.Envelopes;
+using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Orbital.Mock.Server.Pipelines.Factories.Bases;
 using Orbital.Mock.Server.Pipelines.Ports;
-using Orbital.Mock.Server.Pipelines.Envelopes;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks.Dataflow;
 
 namespace Orbital.Mock.Server.Pipelines.Factories
@@ -11,8 +12,17 @@ namespace Orbital.Mock.Server.Pipelines.Factories
     [ExcludeFromCodeCoverage]
     internal class SyncBlockFactory : BaseBlockFactory<ProcessMessagePort>
     {
+        public SyncBlockFactory() : base()
+        {
+        }
+
+        public SyncBlockFactory(CancellationTokenSource cancellationTokenSource) : base(cancellationTokenSource)
+        {
+            this.CancellationTokenSource = cancellationTokenSource;
+        }
+
         /// <inheritdoc />
-        internal override TransformBlock<Tuple<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>>, IEnvelope<ProcessMessagePort>> CreateJoinTransformBlock(Func<Tuple<ProcessMessagePort, ProcessMessagePort>, ProcessMessagePort> func)
+        internal override TransformBlock<Tuple<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>>, IEnvelope<ProcessMessagePort>> CreateJoinTransformBlock(Func<Tuple<ProcessMessagePort, ProcessMessagePort>, ProcessMessagePort> func, CancellationTokenSource cancellationTokenSource)
         {
             return new TransformBlock<Tuple<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>>, IEnvelope<ProcessMessagePort>>(envelopes =>
             {
@@ -23,11 +33,14 @@ namespace Orbital.Mock.Server.Pipelines.Factories
 
                 var envelope = (envelope1.CompletionSource != null) ? envelope1 : envelope2;
                 return envelope.Transform(result);
+            }, new ExecutionDataflowBlockOptions()
+            {
+                CancellationToken = this.CancellationTokenSource.Token
             });
         }
 
         /// <inheritdoc />
-        internal override TransformBlock<Tuple<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>>, IEnvelope<ProcessMessagePort>> CreateJoinTransformBlock(Func<Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort>, ProcessMessagePort> func)
+        internal override TransformBlock<Tuple<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>>, IEnvelope<ProcessMessagePort>> CreateJoinTransformBlock(Func<Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort>, ProcessMessagePort> func, CancellationTokenSource cancellationTokenSource)
         {
             return new TransformBlock<Tuple<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>>, IEnvelope<ProcessMessagePort>>(envelopes =>
             {
@@ -40,6 +53,9 @@ namespace Orbital.Mock.Server.Pipelines.Factories
                 var envelope = (envelope1.CompletionSource != null) ? envelope1
                 : ((envelope2.CompletionSource != null) ? envelope2 : envelope3);
                 return envelope.Transform(result);
+            }, new ExecutionDataflowBlockOptions()
+            {
+                CancellationToken = this.CancellationTokenSource.Token
             });
         }
 
@@ -47,12 +63,15 @@ namespace Orbital.Mock.Server.Pipelines.Factories
         /// Create ActionBlock that will set the result for TaskCompletionSource, aka, letting the caller know all the work is done
         /// </summary>
         /// <returns>ActionBlock that sets the result for TaskCompletionSource</returns>
-        internal ActionBlock<IEnvelope<ProcessMessagePort>> CreateFinalBlock()
+        internal ActionBlock<IEnvelope<ProcessMessagePort>> CreateFinalBlock(CancellationTokenSource cancellationTokenSource)
         {
             return CreateActionBlock(envelope =>
             {
-                ((SyncEnvelope)envelope).CompletionSource.SetResult(envelope.Data);
-            });
+                if (!((SyncEnvelope) envelope).CompletionSource.Task.IsCanceled && !((SyncEnvelope)envelope).CompletionSource.Task.IsCompleted)
+                {
+                    ((SyncEnvelope) envelope).CompletionSource.SetResult(envelope.Data);
+                }
+            }, cancellationTokenSource);
         }
     }
 }

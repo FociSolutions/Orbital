@@ -48,7 +48,7 @@ describe('ImportExistingMockComponent', () => {
     ).and.returnValue(validMockDefinition);
     const endPointsStoreSpy = spyOn(
       TestBed.get(EndpointsStore),
-      'addEndpoints'
+      'setEndpoints'
     ).and.callThrough();
     await component.onFileInput({
       0: file,

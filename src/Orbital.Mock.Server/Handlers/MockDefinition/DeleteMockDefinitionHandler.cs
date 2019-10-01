@@ -15,10 +15,9 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     /// </summary>
     public class DeleteMockDefinitionHandler : IRequestHandler<DeleteMockDefinitionByTitleCommand>
     {
-
-
         private readonly IMemoryCache cache;
         private readonly string mockIds;
+
 
         /// <summary>
         /// Constructor
@@ -40,7 +39,6 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         {
 
             this.cache.Remove(request.MockDefinitionTitle);
-
             var KeyList = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
             KeyList.Remove(request.MockDefinitionTitle);
             this.cache.Set(mockIds, KeyList);

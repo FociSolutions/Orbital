@@ -15,13 +15,13 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     /// </summary>
     public class GetAllMockDefinitionsHandler : IRequestHandler<GetAllMockDefinitionsCommand, IEnumerable<MockDefinition>>
     {
-
         private readonly IMemoryCache cache;
         private readonly string mockIds;
 
         /// <summary>
         /// Constructor
         /// </summary>
+
         public GetAllMockDefinitionsHandler(IMemoryCache cache, CommonData data)
         {
             this.cache = cache;

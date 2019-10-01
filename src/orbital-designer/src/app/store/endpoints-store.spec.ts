@@ -15,7 +15,7 @@ describe('EndpointsStore', () => {
     const acceptedVerbs = Object.keys(VerbType).map(verb => verb.toLowerCase());
     expect(endpointStore.state).toEqual([]);
     MockDefinition.toOpenApiSpec(petStore).then(doc => {
-      endpointStore.addEndpoints(doc);
+      endpointStore.setEndpoints(doc);
       for (const path of Object.keys(doc.paths)) {
         for (const verb of acceptedVerbs) {
           if (!!doc.paths[path][verb]) {
@@ -34,21 +34,37 @@ describe('EndpointsStore', () => {
     });
   });
 
-  it('should clear the state when clearStore is called', () => {
-    const store = new EndpointsStore();
-    const mockEndpoint = {
-      path: faker.internet.url(),
-      verb: faker.random.arrayElement([
-        VerbType.GET,
-        VerbType.DELETE,
-        VerbType.POST,
-        VerbType.PUT
-      ]),
+  it('should update the state with new endpoints without clearing old ones', done => {
+    const petStore = validOpenApi;
+    const endpointStore = new EndpointsStore();
+    const originalEndpoint = {
+      path: '/original-pets',
+      verb: VerbType.GET,
       spec: null
     };
-    store.setState([mockEndpoint]);
-    expect(store.state).toEqual([mockEndpoint]);
-    store.clearStore();
-    expect(store.state).toEqual([]);
+    endpointStore.setState([originalEndpoint]);
+    const acceptedVerbs = Object.keys(VerbType).map(verb => verb.toLowerCase());
+    expect(endpointStore.state).toEqual([originalEndpoint]);
+    MockDefinition.toOpenApiSpec(petStore).then(doc => {
+      endpointStore.setEndpoints(doc, false);
+      for (const path of Object.keys(doc.paths)) {
+        for (const verb of acceptedVerbs) {
+          if (!!doc.paths[path][verb]) {
+            expect(
+              endpointStore.state.findIndex(
+                endpoint =>
+                  endpoint.path === path &&
+                  endpoint.verb === VerbType[verb.toUpperCase()] &&
+                  endpoint.spec === doc.paths[path][verb]
+              )
+            ).toBeGreaterThan(-1);
+          }
+        }
+      }
+      expect(
+        endpointStore.state.findIndex(e => e === originalEndpoint)
+      ).toBeGreaterThan(-1);
+      done();
+    });
   });
 });

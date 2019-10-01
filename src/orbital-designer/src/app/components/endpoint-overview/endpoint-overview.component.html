@@ -19,10 +19,12 @@
 
 <div class="row">
   <button nbButton (click)="onBack()" class="mr-2">Go Back</button>
-  <button nbButton (click)="onExportClicked('json')" class="mr-2">
+  <button nbButton (click)="onExportClicked()" class="mr-2">
     Export Json
   </button>
-  <button nbButton (click)="onExportClicked('yml')">Export Yaml</button>
+  <button nbButton data-toggle="modal" data-target="#serverExport" class="mr-2">
+    Export to Server
+  </button>
 </div>
 
 <!-- Scenario Overview with edit scenario page -->
@@ -44,11 +46,56 @@
     <div class="col-8">
       <nb-card>
         <nb-card-body>
-          <app-edit-scenario
-            [scenarioInput]="this.selectedScenario"
-          ></app-edit-scenario>
+          <app-edit-scenario></app-edit-scenario>
         </nb-card-body>
       </nb-card>
     </div>
   </div>
 </ng-template>
+
+<!-- Modal for exporting to server -->
+<div id="serverExport" class="modal fade" role="dialog" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modeal-title" id="title">Export to Server</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="control-label">Enter server URI below</label>
+          <input
+            (input)="tcode = $event.target.value"
+            type="text"
+            class="form-control"
+            id="serverUri"
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          id="CloseButton"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          (click)="onServerExport()"
+          class="btn btn-primary"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

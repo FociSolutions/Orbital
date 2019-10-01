@@ -56,22 +56,4 @@ describe('MockDefinition Store', () => {
     store.updateScenarios(scenarios);
     expect(store.state.scenarios).toBe(scenarios);
   });
-
-  it('should clear state when clearStore is called', () => {
-    const store = new MockDefinitionStore();
-    const mockMockDefinition = {
-      metadata: {
-        title: faker.random.word(),
-        description: faker.random.words()
-      },
-      basePath: faker.internet.domainSuffix(),
-      host: faker.internet.domainName(),
-      scenarios: new Array<Scenario>(),
-      openApi: faker.random.words()
-    };
-    store.setState(mockMockDefinition);
-    expect(store.state).toEqual(mockMockDefinition);
-    store.clearStore();
-    expect(store.state).toEqual(new MockDefinition());
-  });
 });

@@ -3,7 +3,7 @@
     <input
       type="file"
       class="custom-file-input form-control"
-      accept=".yml,.yaml"
+      accept=".json"
       id="mockDefinitionFile"
       (change)="onFileInput($event.target.files)"
     />
@@ -11,7 +11,10 @@
       {{ fileName }}
     </label>
   </div>
-  <div [style.visibility]="!!this.showError ? 'visible' : 'hidden'" class="d-block invalid-feedback mt-2 pt-2">
+  <div
+    [style.visibility]="!!this.showError ? 'visible' : 'hidden'"
+    class="d-block invalid-feedback mt-2 pt-2"
+  >
     Please provide a valid Mock Definition
   </div>
 </div>

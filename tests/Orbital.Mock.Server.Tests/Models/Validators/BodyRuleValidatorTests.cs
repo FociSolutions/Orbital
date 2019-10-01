@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Validators;
 using System;
@@ -14,9 +15,10 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
 
         public BodyRuleValidatorTests()
         {
+            var fakerJObject = new Faker<JObject>()
+                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(40) }));
             this.fakerBodyRule = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
-                .RuleFor(m => m.Rule, f => f.Random.String());
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
         }
         [Fact]
         public void BodyRuleValidatorSuccessTest()
@@ -36,7 +38,5 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             var Actual = Target.Validate(input);
             Assert.False(Actual.IsValid);
         }
-
-
     }
 }

@@ -15,6 +15,9 @@ import { NbCardModule } from '@nebular/theme';
 import { EndpointsStore } from 'src/app/store/endpoints-store';
 import { MockDefinitionStore } from 'src/app/store/mockdefinitionstore';
 import { AppStore } from 'src/app/store/app-store';
+import { AutocompleteInputComponent } from '../../edit-scenario/key-value-list/autocomplete-input/autocomplete-input.component';
+import { MatAutocompleteModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -32,9 +35,10 @@ describe('ScenarioViewComponent', () => {
         GetEndpointScenariosPipe,
         GetVerbColorPipe,
         ScenarioDetailsComponent,
-        KeyValueListComponent
+        KeyValueListComponent,
+        AutocompleteInputComponent
       ],
-      imports: [RouterTestingModule, NbCardModule],
+      imports: [RouterTestingModule, NbCardModule, MatAutocompleteModule, BrowserAnimationsModule],
       providers: [EndpointsStore, MockDefinitionStore, AppStore]
     }).compileComponents();
   }));

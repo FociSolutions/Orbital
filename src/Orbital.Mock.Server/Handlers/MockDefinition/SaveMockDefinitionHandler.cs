@@ -37,7 +37,6 @@ namespace Orbital.Mock.Server.Handlers
         public Task<Unit> Handle(SaveMockDefinitionCommand request, CancellationToken cancellationToken)
         {
             this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-
             var keysCollection = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
 
             if (!keysCollection.Contains(request.MockDefinition.Metadata.Title))
@@ -48,5 +47,6 @@ namespace Orbital.Mock.Server.Handlers
 
             return Unit.Task;
         }
+
     }
 }

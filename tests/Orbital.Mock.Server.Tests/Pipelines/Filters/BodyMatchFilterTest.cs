@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
@@ -7,19 +8,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class BodyMatchFilterTest
     {
-        private Faker<Scenario> scenarioFaker;
+        private readonly Faker<Scenario> scenarioFaker;
 
         public BodyMatchFilterTest()
         {
+            Randomizer.Seed = new Random(FilterTestHelpers.Seed);
+            var fakerJObject = new Faker<JObject>()
+                            .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .RuleFor(m => m.Type, f => f.PickRandom<BodyRuleTypes>())
-                .RuleFor(m => m.Rule, f => f.Random.String());
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
             this.scenarioFaker = new Faker<Scenario>()
@@ -43,7 +47,68 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             var Target = new BodyMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Body = input.Body }).BodyMatch;
+            var Actual = Target.Process(new ProcessMessagePort()
+                    {Scenarios = input.Scenarios, Body = input.Body.ToString()})
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        /// <summary>
+        /// Accept empty JSON bodies (because the designer's JSON validator parses
+        /// JSON in terms of javascript's interpretation rather than ours)
+        /// </summary>
+        [Fact]
+        public void BodyMatchFilterEmptyJsonMatchSuccess()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule>{new BodyRule(BodyRuleTypes.BodyEquality, new JObject())};
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = new JObject()
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+                    { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        [Fact]
+        public void BodyMatchFilterNullJsonMatchSuccess()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule() };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = new JObject()
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+                    { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.Equal(Expected, Actual);
@@ -58,18 +123,18 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = ""
+                Body = "{}"
             };
 
             #endregion
 
             var Target = new BodyMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort() { Scenarios = input.Scenarios, Body = input.Body.ToString() }).BodyMatch;
-            var Expected = new List<string> { fakeScenario.Id };
+            var Actual = Target.Process(new ProcessMessagePort()
+                    { Scenarios = input.Scenarios, Body = input.Body })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Fail)).Select(x => x.ScenarioId).ToList();
 
-            Assert.NotEqual(Expected, Actual);
+            Assert.Contains(fakeScenario.Id, Actual);
         }
-
     }
 }
