@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Validators;
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
@@ -17,9 +16,9 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public ScenarioValidatorTests()
         {
             this.scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Id, f => f.Random.String())
+                .RuleFor(m => m.Id, f => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                 .RuleFor(m => m.Response, f => new MockResponse())
-                .RuleFor(m => m.Path, f => f.Random.String())
+                .RuleFor(m => m.Path, f => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                 .RuleFor(m => m.Verb, f => f.PickRandom(
                     new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete }
                     ));

@@ -34,7 +34,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         }
 
         [Fact]
-        public void MockDefinitionValidatorHostNullFailureTest()
+        public void MockDefinitionValidatorHostNullSuccessTest()
         {
             var mockDefinitionFake = new Faker<MockDefinition>()
                 .RuleFor(m => m.Host, f => null);
@@ -45,11 +45,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             };
 
             var Target = new MockDefinitionValidator();
-            Target.ShouldHaveValidationErrorFor(m => m.Host, input.mockDefinition.Host);
+            Target.ShouldNotHaveValidationErrorFor(m => m.Host, input.mockDefinition.Host);
         }
 
         [Fact]
-        public void MockDefinitionValidatorHostEmptyFailureTest()
+        public void MockDefinitionValidatorHostEmptySuccessTest()
         {
             var mockDefinitionFake = new Faker<MockDefinition>()
                 .RuleFor(m => m.Host, f => string.Empty);
@@ -60,11 +60,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             };
 
             var Target = new MockDefinitionValidator();
-            Target.ShouldHaveValidationErrorFor(m => m.Host, input.mockDefinition.Host);
+            Target.ShouldNotHaveValidationErrorFor(m => m.Host, input.mockDefinition.Host);
         }
 
         [Fact]
-        public void MockDefinitionValidatorBasePathNullFailureTest()
+        public void MockDefinitionValidatorBasePathNullSuccessTest()
         {
             var mockDefinitionFake = new Faker<MockDefinition>()
                 .RuleFor(m => m.BasePath, f => null);
@@ -75,11 +75,11 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             };
 
             var Target = new MockDefinitionValidator();
-            Target.ShouldHaveValidationErrorFor(m => m.BasePath, input.mockDefinition.BasePath);
+            Target.ShouldNotHaveValidationErrorFor(m => m.BasePath, input.mockDefinition.BasePath);
         }
 
         [Fact]
-        public void MockDefinitionValidatorBasePathEmptyFailureTest()
+        public void MockDefinitionValidatorBasePathEmptySuccessTest()
         {
             var mockDefinitionFake = new Faker<MockDefinition>()
                 .RuleFor(m => m.BasePath, f => string.Empty);
@@ -90,7 +90,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             };
 
             var Target = new MockDefinitionValidator();
-            Target.ShouldHaveValidationErrorFor(m => m.BasePath, input.mockDefinition.BasePath);
+            Target.ShouldNotHaveValidationErrorFor(m => m.BasePath, input.mockDefinition.BasePath);
         }
 
         [Fact]

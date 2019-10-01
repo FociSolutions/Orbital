@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
@@ -20,9 +21,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             this.scenarioFaker = new Faker<Scenario>()
-                .RuleFor(m => m.Id, f => f.Random.String())
+                .RuleFor(m => m.Id, f => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                 .RuleFor(m => m.Response, f => new MockResponse())
-                .RuleFor(m => m.Path, f => f.Random.String())
+                .RuleFor(m => m.Path, f => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                 .RuleFor(m => m.Verb, f => f.PickRandom(
                     new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete }
                     ));

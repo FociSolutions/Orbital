@@ -9,7 +9,7 @@ using System.Threading;
 namespace Orbital.Mock.Server.Pipelines.Models
 {
     [ExcludeFromCodeCoverage]
-    internal class MessageProcessorInput
+    public class MessageProcessorInput
     {
         /// <summary>
         /// The Request Context

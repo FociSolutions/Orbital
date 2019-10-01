@@ -12,6 +12,8 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Microsoft.OpenApi.Writers;
 using Newtonsoft.Json.Linq;
+using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Pipelines.Models.Examples;
 
 namespace Orbital.Mock.Server.Registrations
 {
@@ -29,17 +31,6 @@ namespace Orbital.Mock.Server.Registrations
                 var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
                 var assemblyProduct = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>();
                 var assemblyDescription = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyDescriptionAttribute>();
-                o.MapType<OpenApiDocument>(() =>
-                {
-                    using (var stringWriter = new StringWriter())
-                    {
-                        var exampleObject = JsonConvert.DeserializeObject(File.ReadAllText(@"Registrations/SwaggerSchemaExamples/OpenApiDocumentSwaggerSchemaExample.json"));
-                        return new Schema
-                        {
-                            Example = exampleObject
-                        };
-                    }
-                });
                 foreach (var version in provider.ApiVersionDescriptions)
                 {
                     o.SwaggerDoc(version.GroupName, new Info()
@@ -53,9 +44,9 @@ namespace Orbital.Mock.Server.Registrations
                 var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var path = Path.Combine(AppContext.BaseDirectory, file);
                 o.IncludeXmlComments(path);
-
-
+                o.ExampleFilters();
             });
+            services.AddSwaggerExamplesFromAssemblyOf<MockDefinitionsModelExamples>();
         }
     }
 }

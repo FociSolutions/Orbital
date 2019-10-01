@@ -7,7 +7,7 @@ using Serilog;
 namespace Orbital.Mock.Server.Pipelines.Filters.Bases
 {
     [ExcludeFromCodeCoverage]
-    internal abstract class FaultableBaseFilter<T> : IFilter<T> where T : IFaultablePort
+    public abstract class FaultableBaseFilter<T> : IFilter<T> where T : IFaultablePort
     {
         //protected readonly ILogger logger = LogManager.GetCurrentClassLogger();
 

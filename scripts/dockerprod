@@ -1,8 +1,17 @@
-echo Docker login
-echo $2 | docker login --username $DOCKERHUBFOCI --password-stdin
-echo Pushing Orbital Mock image to Docker Hub
-docker tag  $REGISTRY.azurecr.io/$IMAGENAMEMOCK:$1 $DOCKERHUBFOCI/$IMAGENAMEMOCK:$2
-docker push $DOCKERHUBFOCI/$IMAGENAMEMOCK:$2
-echo Pushing Orbital Designer image to Docker Hub
-docker tag  $REGISTRY.azurecr.io/$IMAGENAMEMOCK:$1 $DOCKERHUBFOCI/$IMAGENAMEDESIGNER:$2
-docker push $DOCKERHUBFOCI/$IMAGENAMEDESIGNER:$2
+#!/bin/bash
+echo "Docker login"
+echo "$5" | docker login --username "$DOCKERHUBFOCI" --password-stdin
+
+versions="$2.$3 $4 $2 latest"
+
+echo "Tagging and pushing Orbital mock image"
+for i in $versions; do
+  docker tag "$REGISTRY.azurecr.io/$IMAGENAMEMOCK:$1" "$DOCKERHUBFOCI/$IMAGENAMEMOCK:$i";
+  docker push "$DOCKERHUBFOCI/$IMAGENAMEMOCK:$i";
+done;
+
+echo "Tagging and pushing Orbital designer image"
+for j in $versions; do
+  docker tag "$REGISTRY.azurecr.io/$IMAGENAMEDESIGNER:$1" "$DOCKERHUBFOCI/$IMAGENAMEDESIGNER:$j";
+  docker push "$DOCKERHUBFOCI/$IMAGENAMEDESIGNER:$j";
+done;

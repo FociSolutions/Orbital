@@ -1,15 +1,12 @@
-﻿using Orbital.Mock.Server.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
-    internal class ResponseSelectorFilter<T> : FaultableBaseFilter<T>
+    public class ResponseSelectorFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort
     {
         /// <summary>
@@ -21,26 +18,23 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         {
             if (!IsPipelineValid(ref port, GetType())) return port;
 
-            var scenarioIds = port.BodyMatch.Concat(port.HeaderMatchResults).Concat(port.QueryMatchResults).ToList();
-            if (scenarioIds.Count == 0)
+            var bestScenario = port.HeaderMatchResults
+                .Concat(port.BodyMatchResults)
+                .Concat(port.QueryMatchResults)
+                .GroupBy(scenario => scenario.ScenarioId)
+                .Where(scenarioGrouping =>
+                    !scenarioGrouping.Select(scenarioGroup => scenarioGroup.Match)
+                        .Contains(MatchResultType.Fail))
+                .Select(match => new
             {
-                port.SelectedResponse = new MockResponse();
-                return port;
-            }
+                ScenarioId = match.Key,
+                Score = match.Where(x => x.Match.Equals(MatchResultType.Success)).Sum(x => (int)x.Match)
+            })
+                .OrderByDescending(match => match.Score).FirstOrDefault();
 
-            var scenarioScores = scenarioIds.GroupBy(id => id).ToDictionary(g => g.Key, g => g.Count());
-            var max = scenarioScores.Values.Max();
-            var selectedScenarios = scenarioScores.Keys.Where(key => scenarioScores[key] == max)
-                .Select(id => port.Scenarios.First(scenario => scenario.Id == id))
-                .ToList();
+            port.SelectedResponse = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Response
+                : new MockResponse();
 
-            // always choose the first scenario if there are multiple valid options
-            if (selectedScenarios.Count > 1)
-            {
-                Log.Warning("There were {Count} potential valid scenarios, but only the first one was chosen.", selectedScenarios.Count);
-            }
-
-            port.SelectedResponse = selectedScenarios[0].Response;
             return port;
         }
     }

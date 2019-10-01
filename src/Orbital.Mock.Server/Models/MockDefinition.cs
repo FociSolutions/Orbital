@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Microsoft.OpenApi.Models;
 
 namespace Orbital.Mock.Server.Models
@@ -11,7 +12,7 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("host")]
         public string Host { get; set; }
 
-        [JsonProperty("basePath")]
+        [JsonProperty("basePath", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string BasePath { get; set; }
 
         [JsonProperty("metadata")]

@@ -16,7 +16,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public BodyRuleValidatorTests()
         {
             var fakerJObject = new Faker<JObject>()
-                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
+                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(40) }));
             this.fakerBodyRule = new Faker<BodyRule>()
                 .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
         }

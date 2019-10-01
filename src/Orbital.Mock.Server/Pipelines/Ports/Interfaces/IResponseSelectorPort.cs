@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
-    interface IResponseSelectorPort
+    public interface IResponseSelectorPort
     {
         MockResponse SelectedResponse { get; set; }
     }

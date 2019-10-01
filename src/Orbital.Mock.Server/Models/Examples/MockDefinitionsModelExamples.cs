@@ -10,12 +10,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Orbital.Mock.Server.Pipelines.Models.Examples
 {
+    [ExcludeFromCodeCoverage]
     public class MockDefinitionsModelExamples : IExamplesProvider
     {
         /// <summary>
@@ -89,7 +92,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Metadata = new MetadataInfo { Title = "Scenario 2", Description = "Test Scenario 2" },
                 Verb = 0,
                 Path = "/pets",
-                Response = new MockResponse { Status = 200, Body = "Testing scenario 2", Headers = headers[1] },
+                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Testing scenario 2", Headers = headers[1] },
                 RequestMatchRules = new RequestMatchRules { HeaderRules = headersRules[1], QueryRules = queryRules[1], BodyRules = bodyRules[1] }
             });
             scenarios.Add(new Scenario()
@@ -98,7 +101,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Metadata = new MetadataInfo { Title = "Scenario 3", Description = "Test Scenario 3" },
                 Verb = 0,
                 Path = "/pets",
-                Response = new MockResponse { Status = 200, Body = "Scenario 3", Headers = headers[2] },
+                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Scenario 3", Headers = headers[2] },
                 RequestMatchRules = new RequestMatchRules { HeaderRules = headersRules[2], QueryRules = queryRules[2], BodyRules = bodyRules[2] }
             });
 
@@ -111,7 +114,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                     Title = "Test Title",
                     Description = "Test Description"
                 },
-                OpenApi = JsonConvert.DeserializeObject(File.ReadAllText(@"Registrations\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json")),
+                OpenApi = JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine(@"Models", "Examples", "SwaggerSchemaExamples", "OpenApiDocumentSwaggerSchemaExample.json"))),
                 Scenarios = scenarios
             };
         }

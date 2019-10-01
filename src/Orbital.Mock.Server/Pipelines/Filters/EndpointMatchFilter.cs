@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
-    internal class EndpointMatchFilter<T> : FaultableBaseFilter<T>
+    public class EndpointMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IPathValidationPort, IScenariosPort
     {
         /// <summary>

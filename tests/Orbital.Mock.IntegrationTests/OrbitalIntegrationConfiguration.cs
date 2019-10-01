@@ -1,12 +1,14 @@
-﻿using LightBDD.XUnit2;
-using Newtonsoft.Json.Linq;
+﻿using LightBDD.Core.Configuration;
+using LightBDD.Core.Dependencies;
+using LightBDD.XUnit2;
+using Orbital.Mock.IntegrationTests;
 using Orbital.Mock.Server.IntegrationTests;
-using System;
-using System.Linq;
-using System.Net.Http;
+using Xunit;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 [assembly: OrbitalIntegrationConfiguration]
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace Orbital.Mock.Server.IntegrationTests
 {
@@ -14,23 +16,15 @@ namespace Orbital.Mock.Server.IntegrationTests
     {
         public ITestOutputHelper OutputHelper { get; }
 
-        protected override void OnSetUp()
+        protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            var client = new HttpClient();
-            var response = client.GetAsync(CommonData.ServerBaseUri).Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            try
+            configuration.DependencyContainerConfiguration().UseDefaultContainer(cfg =>
             {
-                var mockDefinitionTokens = JArray.Parse(content);
-                foreach (var mockDefinitionToken in mockDefinitionTokens)
-                {
-                    var mockId = mockDefinitionToken.SelectToken("metadata.title").ToString();
-                    client.DeleteAsync($"{CommonData.ServerBaseUri}/{mockId}").Wait();
-                }
-            }
-            catch (Exception)
-            {
-            }
+                cfg.RegisterInstance(new TestOutputHelper(), new RegistrationOptions().As<ITestOutputHelper>());
+            });
+
+            configuration.ExecutionExtensionsConfiguration()
+                .EnableScenarioDecorator<ClearServerScenarioDecorator>();
         }
     }
 }

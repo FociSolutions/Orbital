@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
-    internal interface IScenariosPort
+    public interface IScenariosPort
     {
         IEnumerable<Scenario> Scenarios { get; set; }
     }

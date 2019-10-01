@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
@@ -25,7 +26,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
+                    QueryRules = faker.Make(10, () => faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())).ToDictionary<string, string>(val => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                 })
                 .RuleFor(m => m.Id, f => f.Random.Word());
 
@@ -39,7 +40,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).QueryMatchResults;
+            var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
+                .QueryMatchResults.Where(x =>x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
+
             var Expected = new List<string> { fakeScenario.Id };
 
             Assert.Equal(Expected, Actual);
@@ -54,7 +57,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = faker.Make(10, () => faker.Random.String()).ToDictionary<string, string>(val => f.Random.String())
+                    QueryRules = faker.Make(10, () => faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())).ToDictionary<string, string>(val => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                 })
                 .RuleFor(m => m.Id, f => f.Random.Word());
 
@@ -68,10 +71,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).QueryMatchResults;
-            var Expected = new List<string> { fakeScenario.Id };
+            var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
+                .QueryMatchResults.Where(x => x.Match == MatchResultType.Success).Select(y => y.ScenarioId).ToList();
 
-            Assert.NotEqual(Expected, Actual);
+            Assert.Empty(Actual);
         }
 
         [Fact]
@@ -81,12 +84,12 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>(),
-                Query =new Dictionary<string, string>()
+                Query = new Dictionary<string, string>()
             };
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).Scenarios;
+            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).QueryMatchResults;
 
             Assert.Empty(Actual);
         }
@@ -108,10 +111,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
 
-            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Faults = input.Faults }).Scenarios;
-            var Expected = new List<Scenario> { fakeScenario };
+            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Faults = input.Faults }).QueryMatchResults;
 
-            Assert.Equal(Expected, Actual);
+            Assert.Empty(Actual);
         }
     }
 }

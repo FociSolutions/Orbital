@@ -4,6 +4,7 @@ using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Models
@@ -15,7 +16,7 @@ namespace Orbital.Mock.Server.Tests.Models
         public BodyRuleTests()
         {
             var fakerJObject = new Faker<JObject>()
-                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
+                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             this.fakerBodyRule = new Faker<BodyRule>()
                 .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
         }

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using Orbital.Mock.Server.Tests.Models.Validators;
 using Orbital.Mock.Server.Tests.Pipelines.Filters;
 using Xunit;
 
@@ -37,7 +38,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         {
             Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var fakerJObject = new Faker<JObject>()
-                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.String() }));
+                .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
                 .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
             var fakerResponse = new Faker<MockResponse>()
@@ -47,9 +48,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                     ));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                     .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
-                    .RuleFor(m => m.HeaderRules, f => f.Make(5, () => f.Random.String())
+                    .RuleFor(m => m.HeaderRules, f => f.Make(5, () => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                         .ToDictionary(x => x, _ => f.Random.Word()))
-                    .RuleFor(m => m.QueryRules, f => f.Make(5, () => f.Random.String())
+                    .RuleFor(m => m.QueryRules, f => f.Make(5, () => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
                         .ToDictionary(x => x, _ => f.Random.Word()));
             this.fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())
@@ -78,7 +79,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         }
 
         [Fact]
-        public void MockServerProcessorPushWithValidInputTest()
+        public void MockServerProcessorPushWithValidInputTestButNoResponse()
         {
             #region TestSetup
             var scenarios = this.fakerScenario.Generate(10);
@@ -101,7 +102,32 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Actual = Target.Push(input, cancellationToken).Result;
 
 
-            Assert.Equal(Expected, Actual);
+            Assert.NotEqual(Expected, Actual);
+        }
+
+        /// <summary>
+        /// Ensure that sending invalid JSON into the pipeline does not cause the pipeline
+        /// to stall
+        /// </summary>
+        [Fact]
+        public void MockServerProcessorPushWithInvalidJsonFailure()
+        {
+            #region TestSetup
+            var scenarios = this.fakerScenario.Generate(1);
+
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Path = scenarios[0].Path;
+            httpContext.Request.Method = scenarios[0].Verb.ToString();
+            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes("invalid \\json"));
+            scenarios[0].RequestMatchRules.HeaderRules.Keys.ToList().ForEach(k => httpContext.Request.Headers.Add(k, scenarios[0].RequestMatchRules.HeaderRules[k]));
+            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
+
+            var input = new MessageProcessorInput(httpContext.Request, scenarios);
+            #endregion
+            var Target = this.mockServerProcessor;
+            Target.Start();
+            var Actual = Target.Push(input, cancellationToken);
+            Assert.NotNull(Actual.Result.Body);
         }
 
         [Fact]
@@ -130,7 +156,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(null, cancellationToken).Result;
-            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
+            var Expected = new MockResponse { Status = StatusCodes.Status400BadRequest, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             Assert.Equal(Expected, Actual);
         }
 
@@ -143,7 +169,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
-            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
+            var Expected = new MockResponse { Status = StatusCodes.Status400BadRequest, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             Assert.Equal(Expected, Actual);
         }
 
@@ -158,7 +184,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
-            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
+            var Expected = new MockResponse { Status = StatusCodes.Status400BadRequest, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             Assert.Equal(Expected, Actual);
         }
 
@@ -172,7 +198,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
-            var Expected = new MockResponse { Status = 400, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
+            var Expected = new MockResponse { Status = StatusCodes.Status400BadRequest, Body = "Something went wrong", Headers = new Dictionary<string, string>() };
             Assert.Equal(Expected, Actual);
         }
 

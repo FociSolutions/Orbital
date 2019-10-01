@@ -67,7 +67,10 @@ namespace Orbital.Mock.Server.Pipelines.Factories
         {
             return CreateActionBlock(envelope =>
             {
-                ((SyncEnvelope)envelope).CompletionSource.SetResult(envelope.Data);
+                if (!((SyncEnvelope) envelope).CompletionSource.Task.IsCanceled && !((SyncEnvelope)envelope).CompletionSource.Task.IsCompleted)
+                {
+                    ((SyncEnvelope) envelope).CompletionSource.SetResult(envelope.Data);
+                }
             }, cancellationTokenSource);
         }
     }

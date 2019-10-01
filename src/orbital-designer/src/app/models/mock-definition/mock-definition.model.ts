@@ -77,6 +77,7 @@ export class MockDefinition {
 
   /**
    * Check if the given object is mock definition
+   * Supports OpenApiV2 Documents optional basePath and host properties
    * @param o Object to check if it is mock definition
    */
   public static isMockDefinition(o: any): o is MockDefinition {

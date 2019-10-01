@@ -32,7 +32,10 @@ namespace Orbital.Mock.Server.Pipelines.Envelopes
             Data = data;
             this.token = token;
 
-            this.token.Register(() => this.CompletionSource.SetResult(null));
+            this.token.Register(() =>
+            {
+                if (!this.CompletionSource.Task.IsCompleted) this.CompletionSource.SetResult(null);
+            });
         }
 
         /// <inheritdoc />

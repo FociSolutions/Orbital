@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Envelopes;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
@@ -12,14 +11,14 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.AspNetCore.Http;
 
 namespace Orbital.Mock.Server.Pipelines
 {
-    internal class MockServerProcessor : IPipeline<MessageProcessorInput, Task<MockResponse>>
+    public class MockServerProcessor : IPipeline<MessageProcessorInput, Task<MockResponse>>
     {
         private readonly SyncBlockFactory blockFactory;
 
@@ -31,7 +30,7 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
-
+        public bool PipelineIsRunning { get; private set;  }
 
         public MockServerProcessor()
             : this(new PathValidationFilter<ProcessMessagePort>(),
@@ -105,7 +104,9 @@ namespace Orbital.Mock.Server.Pipelines
         /// <inheritdoc />
         public async Task<MockResponse> Push(MessageProcessorInput input, CancellationToken token)
         {
-            token.Register(() => { this.cancellationTokenSource.Cancel(); });
+            var completionSource = new TaskCompletionSource<ProcessMessagePort>();
+
+            token.Register(() => cancellationTokenSource.Cancel());
 
             if (input == null ||
                 input.ServerHttpRequest == null ||
@@ -139,26 +140,21 @@ namespace Orbital.Mock.Server.Pipelines
                 Body = body
             };
 
-            var completionSource = new TaskCompletionSource<ProcessMessagePort>();
+            
             var envelope = new SyncEnvelope(completionSource, port, token);
 
             this.startBlock.Post(envelope);
+
             port = await completionSource.Task;
 
             if (port == null)
             {
                 var error = "Pipeline port cannot be null";
                 Log.Error("MockServerProcessor Error: {Error}", error);
-                return new MockResponse { Status = 500, Body = error, Headers = new Dictionary<string, string>() };
+                return new MockResponse { Status = StatusCodes.Status500InternalServerError, Body = error, Headers = new Dictionary<string, string>() };
             }
 
-            if (port.IsFaulted)
-            {
-                return new MockResponse();
-            }
-
-            return port.SelectedResponse;
-
+            return port.IsFaulted || port.SelectedResponse == null ? new MockResponse() : port.SelectedResponse;
         }
 
         /// <inheritdoc />
@@ -173,6 +169,7 @@ namespace Orbital.Mock.Server.Pipelines
                 }
 
                 this.cancellationTokenSource.Cancel();
+                PipelineIsRunning = false;
             }
             catch (AggregateException e)
             {

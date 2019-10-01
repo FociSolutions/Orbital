@@ -56,7 +56,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
             var faker = new Faker();
-            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(faker.Random.String());
+            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(faker.Random.AlphaNumeric(40));
             #endregion
             var Target = new DeleteMockDefinitionHandler(cache, data);
             var exception = Record.Exception(() => Target.Handle(deleteMockDefinitionCommand, CancellationToken.None).Result);

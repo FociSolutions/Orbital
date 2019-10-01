@@ -1,6 +1,7 @@
 ﻿using LightBDD.Framework;
 using LightBDD.Framework.Scenarios;
 using LightBDD.XUnit2;
+using Orbital.Mock.IntegrationTests;
 
 namespace Orbital.Mock.Server.IntegrationTests.OrbitalAdmin.GetMockDefinitions
 {
@@ -12,6 +13,7 @@ namespace Orbital.Mock.Server.IntegrationTests.OrbitalAdmin.GetMockDefinitions
     {
         [Scenario]
         [Label("Ticket-1")]
+        [ClearServerScenarioDecorator]
         public void No_mock_definitions_loaded()
         {
             Runner.RunScenario(

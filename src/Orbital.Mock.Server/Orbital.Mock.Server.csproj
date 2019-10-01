@@ -14,6 +14,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
     <PackageReference Include="MediatR" Version="7.0.0" />
@@ -36,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Registrations\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json">
+    <Content Update="Models\Examples\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

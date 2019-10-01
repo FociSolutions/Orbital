@@ -50,6 +50,7 @@ namespace Orbital.Mock.Server.Middleware
                 var command = new InvokeSynchronousPipelineCommand(context.Request);
 
                 var response = await this.mediator.Send(command);
+                context.Response.StatusCode = response.Status;
                 foreach (KeyValuePair<string, string> header in response.Headers)
                 {
                     context.Response.Headers.Add(header.Key, header.Value);

@@ -31,7 +31,7 @@ namespace Orbital.Mock.Server
         {
             configurationBuilder.AddEnvironmentVariables();
             var loggerConfiguration = new LoggerConfiguration()
-            .MinimumLevel.Information()
+            .MinimumLevel.Information() 
             .Enrich.FromLogContext()
             .WriteTo.Console();
 

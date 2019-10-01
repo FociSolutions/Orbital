@@ -55,7 +55,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             var input = new
             {
-                title = faker.Random.String()
+                title = faker.Random.AlphaNumeric(40)
             };
 
             var getMockDefinitionCommand = new GetMockDefinitionByTitleCommand(input.title);
