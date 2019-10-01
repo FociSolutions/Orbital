@@ -19,13 +19,16 @@ export class SideBarComponent implements OnInit {
     });
   }
 
+  // Pass a string title value selected and set it to the string title.
   isSelected(title: string): boolean {
     if (this.selectedMockDefinition === null) {
-
+      return false;
     }
     return title === this.selectedMockDefinition;
   }
 
+  // Updates the value of the mock definition after selecting it.
+  // this.store.mockDefinition is set and then the state updated.
   updateSelected(mockDefinition: MockDefinition) {
     this.store.mockDefinition = mockDefinition;
   }

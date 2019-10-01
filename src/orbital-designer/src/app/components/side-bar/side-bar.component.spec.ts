@@ -35,6 +35,7 @@ describe('SideBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // Checks that the h1 rendered content is equals to "MOCKDEFINITIONS"
   it('should render title in h1 tag', async(() => {
     // tslint:disable-next-line: no-shadowed-variable
     const fixture = TestBed.createComponent(SideBarComponent);
@@ -43,6 +44,8 @@ describe('SideBarComponent', () => {
     expect(compiled.querySelector('h1').textContent).toContain('MOCKDEFINITIONS');
   }));
 
+  // Check if a valid mockdefinition is passed to the isSelected method.
+  // Then, confirm the value returned is selected by having a true response.
   describe('SideBarComponent.isSelected', () => {
     it('should return true if selected a valid Mock Defintion', () => {
       const title = component.selectedMockDefinition;
@@ -51,10 +54,20 @@ describe('SideBarComponent', () => {
       expect(component.isSelected(title)).toBeTruthy();
     });
   });
+  // Check if a false value was passed to the isSelected method.
   describe('SideBarComponent.isSelected', () => {
     it('should return false if the mockDefinitions title list is not selected', () => {
-      const title = null;
+      const title = validMockDefinition.metadata.title + 'false';
       expect(component.isSelected(title)).toBeFalsy();
+    });
+  });
+  // Test the updateSelected method that passes by passing the latest mock definition stored in the state
+  // and compared against a valid mock modefintion.
+  describe('SideBarComponent.updateSelected', () => {
+    it('should return true if the mockDefinitions menu item is updated', () => {
+      const expected = validMockDefinition;
+      component.updateSelected(validMockDefinition);
+      expect(store.state.mockDefinition).toEqual(expected);
     });
   });
 });
