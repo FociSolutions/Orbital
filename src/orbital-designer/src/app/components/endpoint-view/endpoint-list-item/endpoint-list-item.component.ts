@@ -24,28 +24,10 @@ export class EndpointListItemComponent implements OnInit {
   /**
    * Returns a list of scenarios for the clicked endpoint
    */
-  public onClickEndpoint() {
-    const pipe = new GetEndpointScenariosPipe();
-    const scenarios = pipe.transform(
-      this.store.state.mockDefinition.scenarios,
-      this.endpoint
-    );
 
-    let alertText = 'List of scenarios within this endpoint:\n';
-
-    scenarios.forEach(scenario => {
-      alertText +=
-        scenario.metadata.title +
-        ': ' +
-        scenario.metadata.description +
-        ', code: ' +
-        scenario.response.status +
-        ': ' +
-        HttpStatus.getStatusText(scenario.response.status) +
-        '\n';
-    });
-
-    alert(alertText);
+  selectEndpoint() {
+    this.store.state.selectedEndpoint = this.endpoint;
+    console.log(this.store.state.selectedEndpoint);
   }
 
   get endpointDescription(): string {
