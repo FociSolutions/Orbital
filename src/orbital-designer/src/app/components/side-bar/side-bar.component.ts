@@ -20,6 +20,9 @@ export class SideBarComponent implements OnInit {
   }
 
   isSelected(title: string): boolean {
+    if (this.selectedMockDefinition === null) {
+
+    }
     return title === this.selectedMockDefinition;
   }
 
