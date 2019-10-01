@@ -1,14 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatListOption, MatListItem } from '@angular/material/list';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  ViewChild,
+  OnChanges,
+  ElementRef
+} from '@angular/core';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnChanges {
   @Output() filteredList: EventEmitter<any[]>;
-
+  @ViewChild(MatInput, { static: false }) input: MatInput;
   @Input() list: any[] = [];
   @Input() itemToStringFn: (_: any) => string = x => x as string;
   constructor() {
@@ -40,6 +50,15 @@ export class SearchBarComponent implements OnInit {
   // tslint:disable-next-line: member-ordering
   static ignoreCaseContainsMatch(target: string, substring: string): boolean {
     return target.toLowerCase().includes(substring.toLowerCase());
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!!changes.list) {
+      if (!!this.input) {
+        this.input.value = '';
+      }
+      this.onSearchInput('');
+    }
   }
   ngOnInit() {}
 }
