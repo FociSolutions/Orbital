@@ -1,10 +1,9 @@
 .side-bar-container {
     min-width: 14vw;
     min-height: 85vh ;
-    max-height: 94.5vh ;
     background-color: white;
     border-right: 0.1em solid rgba(0, 0, 0, 0.12);
-
+    overflow-y: scroll;
     .side-bar-top {
         min-width: 14vw;
         display: flex;

@@ -41,7 +41,7 @@ describe('SideBarComponent', () => {
     const fixture = TestBed.createComponent(SideBarComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('MOCKDEFINITIONS');
+    expect(compiled.querySelector('h1').textContent).toContain('MOCK DEFINITIONS');
   }));
 
   // Check if a valid mockdefinition is passed to the isSelected method.

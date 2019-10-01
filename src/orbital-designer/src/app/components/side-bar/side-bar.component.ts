@@ -10,7 +10,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 export class SideBarComponent implements OnInit {
   mockDefinitions: Map<string, MockDefinition>;
   selectedMockDefinition: string;
-  title = 'MOCKDEFINITIONS';
+  title = 'MOCK DEFINITIONS';
 
   constructor( private store: DesignerStore) {
     this.store.state$.subscribe(state => {
