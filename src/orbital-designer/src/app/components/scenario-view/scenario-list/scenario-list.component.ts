@@ -8,7 +8,7 @@ import { DesignerStore } from '../../../../../src/app/store/designer-store';
   styleUrls: ['./scenario-list.component.scss']
 })
 export class ScenarioListComponent implements OnInit {
-  @Input() scenarios: Scenario[];
+  @Input() scenarios: Scenario[] = [];
   constructor(private designerStore: DesignerStore) {
     this.designerStore.state$.subscribe(() => {
       this.scenarios = this.designerStore.state.mockDefinition.scenarios;

@@ -10,13 +10,14 @@ import { DesignerStore } from '../../store/designer-store';
 import { LoggerModule } from 'ngx-logger';
 import { HttpBackend } from '@angular/common/http';
 import {AppModule} from '../../app.module';
+import { APP_BASE_HREF } from '@angular/common';
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
   let fixture: ComponentFixture<ScenarioViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule]
+      imports: [AppModule, APP_BASE_HREF]
     })
     .compileComponents();
   }));
