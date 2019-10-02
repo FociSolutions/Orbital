@@ -10,6 +10,11 @@ import {
   LoggerConfig
 } from 'ngx-logger';
 import { HttpBackend } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { AppModule } from 'src/app/app.module';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EndpointListComponent } from '../endpoint-list/endpoint-list.component';
+import { EndpointViewComponent } from '../endpoint-view.component';
 
 describe('EndpointListItemComponent', () => {
   let component: EndpointListItemComponent;
@@ -17,16 +22,9 @@ describe('EndpointListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EndpointListItemComponent],
-      imports: [MatCardModule, MatGridListModule],
-      providers: [
-        DesignerStore,
-        NGXLoggerHttpService,
-        NGXLogger,
-        NGXMapperService,
-        HttpBackend,
-        LoggerConfig
-      ]
+      declarations: [EndpointListItemComponent, EndpointListComponent],
+      imports: [AppModule],
+      providers: [DesignerStore]
     }).compileComponents();
   }));
 

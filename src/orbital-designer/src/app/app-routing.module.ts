@@ -18,7 +18,11 @@ const routes: Routes = [
     component: EndpointViewComponent,
     canActivate: [OverviewRedirectService]
   },
-  { path: 'scenario-view', component: ScenarioViewComponent },
+  {
+    path: 'scenario-view',
+    component: ScenarioViewComponent,
+    canActivate: [OverviewRedirectService]
+  },
   { path: '**', component: HomeViewComponent }
 ];
 

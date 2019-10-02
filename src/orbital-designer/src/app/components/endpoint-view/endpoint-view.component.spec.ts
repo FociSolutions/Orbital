@@ -14,7 +14,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { EndpointListComponent } from './endpoint-list/endpoint-list.component';
 import { GetEndpointScenariosPipe } from '../../pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
-import { SideBarComponent} from '../side-bar/side-bar.component';
+import { SideBarComponent } from '../side-bar/side-bar.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -38,7 +39,8 @@ describe('EndpointViewComponent', () => {
         LoggerTestingModule,
         MatDividerModule,
         MatIconModule,
-        MatListModule
+        MatListModule,
+        RouterTestingModule.withRoutes([])
       ],
       providers: [DesignerStore]
     }).compileComponents();

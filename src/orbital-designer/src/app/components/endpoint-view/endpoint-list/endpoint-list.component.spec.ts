@@ -7,6 +7,7 @@ import { GetEndpointScenariosPipe } from '../../../pipes/get-endpoint-scenarios/
 import { DesignerStore } from '../../../store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import SampleMockDefinition from '../../../../test-files/test-mockdefinition-object';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('EndpointListComponent', () => {
   let component: EndpointListComponent;
@@ -20,7 +21,12 @@ describe('EndpointListComponent', () => {
         EndpointListItemComponent,
         GetEndpointScenariosPipe
       ],
-      imports: [MatListModule, MatCardModule, LoggerTestingModule],
+      imports: [
+        MatListModule,
+        MatCardModule,
+        LoggerTestingModule,
+        RouterTestingModule.withRoutes([])
+      ],
       providers: [DesignerStore]
     }).compileComponents();
   }));

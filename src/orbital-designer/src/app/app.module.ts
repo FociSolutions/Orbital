@@ -44,7 +44,6 @@ import { ScenarioListItemComponent } from './components/scenario-view/scenario-l
     EndpointViewComponent,
     FilterInvalidControlsPipe,
     EndpointListComponent,
-    EndpointListItemComponent,
     OverviewComponent,
     SideBarComponent,
     ScenarioViewComponent,
