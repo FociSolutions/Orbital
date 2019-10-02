@@ -15,7 +15,7 @@ describe('ScenarioListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule, ScenarioListComponent, EndpointListComponent]
+      imports: [AppModule]
     }).compileComponents();
   }));
 

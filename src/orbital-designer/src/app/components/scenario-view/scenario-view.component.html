@@ -1,4 +1,4 @@
-<div class="fullscreen column center-hr">
+<div *ngIf="this.mockdefinition != null" class="fullscreen column center-hr">
   <div class="container scenarioview">
     <div class="row">
       <div class="sidebar">
@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<ng-template #headerContent>
+<ng-template [ngIf]="this.mockdefinition != null" #headerContent>
   <div class="title">
     <h3>{{ this.mockdefinition?.metadata?.title }}</h3>
   </div>

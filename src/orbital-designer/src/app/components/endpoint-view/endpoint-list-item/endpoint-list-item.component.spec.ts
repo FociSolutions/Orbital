@@ -22,9 +22,7 @@ describe('EndpointListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EndpointListItemComponent, EndpointListComponent],
       imports: [AppModule],
-      providers: [DesignerStore]
     }).compileComponents();
   }));
 

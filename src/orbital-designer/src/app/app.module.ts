@@ -48,7 +48,9 @@ import { ScenarioListItemComponent } from './components/scenario-view/scenario-l
     SideBarComponent,
     ScenarioViewComponent,
     ScenarioListComponent,
-    ScenarioListItemComponent
+    ScenarioListItemComponent,
+    SideBarComponent,
+    EndpointListItemComponent
   ],
   imports: [
     BrowserModule,

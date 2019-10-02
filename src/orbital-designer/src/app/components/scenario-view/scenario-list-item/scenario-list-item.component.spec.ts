@@ -4,6 +4,7 @@ import { ScenarioListItemComponent } from './scenario-list-item.component';
 import { DesignerStore } from '../../../store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { ScenarioListComponent } from '../scenario-list/scenario-list.component';
+import { AppModule } from 'src/app/app.module';
 
 describe('ScenarioListItemComponent', () => {
   let component: ScenarioListItemComponent;
@@ -11,9 +12,7 @@ describe('ScenarioListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ScenarioListComponent],
-      imports: [MatCardModule],
-      providers: [DesignerStore]
+      imports: [AppModule]
     }).compileComponents();
   }));
 
