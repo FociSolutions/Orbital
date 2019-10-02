@@ -3,6 +3,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { Scenario } from '../../../models/mock-definition/scenario/scenario.model';
 import * as HttpStatus from 'http-status-codes';
+import { ScenarioViewComponent } from '../scenario-view.component';
 
 @Component({
   selector: 'app-scenario-list-item',

@@ -10,7 +10,12 @@
         </div>
         <div>
           <app-search-bar> </app-search-bar>
-          <app-scenario-list></app-scenario-list>
+          <app-scenario-list
+            [scenarios]="
+              this.mockdefinition?.scenarios
+                | getEndpointScenarios: selectedEndpoint
+            "
+          ></app-scenario-list>
         </div>
       </div>
     </div>
@@ -19,7 +24,7 @@
 
 <ng-template #headerContent>
   <div class="title">
-    <h3>{{ this.mockDefinition?.metadata?.title }}</h3>
+    <h3>{{ this.mockdefinition?.metadata?.title }}</h3>
   </div>
-  <p>{{ this.mockDefinition?.metadata?.description }}</p>
+  <p>{{ this.mockdefinition?.metadata?.description }}</p>
 </ng-template>

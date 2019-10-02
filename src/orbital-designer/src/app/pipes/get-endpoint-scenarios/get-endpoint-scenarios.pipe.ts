@@ -18,7 +18,9 @@ export class GetEndpointScenariosPipe implements PipeTransform {
     }
     return scenarios.filter(
       scenario =>
-        scenario.path === endpoint.path && scenario.verb === endpoint.verb
+        scenario.path === endpoint.path &&
+        scenario.verb.toString().toUpperCase() ===
+          endpoint.verb.toString().toUpperCase()
     );
   }
 }

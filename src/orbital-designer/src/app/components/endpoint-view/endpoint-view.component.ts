@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Endpoint } from 'src/app/models/endpoint.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-endpoint-view',
@@ -13,7 +14,7 @@ export class EndpointViewComponent implements OnInit {
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
 
-  constructor(private store: DesignerStore) {
+  constructor(private store: DesignerStore, private router: Router) {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
       this.endpointList = [...state.endpoints];
@@ -34,5 +35,8 @@ export class EndpointViewComponent implements OnInit {
     this.filteredList = endpoints;
   }
 
+  // navigateToScenarios() {
+  //   this.router.navigateByUrl('scenario-view');
+  // }
   ngOnInit() {}
 }

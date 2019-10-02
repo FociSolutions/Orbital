@@ -9,11 +9,10 @@ import { DesignerStore } from '../../../../../src/app/store/designer-store';
 })
 export class ScenarioListComponent implements OnInit {
   @Input() scenarios: Scenario[] = [];
-  constructor(private designerStore: DesignerStore) {
-    this.designerStore.state$.subscribe(() => {
-      this.scenarios = this.designerStore.state.mockDefinition.scenarios;
-    });
-  }
 
-  ngOnInit() {}
+  constructor() {}
+
+  ngOnInit() {
+    console.log(this.scenarios);
+  }
 }

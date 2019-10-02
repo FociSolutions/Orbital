@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { OverviewComponent } from './overview.component';
 
 describe('OverviewComponent', () => {
@@ -8,10 +8,9 @@ describe('OverviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OverviewComponent ],
-      imports: [ MatCardModule ]
-    })
-    .compileComponents();
+      declarations: [OverviewComponent],
+      imports: [MatCardModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

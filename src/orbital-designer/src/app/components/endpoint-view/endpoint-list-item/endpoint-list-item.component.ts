@@ -4,6 +4,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { GetEndpointScenariosPipe } from '../../../pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import * as HttpStatus from 'http-status-codes';
 import { NGXLogger } from 'ngx-logger';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-endpoint-list-item',
@@ -15,7 +16,11 @@ export class EndpointListItemComponent implements OnInit {
   @Input() endpoint: Endpoint;
   @Input() scenarioCount: number;
 
-  constructor(private designerStore: DesignerStore, private logger: NGXLogger) {
+  constructor(
+    private designerStore: DesignerStore,
+    private logger: NGXLogger,
+    private router: Router
+  ) {
     this.store = designerStore;
   }
 
@@ -27,6 +32,7 @@ export class EndpointListItemComponent implements OnInit {
 
   selectEndpoint() {
     this.store.state.selectedEndpoint = this.endpoint;
+    this.router.navigateByUrl('scenario-view');
     console.log(this.store.state.selectedEndpoint);
   }
 
