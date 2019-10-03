@@ -27,8 +27,8 @@
 
   <ng-template #headerContent>
     <div class="title">
-      <h3>{{ this.mockDefinition.metadata?.title }}</h3>
+      <h3>{{ !!mockDefinition ? mockDefinition.metadata.title : null }}</h3>
     </div>
-    <p>{{ this.mockDefinition.metadata?.description }}</p>
+    <p>{{ !!mockDefinition ? mockDefinition.metadata.description : null }}</p>
   </ng-template>
 </div>

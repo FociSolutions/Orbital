@@ -12,10 +12,12 @@ export class SideBarComponent implements OnInit {
   selectedMockDefinition: string;
   title = 'MOCK DEFINITIONS';
 
-  constructor( private store: DesignerStore) {
+  constructor(private store: DesignerStore) {
     this.store.state$.subscribe(state => {
-      this.mockDefinitions = state.mockDefinitions;
-      this.selectedMockDefinition = state.mockDefinition.metadata.title;
+      if (!!state.mockDefinition) {
+        this.mockDefinitions = state.mockDefinitions;
+        this.selectedMockDefinition = state.mockDefinition.metadata.title;
+      }
     });
   }
 
@@ -32,7 +34,5 @@ export class SideBarComponent implements OnInit {
   updateSelected(mockDefinition: MockDefinition) {
     this.store.mockDefinition = mockDefinition;
   }
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

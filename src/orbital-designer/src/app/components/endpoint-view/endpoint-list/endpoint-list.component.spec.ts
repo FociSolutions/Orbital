@@ -1,13 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { EndpointListItemComponent } from '../endpoint-list-item/endpoint-list-item.component';
 import { EndpointListComponent } from './endpoint-list.component';
-import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card';
-import { GetEndpointScenariosPipe } from '../../../pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { DesignerStore } from '../../../store/designer-store';
-import { LoggerTestingModule } from 'ngx-logger/testing';
 import SampleMockDefinition from '../../../../test-files/test-mockdefinition-object';
-import { RouterTestingModule } from '@angular/router/testing';
+import { MatListModule } from '@angular/material/list';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { EndpointListItemComponent } from '../endpoint-list-item/endpoint-list-item.component';
+import { MatCardModule } from '@angular/material/card';
+import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 
 describe('EndpointListComponent', () => {
   let component: EndpointListComponent;
@@ -21,12 +20,7 @@ describe('EndpointListComponent', () => {
         EndpointListItemComponent,
         GetEndpointScenariosPipe
       ],
-      imports: [
-        MatListModule,
-        MatCardModule,
-        LoggerTestingModule,
-        RouterTestingModule.withRoutes([])
-      ],
+      imports: [MatListModule, MatCardModule, LoggerTestingModule],
       providers: [DesignerStore]
     }).compileComponents();
   }));

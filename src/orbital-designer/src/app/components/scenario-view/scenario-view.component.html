@@ -11,9 +11,9 @@
         <div>
           <app-search-bar> </app-search-bar>
           <app-scenario-list
+            *ngIf="!!mockDefinition"
             [scenarios]="
-              this.mockdefinition?.scenarios
-                | getEndpointScenarios: selectedEndpoint
+              mockDefinition.scenarios | getEndpointScenarios: selectedEndpoint
             "
           ></app-scenario-list>
         </div>
@@ -22,9 +22,10 @@
   </div>
 </div>
 
-<ng-template [ngIf]="this.mockdefinition != null" #headerContent>
+<ng-template #headerContent let-path="path">
   <div class="title">
-    <h3>{{ this.mockdefinition?.metadata?.title }}</h3>
+    <h3>
+      {{ !!selectedEndpoint ? selectedEndpoint.path : null }}
+    </h3>
   </div>
-  <p>{{ this.mockdefinition?.metadata?.description }}</p>
 </ng-template>

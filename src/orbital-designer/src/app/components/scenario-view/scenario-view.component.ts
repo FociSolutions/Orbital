@@ -1,8 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Endpoint } from 'src/app/models/endpoint.model';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-scenario-view',
@@ -11,12 +10,12 @@ import { Endpoint } from 'src/app/models/endpoint.model';
 })
 export class ScenarioViewComponent implements OnInit {
   selectedEndpoint: Endpoint;
-  mockdefinition: MockDefinition;
+  mockDefinition: MockDefinition;
 
   constructor(private store: DesignerStore) {
     this.store.state$.subscribe(state => {
-      this.mockdefinition = state.mockDefinition;
       this.selectedEndpoint = state.selectedEndpoint;
+      this.mockDefinition = state.mockDefinition;
     });
   }
 

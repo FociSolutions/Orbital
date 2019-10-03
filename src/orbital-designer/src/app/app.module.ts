@@ -50,7 +50,8 @@ import { ScenarioListItemComponent } from './components/scenario-view/scenario-l
     ScenarioListComponent,
     ScenarioListItemComponent,
     SideBarComponent,
-    EndpointListItemComponent
+    EndpointListItemComponent,
+    ScenarioViewComponent
   ],
   imports: [
     BrowserModule,

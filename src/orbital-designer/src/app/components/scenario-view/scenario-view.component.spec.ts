@@ -1,22 +1,32 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScenarioViewComponent } from './scenario-view.component';
-import { ScenarioListItemComponent } from './scenario-list-item/scenario-list-item.component';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
-import { OverviewComponent } from '../overview/overview.component';
+import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { ScenarioListComponent } from './scenario-list/scenario-list.component';
+import { SideBarComponent } from '../side-bar/side-bar.component';
+import { ScenarioListItemComponent } from './scenario-list-item/scenario-list-item.component';
 import { MatCardModule } from '@angular/material/card';
-import { DesignerStore } from '../../store/designer-store';
-import { LoggerModule } from 'ngx-logger';
-import { HttpBackend } from '@angular/common/http';
-import { AppModule } from '../../app.module';
+import { OverviewComponent } from '../overview/overview.component';
+
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
   let fixture: ComponentFixture<ScenarioViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule]
+      declarations: [
+        ScenarioViewComponent,
+        ScenarioListComponent,
+        ScenarioListItemComponent,
+        SideBarComponent,
+        GetEndpointScenariosPipe,
+        OverviewComponent
+      ],
+      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule],
+      providers: [DesignerStore]
     }).compileComponents();
   }));
 
