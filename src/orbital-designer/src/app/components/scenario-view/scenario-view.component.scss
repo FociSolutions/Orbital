@@ -1,4 +1,4 @@
-.container .scenarioview {
+.container.scenarioview {
   width: 95vw !important;
   min-height: 85vh !important;
   margin-top: 2vh;
@@ -8,7 +8,7 @@
 }
 
 .scenario {
-  width: 100vw !important;
+  width: 100% !important;
 }
 
 app-overview {
@@ -27,4 +27,5 @@ app-scenario-list {
 
 div.scenarios {
   width: 100%;
+  overflow-y:hidden;
 }
