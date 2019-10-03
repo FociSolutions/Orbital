@@ -17,6 +17,8 @@ import { VerbType } from 'src/app/models/verb.type';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validOpenApiText from '../../../test-files/valid-openapi-spec';
 import { By } from '@angular/platform-browser';
+import testMockdefinitionFileMock from 'src/test-files/test-mockdefinition-file.mock';
+import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -40,19 +42,7 @@ describe('ScenarioViewComponent', () => {
   beforeEach(async () => {
     fixture = TestBed.createComponent(ScenarioViewComponent);
     component = fixture.componentInstance;
-    const title = faker.random.word();
-    const description = faker.random.words();
-    const openApi = await MockDefinition.toOpenApiSpec(validOpenApiText);
-    component.mockDefinition = {
-      metadata: {
-        title,
-        description
-      },
-      host: openApi.host,
-      basePath: openApi.basePath,
-      openApi,
-      scenarios: []
-    } as MockDefinition;
+    component.mockDefinition = testMockdefinitionObject;
 
     fixture.detectChanges();
   });
