@@ -31,6 +31,9 @@ export class EndpointListItemComponent implements OnInit {
     this.logger.debug(this.store.state.selectedEndpoint);
   }
 
+  /**
+   * Gets the endpoint's description
+   */
   get endpointDescription(): string {
     return !this.endpoint || !this.endpoint.spec.description
       ? 'No description'
