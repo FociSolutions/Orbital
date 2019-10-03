@@ -19,6 +19,10 @@ export class ScenarioListItemComponent implements OnInit {
    * Gets the scenario response's status string
    */
   getScenarioResponseStatusString() {
-    return HttpStatus.getStatusText(this.scenario.response.status);
+    try {
+      return HttpStatus.getStatusText(this.scenario.response.status);
+    } catch (Error) {
+      return 'Unknown';
+    }
   }
 }
