@@ -10,6 +10,7 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 import { ScenarioListItemComponent } from './scenario-list-item/scenario-list-item.component';
 import { MatCardModule } from '@angular/material/card';
 import { OverviewComponent } from '../overview/overview.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -25,7 +26,7 @@ describe('ScenarioViewComponent', () => {
         GetEndpointScenariosPipe,
         OverviewComponent
       ],
-      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule],
+      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule, RouterTestingModule],
       providers: [DesignerStore]
     }).compileComponents();
   }));

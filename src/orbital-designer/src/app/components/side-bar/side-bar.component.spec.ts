@@ -8,6 +8,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
@@ -17,7 +18,7 @@ describe('SideBarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SideBarComponent ],
-      imports: [ MatSidenavModule, MatDividerModule, MatListModule, MatIconModule, LoggerTestingModule ],
+      imports: [ MatSidenavModule, MatDividerModule, MatListModule, MatIconModule, LoggerTestingModule, RouterTestingModule ],
       providers: [ DesignerStore ]
     })
     .compileComponents();
