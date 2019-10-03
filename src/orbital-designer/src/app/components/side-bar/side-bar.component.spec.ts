@@ -9,11 +9,13 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
   let fixture: ComponentFixture<SideBarComponent>;
   let store: DesignerStore;
+  let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -65,10 +67,12 @@ describe('SideBarComponent', () => {
   // Test the updateSelected method that passes by passing the latest mock definition stored in the state
   // and compared against a valid mock modefintion.
   describe('SideBarComponent.updateSelected', () => {
-    it('should return true if the mockDefinitions menu item is updated', () => {
+    it('should return true if the mockDefinitions menu item is updated and navigate to endpoint-view', () => {
+      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const expected = validMockDefinition;
       component.updateSelected(validMockDefinition);
       expect(store.state.mockDefinition).toEqual(expected);
+      expect(routerSpy).toHaveBeenCalled();
     });
   });
 });
