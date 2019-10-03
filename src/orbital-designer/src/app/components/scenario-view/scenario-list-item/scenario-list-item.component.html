@@ -1,7 +1,4 @@
-<mat-card *ngIf="!!scenario" class="scenariolistitemcontainer">
-  <mat-card-header class="{{ scenario?.verb | lowercase }} column center">
-    <mat-card-title class="verb"></mat-card-title>
-  </mat-card-header>
+<mat-card *ngIf="!!scenario" class="scenariolistitemcontainer mincardheight">
   <mat-card-content>
     <mat-card-title> {{ scenario?.metadata.title }} </mat-card-title>
     <mat-card-subtitle>

@@ -50,6 +50,10 @@ body {
   min-height: 100%;
 }
 
+.mincardheight {
+  min-height: 7vh;
+}
+
 .column {
   display: flex !important;
   flex-direction: column;
@@ -105,4 +109,3 @@ body {
 *::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.26);
 }
-
