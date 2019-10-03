@@ -15,6 +15,9 @@ export class ScenarioListItemComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * Gets the scenario response's status string
+   */
   getScenarioResponseStatusString() {
     return HttpStatus.getStatusText(this.scenario.response.status);
   }
