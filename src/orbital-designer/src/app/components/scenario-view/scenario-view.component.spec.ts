@@ -1,5 +1,7 @@
+import { Endpoint } from './../../models/endpoint.model';
+import { Scenario, newScenario } from './../../models/mock-definition/scenario/scenario.model';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import * as faker from 'faker';
 import { ScenarioViewComponent } from './scenario-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -11,6 +13,10 @@ import { ScenarioListItemComponent } from './scenario-list-item/scenario-list-it
 import { MatCardModule } from '@angular/material/card';
 import { OverviewComponent } from '../overview/overview.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { VerbType } from 'src/app/models/verb.type';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import validOpenApiText from '../../../test-files/valid-openapi-spec';
+import { By } from '@angular/platform-browser';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -31,13 +37,31 @@ describe('ScenarioViewComponent', () => {
     }).compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(ScenarioViewComponent);
     component = fixture.componentInstance;
+    const title = faker.random.word();
+    const description = faker.random.words();
+    const openApi = await MockDefinition.toOpenApiSpec(validOpenApiText);
+    component.mockDefinition = {
+      metadata: {
+        title,
+        description
+      },
+      host: openApi.host,
+      basePath: openApi.basePath,
+      openApi,
+      scenarios: []
+    } as MockDefinition;
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should not show any scenarios if there are no scenarios to show', () => {
+    expect(fixture.debugElement.query(By.css('app-scenario-list mat-list')).nativeNode.childNodes[0].childNodes.length).toBe(0);
   });
 });
