@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DesignerStore } from '../../store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-bar',
@@ -12,7 +13,7 @@ export class SideBarComponent implements OnInit {
   selectedMockDefinition: string;
   title = 'MOCK DEFINITIONS';
 
-  constructor(private store: DesignerStore) {
+  constructor(private store: DesignerStore, private router: Router) {
     this.store.state$.subscribe(state => {
       if (!!state.mockDefinition) {
         this.mockDefinitions = state.mockDefinitions;
@@ -33,6 +34,7 @@ export class SideBarComponent implements OnInit {
   // this.store.mockDefinition is set and then the state updated.
   updateSelected(mockDefinition: MockDefinition) {
     this.store.mockDefinition = mockDefinition;
+    this.router.navigateByUrl('endpoint-view');
   }
   ngOnInit() {}
 }
