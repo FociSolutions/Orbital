@@ -34,8 +34,5 @@ export class EndpointViewComponent implements OnInit {
     this.filteredList = endpoints;
   }
 
-  // navigateToScenarios() {
-  //   this.router.navigateByUrl('scenario-view');
-  // }
   ngOnInit() {}
 }
