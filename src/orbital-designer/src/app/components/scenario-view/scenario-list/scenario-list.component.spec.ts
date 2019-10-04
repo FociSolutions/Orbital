@@ -20,7 +20,9 @@ describe('ScenarioListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioListComponent);
     component = fixture.componentInstance;
-    component.scenarios = [...testMockdefinitionObject.scenarios];
+
+    // force the object to be copied; Object.assign() and spread operator do not work here
+    component.scenarios = JSON.parse(JSON.stringify(testMockdefinitionObject.scenarios));
     fixture.detectChanges();
   });
 
