@@ -37,10 +37,4 @@ describe('ScenarioListItemComponent', () => {
     component.scenario.response.status = 202;
     expect(component.getScenarioResponseStatusString()).toBe('Accepted');
   });
-
-  it('should throw an error for an invalid status code zero', () => {
-    component.scenario = newScenario(VerbType.GET, '/test');
-    component.scenario.response.status = 0;
-    expect(() => { component.getScenarioResponseStatusString(); } ).toThrow(new Error('Status code does not exist: 0'));
-  });
 });
