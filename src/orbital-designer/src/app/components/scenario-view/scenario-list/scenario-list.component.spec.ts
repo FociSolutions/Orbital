@@ -36,4 +36,15 @@ describe('ScenarioListComponent', () => {
     // component should not crash
     expect(component).toBeTruthy();
   });
+
+  it('should display the unknown scenario description if the status code is invalid', () => {
+    component.scenarios[0].response.status = 0;
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.childNodes[0].nativeNode;
+    expect(compiled.textContent).toContain(
+      'Unknown'
+    );
+    // component should not crash
+    expect(component).toBeTruthy();
+  });
 });
