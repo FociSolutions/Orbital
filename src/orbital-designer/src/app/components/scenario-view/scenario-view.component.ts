@@ -19,5 +19,17 @@ export class ScenarioViewComponent implements OnInit {
     });
   }
 
+  /**
+   * Gets the description for the scenario in the OpenAPI spec; returns no description
+   * if there is no description.
+   */
+  getScenarioDescription() {
+    return !!this.selectedEndpoint && !!this.mockDefinition
+      ? this.mockDefinition.openApi.paths[this.selectedEndpoint.path][
+          this.selectedEndpoint.verb.toLowerCase()
+        ].summary
+      : 'No description';
+  }
+
   ngOnInit() {}
 }
