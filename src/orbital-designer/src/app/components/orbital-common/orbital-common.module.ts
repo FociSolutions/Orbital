@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
     ToolTipComponent,
     SearchableSelectionListComponent,
     SearchBarComponent,
-    ShuttleListComponent
+    ShuttleListComponent,
+    DialogBoxComponent
   ],
   imports: [
     CommonModule,
@@ -61,7 +63,8 @@ import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
     MatSelectModule,
     MatCheckboxModule,
     SearchBarComponent,
-    ShuttleListComponent
+    ShuttleListComponent,
+    DialogBoxComponent
   ]
 })
 export class OrbitalCommonModule {}

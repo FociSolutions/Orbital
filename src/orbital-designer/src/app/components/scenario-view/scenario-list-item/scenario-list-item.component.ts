@@ -10,6 +10,7 @@ import * as HttpStatus from 'http-status-codes';
 })
 export class ScenarioListItemComponent implements OnInit {
   @Input() scenario: Scenario;
+  triggerOpen: boolean;
 
   constructor(private logger: NGXLogger) {}
 
@@ -20,5 +21,21 @@ export class ScenarioListItemComponent implements OnInit {
    */
   getScenarioResponseStatusString() {
     return HttpStatus.getStatusText(this.scenario.response.status);
+  }
+
+  confirmDeleteDialog() {
+    this.triggerOpen = true;
+  }
+
+  onDialogAction(confirmed: boolean) {
+    if (confirmed) {
+      //delete code
+    }
+
+    this.triggerOpen = false;
+  }
+
+  get bodyText(): string {
+    return `Are you sure you want to delete ${this.scenario.id}`;
   }
 }

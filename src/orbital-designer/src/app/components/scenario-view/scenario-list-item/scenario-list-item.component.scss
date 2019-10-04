@@ -1,4 +1,4 @@
-.scenariolistitemcontainer {
+.scenario-list-item-container {
   padding: 0em;
   display: flex;
   flex-direction: row;
@@ -13,6 +13,15 @@
 
   mat-card-title {
     font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    margin-bottom: 0;
+  }
+
+  .scenario-options-menu {
+    position: relative;
+    bottom: 0.6em;
   }
 
   .verb {

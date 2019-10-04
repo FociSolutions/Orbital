@@ -1,6 +1,31 @@
-<mat-card *ngIf="!!scenario" class="scenariolistitemcontainer mincardheight">
+<mat-card
+  *ngIf="!!scenario"
+  class="scenario-list-item-container min-card-height"
+>
   <mat-card-content>
-    <mat-card-title> {{ scenario?.metadata.title }} </mat-card-title>
+    <mat-card-title>
+      {{ scenario?.metadata.title }}
+      <div class="scenario-options-menu">
+        <button
+          mat-icon-button
+          [mat-menu-trigger-for]="menu"
+          aria-label="Example icon-button with a menu"
+        >
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item>
+            <mat-icon>file_copy</mat-icon>
+            <span>Clone</span>
+          </button>
+          <button mat-menu-item (click)="confirmDeleteDialog()">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </mat-card-title>
+
     <mat-card-subtitle>
       <div class="subtitle">
         <div>{{ scenario?.metadata.description }}</div>
@@ -12,3 +37,14 @@
     </mat-card-subtitle>
   </mat-card-content>
 </mat-card>
+
+<div *ngIf="triggerOpen">
+  <mat-card>
+    <app-dialog-box
+      titleText="Confirm Scenario Deletion"
+      confirmButtonText="Delete"
+      cancelButtonText="Cancel"
+      [bodyText]="bodyText"
+    ></app-dialog-box>
+  </mat-card>
+</div>
