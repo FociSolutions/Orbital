@@ -72,7 +72,6 @@ describe('ScenarioViewComponent', () => {
   });
 
   it('should not show the scenario description if the selected endpoint is null', () => {
-    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
     const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
 
     component.selectedEndpoint = null;
