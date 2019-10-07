@@ -24,7 +24,7 @@ export class ScenarioViewComponent implements OnInit {
    * if there is no description.
    */
   getScenarioDescription() {
-    return !!this.selectedEndpoint && !!this.mockDefinition
+    return !!this.selectedEndpoint && !!this.mockDefinition && !!this.mockDefinition.openApi.paths[this.selectedEndpoint.path]
       ? this.mockDefinition.openApi.paths[this.selectedEndpoint.path][
           this.selectedEndpoint.verb.toLowerCase()
         ].summary
