@@ -38,13 +38,16 @@
   </mat-card-content>
 </mat-card>
 
-<div *ngIf="triggerOpen">
-  <mat-card>
-    <app-dialog-box
-      titleText="Confirm Scenario Deletion"
-      confirmButtonText="Delete"
-      cancelButtonText="Cancel"
-      [bodyText]="bodyText"
-    ></app-dialog-box>
-  </mat-card>
+<div class="overlay" *ngIf="triggerOpen">
+  <div class="confirm-scenario-delete-dialog">
+    <mat-card>
+      <app-dialog-box
+        titleText="Confirm Scenario Deletion"
+        confirmButtonText="Delete"
+        cancelButtonText="Cancel"
+        [bodyText]="bodyText"
+        (choiceBoolean)="onDialogAction($event)"
+      ></app-dialog-box>
+    </mat-card>
+  </div>
 </div>

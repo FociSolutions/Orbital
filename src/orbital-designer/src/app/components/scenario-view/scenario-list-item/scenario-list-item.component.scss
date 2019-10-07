@@ -59,3 +59,20 @@
     max-width: 80%;
   }
 }
+
+.confirm-scenario-delete-dialog {
+  position: fixed;
+  width: 35vw;
+  top: 35%;
+  left: 35%;
+}
+
+.overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+}

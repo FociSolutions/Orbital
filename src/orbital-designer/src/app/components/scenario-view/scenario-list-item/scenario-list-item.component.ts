@@ -23,19 +23,30 @@ export class ScenarioListItemComponent implements OnInit {
     return HttpStatus.getStatusText(this.scenario.response.status);
   }
 
+  /**
+   * This method opens the dialog box when called
+   */
   confirmDeleteDialog() {
     this.triggerOpen = true;
   }
 
+  /**
+   * This method delete the scenario in the store when the user clicks on the confirm box and does nothing if the user cancels
+   * the scenario deletion
+   * @param confirmed boolean is true when the user clicks on confirm scenario deletion
+   */
   onDialogAction(confirmed: boolean) {
     if (confirmed) {
-      //delete code
+      this.scenario = null;
     }
 
     this.triggerOpen = false;
   }
 
+  /**
+   * This method sets the body text with the deletion prompt
+   */
   get bodyText(): string {
-    return `Are you sure you want to delete ${this.scenario.id}`;
+    return `Are you sure you want to delete '${this.scenario.metadata.title}'`;
   }
 }

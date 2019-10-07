@@ -17,10 +17,16 @@ export class DialogBoxComponent implements OnInit {
     this.choiceBoolean = new EventEmitter<boolean>();
   }
 
+  /**
+   * Emits true to parent when the user wishes the delete a scenario
+   */
   onConfirm() {
     this.choiceBoolean.emit(true);
   }
 
+  /**
+   * Emits false to parent when the user wishes the delete a scenario
+   */
   onCancel() {
     this.choiceBoolean.emit(false);
   }
