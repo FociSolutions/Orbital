@@ -1,18 +1,38 @@
 <div class="fullscreen column center-hr">
-  <div class="container scenarioeditor">
+  <div class="container editor">
     <div class="row">
       <div class="sidebar">
         <app-side-bar></app-side-bar>
       </div>
-      <div class="scenarios">
+      <div class="metadata">
         <div>
           <app-overview [header]="headerContent"></app-overview>
         </div>
-        <div>
+        <div id="metadata-cards">
           <app-search-bar> </app-search-bar>
-          This is placeholder content. The view is currently on the scenario-editor. The title is a placeholder too.
+          <h3>Scenario Properties</h3>
+          <mat-card>
+            <mat-card-title>Metadata</mat-card-title>
+            <mat-card-subtitle>Name and Description</mat-card-subtitle>
+          </mat-card>
+          <mat-card>
+            <mat-card-title>Request Match Rules</mat-card-title>
+            <mat-card-subtitle>Query Match Rules, Header Match Rules...</mat-card-subtitle>
+          </mat-card>
+          <mat-card>
+            <mat-card-title>Response</mat-card-title>
+            <mat-card-subtitle>Scenario Description</mat-card-subtitle>
+          </mat-card>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #headerContent let-path="path">
+  <div class="title">
+    <h3>
+      New Scenario
+    </h3>
+  </div>
+</ng-template>
