@@ -40,4 +40,12 @@ describe('ScenarioEditorComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should go back to the scenario-view when the button is pressed', () => {
+    spyOn(component, 'goToScenarios');
+
+    const button = fixture.debugElement.nativeElement.querySelector('button#go-to-scenarios');
+    button.click();
+    expect(component.goToScenarios).toHaveBeenCalled();
+  });
 });
