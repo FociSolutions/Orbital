@@ -55,6 +55,17 @@ describe('ScenarioViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should go back to the endpoints when the endpoints button is clicked', () => {
+    spyOn(component, 'goToEndpoints');
+
+    const button = fixture.debugElement.nativeElement.querySelector('button#back-to-endpoints');
+    button.click();
+
+    fixture.whenStable().then(() => {
+      expect(component.goToEndpoints).toHaveBeenCalled();
+    });
+  });
+
   it('should not show any scenarios if there are no scenarios to show', () => {
     expect(
       fixture.debugElement.query(By.css('app-scenario-list mat-list'))
