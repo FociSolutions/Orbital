@@ -81,4 +81,15 @@ describe('ScenarioViewComponent', () => {
     expect(component.getScenarioDescription()).toBe('No description');
     component.selectedEndpoint = endpointBefore;
   });
+
+  it('should show the scenario description if there is one set if the verb type is not set', () => {
+    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
+    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
+
+    component.selectedEndpoint = componentMockDef;
+    component.selectedEndpoint.path = '/pets';
+
+    expect(component.getScenarioDescription()).toBe('No description');
+    component.selectedEndpoint = endpointBefore;
+  });
 });
