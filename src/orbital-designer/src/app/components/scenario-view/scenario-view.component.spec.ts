@@ -42,7 +42,7 @@ describe('ScenarioViewComponent', () => {
   beforeEach(async () => {
     fixture = TestBed.createComponent(ScenarioViewComponent);
     component = fixture.componentInstance;
-    component.mockDefinition = testMockdefinitionObject;
+    component.mockDefinition = JSON.parse(JSON.stringify(testMockdefinitionObject));
 
     fixture.detectChanges();
   });
@@ -53,5 +53,21 @@ describe('ScenarioViewComponent', () => {
 
   it('should not show any scenarios if there are no scenarios to show', () => {
     expect(fixture.debugElement.query(By.css('app-scenario-list mat-list')).nativeNode.childNodes[0].childNodes.length).toBe(0);
+  });
+
+  it('should show the default scenario description if there is no scenario description', () => {
+    expect(component.getScenarioDescription()).toBe('No description');
+  });
+
+  it('should show the scenario description if there is one set if the scenario is valid', () => {
+    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
+    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
+
+    component.selectedEndpoint = componentMockDef;
+    component.selectedEndpoint.verb = VerbType.POST;
+    component.selectedEndpoint.path = '/pets';
+
+    expect(component.getScenarioDescription()).toBe('Create a pet');
+    component.selectedEndpoint = endpointBefore;
   });
 });
