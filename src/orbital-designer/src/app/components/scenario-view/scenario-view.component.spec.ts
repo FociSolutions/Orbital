@@ -19,6 +19,7 @@ import validOpenApiText from '../../../test-files/valid-openapi-spec';
 import { By } from '@angular/platform-browser';
 import testMockdefinitionFileMock from 'src/test-files/test-mockdefinition-file.mock';
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
+import { MatButtonModule } from '@angular/material';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -34,7 +35,7 @@ describe('ScenarioViewComponent', () => {
         GetEndpointScenariosPipe,
         OverviewComponent
       ],
-      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule, RouterTestingModule],
+      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule, RouterTestingModule, MatButtonModule],
       providers: [DesignerStore]
     }).compileComponents();
   }));
