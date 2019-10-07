@@ -30,6 +30,10 @@ export class ScenarioViewComponent implements OnInit {
           this.selectedEndpoint.verb.toLowerCase()
         ].summary
       : 'No description';
+      }
+
+  addScenario() {
+
   }
 
   ngOnInit() {}

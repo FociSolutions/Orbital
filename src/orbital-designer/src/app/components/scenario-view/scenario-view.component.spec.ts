@@ -113,4 +113,12 @@ describe('ScenarioViewComponent', () => {
     expect(component.getScenarioDescription()).toBe('No description');
     component.selectedEndpoint = endpointBefore;
   });
+
+  it('should call addScenario function if the add scenario button is clicked', () => {
+    spyOn(component, 'addScenario');
+
+    const button = fixture.debugElement.nativeElement.querySelector('button#add');
+    button.click();
+    expect(component.addScenario).toHaveBeenCalled();
+  });
 });
