@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScenarioEditorComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
+  /**
+   * Goes back to the scenarios view
+   */
+  goToScenarios() {
+    this.router.navigateByUrl('scenario-view');
+  }
 }
