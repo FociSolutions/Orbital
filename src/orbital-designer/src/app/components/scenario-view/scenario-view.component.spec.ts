@@ -71,6 +71,16 @@ describe('ScenarioViewComponent', () => {
     component.selectedEndpoint = endpointBefore;
   });
 
+  it('should not show the scenario description if the selected endpoint is null', () => {
+    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
+    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
+
+    component.selectedEndpoint = null;
+
+    expect(component.getScenarioDescription()).toBe('No description');
+    component.selectedEndpoint = endpointBefore;
+  });
+
   it('should not show the scenario description if the path is not set', () => {
     const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
     const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
@@ -82,7 +92,7 @@ describe('ScenarioViewComponent', () => {
     component.selectedEndpoint = endpointBefore;
   });
 
-  it('should show the scenario description if there is one set if the verb type is not set', () => {
+  it('should not show the scenario description if there is one set if the verb type is not set', () => {
     const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
     const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
 
