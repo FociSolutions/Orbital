@@ -101,4 +101,15 @@ describe('ScenarioViewComponent', () => {
     expect(component.getScenarioDescription()).toBe('No description');
     component.selectedEndpoint = endpointBefore;
   });
+
+  it('should not show the scenario description if the path is invalid, but is text', () => {
+    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
+    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
+
+    component.selectedEndpoint = componentMockDef;
+    component.selectedEndpoint.path = '/does-not-exist';
+
+    expect(component.getScenarioDescription()).toBe('No description');
+    component.selectedEndpoint = endpointBefore;
+  });
 });
