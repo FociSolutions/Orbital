@@ -37,5 +37,12 @@ export class ScenarioViewComponent implements OnInit {
     this.router.navigateByUrl('scenario-editor');
   }
 
+  /**
+   * Goes back to the endpoint page
+   */
+  goToEndpoints() {
+    this.router.navigateByUrl('endpoint-view');
+  }
+
   ngOnInit() {}
 }
