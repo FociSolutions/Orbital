@@ -15,25 +15,29 @@ export class ScenarioEditorComponent implements OnInit {
   nameDescriptionPanelExpanded: boolean;
 
   constructor(private router: Router, private store: DesignerStore) {
-      this.name = new FormControl(
-        '',
-          Validators.compose([Validators.maxLength(50), Validators.required]));
+    this.name = new FormControl(
+      '',
+      Validators.compose([Validators.maxLength(50), Validators.required])
+    );
 
-      this.description = new FormControl(
-        '',
-          Validators.compose([Validators.maxLength(50)])
-      );
+    this.description = new FormControl(
+      '',
+      Validators.compose([Validators.maxLength(50)])
+    );
 
-      this.store.state$.subscribe(state => {
-        if (!!state.selectedScenario && !!state.selectedScenario.metadata && !!state.selectedScenario.metadata) {
-          this.name.setValue(state.selectedScenario.metadata.title);
-          this.description.setValue(state.selectedScenario.metadata.description);
-        }
-      });
+    this.store.state$.subscribe(state => {
+      if (
+        !!state.selectedScenario &&
+        !!state.selectedScenario.metadata &&
+        !!state.selectedScenario.metadata
+      ) {
+        this.name.setValue(state.selectedScenario.metadata.title);
+        this.description.setValue(state.selectedScenario.metadata.description);
+      }
+    });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Goes back to the scenarios view
@@ -43,9 +47,18 @@ export class ScenarioEditorComponent implements OnInit {
   }
 
   /**
-   * Sets the state of the panel to collapsed when save (if valid) or cancel is clicked
+   * Sets the state of the panel to collapsed when cancel is clicked
    */
   handleCancelButtonClick() {
+    this.nameDescriptionPanelExpanded = false;
+  }
+
+  /**
+   * Sets the state of the panel to collapsed when save is clicked.
+   * Currently, this method is identical to handleCancelButtonClick but will
+   * contain save functionality later.
+   */
+  handleSaveButtonClick() {
     this.nameDescriptionPanelExpanded = false;
   }
 
