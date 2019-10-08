@@ -9,11 +9,15 @@
           <app-overview [header]="headerContent"></app-overview>
         </div>
         <div>
-          <app-search-bar> </app-search-bar>
+          <app-search-bar
+          [list]="scenarioList| getEndpointScenarios: selectedEndpoint"
+          (filteredList)="setFilteredList($event)"
+          [itemToStringFn]="scenarioToString"
+          > </app-search-bar>
           <app-scenario-list
             *ngIf="!!mockDefinition"
             [scenarios]="
-              mockDefinition.scenarios | getEndpointScenarios: selectedEndpoint
+            filteredList
             "
           ></app-scenario-list>
         </div>
