@@ -7,10 +7,11 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { OverviewComponent } from '../overview/overview.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { MatCardModule, MatButtonModule } from '@angular/material';
+import { MatCardModule, MatButtonModule, MatExpansionModule } from '@angular/material';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -26,7 +27,15 @@ describe('ScenarioEditorComponent', () => {
         GetEndpointScenariosPipe,
         OverviewComponent
       ],
-      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule, RouterTestingModule, MatButtonModule],
+      imports: [
+        LoggerTestingModule,
+        MatCardModule,
+        OrbitalCommonModule,
+        RouterTestingModule,
+        MatButtonModule,
+        MatExpansionModule,
+        BrowserAnimationsModule
+      ],
       providers: [DesignerStore]
     }).compileComponents();
   }));

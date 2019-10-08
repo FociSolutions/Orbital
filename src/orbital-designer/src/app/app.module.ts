@@ -32,6 +32,7 @@ import { ScenarioViewComponent } from './components/scenario-view/scenario-view.
 import { ScenarioListComponent } from './components/scenario-view/scenario-list/scenario-list.component';
 import { ScenarioListItemComponent } from './components/scenario-view/scenario-list-item/scenario-list-item.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
+import { MatExpansionModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ScenarioEditorComponent } from './components/scenario-editor/scenario-e
     MatListModule,
     MatButtonModule,
     MatGridListModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatExpansionModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]

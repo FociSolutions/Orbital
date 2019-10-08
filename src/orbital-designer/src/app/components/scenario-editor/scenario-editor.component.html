@@ -11,10 +11,36 @@
         <div id="metadata-cards">
           <app-search-bar> </app-search-bar>
           <h3>Scenario Properties</h3>
-          <mat-card>
-            <mat-card-title>Metadata</mat-card-title>
-            <mat-card-subtitle>Name and Description</mat-card-subtitle>
-          </mat-card>
+
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Metadata
+                </mat-panel-title>
+                <mat-panel-description>
+                   Name and Description
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <mat-form-field>
+                <input matInput placeholder="Name" [formControl]="name" maxlength="50">
+              </mat-form-field>
+              <br />
+              <mat-form-field>
+                <input matInput placeholder="Description" [formControl]="description" maxlength="50">
+              </mat-form-field>
+              <div id="cancel-save-buttons">
+                <button id="cancel" mat-raised-button color="primary">
+                  Cancel
+                </button>
+                <button id="save" mat-raised-button color="primary">
+                  Save
+                </button>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+
           <mat-card>
             <mat-card-title>Request Match Rules</mat-card-title>
             <mat-card-subtitle>Query Match Rules, Header Match Rules...</mat-card-subtitle>

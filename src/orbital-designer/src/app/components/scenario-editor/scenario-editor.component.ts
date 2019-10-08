@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -8,8 +8,20 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./scenario-editor.component.scss']
 })
 export class ScenarioEditorComponent implements OnInit {
+  formGroup: FormGroup;
+  name: FormControl;
+  description: FormControl;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+      this.name = new FormControl(
+        '',
+          Validators.compose([Validators.maxLength(50), Validators.required]));
+
+      this.description = new FormControl(
+        '',
+          Validators.compose([Validators.maxLength(50)])
+      );
+  }
 
   ngOnInit() {
   }
