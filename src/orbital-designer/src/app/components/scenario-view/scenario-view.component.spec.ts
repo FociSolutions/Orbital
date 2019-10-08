@@ -174,7 +174,7 @@ describe('ScenarioViewComponent', () => {
         const expected = component.mockDefinition.scenarios[0].metadata.title;
         expect(expected).toEqual(component.scenarioToString(scenario));
        });
-      it('should return the scenario title', () => {
+      it('should return undefined result', () => {
         const scenario = null;
         expect(component.scenarioToString(scenario)).toBeUndefined();
        });
