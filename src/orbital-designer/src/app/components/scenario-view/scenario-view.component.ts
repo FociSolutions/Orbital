@@ -19,17 +19,36 @@ export class ScenarioViewComponent implements OnInit {
     this.store.state$.subscribe(state => {
       this.selectedEndpoint = state.selectedEndpoint;
       this.mockDefinition = state.mockDefinition;
-      this.scenarioList = [...state.mockDefinition.scenarios];
+      if (!!state.mockDefinition && !!state.mockDefinition.scenarios) {
+        this.scenarioList = [...state.mockDefinition.scenarios];
+      }
     });
   }
 
+   /**
+    * Gets the description for the scenario in the OpenAPI spec; returns no description
+    * if there is no description.
+    */
+  getScenarioDescription() {
+    return !!this.selectedEndpoint && !!this.mockDefinition &&
+    !!this.mockDefinition.openApi.paths[this.selectedEndpoint.path] && !!this.selectedEndpoint.verb
+      ? this.mockDefinition.openApi.paths[this.selectedEndpoint.path][
+          this.selectedEndpoint.verb.toLowerCase()
+        ].summary
+      : 'No description';
+  }
+
   scenarioToString(scenario: Scenario): string {
-    return scenario.metadata.title;
+    if (!!scenario && !!scenario.metadata) {
+      return scenario.metadata.title;
+    }
   }
 
   setFilteredList(newScenarios: Scenario[]) {
     console.log(newScenarios);
-    this.filteredList = newScenarios;
+    if (!!newScenarios) {
+      this.filteredList = newScenarios;
+    }
   }
   ngOnInit() {}
 }
