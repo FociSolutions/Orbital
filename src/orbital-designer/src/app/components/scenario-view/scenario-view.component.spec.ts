@@ -185,7 +185,7 @@ describe('ScenarioViewComponent', () => {
         component.setFilteredList(expected);
         expect(component.filteredList).toEqual(expected);
        });
-      it('should set the filteredList property to null', () => {
+      it('should set the filtered list to an empty list when the filtered list is null', () => {
         const expected = null;
         component.setFilteredList(expected);
         expect(component.filteredList).toEqual([]);

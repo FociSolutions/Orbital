@@ -65,6 +65,8 @@ export class ScenarioViewComponent implements OnInit {
     this.logger.debug(newScenarios);
     if (!!newScenarios) {
       this.filteredList = newScenarios;
+    } else {
+      this.logger.debug('Scenario could not be set');
     }
   }
   ngOnInit() {}
