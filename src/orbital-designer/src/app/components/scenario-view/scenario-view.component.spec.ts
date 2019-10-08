@@ -181,5 +181,10 @@ describe('ScenarioViewComponent', () => {
       const expected = component.mockDefinition.scenarios[0].metadata.title + 'false';
       expect(expected).not.toEqual(component.scenarioToString(scenario));
      });
+    it('should return true if two array of scenarios are equal', () => {
+      const expected = component.mockDefinition.scenarios;
+      component.setFilteredList(expected);
+      expect(component.filteredList).toEqual(expected);
+     });
   });
 });
