@@ -167,24 +167,24 @@ describe('ScenarioViewComponent', () => {
       component.addScenario();
       expect(routerSpy).toHaveBeenCalledWith('scenario-editor');
     });
-    it('should return true if retrieving a valid scenario', () => {
-        const scenario = component.mockDefinition.scenarios[0];
-        expect(component.scenarioToString(scenario)).toBeTruthy();
-    });
-    it('should return true if retrieving the same title', () => {
+    it('should return the scenario title', () => {
       const scenario = component.mockDefinition.scenarios[0];
       const expected = component.mockDefinition.scenarios[0].metadata.title;
       expect(expected).toEqual(component.scenarioToString(scenario));
      });
-    it('should return false if it is not retrieving the same title', () => {
-      const scenario = component.mockDefinition.scenarios[0];
-      const expected = component.mockDefinition.scenarios[0].metadata.title + 'false';
-      expect(expected).not.toEqual(component.scenarioToString(scenario));
+    it('should return the scenario title', () => {
+      const scenario = null;
+      expect(component.scenarioToString(scenario)).toBeUndefined();
      });
-    it('should return true if two array of scenarios are equal', () => {
+    it('should set the filteredList property to equal the given array', () => {
       const expected = component.mockDefinition.scenarios;
       component.setFilteredList(expected);
       expect(component.filteredList).toEqual(expected);
+     });
+    it('should set the filteredList property to null', () => {
+      const expected = null;
+      component.setFilteredList(expected);
+      expect(component.filteredList).toEqual([]);
      });
   });
 });
