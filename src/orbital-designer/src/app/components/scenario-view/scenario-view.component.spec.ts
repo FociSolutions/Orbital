@@ -161,30 +161,33 @@ describe('ScenarioViewComponent', () => {
       button.click();
       expect(component.addScenario).toHaveBeenCalled();
     });
-
     it('should navigate to scenario editor', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       component.addScenario();
       expect(routerSpy).toHaveBeenCalledWith('scenario-editor');
     });
-    it('should return the scenario title', () => {
-      const scenario = component.mockDefinition.scenarios[0];
-      const expected = component.mockDefinition.scenarios[0].metadata.title;
-      expect(expected).toEqual(component.scenarioToString(scenario));
-     });
-    it('should return the scenario title', () => {
-      const scenario = null;
-      expect(component.scenarioToString(scenario)).toBeUndefined();
-     });
-    it('should set the filteredList property to equal the given array', () => {
-      const expected = component.mockDefinition.scenarios;
-      component.setFilteredList(expected);
-      expect(component.filteredList).toEqual(expected);
-     });
-    it('should set the filteredList property to null', () => {
-      const expected = null;
-      component.setFilteredList(expected);
-      expect(component.filteredList).toEqual([]);
-     });
+    describe('ScenarioViewComponent.scenarioToString', () => {
+      it('should return the scenario title', () => {
+        const scenario = component.mockDefinition.scenarios[0];
+        const expected = component.mockDefinition.scenarios[0].metadata.title;
+        expect(expected).toEqual(component.scenarioToString(scenario));
+       });
+      it('should return the scenario title', () => {
+        const scenario = null;
+        expect(component.scenarioToString(scenario)).toBeUndefined();
+       });
+    });
+    describe('ScenarioViewComponent.setFilteredList', () => {
+      it('should set the filteredList property to equal the given array', () => {
+        const expected = component.mockDefinition.scenarios;
+        component.setFilteredList(expected);
+        expect(component.filteredList).toEqual(expected);
+       });
+      it('should set the filteredList property to null', () => {
+        const expected = null;
+        component.setFilteredList(expected);
+        expect(component.filteredList).toEqual([]);
+       });
+    });
   });
 });
