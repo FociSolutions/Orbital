@@ -1,5 +1,8 @@
 import { Endpoint } from './../../models/endpoint.model';
-import { Scenario, newScenario } from './../../models/mock-definition/scenario/scenario.model';
+import {
+  Scenario,
+  newScenario
+} from './../../models/mock-definition/scenario/scenario.model';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { ScenarioViewComponent } from './scenario-view.component';
@@ -19,6 +22,7 @@ import validOpenApiText from '../../../test-files/valid-openapi-spec';
 import { By } from '@angular/platform-browser';
 import testMockdefinitionFileMock from 'src/test-files/test-mockdefinition-file.mock';
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
+import { MatMenuModule } from '@angular/material/menu';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -34,7 +38,13 @@ describe('ScenarioViewComponent', () => {
         GetEndpointScenariosPipe,
         OverviewComponent
       ],
-      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule, RouterTestingModule],
+      imports: [
+        LoggerTestingModule,
+        MatCardModule,
+        OrbitalCommonModule,
+        RouterTestingModule,
+        MatMenuModule
+      ],
       providers: [DesignerStore]
     }).compileComponents();
   }));
@@ -52,6 +62,9 @@ describe('ScenarioViewComponent', () => {
   });
 
   it('should not show any scenarios if there are no scenarios to show', () => {
-    expect(fixture.debugElement.query(By.css('app-scenario-list mat-list')).nativeNode.childNodes[0].childNodes.length).toBe(0);
+    expect(
+      fixture.debugElement.query(By.css('app-scenario-list mat-list'))
+        .nativeNode.childNodes[0].childNodes.length
+    ).toBe(0);
   });
 });

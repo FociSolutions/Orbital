@@ -2,6 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScenarioListItemComponent } from './scenario-list-item.component';
 import { MatCardModule } from '@angular/material/card';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogBoxComponent } from '../../orbital-common/dialog-box/dialog-box.component';
 
 describe('ScenarioListItemComponent', () => {
   let component: ScenarioListItemComponent;
@@ -9,8 +12,13 @@ describe('ScenarioListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ScenarioListItemComponent],
-      imports: [MatCardModule, LoggerTestingModule]
+      declarations: [ScenarioListItemComponent, DialogBoxComponent],
+      imports: [
+        MatCardModule,
+        LoggerTestingModule,
+        MatMenuModule,
+        MatIconModule
+      ]
     }).compileComponents();
   }));
 
