@@ -5,6 +5,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogBoxComponent } from '../../orbital-common/dialog-box/dialog-box.component';
+import { DesignerStore } from './../../../store/designer-store';
 
 describe('ScenarioListItemComponent', () => {
   let component: ScenarioListItemComponent;
@@ -18,7 +19,8 @@ describe('ScenarioListItemComponent', () => {
         LoggerTestingModule,
         MatMenuModule,
         MatIconModule
-      ]
+      ],
+      providers: [DesignerStore]
     }).compileComponents();
   }));
 
