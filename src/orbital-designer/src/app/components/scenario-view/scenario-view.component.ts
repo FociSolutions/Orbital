@@ -3,6 +3,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-scenario-view',
@@ -15,7 +16,7 @@ export class ScenarioViewComponent implements OnInit {
   scenarioList: Scenario[] = [];
   filteredList: Scenario[] = [];
 
-  constructor(private store: DesignerStore) {
+  constructor(private store: DesignerStore, private router: Router) {
     this.store.state$.subscribe(state => {
       this.selectedEndpoint = state.selectedEndpoint;
       this.mockDefinition = state.mockDefinition;
@@ -36,6 +37,15 @@ export class ScenarioViewComponent implements OnInit {
           this.selectedEndpoint.verb.toLowerCase()
         ].summary
       : 'No description';
+  }
+  addScenario() {
+    this.router.navigateByUrl('scenario-editor');
+  }
+  /**
+   * Goes back to the endpoint page
+   */
+  goToEndpoints() {
+    this.router.navigateByUrl('endpoint-view');
   }
  /**
   * This function takes an scenario object and return its path as a string
