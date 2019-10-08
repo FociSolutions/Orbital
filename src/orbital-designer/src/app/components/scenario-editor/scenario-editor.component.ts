@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { DesignerStore } from 'src/app/store/designer-store';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -9,21 +8,22 @@ import { DesignerStore } from 'src/app/store/designer-store';
   styleUrls: ['./scenario-editor.component.scss']
 })
 export class ScenarioEditorComponent implements OnInit {
-  formGroup: FormGroup;
+  nameAndDescriptionFormGroup: FormGroup;
   name: FormControl;
   description: FormControl;
   nameDescriptionPanelExpanded: boolean;
 
-  constructor(private router: Router, private store: DesignerStore) {
-    this.name = new FormControl(
-      '',
-      Validators.compose([Validators.maxLength(50), Validators.required])
-    );
-
-    this.description = new FormControl(
-      '',
-      Validators.compose([Validators.maxLength(50)])
-    );
+  constructor(private router: Router) {
+    this.nameAndDescriptionFormGroup = new FormGroup({
+      name: new FormControl(
+        '',
+        Validators.compose([Validators.maxLength(50), Validators.required])
+      ),
+      description: new FormControl(
+        '',
+        Validators.compose([Validators.maxLength(50)])
+      )
+    });
   }
 
   ngOnInit() {}
@@ -56,5 +56,21 @@ export class ScenarioEditorComponent implements OnInit {
    */
   handleNameDescriptionPanelOpen() {
     this.nameDescriptionPanelExpanded = true;
+  }
+
+  /**
+   * Returns whether the save button should be disabled based on the form's validity
+   */
+  saveButtonDisabledState() {
+    if (!!this.nameAndDescriptionFormGroup &&
+      // tslint:disable-next-line: no-string-literal
+      !!this.nameAndDescriptionFormGroup['name'] &&
+      // tslint:disable-next-line: no-string-literal
+      !!this.nameAndDescriptionFormGroup['description']) {
+      // tslint:disable-next-line: no-string-literal
+      return this.nameAndDescriptionFormGroup['name'].invalid || this.nameAndDescriptionFormGroup['description'].invalid;
+    }
+
+    return false;
   }
 }

@@ -22,21 +22,23 @@
                 </mat-panel-description>
               </mat-expansion-panel-header>
 
-              <mat-form-field>
-                <input matInput placeholder="Name" [formControl]="name" maxlength="50">
-              </mat-form-field>
-              <br />
-              <mat-form-field>
-                <input matInput placeholder="Description" [formControl]="description" maxlength="50">
-              </mat-form-field>
-              <div id="cancel-save-buttons">
-                <button id="cancel" (click)="handleCancelButtonClick()" mat-raised-button color="primary">
-                  Cancel
-                </button>
-                <button [disabled]="this.name.invalid || this.description.invalid" (click)="handleSaveButtonClick()" id="save" mat-raised-button color="primary">
-                  Save
-                </button>
-              </div>
+              <form [formGroup]="nameAndDescriptionFormGroup">
+                <mat-form-field>
+                  <input matInput placeholder="Name" formControlName="name" maxlength="50">
+                </mat-form-field>
+                <br />
+                <mat-form-field>
+                  <input matInput placeholder="Description" formControlName="description" maxlength="50">
+                </mat-form-field>
+                <div id="cancel-save-buttons">
+                  <button id="cancel" (click)="handleCancelButtonClick()" mat-raised-button color="primary">
+                    Cancel
+                  </button>
+                  <button [disabled]="saveButtonDisabledState()" (click)="handleSaveButtonClick()" id="save" mat-raised-button color="primary">
+                    Save
+                  </button>
+                </div>
+              </form>
             </mat-expansion-panel>
           </mat-accordion>
 
