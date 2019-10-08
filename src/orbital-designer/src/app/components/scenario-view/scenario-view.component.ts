@@ -4,6 +4,7 @@ import { Endpoint } from 'src/app/models/endpoint.model';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Router } from '@angular/router';
+import { NGXLogger, LoggerConfig } from 'ngx-logger';
 
 @Component({
   selector: 'app-scenario-view',
@@ -16,7 +17,7 @@ export class ScenarioViewComponent implements OnInit {
   scenarioList: Scenario[] = [];
   filteredList: Scenario[] = [];
 
-  constructor(private store: DesignerStore, private router: Router) {
+  constructor(private store: DesignerStore, private router: Router, private logger: NGXLogger) {
     this.store.state$.subscribe(state => {
       this.selectedEndpoint = state.selectedEndpoint;
       this.mockDefinition = state.mockDefinition;
@@ -61,7 +62,7 @@ export class ScenarioViewComponent implements OnInit {
    * @param scenarios The list of scenarios
    */
   setFilteredList(newScenarios: Scenario[]) {
-    console.log(newScenarios);
+    this.logger.log(newScenarios);
     if (!!newScenarios) {
       this.filteredList = newScenarios;
     }
