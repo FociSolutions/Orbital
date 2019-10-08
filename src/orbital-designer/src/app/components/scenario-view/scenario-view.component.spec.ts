@@ -15,6 +15,7 @@ import { By } from '@angular/platform-browser';
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
 import { MatButtonModule } from '@angular/material';
 import { Router } from '@angular/router';
+import { state } from '@angular/animations';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -165,6 +166,10 @@ describe('ScenarioViewComponent', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       component.addScenario();
       expect(routerSpy).toHaveBeenCalledWith('scenario-editor');
+    });
+    it('should return true if retrieving a valid scenario', () => {
+        const scenario = component.mockDefinition.scenarios[0];
+        expect(component.scenarioToString(scenario)).toBeTruthy();
     });
   });
 });
