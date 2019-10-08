@@ -62,80 +62,82 @@ describe('ScenarioViewComponent', () => {
     ).toBe(0);
   });
 
-  it('should show the default scenario description if there is no scenario description', () => {
-    expect(component.getScenarioDescription()).toBe('No description');
-  });
+  describe('ScenarioViewComponent.getScenarioDescription', () => {
+    it('should show the default scenario description if there is no scenario description', () => {
+      expect(component.getScenarioDescription()).toBe('No description');
+    });
 
-  it('should show the scenario description if there is one set if the scenario is valid', () => {
-    const componentMockDef = JSON.parse(
-      JSON.stringify(component.mockDefinition)
-    );
-    const endpointBefore = JSON.parse(
-      JSON.stringify(component.selectedEndpoint)
-    );
+    it('should show the scenario description if there is one set if the scenario is valid', () => {
+      const componentMockDef = JSON.parse(
+        JSON.stringify(component.mockDefinition)
+      );
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
 
-    component.selectedEndpoint = componentMockDef;
-    component.selectedEndpoint.verb = VerbType.POST;
-    component.selectedEndpoint.path = '/pets';
+      component.selectedEndpoint = componentMockDef;
+      component.selectedEndpoint.verb = VerbType.POST;
+      component.selectedEndpoint.path = '/pets';
 
-    expect(component.getScenarioDescription()).toBe('Create a pet');
-    component.selectedEndpoint = endpointBefore;
-  });
+      expect(component.getScenarioDescription()).toBe('Create a pet');
+      component.selectedEndpoint = endpointBefore;
+    });
 
-  it('should not show the scenario description if the selected endpoint is null', () => {
-    const endpointBefore = JSON.parse(
-      JSON.stringify(component.selectedEndpoint)
-    );
+    it('should not show the scenario description if the selected endpoint is null', () => {
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
 
-    component.selectedEndpoint = null;
+      component.selectedEndpoint = null;
 
-    expect(component.getScenarioDescription()).toBe('No description');
-    component.selectedEndpoint = endpointBefore;
-  });
+      expect(component.getScenarioDescription()).toBe('No description');
+      component.selectedEndpoint = endpointBefore;
+    });
 
-  it('should not show the scenario description if the path is not set', () => {
-    const componentMockDef = JSON.parse(
-      JSON.stringify(component.mockDefinition)
-    );
-    const endpointBefore = JSON.parse(
-      JSON.stringify(component.selectedEndpoint)
-    );
+    it('should not show the scenario description if the path is not set', () => {
+      const componentMockDef = JSON.parse(
+        JSON.stringify(component.mockDefinition)
+      );
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
 
-    component.selectedEndpoint = componentMockDef;
-    component.selectedEndpoint.verb = VerbType.POST;
+      component.selectedEndpoint = componentMockDef;
+      component.selectedEndpoint.verb = VerbType.POST;
 
-    expect(component.getScenarioDescription()).toBe('No description');
-    component.selectedEndpoint = endpointBefore;
-  });
+      expect(component.getScenarioDescription()).toBe('No description');
+      component.selectedEndpoint = endpointBefore;
+    });
 
-  it('should not show the scenario description if there is one set if the verb type is not set', () => {
-    const componentMockDef = JSON.parse(
-      JSON.stringify(component.mockDefinition)
-    );
-    const endpointBefore = JSON.parse(
-      JSON.stringify(component.selectedEndpoint)
-    );
+    it('should not show the scenario description if there is one set if the verb type is not set', () => {
+      const componentMockDef = JSON.parse(
+        JSON.stringify(component.mockDefinition)
+      );
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
 
-    component.selectedEndpoint = componentMockDef;
-    component.selectedEndpoint.path = '/pets';
+      component.selectedEndpoint = componentMockDef;
+      component.selectedEndpoint.path = '/pets';
 
-    expect(component.getScenarioDescription()).toBe('No description');
-    component.selectedEndpoint = endpointBefore;
-  });
+      expect(component.getScenarioDescription()).toBe('No description');
+      component.selectedEndpoint = endpointBefore;
+    });
 
-  it('should not show the scenario description if the path is invalid, but is text', () => {
-    const componentMockDef = JSON.parse(
-      JSON.stringify(component.mockDefinition)
-    );
-    const endpointBefore = JSON.parse(
-      JSON.stringify(component.selectedEndpoint)
-    );
+    it('should not show the scenario description if the path is invalid, but is text', () => {
+      const componentMockDef = JSON.parse(
+        JSON.stringify(component.mockDefinition)
+      );
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
 
-    component.selectedEndpoint = componentMockDef;
-    component.selectedEndpoint.path = '/does-not-exist';
+      component.selectedEndpoint = componentMockDef;
+      component.selectedEndpoint.path = '/does-not-exist';
 
-    expect(component.getScenarioDescription()).toBe('No description');
-    component.selectedEndpoint = endpointBefore;
+      expect(component.getScenarioDescription()).toBe('No description');
+      component.selectedEndpoint = endpointBefore;
+    });
   });
 
   describe('ScenarioViewComponent.addScenario', () => {
