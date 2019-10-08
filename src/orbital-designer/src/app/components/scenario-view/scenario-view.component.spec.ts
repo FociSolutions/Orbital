@@ -171,5 +171,10 @@ describe('ScenarioViewComponent', () => {
         const scenario = component.mockDefinition.scenarios[0];
         expect(component.scenarioToString(scenario)).toBeTruthy();
     });
+    it('should return true if retrieving a valid scenario', () => {
+      const scenario = testMockdefinitionObject.scenarios[0];
+      const expected = testMockdefinitionObject.scenarios[0].metadata.title;
+      expect(expected).toEqual(component.scenarioToString(scenario));
+     });
   });
 });
