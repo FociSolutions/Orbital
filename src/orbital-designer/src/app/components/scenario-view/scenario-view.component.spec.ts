@@ -1,7 +1,4 @@
-import { Endpoint } from './../../models/endpoint.model';
-import { Scenario, newScenario } from './../../models/mock-definition/scenario/scenario.model';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as faker from 'faker';
 import { ScenarioViewComponent } from './scenario-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -14,11 +11,10 @@ import { MatCardModule } from '@angular/material/card';
 import { OverviewComponent } from '../overview/overview.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { VerbType } from 'src/app/models/verb.type';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import validOpenApiText from '../../../test-files/valid-openapi-spec';
 import { By } from '@angular/platform-browser';
-import testMockdefinitionFileMock from 'src/test-files/test-mockdefinition-file.mock';
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
+import { MatButtonModule } from '@angular/material';
+import { Router } from '@angular/router';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -34,7 +30,13 @@ describe('ScenarioViewComponent', () => {
         GetEndpointScenariosPipe,
         OverviewComponent
       ],
-      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule,  RouterTestingModule],
+      imports: [
+        LoggerTestingModule,
+        MatCardModule,
+        OrbitalCommonModule,
+        RouterTestingModule,
+        MatButtonModule
+      ],
       providers: [DesignerStore]
     }).compileComponents();
   }));
@@ -42,7 +44,9 @@ describe('ScenarioViewComponent', () => {
   beforeEach(async () => {
     fixture = TestBed.createComponent(ScenarioViewComponent);
     component = fixture.componentInstance;
-    component.mockDefinition = JSON.parse(JSON.stringify(testMockdefinitionObject));
+    component.mockDefinition = JSON.parse(
+      JSON.stringify(testMockdefinitionObject)
+    );
 
     fixture.detectChanges();
   });
@@ -51,65 +55,116 @@ describe('ScenarioViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should go back to the endpoints when the endpoints button is clicked', () => {
+    spyOn(component, 'goToEndpoints');
+
+    const button = fixture.debugElement.nativeElement.querySelector('button#back-to-endpoints');
+    button.click();
+
+    fixture.whenStable().then(() => {
+      expect(component.goToEndpoints).toHaveBeenCalled();
+    });
+  });
+
   it('should not show any scenarios if there are no scenarios to show', () => {
-    expect(fixture.debugElement.query(By.css('app-scenario-list mat-list')).nativeNode.childNodes[0].childNodes.length).toBe(0);
+    expect(
+      fixture.debugElement.query(By.css('app-scenario-list mat-list'))
+        .nativeNode.childNodes[0].childNodes.length
+    ).toBe(0);
   });
 
-  it('should show the default scenario description if there is no scenario description', () => {
-    expect(component.getScenarioDescription()).toBe('No description');
+  describe('ScenarioViewComponent.getScenarioDescription', () => {
+    it('should show the default scenario description if there is no scenario description', () => {
+      expect(component.getScenarioDescription()).toBe('No description');
+    });
+
+    it('should show the scenario description if there is one set if the scenario is valid', () => {
+      const componentMockDef = JSON.parse(
+        JSON.stringify(component.mockDefinition)
+      );
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
+
+      component.selectedEndpoint = componentMockDef;
+      component.selectedEndpoint.verb = VerbType.POST;
+      component.selectedEndpoint.path = '/pets';
+
+      expect(component.getScenarioDescription()).toBe('Create a pet');
+      component.selectedEndpoint = endpointBefore;
+    });
+
+    it('should not show the scenario description if the selected endpoint is null', () => {
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
+
+      component.selectedEndpoint = null;
+
+      expect(component.getScenarioDescription()).toBe('No description');
+      component.selectedEndpoint = endpointBefore;
+    });
+
+    it('should not show the scenario description if the path is not set', () => {
+      const componentMockDef = JSON.parse(
+        JSON.stringify(component.mockDefinition)
+      );
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
+
+      component.selectedEndpoint = componentMockDef;
+      component.selectedEndpoint.verb = VerbType.POST;
+
+      expect(component.getScenarioDescription()).toBe('No description');
+      component.selectedEndpoint = endpointBefore;
+    });
+
+    it('should not show the scenario description if there is one set if the verb type is not set', () => {
+      const componentMockDef = JSON.parse(
+        JSON.stringify(component.mockDefinition)
+      );
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
+
+      component.selectedEndpoint = componentMockDef;
+      component.selectedEndpoint.path = '/pets';
+
+      expect(component.getScenarioDescription()).toBe('No description');
+      component.selectedEndpoint = endpointBefore;
+    });
+
+    it('should not show the scenario description if the path is invalid, but is text', () => {
+      const componentMockDef = JSON.parse(
+        JSON.stringify(component.mockDefinition)
+      );
+      const endpointBefore = JSON.parse(
+        JSON.stringify(component.selectedEndpoint)
+      );
+
+      component.selectedEndpoint = componentMockDef;
+      component.selectedEndpoint.path = '/does-not-exist';
+
+      expect(component.getScenarioDescription()).toBe('No description');
+      component.selectedEndpoint = endpointBefore;
+    });
   });
 
-  it('should show the scenario description if there is one set if the scenario is valid', () => {
-    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
-    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
+  describe('ScenarioViewComponent.addScenario', () => {
+    it('should call addScenario function if the add scenario button is clicked', () => {
+      spyOn(component, 'addScenario');
+      const button = fixture.debugElement.nativeElement.querySelector(
+        'button#add'
+      );
+      button.click();
+      expect(component.addScenario).toHaveBeenCalled();
+    });
 
-    component.selectedEndpoint = componentMockDef;
-    component.selectedEndpoint.verb = VerbType.POST;
-    component.selectedEndpoint.path = '/pets';
-
-    expect(component.getScenarioDescription()).toBe('Create a pet');
-    component.selectedEndpoint = endpointBefore;
-  });
-
-  it('should not show the scenario description if the selected endpoint is null', () => {
-    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
-
-    component.selectedEndpoint = null;
-
-    expect(component.getScenarioDescription()).toBe('No description');
-    component.selectedEndpoint = endpointBefore;
-  });
-
-  it('should not show the scenario description if the path is not set', () => {
-    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
-    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
-
-    component.selectedEndpoint = componentMockDef;
-    component.selectedEndpoint.verb = VerbType.POST;
-
-    expect(component.getScenarioDescription()).toBe('No description');
-    component.selectedEndpoint = endpointBefore;
-  });
-
-  it('should not show the scenario description if there is one set if the verb type is not set', () => {
-    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
-    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
-
-    component.selectedEndpoint = componentMockDef;
-    component.selectedEndpoint.path = '/pets';
-
-    expect(component.getScenarioDescription()).toBe('No description');
-    component.selectedEndpoint = endpointBefore;
-  });
-
-  it('should not show the scenario description if the path is invalid, but is text', () => {
-    const componentMockDef = JSON.parse(JSON.stringify(component.mockDefinition));
-    const endpointBefore = JSON.parse(JSON.stringify(component.selectedEndpoint));
-
-    component.selectedEndpoint = componentMockDef;
-    component.selectedEndpoint.path = '/does-not-exist';
-
-    expect(component.getScenarioDescription()).toBe('No description');
-    component.selectedEndpoint = endpointBefore;
+    it('should navigate to scenario editor', () => {
+      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+      component.addScenario();
+      expect(routerSpy).toHaveBeenCalledWith('scenario-editor');
+    });
   });
 });

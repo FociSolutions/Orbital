@@ -1,4 +1,4 @@
-.container.scenarioview {
+.container.editor {
   width: 95vw !important;
   min-height: 85vh !important;
   margin-top: 2vh;
@@ -7,8 +7,23 @@
   box-shadow: 0px 1px 12px 3px rgba(153, 148, 153, 1);
 }
 
-.scenario {
+.metadata {
   width: 100% !important;
+}
+
+div.metadata {
+  width: 100%;
+  overflow-y:hidden;
+}
+
+div.metadata h3 {
+  text-align: center
+}
+
+p#description {
+  font-size: 1.4em;
+  color: rgba(0, 0, 0, 0.541327);
+  font-family: Roboto;
 }
 
 app-overview {
@@ -18,33 +33,18 @@ app-overview {
   flex-direction: column;
 }
 
-app-scenario-list {
+div#metadata-cards {
   max-width: 70%;
   display: flex;
   flex-direction: column;
   margin-left: 15%;
 }
 
-div.scenarios {
-  width: 100%;
-  overflow-y:hidden;
+mat-card-title {
+  font-size: 1.2em;
 }
 
-p#description {
-  font-size: 1.4em;
-  color: rgba(0, 0, 0, 0.541327);
-  font-family: Roboto;
-  padding: 0 2em 0.5em 2em;
-}
-
-button#add {
-  font-size: 1.6em;
-  font-weight: 300;
-  float: right;
-  margin-right: 10%;
-}
-
-button#back-to-endpoints {
+button#go-to-scenarios {
   margin-left: 10%;
   margin-top: 1em;
 }
