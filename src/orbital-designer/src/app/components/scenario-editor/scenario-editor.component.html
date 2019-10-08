@@ -12,17 +12,18 @@
           <h3>Scenario Properties</h3>
 
           <mat-accordion>
-            <mat-expansion-panel [expanded]="this.nameDescriptionPanelExpanded" (opened)="handleNameDescriptionPanelOpen()">
+            <mat-expansion-panel [expanded]="this.nameDescriptionPanelExpanded" (opened)="handleNameDescriptionPanelOpen()" (closed)="handleNameDescriptionPanelClose()">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   Metadata
                 </mat-panel-title>
-                <mat-panel-description>
+                <mat-panel-description *ngIf="!this.nameDescriptionPanelExpanded">
                    Name and Description
                 </mat-panel-description>
               </mat-expansion-panel-header>
 
               <form [formGroup]="nameAndDescriptionFormGroup">
+                <mat-divider></mat-divider>
                 <mat-form-field>
                   <input matInput placeholder="Name" formControlName="name" maxlength="50">
                 </mat-form-field>

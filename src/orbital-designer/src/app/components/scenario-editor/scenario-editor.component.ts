@@ -63,14 +63,18 @@ export class ScenarioEditorComponent implements OnInit {
    */
   saveButtonDisabledState() {
     if (!!this.nameAndDescriptionFormGroup &&
-      // tslint:disable-next-line: no-string-literal
       this.nameAndDescriptionFormGroup.controls.name !== undefined &&
-      // tslint:disable-next-line: no-string-literal
       this.nameAndDescriptionFormGroup.controls.description !== undefined) {
-      // tslint:disable-next-line: no-string-literal
       return this.nameAndDescriptionFormGroup.controls.name.invalid || this.nameAndDescriptionFormGroup.controls.description.invalid;
     }
 
     return true;
+  }
+
+  /**
+   * Handles when the panel is manually closed (by clicking the header.)
+   */
+  handleNameDescriptionPanelClose() {
+    this.nameDescriptionPanelExpanded = false;
   }
 }
