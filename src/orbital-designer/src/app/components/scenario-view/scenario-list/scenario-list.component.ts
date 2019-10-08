@@ -13,6 +13,5 @@ export class ScenarioListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log(this.scenarios);
   }
 }

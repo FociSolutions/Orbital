@@ -8,6 +8,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 
+import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import * as faker from 'faker';
 describe('ScenarioListComponent', () => {
   let component: ScenarioListComponent;
   let fixture: ComponentFixture<ScenarioListComponent>;
@@ -19,17 +22,71 @@ describe('ScenarioListComponent', () => {
         ScenarioListItemComponent,
         DialogBoxComponent
       ],
-      imports: [MatListModule, MatCardModule, MatMenuModule, MatIconModule]
+      imports: [
+        MatListModule,
+        MatCardModule,
+        MatMenuModule,
+        MatIconModule,
+        LoggerTestingModule
+      ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioListComponent);
     component = fixture.componentInstance;
+
+    // force the object to be copied; Object.assign() and spread operator do not work here
+    component.scenarios = JSON.parse(
+      JSON.stringify(testMockdefinitionObject.scenarios)
+    );
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display scenario even if status code is invalid', () => {
+    component.scenarios[0].response.status = 0;
+
+    // component should not crash
+    expect(component).toBeTruthy();
+  });
+
+  it('should display the unknown scenario description if the status code is invalid', () => {
+    component.scenarios[0].response.status = 0;
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.childNodes[0].nativeNode;
+    expect(compiled.textContent).toContain('Unknown');
+    // component should not crash
+    expect(component).toBeTruthy();
+  });
+
+  it('should display all required information on a list of 50 scenarios', () => {
+    const expectedScenarios = [];
+    for (let i = 0; i < 50; i++) {
+      const testScenario = component.scenarios[0];
+      testScenario.response.status = faker.random.number();
+      testScenario.metadata.title = faker.lorem.words();
+      testScenario.metadata.description = faker.random.words();
+      component.scenarios.push(JSON.parse(JSON.stringify(testScenario)));
+      expectedScenarios.push(JSON.parse(JSON.stringify(testScenario)));
+    }
+
+    fixture.detectChanges();
+
+    for (let i = 0; i < 50; i++) {
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.childNodes[0].nativeNode;
+      expect(compiled.textContent).toContain(
+        expectedScenarios[i].metadata.title +
+          ' ' +
+          expectedScenarios[i].metadata.description
+      );
+      expect(compiled.textContent).toContain(
+        expectedScenarios[i].response.status
+      );
+    }
   });
 });
