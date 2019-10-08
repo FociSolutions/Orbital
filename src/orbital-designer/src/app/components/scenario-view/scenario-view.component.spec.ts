@@ -34,7 +34,7 @@ describe('ScenarioViewComponent', () => {
         GetEndpointScenariosPipe,
         OverviewComponent
       ],
-      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule, RouterTestingModule],
+      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule,  RouterTestingModule],
       providers: [DesignerStore]
     }).compileComponents();
   }));
