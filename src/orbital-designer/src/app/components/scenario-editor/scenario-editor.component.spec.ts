@@ -83,4 +83,53 @@ describe('ScenarioEditorComponent', () => {
       expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
     });
   });
+
+  describe('ScenarioEditorComponent.saveButtonDisabledState', () => {
+    it('should not save if nameAndDescriptionFormGroup is null', () => {
+      component.nameAndDescriptionFormGroup = null;
+      expect(component.saveButtonDisabledState()).toBeTruthy();
+    });
+
+    it('should not save if nameAndDescriptionFormGroup\'s name is empty', () => {
+      component.nameAndDescriptionFormGroup.controls.name.setValue('');
+      component.nameAndDescriptionFormGroup.controls.description.setValue('');
+      expect(component.saveButtonDisabledState()).toBeTruthy();
+    });
+
+    it('should save if nameAndDescriptionFormGroup\'s description is empty', () => {
+      component.nameAndDescriptionFormGroup.controls.description.setValue('');
+      component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
+      expect(component.saveButtonDisabledState()).not.toBeTruthy();
+    });
+
+    it('should save if nameAndDescriptionFormGroup\'s name is not empty', () => {
+      component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
+      component.nameAndDescriptionFormGroup.controls.description.setValue('');
+      expect(component.saveButtonDisabledState()).not.toBeTruthy();
+    });
+
+    it('should save if nameAndDescriptionFormGroup\'s name is only one character', () => {
+      component.nameAndDescriptionFormGroup.controls.name.setValue('z');
+      component.nameAndDescriptionFormGroup.controls.description.setValue('');
+      expect(component.saveButtonDisabledState()).not.toBeTruthy();
+    });
+
+    it('should not save if nameAndDescriptionFormGroup\'s name is more than 50 characters', () => {
+      component.nameAndDescriptionFormGroup.controls.description.setValue('');
+      component.nameAndDescriptionFormGroup.controls.name.setValue('z'.repeat(52));
+      expect(component.saveButtonDisabledState()).toBeTruthy();
+    });
+
+    it('should not save if nameAndDescriptionFormGroup\'s description is more than 50 characters', () => {
+      component.nameAndDescriptionFormGroup.controls.name.setValue('');
+      component.nameAndDescriptionFormGroup.controls.description.setValue('z'.repeat(52));
+      expect(component.saveButtonDisabledState()).toBeTruthy();
+    });
+
+    it('should not save if nameAndDescriptionFormGroup\'s name and description is more than 50 characters', () => {
+      component.nameAndDescriptionFormGroup.controls.description.setValue('');
+      component.nameAndDescriptionFormGroup.controls.name.setValue('');
+      expect(component.saveButtonDisabledState()).toBeTruthy();
+    });
+  });
 });
