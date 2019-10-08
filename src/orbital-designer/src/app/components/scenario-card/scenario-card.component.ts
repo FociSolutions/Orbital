@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ContentChild, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-scenario-card',
@@ -10,6 +10,7 @@ export class ScenarioCardComponent implements OnInit {
   @Input() description: string;
   @Output() panelOpened = new EventEmitter();
   @Output() panelClosed = new EventEmitter();
+  @Input() cardTemplate: TemplateRef<any>;
 
   panelExpanded: boolean;
 
