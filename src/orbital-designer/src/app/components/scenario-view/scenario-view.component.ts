@@ -37,13 +37,19 @@ export class ScenarioViewComponent implements OnInit {
         ].summary
       : 'No description';
   }
-
+ /**
+  * This function takes an scenario object and return its path as a string
+  * @param scenario The scenario to be converted to string
+  */
   scenarioToString(scenario: Scenario): string {
     if (!!scenario && !!scenario.metadata) {
       return scenario.metadata.title;
     }
   }
-
+  /**
+   * This function takes a list of scenarios and updates it to the new list of filtered scenarios
+   * @param scenarios The list of scenarios
+   */
   setFilteredList(newScenarios: Scenario[]) {
     console.log(newScenarios);
     if (!!newScenarios) {
