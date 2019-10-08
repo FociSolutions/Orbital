@@ -33,6 +33,7 @@ import { ScenarioListComponent } from './components/scenario-view/scenario-list/
 import { ScenarioListItemComponent } from './components/scenario-view/scenario-list-item/scenario-list-item.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
 import { MatExpansionModule } from '@angular/material';
+import { ScenarioCardComponent } from './components/scenario-card/scenario-card.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { MatExpansionModule } from '@angular/material';
     SideBarComponent,
     EndpointListItemComponent,
     ScenarioViewComponent,
-    ScenarioEditorComponent
+    ScenarioEditorComponent,
+    ScenarioCardComponent
   ],
   imports: [
     BrowserModule,

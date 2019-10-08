@@ -1,0 +1,14 @@
+<mat-accordion>
+    <mat-expansion-panel [expanded]="this.panelExpanded" (opened)="handlePanelOpen()" (closed)="handlePanelClose()">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ this.title }}
+        </mat-panel-title>
+        <mat-panel-description *ngIf="!this.panelExpanded">
+           {{ this.description }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <!-- insert form template here -->
+    </mat-expansion-panel>
+  </mat-accordion>
