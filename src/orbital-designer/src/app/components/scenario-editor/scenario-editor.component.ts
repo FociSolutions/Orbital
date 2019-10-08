@@ -64,13 +64,13 @@ export class ScenarioEditorComponent implements OnInit {
   saveButtonDisabledState() {
     if (!!this.nameAndDescriptionFormGroup &&
       // tslint:disable-next-line: no-string-literal
-      !!this.nameAndDescriptionFormGroup['name'] &&
+      this.nameAndDescriptionFormGroup.controls.name !== undefined &&
       // tslint:disable-next-line: no-string-literal
-      !!this.nameAndDescriptionFormGroup['description']) {
+      this.nameAndDescriptionFormGroup.controls.description !== undefined) {
       // tslint:disable-next-line: no-string-literal
-      return this.nameAndDescriptionFormGroup['name'].invalid || this.nameAndDescriptionFormGroup['description'].invalid;
+      return this.nameAndDescriptionFormGroup.controls.name.invalid || this.nameAndDescriptionFormGroup.controls.description.invalid;
     }
 
-    return false;
+    return true;
   }
 }
