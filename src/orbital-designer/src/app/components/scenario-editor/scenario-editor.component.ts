@@ -24,17 +24,6 @@ export class ScenarioEditorComponent implements OnInit {
       '',
       Validators.compose([Validators.maxLength(50)])
     );
-
-    this.store.state$.subscribe(state => {
-      if (
-        !!state.selectedScenario &&
-        !!state.selectedScenario.metadata &&
-        !!state.selectedScenario.metadata
-      ) {
-        this.name.setValue(state.selectedScenario.metadata.title);
-        this.description.setValue(state.selectedScenario.metadata.description);
-      }
-    });
   }
 
   ngOnInit() {}
