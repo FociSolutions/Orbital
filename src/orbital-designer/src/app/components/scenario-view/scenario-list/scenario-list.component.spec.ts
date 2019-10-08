@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
+import { DesignerStore } from 'src/app/store/designer-store';
 describe('ScenarioListComponent', () => {
   let component: ScenarioListComponent;
   let fixture: ComponentFixture<ScenarioListComponent>;
@@ -14,7 +15,8 @@ describe('ScenarioListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ScenarioListComponent, ScenarioListItemComponent],
-      imports: [MatListModule, MatCardModule, LoggerTestingModule]
+      imports: [MatListModule, MatCardModule, LoggerTestingModule],
+      providers: [DesignerStore]
     }).compileComponents();
   }));
 

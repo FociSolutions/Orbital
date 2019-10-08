@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { DesignerStore } from 'src/app/store/designer-store';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -12,7 +13,7 @@ export class ScenarioEditorComponent implements OnInit {
   name: FormControl;
   description: FormControl;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private store: DesignerStore) {
       this.name = new FormControl(
         '',
           Validators.compose([Validators.maxLength(50), Validators.required]));
@@ -21,6 +22,13 @@ export class ScenarioEditorComponent implements OnInit {
         '',
           Validators.compose([Validators.maxLength(50)])
       );
+
+      this.store.state$.subscribe(state => {
+        if (!!state.selectedScenario && !!state.selectedScenario.metadata && !!state.selectedScenario.metadata) {
+          this.name.setValue(state.selectedScenario.metadata.title);
+          this.description.setValue(state.selectedScenario.metadata.description);
+        }
+      });
   }
 
   ngOnInit() {

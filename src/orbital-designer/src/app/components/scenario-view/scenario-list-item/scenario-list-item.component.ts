@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Scenario } from '../../../models/mock-definition/scenario/scenario.model';
 import * as HttpStatus from 'http-status-codes';
+import { DesignerStore } from 'src/app/store/designer-store';
 
 @Component({
   selector: 'app-scenario-list-item',
@@ -11,7 +12,11 @@ import * as HttpStatus from 'http-status-codes';
 export class ScenarioListItemComponent implements OnInit {
   @Input() scenario: Scenario;
 
-  constructor(private logger: NGXLogger) {}
+  constructor(private logger: NGXLogger, private store: DesignerStore) {
+    if (!!this.scenario) {
+      this.store.selectedScenario = this.scenario;
+    }
+  }
 
   ngOnInit() {}
 

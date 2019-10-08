@@ -33,7 +33,7 @@
                 <button id="cancel" mat-raised-button color="primary">
                   Cancel
                 </button>
-                <button id="save" mat-raised-button color="primary">
+                <button [disabled]="this.name.invalid || this.description.invalid" id="save" mat-raised-button color="primary">
                   Save
                 </button>
               </div>

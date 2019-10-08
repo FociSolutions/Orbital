@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { newScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
+import { DesignerStore } from 'src/app/store/designer-store';
 
 describe('ScenarioListItemComponent', () => {
   let component: ScenarioListItemComponent;
@@ -12,7 +13,8 @@ describe('ScenarioListItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ScenarioListItemComponent],
-      imports: [MatCardModule, LoggerTestingModule]
+      imports: [MatCardModule, LoggerTestingModule],
+      providers: [DesignerStore]
     }).compileComponents();
   }));
 
