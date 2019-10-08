@@ -12,6 +12,7 @@ export class ScenarioEditorComponent implements OnInit {
   formGroup: FormGroup;
   name: FormControl;
   description: FormControl;
+  nameDescriptionPanelExpanded: boolean;
 
   constructor(private router: Router, private store: DesignerStore) {
       this.name = new FormControl(
@@ -39,5 +40,19 @@ export class ScenarioEditorComponent implements OnInit {
    */
   goToScenarios() {
     this.router.navigateByUrl('scenario-view');
+  }
+
+  /**
+   * Sets the state of the panel to collapsed when save (if valid) or cancel is clicked
+   */
+  handleCancelButtonClick() {
+    this.nameDescriptionPanelExpanded = false;
+  }
+
+  /**
+   * Sets the state of the panel to open
+   */
+  handleNameDescriptionPanelOpen() {
+    this.nameDescriptionPanelExpanded = true;
   }
 }

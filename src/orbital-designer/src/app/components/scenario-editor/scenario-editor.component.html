@@ -12,7 +12,7 @@
           <h3>Scenario Properties</h3>
 
           <mat-accordion>
-            <mat-expansion-panel>
+            <mat-expansion-panel [expanded]="this.nameDescriptionPanelExpanded" (opened)="handleNameDescriptionPanelOpen()">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   Metadata
@@ -30,7 +30,7 @@
                 <input matInput placeholder="Description" [formControl]="description" maxlength="50">
               </mat-form-field>
               <div id="cancel-save-buttons">
-                <button id="cancel" mat-raised-button color="primary">
+                <button id="cancel" (click)="handleCancelButtonClick()" mat-raised-button color="primary">
                   Cancel
                 </button>
                 <button [disabled]="this.name.invalid || this.description.invalid" id="save" mat-raised-button color="primary">
