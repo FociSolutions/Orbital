@@ -96,10 +96,10 @@
           <mat-list-item class="key-value-item">
               <div class="flex-space-between-large">
                 <mat-form-field class="header-key">
-                  <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls.key">
+                  <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls[0].controls.key">
                 </mat-form-field>
                 <mat-form-field class="header-value">
-                  <input matInput placeholder="Value" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls.value">
+                  <input matInput placeholder="Value" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls[0].controls.value">
                 </mat-form-field>
                   <button>x</button>
               </div>
@@ -108,10 +108,10 @@
           <mat-list-item class="key-value-item">
               <div class="flex-space-between-large">
                 <mat-form-field class="header-key">
-                  <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls.key">
+                  <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls[1].controls.key">
                 </mat-form-field>
                 <mat-form-field class="header-value">
-                  <input matInput placeholder="Value" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls.value">
+                  <input matInput placeholder="Value" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls[1].controls.value">
                 </mat-form-field>
                   <button>x</button>
               </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -40,10 +40,16 @@ export class ScenarioEditorComponent implements OnInit {
           key: new FormControl(),
           value: new FormControl()
         }),
-        headersAdded: new FormGroup({
-          key: new FormControl(),
-          value: new FormControl()
-        })
+        headersAdded: new FormArray([
+          new FormGroup({
+            key: new FormControl(),
+            value: new FormControl()
+          }),
+          new FormGroup({
+            key: new FormControl(),
+            value: new FormControl()
+          })
+        ])
       }),
       body: new FormGroup({
         bodyContent: new FormControl()
