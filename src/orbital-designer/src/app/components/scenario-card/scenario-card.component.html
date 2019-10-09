@@ -1,0 +1,14 @@
+<mat-accordion>
+    <mat-expansion-panel [expanded]="this.panelExpanded" (opened)="handlePanelOpen()" (closed)="handlePanelClose()">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ title }}
+        </mat-panel-title>
+        <mat-panel-description *ngIf="!this.panelExpanded">
+           {{ description }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ng-container *ngTemplateOutlet="cardTemplate"> </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>

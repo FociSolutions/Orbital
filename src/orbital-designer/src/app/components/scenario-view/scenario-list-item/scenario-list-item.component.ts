@@ -3,6 +3,7 @@ import { NGXLogger, LoggerConfig } from 'ngx-logger';
 import { Scenario } from '../../../models/mock-definition/scenario/scenario.model';
 import * as HttpStatus from 'http-status-codes';
 import { DesignerStore } from 'src/app/store/designer-store';
+
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
@@ -19,6 +20,10 @@ export class ScenarioListItemComponent implements OnInit {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
     });
+
+    if (!!this.scenario) {
+      this.store.selectedScenario = this.scenario;
+    }
   }
 
   ngOnInit() {}

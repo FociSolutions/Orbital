@@ -8,10 +8,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { DesignerStore } from '../../../store/designer-store';
-
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
+
 describe('ScenarioListComponent', () => {
   let component: ScenarioListComponent;
   let fixture: ComponentFixture<ScenarioListComponent>;
@@ -30,6 +30,7 @@ describe('ScenarioListComponent', () => {
         MatIconModule,
         LoggerTestingModule
       ],
+
       providers: [DesignerStore]
     }).compileComponents();
   }));

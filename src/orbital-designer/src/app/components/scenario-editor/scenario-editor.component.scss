@@ -48,3 +48,16 @@ button#go-to-scenarios {
   margin-left: 10%;
   margin-top: 1em;
 }
+
+div#cancel-save-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+app-scenario-card {
+  margin-bottom: 1em;
+}
