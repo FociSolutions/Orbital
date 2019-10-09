@@ -11,11 +11,9 @@ export class DialogBoxComponent implements OnInit {
   @Input() confirmButtonText = 'Confirm';
   @Input() cancelButtonText = 'Cancel';
 
-  @Output() choiceBoolean: EventEmitter<boolean>;
+  @Output() choiceBoolean: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() {
-    this.choiceBoolean = new EventEmitter<boolean>();
-  }
+  constructor() {}
 
   /**
    * Emits true to parent when the user wishes the delete a scenario

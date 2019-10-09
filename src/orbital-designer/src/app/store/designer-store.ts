@@ -108,13 +108,18 @@ export class DesignerStore extends Store<State> {
    * @param mockDefinition The MockDefinition used to update the store
    */
   set mockDefinition(mockDefinition: MockDefinition) {
+    const mockDefinitionCopy = { ...mockDefinition };
+    const mockDefinitions = this.state.mockDefinitions.set(
+      mockDefinition.metadata.title,
+      mockDefinitionCopy
+    );
     this.logger.debug('Setting mockDefinition to ', mockDefinition);
     this.setState({
       ...this.state,
-      mockDefinition: {
-        ...mockDefinition
-      }
+      mockDefinitions,
+      mockDefinition: mockDefinitionCopy
     });
+    this.logger.debug(this.state);
     this.setEndpoints(mockDefinition.openApi);
   }
 
@@ -167,12 +172,24 @@ export class DesignerStore extends Store<State> {
    */
   updateScenarios(scenarios: Scenario[]) {
     this.logger.debug('Setting scenarios to ', scenarios);
-    this.setState({
-      ...this.state,
-      mockDefinition: {
-        ...this.state.mockDefinition,
-        scenarios: [...scenarios]
-      }
-    });
+    this.mockDefinition = {
+      ...this.state.mockDefinition,
+      scenarios: [...scenarios]
+    };
+  }
+
+  /**
+   * createScenario(scenario?: Scenario){}
+   * updateScenario(scenario: Scenario){}
+   * deleteScenario(scenarioId: number){}
+   */
+
+  deleteScenario(scenarioId: string) {
+    this.mockDefinition = {
+      ...this.state.mockDefinition,
+      scenarios: this.state.mockDefinition.scenarios.filter(
+        s => s.id !== scenarioId
+      )
+    };
   }
 }

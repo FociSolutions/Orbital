@@ -17,7 +17,11 @@ export class ScenarioViewComponent implements OnInit {
   scenarioList: Scenario[] = [];
   filteredList: Scenario[] = [];
 
-  constructor(private store: DesignerStore, private router: Router, private logger: NGXLogger) {
+  constructor(
+    private store: DesignerStore,
+    private router: Router,
+    private logger: NGXLogger
+  ) {
     this.store.state$.subscribe(state => {
       this.selectedEndpoint = state.selectedEndpoint;
       this.mockDefinition = state.mockDefinition;
@@ -27,13 +31,15 @@ export class ScenarioViewComponent implements OnInit {
     });
   }
 
-   /**
-    * Gets the description for the scenario in the OpenAPI spec; returns no description
-    * if there is no description.
-    */
+  /**
+   * Gets the description for the scenario in the OpenAPI spec; returns no description
+   * if there is no description.
+   */
   getScenarioDescription() {
-    return !!this.selectedEndpoint && !!this.mockDefinition &&
-    !!this.mockDefinition.openApi.paths[this.selectedEndpoint.path] && !!this.selectedEndpoint.verb
+    return !!this.selectedEndpoint &&
+      !!this.mockDefinition &&
+      !!this.mockDefinition.openApi.paths[this.selectedEndpoint.path] &&
+      !!this.selectedEndpoint.verb
       ? this.mockDefinition.openApi.paths[this.selectedEndpoint.path][
           this.selectedEndpoint.verb.toLowerCase()
         ].summary
@@ -48,10 +54,10 @@ export class ScenarioViewComponent implements OnInit {
   goToEndpoints() {
     this.router.navigateByUrl('endpoint-view');
   }
- /**
-  * This function takes an scenario object and return its path as a string
-  * @param scenario The scenario to be converted to string
-  */
+  /**
+   * This function takes an scenario object and return its path as a string
+   * @param scenario The scenario to be converted to string
+   */
   scenarioToString(scenario: Scenario): string {
     if (!!scenario && !!scenario.metadata) {
       return scenario.metadata.title;

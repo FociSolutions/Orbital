@@ -36,8 +36,8 @@ export class ScenarioListItemComponent implements OnInit {
       return HttpStatus.getStatusText(this.scenario.response.status);
     } catch (Error) {
       this.logger.warn(
-        'Returning unknown for scenario status as the status is invalid: ' +
-          this.scenario.response.status
+        `Returning unknown for scenario status as the status is invalid:
+          ${this.scenario.response.status}`
       );
       return 'Unknown';
     }
@@ -69,11 +69,11 @@ export class ScenarioListItemComponent implements OnInit {
     );
   }
 
+  /**
+   * This method updates the store with the current scenario filtered out
+   */
   deleteScenario() {
-    const scenarios = this.store.state.mockDefinition.scenarios;
-    this.store.updateScenarios(
-      scenarios.filter(s => s.id !== this.scenario.id)
-    );
+    this.store.deleteScenario(this.scenario.id);
   }
 
   /**
