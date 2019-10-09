@@ -13,6 +13,9 @@ export class ScenarioEditorComponent implements OnInit {
   description: FormControl;
   nameDescriptionPanelExpanded: boolean;
 
+  responseFormGroup: FormGroup;
+  requestMatchRulesPanelExpanded: boolean;
+
   constructor(private router: Router) {
     this.nameAndDescriptionFormGroup = new FormGroup({
       name: new FormControl(
@@ -23,6 +26,25 @@ export class ScenarioEditorComponent implements OnInit {
         '',
         Validators.compose([Validators.maxLength(50)])
       )
+    });
+
+    this.responseFormGroup = new FormGroup({
+      status: new FormGroup({
+        statuscode: new FormControl()
+      }),
+      headers: new FormGroup({
+        headerToAdd: new FormGroup({
+          key: new FormControl(),
+          value: new FormControl()
+        }),
+        headersAdded: new FormGroup({
+          key: new FormControl(),
+          value: new FormControl()
+        })
+      }),
+      body: new FormGroup({
+        bodyContent: new FormControl()
+      })
     });
   }
 
@@ -77,4 +99,14 @@ export class ScenarioEditorComponent implements OnInit {
   handleNameDescriptionPanelClose() {
     this.nameDescriptionPanelExpanded = false;
   }
+
+  handleRequestMatchRulesPanelOpen() {
+    this.requestMatchRulesPanelExpanded = false;
+  }
+
+  handleRequestMatchRulesPanelClose() {
+    this.requestMatchRulesPanelExpanded = false;
+  }
+
+
 }

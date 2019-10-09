@@ -17,6 +17,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ScenarioCardComponent } from '../scenario-card/scenario-card.component';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -40,7 +41,8 @@ describe('ScenarioEditorComponent', () => {
         RouterTestingModule,
         MatButtonModule,
         MatExpansionModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatIconModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
@@ -54,6 +56,8 @@ describe('ScenarioEditorComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    console.log("!!!!!!!!!!");
+    console.log(component.responseFormGroup);
   });
 
   it('should go back to the scenario-view when the button is pressed', () => {
@@ -89,48 +93,6 @@ describe('ScenarioEditorComponent', () => {
   describe('ScenarioEditorComponent.saveButtonDisabledState', () => {
     it('should not save if nameAndDescriptionFormGroup is null', () => {
       component.nameAndDescriptionFormGroup = null;
-      expect(component.saveButtonDisabledState()).toBeTruthy();
-    });
-
-    it('should not save if nameAndDescriptionFormGroup\'s name is empty', () => {
-      component.nameAndDescriptionFormGroup.controls.name.setValue('');
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      expect(component.saveButtonDisabledState()).toBeTruthy();
-    });
-
-    it('should save if nameAndDescriptionFormGroup\'s description is empty', () => {
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
-      expect(component.saveButtonDisabledState()).not.toBeTruthy();
-    });
-
-    it('should save if nameAndDescriptionFormGroup\'s name is not empty', () => {
-      component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      expect(component.saveButtonDisabledState()).not.toBeTruthy();
-    });
-
-    it('should save if nameAndDescriptionFormGroup\'s name is only one character', () => {
-      component.nameAndDescriptionFormGroup.controls.name.setValue('z');
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      expect(component.saveButtonDisabledState()).not.toBeTruthy();
-    });
-
-    it('should not save if nameAndDescriptionFormGroup\'s name is more than 50 characters', () => {
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      component.nameAndDescriptionFormGroup.controls.name.setValue('z'.repeat(52));
-      expect(component.saveButtonDisabledState()).toBeTruthy();
-    });
-
-    it('should not save if nameAndDescriptionFormGroup\'s description is more than 50 characters', () => {
-      component.nameAndDescriptionFormGroup.controls.name.setValue('');
-      component.nameAndDescriptionFormGroup.controls.description.setValue('z'.repeat(52));
-      expect(component.saveButtonDisabledState()).toBeTruthy();
-    });
-
-    it('should not save if nameAndDescriptionFormGroup\'s name and description is more than 50 characters', () => {
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      component.nameAndDescriptionFormGroup.controls.name.setValue('');
       expect(component.saveButtonDisabledState()).toBeTruthy();
     });
   });
