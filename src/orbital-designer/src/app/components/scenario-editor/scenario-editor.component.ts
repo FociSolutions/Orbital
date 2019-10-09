@@ -100,13 +100,43 @@ export class ScenarioEditorComponent implements OnInit {
     this.nameDescriptionPanelExpanded = false;
   }
 
+  /**
+   * Handles when the request match rules panel is open
+   */
   handleRequestMatchRulesPanelOpen() {
-    this.requestMatchRulesPanelExpanded = false;
+    this.requestMatchRulesPanelExpanded = true;
   }
 
+  /**
+   * Handles when the request match panel is closed
+   */
   handleRequestMatchRulesPanelClose() {
     this.requestMatchRulesPanelExpanded = false;
   }
 
+  /**
+   * Handles when the cancel button is clicked on the request match rules
+   */
+  handleCancelButtonClickRequestMatchRules() {
+    this.requestMatchRulesPanelExpanded = false;
+  }
+
+  /**
+   * Handles when the save button is clicked on the request match rules
+   */
+  saveButtonDisabledStateRequestMatchRules() {
+    if (!!this.responseFormGroup) {
+      return this.responseFormGroup.invalid;
+    }
+
+    return true;
+  }
+
+  /**
+   * Handles when the save button is clicked on the request match rules
+   */
+  handleSaveButtonClickRequestMatchRules() {
+    this.requestMatchRulesPanelExpanded = true;
+  }
 
 }

@@ -125,10 +125,10 @@
       </form>
 
       <div id="cancel-save-buttons">
-        <button id="cancel" (click)="handleCancelButtonClick()" mat-raised-button color="primary">
+        <button id="cancel" (click)="handleCancelButtonClickRequestMatchRules()" mat-raised-button color="primary">
           Cancel
         </button>
-        <button [disabled]="saveButtonDisabledState()" (click)="handleSaveButtonClick()" id="save" mat-raised-button color="primary">
+        <button [disabled]="saveButtonDisabledStateRequestMatchRules()" (click)="handleSaveButtonClickRequestMatchRules()" id="save" mat-raised-button color="primary">
           Save
         </button>
       </div>
