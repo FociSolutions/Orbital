@@ -23,9 +23,10 @@
           <app-scenario-card [title]="'Response'" [description]="'Response Header, Response Body and Code'" [cardTemplate]="responseCardContent"
             (panelOpened)="handleRequestMatchRulesPanelOpen()" (panelClosed)="handleRequestMatchRulesPanelClose()" [panelExpanded]="this.requestMatchRulesPanelExpanded">
           </app-scenario-card>
-
+          <div id="scenario-back-button-div">
+            <button id="go-to-scenarios" color="primary" mat-raised-button (click)="goToScenarios()">Back to Scenarios</button>
+          </div>
         </div>
-        <button id="go-to-scenarios" color="primary" mat-raised-button (click)="goToScenarios()">Back to Scenarios</button>
       </div>
     </div>
   </div>
