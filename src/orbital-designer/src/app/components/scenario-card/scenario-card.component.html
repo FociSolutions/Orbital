@@ -2,13 +2,13 @@
     <mat-expansion-panel [expanded]="this.panelExpanded" (opened)="handlePanelOpen()" (closed)="handlePanelClose()">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ this.title }}
+          {{ title }}
         </mat-panel-title>
         <mat-panel-description *ngIf="!this.panelExpanded">
-           {{ this.description }}
+           {{ description }}
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <ng-template #cardTemplate></ng-template>
+      <ng-container *ngTemplateOutlet="cardTemplate"> </ng-container>
     </mat-expansion-panel>
   </mat-accordion>

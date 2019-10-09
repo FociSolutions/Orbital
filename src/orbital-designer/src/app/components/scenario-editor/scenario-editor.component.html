@@ -11,37 +11,9 @@
         <div id="metadata-cards">
           <h3>Scenario Properties</h3>
 
-          <mat-accordion>
-            <mat-expansion-panel [expanded]="this.nameDescriptionPanelExpanded" (opened)="handleNameDescriptionPanelOpen()" (closed)="handleNameDescriptionPanelClose()">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Metadata
-                </mat-panel-title>
-                <mat-panel-description *ngIf="!this.nameDescriptionPanelExpanded">
-                   Name and Description
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-
-              <form [formGroup]="nameAndDescriptionFormGroup">
-                <mat-divider></mat-divider>
-                <mat-form-field>
-                  <input matInput placeholder="Name" formControlName="name" maxlength="50">
-                </mat-form-field>
-                <br />
-                <mat-form-field>
-                  <input matInput placeholder="Description" formControlName="description" maxlength="50">
-                </mat-form-field>
-                <div id="cancel-save-buttons">
-                  <button id="cancel" (click)="handleCancelButtonClick()" mat-raised-button color="primary">
-                    Cancel
-                  </button>
-                  <button [disabled]="saveButtonDisabledState()" (click)="handleSaveButtonClick()" id="save" mat-raised-button color="primary">
-                    Save
-                  </button>
-                </div>
-              </form>
-            </mat-expansion-panel>
-          </mat-accordion>
+          <app-scenario-card [title]="'Metadata'" [description]="'Name and Description'" [cardTemplate]="metadataCardContent"
+            (panelOpened)="handleNameDescriptionPanelOpen()" (panelClosed)="handleNameDescriptionPanelClose()" [panelExpanded]="this.nameDescriptionPanelExpanded">
+          </app-scenario-card>
 
           <mat-card>
             <mat-card-title>Request Match Rules</mat-card-title>
@@ -64,4 +36,25 @@
       New Scenario
     </h3>
   </div>
+</ng-template>
+
+<ng-template #metadataCardContent>
+  <form [formGroup]="nameAndDescriptionFormGroup">
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name" maxlength="50">
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <input matInput placeholder="Description" formControlName="description" maxlength="50">
+    </mat-form-field>
+    <div id="cancel-save-buttons">
+      <button id="cancel" (click)="handleCancelButtonClick()" mat-raised-button color="primary">
+        Cancel
+      </button>
+      <button [disabled]="saveButtonDisabledState()" (click)="handleSaveButtonClick()" id="save" mat-raised-button color="primary">
+        Save
+      </button>
+    </div>
+  </form>
 </ng-template>

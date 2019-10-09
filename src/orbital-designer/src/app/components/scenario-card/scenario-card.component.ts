@@ -12,7 +12,7 @@ export class ScenarioCardComponent implements OnInit {
   @Output() panelClosed = new EventEmitter();
   @Input() cardTemplate: TemplateRef<any>;
 
-  panelExpanded: boolean;
+  @Input() panelExpanded: boolean;
 
   constructor() { }
 

@@ -16,6 +16,7 @@ import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ScenarioCardComponent } from '../scenario-card/scenario-card.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -29,7 +30,8 @@ describe('ScenarioEditorComponent', () => {
         ScenarioListItemComponent,
         SideBarComponent,
         GetEndpointScenariosPipe,
-        OverviewComponent
+        OverviewComponent,
+        ScenarioCardComponent
       ],
       imports: [
         LoggerTestingModule,
