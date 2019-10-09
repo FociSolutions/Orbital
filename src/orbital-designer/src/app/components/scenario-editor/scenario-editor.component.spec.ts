@@ -56,8 +56,6 @@ describe('ScenarioEditorComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    console.log("!!!!!!!!!!");
-    console.log(component.responseFormGroup);
   });
 
   it('should go back to the scenario-view when the button is pressed', () => {

@@ -15,14 +15,15 @@
             (panelOpened)="handleNameDescriptionPanelOpen()" (panelClosed)="handleNameDescriptionPanelClose()" [panelExpanded]="this.nameDescriptionPanelExpanded">
           </app-scenario-card>
 
-          <app-scenario-card [title]="'Request Match Rules'" [description]="'Query Match Rules, Header Match Rules...'" [cardTemplate]="responseCardContent"
+          <mat-card>
+              <mat-card-title>Request Match Rules</mat-card-title>
+              <mat-card-subtitle>Query Match Rules, Header Match Rules...</mat-card-subtitle>
+            </mat-card>
+
+          <app-scenario-card [title]="'Response'" [description]="'Response Header, Response Body and Code'" [cardTemplate]="responseCardContent"
             (panelOpened)="handleRequestMatchRulesPanelOpen()" (panelClosed)="handleRequestMatchRulesPanelClose()" [panelExpanded]="this.requestMatchRulesPanelExpanded">
           </app-scenario-card>
 
-          <mat-card>
-            <mat-card-title>Response</mat-card-title>
-            <mat-card-subtitle>Scenario Description</mat-card-subtitle>
-          </mat-card>
         </div>
         <button id="go-to-scenarios" color="primary" mat-raised-button (click)="goToScenarios()">Back to Scenarios</button>
       </div>
