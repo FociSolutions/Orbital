@@ -75,6 +75,6 @@ export class ScenarioListItemComponent implements OnInit {
    * This method sets the body text with the deletion prompt
    */
   get bodyText(): string {
-    return `Are you sure you want to delete '${this.scenario.metadata.title}'`;
+    return `Are you sure you want to delete '${this.scenario.metadata.title.bold()}' ?`;
   }
 }
