@@ -124,14 +124,5 @@ describe('ScenarioEditorComponent', () => {
         expect(component.saveButtonDisabledStateRequestMatchRules()).toBeTruthy();
       });
     });
-
-    describe('ScenarioEditorComponent.saveButtonDisabledStateRequestMatchRules', () => {
-      it('should not save if responseFormGroup is invalid', () => {
-        // lint is disabled because status is a key and not the "status" of the form (namespace conflict)
-        // tslint:disable-next-line: no-string-literal
-        component.responseFormGroup.controls['status']['statuscode'] = 'abc';
-        expect(component.saveButtonDisabledStateRequestMatchRules()).toBeTruthy();
-      });
-    });
   });
 });
