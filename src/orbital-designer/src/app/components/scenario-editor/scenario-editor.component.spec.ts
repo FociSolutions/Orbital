@@ -11,6 +11,7 @@ import { MatCardModule, MatButtonModule } from '@angular/material';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
+import { MatMenuModule } from '@angular/material/menu';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -26,7 +27,14 @@ describe('ScenarioEditorComponent', () => {
         GetEndpointScenariosPipe,
         OverviewComponent
       ],
-      imports: [LoggerTestingModule, MatCardModule, OrbitalCommonModule, RouterTestingModule, MatButtonModule],
+      imports: [
+        LoggerTestingModule,
+        MatCardModule,
+        OrbitalCommonModule,
+        RouterTestingModule,
+        MatButtonModule,
+        MatMenuModule
+      ],
       providers: [DesignerStore]
     }).compileComponents();
   }));
@@ -44,7 +52,9 @@ describe('ScenarioEditorComponent', () => {
   it('should go back to the scenario-view when the button is pressed', () => {
     spyOn(component, 'goToScenarios');
 
-    const button = fixture.debugElement.nativeElement.querySelector('button#go-to-scenarios');
+    const button = fixture.debugElement.nativeElement.querySelector(
+      'button#go-to-scenarios'
+    );
     button.click();
     expect(component.goToScenarios).toHaveBeenCalled();
   });

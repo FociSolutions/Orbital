@@ -7,7 +7,7 @@ import { DialogBoxComponent } from '../../orbital-common/dialog-box/dialog-box.c
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-
+import { DesignerStore } from '../../../store/designer-store';
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
@@ -77,7 +77,6 @@ describe('ScenarioListComponent', () => {
     fixture.detectChanges();
 
     for (let i = 0; i < 50; i++) {
-      fixture.detectChanges();
       const compiled = fixture.debugElement.childNodes[0].nativeNode;
       expect(compiled.textContent).toContain(
         expectedScenarios[i].metadata.title +

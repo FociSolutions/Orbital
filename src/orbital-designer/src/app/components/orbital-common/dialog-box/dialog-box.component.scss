@@ -1,4 +1,15 @@
-mat-dialog-actions {
+.dialog-content.p {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8em;
+}
+
+.dialog-title {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.dialog-actions {
   display: flex;
   justify-content: space-between;
 }
