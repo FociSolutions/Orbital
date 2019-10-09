@@ -15,10 +15,8 @@
             (panelOpened)="handleNameDescriptionPanelOpen()" (panelClosed)="handleNameDescriptionPanelClose()" [panelExpanded]="this.nameDescriptionPanelExpanded">
           </app-scenario-card>
 
-          <mat-card>
-              <mat-card-title>Request Match Rules</mat-card-title>
-              <mat-card-subtitle>Query Match Rules, Header Match Rules...</mat-card-subtitle>
-            </mat-card>
+          <app-scenario-card [title]="'Request Match Rules'" [description]="'Query Match Rules, Header Match Rules...'" [cardTemplate]="this.requestMatchRulesCard">
+          </app-scenario-card>
 
           <app-scenario-card [title]="'Response'" [description]="'Response Header, Response Body and Code'" [cardTemplate]="responseCardContent"
             (panelOpened)="handleRequestMatchRulesPanelOpen()" (panelClosed)="handleRequestMatchRulesPanelClose()" [panelExpanded]="this.requestMatchRulesPanelExpanded">
@@ -31,6 +29,10 @@
     </div>
   </div>
 </div>
+
+<ng-template #requestMatchRulesCard let-path="path">
+
+</ng-template>
 
 <ng-template #headerContent let-path="path">
   <div class="title">
