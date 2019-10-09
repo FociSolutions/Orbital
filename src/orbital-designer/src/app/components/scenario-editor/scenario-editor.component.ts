@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -13,6 +13,9 @@ export class ScenarioEditorComponent implements OnInit {
   description: FormControl;
   nameDescriptionPanelExpanded: boolean;
 
+  responseFormGroup: FormGroup;
+  requestMatchRulesPanelExpanded: boolean;
+
   constructor(private router: Router) {
     this.nameAndDescriptionFormGroup = new FormGroup({
       name: new FormControl(
@@ -23,6 +26,34 @@ export class ScenarioEditorComponent implements OnInit {
         '',
         Validators.compose([Validators.maxLength(50)])
       )
+    });
+
+    this.responseFormGroup = new FormGroup({
+      status: new FormGroup({
+        statuscode: new FormControl(
+          '',
+          Validators.compose([Validators.maxLength(3), Validators.required, Validators.pattern('^[0-9]*$')])
+        )
+      }),
+      headers: new FormGroup({
+        headerToAdd: new FormGroup({
+          key: new FormControl(),
+          value: new FormControl()
+        }),
+        headersAdded: new FormArray([
+          new FormGroup({
+            key: new FormControl(),
+            value: new FormControl()
+          }),
+          new FormGroup({
+            key: new FormControl(),
+            value: new FormControl()
+          })
+        ])
+      }),
+      body: new FormGroup({
+        bodyContent: new FormControl()
+      })
     });
   }
 
@@ -77,4 +108,44 @@ export class ScenarioEditorComponent implements OnInit {
   handleNameDescriptionPanelClose() {
     this.nameDescriptionPanelExpanded = false;
   }
+
+  /**
+   * Handles when the request match rules panel is open
+   */
+  handleRequestMatchRulesPanelOpen() {
+    this.requestMatchRulesPanelExpanded = true;
+  }
+
+  /**
+   * Handles when the request match panel is closed
+   */
+  handleRequestMatchRulesPanelClose() {
+    this.requestMatchRulesPanelExpanded = false;
+  }
+
+  /**
+   * Handles when the cancel button is clicked on the request match rules
+   */
+  handleCancelButtonClickRequestMatchRules() {
+    this.requestMatchRulesPanelExpanded = false;
+  }
+
+  /**
+   * Handles when the save button is clicked on the request match rules
+   */
+  saveButtonDisabledStateRequestMatchRules() {
+    if (!!this.responseFormGroup) {
+      return this.responseFormGroup.invalid;
+    }
+
+    return true;
+  }
+
+  /**
+   * Handles when the save button is clicked on the request match rules
+   */
+  handleSaveButtonClickRequestMatchRules() {
+    this.requestMatchRulesPanelExpanded = true;
+  }
+
 }
