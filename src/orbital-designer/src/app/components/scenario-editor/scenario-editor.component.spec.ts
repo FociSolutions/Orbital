@@ -71,21 +71,21 @@ describe('ScenarioEditorComponent', () => {
   });
 
   describe('ScenarioEditorComponent.handleCancelButtonClick', () => {
-    it("should set the name and description panel's state to closed if handleCancelButtonClick is called", () => {
+    it('should set the name and description panels state to closed if handleCancelButtonClick is called', () => {
       component.handleCancelButtonClick();
       expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
     });
   });
 
   describe('ScenarioEditorComponent.handleNameDescriptionPanelOpen', () => {
-    it("should set the name and description panel's state to open if handleNameDescriptionPanelOpen is called", () => {
+    it('should set the name and description panel state to open if handleNameDescriptionPanelOpen is called', () => {
       component.handleNameDescriptionPanelOpen();
       expect(component.nameDescriptionPanelExpanded).toBeTruthy();
     });
   });
 
   describe('ScenarioEditorComponent.nameDescriptionPanelExpanded property', () => {
-    it("should ensure that the name and description panel's state is closed when initialized for the first time", () => {
+    it('should ensure that the name and description panel state is closed when initialized for the first time', () => {
       expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
     });
   });
@@ -96,31 +96,31 @@ describe('ScenarioEditorComponent', () => {
       expect(component.saveButtonDisabledState()).toBeTruthy();
     });
 
-    it("should not save if nameAndDescriptionFormGroup's name is empty", () => {
+    it('should not save if nameAdDescriptionFormGroup name is empty', () => {
       component.nameAndDescriptionFormGroup.controls.name.setValue('');
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
       expect(component.saveButtonDisabledState()).toBeTruthy();
     });
 
-    it("should save if nameAndDescriptionFormGroup's description is empty", () => {
+    it('should save if nameAndDescriptionFormGroups description is empty', () => {
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
       component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
       expect(component.saveButtonDisabledState()).not.toBeTruthy();
     });
 
-    it("should save if nameAndDescriptionFormGroup's name is not empty", () => {
+    it('should save if nameAndDescriptionFormGroup name is not empty', () => {
       component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
       expect(component.saveButtonDisabledState()).not.toBeTruthy();
     });
 
-    it("should save if nameAndDescriptionFormGroup's name is only one character", () => {
+    it('should save if nameAndDescriptionFormGroup name is only one character', () => {
       component.nameAndDescriptionFormGroup.controls.name.setValue('z');
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
       expect(component.saveButtonDisabledState()).not.toBeTruthy();
     });
 
-    it("should not save if nameAndDescriptionFormGroup's name is more than 50 characters", () => {
+    it('should not save if nameAndDescriptionFormGroups name is more than 50 characters', () => {
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
       component.nameAndDescriptionFormGroup.controls.name.setValue(
         'z'.repeat(52)
@@ -128,7 +128,7 @@ describe('ScenarioEditorComponent', () => {
       expect(component.saveButtonDisabledState()).toBeTruthy();
     });
 
-    it("should not save if nameAndDescriptionFormGroup's description is more than 50 characters", () => {
+    it('should not save if nameAndDescriptionFormGroups description is more than 50 characters', () => {
       component.nameAndDescriptionFormGroup.controls.name.setValue('');
       component.nameAndDescriptionFormGroup.controls.description.setValue(
         'z'.repeat(52)
@@ -136,7 +136,7 @@ describe('ScenarioEditorComponent', () => {
       expect(component.saveButtonDisabledState()).toBeTruthy();
     });
 
-    it("should not save if nameAndDescriptionFormGroup's name and description is more than 50 characters", () => {
+    it('should not save if nameAndDescriptionFormGroups name and description is more than 50 characters', () => {
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
       component.nameAndDescriptionFormGroup.controls.name.setValue('');
       expect(component.saveButtonDisabledState()).toBeTruthy();
