@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
+import { NGXLogger, LoggerConfig } from 'ngx-logger';
 import { Scenario } from '../../../models/mock-definition/scenario/scenario.model';
 import * as HttpStatus from 'http-status-codes';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-scenario-list-item',
@@ -11,8 +13,13 @@ import * as HttpStatus from 'http-status-codes';
 export class ScenarioListItemComponent implements OnInit {
   @Input() scenario: Scenario;
   triggerOpen: boolean;
+  mockDefinition: MockDefinition;
 
-  constructor(private logger: NGXLogger) {}
+  constructor(private store: DesignerStore, private logger: NGXLogger) {
+    this.store.state$.subscribe(state => {
+      this.mockDefinition = state.mockDefinition;
+    });
+  }
 
   ngOnInit() {}
 
@@ -20,7 +27,12 @@ export class ScenarioListItemComponent implements OnInit {
    * Gets the scenario response's status string
    */
   getScenarioResponseStatusString() {
-    return HttpStatus.getStatusText(this.scenario.response.status);
+    try {
+      return HttpStatus.getStatusText(this.scenario.response.status);
+    } catch (Error) {
+      this.logger.warn('Returning unknown for scenario status as the status is invalid: ' + this.scenario.response.status);
+      return 'Unknown';
+    }
   }
 
   /**
@@ -37,10 +49,23 @@ export class ScenarioListItemComponent implements OnInit {
    */
   onDialogAction(confirmed: boolean) {
     if (confirmed) {
-      this.scenario = null;
+      this.deleteScenario();
+      this.logger.debug(
+        `Scenario ${this.scenario.metadata.title} deleted sucesfully`
+      );
     }
 
     this.triggerOpen = false;
+    this.logger.debug(
+      `Scenario ${this.scenario.metadata.title} deletion aborted`
+    );
+  }
+
+  deleteScenario() {
+    const scenarios = this.store.state.mockDefinition.scenarios;
+    this.store.updateScenarios(
+      scenarios.filter(s => s.id !== this.scenario.id)
+    );
   }
 
   /**

@@ -9,14 +9,22 @@
           <app-overview [header]="headerContent"></app-overview>
         </div>
         <div>
-          <app-search-bar> </app-search-bar>
+          <app-search-bar
+          [list]="scenarioList| getEndpointScenarios: selectedEndpoint"
+          (filteredList)="setFilteredList($event)"
+          [itemToStringFn]="scenarioToString"
+          > </app-search-bar>
           <app-scenario-list
             *ngIf="!!mockDefinition"
             [scenarios]="
-              mockDefinition.scenarios | getEndpointScenarios: selectedEndpoint
+            filteredList
             "
           ></app-scenario-list>
+          <button (click)="addScenario()" id="add" mat-fab color="primary">+</button>
         </div>
+        <button id="back-to-endpoints" mat-raised-button color="primary" (click)="goToEndpoints()">
+          Back to Endpoints
+        </button>
       </div>
     </div>
   </div>
@@ -28,4 +36,5 @@
       {{ !!selectedEndpoint ? selectedEndpoint.path : null }}
     </h3>
   </div>
+  <p id="description">{{ getScenarioDescription() }}</p>
 </ng-template>

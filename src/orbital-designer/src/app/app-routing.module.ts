@@ -7,6 +7,7 @@ import { ImportFromFileViewComponent } from './components/import-from-file-view/
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
+import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
 
 const routes: Routes = [
   { path: '', component: HomeViewComponent },
@@ -21,6 +22,11 @@ const routes: Routes = [
   {
     path: 'scenario-view',
     component: ScenarioViewComponent,
+    canActivate: [OverviewRedirectService]
+  },
+  {
+    path: 'scenario-editor',
+    component: ScenarioEditorComponent,
     canActivate: [OverviewRedirectService]
   },
   { path: '**', component: HomeViewComponent }
