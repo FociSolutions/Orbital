@@ -60,15 +60,11 @@
   }
 }
 
-.confirm-scenario-delete-dialog {
-  position: fixed;
-  width: 35vw;
-  top: 35%;
-  left: 35%;
-}
-
 .overlay {
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
   top: 0;
