@@ -178,12 +178,6 @@ export class DesignerStore extends Store<State> {
     };
   }
 
-  /**
-   * createScenario(scenario?: Scenario){}
-   * updateScenario(scenario: Scenario){}
-   * deleteScenario(scenarioId: number){}
-   */
-
   deleteScenario(scenarioId: string) {
     this.mockDefinition = {
       ...this.state.mockDefinition,
