@@ -30,7 +30,10 @@ export class ScenarioListItemComponent implements OnInit {
     try {
       return HttpStatus.getStatusText(this.scenario.response.status);
     } catch (Error) {
-      this.logger.warn('Returning unknown for scenario status as the status is invalid: ' + this.scenario.response.status);
+      this.logger.warn(
+        'Returning unknown for scenario status as the status is invalid: ' +
+          this.scenario.response.status
+      );
       return 'Unknown';
     }
   }
@@ -51,7 +54,7 @@ export class ScenarioListItemComponent implements OnInit {
     if (confirmed) {
       this.deleteScenario();
       this.logger.debug(
-        `Scenario ${this.scenario.metadata.title} deleted sucesfully`
+        `Scenario ${this.scenario.metadata.title} deleted successfully`
       );
     }
 

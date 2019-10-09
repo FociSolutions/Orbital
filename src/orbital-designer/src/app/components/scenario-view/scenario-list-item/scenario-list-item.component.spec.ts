@@ -47,4 +47,12 @@ describe('ScenarioListItemComponent', () => {
     component.scenario.response.status = 202;
     expect(component.getScenarioResponseStatusString()).toBe('Accepted');
   });
+
+  it('should delete a scenario from the store', () => {
+    component.scenario = newScenario(VerbType.GET, '/test');
+    const store = TestBed.get(DesignerStore);
+    store.updateScenarios([component.scenario]);
+    component.deleteScenario();
+    expect(store.state.mockDefinition.scenarios).toEqual([]);
+  });
 });
