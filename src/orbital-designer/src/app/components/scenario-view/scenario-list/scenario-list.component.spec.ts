@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { DesignerStore } from '../../../store/designer-store';
+
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
@@ -28,7 +29,8 @@ describe('ScenarioListComponent', () => {
         MatMenuModule,
         MatIconModule,
         LoggerTestingModule
-      ]
+      ],
+      providers: [DesignerStore]
     }).compileComponents();
   }));
 
@@ -61,31 +63,5 @@ describe('ScenarioListComponent', () => {
     expect(compiled.textContent).toContain('Unknown');
     // component should not crash
     expect(component).toBeTruthy();
-  });
-
-  it('should display all required information on a list of 50 scenarios', () => {
-    const expectedScenarios = [];
-    for (let i = 0; i < 50; i++) {
-      const testScenario = component.scenarios[0];
-      testScenario.response.status = faker.random.number();
-      testScenario.metadata.title = faker.lorem.words();
-      testScenario.metadata.description = faker.random.words();
-      component.scenarios.push(JSON.parse(JSON.stringify(testScenario)));
-      expectedScenarios.push(JSON.parse(JSON.stringify(testScenario)));
-    }
-
-    fixture.detectChanges();
-
-    for (let i = 0; i < 50; i++) {
-      const compiled = fixture.debugElement.childNodes[0].nativeNode;
-      expect(compiled.textContent).toContain(
-        expectedScenarios[i].metadata.title +
-          ' ' +
-          expectedScenarios[i].metadata.description
-      );
-      expect(compiled.textContent).toContain(
-        expectedScenarios[i].response.status
-      );
-    }
   });
 });
