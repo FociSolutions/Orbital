@@ -75,3 +75,18 @@ app-scenario-card {
   height: 20px;
   margin-top: 25px;
 }
+
+div.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+div.flex-space-between-large {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.status-code-text {
+  width: 100px;
+}

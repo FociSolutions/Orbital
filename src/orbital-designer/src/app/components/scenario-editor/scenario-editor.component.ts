@@ -30,7 +30,10 @@ export class ScenarioEditorComponent implements OnInit {
 
     this.responseFormGroup = new FormGroup({
       status: new FormGroup({
-        statuscode: new FormControl()
+        statuscode: new FormControl(
+          '',
+          Validators.compose([Validators.maxLength(3), Validators.required, Validators.pattern('^[0-9]*$')])
+        )
       }),
       headers: new FormGroup({
         headerToAdd: new FormGroup({

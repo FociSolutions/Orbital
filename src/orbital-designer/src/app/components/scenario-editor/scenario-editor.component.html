@@ -63,9 +63,12 @@
   <form [formGroup]="responseFormGroup">
       <mat-divider></mat-divider>
       <form [formGroup]="responseFormGroup.controls['status']">
-        <mat-form-field>
-          <input matInput placeholder="Status Code" [formControl]="responseFormGroup.controls['status'].controls.statuscode" maxlength="3">
-        </mat-form-field>
+        <div class="flex-space-between">
+          <mat-form-field class="status-code-text">
+            <input matInput placeholder="Status Code" [formControl]="responseFormGroup.controls['status'].controls.statuscode" maxlength="3">
+          </mat-form-field>
+          <p>Status Code Text</p>
+        </div>
       </form>
       <br />
 
@@ -73,7 +76,7 @@
       <form [formGroup]="responseFormGroup.controls['headers']">
         <mat-card id="headers">
             <form [formGroup]="responseFormGroup.controls['headers'].controls['headerToAdd']">
-              <div style="display: flex;justify-content: space-between;">
+              <div  class="flex-space-between">
                 <mat-form-field class="header-key">
                   <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headerToAdd.controls.key">
                 </mat-form-field>
@@ -90,7 +93,7 @@
         <form [formGroup]="responseFormGroup.controls['headers'].controls['headersAdded']">
         <mat-list id="added-headers">
           <mat-list-item class="key-value-item">
-              <div style="display: flex;justify-content: space-between;width:100%">
+              <div class="flex-space-between-large">
                 <mat-form-field class="header-key">
                   <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls.key">
                 </mat-form-field>
@@ -102,7 +105,7 @@
           </mat-list-item>
 
           <mat-list-item class="key-value-item">
-              <div style="display: flex;justify-content: space-between;width:100%">
+              <div class="flex-space-between-large">
                 <mat-form-field class="header-key">
                   <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls.key">
                 </mat-form-field>
