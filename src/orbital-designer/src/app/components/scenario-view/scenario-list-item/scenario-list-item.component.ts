@@ -3,8 +3,9 @@ import { NGXLogger, LoggerConfig } from 'ngx-logger';
 import { Scenario } from '../../../models/mock-definition/scenario/scenario.model';
 import * as HttpStatus from 'http-status-codes';
 import { DesignerStore } from 'src/app/store/designer-store';
-
+import * as faker from 'faker';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 
 @Component({
   selector: 'app-scenario-list-item',
@@ -48,6 +49,32 @@ export class ScenarioListItemComponent implements OnInit {
    */
   confirmDeleteDialog() {
     this.triggerOpen = true;
+  }
+
+  /**
+   * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
+   * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
+   */
+  cloneScenario() {
+    // copy scenario using deep copy
+    const clonedScenario = JSON.parse(JSON.stringify(this.scenario));
+    clonedScenario.id = faker.random.uuid();
+    clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
+
+    const originalScenarioIndex = this.mockDefinition.scenarios.indexOf(this.scenario);
+
+    // ensure that there are no naming conflicts; if there are, repeat until a name is found
+    if (!this.mockDefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
+      let copyCounter = 2;
+      while (this.mockDefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title + ' ' + copyCounter)) {
+        copyCounter++;
+      }
+
+      clonedScenario.metadata.title = clonedScenario.metadata.title + ' ' + copyCounter;
+    }
+
+    this.mockDefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
+    this.store.updateScenarios([...this.mockDefinition.scenarios]);
   }
 
   /**
