@@ -132,14 +132,14 @@ describe('DesignerStore', () => {
     it('should update the list of MockDefinitions', () => {
       const mockDef = validMockDefinition;
       const expectedMap = new Map([[mockDef.metadata.title, mockDef]]);
-      expect(store.state.mockDefinitions).toBeNull();
+      expect(store.state.mockDefinitions.size).toBe(0);
       store.mockDefinitions = [mockDef];
       expect(store.state.mockDefinitions).toEqual(expectedMap);
     });
 
     it('should set the mockDefinition property of the state to be the first mock definition in the list', () => {
       const mockDef = validMockDefinition;
-      expect(store.state.mockDefinitions).toBeNull();
+      expect(store.state.mockDefinitions.size).toBe(0);
       store.mockDefinitions = [mockDef];
       expect(store.state.mockDefinition).toEqual(mockDef);
     });
@@ -177,6 +177,7 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.updateScenarios()', () => {
     it('should update scenarios', () => {
+      store.mockDefinition = validMockDefinition;
       const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
         scenarios.push(newScenario(VerbType.GET, '/pets'));

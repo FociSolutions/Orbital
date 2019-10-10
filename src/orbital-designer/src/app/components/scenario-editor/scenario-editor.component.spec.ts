@@ -122,21 +122,19 @@ describe('ScenarioEditorComponent', () => {
       component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
       expect(component.saveButtonDisabledState()).not.toBeTruthy();
-
-      describe('ScenarioEditorComponent.nameDescriptionPanelExpanded property', () => {
-        it('should ensure that the name and description panel state is closed when initialized for the first time', () => {
-          expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
-        });
-      });
-
-      describe('ScenarioEditorComponent.saveButtonDisabledState', () => {
-        it('should not save if nameAndDescriptionFormGroup is null', () => {
-          component.nameAndDescriptionFormGroup = null;
-          expect(component.saveButtonDisabledState()).toBeTruthy();
-        });
+    });
+    describe('ScenarioEditorComponent.nameDescriptionPanelExpanded property', () => {
+      it('should ensure that the name and description panel state is closed when initialized for the first time', () => {
+        expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
       });
     });
 
+    describe('ScenarioEditorComponent.saveButtonDisabledState', () => {
+      it('should not save if nameAndDescriptionFormGroup is null', () => {
+        component.nameAndDescriptionFormGroup = null;
+        expect(component.saveButtonDisabledState()).toBeTruthy();
+      });
+    });
     it('should save if nameAndDescriptionFormGroup name is only one character', () => {
       component.nameAndDescriptionFormGroup.controls.name.setValue('z');
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
@@ -163,36 +161,37 @@ describe('ScenarioEditorComponent', () => {
       component.nameAndDescriptionFormGroup.controls.description.setValue('');
       component.nameAndDescriptionFormGroup.controls.name.setValue('');
       expect(component.saveButtonDisabledState()).toBeTruthy();
-      describe('ScenarioEditorComponent request match rules card', () => {
-        describe('ScenarioEditorComponent.handleRequestMatchRulesPanelOpen', () => {
-          it('should set the panel state to closed if handleCancelButtonClick is called', () => {
-            component.handleCancelButtonClickRequestMatchRules();
-            expect(component.requestMatchRulesPanelExpanded).not.toBeTruthy();
-          });
-        });
+    });
 
-        describe('ScenarioEditorComponent.handleRequestMatchRulesPanelClose', () => {
-          it('should set the panel state to open if handleRequestMatchRulesPanelClose is called', () => {
-            component.handleRequestMatchRulesPanelClose();
-            expect(component.requestMatchRulesPanelExpanded).not.toBeTruthy();
-          });
+    describe('ScenarioEditorComponent request match rules card', () => {
+      describe('ScenarioEditorComponent.handleRequestMatchRulesPanelOpen', () => {
+        it('should set the panel state to closed if handleCancelButtonClick is called', () => {
+          component.handleCancelButtonClickRequestMatchRules();
+          expect(component.requestMatchRulesPanelExpanded).not.toBeTruthy();
         });
+      });
 
-        describe('ScenarioEditorComponent.saveButtonDisabledStateRequestMatchRules', () => {
-          it('should ensure that the panel state cannot be saved for the first time when initialized', () => {
-            expect(
-              component.saveButtonDisabledStateRequestMatchRules()
-            ).toBeTruthy();
-          });
+      describe('ScenarioEditorComponent.handleRequestMatchRulesPanelClose', () => {
+        it('should set the panel state to open if handleRequestMatchRulesPanelClose is called', () => {
+          component.handleRequestMatchRulesPanelClose();
+          expect(component.requestMatchRulesPanelExpanded).not.toBeTruthy();
         });
+      });
 
-        describe('ScenarioEditorComponent.saveButtonDisabledStateRequestMatchRules', () => {
-          it('should not save if responseFormGroup is null', () => {
-            component.responseFormGroup = null;
-            expect(
-              component.saveButtonDisabledStateRequestMatchRules()
-            ).toBeTruthy();
-          });
+      describe('ScenarioEditorComponent.saveButtonDisabledStateRequestMatchRules', () => {
+        it('should ensure that the panel state cannot be saved for the first time when initialized', () => {
+          expect(
+            component.saveButtonDisabledStateRequestMatchRules()
+          ).toBeTruthy();
+        });
+      });
+
+      describe('ScenarioEditorComponent.saveButtonDisabledStateRequestMatchRules', () => {
+        it('should not save if responseFormGroup is null', () => {
+          component.responseFormGroup = null;
+          expect(
+            component.saveButtonDisabledStateRequestMatchRules()
+          ).toBeTruthy();
         });
       });
     });

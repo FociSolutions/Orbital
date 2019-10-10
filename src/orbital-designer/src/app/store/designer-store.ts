@@ -23,7 +23,7 @@ export class DesignerStore extends Store<State> {
       selectedEndpoint: null,
       selectedScenario: null,
       mockDefinition: null,
-      mockDefinitions: null,
+      mockDefinitions: new Map<string, MockDefinition>(),
       endpoints: []
     });
   }

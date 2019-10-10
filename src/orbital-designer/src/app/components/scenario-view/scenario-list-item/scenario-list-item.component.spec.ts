@@ -8,10 +8,12 @@ import { DialogBoxComponent } from '../../orbital-common/dialog-box/dialog-box.c
 import { DesignerStore } from './../../../store/designer-store';
 import { newScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
+import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
 
 describe('ScenarioListItemComponent', () => {
   let component: ScenarioListItemComponent;
   let fixture: ComponentFixture<ScenarioListItemComponent>;
+  let store: DesignerStore;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,6 +31,8 @@ describe('ScenarioListItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioListItemComponent);
     component = fixture.componentInstance;
+    store = TestBed.get(DesignerStore);
+    store.mockDefinition = validMockDefinition;
     fixture.detectChanges();
   });
 
@@ -48,11 +52,12 @@ describe('ScenarioListItemComponent', () => {
     expect(component.getScenarioResponseStatusString()).toBe('Accepted');
   });
 
-  it('should delete a scenario from the store', () => {
-    component.scenario = newScenario(VerbType.GET, '/test');
-    const store = TestBed.get(DesignerStore);
-    store.updateScenarios([component.scenario]);
-    component.deleteScenario();
-    expect(store.state.mockDefinition.scenarios).toEqual([]);
+  describe('ScenarioListItemComponent.deleteScenario', () => {
+    it('should delete a scenario from the store', () => {
+      component.scenario = newScenario(VerbType.GET, '/test');
+      store.updateScenarios([component.scenario]);
+      component.deleteScenario();
+      expect(store.state.mockDefinition.scenarios).toEqual([]);
+    });
   });
 });
