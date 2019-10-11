@@ -60,5 +60,6 @@ export class SearchBarComponent implements OnInit, OnChanges {
       this.onSearchInput('');
     }
   }
+
   ngOnInit() {}
 }

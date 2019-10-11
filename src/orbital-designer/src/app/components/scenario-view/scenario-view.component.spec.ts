@@ -17,6 +17,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material';
 import { Router } from '@angular/router';
 import { state } from '@angular/animations';
+import { componentFactoryName } from '@angular/compiler';
+import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -193,6 +195,12 @@ describe('ScenarioViewComponent', () => {
         const expected = null;
         component.setFilteredList(expected);
         expect(component.filteredList).toEqual([]);
+      });
+    });
+    describe('ScenarioViewComponent.showNotFound', () => {
+      it('should return true if have no filtered list', () => {
+        const expected: Scenario[] = [];
+        expect(component.showNotFound(expected)).toBeTruthy();
       });
     });
   });

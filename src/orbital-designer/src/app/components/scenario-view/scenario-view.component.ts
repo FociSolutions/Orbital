@@ -74,5 +74,15 @@ export class ScenarioViewComponent implements OnInit {
       this.logger.debug('Scenario could not be set');
     }
   }
+
+  showNotFound(list: Scenario[]) {
+    let i: boolean;
+    list = this.filteredList;
+    if (list.length === 0) {
+      i = true;
+      return i;
+    }
+  }
+
   ngOnInit() {}
 }
