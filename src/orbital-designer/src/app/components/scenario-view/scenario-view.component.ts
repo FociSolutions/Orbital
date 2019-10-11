@@ -86,6 +86,5 @@ export class ScenarioViewComponent implements OnInit {
       return i;
     }
   }
-
   ngOnInit() {}
 }

@@ -17,7 +17,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material';
 import { Router } from '@angular/router';
 import { state } from '@angular/animations';
-import { componentFactoryName } from '@angular/compiler';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('ScenarioViewComponent', () => {
