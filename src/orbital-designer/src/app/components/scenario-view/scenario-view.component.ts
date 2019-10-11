@@ -68,7 +68,6 @@ export class ScenarioViewComponent implements OnInit {
    * @param scenarios The list of scenarios
    */
   setFilteredList(newScenarios: Scenario[]) {
-    this.logger.debug(newScenarios);
     if (!!newScenarios) {
       this.filteredList = newScenarios;
     } else {

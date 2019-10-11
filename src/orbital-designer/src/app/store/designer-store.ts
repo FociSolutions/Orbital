@@ -119,7 +119,6 @@ export class DesignerStore extends Store<State> {
       mockDefinitions,
       mockDefinition: mockDefinitionCopy
     });
-    this.logger.debug(this.state);
     this.setEndpoints(mockDefinition.openApi);
   }
 
