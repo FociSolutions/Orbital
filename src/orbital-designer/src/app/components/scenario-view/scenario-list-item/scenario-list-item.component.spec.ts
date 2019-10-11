@@ -131,5 +131,40 @@ describe('ScenarioListItemComponent', () => {
       expect(component.mockDefinition.scenarios[0].id).not.toEqual(component.mockDefinition.scenarios[1].id);
       expect(component.mockDefinition.scenarios[0].metadata.title).not.toEqual(component.mockDefinition.scenarios[1].metadata.title);
     });
+
+    it('should clone a scenario and ensure that there exists another scenario with the same contents, except for title and id', () => {
+      const scenarios = [];
+      for (let i = 0; i < 3; i++) {
+        const scenario = newScenario(VerbType.GET, '/' + faker.random.words());
+        scenario.metadata.title = faker.random.words();
+        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      }
+
+      store.state.mockDefinition.scenarios = scenarios;
+
+      component.scenario = JSON.parse(JSON.stringify(scenarios[0]));
+      component.cloneScenario();
+
+      const componentScenarioClonee = component.mockDefinition.scenarios[0];
+
+      // ensure that there are two results after the cloning operation
+      const expectedResults = (store.state.mockDefinition.scenarios.filter(aScenario =>
+        aScenario.id !== componentScenarioClonee.id &&
+        aScenario.metadata.title !== componentScenarioClonee.metadata.title &&
+        aScenario.path === componentScenarioClonee.path &&
+        JSON.stringify(aScenario.requestMatchRules.bodyRules) ===
+          JSON.stringify(componentScenarioClonee.requestMatchRules.bodyRules) &&
+          JSON.stringify(aScenario.requestMatchRules.headerRules) ===
+        JSON.stringify(componentScenarioClonee.requestMatchRules.headerRules) &&
+          JSON.stringify(aScenario.requestMatchRules.queryRules) ===
+        JSON.stringify(componentScenarioClonee.requestMatchRules.queryRules) &&
+        aScenario.response.body === componentScenarioClonee.response.body &&
+        JSON.stringify(aScenario.response.headers) === JSON.stringify(componentScenarioClonee.response.headers) &&
+        aScenario.response.status === componentScenarioClonee.response.status &&
+        JSON.stringify(aScenario.verb) === JSON.stringify(componentScenarioClonee.verb) &&
+        aScenario.metadata.description === componentScenarioClonee.metadata.description)).length;
+
+      expect(expectedResults).toEqual(1);
+    });
   });
 });
