@@ -7,6 +7,9 @@
   box-shadow: 0px 1px 12px 3px rgba(153, 148, 153, 1);
 }
 
+.GET {
+  background-color: rgba(0, 163, 255, 0.25);
+}
 .scenario {
   width: 100% !important;
 }
@@ -27,7 +30,7 @@ app-scenario-list {
 
 div.scenarios {
   width: 100%;
-  overflow-y:hidden;
+  overflow-y: hidden;
 }
 
 p#description {
@@ -59,6 +62,6 @@ button#back-to-endpoints {
   margin-top: 1em;
 }
 
-div.title {
-  display: flex; justify-content: center;padding-top: 30px;
+.title mat-chip-list {
+  margin-right: 1em;
 }

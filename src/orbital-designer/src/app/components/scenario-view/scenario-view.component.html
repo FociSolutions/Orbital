@@ -18,13 +18,18 @@
 
           <app-scenario-list
             *ngIf="!!mockDefinition"
-            [scenarios]="
-            filteredList
-            "
+            [scenarios]="filteredList"
           ></app-scenario-list>
-          <button (click)="addScenario()" id="add" mat-fab color="primary">+</button>
+          <button (click)="addScenario()" id="add" mat-fab color="primary">
+            +
+          </button>
         </div>
-        <button id="back-to-endpoints" mat-raised-button color="primary" (click)="goToEndpoints()">
+        <button
+          id="back-to-endpoints"
+          mat-raised-button
+          color="primary"
+          (click)="goToEndpoints()"
+        >
           Back to Endpoints
         </button>
       </div>
@@ -33,12 +38,14 @@
 </div>
 
 <ng-template #headerContent let-path="path">
-  <div class="title">
-      <div id="mat-chip-endpoint">
-          <mat-chip-list><mat-chip>{{ this.getEndpointVerb() }}</mat-chip>
-      </mat-chip-list></div>
+  <div class="title row center">
+    <mat-chip-list
+      ><mat-chip [ngClass]="this.getEndpointVerb()">{{
+        this.getEndpointVerb()
+      }}</mat-chip>
+    </mat-chip-list>
     <h3>
-        {{ !!selectedEndpoint ? selectedEndpoint.path : null }}
+      {{ !!selectedEndpoint ? selectedEndpoint.path : null }}
     </h3>
   </div>
   <p id="description">{{ getScenarioDescription() }}</p>
