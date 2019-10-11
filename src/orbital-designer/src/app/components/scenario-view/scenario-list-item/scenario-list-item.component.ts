@@ -79,7 +79,7 @@ export class ScenarioListItemComponent implements OnInit {
 
     this.mockDefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
     this.store.updateScenarios([...this.mockDefinition.scenarios]);
-    this.logger.warn('Scenario successfully cloned: ' + clonedScenario);
+    this.logger.warn('Scenario successfully cloned: ', clonedScenario)
   }
 
   /**
