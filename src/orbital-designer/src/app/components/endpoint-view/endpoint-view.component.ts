@@ -34,5 +34,13 @@ export class EndpointViewComponent implements OnInit {
     this.filteredList = endpoints;
   }
 
+  /**
+   * The function checks if there's matched scenario(s) found when searching.
+   * Search is done by the search bar component.
+   */
+  showNotFound() {
+    return this.filteredList.length === 0;
+  }
+
   ngOnInit() {}
 }
