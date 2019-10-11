@@ -3,7 +3,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Scenario } from '../../../models/mock-definition/scenario/scenario.model';
 import * as HttpStatus from 'http-status-codes';
 import { DesignerStore } from 'src/app/store/designer-store';
-import * as faker from 'faker';
+import * as uuid from 'uuid';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
@@ -62,7 +62,7 @@ export class ScenarioListItemComponent implements OnInit {
 
     // copy scenario using deep copy
     const clonedScenario = JSON.parse(JSON.stringify(this.scenario));
-    clonedScenario.id = faker.random.uuid();
+    clonedScenario.id = uuid.v4();
     clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
 
     const originalScenarioIndex = this.mockDefinition.scenarios.indexOf(this.scenario);
