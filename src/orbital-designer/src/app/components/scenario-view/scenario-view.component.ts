@@ -74,7 +74,10 @@ export class ScenarioViewComponent implements OnInit {
       this.logger.debug('Scenario could not be set');
     }
   }
-
+  /**
+   * The function checks if there's matched scenario(s) found when searching.
+   * Search is done by the search bar component.
+   */
   showNotFound() {
     return this.filteredList.length === 0;
   }
