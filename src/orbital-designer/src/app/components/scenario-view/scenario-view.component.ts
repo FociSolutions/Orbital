@@ -81,5 +81,30 @@ export class ScenarioViewComponent implements OnInit {
   showNotFound() {
     return this.filteredList.length === 0;
   }
+
+  /**
+   * Gets the verb for this endpoint to show in the chip
+   */
+  getEndpointVerb() {
+    return !!this.selectedEndpoint ? this.selectedEndpoint.verb : null;
+  }
+
+  /**
+   * Gets the color that the chip should be for the appropriate http verb of this endpoint.
+   * Currently, this just returns one color but can be extended to return multiple colors.
+   */
+  getEndpointVerbChipColor() {
+    switch (this.getEndpointVerb()) {
+      case 'POST':
+        return 'primary';
+      case 'GET':
+        return 'primary';
+      case 'DELETE':
+        return 'primary';
+      case 'PUT':
+        return 'primary';
+    }
+  }
+
   ngOnInit() {}
 }

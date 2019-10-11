@@ -34,8 +34,11 @@
 
 <ng-template #headerContent let-path="path">
   <div class="title">
+      <div id="mat-chip-endpoint">
+          <mat-chip-list><mat-chip>{{ this.getEndpointVerb() }}</mat-chip>
+      </mat-chip-list></div>
     <h3>
-      {{ !!selectedEndpoint ? selectedEndpoint.path : null }}
+        {{ !!selectedEndpoint ? selectedEndpoint.path : null }}
     </h3>
   </div>
   <p id="description">{{ getScenarioDescription() }}</p>

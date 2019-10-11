@@ -33,7 +33,7 @@ import { ScenarioViewComponent } from './components/scenario-view/scenario-view.
 import { ScenarioListComponent } from './components/scenario-view/scenario-list/scenario-list.component';
 import { ScenarioListItemComponent } from './components/scenario-view/scenario-list-item/scenario-list-item.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
-import { MatExpansionModule } from '@angular/material';
+import { MatExpansionModule, MatChipsModule } from '@angular/material';
 import { ScenarioCardComponent } from './components/scenario-card/scenario-card.component';
 
 @NgModule({
@@ -75,7 +75,8 @@ import { ScenarioCardComponent } from './components/scenario-card/scenario-card.
     MatGridListModule,
     ReactiveFormsModule,
     MatMenuModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatChipsModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]

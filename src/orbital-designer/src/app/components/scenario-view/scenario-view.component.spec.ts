@@ -18,6 +18,8 @@ import { MatButtonModule } from '@angular/material';
 import { Router } from '@angular/router';
 import { state } from '@angular/animations';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { MatChipsModule } from '@angular/material/chips';
+import { FormsModule } from '@angular/forms';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -39,7 +41,9 @@ describe('ScenarioViewComponent', () => {
         OrbitalCommonModule,
         RouterTestingModule,
         MatMenuModule,
-        MatButtonModule
+        MatButtonModule,
+        FormsModule,
+        MatChipsModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
