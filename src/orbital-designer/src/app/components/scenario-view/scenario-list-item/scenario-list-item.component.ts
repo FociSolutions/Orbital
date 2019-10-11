@@ -56,6 +56,11 @@ export class ScenarioListItemComponent implements OnInit {
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
   cloneScenario() {
+    if (!(!!this.scenario && !!this.scenario.id && !!this.scenario.metadata && !!this.scenario.metadata.title)) {
+      this.logger.warn('Scenario not cloned because it contains undefined attributes');
+      return;
+    }
+
     // copy scenario using deep copy
     const clonedScenario = JSON.parse(JSON.stringify(this.scenario));
     clonedScenario.id = faker.random.uuid();
@@ -75,6 +80,7 @@ export class ScenarioListItemComponent implements OnInit {
 
     this.mockDefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
     this.store.updateScenarios([...this.mockDefinition.scenarios]);
+    this.logger.warn('Scenario successfully cloned: ' + clonedScenario);
   }
 
   /**

@@ -9,6 +9,7 @@ import { DesignerStore } from './../../../store/designer-store';
 import { newScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
 import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
+import * as faker from 'faker';
 
 describe('ScenarioListItemComponent', () => {
   let component: ScenarioListItemComponent;
@@ -58,6 +59,84 @@ describe('ScenarioListItemComponent', () => {
       store.updateScenarios([component.scenario]);
       component.deleteScenario();
       expect(store.state.mockDefinition.scenarios).toEqual([]);
+    });
+  });
+
+  describe('ScenarioListItemComponent.cloneScenario', () => {
+    it('should clone a scenario from the store such that no name conflicts will be encountered', () => {
+      const scenarios = [];
+      for (let i = 0; i < 10; i++) {
+        const scenario = newScenario(VerbType.GET, '/test');
+        scenario.metadata.title = faker.random.words();
+        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      }
+
+      store.state.mockDefinition.scenarios = scenarios;
+
+      component.scenario = scenarios[0];
+      component.cloneScenario();
+
+      const expectedScenario = JSON.parse(JSON.stringify(scenarios[0]));
+      expectedScenario.metadata.title += '-copy';
+      store.state.mockDefinition.scenarios = [...store.state.mockDefinition.scenarios, expectedScenario];
+
+      expect(component.mockDefinition.scenarios.find(x => x.metadata.title === expectedScenario.metadata.title)).toBeTruthy();
+    });
+
+    it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', () => {
+      const scenarios = [];
+      for (let i = 0; i < 10; i++) {
+        const scenario = newScenario(VerbType.GET, '/test');
+        scenario.metadata.title = faker.random.words();
+        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      }
+
+      store.state.mockDefinition.scenarios = scenarios;
+
+      component.scenario = scenarios[0];
+      component.cloneScenario();
+      component.cloneScenario();
+      component.cloneScenario();
+
+      const expectedScenario = JSON.parse(JSON.stringify(scenarios[0]));
+      expectedScenario.metadata.title += '-copy 3';
+      store.state.mockDefinition.scenarios = [...store.state.mockDefinition.scenarios, expectedScenario];
+
+      expect(component.mockDefinition.scenarios.find(x => x.metadata.title === expectedScenario.metadata.title)).toBeTruthy();
+    });
+
+    it('should not clone a scenario from the store if the cloned scenario is invalid', () => {
+      const scenarios = [];
+      for (let i = 0; i < 10; i++) {
+        const scenario = newScenario(VerbType.GET, '/test');
+        scenario.metadata.title = faker.random.words();
+        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      }
+
+      store.state.mockDefinition.scenarios = scenarios;
+
+      const scenarioLengthComponentExpected = component.mockDefinition.scenarios.length;
+      component.scenario = null;
+      component.cloneScenario();
+
+      const scenarioLengthComponentActual = component.mockDefinition.scenarios.length;
+      expect(scenarioLengthComponentActual).toEqual(scenarioLengthComponentExpected);
+    });
+
+    it('should clone a scenario and ensure that the title and id are different', () => {
+      const scenarios = [];
+      for (let i = 0; i < 10; i++) {
+        const scenario = newScenario(VerbType.GET, '/test');
+        scenario.metadata.title = faker.random.words();
+        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      }
+
+      store.state.mockDefinition.scenarios = scenarios;
+      component.scenario = scenarios[0];
+      component.cloneScenario();
+
+      expect(component.mockDefinition.scenarios[0].id).not.toEqual(component.mockDefinition.scenarios[1].id);
+      expect(component.mockDefinition.scenarios[0].metadata.title).not.toEqual(component.mockDefinition.scenarios[1].metadata.title);
     });
   });
 });
