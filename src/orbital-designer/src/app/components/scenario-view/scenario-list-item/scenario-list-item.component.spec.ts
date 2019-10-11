@@ -73,14 +73,10 @@ describe('ScenarioListItemComponent', () => {
 
       store.state.mockDefinition.scenarios = scenarios;
 
-      component.scenario = scenarios[0];
+      component.scenario = JSON.parse(JSON.stringify(scenarios[0]));
       component.cloneScenario();
 
-      const expectedScenario = JSON.parse(JSON.stringify(scenarios[0]));
-      expectedScenario.metadata.title += '-copy';
-      store.state.mockDefinition.scenarios = [...store.state.mockDefinition.scenarios, expectedScenario];
-
-      expect(component.mockDefinition.scenarios.find(x => x.metadata.title === expectedScenario.metadata.title)).toBeTruthy();
+      expect(component.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy') !== -1)).toBeTruthy();
     });
 
     it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', () => {
@@ -93,16 +89,13 @@ describe('ScenarioListItemComponent', () => {
 
       store.state.mockDefinition.scenarios = scenarios;
 
-      component.scenario = scenarios[0];
+      component.scenario = JSON.parse(JSON.stringify(scenarios[0]));
       component.cloneScenario();
       component.cloneScenario();
       component.cloneScenario();
 
-      const expectedScenario = JSON.parse(JSON.stringify(scenarios[0]));
-      expectedScenario.metadata.title += '-copy 3';
-      store.state.mockDefinition.scenarios = [...store.state.mockDefinition.scenarios, expectedScenario];
-
-      expect(component.mockDefinition.scenarios.find(x => x.metadata.title === expectedScenario.metadata.title)).toBeTruthy();
+      expect(component.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 2') !== -1)).toBeTruthy();
+      expect(component.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 3') !== -1)).toBeTruthy();
     });
 
     it('should not clone a scenario from the store if the cloned scenario is invalid', () => {
