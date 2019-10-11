@@ -197,8 +197,13 @@ describe('ScenarioViewComponent', () => {
       });
     });
     describe('ScenarioViewComponent.showNotFound', () => {
-      it('should return true if have no filtered list', () => {
+      it('should return Not Found message if filteredList does not exist', () => {
         expect(component.showNotFound()).toBeTruthy();
+      });
+      it('should not return Not Found message if filteredList exists', () => {
+        const populatedScenario = component.mockDefinition.scenarios;
+        component.filteredList = populatedScenario;
+        expect(component.showNotFound()).toBeFalsy();
       });
     });
   });
