@@ -1,11 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NGXLogger, LoggerConfig } from 'ngx-logger';
+import { NGXLogger } from 'ngx-logger';
 import { Scenario } from '../../../models/mock-definition/scenario/scenario.model';
 import * as HttpStatus from 'http-status-codes';
 import { DesignerStore } from 'src/app/store/designer-store';
 import * as faker from 'faker';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 
 @Component({
   selector: 'app-scenario-list-item',
