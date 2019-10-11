@@ -81,6 +81,9 @@ export class ScenarioViewComponent implements OnInit {
     if (list.length === 0) {
       i = true;
       return i;
+    } else {
+      i = false;
+      return i;
     }
   }
 
