@@ -20,6 +20,7 @@ import { state } from '@angular/animations';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
+import { NoSearchResultsViewComponent } from '../no-search-results-view/no-search-results-view.component';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -33,7 +34,8 @@ describe('ScenarioViewComponent', () => {
         ScenarioListItemComponent,
         SideBarComponent,
         GetEndpointScenariosPipe,
-        OverviewComponent
+        OverviewComponent,
+        NoSearchResultsViewComponent
       ],
       imports: [
         LoggerTestingModule,

@@ -12,6 +12,7 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 import { MatCardModule } from '@angular/material/card';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NoSearchResultsViewComponent } from '../no-search-results-view/no-search-results-view.component';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -25,7 +26,8 @@ describe('EndpointViewComponent', () => {
         EndpointListComponent,
         EndpointListItemComponent,
         SideBarComponent,
-        GetEndpointScenariosPipe
+        GetEndpointScenariosPipe,
+        NoSearchResultsViewComponent
       ],
       imports: [
         LoggerTestingModule,

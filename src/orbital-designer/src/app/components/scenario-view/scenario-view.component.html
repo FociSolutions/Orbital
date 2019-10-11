@@ -14,7 +14,7 @@
           (filteredList)="setFilteredList($event)"
           [itemToStringFn]="scenarioToString"
           > </app-search-bar>
-          <p *ngIf="showNotFound()" id="notFoundMessage">No Result(s) Found</p>
+          <app-no-search-results-view *ngIf="showNotFound()"></app-no-search-results-view>
 
           <app-scenario-list
             *ngIf="!!mockDefinition"
