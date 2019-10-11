@@ -56,7 +56,7 @@ export class ScenarioListItemComponent implements OnInit {
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
   cloneScenario() {
-    if (!(!!this.scenario && !!this.scenario.id && !!this.scenario.metadata && !!this.scenario.metadata.title)) {
+    if (!this.scenario || !this.scenario.id || !this.scenario.metadata || !this.scenario.metadata.title) {
       this.logger.warn('Scenario not cloned because it contains undefined attributes');
       return;
     }
