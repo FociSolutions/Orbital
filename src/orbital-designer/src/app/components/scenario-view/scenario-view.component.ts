@@ -75,16 +75,8 @@ export class ScenarioViewComponent implements OnInit {
     }
   }
 
-  showNotFound(list: Scenario[]) {
-    let i: boolean;
-    list = this.filteredList;
-    if (list.length === 0) {
-      i = true;
-      return i;
-    } else {
-      i = false;
-      return i;
-    }
+  showNotFound() {
+    return this.filteredList.length === 0;
   }
   ngOnInit() {}
 }

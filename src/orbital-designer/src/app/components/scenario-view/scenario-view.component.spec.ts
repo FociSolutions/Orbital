@@ -198,8 +198,7 @@ describe('ScenarioViewComponent', () => {
     });
     describe('ScenarioViewComponent.showNotFound', () => {
       it('should return true if have no filtered list', () => {
-        const expected: Scenario[] = [];
-        expect(component.showNotFound(expected)).toBeTruthy();
+        expect(component.showNotFound()).toBeTruthy();
       });
     });
   });
