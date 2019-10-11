@@ -198,7 +198,7 @@ describe('ScenarioViewComponent', () => {
     });
     describe('ScenarioViewComponent.showNotFound', () => {
       it('should return Not Found message if filteredList is empty', () => {
-        expect(component.showNotFound()).toBeTruthy();
+        expect(component.showNotFound()).toBe(true);
       });
       it('should not return Not Found message if filteredList has value(s)', () => {
         const populatedScenario = component.mockDefinition.scenarios;
