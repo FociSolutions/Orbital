@@ -203,7 +203,7 @@ describe('ScenarioViewComponent', () => {
       it('should not return Not Found message if filteredList has value(s)', () => {
         const populatedScenario = component.mockDefinition.scenarios;
         component.filteredList = populatedScenario;
-        expect(component.showNotFound()).toBeFalsy();
+        expect(component.showNotFound()).toBe(false);
       });
     });
   });
