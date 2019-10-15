@@ -13,7 +13,7 @@ export class MockDefinition {
   host?: string;
   basePath?: string;
   scenarios: Scenario[] = [];
-  openApi: any;
+  openApi: OpenAPIV2.Document;
 
   /**
    * Parse provided string to mock definition

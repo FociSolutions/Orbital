@@ -53,7 +53,7 @@ describe('EndpointViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('EndpointViewComponent.noEndpoints', () => {
+  describe('EndpointViewComponent.showNotFound()', () => {
     beforeEach(() => {
       store.mockDefinition = SampleMockDefinition;
       fixture.detectChanges();
