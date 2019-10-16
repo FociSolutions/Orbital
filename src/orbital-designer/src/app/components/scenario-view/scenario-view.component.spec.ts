@@ -100,9 +100,9 @@ describe('ScenarioViewComponent', () => {
 
       component.selectedEndpoint = componentMockDef;
       component.selectedEndpoint.verb = VerbType.POST;
-      component.selectedEndpoint.path = '/pets';
+      component.selectedEndpoint.path = '/';
 
-      expect(component.getScenarioDescription()).toBe('Create a pet');
+      expect(component.getScenarioDescription()).toBe('Another test scenario');
       component.selectedEndpoint = endpointBefore;
     });
 
