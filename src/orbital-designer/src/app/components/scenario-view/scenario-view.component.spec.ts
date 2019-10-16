@@ -212,5 +212,13 @@ describe('ScenarioViewComponent', () => {
         expect(component.showNotFound()).toBe(false);
       });
     });
+    describe('ScenarioViewComponent.NoScenariosFound', () => {
+      describe('ScenarioViewComponent.notExistingScenarios', () => {
+        it('should not return not found scenarios message for null endpoints', () => {
+          component.selectedEndpoint = null;
+          expect(component.notExistingScenarios()).toBe(false);
+        });
+      });
+    });
   });
 });
