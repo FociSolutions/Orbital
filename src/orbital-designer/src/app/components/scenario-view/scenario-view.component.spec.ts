@@ -219,12 +219,14 @@ describe('ScenarioViewComponent', () => {
           component.selectedEndpoint = null;
           expect(component.endpointNoScenarios()).toBe(false);
         });
-        it('should not return the not found message if endpoint has scenarios', () => {
+        it('should not return the not found message if endpoint has scenario(s)', () => {
             const componentMockDef = JSON.parse(
             JSON.stringify(component.mockDefinition)
             );
             component.selectedEndpoint = componentMockDef.scenarios;
-            expect(component.endpointNoScenarios()).toBe(true);
+            component.selectedEndpoint.verb = VerbType.POST;
+            component.selectedEndpoint.path = '/pets';
+            expect(component.endpointNoScenarios()).toBe(false);
         });
       });
     });

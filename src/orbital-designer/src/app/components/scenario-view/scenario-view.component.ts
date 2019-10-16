@@ -90,11 +90,11 @@ export class ScenarioViewComponent implements OnInit {
    */
   endpointNoScenarios() {
   if ( this.selectedEndpoint !== null) {
-    return  this.mockDefinition.scenarios.filter(
+    return !this.mockDefinition.scenarios.filter(
       s =>
       s.path === this.selectedEndpoint.path &&
       s.verb === this.selectedEndpoint.verb
-      ).length === 0;
+      ).length;
     } else { return false; }
   }
 
