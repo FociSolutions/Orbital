@@ -15,7 +15,7 @@
           [itemToStringFn]="scenarioToString"
           > </app-search-bar>
           <app-no-search-results-view *ngIf="showNotFound()"></app-no-search-results-view>
-          <p *ngIf="notExistingScenarios()" id="notFoundMessage">No scenarios exists. Click the add button to create a new scenario.</p>
+          <p *ngIf="endpointNoScenarios()" id="notFoundMessage">No scenarios exists. Click the add button to create a new scenario.</p>
           <app-scenario-list
             *ngIf="!!mockDefinition"
             [scenarios]="filteredList"

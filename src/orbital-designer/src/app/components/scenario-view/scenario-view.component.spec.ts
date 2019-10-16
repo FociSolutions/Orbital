@@ -21,6 +21,7 @@ import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { NoSearchResultsViewComponent } from '../no-search-results-view/no-search-results-view.component';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -216,7 +217,14 @@ describe('ScenarioViewComponent', () => {
       describe('ScenarioViewComponent.notExistingScenarios', () => {
         it('should not return not found scenarios message for null endpoints', () => {
           component.selectedEndpoint = null;
-          expect(component.notExistingScenarios()).toBe(false);
+          expect(component.endpointNoScenarios()).toBe(false);
+        });
+        it('should not return the not found message if endpoint has scenarios', () => {
+            const componentMockDef = JSON.parse(
+            JSON.stringify(component.mockDefinition)
+            );
+            component.selectedEndpoint = componentMockDef.scenarios;
+            expect(component.endpointNoScenarios()).toBe(true);
         });
       });
     });

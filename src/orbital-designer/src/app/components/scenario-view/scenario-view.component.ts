@@ -5,8 +5,6 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Router } from '@angular/router';
 import { NGXLogger, LoggerConfig } from 'ngx-logger';
-import { empty } from 'rxjs';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-scenario-view',
@@ -81,17 +79,16 @@ export class ScenarioViewComponent implements OnInit {
    * Search is done by the search bar component.
    */
   showNotFound() {
-    if (this.filteredList.length === 0 && !!this.notExistingScenarios()) {
+    if (this.filteredList.length === 0 && this.endpointNoScenarios()) {
       return false;
     } else {
       return this.filteredList.length === 0;
     }
-
   }
   /**
-   * Method that returns true if there are no scenarios found in the endpoint.
+   * Method that return a value if there are no scenarios found in the endpoint.
    */
-  notExistingScenarios() {
+  endpointNoScenarios() {
   if ( this.selectedEndpoint !== null) {
     return  this.mockDefinition.scenarios.filter(
       s =>
