@@ -37,18 +37,10 @@ export default {
           produces: ['application/json'],
           responses: {
             '200': {
-              description: '200 300 response',
-              examples: {
-                'application/json':
-                  '{\n    "versions": [\n        {\n            "status": "CURRENT",\n            "updated": "2011-01-21T11:33:21Z",\n            "id": "v2.0",\n            "links": [\n                {\n                    "href": "http://127.0.0.1:8774/v2/",\n                    "rel": "self"\n                }\n            ]\n        },\n        {\n            "status": "EXPERIMENTAL",\n            "updated": "2013-07-23T11:33:21Z",\n            "id": "v3.0",\n            "links": [\n                {\n                    "href": "http://127.0.0.1:8774/v3/",\n                    "rel": "self"\n                }\n            ]\n        }\n    ]\n}'
-              }
+              description: '200 300 response'
             },
             '300': {
-              description: '200 300 response',
-              examples: {
-                'application/json':
-                  '{\n    "versions": [\n        {\n            "status": "CURRENT",\n            "updated": "2011-01-21T11:33:21Z",\n            "id": "v2.0",\n            "links": [\n                {\n                    "href": "http://127.0.0.1:8774/v2/",\n                    "rel": "self"\n                }\n            ]\n        },\n        {\n            "status": "EXPERIMENTAL",\n            "updated": "2013-07-23T11:33:21Z",\n            "id": "v3.0",\n            "links": [\n                {\n                    "href": "http://127.0.0.1:8774/v3/",\n                    "rel": "self"\n                }\n            ]\n        }\n    ]\n}'
-              }
+              description: '200 300 response'
             }
           }
         }
@@ -60,18 +52,10 @@ export default {
           produces: ['application/json'],
           responses: {
             '200': {
-              description: '200 203 response',
-              examples: {
-                'application/json':
-                  '{\n    "version": {\n        "status": "CURRENT",\n        "updated": "2011-01-21T11:33:21Z",\n        "media-types": [\n            {\n                "base": "application/xml",\n                "type": "application/vnd.openstack.compute+xml;version=2"\n            },\n            {\n                "base": "application/json",\n                "type": "application/vnd.openstack.compute+json;version=2"\n            }\n        ],\n        "id": "v2.0",\n        "links": [\n            {\n                "href": "http://127.0.0.1:8774/v2/",\n                "rel": "self"\n            },\n            {\n                "href": "http://docs.openstack.org/api/openstack-compute/2/os-compute-devguide-2.pdf",\n                "type": "application/pdf",\n                "rel": "describedby"\n            },\n            {\n                "href": "http://docs.openstack.org/api/openstack-compute/2/wadl/os-compute-2.wadl",\n                "type": "application/vnd.sun.wadl+xml",\n                "rel": "describedby"\n            },\n            {\n              "href": "http://docs.openstack.org/api/openstack-compute/2/wadl/os-compute-2.wadl",\n              "type": "application/vnd.sun.wadl+xml",\n              "rel": "describedby"\n            }\n        ]\n    }\n}'
-              }
+              description: '200 203 response'
             },
             '203': {
-              description: '200 203 response',
-              examples: {
-                'application/json':
-                  '{\n    "version": {\n        "status": "CURRENT",\n        "updated": "2011-01-21T11:33:21Z",\n        "media-types": [\n            {\n                "base": "application/xml",\n                "type": "application/vnd.openstack.compute+xml;version=2"\n            },\n            {\n                "base": "application/json",\n                "type": "application/vnd.openstack.compute+json;version=2"\n            }\n        ],\n        "id": "v2.0",\n        "links": [\n            {\n                "href": "http://23.253.228.211:8774/v2/",\n                "rel": "self"\n            },\n            {\n                "href": "http://docs.openstack.org/api/openstack-compute/2/os-compute-devguide-2.pdf",\n                "type": "application/pdf",\n                "rel": "describedby"\n            },\n            {\n                "href": "http://docs.openstack.org/api/openstack-compute/2/wadl/os-compute-2.wadl",\n                "type": "application/vnd.sun.wadl+xml",\n                "rel": "describedby"\n            }\n        ]\n    }\n}'
-              }
+              description: '200 203 response'
             }
           }
         }

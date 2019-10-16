@@ -21,6 +21,8 @@ import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { NoSearchResultsViewComponent } from '../no-search-results-view/no-search-results-view.component';
+import { Endpoint } from 'src/app/models/endpoint.model';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -91,19 +93,26 @@ describe('ScenarioViewComponent', () => {
     });
 
     it('should show the scenario description if there is one set if the scenario is valid', () => {
-      const componentMockDef = JSON.parse(
+      const componentMockDef: MockDefinition = JSON.parse(
         JSON.stringify(component.mockDefinition)
       );
-      const endpointBefore = JSON.parse(
-        JSON.stringify(component.selectedEndpoint)
+
+      const openApiEndpoint =
+        componentMockDef.openApi.paths[
+          Object.keys(componentMockDef.openApi.paths)[0]
+        ].get;
+
+      const expectedEndpoint: Endpoint = {
+        verb: VerbType.GET,
+        path: Object.keys(componentMockDef.openApi.paths)[0],
+        spec: openApiEndpoint
+      };
+
+      component.selectedEndpoint = expectedEndpoint;
+
+      expect(component.getScenarioDescription()).toBe(
+        expectedEndpoint.spec.summary
       );
-
-      component.selectedEndpoint = componentMockDef;
-      component.selectedEndpoint.verb = VerbType.POST;
-      component.selectedEndpoint.path = '/';
-
-      expect(component.getScenarioDescription()).toBe('Another test scenario');
-      component.selectedEndpoint = endpointBefore;
     });
 
     it('should not show the scenario description if the selected endpoint is null', () => {
