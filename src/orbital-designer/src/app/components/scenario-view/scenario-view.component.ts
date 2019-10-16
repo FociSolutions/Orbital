@@ -89,7 +89,7 @@ export class ScenarioViewComponent implements OnInit {
    * Method that return a value if there are no scenarios found in the endpoint.
    */
   endpointNoScenarios() {
-  if ( this.selectedEndpoint !== null) {
+  if (this.selectedEndpoint !== null) {
     return !this.mockDefinition.scenarios.filter(
       s =>
       s.path === this.selectedEndpoint.path &&
