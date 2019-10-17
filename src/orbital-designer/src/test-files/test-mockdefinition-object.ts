@@ -36,10 +36,10 @@ export default {
           summary: 'List API versions',
           produces: ['application/json'],
           responses: {
-            '200': {
+            200: {
               description: '200 300 response'
             },
-            '300': {
+            300: {
               description: '200 300 response'
             }
           }
@@ -51,10 +51,10 @@ export default {
           summary: 'Show API version details',
           produces: ['application/json'],
           responses: {
-            '200': {
+            200: {
               description: '200 203 response'
             },
-            '203': {
+            203: {
               description: '200 203 response'
             }
           }
