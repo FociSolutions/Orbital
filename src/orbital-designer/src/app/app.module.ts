@@ -37,6 +37,7 @@ import { MatExpansionModule, MatChipsModule } from '@angular/material';
 import { ScenarioCardComponent } from './components/scenario-card/scenario-card.component';
 import { NoSearchResultsViewComponent } from './components/no-search-results-view/no-search-results-view.component';
 import { KvpEditComponent } from './components/orbital-common/kvp-edit/kvp-edit.component';
+import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule/add-body-rule.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { KvpEditComponent } from './components/orbital-common/kvp-edit/kvp-edit.
     ScenarioEditorComponent,
     ScenarioCardComponent,
     NoSearchResultsViewComponent,
-    KvpEditComponent
+    KvpEditComponent,
+    AddBodyRuleComponent
   ],
   imports: [
     BrowserModule,
