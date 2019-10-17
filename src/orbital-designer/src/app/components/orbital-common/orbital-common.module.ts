@@ -19,7 +19,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
-import { KvpEditComponent } from './kvp-edit/kvp-edit.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,7 @@ import { KvpEditComponent } from './kvp-edit/kvp-edit.component';
     SearchableSelectionListComponent,
     SearchBarComponent,
     ShuttleListComponent,
-    DialogBoxComponent,
-    KvpEditComponent
+    DialogBoxComponent
   ],
   imports: [
     CommonModule,

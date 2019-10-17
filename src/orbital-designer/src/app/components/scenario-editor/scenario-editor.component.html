@@ -11,28 +11,49 @@
         <div id="metadata-cards">
           <h3>Scenario Properties</h3>
 
-          <app-scenario-card [title]="'Metadata'" [description]="'Name and Description'" [cardTemplate]="metadataCardContent"
-            (panelOpened)="handleNameDescriptionPanelOpen()" (panelClosed)="handleNameDescriptionPanelClose()" [panelExpanded]="this.nameDescriptionPanelExpanded">
+          <app-scenario-card
+            [title]="'Metadata'"
+            [description]="'Name and Description'"
+            [cardTemplate]="metadataCardContent"
+            (panelOpened)="handleNameDescriptionPanelOpen()"
+            (panelClosed)="handleNameDescriptionPanelClose()"
+            [panelExpanded]="this.nameDescriptionPanelExpanded"
+          >
           </app-scenario-card>
 
-          <app-scenario-card [title]="'Request Match Rules'" [description]="'Query Match Rules, Header Match Rules...'" [cardTemplate]="this.requestMatchRulesCard">
+          <app-scenario-card
+            [title]="'Request Match Rules'"
+            [description]="
+              'Query Match Rules, Header Match Rules and Body Match Rules'
+            "
+            [cardTemplate]="this.requestMatchRulesCard"
+          >
           </app-scenario-card>
 
-          <app-scenario-card [title]="'Response'" [description]="'Response Header, Response Body and Code'" [cardTemplate]="responseCardContent"
-            (panelOpened)="handleRequestMatchRulesPanelOpen()" (panelClosed)="handleRequestMatchRulesPanelClose()" [panelExpanded]="this.requestMatchRulesPanelExpanded">
+          <app-scenario-card
+            [title]="'Response'"
+            [description]="'Response Header, Response Body and Code'"
+            [cardTemplate]="responseCardContent"
+            (panelOpened)="handleRequestMatchRulesPanelOpen()"
+            (panelClosed)="handleRequestMatchRulesPanelClose()"
+            [panelExpanded]="this.requestMatchRulesPanelExpanded"
+          >
           </app-scenario-card>
           <div id="scenario-back-button-div">
-            <button id="go-to-scenarios" color="primary" mat-raised-button (click)="goToScenarios()">Back to Scenarios</button>
+            <button
+              id="go-to-scenarios"
+              color="primary"
+              mat-raised-button
+              (click)="goToScenarios()"
+            >
+              Back to Scenarios
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<ng-template #requestMatchRulesCard let-path="path">
-
-</ng-template>
 
 <ng-template #headerContent let-path="path">
   <div class="title">
@@ -46,98 +67,197 @@
   <form [formGroup]="nameAndDescriptionFormGroup">
     <mat-divider></mat-divider>
     <mat-form-field>
-      <input matInput placeholder="Name" formControlName="name" maxlength="50">
+      <input
+        matInput
+        placeholder="Name"
+        formControlName="name"
+        maxlength="50"
+      />
     </mat-form-field>
     <br />
     <mat-form-field>
-      <input matInput placeholder="Description" formControlName="description" maxlength="50">
+      <input
+        matInput
+        placeholder="Description"
+        formControlName="description"
+        maxlength="50"
+      />
     </mat-form-field>
     <div id="cancel-save-buttons">
-      <button id="cancel" (click)="handleCancelButtonClick()" mat-raised-button color="primary">
+      <button
+        id="cancel"
+        (click)="handleCancelButtonClick()"
+        mat-raised-button
+        color="primary"
+      >
         Cancel
       </button>
-      <button [disabled]="saveButtonDisabledState()" (click)="handleSaveButtonClick()" id="save" mat-raised-button color="primary">
+      <button
+        [disabled]="saveButtonDisabledState()"
+        (click)="handleSaveButtonClick()"
+        id="save"
+        mat-raised-button
+        color="primary"
+      >
         Save
       </button>
     </div>
   </form>
 </ng-template>
 
+<ng-template #requestMatchRulesCard>
+  <app-kvp-edit></app-kvp-edit>
+</ng-template>
+
 <ng-template #responseCardContent>
   <form [formGroup]="responseFormGroup">
+    <mat-divider></mat-divider>
+    <form [formGroup]="responseFormGroup.controls['status']">
+      <div class="flex-space-between">
+        <mat-form-field class="status-code-text">
+          <input
+            matInput
+            placeholder="Status Code"
+            [formControl]="
+              responseFormGroup.controls['status'].controls.statuscode
+            "
+            maxlength="3"
+          />
+        </mat-form-field>
+        <p>Status Code Text</p>
+      </div>
+    </form>
+    <br />
+
+    <p>Headers</p>
+    <form [formGroup]="responseFormGroup.controls['headers']">
+      <mat-card id="headers">
+        <form
+          [formGroup]="
+            responseFormGroup.controls['headers'].controls['headerToAdd']
+          "
+        >
+          <div class="flex-space-between">
+            <mat-form-field class="header-key">
+              <input
+                matInput
+                placeholder="Key"
+                [formControl]="
+                  responseFormGroup.controls['headers'].controls.headerToAdd
+                    .controls.key
+                "
+              />
+            </mat-form-field>
+            <mat-form-field class="header-value">
+              <input
+                matInput
+                placeholder="Value"
+                [formControl]="
+                  responseFormGroup.controls['headers'].controls.headerToAdd
+                    .controls.value
+                "
+              />
+            </mat-form-field>
+            <button mat-mini-fab color="primary">+</button>
+          </div>
+        </form>
+      </mat-card>
       <mat-divider></mat-divider>
-      <form [formGroup]="responseFormGroup.controls['status']">
-        <div class="flex-space-between">
-          <mat-form-field class="status-code-text">
-            <input matInput placeholder="Status Code" [formControl]="responseFormGroup.controls['status'].controls.statuscode" maxlength="3">
-          </mat-form-field>
-          <p>Status Code Text</p>
-        </div>
-      </form>
-      <br />
 
-      <p>Headers</p>
-      <form [formGroup]="responseFormGroup.controls['headers']">
-        <mat-card id="headers">
-            <form [formGroup]="responseFormGroup.controls['headers'].controls['headerToAdd']">
-              <div  class="flex-space-between">
-                <mat-form-field class="header-key">
-                  <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headerToAdd.controls.key">
-                </mat-form-field>
-                <mat-form-field class="header-value">
-                  <input matInput placeholder="Value" [formControl]="responseFormGroup.controls['headers'].controls.headerToAdd.controls.value">
-                </mat-form-field>
-                  <button mat-mini-fab color="primary">+</button>
-              </div>
-            </form>
-        </mat-card>
-        <mat-divider></mat-divider>
-
-        <p>Added Headers</p>
-        <form [formGroup]="responseFormGroup.controls['headers'].controls['headersAdded']">
+      <p>Added Headers</p>
+      <form
+        [formGroup]="
+          responseFormGroup.controls['headers'].controls['headersAdded']
+        "
+      >
         <mat-list id="added-headers">
           <mat-list-item class="key-value-item">
-              <div class="flex-space-between-large">
-                <mat-form-field class="header-key">
-                  <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls[0].controls.key">
-                </mat-form-field>
-                <mat-form-field class="header-value">
-                  <input matInput placeholder="Value" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls[0].controls.value">
-                </mat-form-field>
-                  <button>x</button>
-              </div>
+            <div class="flex-space-between-large">
+              <mat-form-field class="header-key">
+                <input
+                  matInput
+                  placeholder="Key"
+                  [formControl]="
+                    responseFormGroup.controls['headers'].controls.headersAdded
+                      .controls[0].controls.key
+                  "
+                />
+              </mat-form-field>
+              <mat-form-field class="header-value">
+                <input
+                  matInput
+                  placeholder="Value"
+                  [formControl]="
+                    responseFormGroup.controls['headers'].controls.headersAdded
+                      .controls[0].controls.value
+                  "
+                />
+              </mat-form-field>
+              <button>x</button>
+            </div>
           </mat-list-item>
 
           <mat-list-item class="key-value-item">
-              <div class="flex-space-between-large">
-                <mat-form-field class="header-key">
-                  <input matInput placeholder="Key" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls[1].controls.key">
-                </mat-form-field>
-                <mat-form-field class="header-value">
-                  <input matInput placeholder="Value" [formControl]="responseFormGroup.controls['headers'].controls.headersAdded.controls[1].controls.value">
-                </mat-form-field>
-                  <button>x</button>
-              </div>
+            <div class="flex-space-between-large">
+              <mat-form-field class="header-key">
+                <input
+                  matInput
+                  placeholder="Key"
+                  [formControl]="
+                    responseFormGroup.controls['headers'].controls.headersAdded
+                      .controls[1].controls.key
+                  "
+                />
+              </mat-form-field>
+              <mat-form-field class="header-value">
+                <input
+                  matInput
+                  placeholder="Value"
+                  [formControl]="
+                    responseFormGroup.controls['headers'].controls.headersAdded
+                      .controls[1].controls.value
+                  "
+                />
+              </mat-form-field>
+              <button>x</button>
+            </div>
           </mat-list-item>
-
         </mat-list>
-        </form>
       </form>
+    </form>
 
-      <p>Body</p>
-      <form [formGroup]="responseFormGroup.controls['body']">
-        <mat-form-field>
-          <textarea matInput placeholder="Body" [formControl]="responseFormGroup.controls['body'].controls.bodyContent" aria-multiline="true"></textarea>
-        </mat-form-field>
-      </form>
+    <p>Body</p>
+    <form [formGroup]="responseFormGroup.controls['body']">
+      <mat-form-field>
+        <textarea
+          matInput
+          placeholder="Body"
+          [formControl]="
+            responseFormGroup.controls['body'].controls.bodyContent
+          "
+          aria-multiline="true"
+        ></textarea>
+      </mat-form-field>
+    </form>
 
-      <div id="cancel-save-buttons">
-        <button id="cancel" (click)="handleCancelButtonClickRequestMatchRules()" mat-raised-button color="primary">
-          Cancel
-        </button>
-        <button [disabled]="saveButtonDisabledStateRequestMatchRules()" (click)="handleSaveButtonClickRequestMatchRules()" id="save" mat-raised-button color="primary">
-          Save
-        </button>
-      </div>
+    <div id="cancel-save-buttons">
+      <button
+        id="cancel"
+        (click)="handleCancelButtonClickRequestMatchRules()"
+        mat-raised-button
+        color="primary"
+      >
+        Cancel
+      </button>
+      <button
+        [disabled]="saveButtonDisabledStateRequestMatchRules()"
+        (click)="handleSaveButtonClickRequestMatchRules()"
+        id="save"
+        mat-raised-button
+        color="primary"
+      >
+        Save
+      </button>
+    </div>
   </form>
 </ng-template>
