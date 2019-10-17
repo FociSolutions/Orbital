@@ -58,7 +58,7 @@ describe('EndpointViewComponent', () => {
       store.mockDefinition = SampleMockDefinition;
       fixture.detectChanges();
     });
-    it('Should return false if endpoints list is not', () => {
+    it('Should return false if endpoints list is not empty', () => {
       expect(component.showNotFound()).toBeFalsy();
     });
 
