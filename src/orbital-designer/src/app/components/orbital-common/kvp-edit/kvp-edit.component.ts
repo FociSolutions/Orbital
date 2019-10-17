@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-kvp-edit',
@@ -10,7 +10,7 @@ export class KvpEditComponent implements OnInit {
   @Input() addKvpTitle: string;
   @Input() listKvpTitle: string;
 
-  @Output() kvpMap: Map<string, string> = new Map<string, string>();
+  @Output() kvpMap = new EventEmitter<Map<string, string>>();
 
   constructor() {}
 
