@@ -21,6 +21,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ScenarioCardComponent } from '../scenario-card/scenario-card.component';
 import { MatIconModule } from '@angular/material/icon';
+import { AddBodyRuleComponent } from './add-body-rule/add-body-rule.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -35,7 +36,8 @@ describe('ScenarioEditorComponent', () => {
         SideBarComponent,
         GetEndpointScenariosPipe,
         OverviewComponent,
-        ScenarioCardComponent
+        ScenarioCardComponent,
+        AddBodyRuleComponent
       ],
       imports: [
         LoggerTestingModule,

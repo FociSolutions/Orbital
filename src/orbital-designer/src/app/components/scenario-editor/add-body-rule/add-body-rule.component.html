@@ -1,1 +1,23 @@
-<p>add-body-rule works!</p>
+<mat-card class="example-card">
+  <mat-card-content>
+    <div style="display: flex">
+    <div>
+    <h3 class="subtitle">Rule Type</h3>
+      <mat-form-field>
+        <mat-label>Body Rule Type</mat-label>
+            <mat-select>
+                <mat-option value="bodyIgnore">Body Ignore</mat-option>
+                <mat-option value="bodyContains">Body Contains</mat-option>
+                <mat-option value="bodyEquality">Body Equality</mat-option>
+            </mat-select>
+      </mat-form-field>
+    </div>
+    <div style="width: 100%;">
+      <mat-form-field style="width: 100%; padding-left: 125px">
+        <h3 class="subtitle" style="margin-top: 0px">Value</h3>
+          <textarea matInput rows="10">{}</textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  </mat-card-content>
+</mat-card>
