@@ -230,8 +230,8 @@ describe('ScenarioViewComponent', () => {
             JSON.stringify(component.mockDefinition)
           );
           component.selectedEndpoint = componentMockDef.scenarios;
-          component.selectedEndpoint.verb = VerbType.POST;
-          component.selectedEndpoint.path = '/pets';
+          component.selectedEndpoint.verb = VerbType.GET;
+          component.selectedEndpoint.path = '/';
           expect(component.endpointNoScenarios()).toBe(false);
         });
       });
