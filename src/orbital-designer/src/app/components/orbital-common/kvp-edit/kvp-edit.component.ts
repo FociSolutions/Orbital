@@ -12,7 +12,5 @@ export class KvpEditComponent implements OnInit {
 
   @Output() kvpMap = new EventEmitter<Map<string, string>>();
 
-  constructor() {}
-
   ngOnInit() {}
 }
