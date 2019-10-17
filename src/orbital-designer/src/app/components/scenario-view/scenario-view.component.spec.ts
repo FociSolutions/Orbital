@@ -16,8 +16,6 @@ import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object'
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material';
 import { Router } from '@angular/router';
-import { state } from '@angular/animations';
-import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { NoSearchResultsViewComponent } from '../no-search-results-view/no-search-results-view.component';
@@ -219,6 +217,23 @@ describe('ScenarioViewComponent', () => {
         const populatedScenario = component.mockDefinition.scenarios;
         component.filteredList = populatedScenario;
         expect(component.showNotFound()).toBe(false);
+      });
+    });
+    describe('ScenarioViewComponent.NoScenariosFound', () => {
+      describe('ScenarioViewComponent.notExistingScenarios', () => {
+        it('should not return not found scenarios message for null endpoints', () => {
+          component.selectedEndpoint = null;
+          expect(component.endpointNoScenarios()).toBe(false);
+        });
+        it('should not return the not found message if endpoint has scenario(s)', () => {
+          const componentMockDef = JSON.parse(
+            JSON.stringify(component.mockDefinition)
+          );
+          component.selectedEndpoint = componentMockDef.scenarios;
+          component.selectedEndpoint.verb = VerbType.POST;
+          component.selectedEndpoint.path = '/pets';
+          expect(component.endpointNoScenarios()).toBe(false);
+        });
       });
     });
   });

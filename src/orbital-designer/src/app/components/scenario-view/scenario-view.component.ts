@@ -79,7 +79,23 @@ export class ScenarioViewComponent implements OnInit {
    * Search is done by the search bar component.
    */
   showNotFound() {
-    return this.filteredList.length === 0;
+    if (this.filteredList.length === 0 && this.endpointNoScenarios()) {
+      return false;
+    } else {
+      return this.filteredList.length === 0;
+    }
+  }
+  /**
+   * Method that return a value if there are no scenarios found in the endpoint.
+   */
+  endpointNoScenarios() {
+  if (this.selectedEndpoint !== null) {
+    return !this.mockDefinition.scenarios.filter(
+      s =>
+      s.path === this.selectedEndpoint.path &&
+      s.verb === this.selectedEndpoint.verb
+      ).length;
+    } else { return false; }
   }
 
   /**
