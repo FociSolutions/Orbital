@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
+import { openApiFileValidator } from 'src/app/validators/open-api-file-validator/open-api-file-validator';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-add-body-rule',
@@ -6,8 +10,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-body-rule.component.scss']
 })
 export class AddBodyRuleComponent implements OnInit {
-
-  constructor() { }
+  public addBodyRuleFormGroup: FormGroup;
+  constructor(logger: NGXLogger) {
+    this.addBodyRuleFormGroup = new FormGroup({
+      bodyType: new FormControl(
+        '',
+        extendBuiltInValidatorFactory(
+          Validators.compose([Validators.required]),
+          logger
+        )
+      ),
+      bodyValue: new FormControl(
+        '',
+        extendBuiltInValidatorFactory(
+          Validators.compose([Validators.required]),
+          logger
+        )
+      )
+    });
+  }
 
   ngOnInit() {
   }

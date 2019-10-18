@@ -1,26 +1,28 @@
 <mat-card>
   <mat-card-content>
-    <div class="row">
-    <div>
-    <h3 class="subtitle">Rule Type</h3>
-      <mat-form-field>
-        <mat-label>Body Rule Type</mat-label>
-            <mat-select>
-                <mat-option value="bodyIgnore">Body Ignore</mat-option>
-                <mat-option value="bodyContains">Body Contains</mat-option>
-                <mat-option value="bodyEquality">Body Equality</mat-option>
+    <form [formGroup]="this.addBodyRuleFormGroup">
+      <div class="row">
+        <div>
+          <h3 class="subtitle">Rule Type</h3>
+          <mat-form-field>
+            <mat-label>Body Rule Type</mat-label>
+            <mat-select [formControl]="this.addBodyRuleFormGroup.controls['bodyType']">
+              <mat-option value="bodyIgnore">Body Ignore</mat-option>
+              <mat-option value="bodyContains">Body Contains</mat-option>
+              <mat-option value="bodyEquality">Body Equality</mat-option>
             </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="full-width" id="spacer-left">
-      <mat-form-field class="full-width">
-        <h3 class="subtitle" id="value">Value</h3>
-          <textarea matInput rows="10">{}</textarea>
-      </mat-form-field>
-    </div>
-    <div>
-        <button id="add" mat-fab color="primary">+</button>
-    </div>
-  </div>
+          </mat-form-field>
+        </div>
+        <div class="full-width" id="spacer-left">
+          <mat-form-field class="full-width">
+            <h3 class="subtitle" id="value">Value</h3>
+            <textarea matInput rows="10" [formControl]="this.addBodyRuleFormGroup.controls['bodyValue']">{}</textarea>
+          </mat-form-field>
+        </div>
+        <div>
+          <button id="add" mat-fab color="primary">+</button>
+        </div>
+      </div>
+    </form>
   </mat-card-content>
 </mat-card>
