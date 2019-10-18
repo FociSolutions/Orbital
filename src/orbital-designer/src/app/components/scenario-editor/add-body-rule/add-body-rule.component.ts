@@ -13,6 +13,7 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 })
 export class AddBodyRuleComponent implements OnInit {
   public addBodyRuleFormGroup: FormGroup;
+  errorMessage: string;
   bodyRules: BodyRule[] = [];
 
   constructor(logger: NGXLogger) {
@@ -24,7 +25,7 @@ export class AddBodyRuleComponent implements OnInit {
           logger
         )
       ),
-      bodyValue: new FormControl({value: '', disabled: true})
+      bodyValue: new FormControl({value: '', disabled: false})
     });
 
     // ensure that the body value is valid JSON
@@ -61,6 +62,9 @@ export class AddBodyRuleComponent implements OnInit {
     if (!this.bodyRules.find(({ rule, type }) => rule === bodyRule.rule && type === bodyRule.type)) {
       this.bodyRules.push(bodyRule);
       this.addBodyRuleFormGroup.reset();
+    } else {
+      this.addBodyRuleFormGroup.get('bodyValue').setErrors({ruleExists: true});
+      this.getBodyValidationErrorMessages();
     }
   }
 
@@ -69,6 +73,23 @@ export class AddBodyRuleComponent implements OnInit {
    */
   shouldDisableAddingBodyRuleButton() {
     return !this.addBodyRuleFormGroup.valid;
+  }
+
+  /**
+   * Gets the error messages for the body's value
+   */
+  getBodyValidationErrorMessages() {
+    if (this.addBodyRuleFormGroup.get('bodyValue').errors != null) {
+      if (this.addBodyRuleFormGroup.get('bodyValue').errors.required) {
+        this.errorMessage = 'This field is required';
+      } else if (this.addBodyRuleFormGroup.get('bodyValue').errors.jsonInvalid) {
+        this.errorMessage = 'The JSON object is not valid';
+      } else if (this.addBodyRuleFormGroup.get('bodyValue').errors.ruleExists) {
+        this.errorMessage = 'The rule already exists';
+      } else {
+        this.errorMessage = '';
+      }
+    }
   }
 
   ngOnInit() {}
