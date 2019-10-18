@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
-import { openApiFileValidator } from 'src/app/validators/open-api-file-validator/open-api-file-validator';
 import { NGXLogger } from 'ngx-logger';
 import { jsonValidator } from 'src/app/validators/json-validator/json-validator';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 @Component({
   selector: 'app-add-body-rule',
@@ -12,6 +13,8 @@ import { jsonValidator } from 'src/app/validators/json-validator/json-validator'
 })
 export class AddBodyRuleComponent implements OnInit {
   public addBodyRuleFormGroup: FormGroup;
+  bodyRules: BodyRule[] = [];
+
   constructor(logger: NGXLogger) {
     this.addBodyRuleFormGroup = new FormGroup({
       bodyType: new FormControl(
@@ -21,7 +24,7 @@ export class AddBodyRuleComponent implements OnInit {
           logger
         )
       ),
-      bodyValue: new FormControl()
+      bodyValue: new FormControl({value: '', disabled: true})
     });
 
     // ensure that the body value is valid JSON
@@ -29,6 +32,51 @@ export class AddBodyRuleComponent implements OnInit {
       Validators.required,
       jsonValidator()
     ]);
+  }
+
+  /**
+   * Adds the body rule from the form field into the internal array
+   */
+  addBodyRule() {
+    const bodyType = this.addBodyRuleFormGroup.controls.bodyType.value;
+    const bodyValue = this.addBodyRuleFormGroup.controls.bodyValue.value;
+    let bodyRuleType: BodyRuleType;
+    switch (bodyType) {
+      case 'bodyIgnore':
+        bodyRuleType = BodyRuleType.BodyIgnore;
+        break;
+      case 'bodyContains':
+        bodyRuleType = BodyRuleType.BodyContains;
+        break;
+      case 'bodyEquality':
+        bodyRuleType = BodyRuleType.BodyEquality;
+    }
+
+    const bodyRule =
+    {
+      type: bodyRuleType,
+      rule: bodyValue
+    } as unknown as BodyRule;
+
+    this.bodyRules.push(bodyRule);
+  }
+
+  /**
+   * Whether to disable adding the body rule button (to prevent adding invalid data)
+   */
+  shouldDisableAddingBodyRuleButton() {
+    return !this.addBodyRuleFormGroup.valid;
+  }
+
+  /**
+   * Disables the body value text area when the body type is set to ignored
+   */
+  changedBodyTypeDropdown() {
+    if (this.addBodyRuleFormGroup.controls.bodyType.value === 'bodyIgnore') {
+      this.addBodyRuleFormGroup.controls.bodyValue.disable();
+    } else {
+      this.addBodyRuleFormGroup.controls.bodyValue.enable();
+    }
   }
 
   ngOnInit() {}

@@ -6,7 +6,7 @@
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select [formControl]="this.addBodyRuleFormGroup.controls['bodyType']">
+            <mat-select [formControl]="this.addBodyRuleFormGroup.controls['bodyType']" (selectionChange)="this.changedBodyTypeDropdown()">
               <mat-option value="bodyIgnore">Body Ignore</mat-option>
               <mat-option value="bodyContains">Body Contains</mat-option>
               <mat-option value="bodyEquality">Body Equality</mat-option>
@@ -20,7 +20,7 @@
           </mat-form-field>
         </div>
         <div>
-          <button id="add" mat-fab color="primary">+</button>
+          <button id="add" mat-fab color="primary" (click)="addBodyRule()" [disabled]="shouldDisableAddingBodyRuleButton()">+</button>
         </div>
       </div>
     </form>
