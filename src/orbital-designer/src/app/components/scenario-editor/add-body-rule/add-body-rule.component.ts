@@ -59,6 +59,7 @@ export class AddBodyRuleComponent implements OnInit {
     } as unknown as BodyRule;
 
     this.bodyRules.push(bodyRule);
+    this.addBodyRuleFormGroup.reset();
   }
 
   /**
