@@ -7,7 +7,7 @@ using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class ResponseSelectorFilter<T> : FaultableBaseFilter<T>
-        where T : IFaultablePort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort
+        where T : IFaultablePort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort, IPathValidationPort
     {
         /// <summary>
         /// Selects the response to use based on the match results from the previous filters. Ties are broken randomly.
