@@ -71,16 +71,5 @@ export class AddBodyRuleComponent implements OnInit {
     return !this.addBodyRuleFormGroup.valid;
   }
 
-  /**
-   * Disables the body value text area when the body type is set to ignored
-   */
-  changedBodyTypeDropdown() {
-    if (this.addBodyRuleFormGroup.controls.bodyType.value === 'bodyIgnore') {
-      this.addBodyRuleFormGroup.controls.bodyValue.disable();
-    } else {
-      this.addBodyRuleFormGroup.controls.bodyValue.enable();
-    }
-  }
-
   ngOnInit() {}
 }
