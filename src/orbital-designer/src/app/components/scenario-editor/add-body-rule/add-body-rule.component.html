@@ -1,6 +1,6 @@
-<mat-card class="example-card">
+<mat-card>
   <mat-card-content>
-    <div style="display: flex">
+    <div class="row">
     <div>
     <h3 class="subtitle">Rule Type</h3>
       <mat-form-field>
@@ -12,14 +12,14 @@
             </mat-select>
       </mat-form-field>
     </div>
-    <div style="width: 100%; padding-left: 125px">
-      <mat-form-field style="width: 100%;">
-        <h3 class="subtitle" style="margin-top: 0px">Value</h3>
+    <div class="full-width" id="spacer-left">
+      <mat-form-field class="full-width">
+        <h3 class="subtitle" id="value">Value</h3>
           <textarea matInput rows="10">{}</textarea>
       </mat-form-field>
     </div>
     <div>
-        <button style="font-size: 1.6em" mat-fab color="primary">+</button>
+        <button id="add" mat-fab color="primary">+</button>
     </div>
   </div>
   </mat-card-content>
