@@ -39,6 +39,10 @@ export class AddBodyRuleComponent implements OnInit {
    * Adds the body rule from the form field into the internal array
    */
   addBodyRule() {
+    if (this.addBodyRuleFormGroup.invalid) {
+      return;
+    }
+
     const bodyType = this.addBodyRuleFormGroup.controls.bodyType.value;
     const bodyValue = this.addBodyRuleFormGroup.controls.bodyValue.value;
     let bodyRuleType: BodyRuleType;
