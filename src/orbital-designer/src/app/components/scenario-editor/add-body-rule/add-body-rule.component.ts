@@ -16,7 +16,7 @@ export class AddBodyRuleComponent implements OnInit {
   errorMessage: string;
   bodyRules: BodyRule[] = [];
 
-  constructor(logger: NGXLogger) {
+  constructor(private logger: NGXLogger) {
     this.addBodyRuleFormGroup = new FormGroup({
       bodyType: new FormControl(
         '',
@@ -59,12 +59,15 @@ export class AddBodyRuleComponent implements OnInit {
       rule: bodyValue
     } as unknown as BodyRule;
 
+    // conditionally add body rule if it does not exist
     if (!this.bodyRules.find(({ rule, type }) => rule === bodyRule.rule && type === bodyRule.type)) {
       this.bodyRules.push(bodyRule);
       this.addBodyRuleFormGroup.reset();
+      this.logger.debug('Added body rule ', bodyRule);
     } else {
       this.addBodyRuleFormGroup.get('bodyValue').setErrors({ruleExists: true});
       this.getBodyValidationErrorMessages();
+      this.logger.debug('Cannot add body rule because it already exists ', bodyRule);
     }
   }
 
@@ -79,12 +82,14 @@ export class AddBodyRuleComponent implements OnInit {
    * Gets the error messages for the body's value
    */
   getBodyValidationErrorMessages() {
-    if (this.addBodyRuleFormGroup.get('bodyValue').errors != null) {
-      if (this.addBodyRuleFormGroup.get('bodyValue').errors.required) {
+    const bodyValueErrors = this.addBodyRuleFormGroup.get('bodyValue').errors;
+    if (bodyValueErrors != null) {
+      this.logger.debug('Body value errors ', this.addBodyRuleFormGroup.get('bodyValue').errors);
+      if (bodyValueErrors.required) {
         this.errorMessage = 'This field is required';
-      } else if (this.addBodyRuleFormGroup.get('bodyValue').errors.jsonInvalid) {
+      } else if (bodyValueErrors.jsonInvalid) {
         this.errorMessage = 'The JSON object is not valid';
-      } else if (this.addBodyRuleFormGroup.get('bodyValue').errors.ruleExists) {
+      } else if (bodyValueErrors.ruleExists) {
         this.errorMessage = 'The rule already exists';
       } else {
         this.errorMessage = '';
