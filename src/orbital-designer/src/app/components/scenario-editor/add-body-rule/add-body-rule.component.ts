@@ -58,8 +58,10 @@ export class AddBodyRuleComponent implements OnInit {
       rule: bodyValue
     } as unknown as BodyRule;
 
-    this.bodyRules.push(bodyRule);
-    this.addBodyRuleFormGroup.reset();
+    if (!this.bodyRules.find(({ rule, type }) => rule === bodyRule.rule && type === bodyRule.type)) {
+      this.bodyRules.push(bodyRule);
+      this.addBodyRuleFormGroup.reset();
+    }
   }
 
   /**
