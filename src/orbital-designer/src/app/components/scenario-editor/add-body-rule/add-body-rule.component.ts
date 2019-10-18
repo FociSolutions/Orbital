@@ -26,14 +26,11 @@ export class AddBodyRuleComponent implements OnInit {
           logger
         )
       ),
-      bodyValue: new FormControl({value: '', disabled: false})
+      bodyValue: new FormControl(
+        {value: '', disabled: false},
+        Validators.compose([Validators.required, jsonValidator])
+      )
     });
-
-    // ensure that the body value is valid JSON
-    this.addBodyRuleFormGroup.get('bodyValue').setValidators([
-      Validators.required,
-      jsonValidator()
-    ]);
   }
 
   /**
