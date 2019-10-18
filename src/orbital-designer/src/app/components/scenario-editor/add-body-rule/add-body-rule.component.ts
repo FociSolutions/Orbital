@@ -56,7 +56,7 @@ export class AddBodyRuleComponent implements OnInit {
     const bodyRule =
     {
       type: bodyRuleType,
-      rule: bodyValue
+      rule: JSON.parse(bodyValue)
     } as unknown as BodyRule;
 
     // conditionally add body rule if it does not exist
