@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AddBodyRuleComponent } from './add-body-rule.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule, MatIconModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -24,7 +24,8 @@ describe('AddBodyRuleComponent', () => {
         MatInputModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
-        LoggerTestingModule
+        LoggerTestingModule,
+        MatIconModule
       ]
     }).compileComponents();
   }));
