@@ -5,6 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { jsonValidator } from 'src/app/validators/json-validator/json-validator';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import deepEqual from 'deep-equal';
 
 @Component({
   selector: 'app-add-body-rule',
@@ -64,7 +65,7 @@ export class AddBodyRuleComponent implements OnInit {
     } as unknown as BodyRule;
 
     // conditionally add body rule if it does not exist
-    if (!this.bodyRules.find(({ rule, type }) => rule === bodyRule.rule && type === bodyRule.type)) {
+    if (!this.bodyRules.find(({ rule, type }) => deepEqual(rule, bodyRule.rule) && deepEqual(type, bodyRule.type))) {
       this.bodyRules.push(bodyRule);
       this.addBodyRuleFormGroup.reset();
       this.logger.debug('Added body rule ', bodyRule);
