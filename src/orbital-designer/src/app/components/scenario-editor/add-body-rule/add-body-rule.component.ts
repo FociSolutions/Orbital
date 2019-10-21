@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
+import { Component, OnInit, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { jsonValidator } from 'src/app/validators/json-validator/json-validator';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import deepEqual from 'deep-equal';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-body-rule',
@@ -13,38 +11,25 @@ import deepEqual from 'deep-equal';
   styleUrls: ['./add-body-rule.component.scss']
 })
 export class AddBodyRuleComponent implements OnInit {
-  public addBodyRuleFormGroup: FormGroup;
-  errorMessage: string;
+  isValid = true;
+  errorMessage = '';
   bodyRules: BodyRule[] = [];
+  addBodyRuleFormGroup: FormGroup = new FormGroup({
+    bodyType: new FormControl(''),
+    bodyValue: new FormControl(''),
+  });
 
-  constructor(private logger: NGXLogger) {
-    this.addBodyRuleFormGroup = new FormGroup({
-      bodyType: new FormControl(
-        '',
-        extendBuiltInValidatorFactory(
-          Validators.compose([Validators.required]),
-          logger
-        )
-      ),
-      bodyValue: new FormControl(
-        {value: '', disabled: false},
-        Validators.compose([Validators.required, jsonValidator])
-      )
-    });
-  }
+  bodyType = '';
+  bodyValue = '';
+
+  constructor(private logger: NGXLogger) {}
 
   /**
    * Adds the body rule from the form field into the internal array
    */
   addBodyRule() {
-    if (this.addBodyRuleFormGroup.invalid) {
-      return;
-    }
-
-    const bodyType = this.addBodyRuleFormGroup.controls.bodyType.value;
-    const bodyValue = this.addBodyRuleFormGroup.controls.bodyValue.value;
     let bodyRuleType: BodyRuleType;
-    switch (bodyType) {
+    switch (this.bodyType) {
       case 'bodyIgnore':
         bodyRuleType = BodyRuleType.BodyIgnore;
         break;
@@ -53,50 +38,89 @@ export class AddBodyRuleComponent implements OnInit {
         break;
       case 'bodyEquality':
         bodyRuleType = BodyRuleType.BodyEquality;
+        break;
+      default:
+        bodyRuleType = null;
+        this.logger.error('The body rule type was not found: ', this.bodyType);
     }
 
-    const bodyRule =
-    {
-      type: bodyRuleType,
-      rule: JSON.parse(bodyValue)
-    } as unknown as BodyRule;
+    if (this.validateRequestMatchRulesForm(bodyRuleType)) {
+      const bodyRule =
+      {
+        type: bodyRuleType,
+        rule: this.tryParseJSON(this.bodyValue)
+      } as unknown as BodyRule;
 
-    // conditionally add body rule if it does not exist
-    if (!this.bodyRules.find(({ rule, type }) => deepEqual(rule, bodyRule.rule) && deepEqual(type, bodyRule.type))) {
       this.bodyRules.push(bodyRule);
-      this.addBodyRuleFormGroup.reset();
+      this.bodyType = '';
+      this.bodyValue = '';
       this.logger.debug('Added body rule ', bodyRule);
+      this.isValid = true;
     } else {
-      this.addBodyRuleFormGroup.get('bodyValue').setErrors({ruleExists: true});
-      this.getBodyValidationErrorMessages();
-      this.logger.debug('Cannot add body rule because it already exists ', bodyRule);
+      this.isValid = false;
     }
   }
 
   /**
-   * Whether to disable adding the body rule button (to prevent adding invalid data)
+   * Validates the request match rules form
+   * @param bodyRuleType The body rule's type to validate
    */
-  shouldDisableAddingBodyRuleButton() {
-    return !this.addBodyRuleFormGroup.valid;
+  validateRequestMatchRulesForm(bodyRuleType: BodyRuleType) {
+    if (this.bodyValue === null) {
+      this.errorMessage = 'The JSON object is not valid';
+      this.logger.debug('A validation error occured and the body rule could not be added ', this.bodyValue);
+      return false;
+    } else if (this.bodyValue === '') {
+      this.errorMessage = 'The body rule value is required';
+      this.logger.debug('The body rule value is required ', this.bodyValue);
+      return false;
+    } else if (!this.isValidJSON(this.bodyValue)) {
+      this.logger.debug('The body value must be valid JSON');
+      this.errorMessage = 'The body value must be valid JSON';
+      return false;
+    } else if (this.bodyRules.find(({ rule, type }) => deepEqual(rule, JSON.parse(this.bodyValue)) && deepEqual(type, bodyRuleType))) {
+      this.logger.debug('The rule already exists ', this.bodyValue);
+      this.errorMessage = 'The rule already exists';
+      return false;
+    } else if (!this.bodyType) {
+      this.logger.debug('Body type is required');
+      this.errorMessage = 'Body type is required';
+      return false;
+    }
+
+    return true;
   }
 
   /**
-   * Gets the error messages for the body's value
+   * Checks if the provided JSON string is valid
+   * @param json The JSON to validate
    */
-  getBodyValidationErrorMessages() {
-    const bodyValueErrors = this.addBodyRuleFormGroup.get('bodyValue').errors;
-    if (bodyValueErrors != null) {
-      this.logger.debug('Body value errors ', this.addBodyRuleFormGroup.get('bodyValue').errors);
-      if (bodyValueErrors.required) {
-        this.errorMessage = 'This field is required';
-      } else if (bodyValueErrors.jsonInvalid) {
-        this.errorMessage = 'The JSON object is not valid';
-      } else if (bodyValueErrors.ruleExists) {
-        this.errorMessage = 'The rule already exists';
-      } else {
-        this.errorMessage = '';
-      }
+  isValidJSON(json: string) {
+    try {
+      JSON.parse(json);
+      return true;
+    } catch (e) {
+      return false;
     }
+  }
+
+  /**
+   * Returns a valid JSON object if the JSON can be parsed, otherwise null
+   * @param json The JSON to parse
+   */
+  tryParseJSON(json: string) {
+    if (this.isValidJSON(json)) {
+      return JSON.parse(json);
+    }
+
+    return null;
+  }
+
+  /**
+   * Whether the body rule can be added to the list of body rules
+   */
+  isBodyRuleValid() {
+    return !this.isValid;
   }
 
   ngOnInit() {}

@@ -1,12 +1,12 @@
 <mat-card>
   <mat-card-content>
-    <form [formGroup]="this.addBodyRuleFormGroup">
+    <form>
       <div class="row">
         <div>
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select [formControl]="this.addBodyRuleFormGroup.controls['bodyType']">
+            <mat-select [value]="this.bodyType" (valueChange)="this.bodyType = $event">
               <mat-option value="bodyContains">Body Contains</mat-option>
               <mat-option value="bodyEquality">Body Equality</mat-option>
             </mat-select>
@@ -15,12 +15,14 @@
         <div class="full-width" id="spacer-left">
           <mat-form-field class="full-width">
             <h3 class="subtitle" id="value">Value</h3>
-            <textarea matInput rows="10" [formControl]="this.addBodyRuleFormGroup.controls['bodyValue']" (change)="getBodyValidationErrorMessages()">{}</textarea>
-            <mat-error>{{ this.errorMessage }}</mat-error>
+            <textarea matInput rows="10" [value]="this.bodyValue" (input)="this.bodyValue = $event.target.value">{}</textarea>
+            <div class="error-message" *ngIf="isBodyRuleValid()">
+                {{ this.errorMessage }}
+            </div>
           </mat-form-field>
         </div>
         <div>
-          <button mat-fab color="primary" (click)="addBodyRule()" [disabled]="shouldDisableAddingBodyRuleButton()"><mat-icon>add</mat-icon></button>
+          <button mat-mini-fab color="primary" (click)="addBodyRule()"><mat-icon>add</mat-icon></button>
         </div>
       </div>
     </form>
