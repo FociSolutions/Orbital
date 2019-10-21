@@ -90,29 +90,10 @@ describe('AddBodyRuleComponent', () => {
 
     describe('add invalid rule(s)', () => {
       describe('invalid json', () => {
-        it('should throw a validation error when an invalid rule is added to an empty list of rules', () => {
-          component.bodyValue = 'invalid';
-          component.bodyType = 'bodyEquality';
-          expect(component.addBodyRuleFormGroup.errors).not.toBeTruthy();
-        });
-
         it('should not add a rule when an invalid rule is added to an empty list of rules', () => {
           component.bodyValue = 'invalid';
           component.bodyType = 'bodyEquality';
           expect(component.bodyRules).toEqual([]);
-        });
-      });
-
-      describe('duplicate rule', () => {
-        it('should throw a validation error when adding an invalid rule to an empty list of rules', () => {
-          component.bodyValue = '{"a": "b"}';
-          component.bodyType = 'bodyEquality';
-          component.addBodyRule();
-
-          component.bodyValue = '{"a": "b"}';
-          component.bodyType = 'bodyEquality';
-          component.addBodyRule();
-          expect(component.addBodyRuleFormGroup.errors).toEqual(null);
         });
       });
     });

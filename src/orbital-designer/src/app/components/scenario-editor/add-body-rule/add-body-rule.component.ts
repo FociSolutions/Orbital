@@ -3,7 +3,6 @@ import { NGXLogger } from 'ngx-logger';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import deepEqual from 'deep-equal';
-import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-body-rule',
@@ -14,10 +13,6 @@ export class AddBodyRuleComponent implements OnInit {
   isValid = true;
   errorMessage = '';
   bodyRules: BodyRule[] = [];
-  addBodyRuleFormGroup: FormGroup = new FormGroup({
-    bodyType: new FormControl(''),
-    bodyValue: new FormControl(''),
-  });
 
   bodyType = '';
   bodyValue = '';
