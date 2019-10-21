@@ -123,5 +123,21 @@ export class AddBodyRuleComponent implements OnInit {
     return !this.isValid;
   }
 
+  /**
+   * Fired when the body type dropdown is changed
+   * @param event The selected body type
+   */
+  onChangeUpdateBodyType(event: string) {
+    this.bodyType = event;
+  }
+
+  /**
+   * Fired when the body value is saved
+   * @param event The new body value
+   */
+  onChangeBodyValue(event: string) {
+    this.bodyValue = event;
+  }
+
   ngOnInit() {}
 }

@@ -6,7 +6,7 @@
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select [value]="this.bodyType" (valueChange)="this.bodyType = $event">
+            <mat-select [value]="this.bodyType" (valueChange)="onChangeUpdateBodyType($event)">
               <mat-option value="bodyContains">Body Contains</mat-option>
               <mat-option value="bodyEquality">Body Equality</mat-option>
             </mat-select>
@@ -15,7 +15,7 @@
         <div class="full-width" id="spacer-left">
           <mat-form-field class="full-width">
             <h3 class="subtitle" id="value">Value</h3>
-            <textarea matInput rows="10" [value]="this.bodyValue" (input)="this.bodyValue = $event.target.value">{}</textarea>
+            <textarea matInput rows="10" [value]="this.bodyValue" (input)="onChangeBodyValue($event.target.value)">{}</textarea>
             <div class="error-message" *ngIf="isBodyRuleValid()">
                 {{ this.errorMessage }}
             </div>
