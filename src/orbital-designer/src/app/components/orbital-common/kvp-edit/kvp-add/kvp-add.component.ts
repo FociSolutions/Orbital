@@ -1,8 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { CreateNewMockViewComponent } from 'src/app/components/create-new-mock-view/create-new-mock-view.component';
-import { RequiredErrorStateMatcher } from '../error-matcher';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-kvp-add',
@@ -20,22 +17,55 @@ export class KvpAddComponent implements OnInit {
   // The key and value properties binded to the template
   key: string;
   value: string;
+  isValid: boolean;
+  errorMessage: string;
 
-  keyFormControl = new FormControl('');
-
-  constructor() {}
+  constructor() {
+    this.key = '';
+    this.value = '';
+    this.isValid = true;
+    this.kvpAdd = {
+      key: '',
+      value: ''
+    };
+  }
 
   ngOnInit() {}
 
+  /**
+   * Checks to see if the kvp inputs are empty and has no duplicates already in the map and adds them to the kvpMap
+   */
   onAdd() {
-    if (!this.hasDuplicates) {
+    if (!this.isEmpty() && !this.hasDuplicates()) {
       this.kvpAdd.key = this.key;
       this.kvpAdd.value = this.value;
       this.kvp.emit(this.kvpAdd);
+      this.isValid = true;
+    } else {
+      this.isValid = false;
     }
   }
 
+  /**
+   * Returns true if the kvp has duplicates and false otherwise
+   */
   hasDuplicates(): boolean {
-    return this.kvpMap.has(this.key);
+    if (this.kvpMap.has(this.key)) {
+      this.errorMessage = 'Key Value Pair Duplicates Found';
+      return true;
+    } else {
+      return false;
+    }
+  }
+  /**
+   * Returns true if both the key and value fields are empty and false otherwise
+   */
+  isEmpty(): boolean {
+    if (!(this.key.length > 0 && this.value.length > 0)) {
+      this.errorMessage = 'Empty Field(s) Founds: Please Enter All Values';
+      return true;
+    } else {
+      return false;
+    }
   }
 }
