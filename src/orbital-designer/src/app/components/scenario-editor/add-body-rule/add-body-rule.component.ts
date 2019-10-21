@@ -29,22 +29,9 @@ export class AddBodyRuleComponent implements OnInit {
    */
   addBodyRule() {
     let bodyRuleType: BodyRuleType;
-    switch (this.bodyType) {
-      case 'bodyIgnore':
-        bodyRuleType = BodyRuleType.BodyIgnore;
-        break;
-      case 'bodyContains':
-        bodyRuleType = BodyRuleType.BodyContains;
-        break;
-      case 'bodyEquality':
-        bodyRuleType = BodyRuleType.BodyEquality;
-        break;
-      default:
-        bodyRuleType = null;
-        this.logger.error('The body rule type was not found: ', this.bodyType);
-    }
+    bodyRuleType = this.getBodyRuleTypeFromString(this.bodyType);
 
-    if (this.validateRequestMatchRulesForm(bodyRuleType)) {
+    if (this.validateRequestMatchRulesForm()) {
       const bodyRule =
       {
         type: bodyRuleType,
@@ -62,10 +49,28 @@ export class AddBodyRuleComponent implements OnInit {
   }
 
   /**
+   * Converts a string body rule type into a BodyRuleType type
+   * @param bodyRuleString The BodyRuleType from the given string
+   */
+  private getBodyRuleTypeFromString(bodyRuleString: string) {
+    switch (bodyRuleString) {
+      case 'bodyIgnore':
+        return BodyRuleType.BodyIgnore;
+      case 'bodyContains':
+        return BodyRuleType.BodyContains;
+      case 'bodyEquality':
+        return BodyRuleType.BodyEquality;
+      default:
+        this.logger.error('The body rule type was not found: ', this.bodyType);
+        return null;
+    }
+  }
+
+  /**
    * Validates the request match rules form
    * @param bodyRuleType The body rule's type to validate
    */
-  validateRequestMatchRulesForm(bodyRuleType: BodyRuleType) {
+  validateRequestMatchRulesForm() {
     if (this.bodyValue === null) {
       this.errorMessage = 'The JSON object is not valid';
       this.logger.debug('A validation error occured and the body rule could not be added ', this.bodyValue);
@@ -78,7 +83,8 @@ export class AddBodyRuleComponent implements OnInit {
       this.logger.debug('The body value must be valid JSON');
       this.errorMessage = 'The body value must be valid JSON';
       return false;
-    } else if (this.bodyRules.find(({ rule, type }) => deepEqual(rule, JSON.parse(this.bodyValue)) && deepEqual(type, bodyRuleType))) {
+    } else if (this.bodyRules.find(({ rule, type }) =>
+               deepEqual(rule, JSON.parse(this.bodyValue)) && deepEqual(type, this.getBodyRuleTypeFromString(this.bodyType)))) {
       this.logger.debug('The rule already exists ', this.bodyValue);
       this.errorMessage = 'The rule already exists';
       return false;
