@@ -16,7 +16,7 @@ export class AddBodyRuleComponent implements OnInit {
   bodyRuleTypeValues = BodyRuleType;
   @Input() bodyRules: BodyRule[] = [];
   @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
-  shouldDisable = false;
+  @Input() shouldDisable = false;
 
   bodyType: BodyRuleType;
   bodyValue = '';
