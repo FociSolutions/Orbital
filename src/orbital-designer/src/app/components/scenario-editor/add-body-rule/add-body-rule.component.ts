@@ -14,7 +14,7 @@ export class AddBodyRuleComponent implements OnInit {
   errorMessage = '';
   bodyRules: BodyRule[] = [];
 
-  bodyType = '';
+  bodyType: BodyRuleType;
   bodyValue = '';
 
   constructor(private logger: NGXLogger) {}
@@ -23,8 +23,7 @@ export class AddBodyRuleComponent implements OnInit {
    * Adds the body rule from the form field into the internal array
    */
   addBodyRule() {
-    let bodyRuleType: BodyRuleType;
-    bodyRuleType = this.getBodyRuleTypeFromString(this.bodyType);
+    const bodyRuleType = this.bodyType;
 
     if (this.validateRequestMatchRulesForm()) {
       const bodyRule =
@@ -34,30 +33,12 @@ export class AddBodyRuleComponent implements OnInit {
       } as unknown as BodyRule;
 
       this.bodyRules.push(bodyRule);
-      this.bodyType = '';
+      this.bodyType = null;
       this.bodyValue = '';
       this.logger.debug('Added body rule ', bodyRule);
       this.isValid = true;
     } else {
       this.isValid = false;
-    }
-  }
-
-  /**
-   * Converts a string body rule type into a BodyRuleType type
-   * @param bodyRuleString The BodyRuleType from the given string
-   */
-  private getBodyRuleTypeFromString(bodyRuleString: string) {
-    switch (bodyRuleString) {
-      case 'bodyIgnore':
-        return BodyRuleType.BodyIgnore;
-      case 'bodyContains':
-        return BodyRuleType.BodyContains;
-      case 'bodyEquality':
-        return BodyRuleType.BodyEquality;
-      default:
-        this.logger.error('The body rule type was not found: ', this.bodyType);
-        return null;
     }
   }
 
@@ -96,7 +77,7 @@ export class AddBodyRuleComponent implements OnInit {
    */
   private bodyRuleDeepEquals() {
     return this.bodyRules.find(({ rule, type }) =>
-           deepEqual(rule, JSON.parse(this.bodyValue)) && deepEqual(type, this.getBodyRuleTypeFromString(this.bodyType)));
+           deepEqual(rule, JSON.parse(this.bodyValue)) && deepEqual(type, this.bodyType));
   }
 
   /**
@@ -135,7 +116,7 @@ export class AddBodyRuleComponent implements OnInit {
    * Fired when the body type dropdown is changed
    * @param event The selected body type
    */
-  onChangeUpdateBodyType(event: string) {
+  onChangeUpdateBodyType(event: BodyRuleType) {
     this.bodyType = event;
   }
 

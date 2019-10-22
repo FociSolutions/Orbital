@@ -53,7 +53,7 @@ describe('AddBodyRuleComponent', () => {
 
         it('should add a valid empty json rule to an empty list of rules', () => {
           component.bodyValue = '{}';
-          component.bodyType = 'bodyEquality';
+          component.bodyType = BodyRuleType.BodyEquality;
 
           const Expected = [{type: BodyRuleType.BodyEquality, rule: {}}] as BodyRule[];
           component.addBodyRule();
@@ -63,7 +63,7 @@ describe('AddBodyRuleComponent', () => {
 
         it('should add a valid non-empty json rule to an empty list of rules', () => {
           component.bodyValue = '{"a": "b"}';
-          component.bodyType = 'bodyEquality';
+          component.bodyType = BodyRuleType.BodyEquality;
           component.addBodyRule();
 
           const Expected = [{type: BodyRuleType.BodyEquality, rule: {a: 'b'}}] as BodyRule[];
@@ -73,11 +73,11 @@ describe('AddBodyRuleComponent', () => {
 
         it('should add a valid rule to a non-empty list of rules which are not the same as the added rule', () => {
           component.bodyValue = '{"a": "b"}';
-          component.bodyType = 'bodyEquality';
+          component.bodyType = BodyRuleType.BodyEquality;
           component.addBodyRule();
 
           component.bodyValue = '{"c": "d"}';
-          component.bodyType = 'bodyContains';
+          component.bodyType = BodyRuleType.BodyContains;
           component.addBodyRule();
 
           const Expected = [{type: BodyRuleType.BodyEquality, rule: {a: 'b'}},
@@ -92,7 +92,7 @@ describe('AddBodyRuleComponent', () => {
       describe('invalid json', () => {
         it('should not add a rule when an invalid rule is added to an empty list of rules', () => {
           component.bodyValue = 'invalid';
-          component.bodyType = 'bodyEquality';
+          component.bodyType = BodyRuleType.BodyEquality;
           expect(component.bodyRules).toEqual([]);
         });
       });
