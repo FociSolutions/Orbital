@@ -47,17 +47,17 @@ export class AddBodyRuleComponent implements OnInit {
    * @param bodyRuleType The body rule's type to validate
    */
   validateRequestMatchRulesForm() {
-    if (!this.isValidJSON(this.bodyValue)) {
+    if (!this.bodyType) {
+      this.logger.debug('Body type is required');
+      this.errorMessage = 'Body type is required';
+      return false;
+    } else if (!this.isValidJSON(this.bodyValue)) {
       this.logger.debug('The body value must be valid JSON');
       this.errorMessage = 'The body value must be valid JSON';
       return false;
     } else if (this.bodyRuleDeepEquals()) {
       this.logger.debug('The rule already exists ', this.bodyValue);
       this.errorMessage = 'The rule already exists';
-      return false;
-    } else if (!this.bodyType) {
-      this.logger.debug('Body type is required');
-      this.errorMessage = 'Body type is required';
       return false;
     }
 
