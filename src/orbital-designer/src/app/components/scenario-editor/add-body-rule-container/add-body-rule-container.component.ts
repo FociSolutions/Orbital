@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 @Component({
   selector: 'app-add-body-rule-container',
@@ -6,8 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-body-rule-container.component.scss']
 })
 export class AddBodyRuleContainerComponent implements OnInit {
+  @Input() bodyRules: BodyRule[];
+  @Input() title = '';
+  @Input() subtitle = '';
 
-  constructor() { }
+  @Output() bodyRulesOutput: BodyRule[];
 
   ngOnInit() {
   }
