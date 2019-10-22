@@ -19,6 +19,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
+import { KvpEditComponent } from './kvp-edit/kvp-edit.component';
+import { KvpAddComponent } from './kvp-edit/kvp-add/kvp-add.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
     SearchableSelectionListComponent,
     SearchBarComponent,
     ShuttleListComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    KvpEditComponent,
+    KvpAddComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +68,9 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
     MatCheckboxModule,
     SearchBarComponent,
     ShuttleListComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    KvpEditComponent,
+    KvpAddComponent
   ]
 })
 export class OrbitalCommonModule {}

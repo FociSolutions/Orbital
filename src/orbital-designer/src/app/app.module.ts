@@ -61,9 +61,7 @@ import { KvpAddComponent } from './components/orbital-common/kvp-edit/kvp-add/kv
     ScenarioViewComponent,
     ScenarioEditorComponent,
     ScenarioCardComponent,
-    NoSearchResultsViewComponent,
-    KvpEditComponent,
-    KvpAddComponent
+    NoSearchResultsViewComponent
   ],
   imports: [
     BrowserModule,
