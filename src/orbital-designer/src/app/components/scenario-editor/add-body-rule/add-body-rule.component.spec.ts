@@ -101,6 +101,21 @@ describe('AddBodyRuleComponent', () => {
     });
 
     describe('add invalid rule(s)', () => {
+      describe('invalid rule', () => {
+        it('should not add a rule if it already exists', () => {
+          const fakeBodyContents = getFakeBodyContents();
+          component.bodyValue = JSON.stringify(fakeBodyContents);
+          component.bodyType = BodyRuleType.BodyEquality;
+          component.addBodyRule();
+
+          component.bodyValue = JSON.stringify(fakeBodyContents);
+          component.bodyType = BodyRuleType.BodyEquality;
+          component.addBodyRule();
+
+          expect(component.errorMessage).toEqual('The rule already exists');
+        });
+      });
+
       describe('invalid json', () => {
         it('should not add a rule when an invalid rule is added to an empty list of rules', () => {
           component.bodyValue = 'invalid';
