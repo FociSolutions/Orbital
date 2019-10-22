@@ -6,7 +6,7 @@
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select [value]="this.bodyType" (valueChange)="onChangeUpdateBodyType($event)">
+            <mat-select [value]="this.bodyType" (valueChange)="this.bodyType = $event">
               <mat-option value="BodyRuleType.BodyContains">Body Contains</mat-option>
               <mat-option value="BodyRuleType.BodyEquality">Body Equality</mat-option>
             </mat-select>
