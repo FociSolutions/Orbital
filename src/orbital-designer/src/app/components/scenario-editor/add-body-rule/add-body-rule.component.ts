@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import deepEqual from 'deep-equal';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-add-body-rule',
@@ -14,6 +15,7 @@ export class AddBodyRuleComponent implements OnInit {
   errorMessage = '';
   bodyRuleTypeValues = BodyRuleType;
   @Input() bodyRules: BodyRule[] = [];
+  @Output() bodyRuleOutput: EventEmitter<BodyRule[]> = new EventEmitter<BodyRule[]>();
 
   bodyType: BodyRuleType;
   bodyValue = '';
@@ -24,12 +26,10 @@ export class AddBodyRuleComponent implements OnInit {
    * Adds the body rule from the form field into the internal array
    */
   addBodyRule() {
-    const bodyRuleType = this.bodyType;
-
     if (this.validateRequestMatchRulesForm()) {
       const bodyRule =
       {
-        type: bodyRuleType,
+        type: this.bodyType,
         rule: this.tryParseJSON(this.bodyValue)
       } as unknown as BodyRule;
 
@@ -38,6 +38,7 @@ export class AddBodyRuleComponent implements OnInit {
       this.bodyValue = '';
       this.logger.debug('Added body rule ', bodyRule);
       this.isValid = true;
+      this.bodyRuleOutput.emit(this.bodyRules);
     } else {
       this.isValid = false;
     }
