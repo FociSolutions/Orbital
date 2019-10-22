@@ -78,8 +78,7 @@ export class AddBodyRuleComponent implements OnInit {
       this.logger.debug('The body value must be valid JSON');
       this.errorMessage = 'The body value must be valid JSON';
       return false;
-    } else if (this.bodyRules.find(({ rule, type }) =>
-               deepEqual(rule, JSON.parse(this.bodyValue)) && deepEqual(type, this.getBodyRuleTypeFromString(this.bodyType)))) {
+    } else if (this.bodyRuleDeepEquals()) {
       this.logger.debug('The rule already exists ', this.bodyValue);
       this.errorMessage = 'The rule already exists';
       return false;
@@ -90,6 +89,14 @@ export class AddBodyRuleComponent implements OnInit {
     }
 
     return true;
+  }
+
+  /**
+   * Determines if the current body rule and value are object equivalent to the ones already added
+   */
+  private bodyRuleDeepEquals() {
+    return this.bodyRules.find(({ rule, type }) =>
+           deepEqual(rule, JSON.parse(this.bodyValue)) && deepEqual(type, this.getBodyRuleTypeFromString(this.bodyType)));
   }
 
   /**
