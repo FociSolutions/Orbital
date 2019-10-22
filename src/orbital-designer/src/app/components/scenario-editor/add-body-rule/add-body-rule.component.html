@@ -15,7 +15,7 @@
         <div class="full-width" id="spacer-left">
           <mat-form-field class="full-width">
             <h3 class="subtitle" id="value">Value</h3>
-            <textarea matInput rows="10" [(ngModel)]="this.bodyValue" [ngModelOptions]="{standalone: true}">{}</textarea>
+            <textarea matInput rows="10" [(ngModel)]="this.bodyValue" [ngModelOptions]="{standalone: true}"></textarea>
             <div class="error-message" *ngIf="isBodyRuleValid()">
                 {{ this.errorMessage }}
             </div>
