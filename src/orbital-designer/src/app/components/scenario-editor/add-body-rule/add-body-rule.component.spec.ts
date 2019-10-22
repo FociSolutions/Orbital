@@ -9,6 +9,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import * as faker from 'faker';
 
 describe('AddBodyRuleComponent', () => {
   let component: AddBodyRuleComponent;
@@ -37,6 +38,14 @@ describe('AddBodyRuleComponent', () => {
     fixture.detectChanges();
   });
 
+  /**
+   * Generates a fake json object to be used for the response body rule
+   */
+  function getFakeBodyContents() {
+    return [{testkey: faker.random.word(), testobjattr: faker.random.word()},
+      {testkey2: faker.random.word(), testobjattr2: faker.random.word()}];
+  }
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -62,26 +71,29 @@ describe('AddBodyRuleComponent', () => {
         });
 
         it('should add a valid non-empty json rule to an empty list of rules', () => {
-          component.bodyValue = '{"a": "b"}';
+          const fakeBodyContents = getFakeBodyContents();
+          component.bodyValue = JSON.stringify(fakeBodyContents);
           component.bodyType = BodyRuleType.BodyEquality;
           component.addBodyRule();
 
-          const Expected = [{type: BodyRuleType.BodyEquality, rule: {a: 'b'}}] as BodyRule[];
+          const Expected = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
           const Actual = component.bodyRules;
           expect(Expected).toEqual(Actual);
         });
 
         it('should add a valid rule to a non-empty list of rules which are not the same as the added rule', () => {
-          component.bodyValue = '{"a": "b"}';
+          const fakeBodyContentsFirst = getFakeBodyContents();
+          const fakeBodyContentsSecond = getFakeBodyContents();
+          component.bodyValue = JSON.stringify(fakeBodyContentsFirst);
           component.bodyType = BodyRuleType.BodyEquality;
           component.addBodyRule();
 
-          component.bodyValue = '{"c": "d"}';
+          component.bodyValue = JSON.stringify(fakeBodyContentsSecond);
           component.bodyType = BodyRuleType.BodyContains;
           component.addBodyRule();
 
-          const Expected = [{type: BodyRuleType.BodyEquality, rule: {a: 'b'}},
-                            {type: BodyRuleType.BodyContains, rule: {c: 'd'}}] as BodyRule[];
+          const Expected = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContentsFirst},
+                            {type: BodyRuleType.BodyContains, rule: fakeBodyContentsSecond}] as BodyRule[];
           const Actual = component.bodyRules;
           expect(Expected).toEqual(Actual);
         });
