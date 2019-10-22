@@ -12,6 +12,7 @@ import deepEqual from 'deep-equal';
 export class AddBodyRuleComponent implements OnInit {
   isValid = true;
   errorMessage = '';
+  bodyRuleTypeValues = BodyRuleType;
   @Input() bodyRules: BodyRule[] = [];
 
   bodyType: BodyRuleType;
