@@ -132,4 +132,18 @@ describe('AddBodyRuleComponent', () => {
       });
     });
   });
+
+  describe('add-body-rule.isValidJSON', () => {
+    it('should return false if the JSON cannot be parsed ', () => {
+      const Actual = component.isValidJSON('invalid');
+      expect(Actual).toBe(false);
+    });
+  });
+
+  describe('add-body-rule.tryParseJSON', () => {
+    it('should return null if the JSON cannot be parsed ', () => {
+      const Actual = component.tryParseJSON('invalid');
+      expect(Actual).toBe(null);
+    });
+  });
 });
