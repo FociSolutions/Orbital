@@ -15,7 +15,7 @@ export class AddBodyRuleComponent implements OnInit {
   errorMessage = '';
   bodyRuleTypeValues = BodyRuleType;
   @Input() bodyRules: BodyRule[] = [];
-  @Output() bodyRuleOutput: EventEmitter<BodyRule[]> = new EventEmitter<BodyRule[]>();
+  @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
 
   bodyType: BodyRuleType;
   bodyValue = '';
@@ -38,7 +38,7 @@ export class AddBodyRuleComponent implements OnInit {
       this.bodyValue = '';
       this.logger.debug('Added body rule ', bodyRule);
       this.isValid = true;
-      this.bodyRuleOutput.emit(this.bodyRules);
+      this.bodyRuleOutput.emit(bodyRule);
     } else {
       this.isValid = false;
     }
