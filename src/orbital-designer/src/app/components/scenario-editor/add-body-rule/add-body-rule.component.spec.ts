@@ -107,6 +107,13 @@ describe('AddBodyRuleComponent', () => {
           component.bodyType = BodyRuleType.BodyEquality;
           expect(component.bodyRules).toEqual([]);
         });
+
+        it('should show the invalid JSON error when invalid JSON is set', () => {
+          component.bodyValue = 'invalid';
+          component.bodyType = BodyRuleType.BodyEquality;
+          component.addBodyRule();
+          expect(component.errorMessage).toEqual('The body value must be valid JSON');
+        });
       });
     });
   });
