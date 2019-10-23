@@ -40,13 +40,13 @@ describe('KvpAddComponent', () => {
       fixture.detectChanges();
     });
     it('Should return true if there are duplicate keys', () => {
-      let keys = Array.from(component.kvpMap.keys());
+      const keys = Array.from(component.kvpMap.keys());
       component.key = faker.random.arrayElement(keys);
       expect(component.hasDuplicates()).toBeTruthy();
     });
 
     it('Should return false if there are no duplicate keys', () => {
-      let keys = Array.from(component.kvpMap.keys());
+      const keys = Array.from(component.kvpMap.keys());
       component.key = faker.random.arrayElement(keys) + 'Test';
       expect(component.hasDuplicates()).toBeFalsy();
     });
