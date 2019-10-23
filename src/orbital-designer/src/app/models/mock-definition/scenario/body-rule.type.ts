@@ -4,5 +4,7 @@
 export enum BodyRuleType {
   JsonPath = 1,
   JsonSchema,
-  BodyEquality
+  BodyEquality = 'bodyEquality',
+  BodyIgnore = 'bodyIgnore',
+  BodyContains = 'bodyContains'
 }
