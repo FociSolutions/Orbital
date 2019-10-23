@@ -1,13 +1,6 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  KeyValueDiffers
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { NGXLogger, LoggerConfig } from 'ngx-logger';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-kvp-add',
@@ -48,7 +41,7 @@ export class KvpAddComponent implements OnInit {
       kvpAdd.value = this.value;
       this.kvp.emit(kvpAdd);
       this.isValid = true;
-      this.logger.debug('KVP emitted to parent');
+      this.logger.debug('KVP emitted to parent', this.kvp);
     } else {
       this.isValid = false;
     }
@@ -70,7 +63,7 @@ export class KvpAddComponent implements OnInit {
    * Returns true if either the key or the value fields are empty and false otherwise
    */
   isEmpty(): boolean {
-    if (this.key.length <= 0 || this.value.length <= 0) {
+    if (this.key.length === 0 || this.value.length === 0) {
       this.errorMessage = 'Empty Field(s) Founds: Please Enter All Values';
       this.logger.debug('Empty Field(s) Founds: Please Enter All Values');
       return true;
