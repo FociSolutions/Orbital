@@ -43,7 +43,7 @@ describe('KvpAddComponent', () => {
     it('Should return false if there are no duplicate keys', () => {
       let keys = Array.from(component.kvpMap.keys());
       component.key = faker.random.arrayElement(keys) + 'Test';
-      expect(component.hasDuplicates()).toEqual(false);
+      expect(component.hasDuplicates()).toBeFalsy();
     });
   });
 
@@ -67,6 +67,39 @@ describe('KvpAddComponent', () => {
       component.value = faker.lorem.sentence();
       component.key = faker.lorem.sentence();
       expect(component.isEmpty()).toBeFalsy();
+    });
+  });
+
+  describe('KvpAddComponent.onAdd', () => {
+    beforeEach(() => {
+      const randomKey: string = faker.lorem.sentence();
+      const randomValue: string = faker.lorem.sentence();
+
+      component.key = randomKey;
+      component.value = randomValue;
+
+      fixture.detectChanges();
+    });
+    it('Should set key and value to kvpAdd and isValid to true', () => {
+      spyOn(component, 'isEmpty').and.returnValue(false);
+      spyOn(component, 'hasDuplicates').and.returnValue(false);
+      component.onAdd();
+      expect(component.isValid).toBeTruthy();
+      expect(component.kvpAdd.key === component.key).toBeTruthy();
+    });
+
+    it('Should set isValid to false if isEmpty is true and hadDuplicates is false', () => {
+      spyOn(component, 'isEmpty').and.returnValue(true);
+      spyOn(component, 'hasDuplicates').and.returnValue(false);
+      component.onAdd();
+      expect(component.isValid).toBeFalsy();
+    });
+
+    it('Should set isValid to false if isEmpty is false and hadDuplicates is true', () => {
+      spyOn(component, 'isEmpty').and.returnValue(false);
+      spyOn(component, 'hasDuplicates').and.returnValue(true);
+      component.onAdd();
+      expect(component.isValid).toBeFalsy();
     });
   });
 });
