@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
+import { NGXLogger, LoggerConfig } from 'ngx-logger';
 
 @Component({
   selector: 'app-kvp-add',
@@ -14,13 +15,13 @@ export class KvpAddComponent implements OnInit {
 
   kvpAdd: KeyValue<string, string>;
 
-  // The key and value properties binded to the template
+  // The key and value properties that were bound to the template
   key: string;
   value: string;
   isValid: boolean;
   errorMessage: string;
 
-  constructor() {
+  constructor(private logger: NGXLogger) {
     this.key = '';
     this.value = '';
     this.isValid = true;
@@ -41,6 +42,7 @@ export class KvpAddComponent implements OnInit {
       this.kvpAdd.value = this.value;
       this.kvp.emit(this.kvpAdd);
       this.isValid = true;
+      this.logger.debug('KVP emitted to parent');
     } else {
       this.isValid = false;
     }
@@ -52,6 +54,7 @@ export class KvpAddComponent implements OnInit {
   hasDuplicates(): boolean {
     if (this.kvpMap.has(this.key)) {
       this.errorMessage = 'Key Value Pair Duplicates Found';
+      this.logger.debug('Key Value Pair Duplicates Found');
       return true;
     } else {
       return false;
@@ -63,6 +66,7 @@ export class KvpAddComponent implements OnInit {
   isEmpty(): boolean {
     if (this.key.length <= 0 || this.value.length <= 0) {
       this.errorMessage = 'Empty Field(s) Founds: Please Enter All Values';
+      this.logger.debug('Empty Field(s) Founds: Please Enter All Values');
       return true;
     } else {
       return false;

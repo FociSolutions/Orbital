@@ -3,6 +3,7 @@ import * as faker from 'faker';
 import { KvpAddComponent } from './kvp-add.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoggerTestingModule } from 'ngx-logger/testing/';
 
 describe('KvpAddComponent', () => {
   let component: KvpAddComponent;
@@ -10,7 +11,11 @@ describe('KvpAddComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, BrowserAnimationsModule]
+      imports: [
+        OrbitalCommonModule,
+        BrowserAnimationsModule,
+        LoggerTestingModule
+      ]
     }).compileComponents();
   }));
 

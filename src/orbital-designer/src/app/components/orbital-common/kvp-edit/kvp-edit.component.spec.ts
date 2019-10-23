@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { KvpEditComponent } from './kvp-edit.component';
 import { OrbitalCommonModule } from '../orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoggerTestingModule } from 'ngx-logger/testing/';
 
 describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
@@ -10,7 +11,11 @@ describe('KvpEditComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, BrowserAnimationsModule]
+      imports: [
+        OrbitalCommonModule,
+        BrowserAnimationsModule,
+        LoggerTestingModule
+      ]
     }).compileComponents();
   }));
 
