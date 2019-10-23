@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { KvpEditComponent } from './kvp-edit.component';
-import { OrbitalCommonModule } from '../orbital-common.module';
 
 describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
@@ -8,7 +8,7 @@ describe('KvpEditComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule]
+      declarations: [KvpEditComponent]
     }).compileComponents();
   }));
 
