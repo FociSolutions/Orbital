@@ -38,8 +38,6 @@ export class KvpAddComponent implements OnInit {
         value: this.value
       };
 
-      kvpAdd.key = this.key;
-      kvpAdd.value = this.value;
       this.kvp.emit(kvpAdd);
       this.isValid = true;
       this.logger.debug('KVP emitted to parent', this.kvp);

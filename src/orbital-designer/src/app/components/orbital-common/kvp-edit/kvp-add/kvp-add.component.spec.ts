@@ -42,13 +42,13 @@ describe('KvpAddComponent', () => {
     it('Should return true if there are duplicate keys', () => {
       const keys = Array.from(component.kvpMap.keys());
       component.key = faker.random.arrayElement(keys);
-      expect(component.hasDuplicates()).toBeTruthy();
+      expect(component.hasDuplicates()).toBe(true);
     });
 
     it('Should return false if there are no duplicate keys', () => {
       const keys = Array.from(component.kvpMap.keys());
       component.key = faker.random.arrayElement(keys) + 'Test';
-      expect(component.hasDuplicates()).toBeFalsy();
+      expect(component.hasDuplicates()).toBe(false);
     });
   });
 
@@ -58,20 +58,20 @@ describe('KvpAddComponent', () => {
     });
     it('Should return true if the key is empty', () => {
       component.key = '';
-      component.key = faker.lorem.sentence();
-      expect(component.isEmpty()).toBeTruthy();
+      component.value = faker.lorem.sentence();
+      expect(component.isEmpty()).toBe(true);
     });
 
     it('Should return true if the value is empty', () => {
       component.value = '';
       component.key = faker.lorem.sentence();
-      expect(component.isEmpty()).toBeTruthy();
+      expect(component.isEmpty()).toBe(true);
     });
 
     it('Should return false if both value and key are not empty', () => {
       component.value = faker.lorem.sentence();
       component.key = faker.lorem.sentence();
-      expect(component.isEmpty()).toBeFalsy();
+      expect(component.isEmpty()).toBe(false);
     });
   });
 
