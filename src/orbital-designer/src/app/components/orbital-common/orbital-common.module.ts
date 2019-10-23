@@ -21,6 +21,7 @@ import { ShuttleListComponent } from './shuttle-list/shuttle-list.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { KvpEditComponent } from './kvp-edit/kvp-edit.component';
 import { KvpAddComponent } from './kvp-edit/kvp-add/kvp-add.component';
+import { KvpListItemComponent } from './kvp-edit/kvp-list-item/kvp-list-item.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { KvpAddComponent } from './kvp-edit/kvp-add/kvp-add.component';
     ShuttleListComponent,
     DialogBoxComponent,
     KvpEditComponent,
-    KvpAddComponent
+    KvpAddComponent,
+    KvpListItemComponent
   ],
   imports: [
     CommonModule,
