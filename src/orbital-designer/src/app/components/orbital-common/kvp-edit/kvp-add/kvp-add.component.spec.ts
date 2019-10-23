@@ -92,7 +92,6 @@ describe('KvpAddComponent', () => {
 
       component.onAdd();
       expect(component.isValid).toBeTruthy();
-      // expect(component.kvpAdd.key === component.key).toBeTruthy();
       expect(component.kvp.emit).toHaveBeenCalledWith({
         key: component.key,
         value: component.value
