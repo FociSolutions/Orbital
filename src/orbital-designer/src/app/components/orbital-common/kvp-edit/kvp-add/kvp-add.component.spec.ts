@@ -88,9 +88,15 @@ describe('KvpAddComponent', () => {
     it('Should set key and value to kvpAdd and isValid to true', () => {
       spyOn(component, 'isEmpty').and.returnValue(false);
       spyOn(component, 'hasDuplicates').and.returnValue(false);
+      spyOn(component.kvp, 'emit');
+
       component.onAdd();
       expect(component.isValid).toBeTruthy();
       // expect(component.kvpAdd.key === component.key).toBeTruthy();
+      expect(component.kvp.emit).toHaveBeenCalledWith({
+        key: component.key,
+        value: component.value
+      });
     });
 
     it('Should set isValid to false if isEmpty is true and hadDuplicates is false', () => {
