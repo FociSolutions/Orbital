@@ -25,6 +25,7 @@ export class KvpAddComponent implements OnInit {
     this.key = '';
     this.value = '';
     this.isValid = true;
+    this.errorMessage = '';
   }
 
   /**
@@ -33,8 +34,8 @@ export class KvpAddComponent implements OnInit {
   onAdd() {
     if (!this.isEmpty() && !this.hasDuplicates()) {
       const kvpAdd: KeyValue<string, string> = {
-        key: '',
-        value: ''
+        key: this.key,
+        value: this.value
       };
 
       kvpAdd.key = this.key;
