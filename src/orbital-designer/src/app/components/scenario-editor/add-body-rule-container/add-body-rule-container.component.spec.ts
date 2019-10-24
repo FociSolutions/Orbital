@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('AddBodyRuleContainerComponent', () => {
   let component: AddBodyRuleContainerComponent;
@@ -25,7 +26,8 @@ describe('AddBodyRuleContainerComponent', () => {
         FormsModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        MatDividerModule ]
+        MatDividerModule,
+        MatCheckboxModule ]
     })
     .compileComponents();
   }));

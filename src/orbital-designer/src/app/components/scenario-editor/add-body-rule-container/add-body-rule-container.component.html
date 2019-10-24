@@ -8,5 +8,7 @@
     </mat-expansion-panel-header>
 
     <p class="description">Add New Body Match Rule</p>
+    <mat-checkbox (change)="this.shouldIgnoreBodyRule = $event.checked">Ignore body rule</mat-checkbox>
+    <app-add-body-rule [shouldDisable]="this.shouldIgnoreBodyRule"></app-add-body-rule>
   </mat-expansion-panel>
 </mat-accordion>

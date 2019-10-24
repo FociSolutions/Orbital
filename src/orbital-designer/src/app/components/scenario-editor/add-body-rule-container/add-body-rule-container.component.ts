@@ -10,6 +10,8 @@ export class AddBodyRuleContainerComponent implements OnInit {
   @Input() bodyRules: BodyRule[] = [];
   @Output() bodyRulesOutput: BodyRule[];
 
+  shouldIgnoreBodyRule = false;
+
   ngOnInit() {
   }
 
