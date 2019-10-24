@@ -38,8 +38,10 @@ export class AddBodyRuleContainerComponent implements OnInit {
   handleDeleteBodyRule(bodyRuleToDelete: BodyRule) {
     this.logger.debug('Fired delete event for body rule ', bodyRuleToDelete);
 
-    this.bodyRulesOutput = this.bodyRulesOutput.filter(({ rule, type }) =>
-           deepEqual(rule, bodyRuleToDelete.rule) && deepEqual(type, bodyRuleToDelete.type));
+    if (!!this.bodyRulesOutput) {
+      this.bodyRulesOutput = this.bodyRulesOutput.filter(({ rule, type }) =>
+            deepEqual(rule, bodyRuleToDelete.rule) && deepEqual(type, bodyRuleToDelete.type));
+    }
   }
 
 }

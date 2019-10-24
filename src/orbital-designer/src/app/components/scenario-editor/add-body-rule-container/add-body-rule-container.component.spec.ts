@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import * as faker from 'faker';
+import { deepEqual } from 'deep-equal';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
@@ -59,4 +61,23 @@ describe('AddBodyRuleContainerComponent', () => {
       expect(Actual.length).toBe(0);
     });
   });
+  it('should delete a body rule when a delete body rule event is emitted', () => {
+    const fakeBodyContents = getFakeBodyContents();
+
+    const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+    component.bodyRules = JSON.parse(JSON.stringify(componentBodyRule));
+
+    component.handleDeleteBodyRule(JSON.parse(JSON.stringify(componentBodyRule)));
+
+    expect(component.bodyRules.find(({ rule, type }) =>
+           deepEqual(rule, componentBodyRule[0].rule) && deepEqual(type, componentBodyRule[0].type))).toBeFalsy();
+  });
+
+  /**
+   * Generates a fake json object to be used for the response body rule
+   */
+  function getFakeBodyContents() {
+    return [{testkey: faker.random.word(), testobjattr: faker.random.word()},
+      {testkey2: faker.random.word(), testobjattr2: faker.random.word()}];
+  }
 });
