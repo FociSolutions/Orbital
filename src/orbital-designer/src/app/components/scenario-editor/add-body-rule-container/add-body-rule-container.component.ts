@@ -7,7 +7,7 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
   styleUrls: ['./add-body-rule-container.component.scss']
 })
 export class AddBodyRuleContainerComponent implements OnInit {
-  @Input() bodyRules: BodyRule[];
+  @Input() bodyRules: BodyRule[] = [];
   @Output() bodyRulesOutput: BodyRule[];
 
   ngOnInit() {
