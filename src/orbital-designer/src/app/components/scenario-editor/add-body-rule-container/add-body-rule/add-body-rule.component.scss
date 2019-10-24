@@ -14,3 +14,13 @@ h3.subtitle {
 #spacer-left {
   padding-left: 125px
 }
+
+button#add {
+  align-self: flex-end;
+  margin-bottom: 15px;
+  margin-left: 10px;
+}
+
+div#add-button-container {
+  display: flex;
+}
