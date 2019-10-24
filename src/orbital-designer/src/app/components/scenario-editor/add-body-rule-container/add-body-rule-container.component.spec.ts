@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { MatDividerModule } from '@angular/material/divider';
 
 describe('AddBodyRuleContainerComponent', () => {
   let component: AddBodyRuleContainerComponent;
@@ -23,7 +24,8 @@ describe('AddBodyRuleContainerComponent', () => {
         MatIconModule,
         FormsModule,
         BrowserAnimationsModule,
-        LoggerTestingModule ]
+        LoggerTestingModule,
+        MatDividerModule ]
     })
     .compileComponents();
   }));
