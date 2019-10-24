@@ -8,9 +8,6 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 })
 export class AddBodyRuleContainerComponent implements OnInit {
   @Input() bodyRules: BodyRule[];
-  @Input() title = '';
-  @Input() subtitle = '';
-
   @Output() bodyRulesOutput: BodyRule[];
 
   ngOnInit() {
