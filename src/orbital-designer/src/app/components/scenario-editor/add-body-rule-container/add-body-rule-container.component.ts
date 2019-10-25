@@ -11,7 +11,7 @@ import { convertMetaToOutput } from '@angular/compiler/src/render3/util';
 })
 export class AddBodyRuleContainerComponent implements OnInit {
   @Input() bodyRules: BodyRule[] = [];
-  @Output() bodyRulesOutput: BodyRule[];
+  @Output() bodyRulesOutput: BodyRule[] = [];
 
   shouldIgnoreBodyRule = false;
 
