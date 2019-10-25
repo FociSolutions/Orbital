@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 describe('AddBodyRuleContainerComponent', () => {
   let component: AddBodyRuleContainerComponent;
@@ -40,5 +42,14 @@ describe('AddBodyRuleContainerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('add-body-rule-container.addBodyRule', () => {
+    it('should add a body rule', () => {
+      const bodyRuleToAdd = {type: BodyRuleType.BodyEquality, rule: {a: 'b'}} as BodyRule;
+      component.addBodyRule(bodyRuleToAdd);
+      const Actual = component.bodyRules;
+      expect([bodyRuleToAdd]).toEqual(Actual);
+    });
   });
 });
