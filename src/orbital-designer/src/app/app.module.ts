@@ -38,6 +38,7 @@ import { ScenarioCardComponent } from './components/scenario-card/scenario-card.
 import { NoSearchResultsViewComponent } from './components/no-search-results-view/no-search-results-view.component';
 import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule/add-body-rule.component';
 import { AddBodyRuleContainerComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule-container.component';
+import { BodyRuleListItemComponent } from './components/scenario-editor/add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { AddBodyRuleContainerComponent } from './components/scenario-editor/add-
     ScenarioCardComponent,
     NoSearchResultsViewComponent,
     AddBodyRuleComponent,
-    AddBodyRuleContainerComponent
+    AddBodyRuleContainerComponent,
+    BodyRuleListItemComponent
   ],
   imports: [
     BrowserModule,
