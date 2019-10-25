@@ -41,13 +41,12 @@ export class AddBodyRuleContainerComponent implements OnInit {
     this.logger.debug('Fired delete event for body rule ', bodyRuleToDelete);
 
     if (!!this.bodyRules && !!bodyRuleToDelete) {
-      const toOutput = [] as BodyRule[];
-      this.bodyRules.forEach(bodyRule => {
+      let toOutput = [] as BodyRule[];
+      toOutput = this.bodyRules.filter(bodyRule => {
         // WORKAROUND: use JSON.stringify instead of deepEquals, as deepEquals throws an exception
-        if (JSON.stringify(bodyRule) !== JSON.stringify(bodyRuleToDelete)) {
-          toOutput.push(bodyRule);
-        }
+        return (JSON.stringify(bodyRule) !== JSON.stringify(bodyRuleToDelete));
       });
+
       this.bodyRulesOutput.emit(toOutput);
     }
   }
