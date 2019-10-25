@@ -51,5 +51,12 @@ describe('AddBodyRuleContainerComponent', () => {
       const Actual = component.bodyRules;
       expect([bodyRuleToAdd]).toEqual(Actual);
     });
+
+    it('should not add an empty body rule', () => {
+      const bodyRuleToAdd = {} as BodyRule;
+      component.addBodyRule(bodyRuleToAdd);
+      const Actual = component.bodyRules;
+      expect(Actual.length).toBe(0);
+    });
   });
 });

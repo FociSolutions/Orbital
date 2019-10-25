@@ -22,7 +22,11 @@ export class AddBodyRuleContainerComponent implements OnInit {
    * @param bodyRuleToAdd The body rule to add
    */
   addBodyRule(bodyRuleToAdd: BodyRule) {
-    this.logger.debug('AddBodyRuleContainer: added body rule', bodyRuleToAdd);
-    this.bodyRules.push(bodyRuleToAdd);
+    if (!!bodyRuleToAdd.rule && !!bodyRuleToAdd.type) {
+      this.logger.debug('AddBodyRuleContainer: added body rule', bodyRuleToAdd);
+      this.bodyRules.push(bodyRuleToAdd);
+    } else {
+      this.logger.debug('AddBodyRuleContainer: did not add body rule because it is invalid', bodyRuleToAdd);
+    }
   }
 }
