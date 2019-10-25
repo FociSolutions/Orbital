@@ -31,7 +31,7 @@ export class BodyRuleListItemComponent implements OnInit {
    * Gets the rule from the body; returns an empty string if undefined or null
    */
   getBodyRule() {
-    if (!!this.bodyRule.rule) {
+    if (!!this.bodyRule && !!this.bodyRule.rule) {
       return JSON.stringify(this.bodyRule.rule);
     } else {
       return '';
@@ -42,7 +42,7 @@ export class BodyRuleListItemComponent implements OnInit {
    * Gets the type from the body; returns an empty string if undefined or null
    */
   getBodyType() {
-    if (!!this.bodyRule.type) {
+    if (!!this.bodyRule && !!this.bodyRule.type) {
       return this.bodyRule.type;
     } else {
       return '';
