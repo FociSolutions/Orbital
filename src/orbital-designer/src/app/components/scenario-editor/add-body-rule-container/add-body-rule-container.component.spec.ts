@@ -85,7 +85,6 @@ describe('AddBodyRuleContainerComponent', () => {
       const componentBodyRule = undefined;
       component.bodyRules = componentBodyRule;
 
-      spyOn(component.bodyRulesOutput, 'emit');
       component.handleDeleteBodyRule(undefined);
 
       expect(component.getBodyRules()).toEqual([]);
