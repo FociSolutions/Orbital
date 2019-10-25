@@ -49,15 +49,54 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should add a body rule', () => {
       const bodyRuleToAdd = {type: BodyRuleType.BodyEquality, rule: {a: 'b'}} as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
-      const Actual = component.bodyRules;
+      const Actual = component.getBodyRules();
       expect([bodyRuleToAdd]).toEqual(Actual);
     });
 
     it('should not add an empty body rule', () => {
       const bodyRuleToAdd = {} as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
-      const Actual = component.bodyRules;
+      const Actual = component.getBodyRules();
       expect(Actual.length).toBe(0);
     });
+
+    it('should delete a body rule when a delete body rule event is emitted', () => {
+      const fakeBodyContents = getFakeBodyContents();
+
+      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+      component.setBodyRules(JSON.parse(JSON.stringify(componentBodyRule[0])));
+
+      component.handleDeleteBodyRule(JSON.parse(JSON.stringify(componentBodyRule[0])));
+      expect(component.getBodyRules()).toEqual(componentBodyRule);
+    });
+
+    it('should not delete a body rule when the body rule to delete is invalid', () => {
+      const fakeBodyContents = getFakeBodyContents();
+
+      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+      component.setBodyRules(JSON.parse(JSON.stringify(componentBodyRule[0])));
+
+      component.handleDeleteBodyRule(undefined);
+
+      expect(component.getBodyRules()).toEqual(componentBodyRule);
+    });
+
+    it('should not delete a body rule when the body rule is invalid', () => {
+      const componentBodyRule = undefined;
+      component.bodyRules = componentBodyRule;
+
+      spyOn(component.bodyRulesOutput, 'emit');
+      component.handleDeleteBodyRule(undefined);
+
+      expect(component.getBodyRules()).toEqual([]);
+    });
+
+	 /**
+    * Generates a fake json object to be used for the response body rul
+    */
+    function getFakeBodyContents() {
+      return [{testkey: faker.random.word(), testobjattr: faker.random.word()},
+        {testkey2: faker.random.word(), testobjattr2: faker.random.word()}];
+    }
   });
 });
