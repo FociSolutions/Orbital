@@ -8,6 +8,7 @@ import { MatInputModule, MatIconModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 
 describe('BodyRuleListItemComponent', () => {
   let component: BodyRuleListItemComponent;
@@ -39,5 +40,14 @@ describe('BodyRuleListItemComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should emit an event containing the deleted body rule when deleting a body rule', () => {
+    const bodyRule = {rule: {a: 'b'}, type: BodyRuleType.BodyEquality};
+    component.bodyRule = bodyRule;
+
+    spyOn(component.deletedBodyRule, 'emit');
+    component.deleteBodyRule(bodyRule);
+    expect(component.deletedBodyRule.emit).toHaveBeenCalledWith(bodyRule);
   });
 });
