@@ -13,12 +13,11 @@ export class AddBodyRuleContainerComponent implements OnInit {
 
   shouldIgnoreBodyRule = false;
 
-  constructor(private logger: NGXLogger) {
-    this.bodyRulesOutput = [] as BodyRule[];
-    this.bodyRules = [] as BodyRule[];
-  }
+  constructor(private logger: NGXLogger) {}
 
   ngOnInit() {
+    this.bodyRulesOutput = [] as BodyRule[];
+    this.bodyRules = [] as BodyRule[];
   }
 
   /**
