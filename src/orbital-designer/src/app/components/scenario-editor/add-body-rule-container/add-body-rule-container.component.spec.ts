@@ -64,9 +64,9 @@ describe('AddBodyRuleContainerComponent', () => {
       const fakeBodyContents = getFakeBodyContents();
 
       const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-      component.setBodyRules(JSON.parse(JSON.stringify(componentBodyRule[0])));
+      component.setBodyRules(componentBodyRule[0]);
 
-      component.handleDeleteBodyRule(JSON.parse(JSON.stringify(componentBodyRule[0])));
+      component.handleDeleteBodyRule(componentBodyRule[0]);
       expect(component.getBodyRules()).toEqual(componentBodyRule);
     });
 
@@ -74,7 +74,7 @@ describe('AddBodyRuleContainerComponent', () => {
       const fakeBodyContents = getFakeBodyContents();
 
       const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-      component.setBodyRules(JSON.parse(JSON.stringify(componentBodyRule[0])));
+      component.setBodyRules(componentBodyRule[0]);
 
       component.handleDeleteBodyRule(undefined);
 
@@ -91,7 +91,7 @@ describe('AddBodyRuleContainerComponent', () => {
       expect(component.getBodyRules()).toEqual([]);
     });
 
-	 /**
+   /*
     * Generates a fake json object to be used for the response body rul
     */
     function getFakeBodyContents() {

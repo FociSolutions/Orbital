@@ -45,8 +45,8 @@ export class AddBodyRuleContainerComponent implements OnInit {
     if (!!this.bodyRules && !!bodyRuleToDelete) {
       let toOutput = [] as BodyRule[];
       toOutput = this.bodyRules.filter(bodyRule => {
-        // WORKAROUND: use JSON.stringify instead of deepEquals, as deepEquals throws an exception
-        return (JSON.stringify(bodyRule) !== JSON.stringify(bodyRuleToDelete));
+        // WORKAROUND: use direct object comparison instead of deepEquals, as deepEquals throws an exception
+        return (bodyRule !== bodyRuleToDelete);
       });
     }
   }
