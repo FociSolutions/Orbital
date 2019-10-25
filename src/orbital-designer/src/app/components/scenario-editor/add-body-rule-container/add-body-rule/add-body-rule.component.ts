@@ -37,7 +37,7 @@ export class AddBodyRuleComponent implements OnInit {
       this.bodyRules.push(bodyRule);
       this.bodyType = null;
       this.bodyValue = '';
-      this.logger.debug('Added body rule ', bodyRule);
+      this.logger.debug('AddBodyRule: emitted body rule ', bodyRule);
       this.isValid = true;
       this.bodyRuleOutput.emit(bodyRule);
     } else {

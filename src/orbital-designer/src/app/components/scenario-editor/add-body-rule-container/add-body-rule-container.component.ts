@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-add-body-rule-container',
@@ -12,7 +13,16 @@ export class AddBodyRuleContainerComponent implements OnInit {
 
   shouldIgnoreBodyRule = false;
 
+  constructor(private logger: NGXLogger) {}
   ngOnInit() {
   }
 
+  /**
+   * Adds a body rule to the internal array
+   * @param bodyRuleToAdd The body rule to add
+   */
+  addBodyRule(bodyRuleToAdd: BodyRule) {
+    this.logger.debug('AddBodyRuleContainer: added body rule', bodyRuleToAdd);
+    this.bodyRules.push(bodyRuleToAdd);
+  }
 }
