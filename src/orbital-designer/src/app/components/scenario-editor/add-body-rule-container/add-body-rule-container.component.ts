@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { deepEqual } from 'deep-equal';
 import { NGXLogger } from 'ngx-logger';
-import { convertMetaToOutput } from '@angular/compiler/src/render3/util';
 
 @Component({
   selector: 'app-add-body-rule-container',
@@ -10,12 +8,16 @@ import { convertMetaToOutput } from '@angular/compiler/src/render3/util';
   styleUrls: ['./add-body-rule-container.component.scss']
 })
 export class AddBodyRuleContainerComponent implements OnInit {
-  @Input() bodyRules: BodyRule[] = [];
-  @Output() bodyRulesOutput: BodyRule[] = [];
+  @Input() bodyRules: BodyRule[];
+  @Output() bodyRulesOutput: BodyRule[];
 
   shouldIgnoreBodyRule = false;
 
-  constructor(private logger: NGXLogger) {}
+  constructor(private logger: NGXLogger) {
+    this.bodyRulesOutput = [] as BodyRule[];
+    this.bodyRules = [] as BodyRule[];
+  }
+
   ngOnInit() {
   }
 
