@@ -42,12 +42,54 @@ describe('BodyRuleListItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit an event containing the deleted body rule when deleting a body rule', () => {
-    const bodyRule = {rule: {a: 'b'}, type: BodyRuleType.BodyEquality};
-    component.bodyRule = bodyRule;
+  describe('body-rule-list-item.deleteBodyRule', () => {
+    it('should emit an event containing the deleted body rule when deleting a body rule', () => {
+      const bodyRule = {rule: {a: 'b'}, type: BodyRuleType.BodyEquality};
+      component.bodyRule = bodyRule;
 
-    spyOn(component.deletedBodyRule, 'emit');
-    component.deleteBodyRule(bodyRule);
-    expect(component.deletedBodyRule.emit).toHaveBeenCalledWith(bodyRule);
+      spyOn(component.deletedBodyRule, 'emit');
+      component.deleteBodyRule(bodyRule);
+      expect(component.deletedBodyRule.emit).toHaveBeenCalledWith(bodyRule);
+    });
+  });
+
+  describe('body-rule-list-item.getBodyRule', () => {
+    it('should get a body rule successfully', () => {
+      const bodyRule = {rule: {a: 'b'}, type: BodyRuleType.BodyEquality};
+      component.bodyRule = bodyRule;
+      expect(component.getBodyRule()).toEqual(JSON.stringify(bodyRule.rule));
+    });
+
+    it('should not get an invalid body rule', () => {
+      const bodyRule = {rule: undefined, type: BodyRuleType.BodyEquality};
+      component.bodyRule = bodyRule;
+      expect(component.getBodyRule()).toEqual('');
+    });
+
+    it('should not get an undefined body', () => {
+      const bodyRule = undefined;
+      component.bodyRule = bodyRule;
+      expect(component.getBodyRule()).toEqual('');
+    });
+  });
+
+  describe('body-rule-list-item.getBodyType', () => {
+    it('should get a valid body type', () => {
+      const bodyRule = {rule: {}, type: BodyRuleType.BodyEquality};
+      component.bodyRule = bodyRule;
+      expect(component.getBodyType()).toEqual(bodyRule.type);
+    });
+
+    it('should not get an invalid body type', () => {
+      const bodyRule = {rule: {}, type: undefined};
+      component.bodyRule = bodyRule;
+      expect(component.getBodyType()).toEqual('');
+    });
+
+    it('should not get an undefined body', () => {
+      const bodyRule = undefined;
+      component.bodyRule = bodyRule;
+      expect(component.getBodyType()).toEqual('');
+    });
   });
 });
