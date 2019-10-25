@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-body-rule-list-item',
@@ -10,14 +11,20 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 export class BodyRuleListItemComponent implements OnInit {
   bodyRuleTypeValues = BodyRuleType;
   @Input() bodyRule: BodyRule;
+  @Output() deletedBodyRule: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
 
-  constructor() {}
+  constructor(private logger: NGXLogger) {
+  }
 
   ngOnInit() {
   }
 
-  deleteBodyRule() {
-
+  /**
+   * Sends an event to delete the selected body rule
+   */
+  deleteBodyRule(bodyRuleToDelete: BodyRule) {
+    this.logger.debug('Emitting event to delete body rule', bodyRuleToDelete);
+    this.deletedBodyRule.emit(bodyRuleToDelete);
   }
 
   /**
