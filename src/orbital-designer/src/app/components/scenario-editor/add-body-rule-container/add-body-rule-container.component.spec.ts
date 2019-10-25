@@ -61,14 +61,14 @@ describe('AddBodyRuleContainerComponent', () => {
     });
 
     it('should delete a body rule when a delete body rule event is emitted', () => {
-    const fakeBodyContents = getFakeBodyContents();
+      const fakeBodyContents = getFakeBodyContents();
 
-    const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-    component.bodyRules = JSON.parse(JSON.stringify(componentBodyRule));
+      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+      component.bodyRules = JSON.parse(JSON.stringify(componentBodyRule));
 
-    component.handleDeleteBodyRule(JSON.parse(JSON.stringify(componentBodyRule[0])));
-
-    expect(component.bodyRulesOutput.length).toBe(0);
+      spyOn(component.bodyRulesOutput, 'emit');
+      component.handleDeleteBodyRule(JSON.parse(JSON.stringify(componentBodyRule[0])));
+      expect(component.bodyRulesOutput.emit).toHaveBeenCalledWith([]);
     });
 
     it('should not delete a body rule when the body rule to delete is invalid', () => {
@@ -77,18 +77,20 @@ describe('AddBodyRuleContainerComponent', () => {
       const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
       component.bodyRules = JSON.parse(JSON.stringify(componentBodyRule));
 
+      spyOn(component.bodyRulesOutput, 'emit');
       component.handleDeleteBodyRule(undefined);
 
-      expect(component.bodyRulesOutput.length).toBe(0);
+      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalled();
     });
 
     it('should not delete a body rule when the body rule is invalid', () => {
       const componentBodyRule = undefined;
       component.bodyRules = componentBodyRule;
 
+      spyOn(component.bodyRulesOutput, 'emit');
       component.handleDeleteBodyRule(undefined);
 
-      expect(component.bodyRulesOutput.length).toBe(0);
+      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalled();
     });
   });
 });

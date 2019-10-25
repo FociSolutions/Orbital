@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { NGXLogger } from 'ngx-logger';
 
@@ -9,15 +9,15 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class AddBodyRuleContainerComponent implements OnInit {
   @Input() bodyRules: BodyRule[];
-  @Output() bodyRulesOutput: BodyRule[];
+  @Output() bodyRulesOutput: EventEmitter<BodyRule[]>;
 
   shouldIgnoreBodyRule = false;
 
   constructor(private logger: NGXLogger) {}
 
   ngOnInit() {
-    this.bodyRulesOutput = [] as BodyRule[];
     this.bodyRules = [] as BodyRule[];
+    this.bodyRulesOutput = new EventEmitter<BodyRule[]>();
   }
 
   /**
@@ -48,7 +48,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
           toOutput.push(bodyRule);
         }
       });
-      this.bodyRulesOutput = toOutput;
+      this.bodyRulesOutput.emit(toOutput);
     }
   }
 
