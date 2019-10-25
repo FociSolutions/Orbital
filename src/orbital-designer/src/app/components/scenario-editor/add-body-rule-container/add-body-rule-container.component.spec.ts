@@ -59,46 +59,5 @@ describe('AddBodyRuleContainerComponent', () => {
       const Actual = component.bodyRules;
       expect(Actual.length).toBe(0);
     });
-
-    it('should delete a body rule when a delete body rule event is emitted', () => {
-      const fakeBodyContents = getFakeBodyContents();
-
-      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-      component.bodyRules = JSON.parse(JSON.stringify(componentBodyRule));
-
-      spyOn(component.bodyRulesOutput, 'emit');
-      component.handleDeleteBodyRule(JSON.parse(JSON.stringify(componentBodyRule[0])));
-      expect(component.bodyRulesOutput.emit).toHaveBeenCalledWith([]);
-    });
-
-    it('should not delete a body rule when the body rule to delete is invalid', () => {
-      const fakeBodyContents = getFakeBodyContents();
-
-      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-      component.bodyRules = JSON.parse(JSON.stringify(componentBodyRule));
-
-      spyOn(component.bodyRulesOutput, 'emit');
-      component.handleDeleteBodyRule(undefined);
-
-      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalled();
-    });
-
-    it('should not delete a body rule when the body rule is invalid', () => {
-      const componentBodyRule = undefined;
-      component.bodyRules = componentBodyRule;
-
-      spyOn(component.bodyRulesOutput, 'emit');
-      component.handleDeleteBodyRule(undefined);
-
-      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalled();
-    });
   });
 });
-
-  /**
-   * Generates a fake json object to be used for the response body rule
-   */
-function getFakeBodyContents() {
-    return [{testkey: faker.random.word(), testobjattr: faker.random.word()},
-      {testkey2: faker.random.word(), testobjattr2: faker.random.word()}];
-  }

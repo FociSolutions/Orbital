@@ -46,8 +46,6 @@ export class AddBodyRuleContainerComponent implements OnInit {
         // WORKAROUND: use JSON.stringify instead of deepEquals, as deepEquals throws an exception
         return (JSON.stringify(bodyRule) !== JSON.stringify(bodyRuleToDelete));
       });
-
-      this.bodyRulesOutput.emit(toOutput);
     }
   }
 
