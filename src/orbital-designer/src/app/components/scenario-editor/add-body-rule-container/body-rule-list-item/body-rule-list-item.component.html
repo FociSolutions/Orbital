@@ -2,19 +2,11 @@
   <mat-card-content>
     <form>
       <div class="row">
-        <div>
-          <mat-form-field>
-            <mat-label>Body Rule Type</mat-label>
-            <mat-select [disabled]="true" [value]="getBodyType()">
-              <mat-option value="{{ bodyRuleTypeValues.BodyContains }}">Body Contains</mat-option>
-              <mat-option value="{{ bodyRuleTypeValues.BodyEquality }}">Body Equality</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="center-flex">
+          <div id="fake-dropdown">{{ getBodyType() }} test text</div>
         </div>
         <div class="full-width" id="spacer-left">
-          <mat-form-field class="full-width">
-            <textarea [disabled]="true" matInput rows="10" [value]="getBodyRule()"></textarea>
-          </mat-form-field>
+          <div id="fake-textarea">{{ getBodyRule() }} test text</div>
         </div>
         <div id="delete-button-container">
           <button id="delete" (click)="deleteBodyRule(this.bodyRule)"><mat-icon>close</mat-icon></button>
