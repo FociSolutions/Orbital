@@ -69,8 +69,7 @@ describe('AddBodyRuleContainerComponent', () => {
 
     component.handleDeleteBodyRule(JSON.parse(JSON.stringify(componentBodyRule[0])));
 
-    expect(!!component.bodyRules.find(({ rule, type }) =>
-           deepEqual(rule, componentBodyRule[0].rule) && deepEqual(type, componentBodyRule[0].type))).toBe(true);
+    expect(component.bodyRulesOutput.length).toBe(0);
   });
 
   /**

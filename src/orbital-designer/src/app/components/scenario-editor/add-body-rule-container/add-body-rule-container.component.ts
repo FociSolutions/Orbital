@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { deepEqual } from 'deep-equal';
 import { NGXLogger } from 'ngx-logger';
+import { convertMetaToOutput } from '@angular/compiler/src/render3/util';
 
 @Component({
   selector: 'app-add-body-rule-container',
@@ -38,9 +39,15 @@ export class AddBodyRuleContainerComponent implements OnInit {
   handleDeleteBodyRule(bodyRuleToDelete: BodyRule) {
     this.logger.debug('Fired delete event for body rule ', bodyRuleToDelete);
 
-    if (!!this.bodyRulesOutput) {
-      this.bodyRulesOutput = this.bodyRulesOutput.filter(({ rule, type }) =>
-            deepEqual(rule, bodyRuleToDelete.rule) && deepEqual(type, bodyRuleToDelete.type));
+    if (!!this.bodyRules && !!bodyRuleToDelete) {
+      const toOutput = [] as BodyRule[];
+      this.bodyRules.forEach(bodyRule => {
+        // WORKAROUND: use JSON.stringify instead of deepEquals, as deepEquals throws an exception
+        if (JSON.stringify(bodyRule) !== JSON.stringify(bodyRuleToDelete)) {
+          toOutput.push(bodyRule);
+        }
+      });
+      this.bodyRulesOutput = toOutput;
     }
   }
 
