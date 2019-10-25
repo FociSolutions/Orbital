@@ -1,0 +1,19 @@
+.full-width {
+  width: 100%;
+}
+
+#spacer-left {
+  padding-left: 125px
+}
+
+button#delete {
+  align-self: flex-start;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  background: none;
+  border: 0;
+}
+
+div#delete-button-container {
+  display: flex;
+}

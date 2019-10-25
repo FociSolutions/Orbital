@@ -1,1 +1,25 @@
-
+<mat-card>
+  <mat-card-content>
+    <form>
+      <div class="row">
+        <div>
+          <mat-form-field>
+            <mat-label>Body Rule Type</mat-label>
+            <mat-select [disabled]="true" [value]="this.bodyType">
+              <mat-option value="{{ bodyRuleTypeValues.BodyContains }}">Body Contains</mat-option>
+              <mat-option value="{{ bodyRuleTypeValues.BodyEquality }}">Body Equality</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="full-width" id="spacer-left">
+          <mat-form-field class="full-width">
+            <textarea [disabled]="true" matInput rows="10"></textarea>
+          </mat-form-field>
+        </div>
+        <div id="delete-button-container">
+          <button id="delete" (click)="deleteBodyRule()"><mat-icon>close</mat-icon></button>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
