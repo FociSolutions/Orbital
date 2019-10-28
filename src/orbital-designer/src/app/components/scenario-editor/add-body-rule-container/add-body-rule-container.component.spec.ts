@@ -67,7 +67,7 @@ describe('AddBodyRuleContainerComponent', () => {
       component.bodyRulesProp.push(componentBodyRule[0]);
 
       component.handleDeleteBodyRule(componentBodyRule[0]);
-      expect(component.bodyRulesProp).toEqual(componentBodyRule);
+      expect(component.bodyRulesProp.length).toBe(0);
     });
 
     it('should not delete a body rule when the body rule to delete is invalid', () => {

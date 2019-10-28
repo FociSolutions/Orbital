@@ -44,9 +44,10 @@ export class AddBodyRuleContainerComponent implements OnInit {
 
     if (!!this.bodyRules && !!bodyRuleToDelete) {
       let toOutput = [] as BodyRule[];
-      toOutput = this.bodyRules.filter(bodyRule => {
+      toOutput = this.bodyRulesProp.filter(bodyRule => {
         return (bodyRule !== bodyRuleToDelete);
       });
+      this.bodyRulesProp = toOutput;
     }
   }
 }
