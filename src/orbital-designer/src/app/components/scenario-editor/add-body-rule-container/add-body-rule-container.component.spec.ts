@@ -91,7 +91,7 @@ describe('AddBodyRuleContainerComponent', () => {
     });
   });
 
-  describe('add-body-rule-container.ngOnChanges', () => {
+  describe('add-body-rule-container emit body rule', () => {
     it('should emit the body rules when the save state is true', () => {
       const fakeBodyContents = getFakeBodyContents();
       const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
@@ -101,6 +101,17 @@ describe('AddBodyRuleContainerComponent', () => {
       component.saveBodyRules = true;
 
       expect(component.bodyRulesOutput.emit).toHaveBeenCalledWith(componentBodyRule);
+    });
+
+    it('should not emit the body rules when the save state is false', () => {
+      const fakeBodyContents = getFakeBodyContents();
+      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+      component.addBodyRule(componentBodyRule[0]);
+
+      spyOn(component.bodyRulesOutput, 'emit');
+      component.saveBodyRules = false;
+
+      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalledWith(componentBodyRule);
     });
   });
 
