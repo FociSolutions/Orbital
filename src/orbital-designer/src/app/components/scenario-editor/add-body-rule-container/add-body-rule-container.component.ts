@@ -8,11 +8,6 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./add-body-rule-container.component.scss']
 })
 export class AddBodyRuleContainerComponent implements OnInit {
-  @Input()
-  set bodyRules(bodyRule: BodyRule[]) {
-    this.bodyRulesProp = bodyRule;
-  }
-
   @Output() bodyRulesOutput: EventEmitter<BodyRule[]>;
 
   shouldIgnoreBodyRule = false;
@@ -24,6 +19,14 @@ export class AddBodyRuleContainerComponent implements OnInit {
     this.bodyRules = [] as BodyRule[];
     this.bodyRulesOutput = new EventEmitter<BodyRule[]>();
     this.bodyRulesProp = [] as BodyRule[];
+  }
+
+  /**
+   * Sets the body rules
+   */
+  @Input()
+  set bodyRules(bodyRule: BodyRule[]) {
+    this.bodyRulesProp = bodyRule;
   }
 
   /**
