@@ -12,6 +12,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
   @Input()
   set saveBodyRules(val: boolean) {
     if (val) {
+      this.logger.debug('Saving body rules', this.bodyRulesProp);
       this.bodyRulesOutput.emit(this.bodyRulesProp);
     }
   }
