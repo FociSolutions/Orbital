@@ -18,7 +18,6 @@ export class AddBodyRuleContainerComponent implements OnInit {
   ngOnInit() {
     this.bodyRules = [] as BodyRule[];
     this.bodyRulesOutput = new EventEmitter<BodyRule[]>();
-    this.bodyRulesProp = [] as BodyRule[];
   }
 
   /**
