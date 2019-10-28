@@ -12,7 +12,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
   @Output() bodyRulesOutput: EventEmitter<BodyRule[]>;
 
   shouldIgnoreBodyRule = false;
-  private bodyRulesProp: BodyRule[];
+  bodyRulesProp: BodyRule[];
 
   constructor(private logger: NGXLogger) {}
 
@@ -29,7 +29,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
   addBodyRule(bodyRuleToAdd: BodyRule) {
     if (!!bodyRuleToAdd.rule && !!bodyRuleToAdd.type) {
       this.logger.debug('AddBodyRuleContainer: added body rule', bodyRuleToAdd);
-      this.setBodyRules(bodyRuleToAdd);
+      this.bodyRulesProp.push(bodyRuleToAdd);
     } else {
       this.logger.debug('AddBodyRuleContainer: did not add body rule because it is invalid', bodyRuleToAdd);
     }
@@ -48,13 +48,5 @@ export class AddBodyRuleContainerComponent implements OnInit {
         return (bodyRule !== bodyRuleToDelete);
       });
     }
-  }
-
-  setBodyRules(bodyRule: BodyRule) {
-    this.bodyRulesProp.push(bodyRule);
-  }
-
-  getBodyRules() {
-    return this.bodyRulesProp;
   }
 }

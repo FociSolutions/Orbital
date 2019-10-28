@@ -49,14 +49,14 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should add a body rule', () => {
       const bodyRuleToAdd = {type: BodyRuleType.BodyEquality, rule: {a: 'b'}} as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
-      const Actual = component.getBodyRules();
+      const Actual = component.bodyRulesProp;
       expect([bodyRuleToAdd]).toEqual(Actual);
     });
 
     it('should not add an empty body rule', () => {
       const bodyRuleToAdd = {} as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
-      const Actual = component.getBodyRules();
+      const Actual = component.bodyRulesProp;
       expect(Actual.length).toBe(0);
     });
 
@@ -64,21 +64,21 @@ describe('AddBodyRuleContainerComponent', () => {
       const fakeBodyContents = getFakeBodyContents();
 
       const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-      component.setBodyRules(componentBodyRule[0]);
+      component.bodyRulesProp.push(componentBodyRule[0]);
 
       component.handleDeleteBodyRule(componentBodyRule[0]);
-      expect(component.getBodyRules()).toEqual(componentBodyRule);
+      expect(component.bodyRulesProp).toEqual(componentBodyRule);
     });
 
     it('should not delete a body rule when the body rule to delete is invalid', () => {
       const fakeBodyContents = getFakeBodyContents();
 
       const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-      component.setBodyRules(componentBodyRule[0]);
+      component.bodyRulesProp.push(componentBodyRule[0]);
 
       component.handleDeleteBodyRule(undefined);
 
-      expect(component.getBodyRules()).toEqual(componentBodyRule);
+      expect(component.bodyRulesProp).toEqual(componentBodyRule);
     });
 
     it('should not delete a body rule when the body rule is invalid', () => {
@@ -87,7 +87,7 @@ describe('AddBodyRuleContainerComponent', () => {
 
       component.handleDeleteBodyRule(undefined);
 
-      expect(component.getBodyRules()).toEqual([]);
+      expect(component.bodyRulesProp).toEqual([]);
     });
 
    /*
