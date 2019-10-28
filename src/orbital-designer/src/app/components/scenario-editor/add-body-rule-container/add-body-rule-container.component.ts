@@ -8,7 +8,11 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./add-body-rule-container.component.scss']
 })
 export class AddBodyRuleContainerComponent implements OnInit {
-  @Input() bodyRules: BodyRule[];
+  @Input()
+  set bodyRules(bodyRule: BodyRule[]) {
+    this.bodyRulesProp = bodyRule;
+  }
+
   @Output() bodyRulesOutput: EventEmitter<BodyRule[]>;
 
   shouldIgnoreBodyRule = false;
@@ -42,7 +46,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
   handleDeleteBodyRule(bodyRuleToDelete: BodyRule) {
     this.logger.debug('Fired delete event for body rule ', bodyRuleToDelete);
 
-    if (!!this.bodyRules && !!bodyRuleToDelete) {
+    if (!!this.bodyRulesProp && !!bodyRuleToDelete) {
       let toOutput = [] as BodyRule[];
       toOutput = this.bodyRulesProp.filter(bodyRule => (bodyRule !== bodyRuleToDelete));
       this.bodyRulesProp = toOutput;

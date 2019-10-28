@@ -87,7 +87,7 @@ describe('AddBodyRuleContainerComponent', () => {
 
       component.handleDeleteBodyRule(undefined);
 
-      expect(component.bodyRulesProp).toEqual([]);
+      expect(component.bodyRulesProp).toEqual(undefined);
     });
 
    /*
