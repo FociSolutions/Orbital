@@ -89,13 +89,26 @@ describe('AddBodyRuleContainerComponent', () => {
 
       expect(component.bodyRulesProp).toEqual(undefined);
     });
+  });
 
-   /*
+  describe('add-body-rule-container.ngOnChanges', () => {
+    it('should emit the body rules when the save state is true', () => {
+      const fakeBodyContents = getFakeBodyContents();
+      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+      component.addBodyRule(componentBodyRule[0]);
+
+      spyOn(component.bodyRulesOutput, 'emit');
+      component.saveBodyRules = true;
+
+      expect(component.bodyRulesOutput.emit).toHaveBeenCalledWith(componentBodyRule);
+    });
+  });
+
+  /*
     * Generates a fake json object to be used for the response body rul
     */
-    function getFakeBodyContents() {
-      return [{testkey: faker.random.word(), testobjattr: faker.random.word()},
-        {testkey2: faker.random.word(), testobjattr2: faker.random.word()}];
-    }
-  });
+  function getFakeBodyContents() {
+    return [{testkey: faker.random.word(), testobjattr: faker.random.word()},
+      {testkey2: faker.random.word(), testobjattr2: faker.random.word()}];
+  }
 });
