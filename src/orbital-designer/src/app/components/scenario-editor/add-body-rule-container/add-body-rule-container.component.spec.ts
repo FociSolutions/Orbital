@@ -20,7 +20,7 @@ describe('AddBodyRuleContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddBodyRuleContainerComponent, AddBodyRuleComponent, BodyRuleListItemComponent ],
+      declarations: [ AddBodyRuleContainerComponent, AddBodyRuleComponent, BodyRuleListItemComponent, BodyRuleListItemComponent ],
       imports: [ MatExpansionModule,
         MatFormFieldModule,
         MatInputModule,
