@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AddBodyRuleContainerComponent } from './add-body-rule-container.component';
 import { AddBodyRuleComponent } from './add-body-rule/add-body-rule.component';
+import { BodyRuleListItemComponent } from './body-rule-list-item/body-rule-list-item.component';
 import { MatFormFieldModule, MatInputModule, MatCardModule, MatIconModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +20,7 @@ describe('AddBodyRuleContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddBodyRuleContainerComponent, AddBodyRuleComponent ],
+      declarations: [ AddBodyRuleContainerComponent, AddBodyRuleComponent, BodyRuleListItemComponent ],
       imports: [ MatExpansionModule,
         MatFormFieldModule,
         MatInputModule,
