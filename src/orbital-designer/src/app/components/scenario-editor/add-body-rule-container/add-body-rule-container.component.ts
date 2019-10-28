@@ -9,13 +9,6 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class AddBodyRuleContainerComponent implements OnInit {
   @Output() bodyRulesOutput: EventEmitter<BodyRule[]>;
-  @Input()
-  set saveBodyRules(val: boolean) {
-    if (val) {
-      this.logger.debug('Saving body rules', this.bodyRulesProp);
-      this.bodyRulesOutput.emit(this.bodyRulesProp);
-    }
-  }
 
   shouldIgnoreBodyRule = false;
   bodyRulesProp: BodyRule[];
@@ -33,6 +26,17 @@ export class AddBodyRuleContainerComponent implements OnInit {
   @Input()
   set bodyRules(bodyRule: BodyRule[]) {
     this.bodyRulesProp = bodyRule;
+  }
+
+  /**
+   * Saves the body rules
+   */
+  @Input()
+  set saveBodyRules(val: boolean) {
+    if (val) {
+      this.logger.debug('Saving body rules', this.bodyRulesProp);
+      this.bodyRulesOutput.emit(this.bodyRulesProp);
+    }
   }
 
   /**
