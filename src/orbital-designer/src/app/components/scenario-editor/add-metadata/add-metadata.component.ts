@@ -11,9 +11,11 @@ export class AddMetadataComponent implements OnInit {
   @Input() saveStatus: boolean;
 
   @Output() metadataOutput: EventEmitter<Metadata>;
-  @Output() isValid: boolean;
+  @Output() isValid: EventEmitter<boolean>;
+
+
   constructor() {
-    this.isValid = true;
+    this.isValid = new EventEmitter<boolean>();
     this.metadataOutput = new EventEmitter<Metadata>();
   }
 
