@@ -10,7 +10,7 @@
     <p class="description">Add New Body Match Rule</p>
     <mat-checkbox (change)="this.shouldIgnoreBodyRule = $event.checked">Ignore Body Rule</mat-checkbox>
     <app-add-body-rule [shouldDisable]="this.shouldIgnoreBodyRule" (bodyRuleOutput)="addBodyRule($event)" [bodyRules]="this.bodyRules"></app-add-body-rule>
-    <div *ngIf="this.bodyRulesProp.length">
+    <div>
       <p class="description">Added Body Match Rules</p>
     </div>
     <div *ngIf="!this.bodyRulesProp.length">
