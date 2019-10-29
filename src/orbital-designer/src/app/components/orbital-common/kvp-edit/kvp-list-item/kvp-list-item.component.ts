@@ -10,10 +10,22 @@ export class KvpListItemComponent implements OnInit {
   // The incoming kvp to be displayed in the list
   @Input() kvp: KeyValue<string, string>;
 
-  get kvpValues() {
-    if (this.kvp.key !== null && this.kvp.value !== null) {
-      return this.kvp;
+  /**
+   * kvpKey key getter method including null/undefined checks
+   */
+  get kvpKey() {
+    if (this.kvp === null || this.kvp === undefined) {
+      return '';
     }
+    return this.kvp.key;
+  }
+
+  // kvpKey value getter method including null/undefined checks
+  get kvpValue() {
+    if (this.kvp === null || this.kvp === undefined) {
+      return '';
+    }
+    return this.kvp.value;
   }
 
   // The kvp to be deleted by the parent
@@ -27,7 +39,7 @@ export class KvpListItemComponent implements OnInit {
    * Emits a removes event with the KeyValue for the parent to remove
    */
   onRemove() {
-    this.removeKvp.emit(this.kvpValues);
+    this.removeKvp.emit(this.kvp);
   }
 
   ngOnInit() {}
