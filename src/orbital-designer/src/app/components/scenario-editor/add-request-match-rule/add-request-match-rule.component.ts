@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, Optional } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { NGXLogger } from 'ngx-logger';
 
@@ -8,7 +8,7 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./add-request-match-rule.component.scss']
 })
 export class AddRequestMatchRuleComponent implements OnInit {
-  @Input() requestMatchRule: RequestMatchRule;
+  @Optional() @Input() requestMatchRule: RequestMatchRule;
   @Input() saveStatus: boolean;
   @Output() isValid = true;
   @Output() requestMatchRuleOutput: RequestMatchRule;
