@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { LoggerTestingModule } from 'ngx-logger/testing';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule.component';
+import { MatExpansionModule, MatFormFieldModule, MatInputModule,
+  MatSelectModule, MatCardModule, MatDividerModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -8,7 +12,17 @@ describe('AddRequestMatchRuleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddRequestMatchRuleComponent ]
+      declarations: [ AddRequestMatchRuleComponent ],
+      imports: [ LoggerTestingModule,
+        MatExpansionModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatCardModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        LoggerTestingModule,
+        MatDividerModule ]
     })
     .compileComponents();
   }));
