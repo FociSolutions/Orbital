@@ -10,6 +10,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRule: RequestMatchRule;
   @Input() saveStatus: boolean;
   @Output() isValid = true;
+  @Output() requestMatchRuleOutput: RequestMatchRule;
 
   panelExpanded: boolean;
   constructor() {}
