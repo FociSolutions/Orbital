@@ -36,4 +36,10 @@ describe('AddRequestMatchRuleComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('add-request-match-rule.cannotClose', () => {
+    it('should initialize the component to a valid save status and can close accordion', () => {
+      expect(component.cannotClose()).toBe(false);
+    });
+  });
 });

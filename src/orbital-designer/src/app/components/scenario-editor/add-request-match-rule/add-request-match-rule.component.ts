@@ -22,7 +22,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
   /**
    * Checks if the panel is valid; if it is not, then it will not allow the panel to close
    */
-  canClose() {
+  cannotClose() {
     this.logger.debug('User clicked to close panel');
     return !this.isValid;
   }
