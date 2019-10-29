@@ -3,9 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddMetadataComponent } from './add-metadata.component';
 import { MatExpansionModule, MatFormFieldModule, MatInputModule, MatSelectModule,
   MatCardModule, MatIconModule, MatDividerModule, MatCheckboxModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { BrowserModule } from '@angular/platform-browser';
+import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 
 describe('AddMetadataComponent', () => {
   let component: AddMetadataComponent;
@@ -20,7 +22,7 @@ describe('AddMetadataComponent', () => {
         MatSelectModule,
         MatCardModule,
         MatIconModule,
-        FormsModule,
+        OrbitalCommonModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
         MatDividerModule,

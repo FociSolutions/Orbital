@@ -8,19 +8,17 @@
       </mat-expansion-panel-header>
       <mat-form-field class="fullwidth">
           <input
-            [ngModel]="metadata.title"
+            [(ngModel)]="this.metadataTitle"
             matInput
             placeholder="Name"
-            formControlName="name"
           />
         </mat-form-field>
         <br />
         <mat-form-field class="fullwidth">
           <input
-            [ngModel]="metadata.description"
+            [(ngModel)]="this.metadataDescription"
             matInput
             placeholder="Description"
-            formControlName="description"
           />
         </mat-form-field>
     </mat-expansion-panel>
