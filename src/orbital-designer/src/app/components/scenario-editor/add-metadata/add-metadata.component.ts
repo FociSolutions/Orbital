@@ -12,7 +12,10 @@ export class AddMetadataComponent implements OnInit {
 
   @Output() metadataOutput: EventEmitter<Metadata>;
   @Output() isValid: boolean;
-  constructor() { }
+  constructor() {
+    this.isValid = true;
+    this.metadataOutput = new EventEmitter<Metadata>();
+  }
 
   ngOnInit() {
   }
