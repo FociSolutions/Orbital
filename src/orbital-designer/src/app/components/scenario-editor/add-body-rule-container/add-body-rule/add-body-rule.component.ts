@@ -34,7 +34,6 @@ export class AddBodyRuleComponent implements OnInit {
         rule: this.tryParseJSON(this.bodyValue)
       } as unknown as BodyRule;
 
-      this.bodyRules.push(bodyRule);
       this.bodyType = null;
       this.bodyValue = '';
       this.logger.debug('AddBodyRule: emitted body rule ', bodyRule);
