@@ -9,12 +9,19 @@ import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/reques
 export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRule: RequestMatchRule;
   @Input() saveStatus: boolean;
-  @Output() isValid: boolean;
+  @Output() isValid = true;
 
   panelExpanded: boolean;
   constructor() {}
 
   ngOnInit() {
+  }
+
+  /**
+   * Checks if the panel is valid; if it is not, then it will not allow the panel to close
+   */
+  canClose() {
+    return !this.isValid;
   }
 
 }
