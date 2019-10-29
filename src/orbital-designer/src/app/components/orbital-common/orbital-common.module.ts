@@ -72,7 +72,8 @@ import { KvpListItemComponent } from './kvp-edit/kvp-list-item/kvp-list-item.com
     ShuttleListComponent,
     DialogBoxComponent,
     KvpEditComponent,
-    KvpAddComponent
+    KvpAddComponent,
+    KvpListItemComponent
   ]
 })
 export class OrbitalCommonModule {}
