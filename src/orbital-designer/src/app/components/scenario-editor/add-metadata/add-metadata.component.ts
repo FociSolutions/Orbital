@@ -23,7 +23,12 @@ export class AddMetadataComponent implements OnInit {
   ngOnInit() {
   }
 
-  @Input() set(metadata: Metadata) {
+  /**
+   * Sets the metadata
+   * @param metadata The metadata to set
+   */
+  @Input()
+  set metadata(metadata: Metadata) {
     this.metadataTitle = metadata.title;
     this.metadataDescription = metadata.description;
   }
