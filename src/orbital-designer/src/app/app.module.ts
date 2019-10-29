@@ -36,7 +36,10 @@ import { ScenarioEditorComponent } from './components/scenario-editor/scenario-e
 import { MatExpansionModule, MatChipsModule } from '@angular/material';
 import { ScenarioCardComponent } from './components/scenario-card/scenario-card.component';
 import { NoSearchResultsViewComponent } from './components/no-search-results-view/no-search-results-view.component';
-import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule/add-body-rule.component';
+import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule/add-body-rule.component';
+import { AddBodyRuleContainerComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule-container.component';
+// tslint:disable-next-line: max-line-length
+import { BodyRuleListItemComponent } from './components/scenario-editor/add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,9 @@ import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule
     ScenarioEditorComponent,
     ScenarioCardComponent,
     NoSearchResultsViewComponent,
-    AddBodyRuleComponent
+    AddBodyRuleComponent,
+    AddBodyRuleContainerComponent,
+    BodyRuleListItemComponent
   ],
   imports: [
     BrowserModule,

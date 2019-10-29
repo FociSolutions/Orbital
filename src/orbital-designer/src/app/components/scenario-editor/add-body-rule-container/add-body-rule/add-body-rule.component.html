@@ -21,8 +21,8 @@
             </div>
           </mat-form-field>
         </div>
-        <div>
-          <button mat-mini-fab color="primary" (click)="addBodyRule()"><mat-icon>add</mat-icon></button>
+        <div id="add-button-container">
+          <button mat-mini-fab color="primary" (click)="addBodyRule()" [disabled]="this.shouldDisable"><mat-icon>add</mat-icon></button>
         </div>
       </div>
     </form>
