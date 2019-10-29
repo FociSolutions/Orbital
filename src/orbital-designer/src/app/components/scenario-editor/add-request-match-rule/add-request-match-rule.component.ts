@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 
 @Component({
   selector: 'app-add-request-match-rule',
@@ -6,8 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-request-match-rule.component.scss']
 })
 export class AddRequestMatchRuleComponent implements OnInit {
+  @Input() requestMatchRule: RequestMatchRule;
+  @Input() saveStatus: boolean;
+  @Output() isValid: boolean;
 
-  constructor() { }
+  panelExpanded: boolean;
+  constructor() {}
 
   ngOnInit() {
   }
