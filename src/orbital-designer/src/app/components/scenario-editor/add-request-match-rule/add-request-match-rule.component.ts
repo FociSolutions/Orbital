@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, Optional } from '@angular/core';
+import { Component, OnInit, Input, Output, Optional, EventEmitter } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { NGXLogger } from 'ngx-logger';
 
@@ -9,12 +9,15 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class AddRequestMatchRuleComponent implements OnInit {
   @Optional() @Input() requestMatchRule: RequestMatchRule;
-  @Input() saveStatus: boolean;
-  @Output() isValid = true;
-  @Output() requestMatchRuleOutput: RequestMatchRule;
+  @Input() saveStatus = true;
+  @Output() isValid: EventEmitter<boolean>;
+  @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
 
   panelExpanded: boolean;
-  constructor(private logger: NGXLogger) {}
+  constructor(private logger: NGXLogger) {
+    this.isValid = new EventEmitter<boolean>();
+    this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
+  }
 
   ngOnInit() {
   }
@@ -24,7 +27,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
    */
   cannotClose() {
     this.logger.debug('User clicked to close panel');
-    return !this.isValid;
+    return !this.saveStatus;
   }
 
 }
