@@ -50,10 +50,6 @@ describe('KvpListItemComponent', () => {
   });
 
   describe('KvpListItemComponent.getKvpValue', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
     it('Should return empty value is kvp is null', () => {
       component.kvp = null;
       expect(component.kvpValue).toEqual('');
@@ -75,9 +71,6 @@ describe('KvpListItemComponent', () => {
   });
 
   describe('KvpListItemComponent.onRemove()', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
     it('Should emit a remove event', () => {
       const randomKey: string = faker.lorem.sentence();
       const randomValue: string = faker.lorem.sentence();

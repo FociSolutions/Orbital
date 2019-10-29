@@ -14,26 +14,28 @@ export class KvpListItemComponent implements OnInit {
    * kvpKey key getter method including null/undefined checks
    */
   get kvpKey() {
-    if (this.kvp === null || this.kvp === undefined) {
+    if (!this.kvp) {
       return '';
     }
     return this.kvp.key;
   }
 
-  // kvpKey value getter method including null/undefined checks
+  /**
+   *  kvpKey value getter method including null/undefined checks
+   */
   get kvpValue() {
-    if (this.kvp === null || this.kvp === undefined) {
+    if (!this.kvp) {
       return '';
     }
     return this.kvp.value;
   }
 
-  // The kvp to be deleted by the parent
+  /**
+   * The kvp to be deleted by the parent
+   */
   @Output() removeKvp: EventEmitter<
     KeyValue<string, string>
   > = new EventEmitter<KeyValue<string, string>>();
-
-  constructor() {}
 
   /**
    * Emits a removes event with the KeyValue for the parent to remove
