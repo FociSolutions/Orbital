@@ -33,4 +33,10 @@ export class AddMetadataComponent implements OnInit {
     this.metadataDescription = metadata.description;
   }
 
+  /**
+   * Checks if the form is valid (title is required)
+   */
+  isFormValid() {
+    return this.metadataTitle.length && this.metadataTitle.length <= 50 && this.metadataDescription.length <= 500;
+  }
 }
