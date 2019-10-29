@@ -40,7 +40,6 @@ import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule
 import { AddBodyRuleContainerComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule-container.component';
 // tslint:disable-next-line: max-line-length
 import { BodyRuleListItemComponent } from './components/scenario-editor/add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
-import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddMetadataComponent } from './components/scenario-editor/add-metadata/add-metadata.component';
 
 @NgModule({
@@ -69,7 +68,6 @@ import { AddMetadataComponent } from './components/scenario-editor/add-metadata/
     AddBodyRuleComponent,
     AddBodyRuleContainerComponent,
     BodyRuleListItemComponent,
-    AddRequestMatchRuleComponent,
     AddMetadataComponent
   ],
   imports: [
