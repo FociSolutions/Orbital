@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 
 describe('AddMetadataComponent', () => {
   let component: AddMetadataComponent;
@@ -39,5 +41,16 @@ describe('AddMetadataComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('AddMetadataComponent', () => {
+    it('should set the setter', () => {
+      const testMockDef = new MockDefinition();
+      testMockDef.metadata = {title: 'test title', description: 'test description'} as unknown as Metadata;
+      component.metadata = testMockDef.metadata;
+
+      expect(component.metadataTitle).toBe('test title');
+      expect(component.metadataDescription).toBe('test description');
+    });
   });
 });
