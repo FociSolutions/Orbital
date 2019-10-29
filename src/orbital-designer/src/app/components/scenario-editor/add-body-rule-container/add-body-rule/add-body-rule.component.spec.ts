@@ -59,63 +59,10 @@ describe('AddBodyRuleComponent', () => {
           const Actual = component.bodyRules;
           expect(Expected).toEqual(Actual);
         });
-
-        it('should add a valid empty json rule to an empty list of rules', () => {
-          component.bodyValue = '{}';
-          component.bodyType = BodyRuleType.BodyEquality;
-
-          const Expected = [{type: BodyRuleType.BodyEquality, rule: {}}] as BodyRule[];
-          component.addBodyRule();
-          const Actual = component.bodyRules;
-          expect(Expected).toEqual(Actual);
-        });
-
-        it('should add a valid non-empty json rule to an empty list of rules', () => {
-          const fakeBodyContents = getFakeBodyContents();
-          component.bodyValue = JSON.stringify(fakeBodyContents);
-          component.bodyType = BodyRuleType.BodyEquality;
-          component.addBodyRule();
-
-          const Expected = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-          const Actual = component.bodyRules;
-          expect(Expected).toEqual(Actual);
-        });
-
-        it('should add a valid rule to a non-empty list of rules which are not the same as the added rule', () => {
-          const fakeBodyContentsFirst = getFakeBodyContents();
-          const fakeBodyContentsSecond = getFakeBodyContents();
-          component.bodyValue = JSON.stringify(fakeBodyContentsFirst);
-          component.bodyType = BodyRuleType.BodyEquality;
-          component.addBodyRule();
-
-          component.bodyValue = JSON.stringify(fakeBodyContentsSecond);
-          component.bodyType = BodyRuleType.BodyContains;
-          component.addBodyRule();
-
-          const Expected = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContentsFirst},
-                            {type: BodyRuleType.BodyContains, rule: fakeBodyContentsSecond}] as BodyRule[];
-          const Actual = component.bodyRules;
-          expect(Expected).toEqual(Actual);
-        });
       });
     });
 
     describe('add invalid rule(s)', () => {
-      describe('invalid rule', () => {
-        it('should not add a rule if it already exists', () => {
-          const fakeBodyContents = getFakeBodyContents();
-          component.bodyValue = JSON.stringify(fakeBodyContents);
-          component.bodyType = BodyRuleType.BodyEquality;
-          component.addBodyRule();
-
-          component.bodyValue = JSON.stringify(fakeBodyContents);
-          component.bodyType = BodyRuleType.BodyEquality;
-          component.addBodyRule();
-
-          expect(component.errorMessage).toEqual('The rule already exists');
-        });
-      });
-
       describe('invalid json', () => {
         it('should not add a rule when an invalid rule is added to an empty list of rules', () => {
           component.bodyValue = 'invalid';
