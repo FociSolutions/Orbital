@@ -1,1 +1,17 @@
-<p>kvp-edit works!</p>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title>
+        Header Match Rules
+      </mat-panel-title>
+      <mat-divider class="divider-padding"></mat-divider>
+    </mat-expansion-panel-header>
+    <p class="description">Add New Header Match Rule</p>
+    <app-kvp-add (kvp)="addKvpToMap($event)"></app-kvp-add>
+
+    <mat-divider class="divider-padding"></mat-divider>
+    <div>
+      <p class="description">Added Header Match Rules</p>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

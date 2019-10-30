@@ -22,6 +22,7 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { KvpEditComponent } from './kvp-edit/kvp-edit.component';
 import { KvpAddComponent } from './kvp-edit/kvp-add/kvp-add.component';
 import { KvpListItemComponent } from './kvp-edit/kvp-list-item/kvp-list-item.component';
+import { MatExpansionModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { KvpListItemComponent } from './kvp-edit/kvp-list-item/kvp-list-item.com
     MatListModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule
   ],
   exports: [
     TextInputComponent,
@@ -73,7 +75,8 @@ import { KvpListItemComponent } from './kvp-edit/kvp-list-item/kvp-list-item.com
     DialogBoxComponent,
     KvpEditComponent,
     KvpAddComponent,
-    KvpListItemComponent
+    KvpListItemComponent,
+    MatExpansionModule
   ]
 })
 export class OrbitalCommonModule {}
