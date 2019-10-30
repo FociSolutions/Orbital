@@ -88,5 +88,13 @@ describe('AddMetadataComponent', () => {
       component.validate();
       expect(component.errorMessage).toBe('Metadata description can only be 500 characters long');
     });
+
+    it('should not show an error if the description field is empty', () => {
+      const testMockDef = new MockDefinition();
+      testMockDef.metadata = {title: faker.random.word(), description: ''} as unknown as Metadata;
+      component.metadata = testMockDef.metadata;
+      component.validate();
+      expect(component.errorMessage).toBe('');
+    });
   });
 });
