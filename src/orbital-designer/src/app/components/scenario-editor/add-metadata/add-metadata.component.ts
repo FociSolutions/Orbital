@@ -38,7 +38,7 @@ export class AddMetadataComponent implements OnInit {
   /**
    * Checks if the form is valid (title is required)
    */
-  getErrorMessage() {
+  validate() {
     this.logger.debug('Called validation for metadata card entry point');
     if (this.metadataTitle.length === 0) {
       this.errorMessage = 'Metadata title is required';
@@ -58,6 +58,6 @@ export class AddMetadataComponent implements OnInit {
    * Checks if the metadata field has an error
    */
   metadataHasError() {
-    return !this.getErrorMessage();
+    return !this.validate();
   }
 }

@@ -11,7 +11,7 @@
             [(ngModel)]="this.metadataTitle"
             matInput
             placeholder="Name"
-            (keyup)="getErrorMessage()"
+            (keyup)="validate()"
           />
         </mat-form-field>
         <mat-form-field class="fullwidth">
@@ -19,7 +19,7 @@
             [(ngModel)]="this.metadataDescription"
             matInput
             placeholder="Description"
-            (keyup)="getErrorMessage()"
+            (keyup)="validate()"
           />
         </mat-form-field>
         <div class="error-message" *ngIf="metadataHasError()">

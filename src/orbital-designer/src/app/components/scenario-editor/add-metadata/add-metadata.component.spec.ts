@@ -56,12 +56,12 @@ describe('AddMetadataComponent', () => {
     });
   });
 
-  describe('AddMetadataComponent.getErrorMessage', () => {
+  describe('AddMetadataComponent.validate', () => {
     it('should show an error if the title field is empty', () => {
       const testMockDef = new MockDefinition();
       testMockDef.metadata = {title: '', description: faker.random.word()} as unknown as Metadata;
       component.metadata = testMockDef.metadata;
-      component.getErrorMessage();
+      component.validate();
       expect(component.errorMessage).toBe('Metadata title is required');
     });
 
@@ -69,7 +69,7 @@ describe('AddMetadataComponent', () => {
       const testMockDef = new MockDefinition();
       testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
       component.metadata = testMockDef.metadata;
-      component.getErrorMessage();
+      component.validate();
       expect(component.errorMessage).toBe('');
     });
 
@@ -77,7 +77,7 @@ describe('AddMetadataComponent', () => {
       const testMockDef = new MockDefinition();
       testMockDef.metadata = {title: 'Z'.repeat(51), description: faker.random.word()} as unknown as Metadata;
       component.metadata = testMockDef.metadata;
-      component.getErrorMessage();
+      component.validate();
       expect(component.errorMessage).toBe('Metadata title max length exceeded (50 characters)');
     });
 
@@ -85,7 +85,7 @@ describe('AddMetadataComponent', () => {
       const testMockDef = new MockDefinition();
       testMockDef.metadata = {title: faker.random.word(), description: 'Z'.repeat(501)} as unknown as Metadata;
       component.metadata = testMockDef.metadata;
-      component.getErrorMessage();
+      component.validate();
       expect(component.errorMessage).toBe('Metadata description can only be 500 characters long');
     });
   });
