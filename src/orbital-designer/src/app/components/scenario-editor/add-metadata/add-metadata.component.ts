@@ -39,9 +39,6 @@ export class AddMetadataComponent implements OnInit {
   constructor(private logger: NGXLogger) {
     this.isValid = new EventEmitter<boolean>();
     this.metadataOutput = new EventEmitter<Metadata>();
-
-    this.metadataTitle = '';
-    this.metadataDescription = '';
   }
 
   ngOnInit() {
