@@ -105,4 +105,46 @@ describe('AddMetadataComponent', () => {
       expect(component.errorMessage).toBe('');
     });
   });
+
+  describe('AddMetadataComponent.saveStatus setter', () => {
+    it('should emit the metadata when saved', () => {
+      const testMockDef = new MockDefinition();
+      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
+      component.metadata = testMockDef.metadata;
+
+      spyOn(component.metadataOutput, 'emit');
+      component.saveStatus = true;
+      expect(component.metadataOutput.emit).toHaveBeenCalledWith(testMockDef.metadata);
+    });
+
+    it('should emit the isValid boolean when saved', () => {
+      const testMockDef = new MockDefinition();
+      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
+      component.metadata = testMockDef.metadata;
+
+      spyOn(component.isValid, 'emit');
+      component.saveStatus = true;
+      expect(component.isValid.emit).toHaveBeenCalledWith(true);
+    });
+
+    it('should not emit the isValid boolean when not saved', () => {
+      const testMockDef = new MockDefinition();
+      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
+      component.metadata = testMockDef.metadata;
+
+      spyOn(component.isValid, 'emit');
+      component.saveStatus = false;
+      expect(component.isValid.emit).not.toHaveBeenCalled();
+    });
+
+    it('should not emit the metadata when not saved', () => {
+      const testMockDef = new MockDefinition();
+      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
+      component.metadata = testMockDef.metadata;
+
+      spyOn(component.metadataOutput, 'emit');
+      component.saveStatus = false;
+      expect(component.metadataOutput.emit).not.toHaveBeenCalled();
+    });
+  });
 });
