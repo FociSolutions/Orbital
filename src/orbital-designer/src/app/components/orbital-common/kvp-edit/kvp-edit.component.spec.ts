@@ -56,6 +56,34 @@ describe('KvpEditComponent', () => {
     });
   });
 
+  describe('KvpEditComponent.deleteKvpFromMap', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('Should return a map without the deleted kvp', () => {
+      const kvpToAdd: KeyValue<string, string> = {
+        key: faker.lorem.sentence(),
+        value: faker.lorem.sentence()
+      };
+
+      component.addKvpToMap(kvpToAdd);
+      component.deleteKvpFromMap(kvpToAdd);
+      expect(component.savedKvpMap.has(kvpToAdd.key)).toBe(false);
+    });
+
+    it('Should not be able to delete kvp if map if kvp is empty/null', () => {
+      const kvpToAdd: KeyValue<string, string> = {
+        key: null,
+        value: ''
+      };
+
+      component.addKvpToMap(kvpToAdd);
+      component.deleteKvpFromMap(kvpToAdd);
+      expect(component.savedKvpMap.has(kvpToAdd.key)).toBe(false);
+    });
+  });
+
   describe('KvpEditComponent.kvpMap', () => {
     beforeEach(() => {
       fixture.detectChanges();

@@ -17,7 +17,10 @@
       No rules Added
     </div>
     <div *ngFor="let headerRule of savedKvpMap | keyvalue">
-      <app-kvp-list-item [kvp]="headerRule"></app-kvp-list-item>
+      <app-kvp-list-item
+        [kvp]="headerRule"
+        (removeKvp)="deleteKvpFromMap($event)"
+      ></app-kvp-list-item>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
