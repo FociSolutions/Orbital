@@ -15,18 +15,6 @@ export class KvpEditComponent implements OnInit {
   @Input() listKvpTitle: string;
 
   /**
-   * This setter calls the emitter for the savedkvpmap if shouldSave is true
-   */
-  @Input() set onSave(shouldSave: boolean) {
-    if (shouldSave) {
-      this.savedKvpMapEmitter.emit(this.savedKvpMap);
-      this.logger.debug('KVP map has been saved', this.savedKvpMap);
-    } else {
-      this.logger.debug('KVP map has not been saved');
-    }
-  }
-
-  /**
    * The new kvp map with the new kvp added in
    */
   savedKvpMap: Map<string, string>;
@@ -41,6 +29,17 @@ export class KvpEditComponent implements OnInit {
   ngOnInit() {
     this.savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
     this.kvpMap = new Map<string, string>();
+  }
+
+  /**
+   * This setter calls the emitter for the savedkvpmap if shouldSave is true
+   */
+  @Input()
+  set onSave(shouldSave: boolean) {
+    if (shouldSave) {
+      this.savedKvpMapEmitter.emit(this.savedKvpMap);
+      this.logger.debug('KVP map has been saved', this.savedKvpMap);
+    }
   }
 
   /**

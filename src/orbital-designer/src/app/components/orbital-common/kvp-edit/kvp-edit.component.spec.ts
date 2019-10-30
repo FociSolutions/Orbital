@@ -98,10 +98,6 @@ describe('KvpEditComponent', () => {
   });
 
   describe('KvpEditComponent.onSave', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
     it('Should emit the savedkvp map is onSave is set to true', () => {
       const newKvpMap: Map<string, string> = new Map<string, string>();
       newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
