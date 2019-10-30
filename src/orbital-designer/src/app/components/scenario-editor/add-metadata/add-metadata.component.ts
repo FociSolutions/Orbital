@@ -16,6 +16,16 @@ export class AddMetadataComponent implements OnInit {
   metadataTitleProp = '';
   metadataDescriptionProp = '';
 
+  errorMessage = '';
+
+  constructor(private logger: NGXLogger) {
+    this.isValid = new EventEmitter<boolean>();
+    this.metadataOutput = new EventEmitter<Metadata>();
+  }
+
+  ngOnInit() {
+  }
+
   /**
    * Sets the metadata title
    */
@@ -23,6 +33,14 @@ export class AddMetadataComponent implements OnInit {
     this.validate();
     this.logger.debug('Set the metadata title', metadataTitle);
     this.metadataTitleProp = metadataTitle;
+  }
+
+  /**
+   * Gets the metadata title
+   */
+  @Input()
+  get metadataTitle() {
+    return this.metadataTitleProp;
   }
 
   /**
@@ -34,14 +52,12 @@ export class AddMetadataComponent implements OnInit {
     this.metadataDescriptionProp = metadataDescription;
   }
 
-  errorMessage = '';
-
-  constructor(private logger: NGXLogger) {
-    this.isValid = new EventEmitter<boolean>();
-    this.metadataOutput = new EventEmitter<Metadata>();
-  }
-
-  ngOnInit() {
+  /**
+   * Gets the metadata description
+   */
+  @Input()
+  get metadataDescription() {
+    return this.metadataDescriptionProp;
   }
 
   /**
@@ -59,11 +75,11 @@ export class AddMetadataComponent implements OnInit {
    */
   validate() {
     this.logger.debug('Called validation for metadata card entry point');
-    if (!this.metadataTitleProp || this.metadataTitleProp.length === 0) {
+    if (!this.metadataTitle || this.metadataTitle.length === 0) {
       this.errorMessage = 'Metadata title is required';
-    } else if (!this.metadataTitleProp || this.metadataTitleProp.length > 50) {
+    } else if (!this.metadataTitle || this.metadataTitle.length > 50) {
       this.errorMessage = 'Metadata title max length exceeded (50 characters)';
-    } else if (!this.metadataDescriptionProp || this.metadataDescriptionProp.length > 500) {
+    } else if (!this.metadataDescription || this.metadataDescription.length > 500) {
       this.errorMessage = 'Metadata description can only be 500 characters long';
     } else {
       this.errorMessage = '';
