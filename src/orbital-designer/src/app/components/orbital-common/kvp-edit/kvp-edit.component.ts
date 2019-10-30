@@ -9,13 +9,6 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class KvpEditComponent implements OnInit {
   /**
-   * The existing KVP map
-   */
-  @Input()
-  set kvpMap(savedKvpMap: Map<string, string>) {
-    this.savedKvpMap = savedKvpMap;
-  }
-  /**
    * The add and list tiles to be added in the template
    */
   @Input() addKvpTitle: string;
@@ -24,16 +17,27 @@ export class KvpEditComponent implements OnInit {
   /**
    * The new kvp map with the new kvp added in
    */
-  savedKvpMap: Map<string, string> = new Map<string, string>();
+  savedKvpMap: Map<string, string>;
 
   /**
    * The event emitter for the savedKvpMap
    */
-  @Output() savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
+  @Output() savedKvpMapEmitter;
 
   constructor(private logger: NGXLogger) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
+    this.savedKvpMap = new Map<string, string>();
+  }
+
+  /**
+   * The existing KVP map
+   */
+  @Input()
+  set kvpMap(savedKvpMap: Map<string, string>) {
+    this.savedKvpMap = savedKvpMap;
+  }
 
   /**
    * This method listens to the event emitter from the child component and adds the KeyValue pair into the map
