@@ -8,8 +8,6 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./add-metadata.component.scss']
 })
 export class AddMetadataComponent implements OnInit {
-  @Input() saveStatus: boolean;
-
   @Output() metadataOutput: EventEmitter<Metadata>;
   @Output() isValid: EventEmitter<boolean>;
 
@@ -71,21 +69,38 @@ export class AddMetadataComponent implements OnInit {
   }
 
   /**
+   * Emits the form validity and the metadata output when the form is saved
+   */
+  @Input()
+  set saveStatus(shouldSave: boolean) {
+    if (shouldSave) {
+      this.logger.debug('Received event to save metadata card');
+      this.isValid.emit(!this.getErrorMessage());
+      const metadataToOutput = {title: this.metadataTitle, description: this.metadataDescription} as Metadata;
+      this.metadataOutput.emit(metadataToOutput);
+      this.logger.debug('Is the metadata card valid?', this.isValid);
+      this.logger.debug('Metadata output from metadata card', metadataToOutput);
+    } else {
+      this.logger.debug('Recieved event to not save metadata card');
+    }
+  }
+
+  /**
    * Checks if the form is valid (title is required)
    */
   validate() {
     this.logger.debug('Called validation for metadata card entry point');
     if (!this.metadataTitle || this.metadataTitle.length === 0) {
       this.errorMessage = 'Metadata title is required';
+      return true;
     } else if (this.metadataTitle.length > 50) {
       this.errorMessage = 'Metadata title max length exceeded (50 characters)';
     } else if (!!this.metadataDescription && this.metadataDescription.length > 500) {
       this.errorMessage = 'Metadata description can only be 500 characters long';
+      return true;
     } else {
       this.errorMessage = '';
     }
-
-    this.logger.debug('Called validation for metadata card', this.errorMessage);
   }
 
   /**
