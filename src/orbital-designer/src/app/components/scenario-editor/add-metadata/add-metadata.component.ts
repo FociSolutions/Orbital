@@ -56,7 +56,6 @@ export class AddMetadataComponent implements OnInit {
 
   /**
    * Checks if the metadata field has an error
-   * @param event The event that is fired when checking
    */
   metadataHasError() {
     return !this.getErrorMessage();
