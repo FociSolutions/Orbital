@@ -96,4 +96,30 @@ describe('KvpEditComponent', () => {
       expect(component.savedKvpMap).toEqual(newKvpMap);
     });
   });
+
+  describe('KvpEditComponent.onSave', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('Should emit the savedkvp map is onSave is set to true', () => {
+      const newKvpMap: Map<string, string> = new Map<string, string>();
+      newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
+      spyOn(component.savedKvpMapEmitter, 'emit');
+      component.onSave = true;
+
+      expect(component.savedKvpMapEmitter.emit).toHaveBeenCalledWith(
+        component.savedKvpMap
+      );
+    });
+
+    it('Should not emit the savedkvp map is onSave is set to false', () => {
+      const newKvpMap: Map<string, string> = new Map<string, string>();
+      newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
+      spyOn(component.savedKvpMapEmitter, 'emit');
+      component.onSave = false;
+
+      expect(component.savedKvpMapEmitter.emit).not.toHaveBeenCalledWith();
+    });
+  });
 });

@@ -14,6 +14,13 @@ export class KvpEditComponent implements OnInit {
   @Input() addKvpTitle: string;
   @Input() listKvpTitle: string;
 
+  @Input() set onSave(shouldSave: boolean) {
+    if (shouldSave) {
+      this.savedKvpMapEmitter.emit(this.savedKvpMap);
+      this.logger.debug('KVP map has been saved', this.savedKvpMap);
+    }
+  }
+
   /**
    * The new kvp map with the new kvp added in
    */
