@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-add-metadata',
@@ -14,8 +15,9 @@ export class AddMetadataComponent implements OnInit {
 
   metadataTitle = '';
   metadataDescription = '';
+  errorMessage = '';
 
-  constructor() {
+  constructor(private logger: NGXLogger) {
     this.isValid = new EventEmitter<boolean>();
     this.metadataOutput = new EventEmitter<Metadata>();
   }
@@ -36,7 +38,27 @@ export class AddMetadataComponent implements OnInit {
   /**
    * Checks if the form is valid (title is required)
    */
-  isFormValid() {
-    return this.metadataTitle.length && this.metadataTitle.length <= 50 && this.metadataDescription.length <= 500;
+  getErrorMessage() {
+    this.logger.debug('Called validation for metadata card entry point');
+    if (this.metadataTitle.length === 0) {
+      this.errorMessage = 'Metadata title is required';
+    } else if (this.metadataTitle.length > 50) {
+      this.errorMessage = 'Metadata title max length exceeded (50 characters)';
+    } else if (this.metadataDescription.length > 500) {
+      this.errorMessage = 'Metadata description can only be 500 characters long';
+    } else {
+      this.errorMessage = '';
+      return false;
+    }
+
+    this.logger.debug('Called validation for metadata card', this.errorMessage);
+  }
+
+  /**
+   * Checks if the metadata field has an error
+   * @param event The event that is fired when checking
+   */
+  metadataHasError() {
+    return false !== this.getErrorMessage();
   }
 }

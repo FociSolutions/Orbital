@@ -28,7 +28,8 @@ describe('AddMetadataComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule,
         MatDividerModule,
-        MatCheckboxModule]
+        MatCheckboxModule,
+        LoggerTestingModule]
     })
     .compileComponents();
   }));
