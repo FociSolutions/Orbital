@@ -44,5 +44,28 @@ describe('KvpEditComponent', () => {
       component.addKvpToMap(kvpToAdd);
       expect(component.savedKvpMap.get(kvpToAdd.key)).toEqual(kvpToAdd.value);
     });
+
+    it('Should not add kvp to map if kvp is empty/null', () => {
+      const kvpToAdd: KeyValue<string, string> = {
+        key: null,
+        value: ''
+      };
+
+      component.addKvpToMap(kvpToAdd);
+      expect(component.savedKvpMap.has(kvpToAdd.key)).toBeFalsy();
+    });
+  });
+
+  describe('KvpEditComponent.kvpMap', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('Should set kvpMap a map with the new kvpmap values', () => {
+      const newKvpMap: Map<string, string> = new Map<string, string>();
+      newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
+      component.kvpMap = newKvpMap;
+      expect(component.savedKvpMap).toEqual(newKvpMap);
+    });
   });
 });

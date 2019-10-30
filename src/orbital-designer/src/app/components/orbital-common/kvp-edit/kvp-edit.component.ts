@@ -28,7 +28,7 @@ export class KvpEditComponent implements OnInit {
 
   ngOnInit() {
     this.savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
-    this.savedKvpMap = new Map<string, string>();
+    this.kvpMap = new Map<string, string>();
   }
 
   /**
@@ -44,7 +44,9 @@ export class KvpEditComponent implements OnInit {
    * @param kvp The KeyValue pair being taken in from the child component to be added
    */
   addKvpToMap(kvpToAdd: KeyValue<string, string>) {
-    this.savedKvpMap.set(kvpToAdd.key, kvpToAdd.value);
-    this.logger.debug('Adding Header Rule to Map', kvpToAdd);
+    if (!!kvpToAdd && !!kvpToAdd.key && !!kvpToAdd.value) {
+      this.savedKvpMap.set(kvpToAdd.key, kvpToAdd.value);
+      this.logger.debug('Adding Header Rule to Map', kvpToAdd);
+    }
   }
 }
