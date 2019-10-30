@@ -8,8 +8,8 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
   styleUrls: ['./scenario-editor.component.scss']
 })
 export class ScenarioEditorComponent implements OnInit {
-  headerMatchRuleTitle: string;
-  headerMatchRuleListTitle: string;
+  readonly headerMatchRuleTitle = 'Header Match Rule';
+  readonly headerMatchRuleListTitle = 'Header Rules';
   nameAndDescriptionFormGroup: FormGroup;
   name: FormControl;
   description: FormControl;
@@ -19,8 +19,6 @@ export class ScenarioEditorComponent implements OnInit {
   requestMatchRulesPanelExpanded: boolean;
 
   constructor(private router: Router) {
-    this.headerMatchRuleTitle = 'Header Rules';
-    this.headerMatchRuleListTitle = 'Header Rules';
     this.nameAndDescriptionFormGroup = new FormGroup({
       name: new FormControl(
         '',
