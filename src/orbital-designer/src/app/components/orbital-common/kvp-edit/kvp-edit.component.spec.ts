@@ -119,7 +119,7 @@ describe('KvpEditComponent', () => {
       spyOn(component.savedKvpMapEmitter, 'emit');
       component.onSave = false;
 
-      expect(component.savedKvpMapEmitter.emit).not.toHaveBeenCalledWith();
+      expect(component.savedKvpMapEmitter.emit).not.toHaveBeenCalled();
     });
   });
 });
