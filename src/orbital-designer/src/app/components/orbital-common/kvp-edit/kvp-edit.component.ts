@@ -11,8 +11,10 @@ export class KvpEditComponent implements OnInit {
   /**
    * The existing KVP map
    */
-  @Input() kvpMap: Map<string, string> = new Map<string, string>();
-
+  @Input()
+  set kvpMap(savedKvpMap: Map<string, string>) {
+    this.savedKvpMap = savedKvpMap;
+  }
   /**
    * The add and list tiles to be added in the template
    */
