@@ -13,5 +13,11 @@
     <div>
       <p class="description">Added Header Match Rules</p>
     </div>
+    <div *ngIf="!this.savedKvpMap.size">
+      No rules Added
+    </div>
+    <div *ngFor="let headerRule of savedKvpMap | keyvalue">
+      <app-kvp-list-item [kvp]="headerRule"></app-kvp-list-item>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>
