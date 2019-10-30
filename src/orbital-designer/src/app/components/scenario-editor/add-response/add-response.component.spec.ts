@@ -1,19 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AddResponseComponent } from './add-response.component';
-import {
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
-  MatCardModule,
-  MatIconModule,
-  MatDividerModule,
-  MatCheckboxModule
-} from '@angular/material';
-import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoggerTestingModule } from 'ngx-logger/testing/public_api';
+import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
@@ -22,19 +10,7 @@ describe('AddResponseComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
-      imports: [
-        MatExpansionModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatCardModule,
-        MatIconModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        LoggerTestingModule,
-        MatDividerModule,
-        MatCheckboxModule
-      ]
+      imports: [OrbitalCommonModule, BrowserAnimationsModule]
     }).compileComponents();
   }));
 
