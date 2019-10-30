@@ -29,6 +29,7 @@ export class AddMetadataComponent implements OnInit {
   /**
    * Sets the metadata title
    */
+  @Input()
   set metadataTitle(metadataTitle: string) {
     this.validate();
     this.logger.debug('Set the metadata title', metadataTitle);
@@ -38,7 +39,6 @@ export class AddMetadataComponent implements OnInit {
   /**
    * Gets the metadata title
    */
-  @Input()
   get metadataTitle() {
     return this.metadataTitleProp;
   }
@@ -46,6 +46,7 @@ export class AddMetadataComponent implements OnInit {
   /**
    * Sets the metadata description
    */
+  @Input()
   set metadataDescription(metadataDescription: string) {
     this.validate();
     this.logger.debug('Set the metadata description', metadataDescription);
@@ -55,7 +56,6 @@ export class AddMetadataComponent implements OnInit {
   /**
    * Gets the metadata description
    */
-  @Input()
   get metadataDescription() {
     return this.metadataDescriptionProp;
   }
