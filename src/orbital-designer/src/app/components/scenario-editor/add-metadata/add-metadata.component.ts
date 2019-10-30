@@ -80,8 +80,6 @@ export class AddMetadataComponent implements OnInit {
       this.metadataOutput.emit(metadataToOutput);
       this.logger.debug('Is the metadata card valid?', this.isValid);
       this.logger.debug('Metadata output from metadata card', metadataToOutput);
-    } else {
-      this.logger.debug('Recieved event to not save metadata card');
     }
   }
 
