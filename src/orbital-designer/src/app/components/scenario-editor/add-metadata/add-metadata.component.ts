@@ -79,7 +79,7 @@ export class AddMetadataComponent implements OnInit {
       this.errorMessage = 'Metadata title is required';
     } else if (this.metadataTitle.length > 50) {
       this.errorMessage = 'Metadata title max length exceeded (50 characters)';
-    } else if (this.metadataDescription.length > 500) {
+    } else if (!!this.metadataDescription && this.metadataDescription.length > 500) {
       this.errorMessage = 'Metadata description can only be 500 characters long';
     } else {
       this.errorMessage = '';

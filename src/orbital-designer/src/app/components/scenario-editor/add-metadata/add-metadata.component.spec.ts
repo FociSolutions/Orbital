@@ -96,5 +96,13 @@ describe('AddMetadataComponent', () => {
       component.validate();
       expect(component.errorMessage).toBe('');
     });
+
+    it('should not show an error if the description field is undefined', () => {
+      const testMockDef = new MockDefinition();
+      testMockDef.metadata = {title: faker.random.word(), description: undefined} as unknown as Metadata;
+      component.metadata = testMockDef.metadata;
+      component.validate();
+      expect(component.errorMessage).toBe('');
+    });
   });
 });
