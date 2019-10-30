@@ -51,8 +51,8 @@ describe('AddMetadataComponent', () => {
       testMockDef.metadata = {title: 'test title', description: 'test description'} as unknown as Metadata;
       component.metadata = testMockDef.metadata;
 
-      expect(component.metadataTitle).toBe('test title');
-      expect(component.metadataDescription).toBe('test description');
+      expect(component.metadataTitleProp).toBe('test title');
+      expect(component.metadataDescriptionProp).toBe('test description');
     });
   });
 

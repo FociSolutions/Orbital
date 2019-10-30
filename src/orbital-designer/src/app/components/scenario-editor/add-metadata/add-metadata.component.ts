@@ -13,13 +13,35 @@ export class AddMetadataComponent implements OnInit {
   @Output() metadataOutput: EventEmitter<Metadata>;
   @Output() isValid: EventEmitter<boolean>;
 
-  metadataTitle = '';
-  metadataDescription = '';
+  metadataTitleProp = '';
+  metadataDescriptionProp = '';
+
+  /**
+   * Sets the metadata title
+   */
+  set metadataTitle(metadataTitle: string) {
+    this.validate();
+    this.logger.debug('Set the metadata title', metadataTitle);
+    this.metadataTitleProp = metadataTitle;
+  }
+
+  /**
+   * Sets the metadata description
+   */
+  set metadataDescription(metadataDescription: string) {
+    this.validate();
+    this.logger.debug('Set the metadata description', metadataDescription);
+    this.metadataDescriptionProp = metadataDescription;
+  }
+
   errorMessage = '';
 
   constructor(private logger: NGXLogger) {
     this.isValid = new EventEmitter<boolean>();
     this.metadataOutput = new EventEmitter<Metadata>();
+
+    this.metadataTitle = '';
+    this.metadataDescription = '';
   }
 
   ngOnInit() {
@@ -40,11 +62,11 @@ export class AddMetadataComponent implements OnInit {
    */
   validate() {
     this.logger.debug('Called validation for metadata card entry point');
-    if (this.metadataTitle.length === 0) {
+    if (!this.metadataTitleProp || this.metadataTitleProp.length === 0) {
       this.errorMessage = 'Metadata title is required';
-    } else if (this.metadataTitle.length > 50) {
+    } else if (!this.metadataTitleProp || this.metadataTitleProp.length > 50) {
       this.errorMessage = 'Metadata title max length exceeded (50 characters)';
-    } else if (this.metadataDescription.length > 500) {
+    } else if (!this.metadataDescriptionProp || this.metadataDescriptionProp.length > 500) {
       this.errorMessage = 'Metadata description can only be 500 characters long';
     } else {
       this.errorMessage = '';
