@@ -14,6 +14,9 @@ export class KvpEditComponent implements OnInit {
   @Input() addKvpTitle: string;
   @Input() listKvpTitle: string;
 
+  /**
+   * This setter calls the emitter for the savedkvpmap if shouldSave is true
+   */
   @Input() set onSave(shouldSave: boolean) {
     if (shouldSave) {
       this.savedKvpMapEmitter.emit(this.savedKvpMap);
