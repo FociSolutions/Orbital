@@ -21,6 +21,8 @@ export class KvpEditComponent implements OnInit {
     if (shouldSave) {
       this.savedKvpMapEmitter.emit(this.savedKvpMap);
       this.logger.debug('KVP map has been saved', this.savedKvpMap);
+    } else {
+      this.logger.debug('KVP map has not been saved');
     }
   }
 
