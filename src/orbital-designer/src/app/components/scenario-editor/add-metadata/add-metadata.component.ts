@@ -75,7 +75,7 @@ export class AddMetadataComponent implements OnInit {
   set saveStatus(shouldSave: boolean) {
     if (shouldSave) {
       this.logger.debug('Received event to save metadata card');
-      this.isValid.emit(!this.getErrorMessage());
+      this.isValid.emit(!this.errorMessage);
       const metadataToOutput = {title: this.metadataTitle, description: this.metadataDescription} as Metadata;
       this.metadataOutput.emit(metadataToOutput);
       this.logger.debug('Is the metadata card valid?', this.isValid);
