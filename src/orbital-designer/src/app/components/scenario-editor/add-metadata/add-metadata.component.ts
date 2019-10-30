@@ -58,6 +58,6 @@ export class AddMetadataComponent implements OnInit {
    * Checks if the metadata field has an error
    */
   metadataHasError() {
-    return !this.validate();
+    return this.errorMessage.length === 0;
   }
 }
