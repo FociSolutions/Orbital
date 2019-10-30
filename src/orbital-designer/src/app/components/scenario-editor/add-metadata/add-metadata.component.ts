@@ -83,7 +83,6 @@ export class AddMetadataComponent implements OnInit {
       this.errorMessage = 'Metadata description can only be 500 characters long';
     } else {
       this.errorMessage = '';
-      return false;
     }
 
     this.logger.debug('Called validation for metadata card', this.errorMessage);
