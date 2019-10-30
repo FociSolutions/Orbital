@@ -6,5 +6,19 @@
         </mat-panel-title>
         <mat-divider id="divider-padding"></mat-divider>
       </mat-expansion-panel-header>
+      <mat-form-field class="fullwidth">
+          <input
+            [(ngModel)]="this.metadataTitle"
+            matInput
+            placeholder="Name"
+          />
+        </mat-form-field>
+        <mat-form-field class="fullwidth">
+          <input
+            [(ngModel)]="this.metadataDescription"
+            matInput
+            placeholder="Description"
+          />
+        </mat-form-field>
     </mat-expansion-panel>
   </mat-accordion>

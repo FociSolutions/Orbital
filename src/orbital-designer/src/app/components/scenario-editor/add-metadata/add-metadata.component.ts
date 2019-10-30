@@ -7,12 +7,13 @@ import { Metadata } from 'src/app/models/mock-definition/metadata.model';
   styleUrls: ['./add-metadata.component.scss']
 })
 export class AddMetadataComponent implements OnInit {
-  @Input() metadata: Metadata;
   @Input() saveStatus: boolean;
 
   @Output() metadataOutput: EventEmitter<Metadata>;
   @Output() isValid: EventEmitter<boolean>;
 
+  metadataTitle = '';
+  metadataDescription = '';
 
   constructor() {
     this.isValid = new EventEmitter<boolean>();
@@ -20,6 +21,16 @@ export class AddMetadataComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  /**
+   * Sets the metadata
+   * @param metadata The metadata to set
+   */
+  @Input()
+  set metadata(metadata: Metadata) {
+    this.metadataTitle = metadata.title;
+    this.metadataDescription = metadata.description;
   }
 
 }
