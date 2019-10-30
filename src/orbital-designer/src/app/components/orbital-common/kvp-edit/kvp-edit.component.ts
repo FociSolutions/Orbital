@@ -54,7 +54,7 @@ export class KvpEditComponent implements OnInit {
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
   deleteKvpFromMap(kvpToDelete: KeyValue<string, string>) {
-    if (!!kvpToDelete && !!kvpToDelete.key && !!kvpToDelete.value) {
+    if (!!kvpToDelete && !!kvpToDelete.key) {
       this.savedKvpMap.delete(kvpToDelete.key);
       this.logger.debug('Delete Header Rule from Map', kvpToDelete);
     }
