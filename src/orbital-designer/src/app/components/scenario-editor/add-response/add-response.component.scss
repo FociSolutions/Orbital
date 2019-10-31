@@ -20,4 +20,10 @@
 .status-message {
   color: rgba(0, 0, 0, 0.539261);
   margin-left: 15em;
+  display: flex;
+  flex-direction: column;
+}
+
+.status-message-output {
+  margin-top: 1em;
 }

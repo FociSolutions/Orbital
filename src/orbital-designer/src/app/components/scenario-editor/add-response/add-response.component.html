@@ -10,12 +10,14 @@
       <div class="status-code">
         Status Code
         <mat-form-field class="status-code-field">
-          <input matInput class="status-code-input" />
+          <input matInput class="status-code-input" [(ngModel)]="statusCode" />
         </mat-form-field>
       </div>
       <div class="status-message">
         Status Message
-        <div class="status-message-output"></div>
+        <div class="status-message-output">
+          {{ statusMessage }}
+        </div>
       </div>
     </div>
   </mat-expansion-panel>
