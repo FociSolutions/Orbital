@@ -11,8 +11,8 @@ export class ScenarioEditorComponent implements OnInit {
   readonly headerMatchRuleTitle = 'Header Match Rule';
   readonly headerMatchRuleListTitle = 'Header Rules';
 
-  readonly queryMatchRuleTitle = 'Query Match Rules';
-  readonly queryMatchRuleListTitle = 'Query Match Rules';
+  readonly queryMatchRuleTitle = 'Query Match Rule';
+  readonly queryMatchRuleListTitle = 'Query Rules';
   nameAndDescriptionFormGroup: FormGroup;
   name: FormControl;
   description: FormControl;
