@@ -10,7 +10,6 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 })
 export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRule: RequestMatchRule;
-  @Input() saveStatus = true;
   @Output() isValid: EventEmitter<boolean>;
   @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
   panelExpanded: boolean;
@@ -46,12 +45,28 @@ export class AddRequestMatchRuleComponent implements OnInit {
     }
   }
 
+ /*
+  * Sets the save status
+  */
+  @Input()
+  set saveStatus(shouldSave: boolean) {
+    if (shouldSave) {
+      // validate request match rules
+      if (!!this.requestMatchRule && !!this.requestMatchRule.queryRules &&
+          !!this.requestMatchRule.headerRules && !!this.requestMatchRule.bodyRules) {
+        this.requestMatchRuleOutput.emit(this.requestMatchRule);
+        this.isValid.emit(true);
+        this.logger.debug('The request match rules have been emitted', this.requestMatchRule);
+      }
+    }
+  }
+
   /**
    * Checks if the panel is valid; if it is not, then it will not allow the panel to close
    */
   cannotClose() {
     this.logger.debug('User clicked to close panel');
-    return !this.saveStatus;
+    return !this.saveStatus && this.saveStatus !== undefined;
   }
 
   /**
