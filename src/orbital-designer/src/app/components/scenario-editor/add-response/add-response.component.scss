@@ -1,0 +1,23 @@
+.response-code {
+  display: flex;
+  flex-direction: row;
+}
+
+.response-dropdown {
+  min-width: 40vw;
+}
+
+.status-code {
+  color: rgba(0, 0, 0, 0.539261);
+  display: flex;
+  flex-direction: column;
+}
+
+.status-code-field {
+  width: 6em;
+}
+
+.status-message {
+  color: rgba(0, 0, 0, 0.539261);
+  margin-left: 15em;
+}

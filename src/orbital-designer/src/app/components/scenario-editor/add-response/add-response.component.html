@@ -1,10 +1,22 @@
 <mat-accordion>
-  <mat-expansion-panel>
+  <mat-expansion-panel class="response-dropdown">
     <mat-expansion-panel-header class="right-aligned-header">
       <mat-panel-title>
         Response
       </mat-panel-title>
       <mat-divider id="divider-padding"></mat-divider>
     </mat-expansion-panel-header>
+    <div class="response-code">
+      <div class="status-code">
+        Status Code
+        <mat-form-field class="status-code-field">
+          <input matInput class="status-code-input" />
+        </mat-form-field>
+      </div>
+      <div class="status-message">
+        Status Message
+        <div class="status-message-output"></div>
+      </div>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>
