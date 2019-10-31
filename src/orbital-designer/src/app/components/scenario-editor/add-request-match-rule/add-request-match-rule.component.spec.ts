@@ -136,9 +136,86 @@ describe('AddRequestMatchRuleComponent', () => {
       component.canCollapseCard = true;
       expect(component.isValid.emit).toHaveBeenCalledWith(true);
     });
+  });
 
-    it('should not emit anything when the card is initialized and canCollapseCard is not changed', () => {
+  describe('AddRequestMatchRule.Save', () => {
+    it('should emit the request match rules if they are valid', () => {
+      const testHeaderMatchRules = new Map<string, string>();
+      const testQueryMatchRules = new Map<string, string>();
+      const testBodyMatchRules: BodyRule[] = [{}] as BodyRule[];
+
+      testHeaderMatchRules.set(faker.random.word(), faker.random.word());
+      testQueryMatchRules.set(faker.random.word(), faker.random.word());
+      testBodyMatchRules[0].rule = {a: faker.random.word()};
+      testBodyMatchRules[0].type = BodyRuleType.BodyEquality;
+
+      spyOn(component.requestMatchRuleOutput, 'emit');
       spyOn(component.isValid, 'emit');
+
+      const requestMatchRule = { headerRules: testHeaderMatchRules,
+                         queryRules: testQueryMatchRules,
+                         bodyRules: testBodyMatchRules } as RequestMatchRule;
+      component.requestMatchRule = requestMatchRule;
+      component.saveStatus = true;
+
+      expect(component.requestMatchRuleOutput.emit).toHaveBeenCalledWith(requestMatchRule);
+      expect(component.isValid.emit).toHaveBeenCalledWith(true);
+    });
+
+    it('should not emit the request match rules if the header match rules are invalid', () => {
+      const testQueryMatchRules = new Map<string, string>();
+      const testBodyMatchRules: BodyRule[] = [{}] as BodyRule[];
+
+      testQueryMatchRules.set(faker.random.word(), faker.random.word());
+      testBodyMatchRules[0].rule = {a: faker.random.word()};
+      testBodyMatchRules[0].type = BodyRuleType.BodyEquality;
+
+      spyOn(component.requestMatchRuleOutput, 'emit');
+      spyOn(component.isValid, 'emit');
+      component.saveStatus = true;
+
+      expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
+      expect(component.isValid.emit).not.toHaveBeenCalled();
+    });
+
+    it('should not emit the request match rules if the query match rules are invalid', () => {
+      const testHeaderMatchRules = new Map<string, string>();
+      const testBodyMatchRules: BodyRule[] = [{}] as BodyRule[];
+
+      testHeaderMatchRules.set(faker.random.word(), faker.random.word());
+      testBodyMatchRules[0].rule = {a: faker.random.word()};
+      testBodyMatchRules[0].type = BodyRuleType.BodyEquality;
+
+      spyOn(component.requestMatchRuleOutput, 'emit');
+      spyOn(component.isValid, 'emit');
+
+      const requestMatchRule = { headerRules: testHeaderMatchRules,
+                         queryRules: undefined,
+                         bodyRules: testBodyMatchRules } as RequestMatchRule;
+      component.requestMatchRule = requestMatchRule;
+      component.saveStatus = true;
+
+      expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
+      expect(component.isValid.emit).not.toHaveBeenCalled();
+    });
+
+    it('should not emit the request match rules if the body match rules are invalid', () => {
+      const testHeaderMatchRules = new Map<string, string>();
+      const testQueryMatchRules = new Map<string, string>();
+
+      testHeaderMatchRules.set(faker.random.word(), faker.random.word());
+      testQueryMatchRules.set(faker.random.word(), faker.random.word());
+
+      spyOn(component.requestMatchRuleOutput, 'emit');
+      spyOn(component.isValid, 'emit');
+
+      const requestMatchRule = { headerRules: testHeaderMatchRules,
+                         queryRules: testQueryMatchRules,
+                         bodyRules: undefined } as RequestMatchRule;
+      component.requestMatchRule = requestMatchRule;
+      component.saveStatus = true;
+
+      expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
       expect(component.isValid.emit).not.toHaveBeenCalled();
     });
   });
