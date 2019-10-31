@@ -105,7 +105,10 @@
   </form>
 </ng-template>
 
-<ng-template #requestMatchRulesCard><app-kvp-edit [addKvpTitle]="this.headerMatchRuleTitle" [listKvpTitle]="this.headerMatchRuleListTitle"></app-kvp-edit></ng-template>
+<ng-template #requestMatchRulesCard>
+  <app-kvp-edit [addKvpTitle]="this.headerMatchRuleTitle" [listKvpTitle]="this.headerMatchRuleListTitle"></app-kvp-edit>
+  <app-kvp-edit [addKvpTitle]="this.queryMatchRuleTitle" [listKvpTitle]="this.queryMatchRuleListTitle"></app-kvp-edit>
+</ng-template>
 
 <ng-template #responseCardContent>
   <form [formGroup]="responseFormGroup">

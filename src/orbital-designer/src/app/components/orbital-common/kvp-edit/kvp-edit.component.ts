@@ -24,10 +24,11 @@ export class KvpEditComponent implements OnInit {
    */
   @Output() savedKvpMapEmitter;
 
-  constructor(private logger: NGXLogger) {}
+  constructor(private logger: NGXLogger) {
+    this.savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
+  }
 
   ngOnInit() {
-    this.savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
     this.kvpMap = new Map<string, string>();
   }
 
