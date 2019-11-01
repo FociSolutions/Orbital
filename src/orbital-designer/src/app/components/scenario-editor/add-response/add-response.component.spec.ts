@@ -3,6 +3,8 @@ import { AddResponseComponent } from './add-response.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import * as faker from 'faker';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { Response } from '../../../models/mock-definition/scenario/response.model';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
@@ -11,13 +13,19 @@ describe('AddResponseComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
-      imports: [OrbitalCommonModule, BrowserAnimationsModule]
+      imports: [
+        OrbitalCommonModule,
+        BrowserAnimationsModule,
+        LoggerTestingModule
+      ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
+
+    component.response = { headers: new Map<string, string>() } as Response;
     fixture.detectChanges();
   });
 

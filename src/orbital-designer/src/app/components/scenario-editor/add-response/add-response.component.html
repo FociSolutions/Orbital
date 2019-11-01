@@ -23,6 +23,9 @@
     <app-kvp-edit
       [addKvpTitle]="titleForKvp"
       [listKvpTitle]="titleForKvpAdded"
+      [onSave]="saveStatus"
+      [kvpMap]="response.headers"
+      (savedKvpMapEmitter)="(childKvpMap)"
     ></app-kvp-edit>
   </mat-expansion-panel>
 </mat-accordion>

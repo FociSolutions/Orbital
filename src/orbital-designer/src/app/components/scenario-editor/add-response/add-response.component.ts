@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as HttpStatus from 'http-status-codes';
+import { Response } from '../../../models/mock-definition/scenario/response.model';
 
 @Component({
   selector: 'app-add-response',
@@ -14,19 +15,25 @@ export class AddResponseComponent implements OnInit {
   @Output() isValid: EventEmitter<boolean>;
 
   /**
-   * The titles for the kvp edit component
+   *  The kvp map sent up from the child component
    */
-  get titleForKvp(): string {
-    return 'Add New Header Rule';
-  }
-  get titleForKvpAdded(): string {
-    return 'Added Header Rules';
-  }
+  childKvpMap: Map<string, string>;
 
   /**
    * The locally store status code
    */
   statusCodeEntered: string;
+
+  /**
+   *  The status message for the corresponding code
+   */
+  statusMessage: string;
+
+  /**
+   * The titles for the kvp edit component
+   */
+  titleForKvp: string;
+  titleForKvpAdded: string;
 
   /**
    * Gets the status code from the form field
@@ -51,11 +58,13 @@ export class AddResponseComponent implements OnInit {
       }
     }
   }
-  statusMessage: string;
 
   constructor() {
     this.responseOutput = new EventEmitter<Response>();
     this.isValid = new EventEmitter<boolean>();
+    this.childKvpMap = new Map<string, string>();
+    this.titleForKvp = 'Add New Header Rule';
+    this.titleForKvpAdded = 'Added Header Rules';
   }
 
   ngOnInit() {
