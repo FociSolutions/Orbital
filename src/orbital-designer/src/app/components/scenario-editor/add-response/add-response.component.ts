@@ -18,6 +18,9 @@ export class AddResponseComponent implements OnInit {
    */
   statusCodeEntered: string;
 
+  /**
+   * Gets the status code from the form field
+   */
   get statusCode(): string {
     return this.statusCodeEntered;
   }
