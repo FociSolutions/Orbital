@@ -1,9 +1,9 @@
-<p class="description">Add New {{ listKvpTitle }}</p>
+<p class="description">{{ listKvpTitle }}</p>
 <app-kvp-add (kvp)="addKvpToMap($event)"></app-kvp-add>
 
 <mat-divider class="divider-padding"></mat-divider>
 <div>
-  <p class="description">Added {{ listKvpTitle }}</p>
+  <p class="description">{{ listKvpTitle }}</p>
 </div>
 <div *ngIf="!this.savedKvpMap.size">
   No rules Added
