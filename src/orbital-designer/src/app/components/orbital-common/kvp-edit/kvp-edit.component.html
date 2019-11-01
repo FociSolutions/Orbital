@@ -1,26 +1,16 @@
-<mat-accordion>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header class="right-aligned-header">
-      <mat-panel-title>
-        {{ addKvpTitle }}
-      </mat-panel-title>
-      <mat-divider class="divider-padding"></mat-divider>
-    </mat-expansion-panel-header>
-    <p class="description">Add New {{ listKvpTitle }}</p>
-    <app-kvp-add (kvp)="addKvpToMap($event)"></app-kvp-add>
+<p class="description">{{ listKvpTitle }}</p>
+<app-kvp-add (kvp)="addKvpToMap($event)"></app-kvp-add>
 
-    <mat-divider class="divider-padding"></mat-divider>
-    <div>
-      <p class="description">Added {{ listKvpTitle }}</p>
-    </div>
-    <div *ngIf="!this.savedKvpMap.size">
-      No rules Added
-    </div>
-    <div *ngFor="let headerRule of savedKvpMap | keyvalue">
-      <app-kvp-list-item
-        [kvp]="headerRule"
-        (removeKvp)="deleteKvpFromMap($event)"
-      ></app-kvp-list-item>
-    </div>
-  </mat-expansion-panel>
-</mat-accordion>
+<mat-divider class="divider-padding"></mat-divider>
+<div>
+  <p class="description">{{ listKvpTitle }}</p>
+</div>
+<div *ngIf="!this.savedKvpMap.size">
+  No rules Added
+</div>
+<div *ngFor="let headerRule of savedKvpMap | keyvalue">
+  <app-kvp-list-item
+    [kvp]="headerRule"
+    (removeKvp)="deleteKvpFromMap($event)"
+  ></app-kvp-list-item>
+</div>

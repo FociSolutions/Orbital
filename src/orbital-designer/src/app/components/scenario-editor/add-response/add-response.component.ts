@@ -18,6 +18,9 @@ export class AddResponseComponent implements OnInit {
    */
   statusCodeEntered: string;
 
+  /**
+   * Gets the status code from the form field
+   */
   get statusCode(): string {
     return this.statusCodeEntered;
   }
@@ -32,7 +35,7 @@ export class AddResponseComponent implements OnInit {
       this.statusMessage = 'Enter a Status Code';
     } else {
       try {
-        this.statusMessage = HttpStatus.getStatusText(+statusCode);
+        this.statusMessage = HttpStatus.getStatusText(Number(statusCode));
       } catch (Error) {
         this.statusMessage = 'Invalid Status Code';
       }
