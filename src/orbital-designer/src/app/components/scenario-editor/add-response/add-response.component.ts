@@ -14,6 +14,16 @@ export class AddResponseComponent implements OnInit {
   @Output() isValid: EventEmitter<boolean>;
 
   /**
+   * The titles for the kvp edit component
+   */
+  get titleForKvp(): string {
+    return 'Add New Header Rule';
+  }
+  get titleForKvpAdded(): string {
+    return 'Added Header Rules';
+  }
+
+  /**
    * The locally store status code
    */
   statusCodeEntered: string;
