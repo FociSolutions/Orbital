@@ -77,4 +77,19 @@ describe('AddRequestMatchRuleComponent', () => {
       expect(component.getHeaderRules()).toEqual(undefined);
     });
   });
+
+  describe('add-request-match-rule.handleQueryKvpOutput', () => {
+    it('should set the query match rules if it is truthy', () => {
+      const queryMatchRules = new Map<string, string>();
+      queryMatchRules.set(faker.random.word(), faker.random.word());
+      component.handleQueryKvpOutput(queryMatchRules);
+      expect(component.queryMatchRules).toEqual(queryMatchRules);
+    });
+
+    it('should not set the query match rules if it is not truthy', () => {
+      const queryMatchRules = null;
+      component.handleQueryKvpOutput(queryMatchRules);
+      expect(component.queryMatchRules).toEqual(undefined);
+    });
+  });
 });
