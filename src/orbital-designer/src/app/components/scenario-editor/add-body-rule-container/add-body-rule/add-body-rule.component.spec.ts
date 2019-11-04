@@ -42,8 +42,10 @@ describe('AddBodyRuleComponent', () => {
    * Generates a fake json object to be used for the response body rule
    */
   function getFakeBodyContents() {
-    return [{testkey: faker.random.word(), testobjattr: faker.random.word()},
-      {testkey2: faker.random.word(), testobjattr2: faker.random.word()}];
+    return [
+      { testkey: faker.random.word(), testobjattr: faker.random.word() },
+      { testkey2: faker.random.word(), testobjattr2: faker.random.word() }
+    ];
   }
 
   it('should create', () => {
@@ -74,23 +76,11 @@ describe('AddBodyRuleComponent', () => {
           component.bodyValue = 'invalid';
           component.bodyType = BodyRuleType.BodyEquality;
           component.addBodyRule();
-          expect(component.errorMessage).toEqual('The body value must be valid JSON');
+          expect(component.errorMessage).toEqual(
+            'The body value must be valid JSON'
+          );
         });
       });
-    });
-  });
-
-  describe('add-body-rule.isValidJSON', () => {
-    it('should return false if the JSON cannot be parsed ', () => {
-      const Actual = component.isValidJSON('invalid');
-      expect(Actual).toBe(false);
-    });
-  });
-
-  describe('add-body-rule.tryParseJSON', () => {
-    it('should return null if the JSON cannot be parsed ', () => {
-      const Actual = component.tryParseJSON('invalid');
-      expect(Actual).toBe(null);
     });
   });
 });
