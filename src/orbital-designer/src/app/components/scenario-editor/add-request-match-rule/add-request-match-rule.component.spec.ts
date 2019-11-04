@@ -62,4 +62,19 @@ describe('AddRequestMatchRuleComponent', () => {
       expect(component.headerMatchRules).toEqual(undefined);
     });
   });
+
+  describe('add-request-match-rule.getRequestMatchRules', () => {
+    it('should get the header match rules if they are valid', () => {
+      const headerMatchRules = new Map<string, string>();
+      headerMatchRules.set(faker.random.word(), faker.random.word());
+      component.handleHeaderKvpOutput(headerMatchRules);
+      expect(component.getHeaderRules()).toEqual(headerMatchRules);
+    });
+
+    it('should not get the header match rules if they are invalid', () => {
+      const headerMatchRules = null;
+      component.handleHeaderKvpOutput(headerMatchRules);
+      expect(component.getHeaderRules()).toEqual(undefined);
+    });
+  });
 });

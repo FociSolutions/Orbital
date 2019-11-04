@@ -45,8 +45,8 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * Gets the header rules if they are not undefined, otherwise returns void
    */
   getHeaderRules() {
-    if (!!this.requestMatchRule && !!this.requestMatchRule.headerRules) {
-      return this.requestMatchRule.headerRules;
+    if (!!this.headerMatchRules) {
+      return this.headerMatchRules;
     }
   }
 
