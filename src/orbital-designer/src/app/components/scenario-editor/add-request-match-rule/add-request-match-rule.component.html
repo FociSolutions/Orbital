@@ -32,8 +32,8 @@
               <mat-divider></mat-divider>
             </mat-expansion-panel-header>
             <app-kvp-edit
-            [addKvpTitle]="'Query Match Rule'"
-            [listKvpTitle]="'Query Match Rules'"
+            [addKvpTitle]="'Add New Query Match Rule'"
+            [listKvpTitle]="'Added Query Match Rules'"
             [Save]="this.saveStatus"
             [kvpMap]="getQueryRules()"
             (savedKvpMapEmitter)="handleQueryKvpOutput($event)">
