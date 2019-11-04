@@ -102,7 +102,7 @@ describe('KvpEditComponent', () => {
       const newKvpMap: Map<string, string> = new Map<string, string>();
       newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
       spyOn(component.savedKvpMapEmitter, 'emit');
-      component.onSave = true;
+      component.Save = true;
 
       expect(component.savedKvpMapEmitter.emit).toHaveBeenCalledWith(
         component.savedKvpMap
@@ -113,7 +113,7 @@ describe('KvpEditComponent', () => {
       const newKvpMap: Map<string, string> = new Map<string, string>();
       newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
       spyOn(component.savedKvpMapEmitter, 'emit');
-      component.onSave = false;
+      component.Save = false;
 
       expect(component.savedKvpMapEmitter.emit).not.toHaveBeenCalled();
     });
