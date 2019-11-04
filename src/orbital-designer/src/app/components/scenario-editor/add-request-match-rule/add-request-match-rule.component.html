@@ -23,5 +23,22 @@
         </app-kvp-edit>
         </mat-expansion-panel>
       </mat-accordion>
+      <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header class="right-aligned-header">
+              <mat-panel-title>
+                Query Match Rules
+              </mat-panel-title>
+              <mat-divider></mat-divider>
+            </mat-expansion-panel-header>
+            <app-kvp-edit
+            [addKvpTitle]="'Query Match Rule'"
+            [listKvpTitle]="'Query Match Rules'"
+            [Save]="this.saveStatus"
+            [kvpMap]="getQueryRules()"
+            (savedKvpMapEmitter)="handleQueryKvpOutput($event)">
+          </app-kvp-edit>
+          </mat-expansion-panel>
+        </mat-accordion>
     </mat-expansion-panel>
   </mat-accordion>
