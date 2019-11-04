@@ -92,4 +92,19 @@ describe('AddRequestMatchRuleComponent', () => {
       expect(component.queryMatchRules).toEqual(undefined);
     });
   });
+
+  describe('add-request-match-rule.getQueryMatchRules', () => {
+    it('should get the query match rules if they are valid', () => {
+      const queryMatchRules = new Map<string, string>();
+      queryMatchRules.set(faker.random.word(), faker.random.word());
+      component.handleQueryKvpOutput(queryMatchRules);
+      expect(component.getQueryRules()).toEqual(queryMatchRules);
+    });
+
+    it('should not get the query match rules if they are invalid', () => {
+      const queryMatchRules = null;
+      component.handleQueryKvpOutput(queryMatchRules);
+      expect(component.getQueryRules()).toEqual(undefined);
+    });
+  });
 });

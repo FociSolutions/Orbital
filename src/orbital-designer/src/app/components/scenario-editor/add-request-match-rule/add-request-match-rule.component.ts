@@ -66,8 +66,8 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * Gets the query rules if they are not undefined, otherwise returns void
    */
   getQueryRules() {
-    if (!!this.requestMatchRule && !!this.requestMatchRule.queryRules) {
-      return this.requestMatchRule.queryRules;
+    if (!!this.queryMatchRules) {
+      return this.queryMatchRules;
     }
   }
 
