@@ -17,12 +17,34 @@ export class AddRequestMatchRuleComponent implements OnInit {
   headerMatchRules: Map<string, string>;
   queryMatchRules: Map<string, string>;
   bodyMatchRules: BodyRule[];
+  isCardDisabled: boolean;
   constructor(private logger: NGXLogger) {
     this.isValid = new EventEmitter<boolean>();
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
   }
 
   ngOnInit() {
+  }
+
+  /**
+   * Sets whether the card can be collapsed.
+   *
+   * If it can be collapsed, then the card becomes non-disabled
+   * If it cannot be collapsed, then the card expands and becomes disabled
+   */
+  @Input()
+  set canCollapseCard(canCollapseCard: boolean) {
+    if (canCollapseCard) {
+      this.isCardDisabled = false;
+      this.isValid.emit(true);
+      this.logger.debug('canCollapse', canCollapseCard);
+      this.logger.debug('isCardDisabled', this.isCardDisabled);
+      this.logger.debug('panelExpanded', this.panelExpanded);
+    } else {
+      this.isCardDisabled = true;
+      this.panelExpanded = true;
+      this.isValid.emit(false);
+    }
   }
 
   /**

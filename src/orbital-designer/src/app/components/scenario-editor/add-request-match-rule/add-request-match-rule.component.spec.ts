@@ -103,4 +103,43 @@ describe('AddRequestMatchRuleComponent', () => {
       expect(component.bodyMatchRules).toEqual(bodyMatchRules);
     });
   });
+
+  describe('add-request-match-rule.canCollapseCard setter', () => {
+    it('should disable the card and set it to expanded if the card cannot be collapsed', () => {
+      component.canCollapseCard = true;
+      expect(component.isCardDisabled).toBe(false);
+    });
+
+    it('should initialize the card\'s expandability to undefined when initializing', () => {
+      component.canCollapseCard = true;
+      expect(component.panelExpanded).toBe(undefined);
+    });
+
+    it('should disable the card if the card cannot be collapsed', () => {
+      component.canCollapseCard = false;
+      expect(component.isCardDisabled).toBe(true);
+    });
+
+    it('should expand the card if the card cannot be collapsed', () => {
+      component.canCollapseCard = false;
+      expect(component.panelExpanded).toBe(true);
+    });
+
+    it('should emit false for isValid if the card cannot be collapsed', () => {
+      spyOn(component.isValid, 'emit');
+      component.canCollapseCard = false;
+      expect(component.isValid.emit).toHaveBeenCalledWith(false);
+    });
+
+    it('should emit true for isValid if the card can be collapsed', () => {
+      spyOn(component.isValid, 'emit');
+      component.canCollapseCard = true;
+      expect(component.isValid.emit).toHaveBeenCalledWith(true);
+    });
+
+    it('should not emit anything when the card is initialized and canCollapseCard is not changed', () => {
+      spyOn(component.isValid, 'emit');
+      expect(component.isValid.emit).not.toHaveBeenCalled();
+    });
+  });
 });
