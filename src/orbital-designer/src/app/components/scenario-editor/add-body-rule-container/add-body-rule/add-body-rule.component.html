@@ -6,23 +6,44 @@
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select [disabled]="this.shouldDisable" [value]="this.bodyType" (valueChange)="this.bodyType = $event">
-              <mat-option value="{{ bodyRuleTypeValues.BodyContains }}">Body Contains</mat-option>
-              <mat-option value="{{ bodyRuleTypeValues.BodyEquality }}">Body Equality</mat-option>
+            <mat-select
+              [disabled]="this.shouldDisable"
+              [value]="this.bodyType"
+              (valueChange)="this.bodyType = $event"
+            >
+              <mat-option value="{{ bodyRuleTypeValues.BodyContains }}"
+                >Body Contains</mat-option
+              >
+              <mat-option value="{{ bodyRuleTypeValues.BodyEquality }}"
+                >Body Equality</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </div>
         <div class="full-width" id="spacer-left">
           <mat-form-field class="full-width">
             <h3 class="subtitle" id="value">Value</h3>
-            <textarea [disabled]="this.shouldDisable" matInput rows="10" [(ngModel)]="this.bodyValue" [ngModelOptions]="{standalone: true}"></textarea>
+            <textarea
+              [disabled]="this.shouldDisable"
+              matInput
+              rows="10"
+              [(ngModel)]="this.bodyValue"
+              [ngModelOptions]="{ standalone: true }"
+            ></textarea>
             <div class="error-message" *ngIf="isBodyRuleValid()">
-                {{ this.errorMessage }}
+              {{ this.errorMessage }}
             </div>
           </mat-form-field>
         </div>
         <div id="add-button-container">
-          <button mat-mini-fab color="primary" (click)="addBodyRule()" [disabled]="this.shouldDisable"><mat-icon>add</mat-icon></button>
+          <button
+            mat-mini-fab
+            color="primary"
+            (click)="addBodyRule()"
+            [disabled]="this.shouldDisable"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
       </div>
     </form>

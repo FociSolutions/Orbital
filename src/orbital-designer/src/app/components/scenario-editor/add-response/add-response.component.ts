@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as HttpStatus from 'http-status-codes';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRuleListItemComponent } from '../add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 
 @Component({
   selector: 'app-add-response',
@@ -18,6 +20,12 @@ export class AddResponseComponent implements OnInit {
    *  The kvp map sent up from the child component
    */
   childKvpMap: Map<string, string>;
+
+  /**
+   *  The body rules sent up from the child component
+   */
+
+  bodyResponse: string;
 
   /**
    * The locally store status code
