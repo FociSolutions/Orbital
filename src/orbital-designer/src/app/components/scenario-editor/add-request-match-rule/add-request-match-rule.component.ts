@@ -43,15 +43,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
   }
 
   /**
-   * Gets the header rules if they are not undefined, otherwise returns void
-   */
-  getHeaderRules() {
-    if (!!this.headerMatchRules) {
-      return this.headerMatchRules;
-    }
-  }
-
-  /**
    * Handles the query kvp pair output
    * @param queryMatchRules The query match rules to use
    */
@@ -59,15 +50,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
     if (!!queryMatchRules) {
       this.logger.debug('Set the query match rules to', queryMatchRules);
       this.queryMatchRules = queryMatchRules;
-    }
-  }
-
-  /**
-   * Gets the query rules if they are not undefined, otherwise returns void
-   */
-  getQueryRules() {
-    if (!!this.queryMatchRules) {
-      return this.queryMatchRules;
     }
   }
 

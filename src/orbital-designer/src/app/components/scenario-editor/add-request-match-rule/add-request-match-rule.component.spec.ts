@@ -63,21 +63,6 @@ describe('AddRequestMatchRuleComponent', () => {
     });
   });
 
-  describe('add-request-match-rule.getRequestMatchRules', () => {
-    it('should get the header match rules if they are valid', () => {
-      const headerMatchRules = new Map<string, string>();
-      headerMatchRules.set(faker.random.word(), faker.random.word());
-      component.handleHeaderKvpOutput(headerMatchRules);
-      expect(component.getHeaderRules()).toEqual(headerMatchRules);
-    });
-
-    it('should not get the header match rules if they are invalid', () => {
-      const headerMatchRules = null;
-      component.handleHeaderKvpOutput(headerMatchRules);
-      expect(component.getHeaderRules()).toEqual(undefined);
-    });
-  });
-
   describe('add-request-match-rule.handleQueryKvpOutput', () => {
     it('should set the query match rules if it is truthy', () => {
       const queryMatchRules = new Map<string, string>();
@@ -90,21 +75,6 @@ describe('AddRequestMatchRuleComponent', () => {
       const queryMatchRules = null;
       component.handleQueryKvpOutput(queryMatchRules);
       expect(component.queryMatchRules).toEqual(undefined);
-    });
-  });
-
-  describe('add-request-match-rule.getQueryMatchRules', () => {
-    it('should get the query match rules if they are valid', () => {
-      const queryMatchRules = new Map<string, string>();
-      queryMatchRules.set(faker.random.word(), faker.random.word());
-      component.handleQueryKvpOutput(queryMatchRules);
-      expect(component.getQueryRules()).toEqual(queryMatchRules);
-    });
-
-    it('should not get the query match rules if they are invalid', () => {
-      const queryMatchRules = null;
-      component.handleQueryKvpOutput(queryMatchRules);
-      expect(component.getQueryRules()).toEqual(undefined);
     });
   });
 });
