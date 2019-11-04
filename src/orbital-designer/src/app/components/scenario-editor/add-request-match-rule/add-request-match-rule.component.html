@@ -15,8 +15,8 @@
             <mat-divider></mat-divider>
           </mat-expansion-panel-header>
           <app-kvp-edit
-          [addKvpTitle]="'Header Match Rule'"
-          [listKvpTitle]="'Headers Match Rules'"
+          [addKvpTitle]="'Add New Header Match Rule'"
+          [listKvpTitle]="'Added Header Match Rules'"
           [Save]="this.saveStatus"
           [kvpMap]="getHeaderRules()"
           (savedKvpMapEmitter)="handleHeaderKvpOutput($event)">
