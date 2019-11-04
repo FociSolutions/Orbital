@@ -48,7 +48,11 @@
                 </mat-panel-title>
                 <mat-divider></mat-divider>
               </mat-expansion-panel-header>
-              <app-add-body-rule-container></app-add-body-rule-container>
+              <app-add-body-rule-container
+              [bodyRules]="getBodyRules()"
+              [saveBodyRules]="this.saveStatus"
+              (bodyRulesOutput)="handleBodyOutput($event)">
+            </app-add-body-rule-container>
             </mat-expansion-panel>
         </mat-accordion>
     </mat-expansion-panel>

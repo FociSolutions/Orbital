@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule.component';
 import { MatExpansionModule, MatFormFieldModule, MatInputModule,
-  MatSelectModule, MatCardModule, MatDividerModule, MatIconModule } from '@angular/material';
+  MatSelectModule, MatCardModule, MatDividerModule, MatIconModule, MatCheckboxModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
@@ -11,6 +11,10 @@ import { KvpEditComponent } from '../../orbital-common/kvp-edit/kvp-edit.compone
 import { KvpListItemComponent } from '../../orbital-common/kvp-edit/kvp-list-item/kvp-list-item.component';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { AddBodyRuleContainerComponent } from '../add-body-rule-container/add-body-rule-container.component';
+import { AddBodyRuleComponent } from '../add-body-rule-container/add-body-rule/add-body-rule.component';
+import { BodyRuleListItemComponent } from '../add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -18,7 +22,14 @@ describe('AddRequestMatchRuleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddRequestMatchRuleComponent, KvpAddComponent, KvpEditComponent, KvpListItemComponent ],
+      declarations: [
+        AddRequestMatchRuleComponent,
+        KvpAddComponent,
+        KvpEditComponent,
+        KvpListItemComponent,
+        AddBodyRuleContainerComponent,
+        AddBodyRuleComponent,
+        BodyRuleListItemComponent ],
       imports: [ LoggerTestingModule,
         MatExpansionModule,
         MatFormFieldModule,
@@ -29,7 +40,8 @@ describe('AddRequestMatchRuleComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule,
         MatDividerModule,
-        MatIconModule ]
+        MatIconModule,
+        MatCheckboxModule ]
     })
     .compileComponents();
   }));
@@ -81,6 +93,49 @@ describe('AddRequestMatchRuleComponent', () => {
       const queryMatchRules = null;
       component.handleQueryKvpOutput(queryMatchRules);
       expect(component.queryMatchRules).toEqual(undefined);
+    });
+  });
+
+  describe('add-request-match-rule.getQueryMatchRules', () => {
+    it('should get the query match rules if they are valid', () => {
+      const queryMatchRules = new Map<string, string>();
+      queryMatchRules.set(faker.random.word(), faker.random.word());
+      component.handleQueryKvpOutput(queryMatchRules);
+      expect(component.getQueryRules()).toEqual(queryMatchRules);
+    });
+
+    it('should not get the query match rules if they are invalid', () => {
+      const queryMatchRules = null;
+      component.handleQueryKvpOutput(queryMatchRules);
+      expect(component.getQueryRules()).toEqual(undefined);
+    });
+  });
+
+  describe('add-request-match-rule.handleBodyOutput', () => {
+    it('should set the body match rules if it is truthy', () => {
+      const bodyMatchRules = [{type: BodyRuleType.BodyEquality, rule: {a: faker.random.word()}}] as BodyRule[];
+      component.handleBodyOutput(bodyMatchRules);
+      expect(component.bodyMatchRules).toEqual(bodyMatchRules);
+    });
+
+    it('should not set the body match rules if it is not truthy', () => {
+      const bodyMatchRules = null;
+      component.handleBodyOutput(bodyMatchRules);
+      expect(component.bodyMatchRules).toEqual(undefined);
+    });
+  });
+
+  describe('add-request-match-rule.getBodyMatchRules', () => {
+    it('should get the body match rules if they are valid', () => {
+      const bodyMatchRules = [{type: BodyRuleType.BodyEquality, rule: {a: faker.random.word()}}] as BodyRule[];
+      component.handleBodyOutput(bodyMatchRules);
+      expect(component.getBodyRules()).toEqual(bodyMatchRules);
+    });
+
+    it('should not get the body match rules if they are invalid', () => {
+      const bodyMatchRules = null;
+      component.handleBodyOutput(bodyMatchRules);
+      expect(component.getBodyRules()).toEqual(undefined);
     });
   });
 });
