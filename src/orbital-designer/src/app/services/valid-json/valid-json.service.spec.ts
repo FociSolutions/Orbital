@@ -19,10 +19,26 @@ describe('add-body-rule.isValidJSON', () => {
   });
 });
 
+describe('add-body-rule.isValidJSON', () => {
+  it('should return true if the JSON can be parsed ', () => {
+    const service: ValidJsonService = TestBed.get(ValidJsonService);
+    const Actual = service.isValidJSON('{}');
+    expect(Actual).toBe(true);
+  });
+});
+
 describe('add-body-rule.tryParseJSON', () => {
   it('should return null if the JSON cannot be parsed ', () => {
     const service: ValidJsonService = TestBed.get(ValidJsonService);
     const Actual = service.tryParseJSON('invalid');
     expect(Actual).toBe(null);
+  });
+
+  describe('add-body-rule.tryParseJSON', () => {
+    it('should return a json object if the JSON can be parsed ', () => {
+      const service: ValidJsonService = TestBed.get(ValidJsonService);
+      const Actual = service.tryParseJSON('{}');
+      expect(Actual).toEqual({});
+    });
   });
 });
