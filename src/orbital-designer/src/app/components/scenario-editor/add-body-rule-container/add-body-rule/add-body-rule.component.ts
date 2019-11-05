@@ -36,7 +36,7 @@ export class AddBodyRuleComponent implements OnInit {
     if (this.validateRequestMatchRulesForm()) {
       const bodyRule = ({
         type: this.bodyType,
-        rule: this.jsonService.tryParseJSON(this.bodyValue)
+        rule: this.jsonService.parseJSONOrDefault(this.bodyValue, {})
       } as unknown) as BodyRule;
 
       this.bodyType = null;
