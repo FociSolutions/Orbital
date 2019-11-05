@@ -62,14 +62,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
   }
 
   /**
-   * Checks if the panel is valid; if it is not, then it will not allow the panel to close
-   */
-  cannotClose() {
-    this.logger.debug('User clicked to close panel');
-    return !this.saveStatus && this.saveStatus !== undefined;
-  }
-
-  /**
    * Handles saving the header match rules kvp values
    * @param event The incoming request match rules
    */

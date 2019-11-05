@@ -60,12 +60,6 @@ describe('AddRequestMatchRuleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('add-request-match-rule.cannotClose', () => {
-    it('should initialize the component to a valid save status and can close accordion', () => {
-      expect(component.cannotClose()).toBe(false);
-    });
-  });
-
   describe('add-request-match-rule.handleHeaderKvpOutput', () => {
     it('should set the header match rules if it is truthy', () => {
       const headerMatchRules = new Map<string, string>();
