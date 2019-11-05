@@ -27,7 +27,7 @@ export class ValidJsonService {
    */
   parseJSONOrDefault<T>(json: string, defaultValue: T): T {
     try {
-      return JSON.parse(json) as T;
+      return JSON.parse(json);
     } catch (e) {
       this.logger.error('Invalid JSON file', e);
       return defaultValue;

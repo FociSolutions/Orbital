@@ -1,6 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { ValidJsonService } from './valid-json.service';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import * as faker from 'faker';
 
 describe('ValidJsonService', () => {
   beforeEach(async(() => {
@@ -34,8 +35,12 @@ describe('ValidJsonService', () => {
 
   describe('add-body-rule.parseJSONOrDefault', () => {
     it('should return default value if the JSON cannot be parsed ', () => {
+      const invalidJSONString: string = faker.random.word();
       const service: ValidJsonService = TestBed.get(ValidJsonService);
-      const Actual = service.parseJSONOrDefault<string>('Invalid JSON', '{}');
+      const Actual = service.parseJSONOrDefault<string>(
+        invalidJSONString,
+        '{}'
+      );
       expect(Actual).toBe('{}');
     });
   });

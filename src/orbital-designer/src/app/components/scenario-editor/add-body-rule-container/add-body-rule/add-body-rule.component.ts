@@ -34,10 +34,10 @@ export class AddBodyRuleComponent implements OnInit {
    */
   addBodyRule() {
     if (this.validateRequestMatchRulesForm()) {
-      const bodyRule = ({
+      const bodyRule = {
         type: this.bodyType,
-        rule: this.jsonService.parseJSONOrDefault(this.bodyValue, {})
-      } as unknown) as BodyRule;
+        rule: this.jsonService.parseJSONOrDefault<object>(this.bodyValue, {})
+      } as BodyRule;
 
       this.bodyType = null;
       this.bodyValue = '';
@@ -74,7 +74,7 @@ export class AddBodyRuleComponent implements OnInit {
   /**
    * Determines if the current body rule and value are object equivalent to the ones already added
    */
-  private bodyRuleDeepEquals() {
+  private bodyRuleDeepEquals(): BodyRule {
     return this.bodyRules.find(
       ({ rule, type }) =>
         deepEqual(rule, JSON.parse(this.bodyValue)) &&
