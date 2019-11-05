@@ -55,6 +55,8 @@ export class AddRequestMatchRuleComponent implements OnInit {
         this.requestMatchRuleOutput.emit(JSON.parse(JSON.stringify(this.requestMatchRule)));
         this.logger.debug('The request match rules have been emitted', this.requestMatchRule);
         this.canCollapseCard = true;
+      } else {
+        this.canCollapseCard = false;
       }
     } else {
       this.canCollapseCard = true;
