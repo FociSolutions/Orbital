@@ -2,9 +2,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule.component';
 import { MatExpansionModule, MatFormFieldModule, MatInputModule,
-  MatSelectModule, MatCardModule, MatDividerModule } from '@angular/material';
+  MatSelectModule, MatCardModule, MatDividerModule, MatIconModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import * as faker from 'faker';
+import { KvpAddComponent } from '../../orbital-common/kvp-edit/kvp-add/kvp-add.component';
+import { KvpEditComponent } from '../../orbital-common/kvp-edit/kvp-edit.component';
+import { KvpListItemComponent } from '../../orbital-common/kvp-edit/kvp-list-item/kvp-list-item.component';
+import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -12,7 +18,7 @@ describe('AddRequestMatchRuleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddRequestMatchRuleComponent ],
+      declarations: [ AddRequestMatchRuleComponent, KvpAddComponent, KvpEditComponent, KvpListItemComponent ],
       imports: [ LoggerTestingModule,
         MatExpansionModule,
         MatFormFieldModule,
@@ -22,7 +28,8 @@ describe('AddRequestMatchRuleComponent', () => {
         FormsModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        MatDividerModule ]
+        MatDividerModule,
+        MatIconModule ]
     })
     .compileComponents();
   }));
@@ -30,6 +37,10 @@ describe('AddRequestMatchRuleComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddRequestMatchRuleComponent);
     component = fixture.componentInstance;
+
+    component.requestMatchRule =
+      {headerRules: new Map<string, string>(), queryRules: new Map<string, string>(),
+       bodyRules: [{}] as BodyRule[]} as unknown as RequestMatchRule;
     fixture.detectChanges();
   });
 
@@ -40,6 +51,36 @@ describe('AddRequestMatchRuleComponent', () => {
   describe('add-request-match-rule.cannotClose', () => {
     it('should initialize the component to a valid save status and can close accordion', () => {
       expect(component.cannotClose()).toBe(false);
+    });
+  });
+
+  describe('add-request-match-rule.handleHeaderKvpOutput', () => {
+    it('should set the header match rules if it is truthy', () => {
+      const headerMatchRules = new Map<string, string>();
+      headerMatchRules.set(faker.random.word(), faker.random.word());
+      component.handleHeaderKvpOutput(headerMatchRules);
+      expect(component.headerMatchRules).toEqual(headerMatchRules);
+    });
+
+    it('should not set the header match rules if it is not truthy', () => {
+      const headerMatchRules = null;
+      component.handleHeaderKvpOutput(headerMatchRules);
+      expect(component.headerMatchRules).toEqual(undefined);
+    });
+  });
+
+  describe('add-request-match-rule.handleQueryKvpOutput', () => {
+    it('should set the query match rules if it is truthy', () => {
+      const queryMatchRules = new Map<string, string>();
+      queryMatchRules.set(faker.random.word(), faker.random.word());
+      component.handleQueryKvpOutput(queryMatchRules);
+      expect(component.queryMatchRules).toEqual(queryMatchRules);
+    });
+
+    it('should not set the query match rules if it is not truthy', () => {
+      const queryMatchRules = null;
+      component.handleQueryKvpOutput(queryMatchRules);
+      expect(component.queryMatchRules).toEqual(undefined);
     });
   });
 });

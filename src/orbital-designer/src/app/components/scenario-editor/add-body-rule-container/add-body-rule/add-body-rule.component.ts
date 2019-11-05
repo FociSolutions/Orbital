@@ -4,6 +4,7 @@ import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import deepEqual from 'deep-equal';
 import { EventEmitter } from '@angular/core';
+import { ValidJsonService } from '../../../../services/valid-json/valid-json.service';
 
 @Component({
   selector: 'app-add-body-rule',
@@ -15,24 +16,28 @@ export class AddBodyRuleComponent implements OnInit {
   errorMessage = '';
   bodyRuleTypeValues = BodyRuleType;
   @Input() bodyRules: BodyRule[] = [];
-  @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
+  @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<
+    BodyRule
+  >();
   @Input() shouldDisable = false;
 
   bodyType: BodyRuleType;
   bodyValue = '';
 
-  constructor(private logger: NGXLogger) {}
+  constructor(
+    private logger: NGXLogger,
+    private jsonService: ValidJsonService
+  ) {}
 
   /**
    * Adds the body rule from the form field into the internal array
    */
   addBodyRule() {
     if (this.validateRequestMatchRulesForm()) {
-      const bodyRule =
-      {
+      const bodyRule = {
         type: this.bodyType,
-        rule: this.tryParseJSON(this.bodyValue)
-      } as unknown as BodyRule;
+        rule: this.jsonService.parseJSONOrDefault<object>(this.bodyValue, {})
+      } as BodyRule;
 
       this.bodyType = null;
       this.bodyValue = '';
@@ -53,7 +58,7 @@ export class AddBodyRuleComponent implements OnInit {
       this.logger.debug('Body type is required');
       this.errorMessage = 'Body type is required';
       return false;
-    } else if (!this.isValidJSON(this.bodyValue)) {
+    } else if (!this.jsonService.isValidJSON(this.bodyValue)) {
       this.logger.debug('The body value must be valid JSON');
       this.errorMessage = 'The body value must be valid JSON';
       return false;
@@ -69,34 +74,12 @@ export class AddBodyRuleComponent implements OnInit {
   /**
    * Determines if the current body rule and value are object equivalent to the ones already added
    */
-  private bodyRuleDeepEquals() {
-    return this.bodyRules.find(({ rule, type }) =>
-           deepEqual(rule, JSON.parse(this.bodyValue)) && deepEqual(type, this.bodyType));
-  }
-
-  /**
-   * Checks if the provided JSON string is valid
-   * @param json The JSON to validate
-   */
-  isValidJSON(json: string) {
-    try {
-      JSON.parse(json);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /**
-   * Returns a valid JSON object if the JSON can be parsed, otherwise null
-   * @param json The JSON to parse
-   */
-  tryParseJSON(json: string) {
-    if (this.isValidJSON(json)) {
-      return JSON.parse(json);
-    }
-
-    return null;
+  private bodyRuleDeepEquals(): BodyRule {
+    return this.bodyRules.find(
+      ({ rule, type }) =>
+        deepEqual(rule, JSON.parse(this.bodyValue)) &&
+        deepEqual(type, this.bodyType)
+    );
   }
 
   /**

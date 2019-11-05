@@ -97,23 +97,23 @@ describe('KvpEditComponent', () => {
     });
   });
 
-  describe('KvpEditComponent.onSave', () => {
-    it('Should emit the savedkvp map is onSave is set to true', () => {
+  describe('KvpEditComponent.Save', () => {
+    it('Should emit the savedkvp map is Save is set to true', () => {
       const newKvpMap: Map<string, string> = new Map<string, string>();
       newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
       spyOn(component.savedKvpMapEmitter, 'emit');
-      component.onSave = true;
+      component.Save = true;
 
       expect(component.savedKvpMapEmitter.emit).toHaveBeenCalledWith(
         component.savedKvpMap
       );
     });
 
-    it('Should not emit the savedkvp map is onSave is set to false', () => {
+    it('Should not emit the savedkvp map is Save is set to false', () => {
       const newKvpMap: Map<string, string> = new Map<string, string>();
       newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
       spyOn(component.savedKvpMapEmitter, 'emit');
-      component.onSave = false;
+      component.Save = false;
 
       expect(component.savedKvpMapEmitter.emit).not.toHaveBeenCalled();
     });
