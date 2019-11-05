@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { NGXLogger } from 'ngx-logger';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 @Component({
   selector: 'app-add-request-match-rule',
@@ -15,6 +16,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
   panelExpanded: boolean;
   headerMatchRules: Map<string, string>;
   queryMatchRules: Map<string, string>;
+  bodyMatchRules: BodyRule[];
   constructor(private logger: NGXLogger) {
     this.isValid = new EventEmitter<boolean>();
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
@@ -50,6 +52,17 @@ export class AddRequestMatchRuleComponent implements OnInit {
     if (!!queryMatchRules) {
       this.logger.debug('Set the query match rules to', queryMatchRules);
       this.queryMatchRules = queryMatchRules;
+    }
+  }
+
+  /**
+   * Handles the body output
+   * @param bodyMatchRules The body match rules to use
+   */
+  handleBodyOutput(bodyMatchRules: BodyRule[]) {
+    if (!!bodyMatchRules) {
+      this.logger.debug('Set the body match rules to', bodyMatchRules);
+      this.bodyMatchRules = bodyMatchRules;
     }
   }
 
