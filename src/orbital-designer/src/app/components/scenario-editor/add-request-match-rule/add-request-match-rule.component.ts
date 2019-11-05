@@ -51,8 +51,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
   set saveStatus(shouldSave: boolean) {
     if (shouldSave) {
       // validate request match rules
-      if (!!this.requestMatchRule && !!this.requestMatchRule.queryRules &&
-          !!this.requestMatchRule.headerRules && !!this.requestMatchRule.bodyRules) {
+      if (!!this.headerMatchRules && !!this.queryMatchRules && !!this.bodyMatchRules) {
         this.requestMatchRuleOutput.emit(this.requestMatchRule);
         this.logger.debug('The request match rules have been emitted', this.requestMatchRule);
         this.canCollapseCard = true;
