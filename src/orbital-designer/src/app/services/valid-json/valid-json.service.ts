@@ -12,18 +12,13 @@ export class ValidJsonService {
    * @param json The JSON to validate
    */
   isValidJSON(json: string): boolean {
-    try {
-      JSON.parse(json);
-      return true;
-    } catch (e) {
-      this.logger.error('Invalid JSON File', e);
-      return false;
-    }
+    return !!this.parseJSONOrDefault<boolean>(json, false);
   }
 
   /**
    * Returns a valid JSON object if the JSON can be parsed, otherwise the default value
    * @param json The JSON to parse
+   * @param defaultValue The default value to return if the string cannot be parsed
    */
   parseJSONOrDefault<T>(json: string, defaultValue: T): T {
     try {

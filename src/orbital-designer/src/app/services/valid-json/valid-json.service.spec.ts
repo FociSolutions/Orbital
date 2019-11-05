@@ -37,11 +37,8 @@ describe('ValidJsonService', () => {
     it('should return default value if the JSON cannot be parsed ', () => {
       const invalidJSONString: string = faker.random.word();
       const service: ValidJsonService = TestBed.get(ValidJsonService);
-      const Actual = service.parseJSONOrDefault<string>(
-        invalidJSONString,
-        '{}'
-      );
-      expect(Actual).toBe('{}');
+      const Actual = service.parseJSONOrDefault<object>(invalidJSONString, {});
+      expect(Actual).toEqual({});
     });
   });
   describe('add-body-rule.parseJSONOrDefault', () => {
