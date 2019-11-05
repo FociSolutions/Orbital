@@ -48,7 +48,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
  /*
   * Sets the save status
   */
-  @Input()
   set saveStatus(shouldSave: boolean) {
     if (shouldSave) {
       // validate request match rules
