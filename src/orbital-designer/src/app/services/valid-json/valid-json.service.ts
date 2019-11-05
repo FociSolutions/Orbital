@@ -16,7 +16,7 @@ export class ValidJsonService {
       JSON.parse(json);
       return true;
     } catch (e) {
-      this.logger.error('Invalid JSON File');
+      this.logger.error('Invalid JSON File', e);
       return false;
     }
   }
@@ -29,7 +29,7 @@ export class ValidJsonService {
     try {
       return JSON.parse(json) as T;
     } catch (e) {
-      this.logger.error('Invalid JSON file');
+      this.logger.error('Invalid JSON file', e);
       return defaultValue;
     }
   }
