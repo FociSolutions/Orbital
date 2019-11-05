@@ -164,9 +164,11 @@ describe('AddRequestMatchRuleComponent', () => {
 
     it('should not emit the request match rules if the header match rules are invalid', () => {
       const testQueryMatchRules = new Map<string, string>();
+      const testHeaderMatchRules = null;
       const testBodyMatchRules: BodyRule[] = [{}] as BodyRule[];
 
       testQueryMatchRules.set(faker.random.word(), faker.random.word());
+      component.requestMatchRule.headerRules = testHeaderMatchRules;
       testBodyMatchRules[0].rule = {a: faker.random.word()};
       testBodyMatchRules[0].type = BodyRuleType.BodyEquality;
 
