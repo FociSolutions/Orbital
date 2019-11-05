@@ -1,3 +1,6 @@
+%subtitle-text {
+  color: rgba(0, 0, 0, 0.539261);
+}
 .response-code {
   display: flex;
   flex-direction: row;
@@ -8,7 +11,7 @@
 }
 
 .status-code {
-  color: rgba(0, 0, 0, 0.539261);
+  @extend %subtitle-text;
   display: flex;
   flex-direction: column;
 }
@@ -19,7 +22,7 @@
 }
 
 .status-message {
-  color: rgba(0, 0, 0, 0.539261);
+  @extend %subtitle-text;
   margin-left: 15em;
   display: flex;
   flex-direction: column;
@@ -28,4 +31,14 @@
 .status-message-output {
   color: rgba(0, 0, 0);
   margin-top: 1em;
+}
+
+.response-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.body-title {
+  @extend %subtitle-text;
+  padding-bottom: 1em;
 }

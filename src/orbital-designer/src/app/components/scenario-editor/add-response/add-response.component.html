@@ -27,9 +27,11 @@
       [kvpMap]="response.headers"
       (savedKvpMapEmitter)="(childKvpMap)"
     ></app-kvp-edit>
-    <mat-form-field class="response-body">
-      <h3 class="subtitle" id="value">Body</h3>
-      <textarea matInput rows="10" [(ngModel)]="this.bodyResponse"></textarea>
-    </mat-form-field>
+    <div class="response-body">
+      <mat-form-field>
+        <div class="body-title">Body</div>
+        <textarea matInput rows="10" [(ngModel)]="this.bodyResponse"></textarea>
+      </mat-form-field>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>
