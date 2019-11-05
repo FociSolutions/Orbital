@@ -96,46 +96,11 @@ describe('AddRequestMatchRuleComponent', () => {
     });
   });
 
-  describe('add-request-match-rule.getQueryMatchRules', () => {
-    it('should get the query match rules if they are valid', () => {
-      const queryMatchRules = new Map<string, string>();
-      queryMatchRules.set(faker.random.word(), faker.random.word());
-      component.handleQueryKvpOutput(queryMatchRules);
-      expect(component.getQueryRules()).toEqual(queryMatchRules);
-    });
-
-    it('should not get the query match rules if they are invalid', () => {
-      const queryMatchRules = null;
-      component.handleQueryKvpOutput(queryMatchRules);
-      expect(component.getQueryRules()).toEqual(undefined);
-    });
-  });
-
   describe('add-request-match-rule.handleBodyOutput', () => {
     it('should set the body match rules if it is truthy', () => {
       const bodyMatchRules = [{type: BodyRuleType.BodyEquality, rule: {a: faker.random.word()}}] as BodyRule[];
       component.handleBodyOutput(bodyMatchRules);
       expect(component.bodyMatchRules).toEqual(bodyMatchRules);
-    });
-
-    it('should not set the body match rules if it is not truthy', () => {
-      const bodyMatchRules = null;
-      component.handleBodyOutput(bodyMatchRules);
-      expect(component.bodyMatchRules).toEqual(undefined);
-    });
-  });
-
-  describe('add-request-match-rule.getBodyMatchRules', () => {
-    it('should get the body match rules if they are valid', () => {
-      const bodyMatchRules = [{type: BodyRuleType.BodyEquality, rule: {a: faker.random.word()}}] as BodyRule[];
-      component.handleBodyOutput(bodyMatchRules);
-      expect(component.getBodyRules()).toEqual(bodyMatchRules);
-    });
-
-    it('should not get the body match rules if they are invalid', () => {
-      const bodyMatchRules = null;
-      component.handleBodyOutput(bodyMatchRules);
-      expect(component.getBodyRules()).toEqual(undefined);
     });
   });
 });

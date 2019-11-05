@@ -56,15 +56,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
   }
 
   /**
-   * Gets the query rules if they are not undefined, otherwise returns void
-   */
-  getQueryRules() {
-    if (!!this.queryMatchRules) {
-      return this.queryMatchRules;
-    }
-  }
-
-  /**
    * Handles the body output
    * @param bodyMatchRules The body match rules to use
    */
@@ -72,15 +63,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
     if (!!bodyMatchRules) {
       this.logger.debug('Set the body match rules to', bodyMatchRules);
       this.bodyMatchRules = bodyMatchRules;
-    }
-  }
-
-  /**
-   * Gets the body rules if they are not undefined, otherwise returns void
-   */
-  getBodyRules() {
-    if (!!this.bodyMatchRules) {
-      return this.bodyMatchRules;
     }
   }
 
