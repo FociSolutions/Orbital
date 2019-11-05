@@ -57,7 +57,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
         this.canCollapseCard = true;
       }
     } else {
-      this.canCollapseCard = false;
+      this.canCollapseCard = true;
     }
   }
 
