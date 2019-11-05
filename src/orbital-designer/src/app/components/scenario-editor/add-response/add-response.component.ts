@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as HttpStatus from 'http-status-codes';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
+import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 
 @Component({
   selector: 'app-add-response',
@@ -64,7 +65,7 @@ export class AddResponseComponent implements OnInit {
     }
   }
 
-  constructor() {
+  constructor(private jsonService: ValidJsonService) {
     this.responseOutput = new EventEmitter<Response>();
     this.isValid = new EventEmitter<boolean>();
     this.childKvpMap = new Map<string, string>();
