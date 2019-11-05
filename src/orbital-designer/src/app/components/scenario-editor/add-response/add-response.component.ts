@@ -20,9 +20,8 @@ export class AddResponseComponent implements OnInit {
   childKvpMap: Map<string, string>;
 
   /**
-   *  The body response rules
+   *  The body response rules entered by the user
    */
-
   bodyResponse: string;
 
   /**
