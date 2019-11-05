@@ -9,6 +9,8 @@ import * as faker from 'faker';
 import { KvpAddComponent } from '../../orbital-common/kvp-edit/kvp-add/kvp-add.component';
 import { KvpEditComponent } from '../../orbital-common/kvp-edit/kvp-edit.component';
 import { KvpListItemComponent } from '../../orbital-common/kvp-edit/kvp-list-item/kvp-list-item.component';
+import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -35,6 +37,10 @@ describe('AddRequestMatchRuleComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddRequestMatchRuleComponent);
     component = fixture.componentInstance;
+
+    component.requestMatchRule =
+      {headerRules: new Map<string, string>(), queryRules: new Map<string, string>(),
+       bodyRules: [{}] as BodyRule[]} as unknown as RequestMatchRule;
     fixture.detectChanges();
   });
 

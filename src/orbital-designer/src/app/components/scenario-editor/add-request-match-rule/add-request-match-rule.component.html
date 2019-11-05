@@ -18,7 +18,7 @@
           [addKvpTitle]="'Add New Header Match Rule'"
           [listKvpTitle]="'Added Header Match Rules'"
           [Save]="this.saveStatus"
-          [kvpMap]="this.requestMatchRule?.headerRules"
+          [kvpMap]="this.requestMatchRule.headerRules"
           (savedKvpMapEmitter)="handleHeaderKvpOutput($event)">
         </app-kvp-edit>
         </mat-expansion-panel>
@@ -35,7 +35,7 @@
             [addKvpTitle]="'Add New Query Match Rule'"
             [listKvpTitle]="'Added Query Match Rules'"
             [Save]="this.saveStatus"
-            [kvpMap]="this.requestMatchRule?.queryRules"
+            [kvpMap]="this.requestMatchRule.queryRules"
             (savedKvpMapEmitter)="handleQueryKvpOutput($event)">
           </app-kvp-edit>
           </mat-expansion-panel>
