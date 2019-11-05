@@ -55,8 +55,8 @@ export class AddRequestMatchRuleComponent implements OnInit {
       if (!!this.requestMatchRule && !!this.requestMatchRule.queryRules &&
           !!this.requestMatchRule.headerRules && !!this.requestMatchRule.bodyRules) {
         this.requestMatchRuleOutput.emit(this.requestMatchRule);
-        this.isValid.emit(true);
         this.logger.debug('The request match rules have been emitted', this.requestMatchRule);
+        this.canCollapseCard = true;
       }
     }
   }
