@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { IOptionsValues } from 'selenium-webdriver/chrome';
 
 @Injectable({
   providedIn: 'root'
