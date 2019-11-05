@@ -32,7 +32,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * If it can be collapsed, then the card becomes non-disabled
    * If it cannot be collapsed, then the card expands and becomes disabled
    */
-  @Input()
   set canCollapseCard(canCollapseCard: boolean) {
     if (canCollapseCard) {
       this.isCardDisabled = false;
