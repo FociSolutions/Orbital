@@ -76,6 +76,9 @@ export class AddResponseComponent implements OnInit {
     }
   }
 
+  /**
+   * Checks to see if the body is valid and sets it to the validBodyResponse if valid
+   */
   set bodyResponse(bodyContent: string) {
     if (this.jsonService.isValidJSON(bodyContent)) {
       this.validBodyResponse = bodyContent;
