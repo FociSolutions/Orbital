@@ -23,6 +23,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.canCollapseCard = true;
   }
 
   /**
