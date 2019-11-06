@@ -146,6 +146,9 @@ describe('AddRequestMatchRuleComponent', () => {
       spyOn(component.requestMatchRuleOutput, 'emit');
       spyOn(component.isValid, 'emit');
 
+      component.headerMatchRules = testHeaderMatchRules;
+      component.queryMatchRules = testQueryMatchRules;
+      component.bodyMatchRules = testBodyMatchRules;
       const requestMatchRule = { headerRules: testHeaderMatchRules,
                          queryRules: testQueryMatchRules,
                          bodyRules: testBodyMatchRules } as RequestMatchRule;
@@ -171,7 +174,7 @@ describe('AddRequestMatchRuleComponent', () => {
       component.saveStatus = true;
 
       expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
-      expect(component.isValid.emit).not.toHaveBeenCalled();
+      expect(component.isValid.emit).toHaveBeenCalledWith(false);
     });
 
     it('should not emit the request match rules if the query match rules are invalid', () => {
@@ -192,7 +195,7 @@ describe('AddRequestMatchRuleComponent', () => {
       component.saveStatus = true;
 
       expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
-      expect(component.isValid.emit).not.toHaveBeenCalled();
+      expect(component.isValid.emit).toHaveBeenCalledWith(false);
     });
 
     it('should not emit the request match rules if the body match rules are invalid', () => {
@@ -205,6 +208,8 @@ describe('AddRequestMatchRuleComponent', () => {
       spyOn(component.requestMatchRuleOutput, 'emit');
       spyOn(component.isValid, 'emit');
 
+      component.headerMatchRules = testHeaderMatchRules;
+      component.queryMatchRules = testQueryMatchRules;
       const requestMatchRule = { headerRules: testHeaderMatchRules,
                          queryRules: testQueryMatchRules,
                          bodyRules: undefined } as RequestMatchRule;
@@ -212,7 +217,7 @@ describe('AddRequestMatchRuleComponent', () => {
       component.saveStatus = true;
 
       expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
-      expect(component.isValid.emit).not.toHaveBeenCalled();
+      expect(component.isValid.emit).toHaveBeenCalledWith(false);
     });
   });
 });
