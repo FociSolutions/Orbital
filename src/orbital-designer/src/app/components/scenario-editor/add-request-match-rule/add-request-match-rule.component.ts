@@ -59,6 +59,9 @@ export class AddRequestMatchRuleComponent implements OnInit {
         this.canCollapseCard = true;
       } else {
         this.canCollapseCard = false;
+        this.logger.debug('Setting canCollapseCard to false because header rules, ' +
+                          'query rules, and/or body match rules were invalid respectively',
+                          this.headerMatchRules, this.queryMatchRules, this.bodyMatchRules);
       }
     } else {
       this.canCollapseCard = true;
