@@ -55,7 +55,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
         const requestToEmit = {headerRules: this.headerMatchRules,
           queryRules: this.queryMatchRules, bodyRules: this.bodyMatchRules} as RequestMatchRule;
         this.requestMatchRuleOutput.emit(requestToEmit);
-        this.logger.debug('The request match rules have been emitted', this.requestMatchRule);
+        this.logger.debug('The request match rules have been emitted', requestToEmit);
         this.canCollapseCard = true;
       } else {
         this.canCollapseCard = false;
