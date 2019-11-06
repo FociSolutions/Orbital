@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as HttpStatus from 'http-status-codes';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-add-response',
@@ -10,7 +11,6 @@ import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service
 })
 export class AddResponseComponent implements OnInit {
   @Input() response: Response;
-  @Input() saveStatus: boolean;
 
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
@@ -21,9 +21,19 @@ export class AddResponseComponent implements OnInit {
   childKvpMap: Map<string, string>;
 
   /**
-   *  The body response rules entered by the user
+   *  The validBodyResponse after it's been validated
    */
-  bodyResponse: string;
+  private validBodyResponse: string;
+
+  /**
+   *
+   */
+  isBodyInvalid: boolean;
+
+  /**
+   * The error message for the body response
+   */
+  bodyErrorMessage: string;
 
   /**
    * The locally store status code
@@ -59,22 +69,59 @@ export class AddResponseComponent implements OnInit {
     } else {
       try {
         this.statusMessage = HttpStatus.getStatusText(Number(statusCode));
+        this.statusCodeEntered = statusCode;
       } catch (Error) {
         this.statusMessage = 'Invalid Status Code';
       }
     }
   }
 
-  constructor(private jsonService: ValidJsonService) {
+  set bodyResponse(bodyContent: string) {
+    if (this.jsonService.isValidJSON(bodyContent)) {
+      this.validBodyResponse = bodyContent;
+      this.isBodyInvalid = false;
+    } else {
+      this.isBodyInvalid = true;
+    }
+  }
+
+  constructor(
+    private jsonService: ValidJsonService,
+    private logger: NGXLogger
+  ) {
     this.responseOutput = new EventEmitter<Response>();
     this.isValid = new EventEmitter<boolean>();
     this.childKvpMap = new Map<string, string>();
     this.titleForKvp = 'Add New Header Rule';
     this.titleForKvpAdded = 'Added Header Rules';
+    this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
+    this.isBodyInvalid = false;
   }
 
   ngOnInit() {
     this.statusMessage = '';
     this.statusCode = '';
+  }
+
+  /**
+   * If shouldSave is true, validate the response and emit to the parent as well as the isValid boolean
+   */
+  set saveStatus(shouldSave: boolean) {
+    if (shouldSave) {
+      if (!!this.statusCode && !!this.childKvpMap && !!this.validBodyResponse) {
+        const responseToEmit = {
+          headers: this.childKvpMap,
+          body: this.bodyResponse,
+          status: +this.statusCode
+        } as Response;
+        this.logger.debug('Response has been emitted', responseToEmit);
+        this.responseOutput.emit(responseToEmit);
+        this.isValid.emit(true);
+      } else {
+        this.isValid.emit(false);
+      }
+    } else {
+      this.isValid.emit(true);
+    }
   }
 }

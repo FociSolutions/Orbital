@@ -32,6 +32,9 @@
         <div class="body-title">Body</div>
         <textarea matInput rows="10" [(ngModel)]="this.bodyResponse"></textarea>
       </mat-form-field>
+      <div class="error-message" *ngIf="isBodyInvalid">
+        {{ this.bodyErrorMessage }}
+      </div>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
