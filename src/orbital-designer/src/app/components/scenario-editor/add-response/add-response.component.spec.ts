@@ -5,12 +5,10 @@ import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module'
 import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
-import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
   let fixture: ComponentFixture<AddResponseComponent>;
-  let jsonService: ValidJsonService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -19,16 +17,13 @@ describe('AddResponseComponent', () => {
         OrbitalCommonModule,
         BrowserAnimationsModule,
         LoggerTestingModule
-      ],
-      providers: [ValidJsonService]
+      ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
-    jsonService = TestBed.get(ValidJsonService);
-
     component.response = { headers: new Map<string, string>() } as Response;
     fixture.detectChanges();
   });
@@ -65,6 +60,7 @@ describe('AddResponseComponent', () => {
       component.childKvpMap = testHeaderResponse;
       component.statusCode = testStatusCode;
       component.bodyResponse = testBodyResponse;
+      component.validBodyResponse = testBodyResponse;
 
       spyOn(component.isValid, 'emit');
       spyOn(component.responseOutput, 'emit');

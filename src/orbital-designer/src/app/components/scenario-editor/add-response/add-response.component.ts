@@ -23,7 +23,7 @@ export class AddResponseComponent implements OnInit {
   /**
    *  The validBodyResponse after it's been validated
    */
-  private validBodyResponse: string;
+  validBodyResponse: string;
 
   /**
    *
@@ -83,6 +83,10 @@ export class AddResponseComponent implements OnInit {
     } else {
       this.isBodyInvalid = true;
     }
+  }
+
+  get bodyResponse(): string {
+    return this.validBodyResponse;
   }
 
   constructor(
