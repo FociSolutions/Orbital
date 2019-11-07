@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
+import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -22,7 +24,11 @@ export class ScenarioEditorComponent implements OnInit {
   responseFormGroup: FormGroup;
   requestMatchRulesPanelExpanded: boolean;
 
-  constructor(private router: Router, private store: DesignerStore) {
+  selectedScenario: Scenario;
+
+  constructor(private router: Router, private store: DesignerStore, private logger: NGXLogger) {
+    this.selectedScenario = this.store.selectedScenario;
+    this.logger.debug('Selected scenario:', this.store.selectedScenario);
     this.nameAndDescriptionFormGroup = new FormGroup({
       name: new FormControl(
         '',
