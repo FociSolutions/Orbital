@@ -21,14 +21,14 @@ export class AddResponseComponent implements OnInit {
   childKvpMap: Map<string, string>;
 
   /**
-   *  The validBodyResponse after it's been validated
+   *  The validBodyResponse after it has been validated
    */
   validBodyResponse: string;
 
   /**
-   *
+   * Boolean indicating if the body is in valid JSON format
    */
-  isBodyInvalid: boolean;
+  isBodyValid: boolean;
 
   /**
    * The error message for the body response
@@ -82,12 +82,15 @@ export class AddResponseComponent implements OnInit {
   set bodyResponse(bodyContent: string) {
     if (this.jsonService.isValidJSON(bodyContent)) {
       this.validBodyResponse = bodyContent;
-      this.isBodyInvalid = false;
+      this.isBodyValid = true;
     } else {
-      this.isBodyInvalid = true;
+      this.isBodyValid = false;
     }
   }
 
+  /**
+   * Gets the valid response body
+   */
   get bodyResponse(): string {
     return this.validBodyResponse;
   }
@@ -102,7 +105,7 @@ export class AddResponseComponent implements OnInit {
     this.titleForKvp = 'Add New Header Rule';
     this.titleForKvpAdded = 'Added Header Rules';
     this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
-    this.isBodyInvalid = false;
+    this.isBodyValid = true;
   }
 
   ngOnInit() {
