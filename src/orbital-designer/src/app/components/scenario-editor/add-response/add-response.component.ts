@@ -118,7 +118,7 @@ export class AddResponseComponent implements OnInit {
    */
   set saveStatus(shouldSave: boolean) {
     if (shouldSave) {
-      if (!!this.statusCode && !!this.childKvpMap && !!this.validBodyResponse) {
+      if (!!this.statusCode && !!this.childKvpMap && this.isBodyValid) {
         const responseToEmit = {
           headers: this.childKvpMap,
           body: this.bodyResponse,
