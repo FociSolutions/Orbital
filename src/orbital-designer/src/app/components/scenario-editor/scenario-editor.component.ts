@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { DesignerStore } from 'src/app/store/designer-store';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -21,7 +22,7 @@ export class ScenarioEditorComponent implements OnInit {
   responseFormGroup: FormGroup;
   requestMatchRulesPanelExpanded: boolean;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private store: DesignerStore) {
     this.nameAndDescriptionFormGroup = new FormGroup({
       name: new FormControl(
         '',
