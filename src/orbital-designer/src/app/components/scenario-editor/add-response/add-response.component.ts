@@ -51,7 +51,7 @@ export class AddResponseComponent implements OnInit {
   titleForKvp: string;
   titleForKvpAdded: string;
   isCardDisabled: boolean;
-  panelExpanded: any;
+  panelExpanded: boolean;
 
   /**
    * Gets the status code from the form field
