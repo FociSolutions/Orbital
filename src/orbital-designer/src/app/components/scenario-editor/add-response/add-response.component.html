@@ -32,7 +32,7 @@
         <div class="body-title">Body</div>
         <textarea matInput rows="10" [(ngModel)]="this.bodyResponse"></textarea>
       </mat-form-field>
-      <div class="error-message" *ngIf="isBodyInvalid">
+      <div class="error-message" *ngIf="isBodyValid">
         {{ this.bodyErrorMessage }}
       </div>
     </div>
