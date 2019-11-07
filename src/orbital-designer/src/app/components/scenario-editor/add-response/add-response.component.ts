@@ -50,6 +50,8 @@ export class AddResponseComponent implements OnInit {
    */
   titleForKvp: string;
   titleForKvpAdded: string;
+  isCardDisabled: boolean;
+  panelExpanded: any;
 
   /**
    * Gets the status code from the form field
@@ -114,6 +116,29 @@ export class AddResponseComponent implements OnInit {
   }
 
   /**
+   * Sets whether the card can be collapsed.
+   *
+   * If it can be collapsed, then the card becomes non-disabled
+   * If it cannot be collapsed, then the card expands and becomes disabled
+   */
+  set canCollapseCard(canCollapseCard: boolean) {
+    if (canCollapseCard) {
+      this.isCardDisabled = false;
+      this.isValid.emit(true);
+      this.logger.debug('canCollapse', canCollapseCard);
+      this.logger.debug('isCardDisabled', this.isCardDisabled);
+      this.logger.debug('panelExpanded', this.panelExpanded);
+    } else {
+      this.isCardDisabled = true;
+      this.panelExpanded = true;
+      this.isValid.emit(false);
+      this.logger.debug('canCollapse', canCollapseCard);
+      this.logger.debug('isCardDisabled', this.isCardDisabled);
+      this.logger.debug('panelExpanded', this.panelExpanded);
+    }
+  }
+
+  /**
    * If shouldSave is true, validate the response and emit to the parent as well as the isValid boolean
    */
   set saveStatus(shouldSave: boolean) {
@@ -126,12 +151,12 @@ export class AddResponseComponent implements OnInit {
         } as Response;
         this.logger.debug('Response has been emitted', responseToEmit);
         this.responseOutput.emit(responseToEmit);
-        this.isValid.emit(true);
+        this.canCollapseCard = true;
       } else {
-        this.isValid.emit(false);
+        this.canCollapseCard = false;
       }
     } else {
-      this.isValid.emit(true);
+      this.canCollapseCard = true;
     }
   }
 }

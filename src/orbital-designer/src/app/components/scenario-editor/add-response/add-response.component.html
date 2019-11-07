@@ -1,5 +1,9 @@
 <mat-accordion>
-  <mat-expansion-panel class="response-dropdown">
+  <mat-expansion-panel
+    class="response-dropdown"
+    [disabled]="this.isCardDisabled"
+    [expanded]="this.panelExpanded"
+  >
     <mat-expansion-panel-header class="right-aligned-header">
       <mat-panel-title>
         Response
@@ -32,7 +36,7 @@
         <div class="body-title">Body</div>
         <textarea matInput rows="10" [(ngModel)]="this.bodyResponse"></textarea>
       </mat-form-field>
-      <div class="error-message" *ngIf="isBodyValid">
+      <div class="error-message" *ngIf="!isBodyValid">
         {{ this.bodyErrorMessage }}
       </div>
     </div>
