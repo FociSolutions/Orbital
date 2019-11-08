@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, Params, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { NGXLogger } from 'ngx-logger';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -25,8 +26,10 @@ export class ScenarioEditorComponent implements OnInit {
   requestMatchRulesPanelExpanded: boolean;
 
   selectedScenario: Scenario;
+  paramsSubscription: Subscription;
+  scenarioId: string;
 
-  constructor(private router: Router, private store: DesignerStore, private logger: NGXLogger) {
+  constructor(private router: Router, private store: DesignerStore, private logger: NGXLogger, private activatedRouter: ActivatedRoute) {
     this.selectedScenario = this.store.selectedScenario;
     this.logger.debug('Selected scenario:', this.store.selectedScenario);
     this.nameAndDescriptionFormGroup = new FormGroup({
@@ -69,7 +72,16 @@ export class ScenarioEditorComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.paramsSubscription = this.activatedRouter.params.subscribe((param: Params) => {
+      this.scenarioId = param.scenarioId;
+      this.logger.debug('Scenario id from URL:', this.scenarioId);
+      if (this.store.state.mockDefinition) {
+        this.selectedScenario = this.store.state.mockDefinition.scenarios.find(s => s.id === this.scenarioId);
+        this.logger.debug('New selected scenario from the URL: ', this.selectedScenario);
+      }
+    });
+  }
 
   /**
    * Goes back to the scenarios view
