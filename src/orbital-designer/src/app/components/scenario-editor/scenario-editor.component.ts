@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './scenario-editor.component.html',
   styleUrls: ['./scenario-editor.component.scss']
 })
-export class ScenarioEditorComponent implements OnInit {
+export class ScenarioEditorComponent implements OnInit, OnDestroy {
   readonly headerMatchRuleTitle = 'Header Match Rule';
   readonly headerMatchRuleListTitle = 'Header Rules';
 
@@ -170,6 +170,10 @@ export class ScenarioEditorComponent implements OnInit {
    */
   handleSaveButtonClickRequestMatchRules() {
     this.requestMatchRulesPanelExpanded = true;
+  }
+
+  ngOnDestroy() {
+    this.paramsSubscription.unsubscribe();
   }
 
 }
