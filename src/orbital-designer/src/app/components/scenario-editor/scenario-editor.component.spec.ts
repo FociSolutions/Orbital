@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AddBodyRuleContainerComponent } from './add-body-rule-container/add-body-rule-container.component';
 import { AddBodyRuleComponent } from './add-body-rule-container/add-body-rule/add-body-rule.component';
 import { BodyRuleListItemComponent } from './add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
+import { AddMetadataComponent } from './add-metadata/add-metadata.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -41,7 +42,8 @@ describe('ScenarioEditorComponent', () => {
         ScenarioCardComponent,
         AddBodyRuleContainerComponent,
         AddBodyRuleComponent,
-        BodyRuleListItemComponent
+        BodyRuleListItemComponent,
+        AddMetadataComponent
       ],
       imports: [
         LoggerTestingModule,

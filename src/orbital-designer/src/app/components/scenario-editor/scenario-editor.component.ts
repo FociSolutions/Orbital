@@ -5,6 +5,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
+import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -29,9 +30,12 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   paramsSubscription: Subscription;
   scenarioId: string;
 
+  metadata: Metadata;
+
   constructor(private router: Router, private store: DesignerStore, private logger: NGXLogger, private activatedRouter: ActivatedRoute) {
     this.selectedScenario = this.store.selectedScenario;
     this.logger.debug('Selected scenario:', this.store.selectedScenario);
+
     this.nameAndDescriptionFormGroup = new FormGroup({
       name: new FormControl(
         '',
@@ -180,6 +184,14 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
+  }
+
+  /*
+   * Saves the metadata to the scenario editor
+   * @param metadata The metadata input from the component
+   */
+  handleMetadataOutput(metadata: Metadata) {
+    this.metadata = metadata;
   }
 
 }
