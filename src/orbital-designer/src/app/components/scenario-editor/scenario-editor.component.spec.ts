@@ -47,7 +47,7 @@ describe('ScenarioEditorComponent', () => {
         AddBodyRuleContainerComponent,
         AddBodyRuleComponent,
         BodyRuleListItemComponent,
-        AddMetadataComponent
+        AddMetadataComponent,
         AddRequestMatchRuleComponent
       ],
       imports: [
