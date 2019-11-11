@@ -64,8 +64,10 @@ export class AddMetadataComponent implements OnInit {
    */
   @Input()
   set metadata(metadata: Metadata) {
-    this.metadataTitle = metadata.title;
-    this.metadataDescription = metadata.description;
+    if (!!metadata) {
+      this.metadataTitle = metadata.title;
+      this.metadataDescription = metadata.description;
+    }
   }
 
   /**

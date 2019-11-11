@@ -11,15 +11,10 @@
         <div id="metadata-cards">
           <h3>Scenario Properties</h3>
 
-          <app-scenario-card
-            [title]="'Metadata'"
-            [description]="'Name and Description'"
-            [cardTemplate]="metadataCardContent"
-            (panelOpened)="handleNameDescriptionPanelOpen()"
-            (panelClosed)="handleNameDescriptionPanelClose()"
-            [panelExpanded]="this.nameDescriptionPanelExpanded"
-          >
-          </app-scenario-card>
+          <app-add-metadata
+            [metadata]="this.selectedScenario?.metadata"
+            (metadataOutput)="handleMetadataOutput($event)">
+          </app-add-metadata>
 
           <app-scenario-card
             [title]="'Request Match Rules'"
