@@ -70,7 +70,6 @@ describe('ScenarioEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
-    component.selectedScenario = validMockDefinition.scenarios[0];
     fixture.detectChanges();
   });
 
@@ -231,6 +230,7 @@ describe('ScenarioEditorComponent', () => {
 
   describe('ScenarioEditorComponent.handleResponseOutput', () => {
     it('should set the response to the response when the component outputs the response', () => {
+      component.selectedScenario = validMockDefinition.scenarios[0];
       const fakeResponse = validMockDefinition.scenarios[0].response as unknown as Response;
       component.handleResponseOutput(fakeResponse);
       expect(component.response).toEqual(fakeResponse);

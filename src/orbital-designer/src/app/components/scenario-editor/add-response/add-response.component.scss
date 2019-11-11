@@ -42,3 +42,10 @@
   @extend %subtitle-text;
   padding-bottom: 1em;
 }
+
+::ng-deep mat-expansion-panel {
+  padding: 16px;
+}
+::ng-deep mat-panel-description {
+  font-size: 0.85em;
+}
