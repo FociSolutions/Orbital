@@ -46,6 +46,12 @@
 ::ng-deep mat-expansion-panel {
   padding: 16px;
 }
+
 ::ng-deep mat-panel-description {
   font-size: 0.85em;
+}
+
+::ng-deep .right-aligned-header .mat-content {
+  display: flex;
+  flex-direction: column;
 }
