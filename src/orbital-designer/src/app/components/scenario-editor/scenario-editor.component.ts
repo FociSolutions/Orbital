@@ -216,4 +216,11 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     this.response = response;
   }
 
+  /**
+   * Saves the current scenario to the designer store
+   */
+  save() {
+
+  }
+
 }
