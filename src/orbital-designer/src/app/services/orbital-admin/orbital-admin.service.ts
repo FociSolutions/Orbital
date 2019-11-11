@@ -16,11 +16,11 @@ export class OrbitalAdminService {
    * @param url The url to post the mockdefinition to
    * @param mockdefinition The mockdefinition to be posted
    */
-  addMockDefinition(
+  exportMockDefinition(
     url: string,
     mockdefinition: MockDefinition
   ): Observable<boolean> {
-    this.logger.debug('Mockdefinition had been added: ', mockdefinition);
+    this.logger.debug('Mockdefinition had been exported: ', mockdefinition);
     return this.httpClient.post<boolean>(
       `${url}${this.ROOT_URL}`,
       mockdefinition
