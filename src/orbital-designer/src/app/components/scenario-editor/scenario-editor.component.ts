@@ -72,6 +72,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Runs when the app is initialized
+   */
   ngOnInit() {
     this.paramsSubscription = this.activatedRouter.params.subscribe((param: Params) => {
       this.scenarioId = param.scenarioId;
@@ -172,6 +175,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     this.requestMatchRulesPanelExpanded = true;
   }
 
+  /**
+   * Unsubscribes from the params subscription when the module is unloaded
+   */
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
   }
