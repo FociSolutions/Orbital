@@ -191,6 +191,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    * @param metadata The metadata input from the component
    */
   handleMetadataOutput(metadata: Metadata) {
+    this.logger.debug('handleMetadataOutput:', metadata);
     this.metadata = metadata;
   }
 
