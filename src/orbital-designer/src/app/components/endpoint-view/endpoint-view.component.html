@@ -27,13 +27,14 @@
         <form class="server-post">
           <mat-form-field>
             <input
-              name="uri-input"
               matInput
+              name="uri-input"
               placeholder="Server URI"
               ngModel
               [pattern]="uriRegex"
               required
             />
+            <mat-error>{{ invalidUriError }}</mat-error>
           </mat-form-field>
         </form>
       </div>
