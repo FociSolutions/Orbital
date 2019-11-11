@@ -27,6 +27,8 @@ import { BodyRuleListItemComponent } from './add-body-rule-container/body-rule-l
 import { AddMetadataComponent } from './add-metadata/add-metadata.component';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import * as faker from 'faker';
+import validMockDefinition from '../../../test-files/test-mockdefinition-object';
+import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -46,6 +48,7 @@ describe('ScenarioEditorComponent', () => {
         AddBodyRuleComponent,
         BodyRuleListItemComponent,
         AddMetadataComponent
+        AddRequestMatchRuleComponent
       ],
       imports: [
         LoggerTestingModule,
@@ -212,6 +215,14 @@ describe('ScenarioEditorComponent', () => {
       const fakeMetadata = {title: faker.random.word(), description: faker.random.word()} as Metadata;
       component.handleMetadataOutput(fakeMetadata);
       expect(component.metadata).toEqual(fakeMetadata);
+    });
+  });
+
+  describe('ScenarioEditorComponent.handleRequestMatchRuleOutput', () => {
+    it('should set the request match rule to the one that the component emitted', () => {
+      const fakeRequestMatchRule = validMockDefinition.scenarios[0].requestMatchRules;
+      component.handleRequestMatchRuleOutput(fakeRequestMatchRule);
+      expect(component.requestMatchRule).toEqual(fakeRequestMatchRule);
     });
   });
 });

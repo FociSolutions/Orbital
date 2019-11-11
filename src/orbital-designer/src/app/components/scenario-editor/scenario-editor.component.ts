@@ -6,6 +6,7 @@ import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
+import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -29,6 +30,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   selectedScenario: Scenario;
   paramsSubscription: Subscription;
   scenarioId: string;
+  requestMatchRule: RequestMatchRule;
 
   metadata: Metadata;
 
@@ -193,6 +195,15 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   handleMetadataOutput(metadata: Metadata) {
     this.logger.debug('handleMetadataOutput:', metadata);
     this.metadata = metadata;
+  }
+
+  /**
+   * Saves the request match rule in the scenario-editor component
+   * @param requestMatchRule The request match rule to save
+   */
+  handleRequestMatchRuleOutput(requestMatchRule: RequestMatchRule) {
+    this.logger.debug('handleRequestMatchRuleOutput:', requestMatchRule);
+    this.requestMatchRule = requestMatchRule;
   }
 
 }

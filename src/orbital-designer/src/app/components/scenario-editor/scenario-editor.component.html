@@ -16,14 +16,10 @@
             (metadataOutput)="handleMetadataOutput($event)">
           </app-add-metadata>
 
-          <app-scenario-card
-            [title]="'Request Match Rules'"
-            [description]="
-              'Query Match Rules, Header Match Rules and Body Match Rules'
-            "
-            [cardTemplate]="this.requestMatchRulesCard"
-          >
-          </app-scenario-card>
+          <app-add-request-match-rule
+            [requestMatchRule]="this.selectedScenario?.requestMatchRules"
+            (requestMatchRuleOutput)="handleRequestMatchRuleOutput($event)">
+          </app-add-request-match-rule>
 
           <app-scenario-card
             [title]="'Response'"
