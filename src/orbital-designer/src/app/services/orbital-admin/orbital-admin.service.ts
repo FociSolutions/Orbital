@@ -20,7 +20,7 @@ export class OrbitalAdminService {
     url: string,
     mockdefinition: MockDefinition
   ): Observable<boolean> {
-    this.logger.debug('Mockdefinition had been exported: ', mockdefinition);
+    this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
     return this.httpClient.post<boolean>(
       `${url}${this.ROOT_URL}`,
       mockdefinition
