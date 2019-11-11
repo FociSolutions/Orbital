@@ -16,12 +16,19 @@
             [itemToStringFn]="endpointToString"
           >
           </app-search-bar>
-          <app-no-search-results-view *ngIf="showNotFound()"></app-no-search-results-view>
+          <app-no-search-results-view
+            *ngIf="showNotFound()"
+          ></app-no-search-results-view>
           <app-endpoint-list
             class="row flex-grow"
             [endpoints]="filteredList"
           ></app-endpoint-list>
         </div>
+        <form class="server-post">
+          <mat-form-field>
+            <input matInput placeholder="Server URI" />
+          </mat-form-field>
+        </form>
       </div>
     </div>
   </div>
