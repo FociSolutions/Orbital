@@ -16,11 +16,6 @@ export class AddResponseComponent implements OnInit {
   @Output() isValid: EventEmitter<boolean>;
 
   /**
-   *  The kvp map sent up from the child component
-   */
-  childKvpMap: Map<string, string>;
-
-  /**
    *  The validBodyResponse after it has been validated
    */
   validBodyResponse: string;
@@ -50,8 +45,10 @@ export class AddResponseComponent implements OnInit {
    */
   titleForKvp: string;
   titleForKvpAdded: string;
+
   isCardDisabled: boolean;
   panelExpanded: boolean;
+  shouldSave: boolean;
 
   /**
    * Gets the status code from the form field
@@ -103,7 +100,6 @@ export class AddResponseComponent implements OnInit {
   ) {
     this.responseOutput = new EventEmitter<Response>();
     this.isValid = new EventEmitter<boolean>();
-    this.childKvpMap = new Map<string, string>();
     this.titleForKvp = 'Add New Header Rule';
     this.titleForKvpAdded = 'Added Header Rules';
     this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
@@ -138,24 +134,28 @@ export class AddResponseComponent implements OnInit {
     }
   }
 
+  saveHeaderMap(map: Map<string, string>) {
+    if (!!this.statusCode && this.isBodyValid) {
+      const responseToEmit = {
+        headers: map,
+        body: this.bodyResponse,
+        status: +this.statusCode
+      } as Response;
+      this.logger.debug('Response has been emitted', responseToEmit);
+      this.responseOutput.emit(responseToEmit);
+      this.canCollapseCard = true;
+    } else {
+      this.canCollapseCard = false;
+    }
+  }
+
   /**
    * If shouldSave is true, validate the response and emit to the parent as well as the isValid boolean
    */
-  set saveStatus(shouldSave: boolean) {
-    if (shouldSave) {
-      if (!!this.statusCode && !!this.childKvpMap && this.isBodyValid) {
-        const responseToEmit = {
-          headers: this.childKvpMap,
-          body: this.bodyResponse,
-          status: +this.statusCode
-        } as Response;
-        this.logger.debug('Response has been emitted', responseToEmit);
-        this.responseOutput.emit(responseToEmit);
-        this.canCollapseCard = true;
-      } else {
-        this.canCollapseCard = false;
-      }
-    } else {
+  @Input()
+  set saveStatus(save: boolean) {
+    this.shouldSave = save;
+    if (!save) {
       this.canCollapseCard = true;
     }
   }

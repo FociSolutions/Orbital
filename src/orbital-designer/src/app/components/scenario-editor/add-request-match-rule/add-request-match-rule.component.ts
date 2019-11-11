@@ -10,62 +10,53 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 })
 export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRule: RequestMatchRule;
-  @Output() isValid: EventEmitter<boolean>;
   @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
-  panelExpanded: boolean;
+
   headerMatchRules: Map<string, string>;
   queryMatchRules: Map<string, string>;
   bodyMatchRules: BodyRule[];
+
+  shouldSave: boolean;
+  panelExpanded: boolean;
   isCardDisabled: boolean;
+
+  headerEmitted: boolean;
+  queryEmitted: boolean;
+  bodyEmitted: boolean;
+
   constructor(private logger: NGXLogger) {
-    this.isValid = new EventEmitter<boolean>();
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
+    this.headerMatchRules = new Map<string, string>();
+    this.queryMatchRules = new Map<string, string>();
+    this.bodyMatchRules = [];
   }
 
-  ngOnInit() {
-    this.canCollapseCard = true;
-  }
+  ngOnInit() {}
 
-  /**
-   * Sets whether the card can be collapsed.
-   *
-   * If it can be collapsed, then the card becomes non-disabled
-   * If it cannot be collapsed, then the card expands and becomes disabled
+  /*
+   * Sets the save status
    */
-  set canCollapseCard(canCollapseCard: boolean) {
-    if (canCollapseCard) {
-      this.isCardDisabled = false;
-      this.isValid.emit(true);
-      this.logger.debug('canCollapse', canCollapseCard);
-      this.logger.debug('isCardDisabled', this.isCardDisabled);
-      this.logger.debug('panelExpanded', this.panelExpanded);
-    } else {
-      this.isCardDisabled = true;
-      this.panelExpanded = true;
-      this.isValid.emit(false);
-    }
+  @Input()
+  set saveStatus(save: boolean) {
+    this.shouldSave = save;
   }
 
- /*
-  * Sets the save status
-  */
-  set saveStatus(shouldSave: boolean) {
-    if (shouldSave) {
+  _save() {
+    if (this.headerEmitted && this.queryEmitted && this.bodyEmitted) {
       // validate request match rules
-      if (!!this.headerMatchRules && !!this.queryMatchRules && !!this.bodyMatchRules) {
-        const requestToEmit = {headerRules: this.headerMatchRules,
-          queryRules: this.queryMatchRules, bodyRules: this.bodyMatchRules} as RequestMatchRule;
-        this.requestMatchRuleOutput.emit(requestToEmit);
-        this.logger.debug('The request match rules have been emitted', requestToEmit);
-        this.canCollapseCard = true;
-      } else {
-        this.canCollapseCard = false;
-        this.logger.debug('Setting canCollapseCard to false because header rules, ' +
-                          'query rules, and/or body match rules were invalid respectively',
-                          this.headerMatchRules, this.queryMatchRules, this.bodyMatchRules);
-      }
-    } else {
-      this.canCollapseCard = true;
+      const requestToEmit = {
+        headerRules: this.headerMatchRules,
+        queryRules: this.queryMatchRules,
+        bodyRules: this.bodyMatchRules
+      } as RequestMatchRule;
+      this.requestMatchRuleOutput.emit(requestToEmit);
+      this.logger.debug(
+        'The request match rules have been emitted',
+        requestToEmit
+      );
+      this.headerEmitted = false;
+      this.queryEmitted = false;
+      this.bodyEmitted = false;
     }
   }
 
@@ -74,10 +65,10 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * @param event The incoming request match rules
    */
   handleHeaderKvpOutput(headerMatchRules: Map<string, string>) {
-    if (!!headerMatchRules) {
-      this.logger.debug('Set the header match rules to', headerMatchRules);
-      this.headerMatchRules = headerMatchRules;
-    }
+    this.headerEmitted = true;
+    this.logger.debug('Set the header match rules to', headerMatchRules);
+    this.headerMatchRules = headerMatchRules;
+    this._save();
   }
 
   /**
@@ -85,10 +76,10 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * @param queryMatchRules The query match rules to use
    */
   handleQueryKvpOutput(queryMatchRules: Map<string, string>) {
-    if (!!queryMatchRules) {
-      this.logger.debug('Set the query match rules to', queryMatchRules);
-      this.queryMatchRules = queryMatchRules;
-    }
+    this.queryEmitted = true;
+    this.logger.debug('Set the query match rules to', queryMatchRules);
+    this.queryMatchRules = queryMatchRules;
+    this._save();
   }
 
   /**
@@ -96,10 +87,9 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * @param bodyMatchRules The body match rules to use
    */
   handleBodyOutput(bodyMatchRules: BodyRule[]) {
-    if (!!bodyMatchRules) {
-      this.logger.debug('Set the body match rules to', bodyMatchRules);
-      this.bodyMatchRules = bodyMatchRules;
-    }
+    this.bodyEmitted = true;
+    this.logger.debug('Set the body match rules to', bodyMatchRules);
+    this.bodyMatchRules = bodyMatchRules;
+    this._save();
   }
-
 }

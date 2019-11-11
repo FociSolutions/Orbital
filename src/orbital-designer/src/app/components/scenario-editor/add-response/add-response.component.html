@@ -8,7 +8,9 @@
       <mat-panel-title>
         Response
       </mat-panel-title>
-      <mat-panel-description>Response Header, Response Body and Code</mat-panel-description>
+      <mat-panel-description
+        >Response Header, Response Body and Code</mat-panel-description
+      >
     </mat-expansion-panel-header>
     <div class="response-code">
       <div class="status-code">
@@ -27,9 +29,9 @@
     <app-kvp-edit
       [addKvpTitle]="titleForKvp"
       [listKvpTitle]="titleForKvpAdded"
-      [Save]="saveStatus"
-      [kvpMap]="response?.headers"
-      (savedKvpMapEmitter)="(childKvpMap)"
+      [Save]="this.shouldSave"
+      [kvpMap]="this.response?.headers"
+      (savedKvpMapEmitter)="saveHeaderMap($event)"
     ></app-kvp-edit>
     <div class="response-body">
       <mat-form-field>

@@ -9,7 +9,6 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class AddMetadataComponent implements OnInit {
   @Output() metadataOutput: EventEmitter<Metadata>;
-  @Output() isValid: EventEmitter<boolean>;
 
   metadataTitleProp = '';
   metadataDescriptionProp = '';
@@ -17,7 +16,6 @@ export class AddMetadataComponent implements OnInit {
   errorMessage = '';
 
   constructor(private logger: NGXLogger) {
-    this.isValid = new EventEmitter<boolean>();
     this.metadataOutput = new EventEmitter<Metadata>();
   }
 
@@ -77,10 +75,8 @@ export class AddMetadataComponent implements OnInit {
   set saveStatus(shouldSave: boolean) {
     if (shouldSave) {
       this.logger.debug('Received event to save metadata card');
-      this.isValid.emit(!this.errorMessage);
       const metadataToOutput = {title: this.metadataTitle, description: this.metadataDescription} as Metadata;
       this.metadataOutput.emit(metadataToOutput);
-      this.logger.debug('Is the metadata card valid?', this.isValid);
       this.logger.debug('Metadata output from metadata card', metadataToOutput);
     }
   }

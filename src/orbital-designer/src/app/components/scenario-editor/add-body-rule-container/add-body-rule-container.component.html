@@ -1,24 +1,13 @@
-<mat-accordion>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header class="right-aligned-header">
-      <mat-panel-title>
-        Body Match Rules
-      </mat-panel-title>
-      <mat-divider id="divider-padding"></mat-divider>
-    </mat-expansion-panel-header>
-
-    <p class="description">Add New Body Match Rule</p>
-    <mat-checkbox (change)="this.shouldIgnoreBodyRule = $event.checked">Ignore Body Rule</mat-checkbox>
-    <app-add-body-rule [shouldDisable]="this.shouldIgnoreBodyRule" (bodyRuleOutput)="addBodyRule($event)" [bodyRules]="this.bodyRulesProp"></app-add-body-rule>
-    <mat-divider id="divider-padding"></mat-divider>
-    <div>
-      <p class="description">Added Body Match Rules</p>
-    </div>
-    <div *ngIf="!this.bodyRulesProp.length">
-      No rules Added
-    </div>
-    <div *ngFor="let bodyRule of this.bodyRulesProp">
-      <app-body-rule-list-item [bodyRule]="bodyRule" (deletedBodyRule)="handleDeleteBodyRule($event)"></app-body-rule-list-item>
-    </div>
-  </mat-expansion-panel>
-</mat-accordion>
+<p class="description">Add New Body Match Rule</p>
+<mat-checkbox (change)="this.shouldIgnoreBodyRule = $event.checked">Ignore Body Rule</mat-checkbox>
+<app-add-body-rule [shouldDisable]="this.shouldIgnoreBodyRule" (bodyRuleOutput)="addBodyRule($event)" [bodyRules]="this.bodyRulesProp"></app-add-body-rule>
+<mat-divider id="divider-padding"></mat-divider>
+<div>
+  <p class="description">Added Body Match Rules</p>
+</div>
+<div *ngIf="!this.bodyRulesProp.length">
+  No rules Added
+</div>
+<div *ngFor="let bodyRule of this.bodyRulesProp">
+  <app-body-rule-list-item [bodyRule]="bodyRule" (deletedBodyRule)="handleDeleteBodyRule($event)"></app-body-rule-list-item>
+</div>

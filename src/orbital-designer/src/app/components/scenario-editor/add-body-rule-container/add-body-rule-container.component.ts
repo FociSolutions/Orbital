@@ -12,6 +12,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
 
   shouldIgnoreBodyRule = false;
   bodyRulesProp: BodyRule[];
+  saveBodyRulesProp: boolean;
 
   constructor(private logger: NGXLogger) {
     this.bodyRulesOutput = new EventEmitter<BodyRule[]>();
@@ -34,10 +35,15 @@ export class AddBodyRuleContainerComponent implements OnInit {
    */
   @Input()
   set saveBodyRules(val: boolean) {
+    this.saveBodyRulesProp = val;
     if (val) {
       this.logger.debug('Saving body rules', this.bodyRulesProp);
       this.bodyRulesOutput.emit(this.bodyRulesProp);
     }
+  }
+
+  get saveBodyRules() {
+    return this.saveBodyRulesProp;
   }
 
   /**

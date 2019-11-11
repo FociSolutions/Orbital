@@ -26,6 +26,7 @@ import { AddBodyRuleComponent } from './add-body-rule-container/add-body-rule/ad
 import { BodyRuleListItemComponent } from './add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 import { AddMetadataComponent } from './add-metadata/add-metadata.component';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
+import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
@@ -214,7 +215,7 @@ describe('ScenarioEditorComponent', () => {
 
   describe('ScenarioEditorComponent.handleMetadataOutput', () => {
     it('should set the metadata to the metadata when the component outputs the metadata', () => {
-      const fakeMetadata = {title: faker.random.word(), description: faker.random.word()} as Metadata;
+      const fakeMetadata = { title: faker.random.word(), description: faker.random.word() } as Metadata;
       component.handleMetadataOutput(fakeMetadata);
       expect(component.metadata).toEqual(fakeMetadata);
     });

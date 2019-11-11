@@ -13,17 +13,20 @@
 
           <app-add-metadata
             [metadata]="this.selectedScenario?.metadata"
-            (metadataOutput)="handleMetadataOutput($event)">
+            (metadataOutput)="handleMetadataOutput($event)"
+            [saveStatus]="this.shouldSave">
           </app-add-metadata>
 
           <app-add-request-match-rule
             [requestMatchRule]="this.selectedScenario?.requestMatchRules"
-            (requestMatchRuleOutput)="handleRequestMatchRuleOutput($event)">
+            (requestMatchRuleOutput)="handleRequestMatchRuleOutput($event)"
+            [saveStatus]="this.shouldSave">
           </app-add-request-match-rule>
 
           <app-add-response
             [response]="this.selectedScenario?.response"
             (responseOutput)="handleResponseOutput($event)"
+            [saveStatus]="this.shouldSave"
           >
           </app-add-response>
           <div class="row" style="justify-content: space-between">

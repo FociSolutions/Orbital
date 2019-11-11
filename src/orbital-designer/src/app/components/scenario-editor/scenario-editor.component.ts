@@ -7,6 +7,9 @@ import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
+import { Response } from 'src/app/models/mock-definition/scenario/response.model';
+import * as uuid from 'uuid';
+import { VerbType } from 'src/app/models/verb.type';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -35,7 +38,17 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   metadata: Metadata;
   response: Response;
 
-  constructor(private router: Router, private store: DesignerStore, private logger: NGXLogger, private activatedRouter: ActivatedRoute) {
+  shouldSave: boolean;
+  requestMatchRuleValid = false;
+  responseMatchRuleValid = false;
+  metadataMatchRuleValid = false;
+
+  constructor(
+    private router: Router,
+    private store: DesignerStore,
+    private logger: NGXLogger,
+    private activatedRouter: ActivatedRoute
+  ) {
     this.selectedScenario = this.store.selectedScenario;
     this.logger.debug('Selected scenario:', this.store.selectedScenario);
 
@@ -54,7 +67,11 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       status: new FormGroup({
         statuscode: new FormControl(
           '',
-          Validators.compose([Validators.maxLength(3), Validators.required, Validators.pattern('^[0-9]*$')])
+          Validators.compose([
+            Validators.maxLength(3),
+            Validators.required,
+            Validators.pattern('^[0-9]*$')
+          ])
         )
       }),
       headers: new FormGroup({
@@ -83,14 +100,21 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    * Runs when the app is initialized
    */
   ngOnInit() {
-    this.paramsSubscription = this.activatedRouter.params.subscribe((param: Params) => {
-      this.scenarioId = param.scenarioId;
-      this.logger.debug('Scenario id from URL:', this.scenarioId);
-      if (this.store.state.mockDefinition) {
-        this.selectedScenario = this.store.state.mockDefinition.scenarios.find(s => s.id === this.scenarioId);
-        this.logger.debug('New selected scenario from the URL: ', this.selectedScenario);
+    this.paramsSubscription = this.activatedRouter.params.subscribe(
+      (param: Params) => {
+        this.scenarioId = param.scenarioId;
+        this.logger.debug('Scenario id from URL:', this.scenarioId);
+        if (this.store.state.mockDefinition) {
+          this.selectedScenario = this.store.state.mockDefinition.scenarios.find(
+            s => s.id === this.scenarioId
+          );
+          this.logger.debug(
+            'New selected scenario from the URL: ',
+            this.selectedScenario
+          );
+        }
       }
-    });
+    );
   }
 
   /**
@@ -127,10 +151,15 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    * Returns whether the save button should be disabled based on the form's validity
    */
   saveButtonDisabledState() {
-    if (!!this.nameAndDescriptionFormGroup &&
+    if (
+      !!this.nameAndDescriptionFormGroup &&
       this.nameAndDescriptionFormGroup.controls.name !== undefined &&
-      this.nameAndDescriptionFormGroup.controls.description !== undefined) {
-      return this.nameAndDescriptionFormGroup.controls.name.invalid || this.nameAndDescriptionFormGroup.controls.description.invalid;
+      this.nameAndDescriptionFormGroup.controls.description !== undefined
+    ) {
+      return (
+        this.nameAndDescriptionFormGroup.controls.name.invalid ||
+        this.nameAndDescriptionFormGroup.controls.description.invalid
+      );
     }
 
     return true;
@@ -195,7 +224,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    */
   handleMetadataOutput(metadata: Metadata) {
     this.logger.debug('handleMetadataOutput:', metadata);
+    this.metadataMatchRuleValid = !!metadata.title;
     this.metadata = metadata;
+    this.saveScenario();
   }
 
   /**
@@ -204,7 +235,61 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    */
   handleRequestMatchRuleOutput(requestMatchRule: RequestMatchRule) {
     this.logger.debug('handleRequestMatchRuleOutput:', requestMatchRule);
+    this.requestMatchRuleValid = requestMatchRule !== ({} as RequestMatchRule);
     this.requestMatchRule = requestMatchRule;
+    this.saveScenario();
+  }
+
+  saveScenario() {
+    if (
+      this.metadataMatchRuleValid &&
+      this.requestMatchRuleValid &&
+      this.responseMatchRuleValid
+    ) {
+      this.logger.debug('Attempting save');
+      this.logger.debug(
+        'Saved these fields:',
+        this.metadata,
+        this.requestMatchRule,
+        this.response
+      );
+      const currentScenario = this.store.state.mockDefinition.scenarios.find(
+        s => s.id === this.scenarioId
+      );
+      if (currentScenario) {
+        this.logger.debug('Current scenario is: ', currentScenario);
+        // update the store
+        currentScenario.metadata = JSON.parse(JSON.stringify(this.metadata));
+        currentScenario.requestMatchRules = JSON.parse(
+          JSON.stringify(this.requestMatchRule)
+        );
+        currentScenario.response = JSON.parse(JSON.stringify(this.response));
+        this.logger.debug(
+          'New current scenario (after saving):',
+          currentScenario
+        );
+      } else {
+        // save a new scenario
+        const newScenario = {
+          id: uuid.v4(),
+          metadata: JSON.parse(JSON.stringify(this.metadata)),
+          requestMatchRules: JSON.parse(JSON.stringify(this.requestMatchRule)),
+          response: JSON.parse(JSON.stringify(this.response)),
+          verb: JSON.parse(JSON.stringify(VerbType.GET)), // FIXME
+          path: 'fix-me'
+        } as Scenario;
+
+        this.scenarioId = newScenario.id;
+
+        this.store.state.mockDefinition.scenarios.push(newScenario);
+        this.logger.debug(
+          'Designer store after saving this scenario',
+          this.store.state.mockDefinition.scenarios
+        );
+      }
+      this.requestMatchRuleValid = false;
+      this.shouldSave = false;
+    }
   }
 
   /*
@@ -213,14 +298,15 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    */
   handleResponseOutput(response: Response) {
     this.logger.debug('handleResponseOutput:', response);
+    this.responseMatchRuleValid = !!response.status;
     this.response = response;
+    this.saveScenario();
   }
 
   /**
    * Saves the current scenario to the designer store
    */
   save() {
-
+    this.shouldSave = true;
   }
-
 }
