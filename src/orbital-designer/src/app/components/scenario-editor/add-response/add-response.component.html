@@ -28,7 +28,7 @@
       [addKvpTitle]="titleForKvp"
       [listKvpTitle]="titleForKvpAdded"
       [Save]="saveStatus"
-      [kvpMap]="response.headers"
+      [kvpMap]="response?.headers"
       (savedKvpMapEmitter)="(childKvpMap)"
     ></app-kvp-edit>
     <div class="response-body">
