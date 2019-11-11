@@ -12,6 +12,11 @@ export class EndpointViewComponent implements OnInit {
   mockDefinition: MockDefinition;
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
+  serverUri: string;
+  uriRegex =
+    '(https?://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\
+  .[^s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+\
+  .[^s]{2,}|www.[a-zA-Z0-9]+.[^s]{2,})';
 
   constructor(private store: DesignerStore) {
     this.store.state$.subscribe(state => {
