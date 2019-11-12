@@ -33,8 +33,17 @@
               ngModel
               [pattern]="uriRegex"
               required
+              [(ngModel)]="serverUri"
             />
           </mat-form-field>
+          <button
+            class="btn-upload"
+            mat-raised-button
+            color="primary"
+            (click)="onSubmit()"
+          >
+            Upload
+          </button>
         </form>
       </div>
     </div>

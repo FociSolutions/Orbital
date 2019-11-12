@@ -34,8 +34,15 @@ app-endpoint-list {
 
 .uri-field {
   width: 50vw;
+  padding-right: 1em;
 }
 
 div.endpoint {
   width: 100%;
+}
+
+.btn-upload {
+  width: 7vw;
+  height: 5vh;
+  max-width: 131px;
 }

@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { NGXLogger } from 'ngx-logger';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { NGXLogger } from "ngx-logger";
+import { MockDefinition } from "src/app/models/mock-definition/mock-definition.model";
+import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class OrbitalAdminService {
-  private ROOT_URL = '/api/v1/OrbitalAdmin';
+  // private ROOT_URL = '/api/v1/OrbitalAdmin';
   constructor(private httpClient: HttpClient, private logger: NGXLogger) {}
 
   /**
@@ -20,10 +20,7 @@ export class OrbitalAdminService {
     url: string,
     mockdefinition: MockDefinition
   ): Observable<boolean> {
-    this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
-    return this.httpClient.post<boolean>(
-      `${url}${this.ROOT_URL}`,
-      mockdefinition
-    );
+    this.logger.debug("Mockdefinition has been exported: ", mockdefinition);
+    return this.httpClient.post<boolean>(`${url}`, mockdefinition);
   }
 }

@@ -1,23 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { DesignerStore } from 'src/app/store/designer-store';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Endpoint } from 'src/app/models/endpoint.model';
+import { Component, OnInit } from "@angular/core";
+import { DesignerStore } from "src/app/store/designer-store";
+import { MockDefinition } from "src/app/models/mock-definition/mock-definition.model";
+import { Endpoint } from "src/app/models/endpoint.model";
+import { OrbitalAdminService } from "src/app/services/orbital-admin/orbital-admin.service";
+import { NGXLogger } from "ngx-logger";
 
 @Component({
-  selector: 'app-endpoint-view',
-  templateUrl: './endpoint-view.component.html',
-  styleUrls: ['./endpoint-view.component.scss']
+  selector: "app-endpoint-view",
+  templateUrl: "./endpoint-view.component.html",
+  styleUrls: ["./endpoint-view.component.scss"]
 })
 export class EndpointViewComponent implements OnInit {
   mockDefinition: MockDefinition;
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
   serverUri: string;
+  serverIsValid: boolean;
   uriRegex =
-    '^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.]{1}[a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$';
-  invalidUriError: 'Invalid Uri';
+    "^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.]{1}[a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$";
+  invalidUriError: "Invalid Uri";
 
-  constructor(private store: DesignerStore) {
+  constructor(
+    private store: DesignerStore,
+    private orbitalAdminService: OrbitalAdminService,
+    private logger: NGXLogger
+  ) {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
       this.endpointList = [...state.endpoints];
@@ -44,6 +51,27 @@ export class EndpointViewComponent implements OnInit {
    */
   showNotFound() {
     return this.filteredList.length === 0;
+  }
+
+  /**
+   * Subscribes the OrbitalAdminService to POST a Mockdefinition to the server
+   */
+  onSubmit() {
+    this.orbitalAdminService
+      .exportMockDefinition(this.serverUri, this.mockDefinition)
+      .subscribe({
+        next(serverValid) {
+          console.log("Valid: ", serverValid);
+        },
+        complete() {
+          console.log("Finished sequence");
+        }
+      });
+    this.logger.debug(
+      "Mockdefinition request sent to server",
+      this.mockDefinition
+    );
+    this.logger.debug("Server URI", this.serverUri);
   }
 
   ngOnInit() {}
