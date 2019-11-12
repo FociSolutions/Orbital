@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { NGXLogger } from "ngx-logger";
 import { MockDefinition } from "src/app/models/mock-definition/mock-definition.model";
-import { Observable } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 @Injectable({
   providedIn: "root"
@@ -22,10 +22,10 @@ export class OrbitalAdminService {
   ): Observable<boolean> {
     this.logger.debug("Mockdefinition has been exported: ", mockdefinition);
     return this.httpClient.post<boolean>(`${url}`, mockdefinition).pipe(
-      catchError((error, caught) => {
-        console.log("Error Occured");
+      catchError(error => {
+        console.log("Error Sending to Server");
         console.log(error);
-        return Observable.throw(error);
+        return throwError(error);
       })
     );
   }

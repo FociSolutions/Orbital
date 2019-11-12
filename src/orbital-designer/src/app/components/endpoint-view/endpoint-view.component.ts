@@ -61,13 +61,10 @@ export class EndpointViewComponent implements OnInit {
   onSubmit() {
     this.orbitalAdminService
       .exportMockDefinition(this.serverUri, this.mockDefinition)
-      .subscribe(
-        (data: any) => (this.httpRequest = { ...data }), // success path
-        // error => (this.invalidUriError = error) // error path
-        error => console.log(error)
-      );
+      .subscribe(result => {
+        console.log(result);
+      });
     this.logger.debug("Server URI", this.serverUri);
-    //  console.log(this.invalidUriError);
   }
 
   ngOnInit() {}
