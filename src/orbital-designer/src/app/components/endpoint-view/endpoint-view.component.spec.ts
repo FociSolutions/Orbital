@@ -15,6 +15,7 @@ import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/g
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoSearchResultsViewComponent } from '../no-search-results-view/no-search-results-view.component';
 import { VerbType } from 'src/app/models/verb.type';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -36,7 +37,8 @@ describe('EndpointViewComponent', () => {
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
