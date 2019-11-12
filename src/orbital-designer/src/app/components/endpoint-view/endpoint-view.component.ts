@@ -4,6 +4,7 @@ import { MockDefinition } from "src/app/models/mock-definition/mock-definition.m
 import { Endpoint } from "src/app/models/endpoint.model";
 import { OrbitalAdminService } from "src/app/services/orbital-admin/orbital-admin.service";
 import { NGXLogger } from "ngx-logger";
+import { HttpRequest } from "@angular/common/http";
 
 @Component({
   selector: "app-endpoint-view",
@@ -14,6 +15,7 @@ export class EndpointViewComponent implements OnInit {
   mockDefinition: MockDefinition;
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
+  httpRequest: HttpRequest<MockDefinition>;
   serverUri: string;
   serverIsValid: boolean;
   uriRegex =
@@ -59,19 +61,13 @@ export class EndpointViewComponent implements OnInit {
   onSubmit() {
     this.orbitalAdminService
       .exportMockDefinition(this.serverUri, this.mockDefinition)
-      .subscribe({
-        next(serverValid) {
-          console.log("Valid: ", serverValid);
-        },
-        complete() {
-          console.log("Finished sequence");
-        }
-      });
-    this.logger.debug(
-      "Mockdefinition request sent to server",
-      this.mockDefinition
-    );
+      .subscribe(
+        (data: any) => (this.httpRequest = { ...data }), // success path
+        // error => (this.invalidUriError = error) // error path
+        error => console.log(error)
+      );
     this.logger.debug("Server URI", this.serverUri);
+    //  console.log(this.invalidUriError);
   }
 
   ngOnInit() {}
