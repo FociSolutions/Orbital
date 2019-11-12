@@ -13,7 +13,8 @@ export class EndpointViewComponent implements OnInit {
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
   serverUri: string;
-  uriRegex = '(http|https)://[a-zA-Z0-9/]+';
+  uriRegex =
+    '^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.]{1}[a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$';
   invalidUriError: 'Invalid Uri';
 
   constructor(private store: DesignerStore) {

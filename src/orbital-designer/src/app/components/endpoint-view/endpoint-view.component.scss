@@ -28,8 +28,12 @@ app-endpoint-list {
 .server-post {
   display: flex;
   justify-content: left;
-  padding-top: 1em;
+  padding-top: 2em;
   padding-left: 10em;
+}
+
+.uri-field {
+  width: 50vw;
 }
 
 div.endpoint {

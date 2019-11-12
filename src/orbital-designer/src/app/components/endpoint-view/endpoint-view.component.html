@@ -24,8 +24,8 @@
             [endpoints]="filteredList"
           ></app-endpoint-list>
         </div>
-        <form class="server-post">
-          <mat-form-field>
+        <form class="server-post" name="server-input">
+          <mat-form-field class="uri-field">
             <input
               matInput
               name="uri-input"
@@ -34,7 +34,6 @@
               [pattern]="uriRegex"
               required
             />
-            <mat-error>{{ invalidUriError }}</mat-error>
           </mat-form-field>
         </form>
       </div>
