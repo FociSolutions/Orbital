@@ -33,6 +33,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   requestMatchRule: RequestMatchRule;
 
   metadata: Metadata;
+  response: Response;
 
   constructor(private router: Router, private store: DesignerStore, private logger: NGXLogger, private activatedRouter: ActivatedRoute) {
     this.selectedScenario = this.store.selectedScenario;
@@ -204,6 +205,15 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   handleRequestMatchRuleOutput(requestMatchRule: RequestMatchRule) {
     this.logger.debug('handleRequestMatchRuleOutput:', requestMatchRule);
     this.requestMatchRule = requestMatchRule;
+  }
+
+  /*
+   * Saves the response to the scenario editor
+   * @param response The response input from the component
+   */
+  handleResponseOutput(response: Response) {
+    this.logger.debug('handleResponseOutput:', response);
+    this.response = response;
   }
 
 }

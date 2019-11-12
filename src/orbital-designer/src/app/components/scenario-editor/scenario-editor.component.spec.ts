@@ -29,6 +29,7 @@ import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
+import { AddResponseComponent } from './add-response/add-response.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -48,7 +49,8 @@ describe('ScenarioEditorComponent', () => {
         AddBodyRuleComponent,
         BodyRuleListItemComponent,
         AddMetadataComponent,
-        AddRequestMatchRuleComponent
+        AddRequestMatchRuleComponent,
+        AddResponseComponent
       ],
       imports: [
         LoggerTestingModule,
@@ -223,6 +225,15 @@ describe('ScenarioEditorComponent', () => {
       const fakeRequestMatchRule = validMockDefinition.scenarios[0].requestMatchRules;
       component.handleRequestMatchRuleOutput(fakeRequestMatchRule);
       expect(component.requestMatchRule).toEqual(fakeRequestMatchRule);
+    });
+  });
+
+  describe('ScenarioEditorComponent.handleResponseOutput', () => {
+    it('should set the response to the response when the component outputs the response', () => {
+      component.selectedScenario = validMockDefinition.scenarios[0];
+      const fakeResponse = validMockDefinition.scenarios[0].response as unknown as Response;
+      component.handleResponseOutput(fakeResponse);
+      expect(component.response).toEqual(fakeResponse);
     });
   });
 });
