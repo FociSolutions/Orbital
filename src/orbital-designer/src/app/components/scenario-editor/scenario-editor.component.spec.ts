@@ -260,6 +260,7 @@ describe('ScenarioEditorComponent', () => {
     it('should save a new scenario if all the fields are valid', () => {
       const store = TestBed.get(DesignerStore);
       store.state.mockDefinition = JSON.parse(JSON.stringify(validMockDefinition));
+      store.state.selectedScenario = validMockDefinition.scenarios[0];
       const prevStoreScenarioLength = store.state.mockDefinition.scenarios.length;
       component.scenarioId = validMockDefinition.scenarios[0].id + '-new';
       const fakeMetadata = { title: faker.random.word(), description: faker.random.word() } as unknown as Metadata;

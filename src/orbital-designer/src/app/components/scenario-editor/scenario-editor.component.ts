@@ -10,6 +10,8 @@ import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/reques
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import * as uuid from 'uuid';
 import { VerbType } from 'src/app/models/verb.type';
+import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
+import { Endpoint } from 'src/app/models/endpoint.model';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -252,8 +254,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
           metadata: JSON.parse(JSON.stringify(this.metadata)),
           requestMatchRules: JSON.parse(JSON.stringify(this.requestMatchRule)),
           response: JSON.parse(JSON.stringify(this.response)),
-          verb: JSON.parse(JSON.stringify(VerbType.GET)), // FIXME
-          path: 'fix-me'
+          verb: JSON.parse(JSON.stringify(this.store.state.selectedScenario.path)),
+          path: this.store.state.selectedScenario.verb
         } as Scenario;
 
         this.scenarioId = newScenario.id;
@@ -263,6 +265,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
           'Designer store after saving this scenario',
           this.store.state.mockDefinition.scenarios
         );
+
+        this.store.state.selectedScenario = newScenario;
       }
       this.requestMatchRuleValid = false;
       this.shouldSave = false;
