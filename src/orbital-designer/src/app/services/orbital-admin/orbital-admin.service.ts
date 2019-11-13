@@ -8,7 +8,6 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class OrbitalAdminService {
-  // private ROOT_URL = '/api/v1/OrbitalAdmin';
   constructor(private httpClient: HttpClient, private logger: NGXLogger) {}
 
   /**
@@ -21,7 +20,7 @@ export class OrbitalAdminService {
     mockdefinition: MockDefinition
   ): Observable<boolean> {
     this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
-    return this.httpClient.post<boolean>(`${url}`, mockdefinition).pipe(
+    return this.httpClient.post<boolean>(url, mockdefinition).pipe(
       catchError(error => {
         return throwError(error);
       })
