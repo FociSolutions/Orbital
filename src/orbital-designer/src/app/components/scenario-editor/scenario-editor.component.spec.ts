@@ -19,7 +19,6 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ScenarioCardComponent } from '../scenario-card/scenario-card.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AddBodyRuleContainerComponent } from './add-body-rule-container/add-body-rule-container.component';
 import { AddBodyRuleComponent } from './add-body-rule-container/add-body-rule/add-body-rule.component';
@@ -46,7 +45,6 @@ describe('ScenarioEditorComponent', () => {
         SideBarComponent,
         GetEndpointScenariosPipe,
         OverviewComponent,
-        ScenarioCardComponent,
         AddBodyRuleContainerComponent,
         AddBodyRuleComponent,
         BodyRuleListItemComponent,
