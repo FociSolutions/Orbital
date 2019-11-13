@@ -17,7 +17,6 @@ export class EndpointViewComponent implements OnInit {
   filteredList: Endpoint[] = [];
   httpRequest: HttpRequest<MockDefinition>;
   serverUri: string;
-  serverIsValid: boolean;
   uriRegex =
     '^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.]{1}[a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$';
   isExportedMessage: string;
@@ -25,9 +24,7 @@ export class EndpointViewComponent implements OnInit {
   constructor(
     private store: DesignerStore,
     private orbitalAdminService: OrbitalAdminService,
-    private logger: NGXLogger,
-    private ngZone: NgZone,
-    private ref: ChangeDetectorRef
+    private logger: NGXLogger
   ) {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
@@ -66,12 +63,12 @@ export class EndpointViewComponent implements OnInit {
       .exportMockDefinition(this.serverUri, this.mockDefinition)
       .subscribe(
         data => {
-          console.log(data);
+          this.logger.log(data);
           this.isExportedMessage =
             'Mockdefinition successfully uploaded to server';
         },
         error => {
-          console.log('Error', error);
+          this.logger.error('Error', error);
           this.isExportedMessage =
             'Error uploading Mockdefinition to server: ' + error.statusText;
         }
