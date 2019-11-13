@@ -61,11 +61,15 @@ export class EndpointViewComponent implements OnInit {
   onSubmit() {
     this.orbitalAdminService
       .exportMockDefinition(this.serverUri, this.mockDefinition)
-      .subscribe(result => {
-        console.log(result);
+      .subscribe({
+        next(result) {
+          console.log('Successfully exported to server: ', result);
+        },
+        error(err) {
+          console.log('failed exporting to server', err)
+        }
       });
-    this.logger.debug("Server URI", this.serverUri);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

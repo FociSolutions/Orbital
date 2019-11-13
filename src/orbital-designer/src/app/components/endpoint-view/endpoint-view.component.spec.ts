@@ -16,6 +16,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NoSearchResultsViewComponent } from '../no-search-results-view/no-search-results-view.component';
 import { VerbType } from 'src/app/models/verb.type';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -38,7 +39,8 @@ describe('EndpointViewComponent', () => {
         MatCardModule,
         OrbitalCommonModule,
         RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        HttpClientTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
