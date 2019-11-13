@@ -79,16 +79,6 @@ describe('ScenarioEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should go back to the scenario-view when the button is pressed', () => {
-    spyOn(component, 'goToScenarios');
-
-    const button = fixture.debugElement.nativeElement.querySelector(
-      'button#go-to-scenarios'
-    );
-    button.click();
-    expect(component.goToScenarios).toHaveBeenCalled();
-  });
-
   describe('ScenarioEditorComponent.handleCancelButtonClick', () => {
     it('should set the name and description panels state to closed if handleCancelButtonClick is called', () => {
       component.handleCancelButtonClick();
