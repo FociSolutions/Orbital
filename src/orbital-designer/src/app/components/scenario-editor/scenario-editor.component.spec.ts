@@ -31,6 +31,7 @@ import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './add-response/add-response.component';
+import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -235,6 +236,50 @@ describe('ScenarioEditorComponent', () => {
       const fakeResponse = validMockDefinition.scenarios[0].response as unknown as Response;
       component.handleResponseOutput(fakeResponse);
       expect(component.response).toEqual(fakeResponse);
+    });
+  });
+
+  describe('ScenarioEditorComponent.saveScenario', () => {
+    it('should save the scenario if all the fields are valid', () => {
+      const store = TestBed.get(DesignerStore);
+      store.state.mockDefinition = JSON.parse(JSON.stringify(validMockDefinition));
+      component.scenarioId = validMockDefinition.scenarios[0].id;
+      const fakeMetadata = { title: faker.random.word(), description: faker.random.word() } as unknown as Metadata;
+      component.metadata = JSON.parse(JSON.stringify(fakeMetadata));
+
+      component.metadataMatchRuleValid = true;
+      component.requestMatchRuleValid = true;
+      component.responseMatchRuleValid = true;
+      component.response = {} as Response;
+      component.requestMatchRule = {} as RequestMatchRule;
+      component.saveScenario();
+
+      expect(store.state.mockDefinition.scenarios[0].metadata).toEqual(fakeMetadata);
+    });
+
+    it('should save a new scenario if all the fields are valid', () => {
+      const store = TestBed.get(DesignerStore);
+      store.state.mockDefinition = JSON.parse(JSON.stringify(validMockDefinition));
+      const prevStoreScenarioLength = store.state.mockDefinition.scenarios.length;
+      component.scenarioId = validMockDefinition.scenarios[0].id + '-new';
+      const fakeMetadata = { title: faker.random.word(), description: faker.random.word() } as unknown as Metadata;
+      component.metadata = JSON.parse(JSON.stringify(fakeMetadata));
+
+      component.metadataMatchRuleValid = true;
+      component.requestMatchRuleValid = true;
+      component.responseMatchRuleValid = true;
+      component.response = {} as Response;
+      component.requestMatchRule = {} as RequestMatchRule;
+      component.saveScenario();
+
+      expect(store.state.mockDefinition.scenarios.length).toEqual(prevStoreScenarioLength + 1);
+    });
+  });
+
+  describe('ScenarioEditorComponent.save', () => {
+    it('should set the shouldSave variable to true', () => {
+      component.save();
+      expect(component.shouldSave).toBe(true);
     });
   });
 });

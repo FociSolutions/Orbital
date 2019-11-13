@@ -111,29 +111,6 @@ export class AddResponseComponent implements OnInit {
     this.statusCode = '';
   }
 
-  /**
-   * Sets whether the card can be collapsed.
-   *
-   * If it can be collapsed, then the card becomes non-disabled
-   * If it cannot be collapsed, then the card expands and becomes disabled
-   */
-  set canCollapseCard(canCollapseCard: boolean) {
-    if (canCollapseCard) {
-      this.isCardDisabled = false;
-      this.isValid.emit(true);
-      this.logger.debug('canCollapse', canCollapseCard);
-      this.logger.debug('isCardDisabled', this.isCardDisabled);
-      this.logger.debug('panelExpanded', this.panelExpanded);
-    } else {
-      this.isCardDisabled = true;
-      this.panelExpanded = true;
-      this.isValid.emit(false);
-      this.logger.debug('canCollapse', canCollapseCard);
-      this.logger.debug('isCardDisabled', this.isCardDisabled);
-      this.logger.debug('panelExpanded', this.panelExpanded);
-    }
-  }
-
   saveHeaderMap(map: Map<string, string>) {
     if (!!this.statusCode && this.isBodyValid) {
       const responseToEmit = {
@@ -143,9 +120,7 @@ export class AddResponseComponent implements OnInit {
       } as Response;
       this.logger.debug('Response has been emitted', responseToEmit);
       this.responseOutput.emit(responseToEmit);
-      this.canCollapseCard = true;
     } else {
-      this.canCollapseCard = false;
     }
   }
 
@@ -155,8 +130,5 @@ export class AddResponseComponent implements OnInit {
   @Input()
   set saveStatus(save: boolean) {
     this.shouldSave = save;
-    if (!save) {
-      this.canCollapseCard = true;
-    }
   }
 }

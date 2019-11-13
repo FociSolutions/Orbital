@@ -1,8 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddMetadataComponent } from './add-metadata.component';
-import { MatExpansionModule, MatFormFieldModule, MatInputModule, MatSelectModule,
-  MatCardModule, MatIconModule, MatDividerModule, MatCheckboxModule } from '@angular/material';
+import {
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatCardModule,
+  MatIconModule,
+  MatDividerModule,
+  MatCheckboxModule
+} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -18,8 +26,9 @@ describe('AddMetadataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddMetadataComponent ],
-      imports: [MatExpansionModule,
+      declarations: [AddMetadataComponent],
+      imports: [
+        MatExpansionModule,
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
@@ -30,9 +39,9 @@ describe('AddMetadataComponent', () => {
         LoggerTestingModule,
         MatDividerModule,
         MatCheckboxModule,
-        LoggerTestingModule]
-    })
-    .compileComponents();
+        LoggerTestingModule
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -48,7 +57,10 @@ describe('AddMetadataComponent', () => {
   describe('AddMetadataComponent', () => {
     it('should set the setter', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: 'test title', description: 'test description'} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: 'test title',
+        description: 'test description'
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
 
       expect(component.metadataTitle).toBe('test title');
@@ -59,7 +71,10 @@ describe('AddMetadataComponent', () => {
   describe('AddMetadataComponent.validate', () => {
     it('should show an error if the title field is empty', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: '', description: faker.random.word()} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: '',
+        description: faker.random.word()
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
       component.validate();
       expect(component.errorMessage).toBe('Metadata title is required');
@@ -67,7 +82,10 @@ describe('AddMetadataComponent', () => {
 
     it('should not show an error if the title field is not empty and less than max length', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: faker.random.word(),
+        description: faker.random.word()
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
       component.validate();
       expect(component.errorMessage).toBe('');
@@ -75,23 +93,36 @@ describe('AddMetadataComponent', () => {
 
     it('should show an error if the title field is more than or equal to max length', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: 'Z'.repeat(51), description: faker.random.word()} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: 'Z'.repeat(51),
+        description: faker.random.word()
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
       component.validate();
-      expect(component.errorMessage).toBe('Metadata title max length exceeded (50 characters)');
+      expect(component.errorMessage).toBe(
+        'Metadata title max length exceeded (50 characters)'
+      );
     });
 
     it('should show an error if the description field is more than or equal to max length', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: faker.random.word(), description: 'Z'.repeat(501)} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: faker.random.word(),
+        description: 'Z'.repeat(501)
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
       component.validate();
-      expect(component.errorMessage).toBe('Metadata description can only be 500 characters long');
+      expect(component.errorMessage).toBe(
+        'Metadata description can only be 500 characters long'
+      );
     });
 
     it('should not show an error if the description field is empty', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: faker.random.word(), description: ''} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: faker.random.word(),
+        description: ''
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
       component.validate();
       expect(component.errorMessage).toBe('');
@@ -99,7 +130,10 @@ describe('AddMetadataComponent', () => {
 
     it('should not show an error if the description field is undefined', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: faker.random.word(), description: undefined} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: faker.random.word(),
+        description: undefined
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
       component.validate();
       expect(component.errorMessage).toBe('');
@@ -109,37 +143,25 @@ describe('AddMetadataComponent', () => {
   describe('AddMetadataComponent.saveStatus setter', () => {
     it('should emit the metadata when saved', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: faker.random.word(),
+        description: faker.random.word()
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
 
       spyOn(component.metadataOutput, 'emit');
       component.saveStatus = true;
-      expect(component.metadataOutput.emit).toHaveBeenCalledWith(testMockDef.metadata);
-    });
-
-    it('should emit the isValid boolean when saved', () => {
-      const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
-      component.metadata = testMockDef.metadata;
-
-      spyOn(component.isValid, 'emit');
-      component.saveStatus = true;
-      expect(component.isValid.emit).toHaveBeenCalledWith(true);
-    });
-
-    it('should not emit the isValid boolean when not saved', () => {
-      const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
-      component.metadata = testMockDef.metadata;
-
-      spyOn(component.isValid, 'emit');
-      component.saveStatus = false;
-      expect(component.isValid.emit).not.toHaveBeenCalled();
+      expect(component.metadataOutput.emit).toHaveBeenCalledWith(
+        testMockDef.metadata
+      );
     });
 
     it('should not emit the metadata when not saved', () => {
       const testMockDef = new MockDefinition();
-      testMockDef.metadata = {title: faker.random.word(), description: faker.random.word()} as unknown as Metadata;
+      testMockDef.metadata = ({
+        title: faker.random.word(),
+        description: faker.random.word()
+      } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
 
       spyOn(component.metadataOutput, 'emit');

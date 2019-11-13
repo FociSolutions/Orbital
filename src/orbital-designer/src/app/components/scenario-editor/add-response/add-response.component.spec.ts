@@ -50,42 +50,13 @@ describe('AddResponseComponent', () => {
   });
 
   describe('addResponse.saveStatus', () => {
-    it('should emit isValid with true and emit the response if save status is true and response is valid', () => {
-      const testStatusCode = '200';
-      const testHeaderResponse: Map<string, string> = new Map<string, string>();
-      const testBodyResponse = '{}';
-
-      testHeaderResponse.set(faker.random.word(), faker.random.word());
-
-      component.childKvpMap = testHeaderResponse;
-      component.statusCode = testStatusCode;
-      component.bodyResponse = testBodyResponse;
-      component.validBodyResponse = testBodyResponse;
-
-      spyOn(component.isValid, 'emit');
-      spyOn(component.responseOutput, 'emit');
-
-      const testResponse = {
-        headers: testHeaderResponse,
-        body: testBodyResponse,
-        status: +testStatusCode
-      } as Response;
-
-      component.response = testResponse;
-      component.saveStatus = true;
-
-      expect(component.responseOutput.emit).toHaveBeenCalledWith(testResponse);
-      expect(component.isValid.emit).toHaveBeenCalledWith(true);
-    });
-
-    it('should emit isValid with false if save status is true and response is not valid', () => {
+    it('should emit the response if the user wants to save', () => {
       const testStatusCode = '200';
       const testHeaderResponse: Map<string, string> = new Map<string, string>();
       const testBodyResponse = 'NOTVALID';
 
       testHeaderResponse.set(faker.random.word(), faker.random.word());
 
-      component.childKvpMap = testHeaderResponse;
       component.statusCode = testStatusCode;
       component.bodyResponse = testBodyResponse;
 
@@ -104,14 +75,23 @@ describe('AddResponseComponent', () => {
       expect(component.responseOutput.emit).not.toHaveBeenCalledWith(
         testResponse
       );
-      expect(component.isValid.emit).toHaveBeenCalledWith(false);
+    });
+  });
+
+  describe('addResponse.saveHeaderMap', () => {
+    it('should emit the response if the status code and body is valid', () => {
+      component.statusCode = '200';
+      component.isBodyValid = true;
+      component.bodyResponse = '{}';
+
+      const headerMap = new Map<string, string>();
+      headerMap.set(faker.random.word(), faker.random.word());
+      const saveHeaderMapSpy = spyOn(component.responseOutput, 'emit');
+      component.saveHeaderMap(headerMap);
+
+      expect(saveHeaderMapSpy).toHaveBeenCalledWith(
+        { headers: headerMap, body: component.bodyResponse, status: +component.statusCode } as unknown as Response);
     });
 
-    it('should emit isValid with true if save status is false', () => {
-      spyOn(component.isValid, 'emit');
-      component.saveStatus = false;
-
-      expect(component.isValid.emit).toHaveBeenCalledWith(true);
-    });
   });
 });

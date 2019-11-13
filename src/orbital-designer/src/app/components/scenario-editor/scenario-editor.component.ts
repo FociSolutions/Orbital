@@ -132,15 +132,6 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Sets the state of the panel to collapsed when save is clicked.
-   * Currently, this method is identical to handleCancelButtonClick but will
-   * contain save functionality later.
-   */
-  handleSaveButtonClick() {
-    this.nameDescriptionPanelExpanded = false;
-  }
-
-  /**
    * Sets the state of the panel to open
    */
   handleNameDescriptionPanelOpen() {
@@ -163,20 +154,6 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     }
 
     return true;
-  }
-
-  /**
-   * Handles when the panel is manually closed (by clicking the header.)
-   */
-  handleNameDescriptionPanelClose() {
-    this.nameDescriptionPanelExpanded = false;
-  }
-
-  /**
-   * Handles when the request match rules panel is open
-   */
-  handleRequestMatchRulesPanelOpen() {
-    this.requestMatchRulesPanelExpanded = true;
   }
 
   /**

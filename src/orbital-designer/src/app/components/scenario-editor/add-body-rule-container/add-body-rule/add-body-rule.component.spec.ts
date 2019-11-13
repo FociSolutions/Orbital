@@ -61,6 +61,18 @@ describe('AddBodyRuleComponent', () => {
           const Actual = component.bodyRules;
           expect(Expected).toEqual(Actual);
         });
+
+        it('should emit the body rule when it is added', () => {
+          const fakeRule = {a: faker.random.word()};
+          const Expected = {type: BodyRuleType.BodyContains, rule: fakeRule} as BodyRule;
+          const bodyRuleOutputSpy = spyOn(component.bodyRuleOutput, 'emit');
+          component.bodyType = BodyRuleType.BodyContains;
+          component.bodyValue = JSON.stringify(fakeRule);
+          component.addBodyRule();
+
+          expect(bodyRuleOutputSpy).toHaveBeenCalledWith(Expected);
+          expect(component.bodyType).toBe(null);
+        });
       });
     });
 
