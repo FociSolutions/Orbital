@@ -29,6 +29,11 @@ const routes: Routes = [
     component: ScenarioEditorComponent,
     canActivate: [OverviewRedirectService]
   },
+  {
+    path: 'scenario-editor/:scenarioId',
+    component: ScenarioEditorComponent,
+    canActivate: [OverviewRedirectService]
+  },
   { path: '**', component: HomeViewComponent }
 ];
 
