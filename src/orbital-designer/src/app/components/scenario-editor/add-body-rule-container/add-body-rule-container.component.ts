@@ -42,6 +42,9 @@ export class AddBodyRuleContainerComponent implements OnInit {
     }
   }
 
+  /**
+   * Gets the saved body rules
+   */
   get saveBodyRules() {
     return this.saveBodyRulesProp;
   }

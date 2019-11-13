@@ -41,6 +41,9 @@ export class AddRequestMatchRuleComponent implements OnInit {
     this.shouldSave = save;
   }
 
+  /**
+   * Emits the request match rule if the header, query, and body fields have already emitted
+   */
   _save() {
     if (this.headerEmitted && this.queryEmitted && this.bodyEmitted) {
       // validate request match rules
