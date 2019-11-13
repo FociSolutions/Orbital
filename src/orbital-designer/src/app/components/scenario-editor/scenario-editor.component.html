@@ -51,6 +51,17 @@
             </button>
           </div>
         </div>
+
+          <div id="scenario-back-button-div">
+            <button
+              id="go-to-scenarios"
+              color="primary"
+              mat-raised-button
+              (click)="cancel()"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -109,3 +120,17 @@
 
 <ng-template #requestMatchRulesCard>
 </ng-template>
+
+<div class="overlay" *ngIf="triggerOpenCancelBox">
+  <div>
+    <mat-card>
+      <app-dialog-box
+        titleText="Confirm Scenario Changes Discard"
+        confirmButtonText="Confirm"
+        cancelButtonText="Cancel"
+        [bodyText]="bodyTextCancelBox"
+        (choiceBoolean)="onCancelDialogAction($event)"
+      ></app-dialog-box>
+    </mat-card>
+  </div>
+</div>

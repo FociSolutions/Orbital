@@ -45,12 +45,17 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   responseMatchRuleValid = false;
   metadataMatchRuleValid = false;
 
+  triggerOpenCancelBox: boolean;
+  bodyTextCancelBox: string;
+
   constructor(
     private router: Router,
     private store: DesignerStore,
     private logger: NGXLogger,
     private activatedRouter: ActivatedRoute
   ) {
+    this.triggerOpenCancelBox = false;
+    this.bodyTextCancelBox = 'Are you sure you want to discard your unsaved changes?';
     this.selectedScenario = this.store.selectedScenario;
     this.logger.debug('Selected scenario:', this.store.selectedScenario);
 
@@ -290,4 +295,26 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   save() {
     this.shouldSave = true;
   }
+
+  /*
+   * Opens the cancel box
+   */
+  cancel() {
+    this.logger.debug('Opened cancel box for scenario-editor');
+    this.triggerOpenCancelBox = true;
+  }
+
+  /**
+   * Handles the response from the cancel box
+   * @param shouldCancel The button pressed for the cancel box
+   */
+  onCancelDialogAction(shouldCancel: boolean) {
+    this.logger.debug('User answer for scenario-editor cancel box', shouldCancel);
+    this.triggerOpenCancelBox = false;
+    if (shouldCancel) {
+      this.logger.debug('The user has cancelled; navigating to endpoint-view');
+      this.router.navigateByUrl('/endpoint-view');
+    }
+  }
+
 }

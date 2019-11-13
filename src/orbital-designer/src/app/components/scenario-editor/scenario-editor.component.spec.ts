@@ -283,4 +283,21 @@ describe('ScenarioEditorComponent', () => {
       expect(component.shouldSave).toBe(true);
     });
   });
+
+  describe('ScenarioEditorComponent.cancel', () => {
+    it('should set the triggerOpenCancelBox to true when cancelled', () => {
+      component.cancel();
+      expect(component.triggerOpenCancelBox).toBe(true);
+    });
+
+    it('should set triggerOpenCancelBox to false when onCancelDialogAction is true', () => {
+      component.onCancelDialogAction(true);
+      expect(component.triggerOpenCancelBox).toBe(false);
+    });
+
+    it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', () => {
+      component.onCancelDialogAction(false);
+      expect(component.triggerOpenCancelBox).toBe(false);
+    });
+  });
 });
