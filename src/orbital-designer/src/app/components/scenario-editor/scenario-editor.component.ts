@@ -259,8 +259,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
           metadata: JSON.parse(JSON.stringify(this.metadata)),
           requestMatchRules: JSON.parse(JSON.stringify(this.requestMatchRule)),
           response: JSON.parse(JSON.stringify(this.response)),
-          verb: JSON.parse(JSON.stringify(this.store.state.selectedScenario.path)),
-          path: this.store.state.selectedScenario.verb
+          verb: JSON.parse(JSON.stringify(this.store.state.selectedEndpoint.verb)),
+          path: this.store.state.selectedEndpoint.path
         } as Scenario;
 
         this.scenarioId = newScenario.id;
