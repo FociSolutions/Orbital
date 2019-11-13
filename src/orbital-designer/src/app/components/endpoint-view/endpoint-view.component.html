@@ -35,6 +35,7 @@
               required
               [(ngModel)]="serverUri"
             />
+            <mat-hint>{{ isExportedMessage }}</mat-hint>
           </mat-form-field>
           <button
             class="btn-upload"
@@ -45,6 +46,7 @@
             Upload
           </button>
         </form>
+        <div class="status-message"></div>
       </div>
     </div>
   </div>

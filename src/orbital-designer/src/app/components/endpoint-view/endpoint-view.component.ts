@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { DesignerStore } from "src/app/store/designer-store";
-import { MockDefinition } from "src/app/models/mock-definition/mock-definition.model";
-import { Endpoint } from "src/app/models/endpoint.model";
-import { OrbitalAdminService } from "src/app/services/orbital-admin/orbital-admin.service";
-import { NGXLogger } from "ngx-logger";
-import { HttpRequest } from "@angular/common/http";
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { Endpoint } from 'src/app/models/endpoint.model';
+import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
+import { NGXLogger } from 'ngx-logger';
+import { HttpRequest } from '@angular/common/http';
 
 @Component({
-  selector: "app-endpoint-view",
-  templateUrl: "./endpoint-view.component.html",
-  styleUrls: ["./endpoint-view.component.scss"]
+  selector: 'app-endpoint-view',
+  templateUrl: './endpoint-view.component.html',
+  styleUrls: ['./endpoint-view.component.scss']
 })
 export class EndpointViewComponent implements OnInit {
   mockDefinition: MockDefinition;
@@ -19,18 +19,21 @@ export class EndpointViewComponent implements OnInit {
   serverUri: string;
   serverIsValid: boolean;
   uriRegex =
-    "^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.]{1}[a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$";
-  invalidUriError: "Invalid Uri";
+    '^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.]{1}[a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$';
+  isExportedMessage: string;
 
   constructor(
     private store: DesignerStore,
     private orbitalAdminService: OrbitalAdminService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private ngZone: NgZone,
+    private ref: ChangeDetectorRef
   ) {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
       this.endpointList = [...state.endpoints];
     });
+    this.isExportedMessage = '';
   }
   /**
    * This function takes an endpoint object and return its path as a string
@@ -61,15 +64,19 @@ export class EndpointViewComponent implements OnInit {
   onSubmit() {
     this.orbitalAdminService
       .exportMockDefinition(this.serverUri, this.mockDefinition)
-      .subscribe({
-        next(result) {
-          console.log('Successfully exported to server: ', result);
+      .subscribe(
+        data => {
+          console.log(data);
+          this.isExportedMessage =
+            'Mockdefinition successfully uploaded to server';
         },
-        error(err) {
-          console.log('failed exporting to server', err)
+        error => {
+          console.log('Error', error);
+          this.isExportedMessage =
+            'Error uploading Mockdefinition to server: ' + error.statusText;
         }
-      });
+      );
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 }
