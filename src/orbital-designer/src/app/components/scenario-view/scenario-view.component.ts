@@ -89,13 +89,15 @@ export class ScenarioViewComponent implements OnInit {
    * Method that return a value if there are no scenarios found in the endpoint.
    */
   endpointNoScenarios() {
-  if (this.selectedEndpoint !== null) {
-    return !this.mockDefinition.scenarios.filter(
-      s =>
-      s.path === this.selectedEndpoint.path &&
-      s.verb === this.selectedEndpoint.verb
+    if (this.selectedEndpoint !== null) {
+      return !this.mockDefinition.scenarios.filter(
+        s =>
+          s.path === this.selectedEndpoint.path &&
+          s.verb === this.selectedEndpoint.verb
       ).length;
-    } else { return false; }
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -103,23 +105,6 @@ export class ScenarioViewComponent implements OnInit {
    */
   getEndpointVerb() {
     return !!this.selectedEndpoint ? this.selectedEndpoint.verb : null;
-  }
-
-  /**
-   * Gets the color that the chip should be for the appropriate http verb of this endpoint.
-   * Currently, this just returns one color but can be extended to return multiple colors.
-   */
-  getEndpointVerbChipColor() {
-    switch (this.getEndpointVerb()) {
-      case 'POST':
-        return 'primary';
-      case 'GET':
-        return 'primary';
-      case 'DELETE':
-        return 'primary';
-      case 'PUT':
-        return 'primary';
-    }
   }
 
   ngOnInit() {}

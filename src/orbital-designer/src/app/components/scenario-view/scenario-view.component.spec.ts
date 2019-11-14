@@ -4,6 +4,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
+import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
 import { ScenarioListComponent } from './scenario-list/scenario-list.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { ScenarioListItemComponent } from './scenario-list-item/scenario-list-item.component';
@@ -34,6 +35,7 @@ describe('ScenarioViewComponent', () => {
         ScenarioListItemComponent,
         SideBarComponent,
         GetEndpointScenariosPipe,
+        GetVerbColorPipe,
         OverviewComponent,
         NoSearchResultsViewComponent
       ],

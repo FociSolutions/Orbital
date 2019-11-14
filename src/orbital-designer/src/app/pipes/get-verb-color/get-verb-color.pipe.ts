@@ -16,13 +16,13 @@ export class GetVerbColorPipe implements PipeTransform {
   transform(verb: VerbType, prefix: string = ''): string {
     switch (verb) {
       case VerbType.DELETE:
-        return prefix + 'danger';
+        return prefix + 'rgba(255, 0, 0, 0.25)';
       case VerbType.GET:
-        return prefix + 'info';
+        return prefix + 'rgba(0, 163, 255, 0.25)';
       case VerbType.POST:
-        return prefix + 'success';
+        return prefix + 'rgba(30, 255, 160, 0.25)';
       case VerbType.PUT:
-        return prefix + 'warning';
+        return prefix + 'rgba(222, 256, 0, 0.25)';
     }
   }
 }

@@ -10,12 +10,17 @@
         </div>
         <div>
           <app-search-bar
-          [list]="scenarioList| getEndpointScenarios: selectedEndpoint"
-          (filteredList)="setFilteredList($event)"
-          [itemToStringFn]="scenarioToString"
-          > </app-search-bar>
-          <app-no-search-results-view *ngIf="showNotFound()"></app-no-search-results-view>
-          <p *ngIf="endpointNoScenarios()" id="notFoundMessage">No scenarios exist. Click the add button to create a new scenario.</p>
+            [list]="scenarioList | getEndpointScenarios: selectedEndpoint"
+            (filteredList)="setFilteredList($event)"
+            [itemToStringFn]="scenarioToString"
+          >
+          </app-search-bar>
+          <app-no-search-results-view
+            *ngIf="showNotFound()"
+          ></app-no-search-results-view>
+          <p *ngIf="endpointNoScenarios()" id="notFoundMessage">
+            No scenarios exist. Click the add button to create a new scenario.
+          </p>
           <app-scenario-list
             *ngIf="!!mockDefinition"
             [scenarios]="filteredList"
@@ -40,9 +45,10 @@
 <ng-template #headerContent let-path="path">
   <div class="title row center">
     <mat-chip-list
-      ><mat-chip [ngClass]="this.getEndpointVerb()">{{
-        this.getEndpointVerb()
-      }}</mat-chip>
+      ><mat-chip
+        [style.background-color]="this.getEndpointVerb() | getVerbColor"
+        >{{ this.getEndpointVerb() }}</mat-chip
+      >
     </mat-chip-list>
     <h3>
       {{ !!selectedEndpoint ? selectedEndpoint.path : null }}
