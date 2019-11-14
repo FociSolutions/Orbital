@@ -82,8 +82,14 @@ export class MockDefinition {
    */
   public static isMockDefinition(o: any): o is MockDefinition {
     const u: MockDefinition = o;
+    const seenScenarios = new Set();
     return (
       Array.isArray(u.scenarios) &&
+      !u.scenarios.some((currentScenario) => {
+        return (
+          seenScenarios.size === seenScenarios.add(currentScenario.id).size
+        );
+      }) &&
       typeof u.metadata === 'object' &&
       u.metadata !== null &&
       typeof u.openApi === 'object' &&

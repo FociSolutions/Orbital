@@ -95,4 +95,23 @@ describe('Mockdefinition.exportMockDefinition', () => {
     const actual = MockDefinition.exportMockDefinition(input);
     expect(actual).toEqual(JSON.stringify(input));
   });
+
+  it('failed to parsed model because it contains duplicate scenario ids', async () => {
+    const testMockDefinitionObject = await MockDefinition.toMockDefinition(
+      testMockDefinitionString
+    );
+    const invalidMockDefinitionObject = JSON.parse(JSON.stringify(testMockDefinitionObject)) as MockDefinition;
+    // this check leaves the other fields undefined so that future validation overlap does not occur
+    const testScenario = {} as Scenario;
+    invalidMockDefinitionObject.scenarios.push(testScenario);
+    invalidMockDefinitionObject.scenarios[0].id = invalidMockDefinitionObject.scenarios[1].id;
+    const result = MockDefinition.exportMockDefinition(
+      testMockDefinitionObject as MockDefinition
+    );
+
+    await MockDefinition.toOpenApiSpec(result).then(
+      actual => fail(actual),
+      err => expect(err).not.toBeUndefined()
+    );
+  });
 });
