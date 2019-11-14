@@ -8,28 +8,28 @@ describe('GetVerbColorPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('returns info for VerbType GET', () => {
+  it('returns rgba(0, 163, 255, 0.25) for VerbType GET', () => {
     const pipe = new GetVerbColorPipe();
     const colorType = pipe.transform(VerbType.GET);
     expect(colorType).toBe('rgba(0, 163, 255, 0.25)');
   });
 
-  it('returns danger for VerbType DELETE', () => {
+  it('returns rgba(255, 0, 0, 0.25) for VerbType DELETE', () => {
     const pipe = new GetVerbColorPipe();
     const colorType = pipe.transform(VerbType.DELETE);
     expect(colorType).toBe('rgba(255, 0, 0, 0.25)');
   });
 
-  it('returns success for VerbType POST', () => {
+  it('returns rgba(30, 255, 160, 0.25) for VerbType POST', () => {
     const pipe = new GetVerbColorPipe();
     const colorType = pipe.transform(VerbType.POST);
     expect(colorType).toBe('rgba(30, 255, 160, 0.25)');
   });
 
-  it('returns warning for VerbType PUT', () => {
+  it('returns rgba(222, 226, 0, 0.25) for VerbType PUT', () => {
     const pipe = new GetVerbColorPipe();
     const colorType = pipe.transform(VerbType.PUT);
-    expect(colorType).toBe('rgba(222, 256, 0, 0.25)');
+    expect(colorType).toBe('rgba(222, 226, 0, 0.25)');
   });
 
   it('prefixes the returned color type with the provide prefix argument', () => {

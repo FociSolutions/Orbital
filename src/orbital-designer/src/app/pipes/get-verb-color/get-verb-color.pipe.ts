@@ -8,7 +8,7 @@ export class GetVerbColorPipe implements PipeTransform {
   private readonly blue: string = 'rgba(0, 163, 255, 0.25)';
   private readonly green: string = 'rgba(30, 255, 160, 0.25)';
   private readonly red: string = 'rgba(255, 0, 0, 0.25)';
-  private readonly yellow: string = 'rgba(222, 256, 0, 0.25)';
+  private readonly yellow: string = 'rgba(222, 226, 0, 0.25)';
 
   /**
    * Returns a string containing the appropriate bootstrap color
