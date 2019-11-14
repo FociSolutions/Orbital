@@ -24,11 +24,11 @@ const routes: Routes = [
     component: ScenarioViewComponent,
     canActivate: [OverviewRedirectService]
   },
-  {
-    path: 'scenario-editor',
-    component: ScenarioEditorComponent,
-    canActivate: [OverviewRedirectService]
-  },
+  // {
+  //   path: 'scenario-editor',
+  //   component: ScenarioEditorComponent,
+  //   canActivate: [OverviewRedirectService]
+  // },
   {
     path: 'scenario-editor/:scenarioId',
     component: ScenarioEditorComponent,
