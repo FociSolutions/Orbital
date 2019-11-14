@@ -13,11 +13,11 @@
 
 div.metadata {
   width: 100%;
-  overflow-y:hidden;
+  overflow-y: hidden;
 }
 
 div.metadata h3 {
-  text-align: center
+  text-align: center;
 }
 
 p#description {
@@ -45,8 +45,13 @@ mat-card-title {
 }
 
 button#go-to-scenarios {
-  margin-left: 10%;
   margin-top: 1em;
+  width: 10em;
+}
+
+button#save-button {
+  margin-top: 1em;
+  width: 10em;
 }
 
 div#cancel-save-buttons {
@@ -58,7 +63,9 @@ mat-form-field {
   width: 100%;
 }
 
-app-scenario-card, app-add-metadata, app-add-request-match-rule {
+app-scenario-card,
+app-add-metadata,
+app-add-request-match-rule {
   margin-bottom: 1em;
 }
 
@@ -88,10 +95,6 @@ div.flex-space-between-large {
 }
 
 .status-code-text {
-  width: 100px;
-}
-
-div#scenario-back-button-div, div#save-button-div {
   width: 100px;
 }
 
