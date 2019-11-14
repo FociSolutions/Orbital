@@ -184,7 +184,9 @@ describe('ScenarioViewComponent', () => {
     it('should navigate to scenario editor', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       component.addScenario();
-      expect(routerSpy).toHaveBeenCalledWith('scenario-editor');
+      expect(routerSpy.calls.mostRecent().args[0]).toMatch(
+        /\/scenario-editor\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+      );
     });
   });
   describe('ScenarioViewComponent.SearchBar', () => {

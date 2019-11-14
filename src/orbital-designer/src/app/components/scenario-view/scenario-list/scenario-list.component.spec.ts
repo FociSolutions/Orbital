@@ -11,6 +11,8 @@ import { DesignerStore } from '../../../store/designer-store';
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
+import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ScenarioListComponent', () => {
   let component: ScenarioListComponent;
@@ -28,6 +30,8 @@ describe('ScenarioListComponent', () => {
         MatCardModule,
         MatMenuModule,
         MatIconModule,
+        RouterModule,
+        RouterTestingModule,
         LoggerTestingModule
       ],
 
