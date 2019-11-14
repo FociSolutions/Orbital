@@ -5,6 +5,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Router } from '@angular/router';
 import { NGXLogger, LoggerConfig } from 'ngx-logger';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-scenario-view',
@@ -46,7 +47,7 @@ export class ScenarioViewComponent implements OnInit {
       : 'No description';
   }
   addScenario() {
-    this.router.navigateByUrl('scenario-editor');
+    this.router.navigate(['/scenario-editor', uuid.v4()]);
   }
   /**
    * Goes back to the endpoint page

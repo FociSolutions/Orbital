@@ -55,7 +55,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     private activatedRouter: ActivatedRoute
   ) {
     this.triggerOpenCancelBox = false;
-    this.bodyTextCancelBox = 'Are you sure you want to discard your unsaved changes?';
+    this.bodyTextCancelBox =
+      'Are you sure you want to discard your unsaved changes?';
     this.selectedScenario = this.store.selectedScenario;
     this.logger.debug('Selected scenario:', this.store.selectedScenario);
 
@@ -255,11 +256,13 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       } else {
         // save a new scenario
         const newScenario = {
-          id: uuid.v4(),
+          id: this.scenarioId,
           metadata: JSON.parse(JSON.stringify(this.metadata)),
           requestMatchRules: JSON.parse(JSON.stringify(this.requestMatchRule)),
           response: JSON.parse(JSON.stringify(this.response)),
-          verb: JSON.parse(JSON.stringify(this.store.state.selectedEndpoint.verb)),
+          verb: JSON.parse(
+            JSON.stringify(this.store.state.selectedEndpoint.verb)
+          ),
           path: this.store.state.selectedEndpoint.path
         } as Scenario;
 
@@ -310,12 +313,14 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    * @param shouldCancel The button pressed for the cancel box
    */
   onCancelDialogAction(shouldCancel: boolean) {
-    this.logger.debug('User answer for scenario-editor cancel box', shouldCancel);
+    this.logger.debug(
+      'User answer for scenario-editor cancel box',
+      shouldCancel
+    );
     this.triggerOpenCancelBox = false;
     if (shouldCancel) {
       this.logger.debug('The user has cancelled; navigating to endpoint-view');
       this.router.navigateByUrl('/scenario-view');
     }
   }
-
 }
