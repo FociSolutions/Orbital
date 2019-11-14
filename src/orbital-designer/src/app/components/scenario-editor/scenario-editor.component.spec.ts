@@ -31,6 +31,8 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './add-response/add-response.component';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
+import { Endpoint } from 'src/app/models/endpoint.model';
+import { VerbType } from 'src/app/models/verb.type';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -249,6 +251,7 @@ describe('ScenarioEditorComponent', () => {
       const store = TestBed.get(DesignerStore);
       store.state.mockDefinition = JSON.parse(JSON.stringify(validMockDefinition));
       store.state.selectedScenario = validMockDefinition.scenarios[0];
+      store.state.selectedEndpoint = {path: 'test-path', verb: VerbType.GET} as Endpoint; // does not have a spec; just for testing
       const prevStoreScenarioLength = store.state.mockDefinition.scenarios.length;
       component.scenarioId = validMockDefinition.scenarios[0].id + '-new';
       const fakeMetadata = { title: faker.random.word(), description: faker.random.word() } as unknown as Metadata;
