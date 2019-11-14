@@ -5,6 +5,11 @@ import { VerbType } from '../../models/verb.type';
   name: 'getVerbColor'
 })
 export class GetVerbColorPipe implements PipeTransform {
+  private readonly blue: string = 'rgba(0, 163, 255, 0.25)';
+  private readonly green: string = 'rgba(30, 255, 160, 0.25)';
+  private readonly red: string = 'rgba(255, 0, 0, 0.25)';
+  private readonly yellow: string = 'rgba(222, 256, 0, 0.25)';
+
   /**
    * Returns a string containing the appropriate bootstrap color
    * class for the verb type. If a prefix string is passed into the parameters
@@ -16,13 +21,13 @@ export class GetVerbColorPipe implements PipeTransform {
   transform(verb: VerbType, prefix: string = ''): string {
     switch (verb) {
       case VerbType.DELETE:
-        return prefix + 'rgba(255, 0, 0, 0.25)';
+        return prefix + this.red;
       case VerbType.GET:
-        return prefix + 'rgba(0, 163, 255, 0.25)';
+        return prefix + this.blue;
       case VerbType.POST:
-        return prefix + 'rgba(30, 255, 160, 0.25)';
+        return prefix + this.green;
       case VerbType.PUT:
-        return prefix + 'rgba(222, 256, 0, 0.25)';
+        return prefix + this.yellow;
     }
   }
 }
