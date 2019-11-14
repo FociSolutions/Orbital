@@ -275,6 +275,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       }
       this.requestMatchRuleValid = false;
       this.shouldSave = false;
+      this.router.navigateByUrl('/scenario-view');
     }
   }
 
@@ -313,7 +314,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     this.triggerOpenCancelBox = false;
     if (shouldCancel) {
       this.logger.debug('The user has cancelled; navigating to endpoint-view');
-      this.router.navigateByUrl('/endpoint-view');
+      this.router.navigateByUrl('/scenario-view');
     }
   }
 
