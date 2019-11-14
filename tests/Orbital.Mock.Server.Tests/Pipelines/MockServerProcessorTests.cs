@@ -79,7 +79,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         }
 
         [Fact]
-        public void MockServerProcessorPushWithValidInputTestButNoResponse()
+        public void MockServerProcessorPushWithValidInputTestWithValidPathResponse()
         {
             #region TestSetup
             var scenarios = this.fakerScenario.Generate(10);
@@ -102,7 +102,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var Actual = Target.Push(input, cancellationToken).Result;
 
 
-            Assert.NotEqual(Expected, Actual);
+            Assert.Equal(Expected, Actual);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var scenarios = this.fakerScenario.Generate(10);
 
             var httpContext = new DefaultHttpContext();
-            httpContext.Request.Path = "";
+            httpContext.Request.Path = "/diff";
             httpContext.Request.Method = HttpMethods.Get;
             var input = new MessageProcessorInput(httpContext.Request, scenarios);
             #endregion
@@ -240,7 +240,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Method = HttpMethods.Get;
             httpContext.Request.Path = "";
-            var input = new MessageProcessorInput(httpContext.Request, this.fakerScenario.Generate(1));
+            var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
             #endregion
             var Target = this.mockServerProcessor;
             Target.Start();
