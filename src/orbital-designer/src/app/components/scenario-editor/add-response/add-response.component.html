@@ -30,7 +30,7 @@
       [addKvpTitle]="titleForKvp"
       [listKvpTitle]="titleForKvpAdded"
       [Save]="this.shouldSave"
-      [kvpMap]="this.response?.headers"
+      [kvpMap]="this.headers"
       (savedKvpMapEmitter)="saveHeaderMap($event)"
     ></app-kvp-edit>
     <div class="response-body">

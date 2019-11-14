@@ -10,7 +10,15 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./add-response.component.scss']
 })
 export class AddResponseComponent implements OnInit {
-  @Input() response: Response;
+  headers: Map<string, string>;
+  @Input()
+  set response(newResponse: Response) {
+    if (newResponse) {
+    this.statusCode = newResponse.status.toString();
+    this.bodyResponse = newResponse.body;
+    this.headers = newResponse.headers;
+    }
+  }
 
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
