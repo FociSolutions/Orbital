@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +21,28 @@ export class OrbitalAdminService {
     mockdefinition: MockDefinition
   ): Observable<boolean> {
     this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
-    return this.httpClient.post<boolean>(url, mockdefinition).pipe(
+    const mockDefinitionToExport = JSON.parse(MockDefinition.exportMockDefinition(mockdefinition));
+
+    mockDefinitionToExport.scenarios.forEach((scenario) => {
+      scenario.requestMatchRules.bodyRules.forEach((bodyRule) => {
+        switch (bodyRule.type) {
+          case 'bodyEquality':
+            bodyRule.type = 1;
+            break;
+          case 'bodyContains':
+            bodyRule.type = 2;
+            break;
+          case 'bodyIgnore':
+            bodyRule.type = 3;
+            break;
+        }
+      });
+    });
+
+    const mockDefinitionToExportJSON = JSON.stringify(mockDefinitionToExport);
+    this.logger.debug('Mockdefinition has been exported JSON: ', mockDefinitionToExportJSON);
+    const jsonHeader = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
+    return this.httpClient.post<boolean>(url, mockDefinitionToExportJSON, {headers: jsonHeader }).pipe(
       catchError(error => {
         return throwError(error);
       })

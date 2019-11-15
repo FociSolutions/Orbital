@@ -2,8 +2,8 @@
 {
     public enum BodyRuleTypes
     {
-        JsonPath = 1,
-        JsonSchema = 2,
-        BodyEquality = 3
+        BodyEquality = 1,
+        BodyContains = 2,
+        BodyIgnore = 3
     }
 }
