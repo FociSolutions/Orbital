@@ -29,7 +29,6 @@ export class KvpEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kvpMap = new Map<string, string>();
   }
 
   /**
@@ -48,6 +47,10 @@ export class KvpEditComponent implements OnInit {
    */
   @Input()
   set kvpMap(savedKvpMap: Map<string, string>) {
+    if (!this.savedKvpMap) {
+      this.savedKvpMap = new Map<string, string>();
+    }
+
     this.savedKvpMap = savedKvpMap;
   }
 
@@ -57,6 +60,10 @@ export class KvpEditComponent implements OnInit {
    */
   addKvpToMap(kvpToAdd: KeyValue<string, string>) {
     if (!!kvpToAdd && !!kvpToAdd.key && !!kvpToAdd.value) {
+      if (!this.savedKvpMap || !this.savedKvpMap.size) {
+        this.savedKvpMap = new Map<string, string>();
+      }
+
       this.savedKvpMap.set(kvpToAdd.key, kvpToAdd.value);
       this.logger.debug('Adding Header Rule to Map', kvpToAdd);
     }

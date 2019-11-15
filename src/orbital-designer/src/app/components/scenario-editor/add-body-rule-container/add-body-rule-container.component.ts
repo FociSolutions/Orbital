@@ -19,7 +19,6 @@ export class AddBodyRuleContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.bodyRules = [] as BodyRule[];
   }
 
   /**
@@ -27,6 +26,10 @@ export class AddBodyRuleContainerComponent implements OnInit {
    */
   @Input()
   set bodyRules(bodyRule: BodyRule[]) {
+    if (!this.bodyRulesProp) {
+      this.bodyRulesProp = [] as BodyRule[];
+    }
+
     this.bodyRulesProp = bodyRule;
   }
 

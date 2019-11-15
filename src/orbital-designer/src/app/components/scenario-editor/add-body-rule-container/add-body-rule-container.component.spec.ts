@@ -40,6 +40,7 @@ describe('AddBodyRuleContainerComponent', () => {
     fixture = TestBed.createComponent(AddBodyRuleContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.bodyRulesProp = [] as BodyRule[];
   });
 
   it('should create', () => {
@@ -63,6 +64,7 @@ describe('AddBodyRuleContainerComponent', () => {
 
     it('should delete a body rule when a delete body rule event is emitted', () => {
       const fakeBodyContents = getFakeBodyContents();
+      component.bodyRulesProp = [] as BodyRule[];
 
       const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
       component.bodyRulesProp.push(componentBodyRule[0]);

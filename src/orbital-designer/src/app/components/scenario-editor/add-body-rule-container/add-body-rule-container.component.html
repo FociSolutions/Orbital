@@ -5,7 +5,7 @@
 <div>
   <p class="description">Added Body Match Rules</p>
 </div>
-<div *ngIf="!this.bodyRulesProp.length">
+<div *ngIf="!this.bodyRulesProp?.length">
   No rules Added
 </div>
 <div *ngFor="let bodyRule of this.bodyRulesProp">

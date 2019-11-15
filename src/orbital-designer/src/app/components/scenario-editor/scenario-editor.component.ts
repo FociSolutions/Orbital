@@ -249,7 +249,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         currentScenario.requestMatchRules.headerRules = this.requestMatchRule.headerRules;
         currentScenario.requestMatchRules.queryRules = this.requestMatchRule.queryRules;
 
-        currentScenario.response = JSON.parse(JSON.stringify(this.response));
+        currentScenario.response.body = this.response.body;
+        currentScenario.response.headers = this.response.headers;
+        currentScenario.response.status = this.response.status;
+
         this.logger.debug(
           'New current scenario (after saving):',
           currentScenario
