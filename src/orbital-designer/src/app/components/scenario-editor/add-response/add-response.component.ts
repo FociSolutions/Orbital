@@ -14,9 +14,9 @@ export class AddResponseComponent implements OnInit {
   @Input()
   set response(newResponse: Response) {
     if (newResponse) {
-    this.statusCode = newResponse.status.toString();
-    this.bodyResponse = newResponse.body;
-    this.headers = newResponse.headers;
+      this.statusCode = newResponse.status ? newResponse.status.toString() : '';
+      this.bodyResponse = newResponse.body;
+      this.headers = newResponse.headers;
     }
   }
 
