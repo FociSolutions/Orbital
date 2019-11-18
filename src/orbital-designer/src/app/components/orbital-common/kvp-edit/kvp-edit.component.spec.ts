@@ -97,6 +97,12 @@ describe('KvpEditComponent', () => {
       component.kvpMap = newKvpMap;
       expect(component.savedKvpMap).toEqual(newKvpMap);
     });
+
+    it('should not set kvpMap a map with the new kvpmap values if that kvp map is undefined', () => {
+      const newKvpMap: Map<string, string> = undefined;
+      component.kvpMap = newKvpMap;
+      expect(component.savedKvpMap).toEqual(newKvpMap);
+    });
   });
 
   describe('KvpEditComponent.Save', () => {
