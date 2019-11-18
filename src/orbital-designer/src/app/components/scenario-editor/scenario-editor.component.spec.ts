@@ -33,6 +33,9 @@ import { AddResponseComponent } from './add-response/add-response.component';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { VerbType } from 'src/app/models/verb.type';
+import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -79,134 +82,12 @@ describe('ScenarioEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ScenarioEditorComponent.handleCancelButtonClick', () => {
-    it('should set the name and description panels state to closed if handleCancelButtonClick is called', () => {
-      component.handleCancelButtonClick();
-      expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
-    });
-  });
-
-  describe('ScenarioEditorComponent.handleNameDescriptionPanelOpen', () => {
-    it('should set the name and description panel state to open if handleNameDescriptionPanelOpen is called', () => {
-      component.handleNameDescriptionPanelOpen();
-      expect(component.nameDescriptionPanelExpanded).toBeTruthy();
-    });
-  });
-
-  describe('ScenarioEditorComponent.nameDescriptionPanelExpanded property', () => {
-    it('should ensure that the name and description panel state is closed when initialized for the first time', () => {
-      expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
-    });
-  });
-  describe('ScenarioEditorComponent metadata card', () => {
-    describe('ScenarioEditorComponent.handleCancelButtonClick', () => {
-      it('should set the name and description panel state to closed if handleCancelButtonClick is called', () => {
-        component.handleCancelButtonClick();
-        expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
-      });
-    });
-
-    describe('ScenarioEditorComponent.handleNameDescriptionPanelOpen', () => {
-      it('should set the name and description panel state to open if handleNameDescriptionPanelOpen is called', () => {
-        component.handleNameDescriptionPanelOpen();
-        expect(component.nameDescriptionPanelExpanded).toBeTruthy();
-      });
-    });
-
-    it('should not save if nameAdDescriptionFormGroup name is empty', () => {
-      component.nameAndDescriptionFormGroup.controls.name.setValue('');
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      expect(component.saveButtonDisabledState()).toBeTruthy();
-    });
-
-    it('should save if nameAndDescriptionFormGroups description is empty', () => {
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
-      expect(component.saveButtonDisabledState()).not.toBeTruthy();
-    });
-
-    it('should save if nameAndDescriptionFormGroup name is not empty', () => {
-      component.nameAndDescriptionFormGroup.controls.name.setValue('test name');
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      expect(component.saveButtonDisabledState()).not.toBeTruthy();
-    });
-    describe('ScenarioEditorComponent.nameDescriptionPanelExpanded property', () => {
-      it('should ensure that the name and description panel state is closed when initialized for the first time', () => {
-        expect(component.nameDescriptionPanelExpanded).not.toBeTruthy();
-      });
-    });
-
-    describe('ScenarioEditorComponent.saveButtonDisabledState', () => {
-      it('should not save if nameAndDescriptionFormGroup is null', () => {
-        component.nameAndDescriptionFormGroup = null;
-        expect(component.saveButtonDisabledState()).toBeTruthy();
-      });
-    });
-    it('should save if nameAndDescriptionFormGroup name is only one character', () => {
-      component.nameAndDescriptionFormGroup.controls.name.setValue('z');
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      expect(component.saveButtonDisabledState()).not.toBeTruthy();
-    });
-
-    it('should not save if nameAndDescriptionFormGroups name is more than 50 characters', () => {
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      component.nameAndDescriptionFormGroup.controls.name.setValue(
-        'z'.repeat(52)
-      );
-      expect(component.saveButtonDisabledState()).toBeTruthy();
-    });
-
-    it('should not save if nameAndDescriptionFormGroups description is more than 50 characters', () => {
-      component.nameAndDescriptionFormGroup.controls.name.setValue('');
-      component.nameAndDescriptionFormGroup.controls.description.setValue(
-        'z'.repeat(52)
-      );
-      expect(component.saveButtonDisabledState()).toBeTruthy();
-    });
-
-    it('should not save if nameAndDescriptionFormGroups name and description is more than 50 characters', () => {
-      component.nameAndDescriptionFormGroup.controls.description.setValue('');
-      component.nameAndDescriptionFormGroup.controls.name.setValue('');
-      expect(component.saveButtonDisabledState()).toBeTruthy();
-    });
-
-    describe('ScenarioEditorComponent request match rules card', () => {
-      describe('ScenarioEditorComponent.handleRequestMatchRulesPanelOpen', () => {
-        it('should set the panel state to closed if handleCancelButtonClick is called', () => {
-          component.handleCancelButtonClickRequestMatchRules();
-          expect(component.requestMatchRulesPanelExpanded).not.toBeTruthy();
-        });
-      });
-
-      describe('ScenarioEditorComponent.handleRequestMatchRulesPanelClose', () => {
-        it('should set the panel state to open if handleRequestMatchRulesPanelClose is called', () => {
-          component.handleRequestMatchRulesPanelClose();
-          expect(component.requestMatchRulesPanelExpanded).not.toBeTruthy();
-        });
-      });
-
-      describe('ScenarioEditorComponent.saveButtonDisabledStateRequestMatchRules', () => {
-        it('should ensure that the panel state cannot be saved for the first time when initialized', () => {
-          expect(
-            component.saveButtonDisabledStateRequestMatchRules()
-          ).toBeTruthy();
-        });
-      });
-
-      describe('ScenarioEditorComponent.saveButtonDisabledStateRequestMatchRules', () => {
-        it('should not save if responseFormGroup is null', () => {
-          component.responseFormGroup = null;
-          expect(
-            component.saveButtonDisabledStateRequestMatchRules()
-          ).toBeTruthy();
-        });
-      });
-    });
-  });
-
   describe('ScenarioEditorComponent.handleMetadataOutput', () => {
     it('should set the metadata to the metadata when the component outputs the metadata', () => {
-      const fakeMetadata = { title: faker.random.word(), description: faker.random.word() } as Metadata;
+      const fakeMetadata = {
+        title: faker.random.word(),
+        description: faker.random.word()
+      } as Metadata;
       component.handleMetadataOutput(fakeMetadata);
       expect(component.metadata).toEqual(fakeMetadata);
     });
@@ -214,7 +95,8 @@ describe('ScenarioEditorComponent', () => {
 
   describe('ScenarioEditorComponent.handleRequestMatchRuleOutput', () => {
     it('should set the request match rule to the one that the component emitted', () => {
-      const fakeRequestMatchRule = validMockDefinition.scenarios[0].requestMatchRules;
+      const fakeRequestMatchRule =
+        validMockDefinition.scenarios[0].requestMatchRules;
       component.handleRequestMatchRuleOutput(fakeRequestMatchRule);
       expect(component.requestMatchRule).toEqual(fakeRequestMatchRule);
     });
@@ -223,7 +105,8 @@ describe('ScenarioEditorComponent', () => {
   describe('ScenarioEditorComponent.handleResponseOutput', () => {
     it('should set the response to the response when the component outputs the response', () => {
       component.selectedScenario = validMockDefinition.scenarios[0];
-      const fakeResponse = validMockDefinition.scenarios[0].response as unknown as Response;
+      const fakeResponse = (validMockDefinition.scenarios[0]
+        .response as unknown) as Response;
       component.handleResponseOutput(fakeResponse);
       expect(component.response).toEqual(fakeResponse);
     });
@@ -232,9 +115,14 @@ describe('ScenarioEditorComponent', () => {
   describe('ScenarioEditorComponent.saveScenario', () => {
     it('should save the scenario if all the fields are valid', () => {
       const store = TestBed.get(DesignerStore);
-      store.state.mockDefinition = JSON.parse(JSON.stringify(validMockDefinition));
+      store.state.mockDefinition = JSON.parse(
+        JSON.stringify(validMockDefinition)
+      );
       component.scenarioId = validMockDefinition.scenarios[0].id;
-      const fakeMetadata = { title: faker.random.word(), description: faker.random.word() } as unknown as Metadata;
+      const fakeMetadata = ({
+        title: faker.random.word(),
+        description: faker.random.word()
+      } as unknown) as Metadata;
       component.metadata = JSON.parse(JSON.stringify(fakeMetadata));
 
       component.metadataMatchRuleValid = true;
@@ -244,17 +132,28 @@ describe('ScenarioEditorComponent', () => {
       component.requestMatchRule = {} as RequestMatchRule;
       component.saveScenario();
 
-      expect(store.state.mockDefinition.scenarios[0].metadata).toEqual(fakeMetadata);
+      expect(store.state.mockDefinition.scenarios[0].metadata).toEqual(
+        fakeMetadata
+      );
     });
 
     it('should save a new scenario if all the fields are valid', () => {
       const store = TestBed.get(DesignerStore);
-      store.state.mockDefinition = JSON.parse(JSON.stringify(validMockDefinition));
+      store.state.mockDefinition = JSON.parse(
+        JSON.stringify(validMockDefinition)
+      );
       store.state.selectedScenario = validMockDefinition.scenarios[0];
-      store.state.selectedEndpoint = {path: 'test-path', verb: VerbType.GET} as Endpoint; // does not have a spec; just for testing
-      const prevStoreScenarioLength = store.state.mockDefinition.scenarios.length;
+      store.state.selectedEndpoint = {
+        path: 'test-path',
+        verb: VerbType.GET
+      } as Endpoint; // does not have a spec; just for testing
+      const prevStoreScenarioLength =
+        store.state.mockDefinition.scenarios.length;
       component.scenarioId = validMockDefinition.scenarios[0].id + '-new';
-      const fakeMetadata = { title: faker.random.word(), description: faker.random.word() } as unknown as Metadata;
+      const fakeMetadata = ({
+        title: faker.random.word(),
+        description: faker.random.word()
+      } as unknown) as Metadata;
       component.metadata = JSON.parse(JSON.stringify(fakeMetadata));
 
       component.metadataMatchRuleValid = true;
@@ -264,7 +163,9 @@ describe('ScenarioEditorComponent', () => {
       component.requestMatchRule = {} as RequestMatchRule;
       component.saveScenario();
 
-      expect(store.state.mockDefinition.scenarios.length).toEqual(prevStoreScenarioLength + 1);
+      expect(store.state.mockDefinition.scenarios.length).toEqual(
+        prevStoreScenarioLength + 1
+      );
     });
   });
 
