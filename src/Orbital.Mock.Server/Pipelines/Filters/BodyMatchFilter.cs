@@ -113,6 +113,11 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <param name="scenario">The scenario to match against</param>
         private static IEnumerable<MatchResult> ProcessScenarios(JToken bodyObject, Scenario scenario)
         {
+            if(scenario.RequestMatchRules.BodyRules == null)
+            {
+                var rules = new List<MatchResult>() { new MatchResult(MatchResultType.Ignore, scenario.Id)};
+                return rules;
+            }
             return scenario.RequestMatchRules.BodyRules.Select(br => BodyCheck(br.Rule, bodyObject, scenario.Id));
         }
 

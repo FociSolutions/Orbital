@@ -16,13 +16,14 @@ namespace Orbital.Mock.Server.Models
         /// <returns>The MatchResult corresponding to the match level of these two dictionaries</returns>
         public static MatchResult MatchByKeyValuePair(IDictionary<string, string> matchRules, IDictionary<string, string> requestDictionary, string scenarioId)
         {
-            var rule = matchRules.Except(requestDictionary).Any()
+            var rule = new MatchResult(MatchResultType.Ignore, scenarioId);
+
+            if (matchRules != null && matchRules.Count > 0)
+            {
+                rule = matchRules.Except(requestDictionary).Any()
                 ? new MatchResult(MatchResultType.Fail, scenarioId)
                 : new MatchResult(MatchResultType.Success, scenarioId);
-
-            if (matchRules.Count == 0)
-            {
-                rule = new MatchResult(MatchResultType.Ignore, scenarioId);
+                
             }
 
             return rule;
