@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpListItemComponent } from './kvp-list-item.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
+import { KeyValue } from '@angular/common';
 
 describe('KvpListItemComponent', () => {
   let component: KvpListItemComponent;
@@ -16,7 +17,6 @@ describe('KvpListItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KvpListItemComponent);
     component = fixture.componentInstance;
-    component.kvp = { key: '', value: '' };
     fixture.detectChanges();
   });
 
@@ -24,67 +24,37 @@ describe('KvpListItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('KvpListItemComponent.getKvpKey', () => {
+  describe('kvp', () => {
     beforeEach(() => {
       fixture.detectChanges();
     });
-    it('Should return empty key is kvp is null', () => {
-      component.kvp = null;
-      expect(component.kvpKey).toEqual('');
-    });
 
-    it('Should return empty key is kvp is undefined', () => {
-      component.kvp = undefined;
-      expect(component.kvpKey).toEqual('');
-    });
-
-    it('Should return key if kvp is not null or undefined', () => {
-      const randomKey: string = faker.lorem.sentence();
-      const randomValue: string = faker.lorem.sentence();
-      component.kvp = {
-        key: randomKey,
-        value: randomValue
+    it('Should contain correct key value pair', () => {
+      const input: KeyValue<string, string> = {
+        key: faker.lorem.sentence(),
+        value: faker.lorem.sentence()
       };
-      expect(component.kvpKey).toEqual(randomKey);
+
+      component.kvp = input;
+
+      expect(component.currentKVP).toEqual(input);
     });
   });
 
-  describe('KvpListItemComponent.getKvpValue', () => {
-    it('Should return empty value is kvp is null', () => {
-      component.kvp = null;
-      expect(component.kvpValue).toEqual('');
-    });
-
-    it('Should return empty value is kvp is null', () => {
-      component.kvp = undefined;
-      expect(component.kvpValue).toEqual('');
-    });
-    it('Should return value if kvp is not null or undefined', () => {
-      const randomKey: string = faker.lorem.sentence();
-      const randomValue: string = faker.lorem.sentence();
-      component.kvp = {
-        key: randomKey,
-        value: randomValue
-      };
-      expect(component.kvpValue).toEqual(randomValue);
-    });
-  });
-
-  describe('KvpListItemComponent.onRemove()', () => {
+  describe('onRemove', () => {
     it('Should emit a remove event', () => {
-      const randomKey: string = faker.lorem.sentence();
-      const randomValue: string = faker.lorem.sentence();
-      component.kvp = {
-        key: randomKey,
-        value: randomValue
+      const input: KeyValue<string, string> = {
+        key: faker.lorem.sentence(),
+        value: faker.lorem.sentence()
       };
-      fixture.detectChanges();
-      spyOn(component.removeKvp, 'emit');
+
+      component.kvp = input;
       component.onRemove();
-      expect(component.removeKvp.emit).toHaveBeenCalledWith({
-        key: randomKey,
-        value: randomValue
-      });
+
+      component.removeKvp.subscribe(
+        actual => expect(actual).toEqual(input),
+        err => fail(`Unexpected error: ${err.message}`)
+      );
     });
   });
 });
