@@ -8,9 +8,9 @@
 <div *ngIf="!this.savedKvpMap.size">
   No rules Added
 </div>
-<div *ngFor="let headerRule of savedKvpMap | keyvalue">
+<div *ngFor="let kv of savedKvpMap | keyvalue">
   <app-kvp-list-item
-    [kvp]="headerRule"
+    [kvp]="kv"
     (removeKvp)="deleteKvpFromMap($event)"
   ></app-kvp-list-item>
 </div>
