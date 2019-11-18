@@ -87,7 +87,7 @@ export class AddResponseComponent implements OnInit {
    * Checks to see if the body is valid and sets it to the validBodyResponse if valid
    */
   set bodyResponse(bodyContent: string) {
-    if (this.jsonService.isValidJSON(bodyContent)) {
+    if (!bodyContent || this.jsonService.isValidJSON(bodyContent)) {
       this.validBodyResponse = bodyContent;
       this.isBodyValid = true;
     } else {
@@ -112,11 +112,11 @@ export class AddResponseComponent implements OnInit {
     this.titleForKvpAdded = 'Added Header Rules';
     this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
     this.isBodyValid = true;
+    this.statusCode = '';
   }
 
   ngOnInit() {
-    this.statusMessage = '';
-    this.statusCode = '';
+
   }
 
   saveHeaderMap(map: Map<string, string>) {
