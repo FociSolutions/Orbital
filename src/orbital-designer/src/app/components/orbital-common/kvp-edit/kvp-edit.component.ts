@@ -47,10 +47,6 @@ export class KvpEditComponent implements OnInit {
    */
   @Input()
   set kvpMap(savedKvpMap: Map<string, string>) {
-    if (!this.savedKvpMap) {
-      this.savedKvpMap = new Map<string, string>();
-    }
-
     this.savedKvpMap = savedKvpMap;
   }
 
