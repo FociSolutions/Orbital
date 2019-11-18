@@ -186,4 +186,30 @@ describe('DesignerStore', () => {
       expect(store.state.mockDefinition.scenarios).toEqual(scenarios);
     });
   });
+
+  describe('addOrUpdateScenario', () => {
+    it('should add new scenario', () => {
+      const input = {
+        mock: validMockDefinition,
+        scenario: newScenario(VerbType.GET, faker.random.words())
+      };
+      const expected = input.mock.scenarios.length + 1;
+
+      store.state.mockDefinition = input.mock;
+      store.addOrUpdateScenario(input.scenario);
+      expect(store.state.mockDefinition.scenarios.length).toEqual(expected);
+    });
+
+    it('should update existing scenario', () => {
+      const input = {
+        mock: validMockDefinition
+      };
+      const inputScenario = input.mock.scenarios[0];
+      const expected = input.mock.scenarios.length;
+
+      store.state.mockDefinition = input.mock;
+      store.addOrUpdateScenario(inputScenario);
+      expect(store.state.mockDefinition.scenarios.length).toEqual(expected);
+    });
+  });
 });

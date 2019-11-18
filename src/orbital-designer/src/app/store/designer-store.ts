@@ -141,6 +141,46 @@ export class DesignerStore extends Store<State> {
   }
 
   /**
+   * Add the provided scenario to current mock definition;
+   * If scenario already exist, update the existing scenario
+   * @param scenario Scenario to add to current mock definition
+   */
+  addOrUpdateScenario(scenario: Scenario) {
+    const currentMock = this.state.mockDefinition;
+    if (currentMock) {
+      let current = currentMock.scenarios.find(s => s.id === scenario.id);
+      if (current) {
+        this.logger.debug(
+          'DesignerStore:AddOrUpdateScenario: Provided scenario already exist in the mock definition',
+          current,
+          scenario
+        );
+        current.metadata.title = scenario.metadata.title;
+        current.metadata.description = scenario.metadata.description;
+
+        current.requestMatchRules.bodyRules =
+          scenario.requestMatchRules.bodyRules;
+        current.requestMatchRules.headerRules =
+          scenario.requestMatchRules.headerRules;
+        current.requestMatchRules.queryRules =
+          scenario.requestMatchRules.queryRules;
+
+        current.response.body = scenario.response.body;
+        current.response.headers = scenario.response.headers;
+        current.response.status = scenario.response.status;
+      } else {
+        this.logger.debug(
+          'DesignerStore:AddOrUpdateScenario: Unable to find provided scenario in the mock definition, Append it to the end of the list',
+          scenario
+        );
+        current = scenario;
+        currentMock.scenarios.push(current);
+      }
+      this.state.selectedScenario = current;
+    }
+  }
+
+  /**
    * This method updates the host,basepath and openAPI spec of the MockDefinition in the designer store
    * @param host The string representing the host
    * @param basePath The string representing endpoint path
