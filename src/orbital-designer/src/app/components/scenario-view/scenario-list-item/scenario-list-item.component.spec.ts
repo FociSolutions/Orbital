@@ -10,6 +10,8 @@ import { newScenario } from 'src/app/models/mock-definition/scenario/scenario.mo
 import { VerbType } from 'src/app/models/verb.type';
 import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
 import * as faker from 'faker';
+import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ScenarioListItemComponent', () => {
   let component: ScenarioListItemComponent;
@@ -23,7 +25,8 @@ describe('ScenarioListItemComponent', () => {
         MatCardModule,
         LoggerTestingModule,
         MatMenuModule,
-        MatIconModule
+        MatIconModule,
+        RouterTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();

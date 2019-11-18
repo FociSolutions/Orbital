@@ -4,7 +4,7 @@
 >
   <mat-card-content>
     <mat-card-title>
-      {{ scenario?.metadata.title }}
+      <div class="fakeLink" [routerLink]="['/scenario-editor', scenario.id]">{{ scenario?.metadata.title }}</div>
       <div class="scenario-options-menu">
         <button
           mat-icon-button
