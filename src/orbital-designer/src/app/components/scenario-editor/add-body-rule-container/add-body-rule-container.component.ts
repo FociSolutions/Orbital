@@ -26,7 +26,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
    */
   @Input()
   set bodyRules(bodyRule: BodyRule[]) {
-    if (!this.bodyRulesProp) {
+    if (!bodyRule) {
       this.bodyRulesProp = [] as BodyRule[];
     }
 
