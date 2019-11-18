@@ -11,13 +11,14 @@ import { NGXLogger } from 'ngx-logger';
 export class BodyRuleListItemComponent implements OnInit {
   bodyRuleTypeValues = BodyRuleType;
   @Input() bodyRule: BodyRule;
-  @Output() deletedBodyRule: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
+  @Output() deletedBodyRule: EventEmitter<BodyRule>;
 
   constructor(private logger: NGXLogger) {
+    this.bodyRule = {} as BodyRule;
+    this.deletedBodyRule = new EventEmitter<BodyRule>();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Sends an event to delete the selected body rule
@@ -31,7 +32,7 @@ export class BodyRuleListItemComponent implements OnInit {
    * Gets the rule from the body; returns an empty string if undefined or null
    */
   getBodyRule() {
-    if (!!this.bodyRule && !!this.bodyRule.rule) {
+    if (this.bodyRule.rule) {
       return JSON.stringify(this.bodyRule.rule);
     } else {
       return '';
@@ -42,7 +43,7 @@ export class BodyRuleListItemComponent implements OnInit {
    * Gets the type from the body; returns an empty string if undefined or null
    */
   getBodyType() {
-    if (!!this.bodyRule && !!this.bodyRule.type) {
+    if (this.bodyRule.type) {
       return this.bodyRule.type;
     } else {
       return '';

@@ -3,7 +3,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AddBodyRuleContainerComponent } from './add-body-rule-container.component';
 import { AddBodyRuleComponent } from './add-body-rule/add-body-rule.component';
 import { BodyRuleListItemComponent } from './body-rule-list-item/body-rule-list-item.component';
-import { MatFormFieldModule, MatInputModule, MatCardModule, MatIconModule } from '@angular/material';
+import {
+  MatFormFieldModule,
+  MatInputModule,
+  MatCardModule,
+  MatIconModule
+} from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,8 +25,14 @@ describe('AddBodyRuleContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddBodyRuleContainerComponent, AddBodyRuleComponent, BodyRuleListItemComponent, BodyRuleListItemComponent ],
-      imports: [ MatExpansionModule,
+      declarations: [
+        AddBodyRuleContainerComponent,
+        AddBodyRuleComponent,
+        BodyRuleListItemComponent,
+        BodyRuleListItemComponent
+      ],
+      imports: [
+        MatExpansionModule,
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
@@ -31,9 +42,9 @@ describe('AddBodyRuleContainerComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule,
         MatDividerModule,
-        MatCheckboxModule ]
-    })
-    .compileComponents();
+        MatCheckboxModule
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -48,7 +59,10 @@ describe('AddBodyRuleContainerComponent', () => {
 
   describe('add-body-rule-container.addBodyRule', () => {
     it('should add a body rule', () => {
-      const bodyRuleToAdd = {type: BodyRuleType.BodyEquality, rule: {a: 'b'}} as BodyRule;
+      const bodyRuleToAdd = {
+        type: BodyRuleType.BodyEquality,
+        rule: { a: 'b' }
+      } as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
       const Actual = component.bodyRulesProp;
       expect([bodyRuleToAdd]).toEqual(Actual);
@@ -64,7 +78,9 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should delete a body rule when a delete body rule event is emitted', () => {
       const fakeBodyContents = getFakeBodyContents();
 
-      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+      const componentBodyRule = [
+        { type: BodyRuleType.BodyEquality, rule: fakeBodyContents }
+      ] as BodyRule[];
       component.bodyRulesProp.push(componentBodyRule[0]);
 
       component.handleDeleteBodyRule(componentBodyRule[0]);
@@ -74,53 +90,57 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should not delete a body rule when the body rule to delete is invalid', () => {
       const fakeBodyContents = getFakeBodyContents();
 
-      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
-      component.bodyRulesProp.push(componentBodyRule[0]);
+      const componentBodyRule = {
+        type: BodyRuleType.BodyEquality,
+        rule: fakeBodyContents
+      } as BodyRule;
+      component.bodyRulesProp = [componentBodyRule];
 
       component.handleDeleteBodyRule(undefined);
 
-      expect(component.bodyRulesProp).toEqual(componentBodyRule);
-    });
-
-    it('should not delete a body rule when the body rule is invalid', () => {
-      const componentBodyRule = undefined;
-      component.bodyRules = componentBodyRule;
-
-      component.handleDeleteBodyRule(undefined);
-
-      expect(component.bodyRulesProp).toEqual(undefined);
+      expect(component.bodyRulesProp.length).toEqual(1);
     });
   });
 
   describe('add-body-rule-container emit body rule', () => {
     it('should emit the body rules when the save state is true', () => {
       const fakeBodyContents = getFakeBodyContents();
-      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+      const componentBodyRule = [
+        { type: BodyRuleType.BodyEquality, rule: fakeBodyContents }
+      ] as BodyRule[];
       component.addBodyRule(componentBodyRule[0]);
 
       spyOn(component.bodyRulesOutput, 'emit');
       component.saveBodyRules = true;
 
-      expect(component.bodyRulesOutput.emit).toHaveBeenCalledWith(componentBodyRule);
+      expect(component.bodyRulesOutput.emit).toHaveBeenCalledWith(
+        componentBodyRule
+      );
     });
 
     it('should not emit the body rules when the save state is false', () => {
       const fakeBodyContents = getFakeBodyContents();
-      const componentBodyRule = [{type: BodyRuleType.BodyEquality, rule: fakeBodyContents}] as BodyRule[];
+      const componentBodyRule = [
+        { type: BodyRuleType.BodyEquality, rule: fakeBodyContents }
+      ] as BodyRule[];
       component.addBodyRule(componentBodyRule[0]);
 
       spyOn(component.bodyRulesOutput, 'emit');
       component.saveBodyRules = false;
 
-      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalledWith(componentBodyRule);
+      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalledWith(
+        componentBodyRule
+      );
     });
   });
 
   /*
-    * Generates a fake json object to be used for the response body rul
-    */
+   * Generates a fake json object to be used for the response body rul
+   */
   function getFakeBodyContents() {
-    return [{testkey: faker.random.word(), testobjattr: faker.random.word()},
-      {testkey2: faker.random.word(), testobjattr2: faker.random.word()}];
+    return [
+      { testkey: faker.random.word(), testobjattr: faker.random.word() },
+      { testkey2: faker.random.word(), testobjattr2: faker.random.word() }
+    ];
   }
 });

@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 describe('BodyRuleListItemComponent', () => {
   let component: BodyRuleListItemComponent;
@@ -16,7 +17,7 @@ describe('BodyRuleListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BodyRuleListItemComponent ],
+      declarations: [BodyRuleListItemComponent],
       imports: [
         MatCardModule,
         MatFormFieldModule,
@@ -28,8 +29,7 @@ describe('BodyRuleListItemComponent', () => {
         MatIconModule,
         FormsModule
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -44,30 +44,30 @@ describe('BodyRuleListItemComponent', () => {
 
   describe('body-rule-list-item.deleteBodyRule', () => {
     it('should emit an event containing the deleted body rule when deleting a body rule', () => {
-      const bodyRule = {rule: {a: 'b'}, type: BodyRuleType.BodyEquality};
-      component.bodyRule = bodyRule;
+      const bodyRule = {
+        rule: { a: 'b' },
+        type: BodyRuleType.BodyEquality
+      } as BodyRule;
 
-      spyOn(component.deletedBodyRule, 'emit');
+      component.bodyRule = bodyRule;
       component.deleteBodyRule(bodyRule);
-      expect(component.deletedBodyRule.emit).toHaveBeenCalledWith(bodyRule);
+
+      component.deletedBodyRule.subscribe(
+        actual => expect(actual).toEqual(bodyRule),
+        err => fail(`Unexpected error: ${err.message}`)
+      );
     });
   });
 
   describe('body-rule-list-item.getBodyRule', () => {
     it('should get a body rule successfully', () => {
-      const bodyRule = {rule: {a: 'b'}, type: BodyRuleType.BodyEquality};
+      const bodyRule = { rule: { a: 'b' }, type: BodyRuleType.BodyEquality };
       component.bodyRule = bodyRule;
       expect(component.getBodyRule()).toEqual(JSON.stringify(bodyRule.rule));
     });
 
     it('should not get an invalid body rule', () => {
-      const bodyRule = {rule: undefined, type: BodyRuleType.BodyEquality};
-      component.bodyRule = bodyRule;
-      expect(component.getBodyRule()).toEqual('');
-    });
-
-    it('should not get an undefined body', () => {
-      const bodyRule = undefined;
+      const bodyRule = { rule: undefined, type: BodyRuleType.BodyEquality };
       component.bodyRule = bodyRule;
       expect(component.getBodyRule()).toEqual('');
     });
@@ -75,19 +75,13 @@ describe('BodyRuleListItemComponent', () => {
 
   describe('body-rule-list-item.getBodyType', () => {
     it('should get a valid body type', () => {
-      const bodyRule = {rule: {}, type: BodyRuleType.BodyEquality};
+      const bodyRule = { rule: {}, type: BodyRuleType.BodyEquality };
       component.bodyRule = bodyRule;
       expect(component.getBodyType()).toEqual(bodyRule.type);
     });
 
     it('should not get an invalid body type', () => {
-      const bodyRule = {rule: {}, type: undefined};
-      component.bodyRule = bodyRule;
-      expect(component.getBodyType()).toEqual('');
-    });
-
-    it('should not get an undefined body', () => {
-      const bodyRule = undefined;
+      const bodyRule = { rule: {}, type: undefined };
       component.bodyRule = bodyRule;
       expect(component.getBodyType()).toEqual('');
     });

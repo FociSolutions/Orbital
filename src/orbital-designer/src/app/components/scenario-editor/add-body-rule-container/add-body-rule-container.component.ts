@@ -16,18 +16,19 @@ export class AddBodyRuleContainerComponent implements OnInit {
 
   constructor(private logger: NGXLogger) {
     this.bodyRulesOutput = new EventEmitter<BodyRule[]>();
+    this.bodyRulesProp = [];
   }
 
-  ngOnInit() {
-    this.bodyRules = [] as BodyRule[];
-  }
+  ngOnInit() {}
 
   /**
    * Sets the body rules
    */
   @Input()
   set bodyRules(bodyRule: BodyRule[]) {
-    this.bodyRulesProp = bodyRule;
+    if (bodyRule) {
+      this.bodyRulesProp = bodyRule;
+    }
   }
 
   /**
@@ -72,7 +73,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
   handleDeleteBodyRule(bodyRuleToDelete: BodyRule) {
     this.logger.debug('Fired delete event for body rule ', bodyRuleToDelete);
 
-    if (!!this.bodyRulesProp && !!bodyRuleToDelete) {
+    if (bodyRuleToDelete) {
       let toOutput = [] as BodyRule[];
       toOutput = this.bodyRulesProp.filter(
         bodyRule => bodyRule !== bodyRuleToDelete
