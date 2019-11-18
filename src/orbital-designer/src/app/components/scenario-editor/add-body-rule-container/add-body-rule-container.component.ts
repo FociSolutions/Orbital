@@ -26,7 +26,7 @@ export class AddBodyRuleContainerComponent implements OnInit {
    */
   @Input()
   set bodyRules(bodyRule: BodyRule[]) {
-    if (!bodyRule) {
+    if (!this.bodyRulesProp) {
       this.bodyRulesProp = [] as BodyRule[];
     }
 
@@ -59,6 +59,10 @@ export class AddBodyRuleContainerComponent implements OnInit {
   addBodyRule(bodyRuleToAdd: BodyRule) {
     if (!!bodyRuleToAdd.rule && !!bodyRuleToAdd.type) {
       this.logger.debug('AddBodyRuleContainer: added body rule', bodyRuleToAdd);
+
+      if (!this.bodyRulesProp) {
+        this.bodyRulesProp = [] as BodyRule[];
+      }
       this.bodyRulesProp.push(bodyRuleToAdd);
     } else {
       this.logger.debug(

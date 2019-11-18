@@ -62,7 +62,7 @@ export class AddBodyRuleComponent implements OnInit {
       this.logger.debug('The body value must be valid JSON');
       this.errorMessage = 'The body value must be valid JSON';
       return false;
-    } else if (this.bodyRuleDeepEquals()) {
+    } else if (!!this.bodyRules && this.bodyRuleDeepEquals()) {
       this.logger.debug('The rule already exists ', this.bodyValue);
       this.errorMessage = 'The rule already exists';
       return false;

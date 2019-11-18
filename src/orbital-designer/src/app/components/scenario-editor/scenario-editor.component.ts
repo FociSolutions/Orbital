@@ -300,7 +300,12 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   /**
    * Saves the current scenario to the designer store
    */
-  save() {
+  async save() {
+    this.shouldSave = false;
+
+    // this delays by 0ms, which causes the event loop to continue and
+    // set the setter
+    await new Promise(resolve => setTimeout(resolve, 0));
     this.shouldSave = true;
   }
 
