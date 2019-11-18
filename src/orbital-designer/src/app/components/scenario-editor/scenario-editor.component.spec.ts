@@ -170,8 +170,8 @@ describe('ScenarioEditorComponent', () => {
   });
 
   describe('ScenarioEditorComponent.save', () => {
-    it('should set the shouldSave variable to true', () => {
-      component.save();
+    it('should set the shouldSave variable to true', async () => {
+      await component.save();
       expect(component.shouldSave).toBe(true);
     });
   });

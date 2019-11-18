@@ -51,6 +51,7 @@ describe('AddBodyRuleContainerComponent', () => {
     fixture = TestBed.createComponent(AddBodyRuleContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.bodyRulesProp = [] as BodyRule[];
   });
 
   it('should create', () => {
@@ -75,8 +76,23 @@ describe('AddBodyRuleContainerComponent', () => {
       expect(Actual.length).toBe(0);
     });
 
+    it('should not add a body rule which has an undefined rule', () => {
+      const bodyRuleToAdd = { rule: undefined, type: BodyRuleType.BodyContains } as unknown as BodyRule;
+      component.addBodyRule(bodyRuleToAdd);
+      const Actual = component.bodyRulesProp;
+      expect(Actual).toEqual([] as BodyRule[]);
+    });
+
+    it('should not add a body rule which has an undefined type', () => {
+      const bodyRuleToAdd = { rule: {}, type: undefined } as unknown as BodyRule;
+      component.addBodyRule(bodyRuleToAdd);
+      const Actual = component.bodyRulesProp;
+      expect(Actual).toEqual([] as BodyRule[]);
+    });
+
     it('should delete a body rule when a delete body rule event is emitted', () => {
       const fakeBodyContents = getFakeBodyContents();
+      component.bodyRulesProp = [] as BodyRule[];
 
       const componentBodyRule = [
         { type: BodyRuleType.BodyEquality, rule: fakeBodyContents }

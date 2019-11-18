@@ -46,6 +46,7 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should not add kvp to map if kvp is empty/null', () => {
+      component.savedKvpMap = new Map<string, string>();
       const kvpToAdd: KeyValue<string, string> = {
         key: null,
         value: ''
@@ -73,6 +74,7 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should not be able to delete kvp if map if kvp is empty/null', () => {
+      component.savedKvpMap = new Map<string, string>();
       const kvpToAdd: KeyValue<string, string> = {
         key: null,
         value: ''
@@ -92,6 +94,12 @@ describe('KvpEditComponent', () => {
     it('Should set kvpMap a map with the new kvpmap values', () => {
       const newKvpMap: Map<string, string> = new Map<string, string>();
       newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
+      component.kvpMap = newKvpMap;
+      expect(component.savedKvpMap).toEqual(newKvpMap);
+    });
+
+    it('should not set kvpMap a map with the new kvpmap values if that kvp map is undefined', () => {
+      const newKvpMap: Map<string, string> = undefined;
       component.kvpMap = newKvpMap;
       expect(component.savedKvpMap).toEqual(newKvpMap);
     });

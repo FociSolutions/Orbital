@@ -10,7 +10,7 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./add-response.component.scss']
 })
 export class AddResponseComponent implements OnInit {
-  headers: Map<string, string>;
+  headers: Map<string, string> = new Map<string, string>();
   @Input()
   set response(newResponse: Response) {
     if (newResponse) {
