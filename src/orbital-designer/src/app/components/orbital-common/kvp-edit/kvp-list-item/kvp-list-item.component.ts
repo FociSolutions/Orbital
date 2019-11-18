@@ -7,35 +7,26 @@ import { KeyValue } from '@angular/common';
   styleUrls: ['./kvp-list-item.component.scss']
 })
 export class KvpListItemComponent implements OnInit {
-  // The incoming kvp to be displayed in the list
-  @Input() kvp: KeyValue<string, string>;
-
-  /**
-   * kvpKey key getter method including null/undefined checks
-   */
-  get kvpKey() {
-    if (!this.kvp) {
-      return '';
-    }
-    return this.kvp.key;
-  }
-
-  /**
-   *  kvpKey value getter method including null/undefined checks
-   */
-  get kvpValue() {
-    if (!this.kvp) {
-      return '';
-    }
-    return this.kvp.value;
-  }
+  currentKVP: KeyValue<string, string>;
 
   /**
    * The kvp to be deleted by the parent
    */
-  @Output() removeKvp: EventEmitter<
-    KeyValue<string, string>
-  > = new EventEmitter<KeyValue<string, string>>();
+  @Output() removeKvp: EventEmitter<KeyValue<string, string>>;
+
+  constructor() {
+    this.removeKvp = new EventEmitter<KeyValue<string, string>>();
+    this.currentKVP = { key: '', value: '' };
+  }
+
+  ngOnInit() {}
+
+  @Input()
+  set kvp(input: KeyValue<string, string>) {
+    if (input) {
+      this.currentKVP = input;
+    }
+  }
 
   /**
    * Emits a removes event with the KeyValue for the parent to remove
@@ -43,6 +34,4 @@ export class KvpListItemComponent implements OnInit {
   onRemove() {
     this.removeKvp.emit(this.kvp);
   }
-
-  ngOnInit() {}
 }
