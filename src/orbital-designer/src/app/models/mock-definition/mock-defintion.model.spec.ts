@@ -1,6 +1,6 @@
 import * as faker from 'faker';
 import { MockDefinition } from './mock-definition.model';
-import testMockDefinitionObject from '../../../test-files/test-mockdefinition-object';
+import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import testMockDefinitionString from '../../../test-files/test-mockdefinition-file.mock';
 
 describe('MockDefinition.toMockDefinition', () => {
@@ -65,9 +65,8 @@ describe('MockDefinition.toOpenApiSpec', () => {
 
 describe('Mockdefinition.exportMockDefinition', () => {
   it('parsed model and returned string representing json content', () => {
-    const result = MockDefinition.exportMockDefinition(
-      testMockDefinitionObject as MockDefinition
-    );
-    expect(result).toEqual(testMockDefinitionString);
+    const input = validMockDefinition;
+    const actual = MockDefinition.exportMockDefinition(input);
+    expect(actual).toEqual(JSON.stringify(input));
   });
 });
