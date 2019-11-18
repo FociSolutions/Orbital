@@ -25,6 +25,7 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
+              "src/Orbital_Logo.svg",
               "src/assets"
             ],
             "styles": [
@@ -85,6 +86,7 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
+              "src/Orbital_Logo.svg",
               "src/assets"
             ],
             "styles": [
