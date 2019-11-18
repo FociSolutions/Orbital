@@ -23,21 +23,25 @@ export class OrbitalAdminService {
     this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
     const mockDefinitionToExport = JSON.parse(MockDefinition.exportMockDefinition(mockdefinition));
 
-    mockDefinitionToExport.scenarios.forEach((scenario) => {
-      scenario.requestMatchRules.bodyRules.forEach((bodyRule) => {
-        switch (bodyRule.type) {
-          case 'bodyEquality':
-            bodyRule.type = 1;
-            break;
-          case 'bodyContains':
-            bodyRule.type = 2;
-            break;
-          case 'bodyIgnore':
-            bodyRule.type = 3;
-            break;
+    if (mockDefinitionToExport.scenarios != null) {
+      mockDefinitionToExport.scenarios.forEach((scenario) => {
+        if (scenario.requestMatchRules != null && scenario.requestMatchRules.bodyRules != null) {
+          scenario.requestMatchRules.bodyRules.forEach((bodyRule) => {
+            switch (bodyRule.type) {
+              case 'bodyEquality':
+                bodyRule.type = 1;
+                break;
+              case 'bodyContains':
+                bodyRule.type = 2;
+                break;
+              case 'bodyIgnore':
+                bodyRule.type = 3;
+                break;
+            }
+          });
         }
       });
-    });
+    }
 
     const mockDefinitionToExportJSON = JSON.stringify(mockDefinitionToExport);
     this.logger.debug('Mockdefinition has been exported JSON: ', mockDefinitionToExportJSON);
