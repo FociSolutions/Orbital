@@ -33,9 +33,6 @@ import { AddResponseComponent } from './add-response/add-response.component';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { VerbType } from 'src/app/models/verb.type';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -114,58 +111,32 @@ describe('ScenarioEditorComponent', () => {
 
   describe('ScenarioEditorComponent.saveScenario', () => {
     it('should save the scenario if all the fields are valid', () => {
-      const store = TestBed.get(DesignerStore);
-      store.state.mockDefinition = JSON.parse(
-        JSON.stringify(validMockDefinition)
-      );
-      component.scenarioId = validMockDefinition.scenarios[0].id;
-      const fakeMetadata = ({
-        title: faker.random.word(),
-        description: faker.random.word()
-      } as unknown) as Metadata;
-      component.metadata = JSON.parse(JSON.stringify(fakeMetadata));
+      const store: DesignerStore = TestBed.get(DesignerStore);
+      store.state.mockDefinition = validMockDefinition;
+
+      const input = {
+        scenario: validMockDefinition.scenarios[0],
+        metadata: {
+          title: faker.random.word(),
+          description: faker.random.word()
+        } as Metadata
+      };
+      component.scenarioId = input.scenario.id;
+      component.metadata = input.metadata;
+      component.response = input.scenario.response;
+      component.requestMatchRule = input.scenario.requestMatchRules;
+      component.selectedScenario = input.scenario;
 
       component.metadataMatchRuleValid = true;
       component.requestMatchRuleValid = true;
       component.responseMatchRuleValid = true;
-      component.response = {} as Response;
-      component.requestMatchRule = {} as RequestMatchRule;
       component.saveScenario();
 
-      expect(store.state.mockDefinition.scenarios[0].metadata).toEqual(
-        fakeMetadata
+      const actual = store.state.mockDefinition.scenarios.find(
+        s => s.id === input.scenario.id
       );
-    });
-
-    it('should save a new scenario if all the fields are valid', () => {
-      const store = TestBed.get(DesignerStore);
-      store.state.mockDefinition = JSON.parse(
-        JSON.stringify(validMockDefinition)
-      );
-      store.state.selectedScenario = validMockDefinition.scenarios[0];
-      store.state.selectedEndpoint = {
-        path: 'test-path',
-        verb: VerbType.GET
-      } as Endpoint; // does not have a spec; just for testing
-      const prevStoreScenarioLength =
-        store.state.mockDefinition.scenarios.length;
-      component.scenarioId = validMockDefinition.scenarios[0].id + '-new';
-      const fakeMetadata = ({
-        title: faker.random.word(),
-        description: faker.random.word()
-      } as unknown) as Metadata;
-      component.metadata = JSON.parse(JSON.stringify(fakeMetadata));
-
-      component.metadataMatchRuleValid = true;
-      component.requestMatchRuleValid = true;
-      component.responseMatchRuleValid = true;
-      component.response = {} as Response;
-      component.requestMatchRule = {} as RequestMatchRule;
-      component.saveScenario();
-
-      expect(store.state.mockDefinition.scenarios.length).toEqual(
-        prevStoreScenarioLength + 1
-      );
+      expect(actual).toBeTruthy();
+      expect(actual.metadata.title).toEqual(input.metadata.title);
     });
   });
 

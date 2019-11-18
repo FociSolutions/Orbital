@@ -102,57 +102,29 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       this.requestMatchRuleValid &&
       this.responseMatchRuleValid
     ) {
-      this.logger.debug('Attempting save');
       this.logger.debug(
-        'Saved these fields:',
-        this.metadata,
-        this.requestMatchRule,
-        this.response
+        'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
+        this.selectedScenario
       );
-      const currentScenario = this.store.state.mockDefinition.scenarios.find(
-        s => s.id === this.scenarioId
+
+      this.selectedScenario.metadata.title = this.metadata.title;
+      this.selectedScenario.metadata.description = this.metadata.description;
+      this.selectedScenario.requestMatchRules.bodyRules = this.requestMatchRule.bodyRules;
+      this.selectedScenario.requestMatchRules.headerRules = this.requestMatchRule.headerRules;
+      this.selectedScenario.requestMatchRules.queryRules = this.requestMatchRule.queryRules;
+
+      this.selectedScenario.response.body = this.response.body;
+      this.selectedScenario.response.headers = this.response.headers;
+      this.selectedScenario.response.status = this.response.status;
+
+      this.store.addOrUpdateScenario(this.selectedScenario);
+
+      this.logger.debug(
+        'ScenarioEditorComponent:saveScenario: Updated the provided scenario',
+        this.selectedScenario
       );
-      if (currentScenario) {
-        this.logger.debug('Current scenario is: ', currentScenario);
-        // update the store
-        currentScenario.metadata = this.metadata;
-        currentScenario.requestMatchRules.bodyRules = this.requestMatchRule.bodyRules;
-        currentScenario.requestMatchRules.headerRules = this.requestMatchRule.headerRules;
-        currentScenario.requestMatchRules.queryRules = this.requestMatchRule.queryRules;
 
-        currentScenario.response.body = this.response.body;
-        currentScenario.response.headers = this.response.headers;
-        currentScenario.response.status = this.response.status;
-
-        this.logger.debug(
-          'New current scenario (after saving):',
-          currentScenario
-        );
-      } else {
-        // save a new scenario
-        const newScenario = {
-          id: this.scenarioId,
-          metadata: JSON.parse(JSON.stringify(this.metadata)),
-          requestMatchRules: JSON.parse(JSON.stringify(this.requestMatchRule)),
-          response: JSON.parse(JSON.stringify(this.response)),
-          verb: JSON.parse(
-            JSON.stringify(this.store.state.selectedEndpoint.verb)
-          ),
-          path: this.store.state.selectedEndpoint.path
-        } as Scenario;
-
-        this.scenarioId = newScenario.id;
-
-        this.store.state.mockDefinition.scenarios.push(newScenario);
-        this.logger.debug(
-          'Designer store after saving this scenario',
-          this.store.state.mockDefinition.scenarios
-        );
-
-        this.store.state.selectedScenario = newScenario;
-      }
       this.requestMatchRuleValid = false;
-      this.shouldSave = false;
       this.router.navigateByUrl('/scenario-view');
     }
   }
