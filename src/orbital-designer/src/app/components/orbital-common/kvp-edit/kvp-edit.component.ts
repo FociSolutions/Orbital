@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, SimpleChange, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 
@@ -25,12 +25,11 @@ export class KvpEditComponent implements OnInit {
   @Output() savedKvpMapEmitter;
 
   constructor(private logger: NGXLogger) {
+    this.savedKvpMap = new Map<string, string>();
     this.savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
   }
 
-  ngOnInit() {
-    this.kvpMap = new Map<string, string>();
-  }
+  ngOnInit() {}
 
   /**
    * This setter calls the emitter for the savedkvpmap if shouldSave is true
@@ -48,7 +47,9 @@ export class KvpEditComponent implements OnInit {
    */
   @Input()
   set kvpMap(savedKvpMap: Map<string, string>) {
-    this.savedKvpMap = savedKvpMap;
+    if (savedKvpMap) {
+      this.savedKvpMap = savedKvpMap;
+    }
   }
 
   /**
