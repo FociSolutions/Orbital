@@ -15,6 +15,7 @@ export class ScenarioListItemComponent implements OnInit {
   @Input() scenario: Scenario;
   triggerOpen: boolean;
   mockDefinition: MockDefinition;
+  isHoveringOverMenu: boolean;
 
   constructor(private store: DesignerStore, private logger: NGXLogger) {
     this.store.state$.subscribe(state => {

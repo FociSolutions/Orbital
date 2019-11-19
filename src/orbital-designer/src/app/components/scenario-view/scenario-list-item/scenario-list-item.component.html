@@ -2,14 +2,16 @@
   *ngIf="!!scenario"
   class="scenario-list-item-container min-card-height"
 >
-  <mat-card-content>
+  <mat-card-content [routerLink]="this.isHoveringOverMenu ? null : ['/scenario-editor', scenario.id]" routerLinkActive="is-active">
     <mat-card-title>
-      <div class="fakeLink" [routerLink]="['/scenario-editor', scenario.id]">{{ scenario?.metadata.title }}</div>
+      <div>{{ scenario?.metadata.title }}</div>
       <div class="scenario-options-menu">
         <button
           mat-icon-button
           [mat-menu-trigger-for]="menu"
           aria-label="Example icon-button with a menu"
+          (mouseout)="this.isHoveringOverMenu = false"
+          (mouseover)="this.isHoveringOverMenu = true"
         >
           <mat-icon>more_horiz</mat-icon>
         </button>
