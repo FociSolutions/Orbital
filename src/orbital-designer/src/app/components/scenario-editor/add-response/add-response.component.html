@@ -35,10 +35,11 @@
     ></app-kvp-edit>
     <div class="response-body">
       <mat-form-field>
+        <input matInput hidden="true" />
         <div class="body-title">Body</div>
-        <textarea matInput rows="10" [(ngModel)]="this.bodyResponse"></textarea>
+        <json-editor [options]="options" [data]="data" (change)="editorChange($event)" ></json-editor>
       </mat-form-field>
-      <div class="error-message" *ngIf="!isBodyValid">
+      <div class="error-message" *ngIf="!editor.isValidJson()">
         {{ this.bodyErrorMessage }}
       </div>
     </div>

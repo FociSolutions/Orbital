@@ -1,24 +1,33 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import * as HttpStatus from 'http-status-codes';
-import { Response } from '../../../models/mock-definition/scenario/response.model';
-import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
-import { NGXLogger } from 'ngx-logger';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild
+} from "@angular/core";
+import * as HttpStatus from "http-status-codes";
+import { Response } from "../../../models/mock-definition/scenario/response.model";
+import { ValidJsonService } from "src/app/services/valid-json/valid-json.service";
+import { NGXLogger } from "ngx-logger";
+import { JsonEditorComponent, JsonEditorOptions } from "ang-jsoneditor";
 
 @Component({
-  selector: 'app-add-response',
-  templateUrl: './add-response.component.html',
-  styleUrls: ['./add-response.component.scss']
+  selector: "app-add-response",
+  templateUrl: "./add-response.component.html",
+  styleUrls: ["./add-response.component.scss"]
 })
 export class AddResponseComponent implements OnInit {
   headers: Map<string, string> = new Map<string, string>();
   @Input()
   set response(newResponse: Response) {
     if (newResponse) {
-      this.statusCode = newResponse.status ? newResponse.status.toString() : '';
+      this.statusCode = newResponse.status ? newResponse.status.toString() : "";
       this.bodyResponse = newResponse.body;
       this.headers = newResponse.headers;
     }
   }
+  @ViewChild(JsonEditorComponent, { static: true }) editor: JsonEditorComponent;
 
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
@@ -37,6 +46,16 @@ export class AddResponseComponent implements OnInit {
    * The error message for the body response
    */
   bodyErrorMessage: string;
+
+  /**
+   * Options for the JSON Editor
+   */
+  options = new JsonEditorOptions();
+
+  /**
+   * any for collection the json data
+   */
+  data: any;
 
   /**
    * The locally store status code
@@ -71,14 +90,14 @@ export class AddResponseComponent implements OnInit {
    * status code
    */
   set statusCode(statusCode: string) {
-    if (statusCode === '') {
-      this.statusMessage = 'Enter a Status Code';
+    if (statusCode === "") {
+      this.statusMessage = "Enter a Status Code";
     } else {
       try {
         this.statusMessage = HttpStatus.getStatusText(Number(statusCode));
         this.statusCodeEntered = statusCode;
       } catch (Error) {
-        this.statusMessage = 'Invalid Status Code';
+        this.statusMessage = "Invalid Status Code";
       }
     }
   }
@@ -108,16 +127,17 @@ export class AddResponseComponent implements OnInit {
   ) {
     this.responseOutput = new EventEmitter<Response>();
     this.isValid = new EventEmitter<boolean>();
-    this.titleForKvp = 'Add New Header Rule';
-    this.titleForKvpAdded = 'Added Header Rules';
-    this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
+    this.titleForKvp = "Add New Header Rule";
+    this.titleForKvpAdded = "Added Header Rules";
+    this.bodyErrorMessage = "Body Content not in Valid JSON Format";
     this.isBodyValid = true;
-    this.statusCode = '';
+    this.statusCode = "";
+
+    this.options = new JsonEditorOptions();
+    this.options.mode = "code";
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   saveHeaderMap(map: Map<string, string>) {
     if (!!this.statusCode && this.isBodyValid) {
@@ -126,9 +146,16 @@ export class AddResponseComponent implements OnInit {
         body: this.bodyResponse,
         status: +this.statusCode
       } as Response;
-      this.logger.debug('Response has been emitted', responseToEmit);
+      this.logger.debug("Response has been emitted", responseToEmit);
       this.responseOutput.emit(responseToEmit);
     } else {
+    }
+  }
+
+  editorChange(event = null) {
+    if (this.editor.isValidJson()) {
+      const json = this.editor.get();
+      this.bodyResponse = JSON.stringify(json, null, 0);
     }
   }
 

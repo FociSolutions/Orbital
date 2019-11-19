@@ -33,7 +33,7 @@ import { ScenarioViewComponent } from './components/scenario-view/scenario-view.
 import { ScenarioListComponent } from './components/scenario-view/scenario-list/scenario-list.component';
 import { ScenarioListItemComponent } from './components/scenario-view/scenario-list-item/scenario-list-item.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
-import { MatExpansionModule, MatChipsModule } from '@angular/material';
+import { MatExpansionModule, MatChipsModule, MatInput, MatInputModule } from '@angular/material';
 import { NoSearchResultsViewComponent } from './components/no-search-results-view/no-search-results-view.component';
 import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule/add-body-rule.component';
 import { AddBodyRuleContainerComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule-container.component';
@@ -42,6 +42,7 @@ import { BodyRuleListItemComponent } from './components/scenario-editor/add-body
 import { AddMetadataComponent } from './components/scenario-editor/add-metadata/add-metadata.component';
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 @NgModule({
   declarations: [
@@ -83,13 +84,15 @@ import { AddResponseComponent } from './components/scenario-editor/add-response/
     MatCardModule,
     MatIconModule,
     MatDividerModule,
+    MatInputModule,
     MatListModule,
     MatButtonModule,
     MatGridListModule,
     ReactiveFormsModule,
     MatMenuModule,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+    NgJsonEditorModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]
