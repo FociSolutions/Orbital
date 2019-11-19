@@ -5,6 +5,8 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import Json from '../../../app/models/json';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,10 +45,7 @@ export class OrbitalAdminService {
       });
     }
 
-    const mockDefinitionToExportJSON = JSON.stringify(mockDefinitionToExport);
-    this.logger.debug('Mockdefinition has been exported JSON: ', mockDefinitionToExportJSON);
-    const jsonHeader = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
-    return this.httpClient.post<boolean>(url, mockDefinitionToExportJSON, {headers: jsonHeader }).pipe(
+    return this.httpClient.post<boolean>(url, Json.mapToObject(mockDefinitionToExport)).pipe(
       catchError(error => {
         return throwError(error);
       })
