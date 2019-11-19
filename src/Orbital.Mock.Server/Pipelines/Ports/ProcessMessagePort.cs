@@ -40,6 +40,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public ICollection<MatchResult> BodyMatchResults { get; set; }
 
         public ICollection<MatchResult> QueryMatchResults { get; set; }
+
         public IDictionary<string, string> Query { get; set; }
 
         public MockResponse SelectedResponse { get; set; }

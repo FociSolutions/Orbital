@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
@@ -10,6 +11,5 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     {
         string Path { get; set; }
         HttpMethod Verb { get; set; }
-
     }
 }

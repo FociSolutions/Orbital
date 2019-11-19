@@ -1,11 +1,10 @@
 ﻿using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
@@ -24,11 +23,26 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             var path = port.Path;
             var verb = port.Verb;
-            var rx = new Regex($"{path}$");
-            var scenarioList = port.Scenarios.Where(s => s.Verb == verb && rx.IsMatch(s.Path));
 
-            port.Scenarios = scenarioList.ToList();
+            port.Scenarios = port.Scenarios.Where(s => s.Verb == verb && MatchParameterizedUrl(s.Path, path)).ToList();
+
             return port;
+        }
+        
+        /// <summary>
+        /// Matches a URL which could be parameterized (e.g. /pets/{id}/test)
+        /// </summary>
+        /// <param name="parameterizedPath">The parameterized path</param>
+        /// <param name="pathToMatch">The path to match against</param>
+        /// <returns></returns>
+        private static bool MatchParameterizedUrl(string parameterizedPath, string pathToMatch)
+        {
+            // ensure that /test/, test/, //test//test, /test are equivalent via StringSplitOptions.RemoveEmptyEntries
+            var pathParts = parameterizedPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var needlePathParts = pathToMatch.Split('/', StringSplitOptions.RemoveEmptyEntries);
+
+            return pathParts.Length == needlePathParts.Length && !pathParts.Where((endpoint, i) =>
+                       !Regex.IsMatch(endpoint, @"(\{.+\})") && !needlePathParts[i].Equals(endpoint)).Any();
         }
     }
 }
