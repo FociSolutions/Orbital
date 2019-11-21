@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "src\\orbital-designer"
+    },
+    {
+      "path": "src\\Orbital.Mock.Server"
+    }
+  ],
+  "settings": {
+    "cSpell.words": ["APIV", "controlkey", "maxlength", "minlength", "openapi"]
+  },
+  "launch": {
+    "configurations": [],
+    "compounds": [
+      {
+        "name": "designer and mock",
+        "configurations": [".NET Core Launch (web)", "ng serve"]
+      }
+    ]
+  }
+}

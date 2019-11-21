@@ -6,11 +6,11 @@ services:
       context: .
       dockerfile: ./docker/designer/Dockerfile
     ports:
-     - "3970:3970"
+     - "4200:80"
   mock:
     # Build Orbitial Mock Server
     build:
       context: .
       dockerfile: ./docker/mock/Dockerfile
     ports:
-      - "3971:3971"
+      - "5001:80"

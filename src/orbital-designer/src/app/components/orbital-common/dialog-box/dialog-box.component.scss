@@ -1,0 +1,24 @@
+.dialog-content {
+  p {
+    text-align: center;
+    padding: 0.8em;
+    color: rgba(0, 0, 0, 0.541327);
+  }
+}
+
+.dialog-title {
+  text-align: center;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+
+  .confirm-button {
+    color: #ff0000;
+  }
+
+  .cancel-button {
+    color: #009688;
+  }
+}

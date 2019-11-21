@@ -1,0 +1,12 @@
+<h3 mat-dialog-title class="dialog-title">{{ titleText }}</h3>
+<div mat-dialog-content class="dialog-content">
+  <p [innerHTML]="bodyText"></p>
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-button class="cancel-button" (click)="onCancel()">
+      {{ cancelButtonText }}
+    </button>
+    <button mat-button class="confirm-button" (click)="onConfirm()">
+      {{ confirmButtonText }}
+    </button>
+  </div>
+</div>

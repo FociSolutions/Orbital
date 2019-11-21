@@ -1,0 +1,28 @@
+<mat-accordion>
+  <mat-expansion-panel
+    [disabled]="this.isCardDisabled"
+    [expanded]="this.panelExpanded"
+  >
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title>
+        Metadata
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field class="fullwidth">
+      <input [(ngModel)]="this.metadataTitle" matInput placeholder="Name" />
+    </mat-form-field>
+    <mat-form-field class="fullwidth">
+      <input
+        [(ngModel)]="this.metadataDescription"
+        matInput
+        placeholder="Description"
+      />
+    </mat-form-field>
+    <div class="error-message" *ngIf="this.titleErrorMessage.length > 0">
+      {{ this.titleErrorMessage }}
+    </div>
+    <div class="error-message" *ngIf="this.descriptionErrorMessage.length > 0">
+      {{ this.descriptionErrorMessage }}
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

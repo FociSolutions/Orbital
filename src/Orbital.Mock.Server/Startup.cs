@@ -43,6 +43,13 @@ namespace Orbital.Mock.Server
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("OrbitalPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddMvc()
                 .AddJsonOptions(options => { options.SerializerSettings.Converters.Add(new OpenApiJsonConverter()); })
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>())

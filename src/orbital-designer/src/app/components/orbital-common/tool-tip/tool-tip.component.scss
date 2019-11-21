@@ -1,0 +1,13 @@
+div {
+  display: flex;
+  flex-direction: row;
+
+  ::ng-deep > *:first-child {
+    flex: 1;
+  }
+
+  mat-icon {
+    margin-left: 0.5em;
+    padding-top: 1em;
+  }
+}

@@ -1,0 +1,57 @@
+%subtitle-text {
+  color: rgba(0, 0, 0, 0.539261);
+}
+.response-code {
+  display: flex;
+  flex-direction: row;
+}
+
+.response-dropdown {
+  min-width: 40vw;
+}
+
+.status-code {
+  @extend %subtitle-text;
+  display: flex;
+  flex-direction: column;
+}
+
+.status-code-field {
+  width: 6em;
+  color: rgba(0, 0, 0);
+}
+
+.status-message {
+  @extend %subtitle-text;
+  margin-left: 15em;
+  display: flex;
+  flex-direction: column;
+}
+
+.status-message-output {
+  color: rgba(0, 0, 0);
+  margin-top: 1em;
+}
+
+.response-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.body-title {
+  @extend %subtitle-text;
+  padding-bottom: 1em;
+}
+
+::ng-deep mat-expansion-panel {
+  padding: 16px;
+}
+
+::ng-deep mat-panel-description {
+  font-size: 0.85em;
+}
+
+::ng-deep .right-aligned-header .mat-content {
+  display: flex;
+  flex-direction: column;
+}

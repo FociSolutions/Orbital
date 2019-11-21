@@ -1,0 +1,26 @@
+h3.subtitle {
+  color: rgba(0, 0, 0, 0.539261);
+  font-weight: normal;
+}
+
+#value {
+  margin-top: 0px
+}
+
+.full-width {
+  width: 100%;
+}
+
+#spacer-left {
+  padding-left: 125px
+}
+
+button#add {
+  align-self: flex-end;
+  margin-bottom: 15px;
+  margin-left: 10px;
+}
+
+div#add-button-container {
+  display: flex;
+}

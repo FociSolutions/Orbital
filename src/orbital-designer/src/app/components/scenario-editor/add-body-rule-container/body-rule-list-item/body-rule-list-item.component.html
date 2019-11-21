@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-content>
+    <form>
+      <div class="row">
+        <div class="center-flex">
+          <div id="fake-dropdown">{{ getBodyType() }}</div>
+        </div>
+        <div class="full-width" id="spacer-left">
+          <div id="fake-textarea">{{ getBodyRule() }}</div>
+        </div>
+        <div id="delete-button-container">
+          <button id="delete" (click)="deleteBodyRule(this.bodyRule)"><mat-icon>close</mat-icon></button>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

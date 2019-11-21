@@ -1,0 +1,47 @@
+mat-card {
+  min-width: 70vw;
+  min-height: 70vh;
+  margin: 6.824vh auto;
+
+  mat-card-title,
+  mat-card-subtitle {
+    align-self: center;
+    color: #000;
+    padding-top: 0.6em;
+  }
+
+  .button-div {
+    justify-content: space-between;
+    padding: 0 4em;
+    button {
+      padding: 0 2.5em;
+    }
+  }
+
+  .div-body {
+    margin: 0 2em;
+    overflow: visible;
+
+    app-shuttle-list {
+      height: 100%;
+      padding: 2em 4em;
+      max-height: calc(85% - 4em);
+      justify-content: flex-start;
+      align-self: stretch;
+
+      ::ng-deep > *:first-child {
+        flex-grow: 1;
+      }
+    }
+  }
+}
+
+.list-item {
+  width: 100%;
+  margin: 1em 0 !important;
+  h5 {
+    font-weight: 400;
+    font-size: 1.2em;
+    margin: 0;
+  }
+}

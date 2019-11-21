@@ -1,0 +1,51 @@
+<mat-accordion>
+  <mat-expansion-panel [disabled]="this.isCardDisabled" [expanded]="this.panelExpanded">
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title>
+        Request Match Rules
+      </mat-panel-title>
+      <mat-panel-description>Query Match Rules and Header Match Rules</mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-accordion>
+      <mat-expansion-panel class="mat-elevation-z0">
+        <mat-expansion-panel-header class="right-aligned-header">
+          <mat-panel-title>
+            Header Match Rules
+          </mat-panel-title>
+          <mat-divider></mat-divider>
+        </mat-expansion-panel-header>
+        <app-kvp-edit [addKvpTitle]="'Add New Header Match Rule'" [listKvpTitle]="'Added Header Match Rules'"
+          [isCaseSensitive]="false" [Save]="this.shouldSave" [kvpMap]="this.requestMatchRule?.headerRules"
+          (savedKvpMapEmitter)="handleHeaderKvpOutput($event)">
+        </app-kvp-edit>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+      <mat-expansion-panel class="mat-elevation-z0">
+        <mat-expansion-panel-header class="right-aligned-header">
+          <mat-panel-title>
+            Query Match Rules
+          </mat-panel-title>
+          <mat-divider></mat-divider>
+        </mat-expansion-panel-header>
+        <app-kvp-edit [addKvpTitle]="'Add New Query Match Rule'" [listKvpTitle]="'Added Query Match Rules'"
+          [isCaseSensitive]="true" [Save]="this.shouldSave" [kvpMap]="this.requestMatchRule?.queryRules"
+          (savedKvpMapEmitter)="handleQueryKvpOutput($event)">
+        </app-kvp-edit>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+      <mat-expansion-panel class="mat-elevation-z0">
+        <mat-expansion-panel-header class="right-aligned-header">
+          <mat-panel-title>
+            Body Match Rules
+          </mat-panel-title>
+          <mat-divider></mat-divider>
+        </mat-expansion-panel-header>
+        <app-add-body-rule-container [bodyRules]="this.requestMatchRule?.bodyRules" [saveBodyRules]="this.shouldSave"
+          (bodyRulesOutput)="handleBodyOutput($event)">
+        </app-add-body-rule-container>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-expansion-panel>
+</mat-accordion>

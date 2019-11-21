@@ -1,0 +1,31 @@
+<mat-form-field floatLabel="always">
+  <mat-label>{{ label }}</mat-label>
+  <div>
+    <div class="div-file-name">{{ fileNames }}</div>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="fileInput.click()"
+    >
+      Choose File
+    </button>
+  </div>
+  <input
+    #fileInput
+    type="file"
+    (change)="onFileChange($event.target.files)"
+    style="display:none;"
+    [accept]="accept"
+    [multiple]="allowMultiple"
+  />
+  <input
+    matInput
+    [formControl]="control"
+    style="display:none;"
+    [errorStateMatcher]="errorStateMatcher"
+  />
+  <mat-error *ngFor="let error of getErrors()">
+    {{ error }}
+  </mat-error>
+</mat-form-field>

@@ -1,0 +1,82 @@
+<div class="fullscreen column center-hr">
+  <div class="container editor">
+    <div class="row">
+      <div class="sidebar row">
+        <app-side-bar class="row"></app-side-bar>
+      </div>
+      <div class="metadata">
+        <div>
+          <app-overview [header]="headerContent"></app-overview>
+        </div>
+        <div id="metadata-cards">
+          <h3>Scenario Properties</h3>
+
+          <app-add-metadata
+            [metadata]="this.selectedScenario?.metadata"
+            (metadataOutput)="handleMetadataOutput($event)"
+            [saveStatus]="this.shouldSave"
+          >
+          </app-add-metadata>
+
+          <app-add-request-match-rule
+            [requestMatchRule]="this.selectedScenario?.requestMatchRules"
+            (requestMatchRuleOutput)="handleRequestMatchRuleOutput($event)"
+            [saveStatus]="this.shouldSave"
+          >
+          </app-add-request-match-rule>
+
+          <app-add-response
+            [response]="this.selectedScenario?.response"
+            (responseOutput)="handleResponseOutput($event)"
+            [saveStatus]="this.shouldSave"
+          >
+          </app-add-response>
+          <div class="row" style="justify-content: space-between">
+            <div id="scenario-back-button-div">
+              <button
+                id="go-to-scenarios"
+                color="primary"
+                mat-raised-button
+                (click)="cancel()"
+              >
+                Back to Scenarios
+              </button>
+            </div>
+            <div id="save-button-div">
+              <button
+                id="save-button"
+                color="primary"
+                mat-raised-button
+                (click)="save()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #headerContent let-path="path">
+  <div class="title">
+    <h3>
+      New Scenario
+    </h3>
+  </div>
+</ng-template>
+
+<div class="overlay" *ngIf="triggerOpenCancelBox">
+  <div>
+    <mat-card>
+      <app-dialog-box
+        titleText="Confirm Scenario Changes Discard"
+        confirmButtonText="Confirm"
+        cancelButtonText="Cancel"
+        bodyText="Are you sure you want to discard your unsaved changes?"
+        (choiceBoolean)="onCancelDialogAction($event)"
+      ></app-dialog-box>
+    </mat-card>
+  </div>
+</div>

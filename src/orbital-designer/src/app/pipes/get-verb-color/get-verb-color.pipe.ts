@@ -1,0 +1,33 @@
+import { Pipe, PipeTransform } from '@angular/core';
+import { VerbType } from '../../models/verb.type';
+
+@Pipe({
+  name: 'getVerbColor'
+})
+export class GetVerbColorPipe implements PipeTransform {
+  private readonly blue: string = 'rgba(0, 163, 255, 0.25)';
+  private readonly green: string = 'rgba(30, 255, 160, 0.25)';
+  private readonly red: string = 'rgba(255, 0, 0, 0.25)';
+  private readonly yellow: string = 'rgba(222, 226, 0, 0.25)';
+
+  /**
+   * Returns a string containing the appropriate bootstrap color
+   * class for the verb type. If a prefix string is passed into the parameters
+   * then the pipe will prefix the color string with the prefix string.
+   * @param verb The verb whose color we are trying to get
+   * @param prefix An optional argument that prefixes the verbs
+   * color string with the passed in string
+   */
+  transform(verb: VerbType, prefix: string = ''): string {
+    switch (verb) {
+      case VerbType.DELETE:
+        return prefix + this.red;
+      case VerbType.GET:
+        return prefix + this.blue;
+      case VerbType.POST:
+        return prefix + this.green;
+      case VerbType.PUT:
+        return prefix + this.yellow;
+    }
+  }
+}

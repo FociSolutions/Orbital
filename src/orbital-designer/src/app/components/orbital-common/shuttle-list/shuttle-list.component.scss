@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: row;
+
+  .selectionList {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    .list-label {
+      align-self: center;
+      margin-bottom: 1em;
+      color: rgba(0, 0, 0, 0.539261);
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+
+    .list-card {
+      flex-grow: 1;
+      box-shadow: 0px 19px 38px rgba(0, 0, 0, 0.3),
+        0px 15px 12px rgba(0, 0, 0, 0.22);
+      border-radius: 0.1em;
+    }
+  }
+
+  .button-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 1em;
+
+    button {
+      margin: 1em 0;
+    }
+  }
+}

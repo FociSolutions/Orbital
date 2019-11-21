@@ -1,0 +1,60 @@
+<div class="fullscreen column center-hr">
+  <div class="container endpointview">
+    <div class="row">
+      <div class="sidebar">
+        <app-side-bar></app-side-bar>
+      </div>
+      <div class="endpoint">
+        <div>
+          <app-overview [header]="headerContent"></app-overview>
+        </div>
+        <div class="column">
+          <app-search-bar
+            class="column flex-grow"
+            [list]="endpointList"
+            (filteredList)="setFilteredList($event)"
+            [itemToStringFn]="endpointToString"
+          >
+          </app-search-bar>
+          <p id="notFoundMessage" *ngIf="showNotFound()">
+            No Result(s) Found
+          </p>
+          <app-endpoint-list
+            class="row flex-grow"
+            [endpoints]="filteredList"
+          ></app-endpoint-list>
+        </div>
+        <form class="server-post" name="server-input">
+          <mat-form-field class="uri-field">
+            <input
+              matInput
+              name="uri-input"
+              placeholder="Server URI"
+              ngModel
+              [pattern]="uriRegex"
+              required
+              [(ngModel)]="serverUri"
+            />
+            <mat-hint>{{ isExportedMessage }}</mat-hint>
+          </mat-form-field>
+          <button
+            class="btn-upload"
+            mat-raised-button
+            color="primary"
+            (click)="onSubmit()"
+          >
+            Upload
+          </button>
+        </form>
+        <div class="status-message"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #headerContent>
+    <div class="title">
+      <h3>{{ !!mockDefinition ? mockDefinition.metadata.title : null }}</h3>
+    </div>
+    <p>{{ !!mockDefinition ? mockDefinition.metadata.description : null }}</p>
+  </ng-template>
+</div>

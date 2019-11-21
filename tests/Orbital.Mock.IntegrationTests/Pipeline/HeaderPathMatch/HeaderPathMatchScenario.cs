@@ -25,25 +25,25 @@ I want to receive the correct response based on my request headers")]
 
         [Scenario]
         [ClearServerScenarioDecorator]
-        public void Unsuccessful_header_match_request_has_different_header_values()
+        public void header_match_request_has_different_header_values_return_closest_match()
         {
             Runner.RunScenario(
                 Given_the_server_has_a_mock_definition_with_scenarios_with_header_rules_to_match_against,
                 Given_the_request_header_values_do_not_match_against_a_scenario,
                 When_the_client_sends_the_request,
-                Then_the_response_should_be_a_bad_request
+                Then_the_response_is_equal_to_the_scenario_expected_response
             );
         }
 
         [Scenario]
         [ClearServerScenarioDecorator]
-        public void Unsuccessful_header_match_request_has_different_header_keys()
+        public void header_match_request_has_different_header_keys_return_closest_match()
         {
             Runner.RunScenario(
                 Given_the_server_has_a_mock_definition_with_scenarios_with_header_rules_to_match_against,
                 Given_the_request_header_keys_do_not_match_against_a_scenario,
                 When_the_client_sends_the_request,
-                Then_the_response_should_be_a_bad_request
+                Then_the_response_is_equal_to_the_scenario_expected_response
             );
         }
     }

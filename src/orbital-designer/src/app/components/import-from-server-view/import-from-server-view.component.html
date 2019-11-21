@@ -1,0 +1,48 @@
+<mat-card class="column">
+  <mat-card-title class="capitalize">Import from Server</mat-card-title>
+  <mat-card-subtitle
+    >Import an existing MockDefinition file below</mat-card-subtitle
+  >
+  <div class="column center-hr flex-grow div-body">
+    <app-tool-tip
+      message="Enter the Server URI that your MockDefinition files are hosted on"
+    >
+      <app-rest-request-input
+        title="Server URI"
+        buttonName="Fetch"
+        (responseReceived)="onResponse($event)"
+        [errors]="errors"
+      ></app-rest-request-input>
+    </app-tool-tip>
+    <app-shuttle-list
+      class="column flex-grow"
+      [list]="formArray.controls | filterInvalidControls"
+      [itemToStringFn]="controlsMockDefinitionToString"
+      [itemTemplate]="listItemTemplate"
+      [emptyListMessage]="emptyListMessageServerBox"
+      leftTitle="Mock Definitions from Server"
+      rightTitle="Mock Definition To Import"
+      (outputList)="onListOutput($event)"
+    ></app-shuttle-list>
+  </div>
+  <div class="row button-div">
+    <button mat-raised-button color="primary" (click)="onBack()">
+      Back
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="disabled"
+      (click)="onSubmit()"
+    >
+      Next
+    </button>
+  </div>
+</mat-card>
+
+<ng-template #listItemTemplate let-control="item">
+  <div class="list-item">
+    <h5 class="capitalize">{{ control.value?.metadata?.title }}</h5>
+    <mat-divider></mat-divider>
+  </div>
+</ng-template>

@@ -91,7 +91,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void ResponseSelectorFilterNoResponseFoundTest()
         {
             #region TestSetup
-            var Scenarios = fakerScenario.Generate(10);
+            var Scenarios =  new List<Scenario>();
             #endregion
 
             var port = new ProcessMessagePort()

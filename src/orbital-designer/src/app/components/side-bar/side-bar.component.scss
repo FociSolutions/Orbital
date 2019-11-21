@@ -1,0 +1,64 @@
+.side-bar-container {
+  min-width: 14vw;
+  min-height: 85vh;
+  background-color: white;
+  border-right: 0.1em solid rgba(0, 0, 0, 0.12);
+  overflow-y: scroll;
+  position: sticky;
+  top: 0;
+  height: 98vh;
+  .side-bar-top {
+    min-width: 14vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 0.4vh;
+    h1 {
+      opacity: 0.54;
+      font-size: 1em;
+      margin-left: 1.5em;
+      margin-top: 2vh;
+    }
+  }
+
+  .divider {
+    width: 90% !important;
+    margin: auto;
+  }
+
+  .side-bar-middle {
+    min-width: 14vw;
+    margin-bottom: 2vh;
+
+    .selected {
+      background: #646464 !important;
+      color: white !important;
+      opacity: 1;
+
+      mat-icon {
+        opacity: 1;
+      }
+    }
+  }
+
+  .side-bar-bottom {
+    min-width: 14vw;
+    margin-top: 1vh;
+  }
+}
+
+mat-action-list button mat-icon {
+  opacity: 0.54;
+}
+
+mat-action-list button h4 {
+  font-size: 0.9em !important;
+}
+
+mat-action-list button:hover {
+  background: #f0f0f0;
+  cursor: pointer;
+  button {
+    background: #f0f0f0;
+  }
+}

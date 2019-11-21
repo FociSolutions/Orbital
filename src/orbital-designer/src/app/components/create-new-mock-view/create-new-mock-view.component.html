@@ -1,0 +1,41 @@
+<mat-card class="create-mock-form row center-hr">
+  <form class="column">
+    <h3 class="capitalize">Create New Mock</h3>
+    <app-text-input
+      class="titleInput capitalize"
+      title="Title - Required"
+      maxLength="200"
+      [control]="formGroup.controls['title']"
+    ></app-text-input>
+    <app-text-input
+      class="flex-grow capitalize"
+      title="Description"
+      maxLength="1000"
+      multiLine="true"
+      [control]="formGroup.controls['description']"
+    ></app-text-input>
+    <app-tool-tip
+      message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
+      ><app-file-input
+        class="row capitalize"
+        [control]="formGroup.controls['openApiFile']"
+        label="Select File - Required"
+        accept=".yml,.yaml, .json"
+      >
+      </app-file-input
+    ></app-tool-tip>
+    <div class="row buttons-div">
+      <button mat-raised-button color="primary" (click)="goBack()">
+        Back
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="formGroup.invalid"
+        (click)="createMock()"
+      >
+        Next
+      </button>
+    </div>
+  </form>
+</mat-card>

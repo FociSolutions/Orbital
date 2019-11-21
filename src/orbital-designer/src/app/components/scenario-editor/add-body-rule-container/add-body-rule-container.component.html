@@ -1,0 +1,18 @@
+<p class="description">Add New Body Match Rule</p>
+<app-add-body-rule
+  (bodyRuleOutput)="addBodyRule($event)"
+  [bodyRules]="this.bodyRulesProp"
+></app-add-body-rule>
+<mat-divider id="divider-padding"></mat-divider>
+<div>
+  <p class="description">Added Body Match Rules</p>
+</div>
+<div *ngIf="!this.bodyRulesProp?.length">
+  No rules Added
+</div>
+<div *ngFor="let bodyRule of this.bodyRulesProp">
+  <app-body-rule-list-item
+    [bodyRule]="bodyRule"
+    (deletedBodyRule)="handleDeleteBodyRule($event)"
+  ></app-body-rule-list-item>
+</div>

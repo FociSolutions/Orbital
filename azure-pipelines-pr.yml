@@ -1,113 +1,243 @@
-pool:
-  vmImage: "Ubuntu 16.04"
-
 pr:
   - master
 
 variables:
   buildConfiguration: "Release"
 
-steps:
-  - task: NuGetCommand@2
-    inputs:
-      command: custom
-      arguments: install GitVersion.CommandLine -Version 4.0.0 -OutputDirectory $(Build.BinariesDirectory)/tools -ExcludeVersion
-
-  - script: |
-      chmod -R 755 $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/
-      mkdir $(System.DefaultWorkingDirectory)/gitversion && touch $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
-      mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
-      mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output buildserver /nofetch
-
-  - task: NodeTool@0
-    inputs:
-      versionSpec: "12.x"
-
-  - script: npm install
-    displayName: npm install
-    workingDirectory: src/orbital-designer
-
-  - script: npm run build -- --prod
-    displayName: npm build
-    workingDirectory: src/orbital-designer
-
-  - task: CopyFiles@2
-    displayName: Move Builds to Artifact Directory
-    inputs:
-      SourceFolder: "$(System.DefaultWorkingDirectory)/src/orbital-designer/dist"
-      Contents: |
-        *
-        orbital-designer/**
-      TargetFolder: "$(Build.ArtifactStagingDirectory)"
-
-  - task: DotNetCoreCLI@2
-    displayName: Publishing Mock Server
-    inputs:
-      command: publish
-      arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/mock/build"
-      workingDirectory: src/Orbital.Mock.Server/
-      publishWebProjects: false
-      modifyOutputPath: true
-      zipAfterPublish: false
-
-  - task: DotNetCoreCLI@2
-    displayName: Publishing Mock Server Windows
-    inputs:
-      command: publish
-      arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/win --runtime win-x64"
-      workingDirectory: src/Orbital.Mock.Server/
-      publishWebProjects: false
-      modifyOutputPath: true
-      zipAfterPublish: yes
-
-  - task: DotNetCoreCLI@2
-    displayName: Publishing Mock Server Linux
-    inputs:
-      command: publish
-      arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/linux --runtime linux-x64"
-      workingDirectory: src/Orbital.Mock.Server/
-      publishWebProjects: false
-      modifyOutputPath: true
-      zipAfterPublish: yes
-
-  - task: DotNetCoreCLI@2
-    displayName: Publishing Mock Server MacOS
-    inputs:
-      command: publish
-      arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/mac --runtime osx-x64"
-      workingDirectory: src/Orbital.Mock.Server/
-      publishWebProjects: false
-      modifyOutputPath: true
-      zipAfterPublish: yes
-
-  - task: Docker@2
-    displayName: "buildAndPush Orbital"
-    inputs:
-      command: "buildAndPush"
-      containerRegistry: "Foci Container Registry"
-      repository: "orbitalmock"
-      dockerfile: "$(System.DefaultWorkingDirectory)/mock/build/Dockerfile"
-      tags: |
-        $(GitVersion.SemVer)
-
-  - task: Docker@2
-    displayName: "buildAndPush Orbital Designer"
-    inputs:
-      command: "buildAndPush"
-      containerRegistry: "Foci Container Registry"
-      repository: "orbitaldesigner"
-      buildContext: "$(System.DefaultWorkingDirectory)"
-      dockerfile: "$(System.DefaultWorkingDirectory)/docker/designer/Dockerfile"
-      tags: |
-        $(GitVersion.SemVer)
-
-  - task: CopyFiles@2
-    displayName: Move GitVersion Variables to Artifact Directory
-    inputs:
-      SourceFolder: "$(System.DefaultWorkingDirectory)/gitversion"
-      Contents: |
-        *
-      TargetFolder: "$(Build.ArtifactStagingDirectory)"
-
-  - task: PublishBuildArtifacts@1
-    displayName: Publish Build Artifiacts
+stages:
+- stage: build_source
+  displayName: build source
+  dependsOn: [] 
+  jobs:
+  - job: build_angular_designer
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build angular designer
+    steps:
+    - task: NodeTool@0
+      displayName: set node to version 12.x
+      inputs:
+        versionSpec: "12.x"
+    - script: npm ci
+      displayName: npm ci
+      workingDirectory: src/orbital-designer
+    - script: npm run build -- --prod
+      displayName: npm build --prod
+      workingDirectory: src/orbital-designer
+    - publish: $(System.DefaultWorkingDirectory)/src/orbital-designer/dist
+      artifact: orbital-designer
+  - job: publish_release_scripts
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: publish release scripts
+    steps:
+    - publish: $(System.DefaultWorkingDirectory)/scripts
+      artifact: scripts
+  - job: build_dotnet_mock_server
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build dotnet mock server
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: dotnet publish
+      inputs:
+        command: publish
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output"
+        workingDirectory: src/Orbital.Mock.Server/
+    - publish: $(System.DefaultWorkingDirectory)/output
+      artifact: mock server
+  - job: build_dotnet_mock_server_win_x64
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build dotnet mock server win x64
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: dotnet publish win x64
+      inputs:
+        command: publish
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output --runtime win-x64"
+        workingDirectory: src/Orbital.Mock.Server/
+    - publish: $(System.DefaultWorkingDirectory)/output
+      artifact: mock server win x64
+  - job: build_dotnet_mock_server_lin_x64
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build dotnet mock server linux x64
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: dotnet publish linux x64
+      inputs:
+        command: publish
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output --runtime linux-x64"
+        workingDirectory: src/Orbital.Mock.Server/
+    - publish: $(System.DefaultWorkingDirectory)/output
+      artifact: mock server lin x64
+  - job: build_dotnet_mock_server_osx_x64
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build dotnet mock server osx x64
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: dotnet publish osx x64
+      inputs:
+        command: publish
+        arguments: "--configuration $(buildConfiguration) --output $(System.DefaultWorkingDirectory)/output --runtime osx-x64"
+        workingDirectory: src/Orbital.Mock.Server/
+    - publish: $(System.DefaultWorkingDirectory)/output
+      artifact: mock server osx x64
+- stage: build_containers
+  displayName: build containers
+  dependsOn: [] 
+  jobs:
+  - job: build_mock_server_container
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build mock server container
+    steps:
+    - task: NuGetCommand@2
+      displayName: install git version tool
+      inputs:
+        command: custom
+        arguments: install GitVersion.CommandLine -Version 4.0.0 -OutputDirectory $(Build.BinariesDirectory)/tools -ExcludeVersion
+    - script: |
+        chmod -R 755 $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/
+        mkdir $(System.DefaultWorkingDirectory)/gitversion && touch $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+        mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+        mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output buildserver /nofetch
+      displayName: set git version to environment variables
+    - task: Docker@2
+      displayName: build mock server container and push to Foci Container Registry
+      inputs:
+        command: "buildAndPush"
+        containerRegistry: "Foci Container Registry"
+        repository: "orbitalmock"
+        buildContext: "$(System.DefaultWorkingDirectory)"
+        dockerfile: "$(System.DefaultWorkingDirectory)/docker/mock/Dockerfile"
+        tags: |
+          $(GitVersion.SemVer)
+    - publish: $(System.DefaultWorkingDirectory)/gitversion
+      artifact: drop
+  - job: build_designer_container
+    pool:
+      vmImage: "Ubuntu 16.04"
+    displayName: build designer container
+    steps:
+    - task: NuGetCommand@2
+      displayName: install git version tool
+      inputs:
+        command: custom
+        arguments: install GitVersion.CommandLine -Version 4.0.0 -OutputDirectory $(Build.BinariesDirectory)/tools -ExcludeVersion
+    - script: |
+        chmod -R 755 $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/
+        mkdir $(System.DefaultWorkingDirectory)/gitversion && touch $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+        mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+        mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output buildserver /nofetch
+      displayName: set git version to environment variables
+    - task: Docker@2
+      displayName: "buildAndPush Orbital Designer"
+      inputs:
+        command: "buildAndPush"
+        containerRegistry: "Foci Container Registry"
+        repository: "orbitaldesigner"
+        buildContext: "$(System.DefaultWorkingDirectory)"
+        dockerfile: "$(System.DefaultWorkingDirectory)/docker/designer/Dockerfile"
+        tags: |
+          $(GitVersion.SemVer)
+- stage: mirror_to_github
+  displayName: mirror to github
+  dependsOn:
+  - build_source
+  - build_containers
+  jobs:
+  - job: mirror_to_github
+    displayName: mirror to github
+    pool:
+      vmImage: "Ubuntu 16.04"
+    steps:
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: $(githubKnownHosts)
+        sshPublicKey: $(githubOrbitalDeployPublicKey)
+        sshKeySecureFile: orbital_github_deploy_key
+    - script: |
+        git clone --bare https://dev.azure.com/focisolutions/Orbital/_git/Orbital $(Pipeline.Workspace)/mirror
+        cd $(Pipeline.Workspace)/mirror
+        git remote add --mirror=push github git@github.com:FociSolutions/Orbital.git
+        git push --quiet github
+- stage: development
+  dependsOn:
+  - mirror_to_github
+  jobs:
+  - deployment: deploy_development
+    displayName: deploy developmnet
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    environment: development
+    variables:
+    - group: Foci Secrets
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - download: current
+            artifact: Scripts
+          - task: OneLuckiDev.json2variable.vsts-release-web-test.oneLuckiDevJson2Variable@1
+            displayName: 'set git variables to environment variables'
+            inputs:
+              jsonFile: '$(Pipeline.Workspace)/drop/gitversionvariables.json'
+              variablePrefix: GitVersion
+          - task: FileTransform@1
+            displayName: 'file transform arm template'
+            inputs:
+              folderPath: '$(Pipeline.Workspace)/Scripts/'
+              fileType: json
+              targetFiles: orbitalARMTemplate.json
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'deploy azure arm template'
+            inputs:
+              azureSubscription: 'Dans Subscription'
+              resourceGroupName: '$(variables.resourceGroupName)'
+              location: 'Canada Central'
+              csmFile: '$(Pipeline.Workspace)/Scripts/orbitalARMTemplate.json'
+              deploymentName: '$(GitVersion.SemVer)'
+              deploymentOutputs: 'ARM_OUTPUTS'
+- stage: production
+  dependsOn:
+  - development
+  jobs:
+  - deployment: deploy_production
+    displayName: deploy production
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    environment: production
+    variables:
+    - group: Foci Secrets
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - download: current
+            artifact: Scripts
+          - task: OneLuckiDev.json2variable.vsts-release-web-test.oneLuckiDevJson2Variable@1
+            displayName: 'set git variables to environment variables'
+            inputs:
+              jsonFile: '$(Pipeline.Workspace)/drop/gitversionvariables.json'
+              variablePrefix: GitVersion
+          - task: DockerInstaller@0
+            displayName: install docker 17.09.0-ce
+          - task: Bash@3
+            displayName: pull images from foci azure container registry
+            inputs:
+              targetType: filePath
+              filePath: '$(Pipeline.Workspace)/Scripts/acrprodscript'
+              arguments: '"$(GitVersion.SemVer)" "$(variables.azureregistrypassword)"'
+          - task: Bash@3
+            displayName: 'push images to docker hub'
+            inputs:
+              targetType: filePath
+              filePath: '$(Pipeline.Workspace)/Scripts/dockerprod'
+              arguments: '"$(GitVersion.SemVer)" "$(GitVersion.Major)" "$(GitVersion.Minor)" "$(GitVersion.MajorMinorPatch)" "$(docker-hub-password)"'

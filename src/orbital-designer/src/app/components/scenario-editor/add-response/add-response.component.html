@@ -1,0 +1,50 @@
+<mat-accordion>
+  <mat-expansion-panel
+    class="response-dropdown"
+    [disabled]="this.isCardDisabled"
+    [expanded]="this.panelExpanded"
+  >
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title>
+        Response
+      </mat-panel-title>
+      <mat-panel-description
+        >Response Header, Response Body and Code</mat-panel-description
+      >
+    </mat-expansion-panel-header>
+    <div class="response-code">
+      <div class="status-code">
+        Status Code
+        <mat-form-field class="status-code-field">
+          <input matInput class="status-code-input" [(ngModel)]="statusCode" />
+        </mat-form-field>
+      </div>
+      <div class="status-message">
+        Status Message
+        <div class="status-message-output">
+          {{ statusMessage }}
+        </div>
+      </div>
+    </div>
+    <div class="error-message" *ngIf="!this.isStatusCodeValid">
+      Invalid Status Code
+    </div>
+    <app-kvp-edit
+      [addKvpTitle]="titleForKvp"
+      [listKvpTitle]="titleForKvpAdded"
+      [isCaseSensitive]="false"
+      [Save]="this.shouldSave"
+      [kvpMap]="this.headers"
+      (savedKvpMapEmitter)="saveHeaderMap($event)"
+    ></app-kvp-edit>
+    <div class="response-body">
+      <mat-form-field>
+        <div class="body-title">Body</div>
+        <textarea matInput rows="10" [(ngModel)]="this.bodyResponse"></textarea>
+      </mat-form-field>
+      <div class="error-message" *ngIf="!isBodyValid">
+        {{ this.bodyErrorMessage }}
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

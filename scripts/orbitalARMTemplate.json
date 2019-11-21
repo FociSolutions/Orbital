@@ -1,0 +1,157 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {
+        "location": "",
+        "sites_orbital_mock_name": "",
+        "serverfarms_orbital_sp_name": "",
+        "sites_orbital_designer_name": "",
+        "azureregistryurl": "",
+        "azureregistryusername": "",
+        "azureregistry": "",
+        "azuremockimage": "",
+        "azuredesignerimage": "",
+        "azuretag": "",
+        "azureregistrypassword": "",
+        "appServiceSkuName": "",
+        "appServiceSkuNameTier": "",
+        "appServiceSkuNameSize": "",
+        "appServiceSkuNameFamily": "",
+        "appServiceSkuNameCapacity": 0,
+        "subscriptionId": "",
+        "resourceGroupName": ""
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2016-09-01",
+            "name": "[variables('serverfarms_orbital_sp_name')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "[variables('appServiceSkuName')]",
+                "tier": "[variables('appServiceSkuNameTier')]",
+                "size": "[variables('appServiceSkuNameSize')]",
+                "family":"[variables('appServiceSkuNameFamily')]",
+                "capacity": "[variables('appServiceSkuNameCapacity')]"
+            },
+            "kind": "linux",
+            "properties": {
+                "name": "[variables('serverfarms_orbital_sp_name')]",
+                "perSiteScaling": false,
+                "reserved": true,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2016-08-01",
+            "name": "[variables('sites_orbital_designer_name')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_orbital_sp_name'))]"
+            ],
+            "kind": "app,linux,container",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(variables('sites_orbital_designer_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(variables('sites_orbital_designer_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "siteConfig": {
+                    "linuxFxVersion": "[concat('DOCKER|',variables('azureregistry'),'.azurecr.io/',variables('azuredesignerimage'),':',variables('azuretag'))]",
+                    "appSettings": [
+                      {
+                        "name": "DOCKER_REGISTRY_SERVER_URL",
+                        "value": "[variables('azureregistryurl')]"
+                      },
+                      {
+                        "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+                        "value": "[variables('azureregistryusername')]"
+                      },
+                      {
+                        "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+                        "value": "[variables('azureregistrypassword')]"
+                      }
+                    ]
+                  },
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_orbital_sp_name'))]",
+                "reserved": true,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2016-08-01",
+            "name": "[variables('sites_orbital_mock_name')]",
+            "location": "Canada Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_orbital_sp_name'))]"
+            ],
+            "kind": "app,linux,container",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(variables('sites_orbital_mock_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(variables('sites_orbital_mock_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "siteConfig": {
+                    "linuxFxVersion": "[concat('DOCKER|',variables('azureregistry'),'.azurecr.io/',variables('azuremockimage'),':',variables('azuretag'))]",
+                    "appSettings": [
+                      {
+                        "name": "DOCKER_REGISTRY_SERVER_URL",
+                        "value": "[variables('azureregistryurl')]"
+                      },
+                      {
+                        "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+                        "value": "[variables('azureregistryusername')]"
+                      },
+                      {
+                        "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+                        "value": "[variables('azureregistrypassword')]"
+                      }
+                    ]
+                  },
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_orbital_sp_name'))]",
+                "reserved": true,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false
+            }
+        }
+    ],
+    "outputs": {
+      "OrbitalDesignerURL": {
+        "type": "string",
+        "value": "[concat('Orbital Designer URL: https://',variables('sites_orbital_designer_name'), '.azurewebsites.net')]"
+      },
+      "OrbitalMockURL": {
+        "type": "string",
+        "value": "[concat('Orbital Mock URL:     https://',variables('sites_orbital_mock_name'), '.azurewebsites.net')]"
+      }
+    }
+}

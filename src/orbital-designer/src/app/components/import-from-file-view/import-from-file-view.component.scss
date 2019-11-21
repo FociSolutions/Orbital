@@ -1,0 +1,27 @@
+.import-from-file {
+  width: 30.3vw;
+  height: auto;
+}
+.buttons-div {
+  justify-content: space-between;
+  justify-self: flex-end;
+  align-items: flex-end;
+  margin: 2em 0;
+  button {
+    width: 10.234vw;
+    max-width: 131px;
+  }
+}
+
+.import-from-file-container {
+  margin-top: 100px;
+  mat-card-title,
+  mat-card-subtitle {
+    text-align: center;
+  }
+}
+
+// hide the last divider in the list so it doesn't divide the end with no items
+mat-card div:last-child mat-divider {
+  display: none;
+}

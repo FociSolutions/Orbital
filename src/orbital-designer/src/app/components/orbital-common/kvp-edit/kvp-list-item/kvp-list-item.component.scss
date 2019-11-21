@@ -1,0 +1,37 @@
+.kvp-added-item {
+  display: flex;
+}
+
+.mat-card {
+  padding: 0.75em;
+  min-width: 35vw;
+  margin-bottom: 1em;
+}
+
+.kvp-added-key {
+  border-bottom: 1px solid #9b9b9b;
+  margin-left: 1.3em;
+  margin-right: 8.5em;
+  width: 12%;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.kvp-added-value {
+  border-bottom: 1px solid #9b9b9b;
+  margin-right: 2em;
+  min-width: 30%;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.delete-button {
+  background: none;
+  border: 0;
+}
+
+.delete-button-container {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}

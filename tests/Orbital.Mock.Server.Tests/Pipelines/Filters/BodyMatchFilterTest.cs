@@ -87,6 +87,306 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             Assert.Equal(Expected, Actual);
         }
 
+        /// <summary>
+        /// Checks if a scenario which contains the exact JSON object that is the response is successful
+        /// </summary>
+        [Fact]
+        public void BodyMatchContainsExactTestSuccess()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'a': 'b'}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'a': 'b'}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        /// <summary>
+        /// Checks if a scenario which contains a subset of the nested JSON object that is the response is a fail
+        /// </summary>
+        [Fact]
+        public void BodyMatchContainsPartialTestFail()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'x': {'a': 'b'}}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'a': 'b'}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Empty(Actual);
+        }
+
+        /// <summary>
+        /// Checks if a scenario which contains a superset of the nested JSON object that is the response is a success
+        /// </summary>
+        [Fact]
+        public void BodyMatchContainsPartialTestSuccess()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'a': 'b'}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'x': {'a': 'b'}}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        /// <summary>
+        /// Checks if a scenario which contains a superset of the nested JSON object in a triply-nested object that is the response is a success
+        /// </summary>
+        [Fact]
+        public void BodyMatchContainsPartialTripleNestedTestSuccess()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'a': 'b'}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        /// <summary>
+        /// Checks if matching a JSON object does not appear in a JSON string literal (where the JSON object is itself an escaped string) does not match
+        /// </summary>
+        [Fact]
+        public void BodyMatchContainsPartialTripleNestedLiteralJSONTestFail()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{\"a\": \"b\"}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': '{\"a\": \"b\"}'}}}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Empty(Actual);
+        }
+
+        /// <summary>
+        /// Checks if a scenario which contains a JSON object must equal response does not fire when the response contains the object
+        /// </summary>
+        [Fact]
+        public void BodyMatchEqualitysPartialTripleNestedTestFail()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyEquality, JObject.Parse("{'a': 'b'}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Empty(Actual);
+        }
+
+        /// <summary>
+        /// Checks if a scenario which contains a non-nested JSON object must equal response does fire when the response equals the object
+        /// </summary>
+        [Fact]
+        public void BodyMatchEqualityTestSuccess()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyEquality, JObject.Parse("{'a': 'b'}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'a': 'b'}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        /// <summary>
+        /// Checks if a scenario which contains a nested JSON object must equal response does fire when the response equals the object
+        /// </summary>
+        [Fact]
+        public void BodyMatchEqualityNestedJSONTestSuccess()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyEquality, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Equal(Expected, Actual);
+        }
+
+        /// <summary>
+        /// Checks if a scenario whose value's first element is the non-nested JSON's value does not match if it contains a key-value pair
+        /// </summary>
+        [Fact]
+        public void BodyMatchEqualityNestedJSONKeyValueFirstTestFail()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyEquality, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'e': 'f'}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Empty(Actual);
+        }
+
+        /// <summary>
+        /// Checks if a scenario whose value's first element is the non-nested JSON's value does not match if it contains a key-value pair
+        /// </summary>
+        [Fact]
+        public void BodyMatchContainsNestedJSONKeyValueFirstTestFail()
+        {
+            #region
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.BodyRules =
+                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
+
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Body = JObject.Parse("{'e': 'f'}")
+            };
+
+            #endregion
+
+            var Target = new BodyMatchFilter<ProcessMessagePort>();
+
+            var Actual = Target.Process(new ProcessMessagePort()
+            { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+
+            var Expected = new List<string> { fakeScenario.Id };
+
+            Assert.Empty(Actual);
+        }
+
         [Fact]
         public void BodyMatchFilterNullJsonMatchSuccess()
         {

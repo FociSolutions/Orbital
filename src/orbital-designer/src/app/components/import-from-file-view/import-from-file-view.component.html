@@ -1,0 +1,41 @@
+<mat-card class="mat-elevation-z20 import-from-file-container">
+  <mat-card-title>Import From File</mat-card-title>
+  <mat-card-subtitle
+    >Import an existing Mockdefinition file below</mat-card-subtitle
+  >
+  <app-file-input
+    class="capitalize"
+    [control]="formGroup.controls['mockDefinitionFile']"
+    label="Select File - Required"
+    accept=".json"
+  >
+  </app-file-input>
+  <mat-card-subtitle>Imported Mock Definitions</mat-card-subtitle>
+  <mat-card class="import-from-file">
+    <mat-list *ngIf="!!formGroup.controls.mockDefinitionFile?.value?.name">
+      <mat-list-item>
+        <h3 matLine>
+          {{ formGroup.controls["mockDefinitionFile"]?.value?.name }}
+        </h3>
+        <p *ngIf="!isValid()" matLine>Invalid File</p>
+        <mat-icon matListIcon *ngIf="!isValid()">cancel</mat-icon>
+        <mat-icon matListIcon *ngIf="isValid()">check_circle_outline</mat-icon>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </mat-card>
+
+  <div class="row buttons-div">
+    <button mat-raised-button color="primary" (click)="goBack()">
+      Back
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="formGroup.invalid"
+      (click)="createMock()"
+    >
+      Next
+    </button>
+  </div>
+</mat-card>

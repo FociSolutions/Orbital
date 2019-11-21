@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("metadata")]
         public MetadataInfo Metadata { get; set; }
         [JsonProperty("verb")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public HttpMethod Verb { get; set; }
         [JsonProperty("path")]
         public string Path { get; set; }

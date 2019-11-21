@@ -72,8 +72,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 queryRules[i].Add("alt", "json");
                 queryRules[i].Add("prettyPrint", "true");
 
-                bodyRules[i].Add(new BodyRule { Rule = JObject.FromObject(new { ruleType = "Use Json Schema" }), Type = BodyRuleTypes.JsonSchema });
-                bodyRules[i].Add(new BodyRule { Rule = JObject.FromObject(new { ruleType = "Use Json Path" }), Type = BodyRuleTypes.JsonPath });
+                bodyRules[i].Add(new BodyRule { Rule = JObject.FromObject(new { ruleType = "Use Body Contains" }), Type = BodyRuleTypes.BodyContains });
                 bodyRules[i].Add(new BodyRule { Rule = JObject.FromObject(new { ruleType = "Use Body Equality" }), Type = BodyRuleTypes.BodyEquality });
             }
 

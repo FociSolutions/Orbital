@@ -15,13 +15,13 @@ namespace Orbital.Mock.Server.Models
         /// </summary>
         /// <param name="Type">Enum representing the type of Body Rule created</param>
         /// <param name="Rule">The Json object used to compare against request bodies for matching</param>
-        public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, JObject Rule = null)
+        public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, JToken Rule = null)
         {
             this.Rule = Rule == null ? new JObject() : Rule;
             this.Type = Type;
         }
         [JsonProperty("rule")]
-        public JObject Rule { get; set; }
+        public JToken Rule { get; set; }
         [JsonProperty("type")]
         public BodyRuleTypes Type { get; set; }
 

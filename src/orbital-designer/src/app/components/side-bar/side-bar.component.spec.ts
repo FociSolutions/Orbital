@@ -1,0 +1,77 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { SideBarComponent } from './side-bar.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { DesignerStore } from 'src/app/store/designer-store';
+import validMockDefinition from '../../../test-files/test-mockdefinition-object';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
+
+describe('SideBarComponent', () => {
+  let component: SideBarComponent;
+  let fixture: ComponentFixture<SideBarComponent>;
+  let store: DesignerStore;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ SideBarComponent ],
+      imports: [ MatSidenavModule, MatDividerModule, MatListModule, MatIconModule, LoggerTestingModule, RouterTestingModule ],
+      providers: [ DesignerStore ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    store = TestBed.get(DesignerStore);
+    store.mockDefinition = validMockDefinition as MockDefinition;
+    fixture = TestBed.createComponent(SideBarComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  // Checks that the h1 rendered content is equals to "MOCKDEFINITIONS"
+  it('should render title in h1 tag', async(() => {
+    // tslint:disable-next-line: no-shadowed-variable
+    const fixture = TestBed.createComponent(SideBarComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('MOCK DEFINITIONS');
+  }));
+
+  // Check if a valid mockdefinition is passed to the isSelected method.
+  // Then, confirm the value returned is selected by having a true response.
+  describe('SideBarComponent.isSelected', () => {
+    it('should return true if selected a valid Mock Defintion', () => {
+      const title = component.selectedMockDefinition;
+      const expected = validMockDefinition.metadata.title;
+      expect(expected).toEqual(title);
+      expect(component.isSelected(title)).toBeTruthy();
+    });
+  });
+  // Check if a false value was passed to the isSelected method.
+  describe('SideBarComponent.isSelected', () => {
+    it('should return false if the mockDefinitions title list is not selected', () => {
+      const title = validMockDefinition.metadata.title + 'false';
+      expect(component.isSelected(title)).toBeFalsy();
+    });
+  });
+  // Test the updateSelected method that passes by passing the latest mock definition stored in the state
+  // and compared against a valid mock modefintion.
+  describe('SideBarComponent.updateSelected', () => {
+    it('should return true if the mockDefinitions menu item is updated and navigate to endpoint-view', () => {
+      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+      const expected = validMockDefinition;
+      component.updateSelected(validMockDefinition);
+      expect(store.state.mockDefinition).toEqual(expected);
+      expect(routerSpy).toHaveBeenCalled();
+    });
+  });
+});

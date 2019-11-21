@@ -43,7 +43,7 @@ namespace Orbital.Mock.Server.Tests.Models
         {
             var Target = this.fakerBodyRule.Generate();
             Target.Type = BodyRuleTypes.BodyEquality;
-            var input = new BodyRule(BodyRuleTypes.JsonPath, Target.Rule) as object;
+            var input = new BodyRule(BodyRuleTypes.BodyContains, Target.Rule) as object;
             Assert.False(Target.Equals(input));
         }
     }

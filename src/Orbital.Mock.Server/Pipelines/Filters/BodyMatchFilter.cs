@@ -54,7 +54,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <param name="jObject">The JObject</param>
         /// <param name="ex">The exception thrown if there was a JSON parsing error</param>
         /// <returns>False if the parse failed and true if successful</returns>
-        private static bool TryParseBody(string body, out JObject jObject, out Exception ex)
+        private static bool TryParseBody(string body, out JToken jObject, out Exception ex)
         {
             ex = null;
             // check if the body is an empty string (which is technically valid JSON) and set it to something that C#
@@ -70,11 +70,11 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// </summary>
         /// <param name="body">The body of the request (a JSON string)</param>
         /// <param name="jObject">The output parsed JSON; null if it could not be parsed</param>
-        private static bool TryParseStrict(string body, out JObject jObject)
+        private static bool TryParseStrict(string body, out JToken jObject)
         {
             try
             {
-                jObject = JObject.Parse(body);
+                jObject = JToken.Parse(body);
             }
             catch (JsonReaderException)
             {
@@ -113,7 +113,13 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <param name="scenario">The scenario to match against</param>
         private static IEnumerable<MatchResult> ProcessScenarios(JToken bodyObject, Scenario scenario)
         {
-            return scenario.RequestMatchRules.BodyRules.Select(br => BodyCheck(br.Rule, bodyObject, scenario.Id));
+            if(scenario.RequestMatchRules.BodyRules == null)
+            {
+                var rules = new List<MatchResult>() { new MatchResult(MatchResultType.Ignore, scenario.Id)};
+                return rules;
+            }
+
+            return scenario.RequestMatchRules.BodyRules.Select(br => BodyCheck(br.Rule, br.Type, bodyObject, scenario.Id)).ToList();
         }
 
         /// <summary>
@@ -122,11 +128,84 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <param name="bodyRule">The rule to process</param>
         /// <param name="bodyObject">The request json object</param>
         /// <param name="scenarioId">The scenario being worked against</param>
-        private static MatchResult BodyCheck(JToken bodyRule, JToken bodyObject, string scenarioId)
+        private static MatchResult BodyEquality(JToken bodyRule, JToken bodyObject, string scenarioId)
         {
+            MatchResult successfulResult = new MatchResult(MatchResultType.Success, scenarioId);
+            MatchResult failureResult = new MatchResult(MatchResultType.Fail, scenarioId);
+            if (bodyObject.Type == JTokenType.String && bodyRule.Type == JTokenType.String)
+            {
+                return bodyObject.Value<string>().Equals(bodyRule.Value<string>()) ?
+                successfulResult :
+                failureResult;
+            }
             return JToken.DeepEquals(bodyRule, bodyObject)
-                ? new MatchResult(MatchResultType.Success, scenarioId)
-                : new MatchResult(MatchResultType.Fail, scenarioId);
+                ? successfulResult
+                : failureResult;
+        }
+
+        /// <summary>
+        /// Checks if a string or JSON object is contained within another one
+        /// </summary>
+        /// <param name="bodyRule">The body rule to check</param>
+        /// <param name="bodyObject">The contents of the body rule</param>
+        /// <param name="scenarioId">The id of the scenario</param>
+        /// <returns>Whether it contains the JSON object or string, depending on the incoming type</returns>
+        private static MatchResult BodyContains(JToken bodyRule, JToken bodyObject, string scenarioId)
+        {
+            MatchResult successfulResult = new MatchResult(MatchResultType.Success, scenarioId);
+            MatchResult failureResult = new MatchResult(MatchResultType.Fail, scenarioId);
+            if (bodyObject.Type == JTokenType.String && bodyRule.Type == JTokenType.String)
+            {
+                return bodyObject.Value<string>().Contains(bodyRule.Value<string>()) ?
+                successfulResult :
+                failureResult;
+            }
+            return DeepContains(bodyRule.HasValues ? bodyRule.First : bodyRule, bodyObject) ?
+                successfulResult :
+                failureResult;
+        }
+
+        /// <summary>
+        /// Checks if a JSON object is contained within another one recursively
+        /// </summary>
+        /// <param name="needle">The object to check</param>
+        /// <param name="haystack">The larger object to check against</param>
+        /// <returns>Whether it contains the JSON object</returns>
+        private static bool DeepContains(JToken needle, JToken haystack)
+        {
+            foreach (JProperty prop in haystack.OfType<JProperty>())
+            {
+                if (JToken.DeepEquals(needle, prop) || DeepContains(needle, prop.Value))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks if the body contains or equals the match rule
+        /// </summary>
+        /// <param name="bodyRule">The body rule to check</param>
+        /// <param name="bodyRuleType">The type of the body rule</param>
+        /// <param name="bodyObject">The contents of the body to check</param>
+        /// <param name="scenarioId">The id of the scenario</param>
+        /// <returns>The processed match result</returns>
+        private static MatchResult BodyCheck(JToken bodyRule, BodyRuleTypes bodyRuleType, JToken bodyObject, string scenarioId)
+        {
+            var matchResult = new MatchResult(MatchResultType.Fail, scenarioId);
+
+            switch (bodyRuleType)
+            {
+                case BodyRuleTypes.BodyContains:
+                    matchResult = BodyContains(bodyRule, bodyObject, scenarioId);
+                    break;
+                case BodyRuleTypes.BodyEquality:
+                    matchResult = BodyEquality(bodyRule, bodyObject, scenarioId);
+                    break;
+            }
+
+            return matchResult;
         }
     }
 }

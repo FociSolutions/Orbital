@@ -1,0 +1,50 @@
+<div class="fullscreen column center-hr">
+  <div class="logo">
+    <h1>
+      <img src="assets/Orbital_Logo.svg" height="100%" width="100%"/>
+    </h1>
+  </div>
+  <mat-card class="card">
+    <mat-grid-list cols="2" rowHeight="217">
+      <mat-grid-tile colspan="1" rowspan="0.5">
+        <div class="column center tile-content line">
+          <h2 class="capitalize">New from OpenAPI Definition</h2>
+          <div class="column center buttons">
+            <button
+              mat-raised-button
+              class="capitalize"
+              color="primary"
+              (click)="navigateTo('/create-new-mock')"
+            >
+              Create New Mock
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1">
+        <!-- Create a component for this -->
+        <div class="column center tile-content">
+          <h2 class="capitalize">Existing from MockDefinitionFile</h2>
+          <div class="column center buttons">
+            <button
+              mat-raised-button
+              class="capitalize"
+              color="primary"
+              (click)="navigateTo('/import-from-file')"
+            >
+              Import From File
+            </button>
+            <button
+              mat-raised-button
+              class="capitalize"
+              color="primary"
+              (click)="navigateTo('/import-from-server')"
+            >
+              Import From Server
+            </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
+</div>

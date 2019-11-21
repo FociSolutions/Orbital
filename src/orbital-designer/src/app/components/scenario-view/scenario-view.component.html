@@ -1,0 +1,50 @@
+<div class="fullscreen column center-hr">
+  <div class="container scenarioview">
+    <div class="row">
+      <div class="sidebar">
+        <app-side-bar></app-side-bar>
+      </div>
+      <div class="scenarios">
+        <div>
+          <app-overview [header]="headerContent"></app-overview>
+        </div>
+        <div>
+          <app-search-bar
+            [list]="scenarioList"
+            (filteredList)="setFilteredList($event)"
+            [itemToStringFn]="scenarioToString"
+          >
+          </app-search-bar>
+          <p id="notFoundMessage" *ngIf="this.filteredList.length === 0">
+            {{ this.errorMessage }}
+          </p>
+          <app-scenario-list [scenarios]="filteredList"></app-scenario-list>
+          <button (click)="addScenario()" id="add" mat-fab color="primary">
+            +
+          </button>
+        </div>
+        <button
+          id="back-to-endpoints"
+          mat-raised-button
+          color="primary"
+          (click)="goToEndpoints()"
+        >
+          Back to Endpoints
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #headerContent let-path="path">
+  <div class="title row center">
+    <mat-chip-list
+      ><mat-chip [style.background-color]="this.endpointVerb | getVerbColor">{{
+        this.endpointVerb
+      }}</mat-chip>
+    </mat-chip-list>
+    <h3>
+      {{ this.endpointPath }}
+    </h3>
+  </div>
+</ng-template>

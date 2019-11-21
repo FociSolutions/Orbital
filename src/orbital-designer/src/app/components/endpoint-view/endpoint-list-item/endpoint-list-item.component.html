@@ -1,0 +1,14 @@
+<mat-card *ngIf="!!endpoint" class="endpointlistitemcontainer mincardheight">
+  <mat-card-header class="{{ endpoint.verb | lowercase }} column center">
+    <mat-card-title class="verb">{{ endpoint.verb }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content (click)="selectEndpoint()">
+    <mat-card-title> {{ endpoint.path }} </mat-card-title>
+    <mat-card-subtitle>
+      <div class="subtitle">
+        <div>{{ endpointDescription }}</div>
+        <div>{{ scenarioCount }} Scenarios</div>
+      </div>
+    </mat-card-subtitle>
+  </mat-card-content>
+</mat-card>

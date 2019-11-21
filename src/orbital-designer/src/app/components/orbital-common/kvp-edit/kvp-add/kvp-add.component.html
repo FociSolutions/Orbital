@@ -1,0 +1,22 @@
+<mat-card class="kvp-add-card">
+  <form class="kvp-add">
+    <mat-form-field class="kvp-key">
+      <input matInput placeholder="Key" [(ngModel)]="key" name="key-input" />
+    </mat-form-field>
+    <mat-form-field class="kvp-value">
+      <input
+        matInput
+        placeholder="Value"
+        [(ngModel)]="value"
+        name="value-input"
+      />
+    </mat-form-field>
+
+    <button mat-mini-fab class="add-button" color="primary" (click)="onAdd()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </form>
+  <div class="error-message" *ngIf="!this.isValid">
+    {{ this.errorMessage }}
+  </div>
+</mat-card>

@@ -1,0 +1,42 @@
+.logo {
+  padding: 1rem 0;
+  h1 {
+    font-size: 4.5em;
+    font-weight: 500;
+  }
+}
+
+.card {
+  width: 75.234vw;
+  max-width: 963px;
+  box-shadow: 0px 19px 38px rgba(0, 0, 0, 0.3),
+    0px 15px 12px rgba(0, 0, 0, 0.22);
+  margin-top: 2rem;
+}
+
+.line {
+  border-right: 1.2px solid rgba(0, 0, 0, 0.24);
+}
+
+.tile-content {
+  flex: 1;
+  justify-content: flex-start;
+  height: 100%;
+
+  h2 {
+    margin-bottom: 2vh;
+    font-size: 1.5em;
+    font-weight: 500;
+  }
+  button {
+    margin-bottom: 2vh;
+    font-size: 1em;
+    font-weight: 500;
+    min-width: 10.938vw;
+    max-width: 175.5px;
+  }
+}
+
+.buttons {
+  flex: 1;
+}

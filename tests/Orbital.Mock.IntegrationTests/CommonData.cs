@@ -13,7 +13,8 @@ namespace Orbital.Mock.Server.IntegrationTests
             HeaderMock,
             QueryMock,
             BodyMock,
-            EndpointMock
+            EndpointMock,
+            BodyJsonContains
         }
 
         public const string PetStoreMockDefinition = @"./MockDefinitions/PetStoreMockDefinition.json";
@@ -43,6 +44,8 @@ namespace Orbital.Mock.Server.IntegrationTests
                     return @"./MockDefinitions/PetStoreMockDefinitionHeaders.json";
                 case MockDefinition.EndpointMock:
                     return @"./MockDefinitions/PetStoreMockDefinitionEndpoint.json";
+                case MockDefinition.BodyJsonContains:
+                    return @"./MockDefinitions/PetStoreMockDefinitionBodyJsonContains.json";
                 default:
                     return @"./MockDefinitions/PetStoreMockDefinitionHeaders.json";
             }

@@ -1,0 +1,16 @@
+<p class="description">{{ addKvpTitle }}</p>
+<app-kvp-add (kvp)="addKvpToMap($event)"></app-kvp-add>
+
+<mat-divider class="divider-padding"></mat-divider>
+<div>
+  <p class="description">{{ listKvpTitle }}</p>
+</div>
+<div *ngIf="!this.savedKvpMap?.size">
+  No rules Added
+</div>
+<div *ngFor="let kv of savedKvpMap | keyvalue">
+  <app-kvp-list-item
+    [kvp]="kv"
+    (removeKvp)="deleteKvpFromMap($event)"
+  ></app-kvp-list-item>
+</div>

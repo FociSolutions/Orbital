@@ -10,10 +10,10 @@ import Json from '../json';
  */
 export class MockDefinition {
   metadata: Metadata;
-  host: string;
-  basePath: string;
+  host?: string;
+  basePath?: string;
   scenarios: Scenario[] = [];
-  openApi: any;
+  openApi: OpenAPIV2.Document;
 
   /**
    * Parse provided string to mock definition
@@ -26,7 +26,7 @@ export class MockDefinition {
       try {
         let content = JSON.parse(mockDefinition);
         if (!this.isMockDefinition(content)) {
-          reject('Invalid mock definition');
+          reject(['Invalid mock definition']);
         } else {
           content = {
             ...content,
@@ -46,13 +46,14 @@ export class MockDefinition {
           resolve(content as MockDefinition);
         }
       } catch (error) {
-        reject(error);
+        reject([error.message]);
       }
     });
   }
 
   /**
    * Return OpenAPI spec
+   * If there were errors in validation it returns them as a map of errors
    * @returns OpenAPIV2.Document
    */
   public static toOpenApiSpec(openApi: string): Promise<OpenAPIV2.Document> {
@@ -61,13 +62,15 @@ export class MockDefinition {
         const validator = new OpenAPISchemaValidator({ version: 2 });
         const content = yaml.safeLoad(openApi);
         const result = validator.validate(content);
-        if (!result.errors || result.errors.length < 1) {
+        if (!result.errors || result.errors.length === 0) {
           resolve(content);
         } else {
-          reject('Invalid OpenAPI spec');
+          reject(
+            result.errors.map(err => `${err.dataPath} ${err.message}`.trim())
+          );
         }
       } catch (error) {
-        reject(error);
+        reject(['file content is invalid yaml']);
       }
     });
   }
@@ -77,15 +80,28 @@ export class MockDefinition {
    * Supports OpenApiV2 Documents optional basePath and host properties
    * @param o Object to check if it is mock definition
    */
-  private static isMockDefinition(o: any): o is MockDefinition {
+  public static isMockDefinition(o: any): o is MockDefinition {
     const u: MockDefinition = o;
-    return (
-      Array.isArray(u.scenarios) &&
-      typeof u.metadata === 'object' &&
-      u.metadata !== null &&
-      typeof u.openApi === 'object' &&
-      u.openApi !== null
-    );
+    const seenScenarios = new Set();
+    try {
+      return (
+        Array.isArray(u.scenarios) &&
+        !u.scenarios.some(currentScenario => {
+          return (
+            seenScenarios.size === seenScenarios.add(currentScenario.id).size
+          );
+        }) &&
+        u.scenarios.every(scenario => {
+          return !scenario.response.body || JSON.parse(scenario.response.body);
+        }) &&
+        typeof u.metadata === 'object' &&
+        u.metadata !== null &&
+        typeof u.openApi === 'object' &&
+        u.openApi !== null
+      );
+    } catch (error) {
+      return false;
+    }
   }
 
   /**

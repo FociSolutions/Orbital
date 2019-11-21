@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="selectionList">
+    <label class="list-label">{{ leftTitle }}</label>
+    <mat-card class="list-card">
+      <app-searchable-selection-list
+        class="list"
+        [list]="leftList"
+        [itemTemplate]="itemTemplate"
+        [itemToStringFn]="itemToStringFn"
+        [emptyListMessage]="emptyListMessage"
+        [noSearchResultsMessage]="noSearchResultsMessage"
+        (itemSelected)="onSelectLeft($event)"
+      ></app-searchable-selection-list>
+    </mat-card>
+  </div>
+  <div class="button-div">
+    <button mat-raised-button color="primary" (click)="onMoveRight()">></button>
+    <button mat-raised-button color="primary" (click)="onMoveLeft()"><</button>
+  </div>
+  <div class="selectionList">
+    <label class="list-label">{{ rightTitle }}</label>
+    <mat-card class="list-card">
+      <app-searchable-selection-list
+        class="list"
+        [list]="rightList"
+        [itemTemplate]="itemTemplate"
+        [itemToStringFn]="itemToStringFn"
+        [emptyListMessage]="emptyListMessage"
+        [noSearchResultsMessage]="noSearchResultsMessage"
+        (itemSelected)="onSelectRight($event)"
+      ></app-searchable-selection-list
+    ></mat-card>
+  </div>
+</div>

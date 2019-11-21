@@ -66,7 +66,7 @@ namespace Orbital.Mock.Server.Controllers
         }
 
         /// <summary>
-        /// Saves a mock defintiion in cache
+        /// Saves a mock definition in cache
         /// </summary>
         /// <param name="mockDefinition">The mock defiition to save</param>
         /// <returns>CreatedResult containing uri to the created resource</returns>

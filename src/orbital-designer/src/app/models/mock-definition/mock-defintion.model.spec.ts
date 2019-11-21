@@ -1,7 +1,9 @@
 import * as faker from 'faker';
 import { MockDefinition } from './mock-definition.model';
-import testMockDefinitionObject from '../../../test-files/test-mockdefinition-object';
+import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import testMockDefinitionString from '../../../test-files/test-mockdefinition-file.mock';
+import { Scenario } from './scenario/scenario.model';
+import { RequestMatchRule } from './scenario/request-match-rule.model';
 
 describe('MockDefinition.toMockDefinition', () => {
   /* it('parsed mock definition string that have the correct format', async () => {
@@ -65,9 +67,70 @@ describe('MockDefinition.toOpenApiSpec', () => {
 
 describe('Mockdefinition.exportMockDefinition', () => {
   it('parsed model and returned string representing json content', () => {
+    const input = validMockDefinition;
+    const actual = MockDefinition.exportMockDefinition(input);
+    expect(actual).toEqual(JSON.stringify(input));
+  });
+
+  it('parsed model with null request match rules and returned string representing json content', () => {
+    const input = {scenarios: [{requestMatchRules: null} as Scenario]} as MockDefinition;
+    const actual = MockDefinition.exportMockDefinition(input);
+    expect(actual).toEqual(JSON.stringify(input));
+  });
+
+  it('parsed model with a not null request match rules and returned string representing json content', () => {
+    const input = {scenarios: [{requestMatchRules: {} as RequestMatchRule} as Scenario]} as MockDefinition;
+    const actual = MockDefinition.exportMockDefinition(input);
+    expect(actual).toEqual(JSON.stringify(input));
+  });
+
+  it('parsed model with a null scenario and returned string representing json content', () => {
+    const input = {scenarios: null} as MockDefinition;
+    const actual = MockDefinition.exportMockDefinition(input);
+    expect(actual).toEqual(JSON.stringify(input));
+  });
+
+  it('parsed model with a not null scenario and returned string representing json content', () => {
+    const input = {scenarios: [{}] as Scenario[]} as MockDefinition;
+    const actual = MockDefinition.exportMockDefinition(input);
+    expect(actual).toEqual(JSON.stringify(input));
+  });
+
+  it('failed to parsed model because it contains duplicate scenario ids', async () => {
+    const testMockDefinitionObject = await MockDefinition.toMockDefinition(
+      testMockDefinitionString
+    );
+    const invalidMockDefinitionObject = JSON.parse(JSON.stringify(testMockDefinitionObject)) as MockDefinition;
+    // this check leaves the other fields undefined so that future validation overlap does not occur
+    const testScenario = {} as Scenario;
+    invalidMockDefinitionObject.scenarios.push(testScenario);
+    invalidMockDefinitionObject.scenarios[0].id = invalidMockDefinitionObject.scenarios[1].id;
     const result = MockDefinition.exportMockDefinition(
       testMockDefinitionObject as MockDefinition
     );
-    expect(result).toEqual(testMockDefinitionString);
+
+    await MockDefinition.toOpenApiSpec(result).then(
+      actual => fail(actual),
+      err => expect(err).not.toBeUndefined()
+    );
+  });
+
+  it('failed to parsed model because it contains a response body which is invalid json', async () => {
+    const testMockDefinitionObject = await MockDefinition.toMockDefinition(
+      testMockDefinitionString
+    );
+    const invalidMockDefinitionObject = JSON.parse(JSON.stringify(testMockDefinitionObject)) as MockDefinition;
+    // this check leaves the other fields undefined so that future validation overlap does not occur
+    const testScenario = {} as Scenario;
+    invalidMockDefinitionObject.scenarios.push(testScenario);
+    invalidMockDefinitionObject.scenarios[0].response.body = '<xml>invalid</xml>';
+    const result = MockDefinition.exportMockDefinition(
+      testMockDefinitionObject as MockDefinition
+    );
+
+    await MockDefinition.toOpenApiSpec(result).then(
+      actual => fail(actual),
+      err => expect(err).not.toBeUndefined()
+    );
   });
 });
