@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { mockFileValidator } from '../../validators/mock-file-validator/mock-file-validator';
-import { FileParserService } from '../../services/file-parser/file-parser.service';
 import { DesignerStore } from '../../store/designer-store';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -19,17 +18,14 @@ export class ImportFromFileViewComponent implements OnInit {
   private store: DesignerStore;
   private router: Router;
   private location: Location;
-  fileParser: FileParserService;
   constructor(
     router: Router,
     location: Location,
-    fileParser: FileParserService,
     store: DesignerStore,
     logger: NGXLogger
   ) {
     this.router = router;
     this.location = location;
-    this.fileParser = fileParser;
     this.store = store;
     this.formGroup = new FormGroup({
       mockDefinitionFile: new FormControl(
@@ -67,8 +63,8 @@ export class ImportFromFileViewComponent implements OnInit {
       return null;
     }
 
-    return await this.fileParser.readMockDefinition(this.formGroup.controls
-      .mockDefinitionFile.value as File);
+    return this.formGroup.controls
+      .mockDefinitionFile.value as MockDefinition;
   }
 
   /**
