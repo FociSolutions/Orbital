@@ -55,18 +55,6 @@ describe('ImportFromServerViewComponent', () => {
     });
   });
 
-  describe('ImportFromServerViewComponent.errors', () => {
-    it('if the formArray errors are null and the formArray is invalid should set the invalid mock definition error message', () => {
-      component.formArray = new FormArray([
-        new FormControl(null, Validators.required)
-      ]);
-      const actual = component.errors;
-      expect(Array.from(Object.values(actual))).toContain(
-        component.invalidMockDefinitionsFoundErrorMessage
-      );
-    });
-  });
-
   describe('ImportFromServerViewComponent.onSubmit', () => {
     it('should set the designer stores mockDefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');

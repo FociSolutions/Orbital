@@ -45,3 +45,45 @@ mat-card {
     margin: 0;
   }
 }
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  mat-select {
+    min-width: 4.5em;
+    padding-bottom: 0.32em;
+    margin-right: 0.3em;
+  }
+  app-text-input {
+    flex: 0 !important;
+    text-transform: capitalize;
+  }
+
+  div#submit-buttons {
+    display: flex;
+    flex-direction: row;
+    margin-left: 1em;
+    mat-spinner {
+      margin-left: 10px;
+      flex-direction: center;
+
+      & #show-spinner {
+        display: visible !important;
+      }
+
+      &#hide-spinner {
+        display: none;
+      }
+    }
+  }
+}
+
+.error-message-import {
+  margin-top: -13px;
+}
+
+.btn-upload {
+  width: 5vw;
+  height: 5vh;
+}
