@@ -18,7 +18,7 @@ describe('OpenApiSpecService', () => {
   });
 
 
-  it('should reject an invalid Open Api Spec file', () => {
+  it('should reject an invalid opena api string', () => {
     const service: OpenApiSpecService = TestBed.get(OpenApiSpecService);
     service.readOpenApiSpec(faker.random.words()).subscribe({
       error: (err) => {

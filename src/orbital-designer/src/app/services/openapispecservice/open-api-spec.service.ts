@@ -12,8 +12,8 @@ export class OpenApiSpecService {
 
   /**
    * Takes a string as input and returns an observable of type OpenAPIV2.Document
-   * @param openApiString an Object representing the file to read and turn contents into an OpenApiSpec
-   * @returns promise containing an object with the Open Api Document
+   * @param openApiString a string representing the open api file and turn contents into an OpenApiSpec
+   * @returns observable object of type Open Api Document
    */
   readOpenApiSpec(openApiString: string): Observable<OpenAPIV2.Document> {
     return new Observable((observer) => {
