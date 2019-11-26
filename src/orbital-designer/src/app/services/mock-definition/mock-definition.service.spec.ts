@@ -59,6 +59,8 @@ describe('MockDefinitionService', () => {
 
     const scenarioToClone = JSON.parse(JSON.stringify(scenarios[0]));
 
+    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe();
+
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
       next: r => {
         expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 2') !== -1)).toBeTruthy();
@@ -128,13 +130,16 @@ describe('MockDefinitionService', () => {
 
     store.state.mockDefinition.scenarios = scenarios;
 
-    const scenarioToClone = JSON.parse(JSON.stringify(scenarios[0]));
+    const scenarioToClone = scenarios[0];
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
+      next: n => {
+        console.log(n);
+      }
+    });
     const componentScenarioClonee = store.mockDefinition.scenarios[0];
 
     // ensure that there are two results after the cloning operation
-    const expectedResults = (store.mockDefinition.scenarios.filter(aScenario =>
+    const expectedResults = (store.state.mockDefinition.scenarios.filter(aScenario =>
       aScenario.id !== componentScenarioClonee.id &&
       aScenario.metadata.title !== componentScenarioClonee.metadata.title &&
       aScenario.path === componentScenarioClonee.path &&
@@ -151,10 +156,6 @@ describe('MockDefinitionService', () => {
       aScenario.metadata.description === componentScenarioClonee.metadata.description)).length;
 
     expect(expectedResults).toEqual(1);
-      }
-    }
-    );
-
   });
 
   it('failed because content is not yaml', () => {
