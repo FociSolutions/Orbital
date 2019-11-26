@@ -136,7 +136,7 @@ describe('MockDefinitionService', () => {
         console.log(n);
       }
     });
-    const componentScenarioClonee = store.mockDefinition.scenarios[0];
+    const componentScenarioClonee = store.state.mockDefinition.scenarios[0];
 
     // ensure that there are two results after the cloning operation
     const expectedResults = (store.state.mockDefinition.scenarios.filter(aScenario =>
