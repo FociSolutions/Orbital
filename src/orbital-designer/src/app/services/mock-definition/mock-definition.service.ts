@@ -25,7 +25,7 @@ export class MockDefinitionService {
    * Parse provided string to mock definition, save it in the store and make it the current mockdefinition in the store.
    * @param mockDefinition String representation of mock definition
    */
-  public desirialize(
+  public deserialize(
     mockDefinition: string
   ): Observable<boolean> {
   return new Observable((observer) => {
