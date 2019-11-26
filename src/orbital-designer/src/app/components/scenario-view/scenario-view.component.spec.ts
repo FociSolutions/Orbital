@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import * as faker from 'faker';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
-import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string.pipe';
+import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;

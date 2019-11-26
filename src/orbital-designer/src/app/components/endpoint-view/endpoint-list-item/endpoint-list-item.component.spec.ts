@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
-import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string.pipe';
+import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 
 describe('EndpointListItemComponent', () => {
   let component: EndpointListItemComponent;

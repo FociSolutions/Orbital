@@ -7,8 +7,8 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { EndpointListItemComponent } from '../endpoint-list-item/endpoint-list-item.component';
 import { MatCardModule } from '@angular/material/card';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
-import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string.pipe';
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
+import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 
 describe('EndpointListComponent', () => {
   let component: EndpointListComponent;
