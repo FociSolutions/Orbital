@@ -48,7 +48,7 @@ export class MockDefinitionService {
           };
         const titlemockdef = (content as MockDefinition).metadata.title;
         this.store.state.mockDefinitions.set(titlemockdef, content as MockDefinition);
-        this.store.state.mockDefinition = content as MockDefinition;
+        this.store.mockDefinition = content as MockDefinition;
         observer.next(true);
       } catch (error) {
         observer.error(error);
