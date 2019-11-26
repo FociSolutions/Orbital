@@ -13,6 +13,8 @@ import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/g
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string.pipe';
+import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -27,7 +29,9 @@ describe('EndpointViewComponent', () => {
         EndpointListComponent,
         EndpointListItemComponent,
         SideBarComponent,
-        GetEndpointScenariosPipe
+        GetEndpointScenariosPipe,
+        GetVerbStringPipe,
+        GetVerbColorPipe
       ],
       imports: [
         LoggerTestingModule,
