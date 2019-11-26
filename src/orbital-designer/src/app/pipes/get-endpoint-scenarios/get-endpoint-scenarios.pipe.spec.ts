@@ -123,7 +123,7 @@ describe('GetEndpointScenariosPipe', () => {
         ] as Array<BodyRule>
       }
     } as unknown as Scenario;
-    const mockpaths = mockPath + faker.random.words;
+    const mockpaths = mockPath + faker.random.words();
     const mockVerbs = faker.random.arrayElement([
       'gET',
       'deLetE',
@@ -201,7 +201,7 @@ describe('GetEndpointScenariosPipe', () => {
         ] as Array<BodyRule>
       }
     } as unknown as Scenario;
-    const mockpaths = mockPath + faker.random.words;
+    const mockpaths = mockPath + faker.random.words();
     const mockVerbs = faker.random.arrayElement([
       VerbType.GET,
       VerbType.DELETE,
