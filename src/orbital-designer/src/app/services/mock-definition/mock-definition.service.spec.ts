@@ -1,12 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
+import * as uuid from 'uuid';
 import { MockDefinitionService } from './mock-definition.service';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { DesignerStore } from './../../store/designer-store';
-import { newScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
@@ -30,7 +33,33 @@ describe('MockDefinitionService', () => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
     const scenarios = [];
     for (let i = 0; i < 10; i++) {
-      const scenario = newScenario(VerbType.GET, '/test');
+      const mockverb = VerbType.GET;
+      const path = '/test';
+      const scenario = {
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        mockverb,
+        path,
+        response: {
+          headers: new Map<string, string>(),
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: new Map<string, string>(),
+          queryRules: new Map<string, string>(),
+          bodyRules: [
+            {
+              type: BodyRuleType.BodyEquality,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as unknown as Scenario;
+
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -49,7 +78,32 @@ describe('MockDefinitionService', () => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
     const scenarios = [];
     for (let i = 0; i < 10; i++) {
-      const scenario = newScenario(VerbType.GET, '/test');
+      const mockverb = VerbType.GET;
+      const path = '/test';
+      const scenario = {
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        mockverb,
+        path,
+        response: {
+          headers: new Map<string, string>(),
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: new Map<string, string>(),
+          queryRules: new Map<string, string>(),
+          bodyRules: [
+            {
+              type: BodyRuleType.BodyEquality,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as unknown as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -78,7 +132,32 @@ describe('MockDefinitionService', () => {
     const scenarios = [];
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
     for (let i = 0; i < 10; i++) {
-      const scenario = newScenario(VerbType.GET, '/test');
+      const mockverb = VerbType.GET;
+      const path = '/test';
+      const scenario = {
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        mockverb,
+        path,
+        response: {
+          headers: new Map<string, string>(),
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: new Map<string, string>(),
+          queryRules: new Map<string, string>(),
+          bodyRules: [
+            {
+              type: BodyRuleType.BodyEquality,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as unknown as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -100,7 +179,32 @@ describe('MockDefinitionService', () => {
     const scenarios = [];
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
     for (let i = 0; i < 10; i++) {
-      const scenario = newScenario(VerbType.GET, '/test');
+      const mockverb = VerbType.GET;
+      const path = '/test';
+      const scenario = {
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        mockverb,
+        path,
+        response: {
+          headers: new Map<string, string>(),
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: new Map<string, string>(),
+          queryRules: new Map<string, string>(),
+          bodyRules: [
+            {
+              type: BodyRuleType.BodyEquality,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as unknown as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -122,7 +226,32 @@ describe('MockDefinitionService', () => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
 
     for (let i = 0; i < 3; i++) {
-      const scenario = newScenario(VerbType.GET, '/' + faker.random.words());
+      const mockverb = VerbType.GET;
+      const path = '/' + faker.random.words;
+      const scenario = {
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        mockverb,
+        path,
+        response: {
+          headers: new Map<string, string>(),
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: new Map<string, string>(),
+          queryRules: new Map<string, string>(),
+          bodyRules: [
+            {
+              type: BodyRuleType.BodyEquality,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as unknown as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
