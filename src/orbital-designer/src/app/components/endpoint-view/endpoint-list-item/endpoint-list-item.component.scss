@@ -5,17 +5,17 @@
   width: 100%;
 
   mat-card-content {
-    min-width: 90%;
-    max-width: 90%;
     margin-left: 5%;
     padding: 1%;
+    flex: 1;
   }
 
-  .verb {
+  .verb-text {
     font-weight: bold;
     text-align: center;
     vertical-align: 50%;
     font-size: 0.75em;
+    margin-bottom: 0;
   }
 
   .subtitle {
@@ -25,4 +25,11 @@
     min-width: 80%;
     max-width: 80%;
   }
+
+  .verb-header {
+    min-width: 12%;
+  }
+}
+::ng-deep .mat-card-header-text {
+  margin: auto !important;
 }
