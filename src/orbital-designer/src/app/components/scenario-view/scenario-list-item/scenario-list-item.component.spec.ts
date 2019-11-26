@@ -315,7 +315,7 @@ describe('ScenarioListItemComponent', () => {
       const scenarios = [];
       for (let i = 0; i < 3; i++) {
         const mockverb = VerbType.GET;
-        const path = '/test';
+        const path = '/' + faker.random.words();
         const scenario = {
          id: uuid.v4(),
          metadata: {
