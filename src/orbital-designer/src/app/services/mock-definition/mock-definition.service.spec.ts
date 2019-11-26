@@ -6,7 +6,6 @@ import { DesignerStore } from './../../store/designer-store';
 import { newScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 describe('MockDefinitionService', () => {

@@ -1,10 +1,6 @@
-import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Injectable } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
-import * as yaml from 'js-yaml';
-import { OpenAPIV2 } from 'openapi-types';
-import OpenAPISchemaValidator from 'openapi-schema-validator';
 import Json from 'src/app/models/json';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
