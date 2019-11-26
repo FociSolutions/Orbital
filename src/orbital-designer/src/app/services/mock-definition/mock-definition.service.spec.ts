@@ -227,7 +227,7 @@ describe('MockDefinitionService', () => {
 
     for (let i = 0; i < 3; i++) {
       const mockverb = VerbType.GET;
-      const path = '/' + faker.random.words;
+      const path = '/' + faker.random.words();
       const scenario = {
         id: uuid.v4(),
         metadata: {
