@@ -160,7 +160,7 @@ describe('MockDefinitionService', () => {
   it('failed because content is not yaml', () => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
 
-    service.desirialize('%').subscribe({
+    service.deserialize('%').subscribe({
       error: (err) => {
         expect(err).toBeTruthy();
       }
@@ -171,7 +171,7 @@ describe('MockDefinitionService', () => {
   it('succeed because content is valid yaml', () => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
 
-    service.desirialize(JSON.stringify(validMockDefinition)).subscribe({
+    service.deserialize(JSON.stringify(validMockDefinition)).subscribe({
       next: t => {
         expect(t).toBeTruthy();
       }
