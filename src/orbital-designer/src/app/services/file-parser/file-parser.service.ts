@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
-import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
-import { OpenAPIV2 } from 'openapi-types';
+import { MockDefinitionService } from '../mock-definition/mock-definition.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileParserService {
-  constructor() {}
+  constructor(private mockdefinitionservice: MockDefinitionService) {}
 
   /**
    * Reads a file as mock definition
    * @param file File containing mock definition
    * @returns promise containing either the resulting mock definition or an error
    */
-  readMockDefinition(file: File): Promise<MockDefinition> {
+  readMockDefinition(file: File): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.read(file).then(contentString => {
-        MockDefinition.toMockDefinition(contentString).then(
+        this.mockdefinitionservice.deserialize(contentString).subscribe(
           result => resolve(result),
           err => reject(err)
         );
@@ -29,10 +28,10 @@ export class FileParserService {
    * @param file an Object representing the file to read and turn contents into an OpenApiSpec
    * @returns promise containing an object with the Open Api Document
    */
-  readOpenApiSpec(file: File): Promise<OpenAPIV2.Document> {
+  readOpenApiSpec(file: File): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.read(file).then(contentString => {
-        MockDefinition.toOpenApiSpec(contentString).then(
+        this.mockdefinitionservice.deserialize(contentString).subscribe(
           doc => resolve(doc),
           err => reject(err)
         );

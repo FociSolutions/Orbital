@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 import { NGXLogger } from 'ngx-logger';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -16,26 +17,23 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class ImportFromFileViewComponent implements OnInit {
   formGroup: FormGroup;
-  private store: DesignerStore;
   private router: Router;
   private location: Location;
-  fileParser: FileParserService;
+  mockDefinitionService: MockDefinitionService;
   constructor(
     router: Router,
     location: Location,
-    fileParser: FileParserService,
-    store: DesignerStore,
+    mockDefinitionService: MockDefinitionService,
     logger: NGXLogger
   ) {
     this.router = router;
     this.location = location;
-    this.fileParser = fileParser;
-    this.store = store;
+    this.mockDefinitionService = mockDefinitionService;
     this.formGroup = new FormGroup({
       mockDefinitionFile: new FormControl(
         null,
         extendBuiltInValidatorFactory(Validators.required, logger),
-        mockFileValidator
+        mockFileValidator(mockDefinitionService)
       )
     });
   }
@@ -50,25 +48,11 @@ export class ImportFromFileViewComponent implements OnInit {
    * the form is invalid the function does nothing.
    */
   async createMock() {
-    const mockDefinition = await this.formToMockDefinition();
-    if (!!mockDefinition) {
-      this.store.mockDefinitions = [mockDefinition];
+    const mockDefinition = this.mockDefinitionService.deserialize(this.formGroup.controls
+      .mockDefinitionFile.value as string);
+    if (mockDefinition) {
       this.router.navigateByUrl('endpoint-view');
     }
-  }
-
-  /**
-   * formToMockDefinition method is responsible for creating a new MockDefinition from the
-   * form values. If the form is invalid then the function will return null, otherwise it uses
-   * the form values to create and return a new MockDefinition
-   */
-  async formToMockDefinition(): Promise<MockDefinition> {
-    if (this.formGroup.invalid) {
-      return null;
-    }
-
-    return await this.fileParser.readMockDefinition(this.formGroup.controls
-      .mockDefinitionFile.value as File);
   }
 
   /**

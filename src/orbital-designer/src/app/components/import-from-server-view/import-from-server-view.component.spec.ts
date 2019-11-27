@@ -16,6 +16,7 @@ import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import Json from '../../models/json';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
@@ -30,7 +31,8 @@ describe('ImportFromServerViewComponent', () => {
         OrbitalCommonModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
-        LoggerTestingModule
+        LoggerTestingModule,
+        MockDefinitionService
       ],
       providers: [Location, DesignerStore]
     }).compileComponents();
@@ -70,7 +72,8 @@ describe('ImportFromServerViewComponent', () => {
     it('should set the designer stores mockDefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const store = TestBed.get(DesignerStore);
-      const expectedMockDefinition = await MockDefinition.toMockDefinition(
+      const service = TestBed.get(MockDefinitionService);
+      const expectedMockDefinition = await service.deserialize(
         JSON.stringify(validMockDefinition)
       );
       const expectedMap = new Map([

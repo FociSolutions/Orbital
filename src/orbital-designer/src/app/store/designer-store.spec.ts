@@ -13,6 +13,7 @@ import { OpenAPIV2 } from 'openapi-types';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
 import { TestBed } from '@angular/core/testing';
+import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -72,6 +73,7 @@ describe('DesignerStore', () => {
     });
 
     it('should update the state with new endpoints without clearing old ones', done => {
+      const service = new OpenApiSpecService();
       const petStore = validOpenApi;
       const originalEndpoint = {
         path: '/original-pets',
@@ -80,17 +82,18 @@ describe('DesignerStore', () => {
       };
       store.setState({ ...store.state, endpoints: [originalEndpoint] });
       expect(store.state.endpoints).toEqual([originalEndpoint]);
-      MockDefinition.toOpenApiSpec(petStore).then(doc => {
-        store.setEndpoints(doc, false);
-        for (const path of Object.keys(doc.paths)) {
+      service.readOpenApiSpec(petStore).subscribe({
+        next: n => {
+        store.setEndpoints(n, false);
+        for (const path of Object.keys(n.paths)) {
           for (const verb of acceptedVerbs) {
-            if (!!doc.paths[path][verb]) {
+            if (!!n.paths[path][verb]) {
               expect(
                 store.state.endpoints.findIndex(
                   endpoint =>
                     endpoint.path === path &&
                     endpoint.verb === VerbType[verb.toUpperCase()] &&
-                    endpoint.spec === doc.paths[path][verb]
+                    endpoint.spec === n.paths[path][verb]
                 )
               ).toBeGreaterThan(-1);
             }
@@ -100,7 +103,7 @@ describe('DesignerStore', () => {
           store.state.endpoints.findIndex(e => e === originalEndpoint)
         ).toBeGreaterThan(-1);
         done();
-      });
+      }});
     });
   });
 

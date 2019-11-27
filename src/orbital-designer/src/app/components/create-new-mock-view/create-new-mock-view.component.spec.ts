@@ -13,7 +13,7 @@ import { FileParserService } from 'src/app/services/file-parser/file-parser.serv
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-
+import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
   let fixture: ComponentFixture<CreateNewMockViewComponent>;
@@ -25,7 +25,8 @@ describe('CreateNewMockViewComponent', () => {
         MatCardModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+        OpenApiSpecService
       ],
       providers: [Location, FileParserService, DesignerStore]
     }).compileComponents();
@@ -91,7 +92,8 @@ describe('CreateNewMockViewComponent', () => {
     title = faker.random.word(),
     description = faker.random.words()
   ): Promise<MockDefinition> {
-    const openApi = await MockDefinition.toOpenApiSpec(validOpenApiText);
+    const service = TestBed.get(OpenApiSpecService);
+    const openApi = await service.readOpenApiSpec(validOpenApiText);
     component.formGroup.setValue({
       ...component.formGroup.value,
       title,

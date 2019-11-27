@@ -3,11 +3,12 @@ import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { openApiFileValidator } from 'src/app/validators/open-api-file-validator/open-api-file-validator';
-import { FileParserService } from 'src/app/services/file-parser/file-parser.service';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 import { NGXLogger } from 'ngx-logger';
+import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
+import { OpenAPIV2 } from 'openapi-types';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -19,7 +20,7 @@ export class CreateNewMockViewComponent implements OnInit {
   constructor(
     private router: Router,
     private location: Location,
-    private fileParser: FileParserService,
+    private openapiservice: OpenApiSpecService,
     private store: DesignerStore,
     private logger: NGXLogger
   ) {
@@ -79,9 +80,11 @@ export class CreateNewMockViewComponent implements OnInit {
       this.logger.debug('Form is invalid');
       return null;
     }
-    const openApi = await this.fileParser.readOpenApiSpec(
-      this.formGroup.value.openApiFile
-    );
+    let openApi: OpenAPIV2.Document;
+    this.openapiservice.readOpenApiSpec(this.formGroup.value.openApiFile).subscribe({
+      next: r => openApi = r,
+      error: (err) => err
+    });
     return {
       metadata: {
         title: this.formGroup.value.title,
