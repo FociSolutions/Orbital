@@ -30,10 +30,6 @@ export class GetVerbColorPipe implements PipeTransform {
         return prefix + this.green;
       case VerbType.PUT:
         return prefix + this.yellow;
-      case VerbType.PATCH:
-        return prefix + this.orange;
-      case VerbType.HEAD:
-        return prefix + this.purple;
     }
   }
 }
