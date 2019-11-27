@@ -27,8 +27,8 @@ describe('GetEndpointScenariosPipe', () => {
         title: 'New Scenario',
         description: ''
       },
-      mockVerb,
-      mockPath,
+      verb: mockVerb,
+      path: mockPath,
       response: {
         headers: new Map<string, string>(),
         status: 0,
@@ -44,7 +44,7 @@ describe('GetEndpointScenariosPipe', () => {
           }
         ] as Array<BodyRule>
       }
-    } as unknown as Scenario;
+    } as Scenario;
     const mockpaths = mockPath + faker.random.words;
     const mockVerbs = faker.random.arrayElement([
       VerbType.GET,
@@ -123,21 +123,21 @@ describe('GetEndpointScenariosPipe', () => {
         ] as Array<BodyRule>
       }
     } as unknown as Scenario;
-    const mockpaths = mockPath + faker.random.words();
+    const mockpaths = mockPath + faker.random.words() as string;
     const mockVerbs = faker.random.arrayElement([
       'gET',
       'deLetE',
       'pOST',
       'PuT'
-    ]);
+    ]) as VerbType;
     const mockNonMatchingScenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
         description: ''
       },
-      mockVerbs,
-      mockpaths,
+      verb: mockVerbs,
+      path: mockpaths,
       response: {
         headers: new Map<string, string>(),
         status: 0,
@@ -153,7 +153,7 @@ describe('GetEndpointScenariosPipe', () => {
           }
         ] as Array<BodyRule>
       }
-    } as unknown as Scenario;
+    } as Scenario;
     const mockEndpoint = {
       path: mockPath,
       verb: mockVerb,
