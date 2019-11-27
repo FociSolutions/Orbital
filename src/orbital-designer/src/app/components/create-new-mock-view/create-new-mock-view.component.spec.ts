@@ -94,18 +94,17 @@ describe('CreateNewMockViewComponent', () => {
   ): Promise<MockDefinition> {
     const service = new OpenApiSpecService();
     let openApi: OpenAPIV2.Document;
-    service.readOpenApiSpec(validOpenApiText).subscribe({
-      next: n => {
-        openApi = n;
-      }
-    });
     component.formGroup.setValue({
       ...component.formGroup.value,
       title,
       description,
       openApiFile: new File([validOpenApiText], 'test-file.yml')
     });
-
+    service.readOpenApiSpec(validOpenApiText).subscribe({
+      next: n => {
+        openApi = n;
+      }
+    });
     return {
       metadata: {
         title,
