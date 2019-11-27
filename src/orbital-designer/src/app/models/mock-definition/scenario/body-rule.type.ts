@@ -2,8 +2,8 @@
  * Enum representation for different body rule types
  */
 export enum BodyRuleType {
-  JsonPath = 1,
+  JsonPath,
   JsonSchema,
-  BodyEquality = 'bodyEquality',
-  BodyContains = 'bodyContains'
+  BodyEquality = 1,
+  BodyContains = 2
 }
