@@ -74,10 +74,16 @@ describe('BodyRuleListItemComponent', () => {
   });
 
   describe('body-rule-list-item.getBodyType', () => {
-    it('should get a valid body type', () => {
+    it('should get the equality body type', () => {
       const bodyRule = { rule: {}, type: BodyRuleType.BodyEquality };
       component.bodyRule = bodyRule;
       expect(component.getBodyType()).toBe('Body Equality');
+    });
+
+    it('should get the contains body type', () => {
+      const bodyRule = { rule: {}, type: BodyRuleType.BodyContains };
+      component.bodyRule = bodyRule;
+      expect(component.getBodyType()).toBe('Body Contains');
     });
 
     it('should not get an invalid body type', () => {
