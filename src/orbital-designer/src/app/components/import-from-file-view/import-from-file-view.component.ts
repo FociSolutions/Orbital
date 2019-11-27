@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { mockFileValidator } from '../../validators/mock-file-validator/mock-file-validator';
-import { FileParserService } from '../../services/file-parser/file-parser.service';
-import { DesignerStore } from '../../store/designer-store';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';

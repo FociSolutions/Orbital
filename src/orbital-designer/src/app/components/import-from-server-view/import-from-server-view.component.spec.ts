@@ -34,7 +34,7 @@ describe('ImportFromServerViewComponent', () => {
         LoggerTestingModule,
         MockDefinitionService
       ],
-      providers: [Location, DesignerStore]
+      providers: [Location, DesignerStore, MockDefinitionService]
     }).compileComponents();
   }));
 
