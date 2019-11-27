@@ -3,9 +3,7 @@
  */
 export enum VerbType {
   GET = 0,
-  POST = 1,
-  PUT = 2,
-  DELETE = 3,
-  PATCH = 4,
-  HEAD = 5
+  PUT = 1,
+  DELETE = 2,
+  POST = 3
 }
