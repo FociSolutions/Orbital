@@ -24,7 +24,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
-import { FilterInvalidControlsPipe } from './pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 import { EndpointListComponent } from './components/endpoint-view/endpoint-list/endpoint-list.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
@@ -52,7 +51,6 @@ import { AddResponseComponent } from './components/scenario-editor/add-response/
     ImportFromFileViewComponent,
     ImportFromServerViewComponent,
     EndpointViewComponent,
-    FilterInvalidControlsPipe,
     EndpointListComponent,
     OverviewComponent,
     SideBarComponent,

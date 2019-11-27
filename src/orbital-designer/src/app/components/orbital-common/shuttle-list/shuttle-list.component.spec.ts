@@ -8,6 +8,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import * as faker from 'faker';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { FormControl } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 
 describe('ShuttleListComponent', () => {
   let component: ShuttleListComponent;
@@ -22,7 +25,8 @@ describe('ShuttleListComponent', () => {
         MatIconModule,
         MatCheckboxModule,
         MatDividerModule,
-        MatListModule
+        MatListModule,
+        LoggerTestingModule
       ]
     }).compileComponents();
   }));
@@ -55,18 +59,22 @@ describe('ShuttleListComponent', () => {
 
   describe('ShuttleListComponent.list', () => {
     it('if the list is not null, should set the leftList to the incoming list and the rightList to an empty list', () => {
-      const expectedList = faker.random.words().split(' ');
+      const expectedList = faker.random.words().split(' ').map((word: string) => {
+        const test = new FormControl(word, Validators.required);
+        test.setValue(faker.random.word());
+        return test;
+      });
       component.list = [...expectedList];
       expect(component.leftList).toEqual(expectedList);
       expect(component.rightList).toEqual([]);
     });
 
-    it('if the list is null, should not set the leftList and not change the rightList', () => {
+    it('if the list is null, should empty the leftList and empty the rightList', () => {
       const fakedList = faker.random.words().split(' ');
       component.rightList = [...fakedList];
       component.list = null;
-      expect(component.leftList).not.toBeNull();
-      expect(component.rightList).toEqual(fakedList);
+      expect(component.leftList).toEqual([]);
+      expect(component.rightList).toEqual([]);
     });
   });
 

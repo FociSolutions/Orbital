@@ -11,7 +11,6 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
 import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import Json from '../../models/json';
@@ -23,7 +22,7 @@ describe('ImportFromServerViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ImportFromServerViewComponent, FilterInvalidControlsPipe],
+      declarations: [ImportFromServerViewComponent],
       imports: [
         MatCardModule,
         RouterTestingModule,
@@ -51,18 +50,6 @@ describe('ImportFromServerViewComponent', () => {
       const locationSpy = spyOn(TestBed.get(Location), 'back');
       component.onBack();
       expect(locationSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('ImportFromServerViewComponent.errors', () => {
-    it('if the formArray errors are null and the formArray is invalid should set the invalid mock definition error message', () => {
-      component.formArray = new FormArray([
-        new FormControl(null, Validators.required)
-      ]);
-      const actual = component.errors;
-      expect(Array.from(Object.values(actual))).toContain(
-        component.invalidMockDefinitionsFoundErrorMessage
-      );
     });
   });
 

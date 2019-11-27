@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { timeout } from 'rxjs/operators';
 import Json from '../../../app/models/json';
 import { cloneDeep } from 'lodash';
 
@@ -52,5 +53,34 @@ export class OrbitalAdminService {
           return throwError(error);
         })
       );
+  }
+
+  /**
+   * Sends a GET all request to a specified server
+   * @param url The url to send the GET request to
+   */
+  getAll(url: string): Observable<HttpEvent<unknown>> {
+    const request = new HttpRequest(
+      'GET',
+      url
+    );
+
+    this.logger.debug('Sent GET request to ' + url);
+    return this.httpClient.request(request).pipe(timeout(3000));
+  }
+
+  /**
+   * Sends a GET request to get a mock definition; the URL should not have a trailing slash
+   * @param url The url to send the GET request to
+   * @param id The mock definition id to get
+   */
+  get(url: string, id: string): Observable<HttpEvent<unknown>> {
+    const request = new HttpRequest(
+      'GET',
+      url + '/' + id
+    );
+
+    this.logger.debug('Sent GET request to ' + url + '/' + id);
+    return this.httpClient.request(request).pipe(timeout(3000));
   }
 }

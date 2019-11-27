@@ -7,6 +7,9 @@ import {
   EventEmitter,
   OnDestroy
 } from '@angular/core';
+import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
+import { Validators, FormControl } from '@angular/forms';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-shuttle-list',
@@ -21,9 +24,11 @@ export class ShuttleListComponent implements OnInit, OnDestroy {
 
   @Input() set list(list: any[]) {
     if (!!list) {
-      this.leftList = list;
-      this.rightList = [];
+      this.leftList = list.filter(control => control.valid);
+    } else {
+      this.leftList = [];
     }
+    this.rightList = [];
   }
   @Input() itemTemplate!: TemplateRef<any>;
   @Input() emptyListMessage = 'List is empty';
@@ -37,7 +42,7 @@ export class ShuttleListComponent implements OnInit, OnDestroy {
 
   @Input() itemToStringFn: (_: any) => string = x => x as string;
 
-  constructor() {
+  constructor(private logger: NGXLogger) {
     this.outputList = new EventEmitter<any[]>();
   }
 

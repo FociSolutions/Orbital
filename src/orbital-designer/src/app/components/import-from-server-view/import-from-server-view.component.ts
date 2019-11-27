@@ -1,12 +1,5 @@
-import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import {
-  FormControl,
-  FormArray,
-  ValidationErrors,
-  AbstractControl
-} from '@angular/forms';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { FormArray, ValidationErrors, AbstractControl } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
 import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-definition-object-validator/mock-definition-object-validator';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
@@ -14,31 +7,117 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
 import Json from '../../models/json';
 
+import {
+  Component,
+  OnInit,
+  Input,
+  Injectable,
+  Output,
+  EventEmitter
+} from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import {
+  HttpClient,
+  HttpResponse,
+  HttpRequest,
+  HttpEventType,
+  HttpEvent,
+  HttpErrorResponse
+} from '@angular/common/http';
+import { Observer } from 'rxjs';
+import { timeout } from 'rxjs/operators';
+import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
+
 @Component({
   selector: 'app-import-from-server-view',
   templateUrl: './import-from-server-view.component.html',
   styleUrls: ['./import-from-server-view.component.scss']
 })
 export class ImportFromServerViewComponent implements OnInit {
+  static readonly urlMaxLength = 2048;
   readonly emptyListMessageServerBox = 'No MockDefinitions';
   readonly invalidMockDefinitionsFoundErrorMessage =
     'One or more invalid Mock Definitions found';
+
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
+  requestObserver: Observer<
+    HttpEvent<HttpResponse<unknown> | HttpErrorResponse>
+  >;
+  options: object = {};
+  body?: string = null;
+  httpMethod = 'GET';
+  concatToURI = '';
+
+  protocols: string[] = ['http://', 'https://'];
+  selectedProtocol: string = this.protocols[0];
+  inputControl: FormControl;
+  requestInProgress = false;
+  title = 'Server URI';
+  buttonName = 'Submit';
+  errors: string;
 
   controlsMockDefinitionToString = (control: AbstractControl) =>
     (control.value as MockDefinition).metadata.title
+
+  @Input() set errorsRestRequest(errors: object) {
+    if (!!this.inputControl) {
+      this.inputControl.setErrors(errors);
+    }
+  }
 
   constructor(
     private location: Location,
     private logger: NGXLogger,
     private designerStore: DesignerStore,
-    private router: Router
+    private router: Router,
+    private httpClient: HttpClient,
+    private orbitalService: OrbitalAdminService
   ) {
     this.formArray = new FormArray([]);
+
+    this.requestObserver = {
+      next: event => {
+        if (event.type === HttpEventType.Response) {
+          this.onResponse(event);
+          this.errors = '';
+        }
+      },
+      error: e => {
+        this.errors = e.message;
+        this.formArray = new FormArray([]);
+        this.requestInProgress = false;
+      },
+      complete: () => (this.requestInProgress = false)
+    };
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.inputControl = new FormControl(
+      '',
+      Validators.compose([
+        Validators.maxLength(ImportFromServerViewComponent.urlMaxLength)
+      ])
+    );
+  }
+
+  sendRequestDisabled() {
+    return this.inputControl.value.length === 0 || this.requestInProgress;
+  }
+
+  getSpinnerId() {
+    return this.requestInProgress ? 'show-spinner' : 'hide-spinner';
+  }
+
+  sendRequest() {
+    this.inputControl.markAsDirty();
+    if (this.sendRequestDisabled) {
+      this.requestInProgress = true;
+      this.errorsRestRequest = null;
+
+      this.orbitalService.getAll(`${this.selectedProtocol}${this.inputControl.value}${this.concatToURI}`).subscribe(this.requestObserver);
+    }
+  }
 
   /**
    * The function called on submit. Sets the mockDefinitions in the DesignerStore
@@ -68,25 +147,9 @@ export class ImportFromServerViewComponent implements OnInit {
   }
 
   /**
-   * Getter function that returns the formArrays validation errors
-   */
-  get errors(): ValidationErrors | null {
-    if (this.formArray.invalid && this.formArray.errors === null) {
-      this.formArray.setErrors({
-        invalidMockDefinitionFound: this.invalidMockDefinitionsFoundErrorMessage
-      });
-      this.logger.debug(
-        'ImportFromServerViewComponent invalidMockDefinitions in formArray',
-        this.formArray
-      );
-    }
-    return this.formArray.errors;
-  }
-
-  /**
    * If the response returned is not an error or domexceptions it sets the controls
    * values to the response body. The control is then responsible for validation.
-   * @param response HttpResponse received by the RestRequestInput
+   * @param response HttpResponse received by the input
    */
   onResponse(
     response: HttpResponse<unknown> | HttpErrorResponse | DOMException
@@ -104,25 +167,6 @@ export class ImportFromServerViewComponent implements OnInit {
       this.logger.debug(
         'ImportFormServerViewComponent FormArray value:',
         this.formArray
-      );
-    } else if (
-      response instanceof HttpErrorResponse ||
-      response instanceof DOMException
-    ) {
-      this.formArray.setErrors({
-        responseError: 'Response returned an error'
-      });
-      this.logger.debug(
-        'ImportFromServerViewComponent formArray.errors: ',
-        this.formArray.errors
-      );
-    } else {
-      this.formArray.setErrors({
-        contentError: 'Expected response body to be an array'
-      });
-      this.logger.debug(
-        'ImportFromServerViewComponent formArray.errors: ',
-        this.formArray.errors
       );
     }
   }
