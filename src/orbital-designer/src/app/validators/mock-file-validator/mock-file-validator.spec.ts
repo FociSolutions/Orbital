@@ -1,17 +1,15 @@
 import { mockFileValidator } from './mock-file-validator';
 import validMockDefinitionString from '../../../test-files/test-mockdefinition-file.mock';
 import { FormControl } from '@angular/forms';
-import { LoggerTestingModule } from 'ngx-logger/testing/public_api';
-import { DesignerStore } from 'src/app/store/designer-store';
+import { DesignerStore } from '../../../../src/app/store/designer-store';
 import { TestBed } from '@angular/core/testing';
-import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { MockDefinitionService } from '../../../../src/app/services/mock-definition/mock-definition.service';
 
 describe('mockFileValidator', () => {
   let mockService: MockDefinitionService;
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
-      LoggerTestingModule
     ],
     providers: [DesignerStore, MockDefinitionService]}).compileComponents());
   beforeEach(() => {
