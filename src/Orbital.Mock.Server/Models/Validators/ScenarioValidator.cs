@@ -13,7 +13,7 @@ namespace Orbital.Mock.Server.Models.Validators
     /// </summary>
     public class ScenarioValidator : AbstractValidator<Scenario>
     {
-        private List<HttpMethod> validMethod = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete };
+        private List<HttpMethod> validMethod = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete, HttpMethod.Patch, HttpMethod.Head };
         public ScenarioValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
