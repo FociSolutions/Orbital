@@ -25,10 +25,9 @@ describe('CreateNewMockViewComponent', () => {
         MatCardModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        RouterTestingModule.withRoutes([]),
-        OpenApiSpecService
+        RouterTestingModule.withRoutes([])
       ],
-      providers: [Location, FileParserService, DesignerStore]
+      providers: [Location, FileParserService, DesignerStore,OpenApiSpecService]
     }).compileComponents();
   }));
 

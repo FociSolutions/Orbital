@@ -31,8 +31,7 @@ describe('ImportFromServerViewComponent', () => {
         OrbitalCommonModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
-        LoggerTestingModule,
-        MockDefinitionService
+        LoggerTestingModule
       ],
       providers: [Location, DesignerStore, MockDefinitionService]
     }).compileComponents();
