@@ -19,6 +19,10 @@ export class GetVerbStringPipe implements PipeTransform {
         return 'POST';
       case VerbType.PUT:
         return 'PUT';
+      case VerbType.PATCH:
+        return 'PATCH';
+      case VerbType.HEAD:
+        return 'HEAD';
     }
   }
 }

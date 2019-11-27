@@ -26,7 +26,19 @@ describe('GetVerbStringPipe', () => {
 
   it('returns string PUT for VerbType PUT', () => {
     const pipe = new GetVerbStringPipe();
-    const verbString = pipe.transform(VerbType.GET);
-    expect(verbString).toBe('GET');
+    const verbString = pipe.transform(VerbType.PUT);
+    expect(verbString).toBe('PUT');
+  });
+
+  it('returns string PATCH for VerbType PATCH', () => {
+    const pipe = new GetVerbStringPipe();
+    const verbString = pipe.transform(VerbType.PATCH);
+    expect(verbString).toBe('PATCH');
+  });
+
+  it('returns string HEAD for VerbType HEAD', () => {
+    const pipe = new GetVerbStringPipe();
+    const verbString = pipe.transform(VerbType.HEAD);
+    expect(verbString).toBe('HEAD');
   });
 });
