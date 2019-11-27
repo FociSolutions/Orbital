@@ -14,6 +14,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
+import { OpenAPIV2 } from 'openapi-types';
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
   let fixture: ComponentFixture<CreateNewMockViewComponent>;
@@ -27,7 +28,7 @@ describe('CreateNewMockViewComponent', () => {
         LoggerTestingModule,
         RouterTestingModule.withRoutes([])
       ],
-      providers: [Location, FileParserService, DesignerStore,OpenApiSpecService]
+      providers: [Location, FileParserService, DesignerStore, OpenApiSpecService]
     }).compileComponents();
   }));
 
@@ -92,7 +93,12 @@ describe('CreateNewMockViewComponent', () => {
     description = faker.random.words()
   ): Promise<MockDefinition> {
     const service = TestBed.get(OpenApiSpecService);
-    const openApi = await service.readOpenApiSpec(validOpenApiText);
+    let openApi: OpenAPIV2.Document;
+    service.readOpenApiSpec(validOpenApiText).subscribe({
+      next: n => {
+        openApi = n;
+      }
+    });
     component.formGroup.setValue({
       ...component.formGroup.value,
       title,
