@@ -72,9 +72,14 @@ describe('ImportFromServerViewComponent', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const store = TestBed.get(DesignerStore);
       const service = TestBed.get(MockDefinitionService);
-      const expectedMockDefinition = await service.deserialize(
+      let expectedMockDefinition: MockDefinition;
+      service.deserialize(
         JSON.stringify(validMockDefinition)
-      );
+      ).subscribe({
+        next: n => {
+          expectedMockDefinition = n;
+        }
+      });
       const expectedMap = new Map([
         [validMockDefinition.metadata.title, expectedMockDefinition]
       ]);
