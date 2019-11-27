@@ -32,17 +32,6 @@ describe('GetVerbColorPipe', () => {
     expect(colorType).toBe('rgba(250, 255, 0, 0.25)');
   });
 
-  it('returns rgba(255, 165, 0, 0.25) for VerbType PATCH', () => {
-    const pipe = new GetVerbColorPipe();
-    const colorType = pipe.transform(VerbType.PATCH);
-    expect(colorType).toBe('rgba(255, 165, 0, 0.25)');
-  });
-  it('returns rgba(82, 0, 255, 0.25) for VerbType HEAD', () => {
-    const pipe = new GetVerbColorPipe();
-    const colorType = pipe.transform(VerbType.HEAD);
-    expect(colorType).toBe('rgba(82, 0, 255, 0.25)');
-  });
-
   it('prefixes the returned color type with the provide prefix argument', () => {
     const pipe = new GetVerbColorPipe();
     const prefix = faker.random.word();
