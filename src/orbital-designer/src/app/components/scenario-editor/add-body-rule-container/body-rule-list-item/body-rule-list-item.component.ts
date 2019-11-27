@@ -43,10 +43,13 @@ export class BodyRuleListItemComponent implements OnInit {
    * Gets the type from the body; returns an empty string if undefined or null
    */
   getBodyType() {
-    if (this.bodyRule.type) {
-      return this.bodyRule.type;
-    } else {
-      return '';
+    this.logger.debug('BodyType from body-rule-list-item: ', this.bodyRule.type);
+    switch (+this.bodyRule.type) {
+      case BodyRuleType.BodyContains:
+        return 'Body Contains';
+      case BodyRuleType.BodyEquality:
+        return 'Body Equality';
     }
+    return '';
   }
 }

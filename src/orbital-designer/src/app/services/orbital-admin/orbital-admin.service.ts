@@ -26,26 +26,6 @@ export class OrbitalAdminService {
     this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
     const mockDefinitionToExport = cloneDeep(mockdefinition);
 
-    if (mockDefinitionToExport.scenarios != null) {
-      mockDefinitionToExport.scenarios.forEach(scenario => {
-        if (
-          scenario.requestMatchRules != null &&
-          scenario.requestMatchRules.bodyRules != null
-        ) {
-          scenario.requestMatchRules.bodyRules.forEach(bodyRule => {
-            switch (bodyRule.type) {
-              case 'bodyEquality':
-                bodyRule.type = 1;
-                break;
-              case 'bodyContains':
-                bodyRule.type = 2;
-                break;
-            }
-          });
-        }
-      });
-    }
-
     return this.httpClient
       .post<boolean>(url, Json.mapToObject(mockDefinitionToExport))
       .pipe(
