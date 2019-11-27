@@ -92,7 +92,7 @@ describe('CreateNewMockViewComponent', () => {
     title = faker.random.word(),
     description = faker.random.words()
   ): Promise<MockDefinition> {
-    const service = TestBed.get(OpenApiSpecService);
+    const service = new OpenApiSpecService();
     let openApi: OpenAPIV2.Document;
     service.readOpenApiSpec(validOpenApiText).subscribe({
       next: n => {
