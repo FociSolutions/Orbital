@@ -29,7 +29,6 @@ export class OpenApiSpecService {
           if (!result.errors || result.errors.length === 0) {
           observer.next(content);
         } else {
-          console.log('there is an error in the open api file');
           observer.error(
             result.errors.map(err => `${err.dataPath} ${err.message}`.trim())
           );

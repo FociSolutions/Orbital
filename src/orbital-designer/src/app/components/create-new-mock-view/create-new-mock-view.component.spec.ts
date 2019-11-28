@@ -76,7 +76,6 @@ describe('CreateNewMockViewComponent', () => {
         done();
       });
       generateMockDefinitionAndSetForm();
-      console.log('en el ultimo test que no funciona');
       component.createMock();
 
     });
