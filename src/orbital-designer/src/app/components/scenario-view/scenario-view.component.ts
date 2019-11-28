@@ -6,6 +6,7 @@ import { NGXLogger } from 'ngx-logger';
 import * as uuid from 'uuid';
 import { Subscription } from 'rxjs';
 import { VerbType } from 'src/app/models/verb.type';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 @Component({
   selector: 'app-scenario-view',
@@ -26,7 +27,8 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   constructor(
     private store: DesignerStore,
     private router: Router,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private mockDefinitionService: MockDefinitionService
   ) {}
 
   ngOnInit() {
@@ -81,5 +83,13 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
       this.filteredList = newScenarios;
     }
     this.errorMessage = 'No Result(s) Found';
+  }
+
+  /**
+   * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
+   * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
+   */
+  cloneScenario() {
+
   }
 }
