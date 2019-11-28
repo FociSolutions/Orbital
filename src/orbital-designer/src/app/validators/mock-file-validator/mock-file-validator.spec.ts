@@ -1,6 +1,3 @@
-import { mockFileValidator } from './mock-file-validator';
-import validMockDefinitionString from '../../../test-files/test-mockdefinition-file.mock';
-import { FormControl } from '@angular/forms';
 import { DesignerStore } from '../../../../src/app/store/designer-store';
 import { TestBed } from '@angular/core/testing';
 import { MockDefinitionService } from '../../../../src/app/services/mock-definition/mock-definition.service';
@@ -8,13 +5,12 @@ import { MockDefinitionService } from '../../../../src/app/services/mock-definit
 describe('mockFileValidator', () => {
   let mockService: MockDefinitionService;
 
-  beforeEach(() => TestBed.configureTestingModule({
+  beforeEach(() => {
+  mockService = TestBed.get(MockDefinitionService);
+  TestBed.configureTestingModule({
     imports: [
     ],
-    providers: [DesignerStore, MockDefinitionService]}).compileComponents());
-  beforeEach(() => {
-    mockService = TestBed.get(MockDefinitionService);
-  });
+    providers: [DesignerStore, MockDefinitionService]}).compileComponents(); });
 
   // it('should return null if the MockDefinition file is valid', async () => {
   //   const file = new File([validMockDefinitionString], 'test-file.yml');
