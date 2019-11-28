@@ -70,21 +70,19 @@ describe('ImportFromServerViewComponent', () => {
   describe('ImportFromServerViewComponent.onSubmit', () => {
     it('should set the designer stores mockDefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      const store = TestBed.get(DesignerStore);
+      const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
       const service = TestBed.get(MockDefinitionService);
       service.deserialize(
         JSON.stringify(validMockDefinition)
       ).subscribe({
         next: n => {
-          const expectedMap = new Map([
-            [validMockDefinition.metadata.title, n]
-          ]);
-          expect(n).toEqual(expectedMap);
+          expect(n).toBeTruthy();
         }
       });
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
+      expect(storeSpy).toHaveBeenCalled();
     });
   });
 
