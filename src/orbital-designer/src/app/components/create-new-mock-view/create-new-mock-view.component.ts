@@ -1,14 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { Router } from '@angular/router';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 import { NGXLogger } from 'ngx-logger';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 import { Observable, EMPTY } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { IfStmt } from '@angular/compiler';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-new-mock-view',
