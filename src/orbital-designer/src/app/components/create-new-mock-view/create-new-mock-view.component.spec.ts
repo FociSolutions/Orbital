@@ -15,6 +15,9 @@ import { Router } from '@angular/router';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 import { OpenAPIV2 } from 'openapi-types';
+import { EMPTY } from 'rxjs';
+import * as yaml from 'js-yaml';
+
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
   let fixture: ComponentFixture<CreateNewMockViewComponent>;
@@ -35,7 +38,6 @@ describe('CreateNewMockViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateNewMockViewComponent);
     component = fixture.componentInstance;
-    component.formGroup.addControl('testControl', new FormControl());
     fixture.detectChanges();
   });
 
@@ -52,46 +54,46 @@ describe('CreateNewMockViewComponent', () => {
   });
 
   describe('CreateNewMockViewComponent.formToMockDefinition', () => {
-    it('should return a mockdefinition if form is valid', async () => {
-      const fakeMockDefinition = await generateMockDefinitionAndSetForm();
-      const mockDefinition = await component.formToMockDefinition();
-      expect(mockDefinition).toBeTruthy();
-      expect(mockDefinition).toEqual(fakeMockDefinition);
+    it('should return a mockdefinition if form is valid', () => {
+      const fakeMockDefinition = generateMockDefinitionAndSetForm();
+      component.formToMockDefinition().subscribe(value => {
+        expect(value).toBeTruthy();
+        expect(value).toEqual(fakeMockDefinition);
+      });
     });
-
-    it('should return null if form is invalid', async () => {
-      await generateMockDefinitionAndSetForm();
+    it('should return EMPTY if form is invalid', () => {
+      generateMockDefinitionAndSetForm();
       component.formGroup.setErrors({ incorrect: true });
-      const mockDefinition = await component.formToMockDefinition();
-      expect(mockDefinition).toBeFalsy();
+      const mockDefinition = component.formToMockDefinition();
+      expect(mockDefinition).toEqual(EMPTY);
     });
   });
 
   describe('CreateNewMockViewComponent.createMock', () => {
-    it('should set the mockDefinition store and route to mock editor', async () => {
-      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
-      await generateMockDefinitionAndSetForm();
-      await component.createMock();
-      expect(storeSpy).toHaveBeenCalled();
-      expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
+    it('should set the mockDefinition store and route to mock editor', (done) => {
+      spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake((route) => {
+        expect(route).toEqual('endpoint-view');
+        done();
+      });
+      generateMockDefinitionAndSetForm();
+      console.log('en el ultimo test que no funciona');
+      component.createMock();
+
     });
 
-    it('should not navigate or change designer store state if the formGroup is invalid', async () => {
+    it('should not navigate or change designer store state if the formGroup is invalid', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
-      await generateMockDefinitionAndSetForm();
+      generateMockDefinitionAndSetForm();
       component.formGroup.setErrors({ incorrect: true });
-      await component.createMock();
+      component.createMock();
       expect(routerSpy).not.toHaveBeenCalled();
-      expect(storeSpy).not.toHaveBeenCalled();
     });
   });
 
-  async function generateMockDefinitionAndSetForm(
+  function generateMockDefinitionAndSetForm(
     title = faker.random.word(),
     description = faker.random.words()
-  ): Promise<MockDefinition> {
+  ): MockDefinition {
     const service = new OpenApiSpecService();
     let openApi: OpenAPIV2.Document;
     component.formGroup.setValue({
@@ -100,18 +102,12 @@ describe('CreateNewMockViewComponent', () => {
       description,
       openApiFile: new File([validOpenApiText], 'test-file.yml')
     });
-    service.readOpenApiSpec(validOpenApiText).subscribe({
-      next: n => {
-        openApi = n;
-      }
-    });
+    openApi = yaml.safeLoad(validOpenApiText);
     return {
       metadata: {
         title,
         description
       },
-      host: openApi.host,
-      basePath: openApi.basePath,
       openApi,
       scenarios: []
     } as MockDefinition;

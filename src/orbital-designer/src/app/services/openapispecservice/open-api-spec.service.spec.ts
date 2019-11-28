@@ -14,13 +14,13 @@ describe('OpenApiSpecService', () => {
 
   it('should read a open API string and return the open api document object representation of the string', () => {
     const service: OpenApiSpecService = TestBed.get(OpenApiSpecService);
-    expect(service.readOpenApiSpec(validOpenApiTest)).toBeDefined();
+    expect(service.readOpenApiSpec(new File([validOpenApiTest], 'test.yml'))).toBeDefined();
   });
 
 
   it('should reject an invalid opena api string', () => {
     const service: OpenApiSpecService = TestBed.get(OpenApiSpecService);
-    service.readOpenApiSpec(faker.random.words()).subscribe({
+    service.readOpenApiSpec(new File(['faker.random.words'], 'test.yml')).subscribe({
       error: (err) => {
         expect(err).toEqual(['should be object']);
       }

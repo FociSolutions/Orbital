@@ -99,7 +99,7 @@ describe('DesignerStore', () => {
 
     it('should update the state with new endpoints without clearing old ones', done => {
       const service = new OpenApiSpecService();
-      const petStore = validOpenApi;
+      const petStore = new File([validOpenApi], 'test.yml');
       const originalEndpoint = {
         path: '/original-pets',
         verb: VerbType.GET,

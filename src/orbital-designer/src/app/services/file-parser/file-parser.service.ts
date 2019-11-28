@@ -32,7 +32,7 @@ export class FileParserService {
   readOpenApiSpec(file: File): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.read(file).then(contentString => {
-        this.openApiservice.readOpenApiSpec(contentString).subscribe(
+        this.openApiservice.readOpenApiSpec(file).subscribe(
           doc => resolve(true),
           err => reject(err)
         );

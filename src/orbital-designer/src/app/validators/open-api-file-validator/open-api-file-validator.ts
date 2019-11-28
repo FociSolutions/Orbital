@@ -14,7 +14,7 @@ export function openApiFileValidator(
   return new Promise(resolve => {
     fileReader.onloadend = () => {
       const service = new OpenApiSpecService();
-      service.readOpenApiSpec(fileReader.result as string).subscribe(
+      service.readOpenApiSpec(new File ([fileReader.result], 'test.yml')).subscribe(
         () => resolve(null),
         errs => resolve(errs)
       );
