@@ -61,7 +61,6 @@ export class CreateNewMockViewComponent implements OnInit {
     observable.subscribe(mockDefinition => {
         if (!!mockDefinition) {
         this.logger.debug('MockDefinition created from form ', mockDefinition);
-        console.log(mockDefinition);
         this.store.mockDefinitions = [mockDefinition];
         this.router.navigateByUrl('endpoint-view');
       }
