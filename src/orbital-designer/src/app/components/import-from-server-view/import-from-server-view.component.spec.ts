@@ -72,20 +72,18 @@ describe('ImportFromServerViewComponent', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const store = TestBed.get(DesignerStore);
       const service = TestBed.get(MockDefinitionService);
-      let expectedMockDefinition: MockDefinition;
       service.deserialize(
         JSON.stringify(validMockDefinition)
       ).subscribe({
         next: n => {
-          expectedMockDefinition = n;
+          const expectedMap = new Map([
+            [validMockDefinition.metadata.title, n]
+          ]);
+          expect(n).toEqual(expectedMap);
         }
       });
-      const expectedMap = new Map([
-        [validMockDefinition.metadata.title, expectedMockDefinition]
-      ]);
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
-      expect(expectedMockDefinition).toBeTruthy(expectedMap);
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
     });
   });
