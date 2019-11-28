@@ -57,7 +57,6 @@ describe('CreateNewMockViewComponent', () => {
     it('should return a mockdefinition if form is valid', () => {
       const fakeMockDefinition = generateMockDefinitionAndSetForm();
       component.formToMockDefinition().subscribe(value => {
-        expect(value).toBeTruthy();
         expect(value).toEqual(fakeMockDefinition);
       });
     });
