@@ -61,17 +61,7 @@ export class ExportToServerViewComponent implements OnInit {
     this.isUploadingMocks = true;
     this.logger.debug('URL contents before uploading', this.inputControl.value);
 
-    const mockDefinitionExportResults = this.service
-      .exportMockDefinitions(
-        this.inputControl.value,
-        this.formArray.controls.map(formControl => {
-          this.logger.debug('Mock definition to export', formControl.value);
-          return formControl.value as MockDefinition;
-        })
-      )
-      .map(mockDefinitionExportResult => {
-        return mockDefinitionExportResult.toPromise();
-      });
+    const mockDefinitionExportResults = this.exportMocksFromForm();
 
     let exportStatusSuccess: boolean;
     await Promise.all(mockDefinitionExportResults)
@@ -98,6 +88,24 @@ export class ExportToServerViewComponent implements OnInit {
     } else {
       this.exportStatusMessage = 'Mock definition export failed';
     }
+  }
+
+  /**
+   * Exports the mocks from the form, and returns a list of promises representing the state
+   * of the export
+   */
+  exportMocksFromForm(): Promise<boolean>[] {
+    return this.service
+      .exportMockDefinitions(
+        this.inputControl.value,
+        this.formArray.controls.map(formControl => {
+          this.logger.debug('Mock definition to export', formControl.value);
+          return formControl.value as MockDefinition;
+        })
+      )
+      .map(mockDefinitionExportResult => {
+        return mockDefinitionExportResult.toPromise();
+      });
   }
 
   /**
