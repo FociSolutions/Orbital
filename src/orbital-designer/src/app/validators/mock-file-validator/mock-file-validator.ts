@@ -11,14 +11,10 @@ export function mockFileValidator(
 ): AsyncValidatorFn {
   return (control: AbstractControl): Promise<ValidationErrors | null> => {
     const file = control.value;
-    const fileReader = new FileReader();
     return new Promise(resolve => {
-    fileReader.onloadend = () => {
-      mockdefservice.deserialize(fileReader.result as string).subscribe(
+      mockdefservice.deserialize(file).subscribe(
         () => resolve(null),
         errs => resolve(errs)
       );
-    };
-    fileReader.readAsText(file);
   }); };
 }

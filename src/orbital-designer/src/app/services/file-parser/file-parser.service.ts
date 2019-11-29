@@ -15,12 +15,10 @@ export class FileParserService {
    */
   readMockDefinition(file: File): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.read(file).then(contentString => {
-        this.mockdefinitionservice.deserialize(contentString).subscribe(
+        this.mockdefinitionservice.deserialize(file).subscribe(
           result => resolve(result),
           err => reject(err)
         );
-      });
     });
   }
   /**
