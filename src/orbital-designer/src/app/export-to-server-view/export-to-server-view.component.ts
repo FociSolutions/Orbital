@@ -84,9 +84,9 @@ export class ExportToServerViewComponent implements OnInit {
       });
 
     if (exportStatusSuccess) {
-      this.exportStatusMessage = 'Mock definition export was successful';
+      this.exportStatusMessage = 'File(s) successfully exported';
     } else {
-      this.exportStatusMessage = 'Mock definition export failed';
+      this.exportStatusMessage = 'File(s) could not be exported because of an error';
     }
   }
 
