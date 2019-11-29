@@ -18,7 +18,7 @@
           <p id="notFoundMessage" *ngIf="this.filteredList.length === 0">
             {{ this.errorMessage }}
           </p>
-          <app-scenario-list [scenarios]="filteredList" (shouldClone)="cloneScenario()"></app-scenario-list>
+          <app-scenario-list [scenarios]="filteredList" (shouldCloneToView)="cloneScenario($event)"></app-scenario-list>
           <button (click)="addScenario()" id="add" mat-fab color="primary">
             +
           </button>

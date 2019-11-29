@@ -57,6 +57,8 @@ export class ScenarioListItemComponent implements OnInit {
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
   cloneScenario() {
+    this.logger.debug(this.scenario);
+    this.logger.debug('scenario to clone emmited');
     this.shouldClone.emit(this.scenario);
   }
 
