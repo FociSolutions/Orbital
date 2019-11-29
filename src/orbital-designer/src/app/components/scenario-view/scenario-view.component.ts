@@ -7,6 +7,7 @@ import * as uuid from 'uuid';
 import { Subscription } from 'rxjs';
 import { VerbType } from 'src/app/models/verb.type';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scenario-view',
@@ -89,7 +90,14 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
-  cloneScenario() {
+  cloneScenario(scenario: Scenario) {
+    const observable = this.mockDefinitionService.cloneScenario(this.store.state.mockDefinition.metadata.title, scenario).pipe(map(
+      value => value));
 
+    observable.subscribe(result => {
+      if (result) {
+        this.logger.log('Scenario successfuly cloned');
+      }}
+      );
   }
 }

@@ -4,7 +4,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import Json from 'src/app/models/json';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
 import * as uuid from 'uuid';
 import * as _ from 'lodash';
 
@@ -61,6 +61,7 @@ export class MockDefinitionService {
         try {
           if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {
             this.logger.warn('Scenario not cloned because it contains undefined attributes');
+            observer.next(false);
             return;
           }
 
