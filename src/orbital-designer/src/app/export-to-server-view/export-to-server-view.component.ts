@@ -88,6 +88,8 @@ export class ExportToServerViewComponent implements OnInit {
     } else {
       this.exportStatusMessage = 'File(s) could not be exported because of an error';
     }
+
+    this.resetForm();
   }
 
   /**
