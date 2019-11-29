@@ -25,6 +25,7 @@ import * as uuid from 'uuid';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -40,6 +41,7 @@ describe('ScenarioViewComponent', () => {
         SideBarComponent,
         GetEndpointScenariosPipe,
         GetVerbColorPipe,
+        GetVerbStringPipe,
         OverviewComponent
       ],
       imports: [
