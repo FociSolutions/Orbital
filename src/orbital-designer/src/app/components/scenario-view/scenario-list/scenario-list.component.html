@@ -2,6 +2,7 @@
   <mat-list-item *ngFor="let scenario of scenarios">
     <app-scenario-list-item
       [scenario]="scenario"
+      (shouldClone)="cloneScenario($event)"
     >
     </app-scenario-list-item>
   </mat-list-item>

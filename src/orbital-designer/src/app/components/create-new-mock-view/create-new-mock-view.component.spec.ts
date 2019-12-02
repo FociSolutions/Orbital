@@ -5,11 +5,9 @@ import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { CreateNewMockViewComponent } from './create-new-mock-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Location } from '@angular/common';
-import { FormControl } from '@angular/forms';
 import validOpenApiText from '../../../test-files/valid-openapi-spec';
 import * as faker from 'faker';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { FileParserService } from 'src/app/services/file-parser/file-parser.service';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -31,7 +29,7 @@ describe('CreateNewMockViewComponent', () => {
         LoggerTestingModule,
         RouterTestingModule.withRoutes([])
       ],
-      providers: [Location, FileParserService, DesignerStore, OpenApiSpecService]
+      providers: [Location, DesignerStore, OpenApiSpecService]
     }).compileComponents();
   }));
 

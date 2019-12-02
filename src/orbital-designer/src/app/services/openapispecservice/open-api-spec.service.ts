@@ -24,7 +24,6 @@ export class OpenApiSpecService {
           const openApiString = fileContent.result as string;
           const validator = new OpenAPISchemaValidator({ version: 2 });
           const content = yaml.safeLoad(openApiString);
-          console.log(openApiString);
           const result = validator.validate(content);
           if (!result.errors || result.errors.length === 0) {
           observer.next(content);
