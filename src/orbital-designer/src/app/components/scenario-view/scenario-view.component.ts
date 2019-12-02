@@ -89,7 +89,6 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
   cloneScenario(scenario: Scenario) {
-    this.logger.debug('lets clone!');
     this.logger.debug(scenario);
     const observable = this.mockDefinitionService.cloneScenario(this.store.state.mockDefinition.metadata.title, scenario).pipe(map(
       value => value));
