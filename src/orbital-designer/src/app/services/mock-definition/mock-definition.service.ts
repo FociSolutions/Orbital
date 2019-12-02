@@ -58,6 +58,11 @@ export class MockDefinitionService {
   });
   }
 
+  /*
+   * Clones the provided scenario and updates the mock definition in the store with the new copy scenario
+   * @param mockId  string representation of mock definition's id
+   * @param scenario Object representation of the scenario to be cloned
+   */
   public cloneScenario(
     mockId: string,
     scenario: Scenario
