@@ -6,6 +6,8 @@ import { NGXLogger } from 'ngx-logger';
 import * as uuid from 'uuid';
 import { Subscription } from 'rxjs';
 import { VerbType } from 'src/app/models/verb.type';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scenario-view',
@@ -26,7 +28,8 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   constructor(
     private store: DesignerStore,
     private router: Router,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private mockDefinitionService: MockDefinitionService
   ) {}
 
   ngOnInit() {
@@ -72,12 +75,28 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   }
   /**
    * This function takes a list of scenarios and updates it to the new list of filtered scenarios
-   * @param scenarios The list of scenarios
+   * @param newScenarios The list of scenarios
    */
   setFilteredList(newScenarios: Scenario[]) {
     if (newScenarios) {
       this.filteredList = newScenarios;
     }
     this.errorMessage = 'No Result(s) Found';
+  }
+
+  /**
+   * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
+   * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
+   */
+  cloneScenario(scenario: Scenario) {
+    this.logger.debug(scenario);
+    const observable = this.mockDefinitionService.cloneScenario(this.store.state.mockDefinition.metadata.title, scenario).pipe(map(
+      value => value));
+
+    observable.subscribe(result => {
+      if (result) {
+        this.logger.log('Scenario successfuly cloned');
+      }}
+      );
   }
 }

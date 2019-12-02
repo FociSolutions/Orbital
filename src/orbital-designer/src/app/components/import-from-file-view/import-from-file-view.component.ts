@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { mockFileValidator } from '../../validators/mock-file-validator/mock-file-validator';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -16,7 +15,7 @@ export class ImportFromFileViewComponent implements OnInit {
   formGroup: FormGroup;
   private router: Router;
   private location: Location;
-  mockDefinitionService: MockDefinitionService;
+  private mockDefinitionService: MockDefinitionService;
   constructor(
     router: Router,
     location: Location,
@@ -27,11 +26,7 @@ export class ImportFromFileViewComponent implements OnInit {
     this.location = location;
     this.mockDefinitionService = mockDefinitionService;
     this.formGroup = new FormGroup({
-      mockDefinitionFile: new FormControl(
-        null,
-        extendBuiltInValidatorFactory(Validators.required, logger),
-        mockFileValidator(mockDefinitionService)
-      )
+      mockDefinitionFile: new FormControl()
     });
   }
 
@@ -44,12 +39,19 @@ export class ImportFromFileViewComponent implements OnInit {
    * in the designer store and navigating to the mock editor if the form is valid. If
    * the form is invalid the function does nothing.
    */
-  async createMock() {
-    const mockDefinition = this.mockDefinitionService.deserialize(this.formGroup.controls
-      .mockDefinitionFile.value as string);
-    if (mockDefinition) {
-      this.router.navigateByUrl('endpoint-view');
-    }
+ createMock() {
+    const observable = this.mockDefinitionService.deserialize(this.formGroup.controls
+      .mockDefinitionFile.value as File).pipe(map(
+        value => value
+      ));
+    observable.subscribe(
+      value => {
+        if (value) {
+            this.router.navigateByUrl('endpoint-view');
+        }
+      }
+    );
+
   }
 
   /**

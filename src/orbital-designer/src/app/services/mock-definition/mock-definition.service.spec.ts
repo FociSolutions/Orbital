@@ -3,6 +3,7 @@ import * as faker from 'faker';
 import * as uuid from 'uuid';
 import { MockDefinitionService } from './mock-definition.service';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
+import validMockDefinitionFile from '../../../test-files/test-mockdefinition-file.mock';
 import { DesignerStore } from './../../store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
@@ -286,23 +287,25 @@ describe('MockDefinitionService', () => {
     expect(expectedResults).toEqual(1);
   });
 
-  it('failed because content is not yaml', () => {
+  it('failed because content is not yaml', done => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
 
-    service.deserialize('%').subscribe({
+    service.deserialize(new File(['%'], 'test.yml')).subscribe({
       error: (err) => {
         expect(err).toBeTruthy();
+        done();
       }
     }
     );
   });
 
-  it('succeed because content is valid yaml', () => {
+  it('succeed because content is valid yaml', done => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
 
-    service.deserialize(JSON.stringify(validMockDefinition)).subscribe({
+    service.deserialize(new File([validMockDefinitionFile], 'test.yml')).subscribe({
       next: t => {
         expect(t).toBeTruthy();
+        done();
       }
     }
     );

@@ -1,9 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Scenario } from '../../../models/mock-definition/scenario/scenario.model';
 import * as HttpStatus from 'http-status-codes';
 import { DesignerStore } from 'src/app/store/designer-store';
-import * as uuid from 'uuid';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import * as _ from 'lodash';
 
@@ -17,6 +16,7 @@ export class ScenarioListItemComponent implements OnInit {
   triggerOpen: boolean;
   mockDefinition: MockDefinition;
   isHoveringOverMenu: boolean;
+  @Output() shouldClone = new EventEmitter<Scenario>();
 
   constructor(private store: DesignerStore, private logger: NGXLogger) {
     this.store.state$.subscribe(state => {
@@ -57,31 +57,8 @@ export class ScenarioListItemComponent implements OnInit {
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
   cloneScenario() {
-    if (!this.scenario || !this.scenario.id || !this.scenario.metadata || !this.scenario.metadata.title) {
-      this.logger.warn('Scenario not cloned because it contains undefined attributes');
-      return;
-    }
-
-    // copy scenario using deep copy
-    const clonedScenario = _.cloneDeep(this.scenario);
-    clonedScenario.id = uuid.v4();
-    clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
-
-    const originalScenarioIndex = this.mockDefinition.scenarios.indexOf(this.scenario);
-
-    // ensure that there are no naming conflicts; if there are, repeat until a name is found
-    if (!this.mockDefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
-      let copyCounter = 2;
-      while (this.mockDefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title + ' ' + copyCounter)) {
-        copyCounter++;
-      }
-
-      clonedScenario.metadata.title = clonedScenario.metadata.title + ' ' + copyCounter;
-    }
-
-    this.mockDefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
-    this.store.updateScenarios([...this.mockDefinition.scenarios]);
-    this.logger.warn('Scenario successfully cloned: ', clonedScenario);
+    this.logger.debug('scenario-list-item clone emmited');
+    this.shouldClone.emit(this.scenario);
   }
 
   /**

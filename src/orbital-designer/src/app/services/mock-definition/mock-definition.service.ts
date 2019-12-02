@@ -4,7 +4,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import Json from 'src/app/models/json';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
 import * as uuid from 'uuid';
 import * as _ from 'lodash';
 
@@ -22,11 +22,14 @@ export class MockDefinitionService {
    * @param mockDefinition String representation of mock definition
    */
   public deserialize(
-    mockDefinition: string
+    mockDefinition: File
   ): Observable<boolean> {
   return new Observable((observer) => {
+    const fileContent = new FileReader();
+    fileContent.readAsText(mockDefinition);
+    fileContent.onload = () => {
       try {
-        let content = JSON.parse(mockDefinition);
+        let content = JSON.parse(fileContent.result as string);
         content = {
             ...content,
             scenarios: content.scenarios.map(s => ({
@@ -43,6 +46,7 @@ export class MockDefinitionService {
             }))
           };
         const titlemockdef = (content as MockDefinition).metadata.title;
+        this.store.mockDefinitions = [content];
         this.store.state.mockDefinitions.set(titlemockdef, content as MockDefinition);
         this.store.state.mockDefinition = content as MockDefinition;
         observer.next(true);
@@ -50,6 +54,7 @@ export class MockDefinitionService {
         observer.error(error);
       }
       observer.complete();
+    };
   });
   }
 
@@ -61,6 +66,7 @@ export class MockDefinitionService {
         try {
           if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {
             this.logger.warn('Scenario not cloned because it contains undefined attributes');
+            observer.next(false);
             return;
           }
 
