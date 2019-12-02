@@ -5,7 +5,7 @@
   <mat-divider class="divider"></mat-divider>
   <div class="side-bar-middle">
     <mat-action-list *ngIf="!!mockDefinitions">
-      <button
+      <a
         mat-list-item
         *ngFor="let mockDefinition of mockDefinitions | keyvalue"
         [ngClass]="{ selected: isSelected(mockDefinition.key) }"
@@ -13,7 +13,10 @@
       >
         <mat-icon mat-list-icon>insert_drive_file_outline</mat-icon>
         <h4 mat-line>{{ mockDefinition.key }}</h4>
-      </button>
+        <button mat-icon-button>
+          <mat-icon mat-list-icon>close</mat-icon>
+        </button>
+      </a>
     </mat-action-list>
   </div>
   <mat-divider class="divider"></mat-divider>
