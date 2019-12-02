@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 import { Observable, EMPTY } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, flatMap, take, switchMap } from 'rxjs/operators';
+import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -20,6 +21,7 @@ export class CreateNewMockViewComponent implements OnInit {
     private router: Router,
     private location: Location,
     private openapiservice: OpenApiSpecService,
+    private readfileerservice: ReadFileService,
     private store: DesignerStore,
     private logger: NGXLogger
   ) {
@@ -44,15 +46,17 @@ export class CreateNewMockViewComponent implements OnInit {
       this.logger.debug('Form is invalid');
       return;
     }
-    observable.subscribe(mockDefinition => {
-        if (!!mockDefinition) {
-        this.logger.debug('MockDefinition created from form ', mockDefinition);
-        this.store.mockDefinitions = [mockDefinition];
-        this.router.navigateByUrl('endpoint-view');
-      }
-    },
-    err => console.log(err));
-
+    observable.subscribe(
+       value => {
+        if (!!value) {
+          this.logger.debug('MockDefinition created from form ', value);
+          this.store.mockDefinitions = [value];
+          this.router.navigateByUrl('endpoint-view');
+        } else {
+          this.logger.log(value);
+        }
+       }
+    );
   }
 
   /**
@@ -73,15 +77,20 @@ export class CreateNewMockViewComponent implements OnInit {
       return EMPTY;
     }
 
-    return this.openapiservice.readOpenApiSpec(this.formGroup.value.openApiFile).pipe(map(
-      value => ({
-        metadata: {
-          title: this.formGroup.value.title,
-          description: this.formGroup.value.description
-        },
-        openApi: value,
-        scenarios: []
-      } as MockDefinition)
-      ));
+    const obser = this.readfileerservice.read(this.formGroup.value.openApiFile).pipe( map(
+        value => value
+      ),
+      switchMap(value => {
+        return this.openapiservice.readOpenApiSpec(value).pipe(map(
+        openapi => ({
+          metadata: {
+            title: this.formGroup.value.title,
+            description: this.formGroup.value.description
+          },
+          openApi: openapi,
+          scenarios: []
+        } as MockDefinition)
+      )); }));
+    return obser;
   }
 }
