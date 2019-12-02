@@ -141,7 +141,7 @@ describe('ScenarioViewComponent', () => {
     });
   });
 
-  describe('ScenarioListItemComponent.cloneScenario', () => {
+  describe('ScenarioViewComponent.cloneScenario', () => {
     it('should clone a scenario from the store such that no name conflicts will be encountered', () => {
       const scenarios = [];
       for (let i = 0; i < 10; i++) {
