@@ -14,13 +14,16 @@ import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.
 import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
+import { ReadFileService } from '../services/read-file/read-file.service';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
+  let serviceFileReader: ReadFileService;
   const acceptedVerbs = Object.keys(VerbType).map(verb => verb.toLowerCase());
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [LoggerTestingModule] });
+    serviceFileReader = TestBed.get(ReadFileService);
     store = new DesignerStore(TestBed.get(NGXLogger));
   });
 
@@ -105,30 +108,36 @@ describe('DesignerStore', () => {
         verb: VerbType.GET,
         spec: null
       };
+      serviceFileReader.read(petStore).subscribe({
+        next: fileread => {
+          service.readOpenApiSpec(fileread).subscribe({
+            next: n => {
+            store.setEndpoints(n, false);
+            for (const path of Object.keys(n.paths)) {
+              for (const verb of acceptedVerbs) {
+                if (!!n.paths[path][verb]) {
+                  expect(
+                    store.state.endpoints.findIndex(
+                      endpoint =>
+                        endpoint.path === path &&
+                        endpoint.verb === VerbType[verb.toUpperCase()] &&
+                        endpoint.spec === n.paths[path][verb]
+                    )
+                  ).toBeGreaterThan(-1);
+                }
+              }
+            }
+            expect(
+              store.state.endpoints.findIndex(e => e === originalEndpoint)
+            ).toBeGreaterThan(-1);
+            done();
+          }});
+        }
+      });
+
       store.setState({ ...store.state, endpoints: [originalEndpoint] });
       expect(store.state.endpoints).toEqual([originalEndpoint]);
-      service.readOpenApiSpec(petStore).subscribe({
-        next: n => {
-        store.setEndpoints(n, false);
-        for (const path of Object.keys(n.paths)) {
-          for (const verb of acceptedVerbs) {
-            if (!!n.paths[path][verb]) {
-              expect(
-                store.state.endpoints.findIndex(
-                  endpoint =>
-                    endpoint.path === path &&
-                    endpoint.verb === VerbType[verb.toUpperCase()] &&
-                    endpoint.spec === n.paths[path][verb]
-                )
-              ).toBeGreaterThan(-1);
-            }
-          }
-        }
-        expect(
-          store.state.endpoints.findIndex(e => e === originalEndpoint)
-        ).toBeGreaterThan(-1);
-        done();
-      }});
+
     });
   });
 

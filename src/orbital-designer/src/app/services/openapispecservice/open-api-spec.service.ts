@@ -15,13 +15,9 @@ export class OpenApiSpecService {
    * @param openApiString a string representing the open api file and turn contents into an OpenApiSpec
    * @returns observable object of type Open Api Document
    */
-  readOpenApiSpec(openApiFile: File): Observable<OpenAPIV2.Document> {
+  readOpenApiSpec(openApiString: string): Observable<OpenAPIV2.Document> {
     return new Observable((observer) => {
-        const fileContent = new FileReader();
-        fileContent.readAsText(openApiFile);
-        fileContent.onload = () => {
         try {
-          const openApiString = fileContent.result as string;
           const validator = new OpenAPISchemaValidator({ version: 2 });
           const content = yaml.safeLoad(openApiString);
           const result = validator.validate(content);
@@ -36,7 +32,6 @@ export class OpenApiSpecService {
         observer.error(['file content is invalid yaml']);
       }
         observer.complete();
-        };
     });
   }
 

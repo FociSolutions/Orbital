@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class FilerReadService {
+export class ReadFileService {
   constructor(private logger: NGXLogger) {}
 
   /**
@@ -16,14 +16,17 @@ export class FilerReadService {
    */
   read(file: File): Observable<string> {
     const fileReader = new FileReader();
-    return Observable.fromEvent((resolve, reject) => {
-      fileContent.readAsText(file);
-      fileContent.onload = () => {
-        const contentString = fileContent.result as string;
-        resolve(contentString);
+    return new Observable((observer) => {
+      fileReader.readAsText(file);
+      fileReader.onload = () => {
+        const contentString = fileReader.result as string;
+        this.logger.debug('File read succeeded');
+        observer.next(contentString);
+      };
+      fileReader.onerror = (ev: ProgressEvent): void => {
+        this.logger.debug('There was an error reading the file');
+        observer.error(ev);
       };
     });
   }
-}
-
 }
