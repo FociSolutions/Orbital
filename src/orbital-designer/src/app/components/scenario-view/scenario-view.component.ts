@@ -75,7 +75,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   }
   /**
    * This function takes a list of scenarios and updates it to the new list of filtered scenarios
-   * @param scenarios The list of scenarios
+   * @param newScenarios The list of scenarios
    */
   setFilteredList(newScenarios: Scenario[]) {
     if (newScenarios) {
