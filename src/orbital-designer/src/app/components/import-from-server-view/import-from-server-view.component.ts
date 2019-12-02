@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
-import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-definition-object-validator/mock-definition-object-validator';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
@@ -96,9 +95,7 @@ export class ImportFromServerViewComponent implements OnInit {
       this.formArray = new FormArray(
         response.body.map(
           obj =>
-            new FormControl(obj, null, [
-              mockDefinitionObjectValidatorFactory(this.logger)
-            ])
+            new FormControl(obj, null)
         )
       );
       this.logger.debug(

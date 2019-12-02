@@ -4,7 +4,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 import { NGXLogger } from 'ngx-logger';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 import { Observable, EMPTY } from 'rxjs';
@@ -25,22 +24,9 @@ export class CreateNewMockViewComponent implements OnInit {
     private logger: NGXLogger
   ) {
     this.formGroup = new FormGroup({
-      title: new FormControl(
-        '',
-        extendBuiltInValidatorFactory(
-          Validators.compose([Validators.maxLength(200), Validators.required]),
-          logger
-        )
-      ),
-      description: new FormControl(
-        '',
-        extendBuiltInValidatorFactory(
-          Validators.compose([Validators.maxLength(1000)]),
-          logger
-        )
-      ),
-      openApiFile: new FormControl(
-      )
+      title: new FormControl(''),
+      description: new FormControl(''),
+      openApiFile: new FormControl()
     });
   }
 
