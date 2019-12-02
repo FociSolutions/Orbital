@@ -1,10 +1,6 @@
 import { DesignerStore } from './designer-store';
 import * as faker from 'faker';
 import { VerbType } from '../models/verb.type';
-import {
-  newScenario,
-  Scenario
-} from '../models/mock-definition/scenario/scenario.model';
 import { MockDefinition } from '../models/mock-definition/mock-definition.model';
 import validOpenApi from '../../test-files/valid-openapi-spec';
 import validMockDefinition from '../../test-files/test-mockdefinition-object';
@@ -13,6 +9,11 @@ import { OpenAPIV2 } from 'openapi-types';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
 import { TestBed } from '@angular/core/testing';
+import { Scenario } from '../models/mock-definition/scenario/scenario.model';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import * as uuid from 'uuid';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -41,7 +42,32 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.selectedScenario', () => {
     it('should set the selectedScenario', () => {
-      const Expected = newScenario(VerbType.GET, faker.random.words());
+      const mockverb = VerbType.GET;
+      const path = faker.random.words();
+      const Expected = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      mockverb,
+      path,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    } as unknown as Scenario;
       store.selectedScenario = Expected;
       expect(store.state.selectedScenario).toEqual(Expected);
     });
@@ -72,7 +98,8 @@ describe('DesignerStore', () => {
     });
 
     it('should update the state with new endpoints without clearing old ones', done => {
-      const petStore = validOpenApi;
+      const service = new OpenApiSpecService();
+      const petStore = new File([validOpenApi], 'test.yml');
       const originalEndpoint = {
         path: '/original-pets',
         verb: VerbType.GET,
@@ -80,17 +107,18 @@ describe('DesignerStore', () => {
       };
       store.setState({ ...store.state, endpoints: [originalEndpoint] });
       expect(store.state.endpoints).toEqual([originalEndpoint]);
-      MockDefinition.toOpenApiSpec(petStore).then(doc => {
-        store.setEndpoints(doc, false);
-        for (const path of Object.keys(doc.paths)) {
+      service.readOpenApiSpec(petStore).subscribe({
+        next: n => {
+        store.setEndpoints(n, false);
+        for (const path of Object.keys(n.paths)) {
           for (const verb of acceptedVerbs) {
-            if (!!doc.paths[path][verb]) {
+            if (!!n.paths[path][verb]) {
               expect(
                 store.state.endpoints.findIndex(
                   endpoint =>
                     endpoint.path === path &&
                     endpoint.verb === VerbType[verb.toUpperCase()] &&
-                    endpoint.spec === doc.paths[path][verb]
+                    endpoint.spec === n.paths[path][verb]
                 )
               ).toBeGreaterThan(-1);
             }
@@ -100,7 +128,7 @@ describe('DesignerStore', () => {
           store.state.endpoints.findIndex(e => e === originalEndpoint)
         ).toBeGreaterThan(-1);
         done();
-      });
+      }});
     });
   });
 
@@ -180,7 +208,33 @@ describe('DesignerStore', () => {
       store.mockDefinition = validMockDefinition;
       const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
-        scenarios.push(newScenario(VerbType.GET, '/pets'));
+        const mockverb = VerbType.GET;
+        const path = 'pets';
+        scenarios.push(
+          {
+          id: uuid.v4(),
+          metadata: {
+            title: 'New Scenario',
+            description: ''
+          },
+          mockverb,
+          path,
+          response: {
+            headers: new Map<string, string>(),
+            status: 0,
+            body: ''
+          },
+          requestMatchRules: {
+            headerRules: new Map<string, string>(),
+            queryRules: new Map<string, string>(),
+            bodyRules: [
+              {
+                type: BodyRuleType.BodyEquality,
+                rule: {}
+              }
+            ] as Array<BodyRule>
+          }
+        } as unknown as Scenario);
       }
       store.updateScenarios(scenarios);
       expect(store.state.mockDefinition.scenarios).toEqual(scenarios);
@@ -189,9 +243,34 @@ describe('DesignerStore', () => {
 
   describe('addOrUpdateScenario', () => {
     it('should add new scenario', () => {
+      const mockverb = VerbType.GET;
+      const path = faker.random.words();
       const input = {
         mock: validMockDefinition,
-        scenario: newScenario(VerbType.GET, faker.random.words())
+        scenario: {
+          id: uuid.v4(),
+          metadata: {
+            title: 'New Scenario',
+            description: ''
+          },
+          mockverb,
+          path,
+          response: {
+            headers: new Map<string, string>(),
+            status: 0,
+            body: ''
+          },
+          requestMatchRules: {
+            headerRules: new Map<string, string>(),
+            queryRules: new Map<string, string>(),
+            bodyRules: [
+              {
+                type: BodyRuleType.BodyEquality,
+                rule: {}
+              }
+            ] as Array<BodyRule>
+          }
+        } as unknown as Scenario
       };
       const expected = input.mock.scenarios.length + 1;
 

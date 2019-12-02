@@ -1,5 +1,5 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
-import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
+import { AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 /**
  * A validator function that is used to validate the content string in the
@@ -7,17 +7,18 @@ import { MockDefinition } from '../../models/mock-definition/mock-definition.mod
  * @param control The control to apply the validator function to
  */
 export function mockFileValidator(
-  control: AbstractControl
-): Promise<ValidationErrors | null> {
-  const file = control.value;
-  const fileReader = new FileReader();
-  return new Promise(resolve => {
+  mockdefservice: MockDefinitionService
+): AsyncValidatorFn {
+  return (control: AbstractControl): Promise<ValidationErrors | null> => {
+    const file = control.value;
+    const fileReader = new FileReader();
+    return new Promise(resolve => {
     fileReader.onloadend = () => {
-      MockDefinition.toMockDefinition(fileReader.result as string).then(
+      mockdefservice.deserialize(fileReader.result as string).subscribe(
         () => resolve(null),
         errs => resolve(errs)
       );
     };
     fileReader.readAsText(file);
-  });
+  }); };
 }

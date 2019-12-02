@@ -1,5 +1,6 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
+import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 /**
  * A validator function that is used to validate the content string in the
  * Form control against the openApi spec. Only works with a single file as input
@@ -12,7 +13,8 @@ export function openApiFileValidator(
   const fileReader = new FileReader();
   return new Promise(resolve => {
     fileReader.onloadend = () => {
-      MockDefinition.toOpenApiSpec(fileReader.result as string).then(
+      const service = new OpenApiSpecService();
+      service.readOpenApiSpec(new File ([fileReader.result], 'test.yml')).subscribe(
         () => resolve(null),
         errs => resolve(errs)
       );

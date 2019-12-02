@@ -40,7 +40,7 @@
   <div class="title row center">
     <mat-chip-list
       ><mat-chip [style.background-color]="this.endpointVerb | getVerbColor">{{
-        this.endpointVerb
+        this.endpointVerb | getVerbString
       }}</mat-chip>
     </mat-chip-list>
     <h3>

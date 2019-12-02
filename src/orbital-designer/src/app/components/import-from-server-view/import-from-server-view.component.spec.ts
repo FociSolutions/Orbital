@@ -16,6 +16,7 @@ import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import Json from '../../models/json';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
@@ -32,7 +33,7 @@ describe('ImportFromServerViewComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule
       ],
-      providers: [Location, DesignerStore]
+      providers: [Location, DesignerStore, MockDefinitionService]
     }).compileComponents();
   }));
 
@@ -69,17 +70,19 @@ describe('ImportFromServerViewComponent', () => {
   describe('ImportFromServerViewComponent.onSubmit', () => {
     it('should set the designer stores mockDefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      const store = TestBed.get(DesignerStore);
-      const expectedMockDefinition = await MockDefinition.toMockDefinition(
+      const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
+      const service = TestBed.get(MockDefinitionService);
+      service.deserialize(
         JSON.stringify(validMockDefinition)
-      );
-      const expectedMap = new Map([
-        [validMockDefinition.metadata.title, expectedMockDefinition]
-      ]);
+      ).subscribe({
+        next: n => {
+          expect(n).toBeTruthy();
+        }
+      });
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
-      expect(store.state.mockDefinitions).toEqual(expectedMap);
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
+      expect(storeSpy).toHaveBeenCalled();
     });
   });
 

@@ -35,9 +35,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
         this.endpointVerb = state.selectedEndpoint.verb;
         this.endpointPath = state.selectedEndpoint.path;
         this.scenarioList = state.mockDefinition.scenarios.filter(
-          s =>
-            s.path === this.endpointPath &&
-            s.verb.toUpperCase() === this.endpointVerb.toUpperCase()
+          s => s.path === this.endpointPath && s.verb === this.endpointVerb
         );
         this.logger.log(
           'ScenarioViewComponent:ngOnInit: Resulting ScenarioList: ',
