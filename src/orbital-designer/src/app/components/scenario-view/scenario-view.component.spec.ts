@@ -41,7 +41,6 @@ describe('ScenarioViewComponent', () => {
         GetEndpointScenariosPipe,
         GetVerbColorPipe,
         GetVerbStringPipe,
-        OverviewComponent,
         OverviewHeaderComponent
       ],
       imports: [
