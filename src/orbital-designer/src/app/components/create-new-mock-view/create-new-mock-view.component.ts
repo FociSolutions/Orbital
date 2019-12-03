@@ -78,7 +78,7 @@ export class CreateNewMockViewComponent implements OnInit {
     }
 
     const obser = this.readfileerservice.read(this.formGroup.value.openApiFile).pipe( map(
-        value => value
+        StringResultFromFileRead => StringResultFromFileRead
       ),
       switchMap(value => {
         return this.openapiservice.readOpenApiSpec(value).pipe(map(
