@@ -14,7 +14,7 @@
   <input
     #fileInput
     type="file"
-    (change)="emitFileContent($event.target.files)"
+    (change)="emitFileContent($event.target.files[0])"
     style="display:none;"
     [accept]="accept"
   />

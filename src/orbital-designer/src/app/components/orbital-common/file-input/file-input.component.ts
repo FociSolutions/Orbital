@@ -26,6 +26,7 @@ export class FileInputComponent implements OnInit {
   emitFileContent(file: File) {
     this.readfileparser.read(file).subscribe(
       fileReadresult => {
+        this.fileName = file.name;
         this.fileNameEmit.emit(this.fileName);
         this.fileContent.emit(fileReadresult);
         this.logger.log('File Contents emmited');
