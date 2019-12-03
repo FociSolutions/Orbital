@@ -15,6 +15,8 @@ export class ImportFromFileViewComponent implements OnInit {
   formGroup: FormGroup;
   private router: Router;
   private location: Location;
+  private mockDefinitionString: string;
+  private mockDefinitionNameString: string;
   private mockDefinitionService: MockDefinitionService;
   constructor(
     router: Router,
@@ -31,7 +33,14 @@ export class ImportFromFileViewComponent implements OnInit {
   }
 
   isValid() {
-    return !this.formGroup.invalid;
+    return !!this.mockDefinitionString;
+  }
+
+  setMockDefinition(fileStringFromFileInput: string) {
+    this.mockDefinitionString = fileStringFromFileInput;
+  }
+  setMockDefinitionName(fileStringName: string) {
+    this.mockDefinitionNameString = fileStringName;
   }
 
   /**

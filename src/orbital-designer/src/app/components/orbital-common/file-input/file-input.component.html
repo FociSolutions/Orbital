@@ -14,18 +14,15 @@
   <input
     #fileInput
     type="file"
-    (change)="onFileChange($event.target.files)"
+    (change)="emmitFileContent($event.target.files)"
     style="display:none;"
     [accept]="accept"
-    [multiple]="allowMultiple"
   />
   <input
     matInput
-    [formControl]="control"
     style="display:none;"
-    [errorStateMatcher]="errorStateMatcher"
   />
-  <mat-error *ngFor="let error of getErrors()">
-    {{ error }}
+  <mat-error>
+    {{ errormessage }}
   </mat-error>
 </mat-form-field>
