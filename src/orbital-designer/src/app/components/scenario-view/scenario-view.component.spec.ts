@@ -11,7 +11,6 @@ import { ScenarioListItemComponent } from './scenario-list-item/scenario-list-it
 import { MatCardModule } from '@angular/material/card';
 import { OverviewComponent } from '../overview/overview.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { By } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material';
 import { Router } from '@angular/router';
@@ -70,35 +69,7 @@ describe('ScenarioViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should go back to the endpoints when the endpoints button is clicked', () => {
-    spyOn(component, 'goToEndpoints');
-
-    const button = fixture.debugElement.nativeElement.querySelector(
-      'button#back-to-endpoints'
-    );
-    button.click();
-
-    fixture.whenStable().then(() => {
-      expect(component.goToEndpoints).toHaveBeenCalled();
-    });
-  });
-
-  it('should not show any scenarios if there are no scenarios to show', () => {
-    expect(
-      fixture.debugElement.query(By.css('app-scenario-list mat-list'))
-        .nativeNode.childNodes[0].childNodes.length
-    ).toBe(0);
-  });
-
   describe('ScenarioViewComponent.addScenario', () => {
-    it('should call addScenario function if the add scenario button is clicked', () => {
-      spyOn(component, 'addScenario');
-      const button = fixture.debugElement.nativeElement.querySelector(
-        'button#add'
-      );
-      button.click();
-      expect(component.addScenario).toHaveBeenCalled();
-    });
     it('should navigate to scenario editor', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       component.addScenario();
