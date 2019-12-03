@@ -31,8 +31,15 @@ export class FileInputComponent implements OnInit {
         this.fileContent.emit(fileReadresult);
         this.logger.log('File Contents emmited');
       },
-      err => this.errormessage = err
+     // err => this.errormessage = err
     );
+  }
+/**
+ * Listens to the error message emited by the parent component to display it to the user.
+ * @param errorMessage string representation of the error emitted by the parent component.
+ */
+gotErrorMessage(errorMessage: string) {
+    this.errormessage = errorMessage;
   }
 
   ngOnInit() {}

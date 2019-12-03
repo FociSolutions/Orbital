@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -12,29 +12,35 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./import-from-file-view.component.scss']
 })
 export class ImportFromFileViewComponent implements OnInit {
-  private router: Router;
-  private location: Location;
   private mockDefinitionString: string;
   mockDefinitionNameString: string;
-  private mockDefinitionService: MockDefinitionService;
+  @Output() errorMessageToEmit = new EventEmitter<string>();
+
   constructor(
-    router: Router,
-    location: Location,
-    mockDefinitionService: MockDefinitionService,
+    private router: Router,
+    private location: Location,
+    private mockDefinitionService: MockDefinitionService,
     private logger: NGXLogger
-  ) {
-    this.router = router;
-    this.location = location;
-    this.mockDefinitionService = mockDefinitionService;
-  }
+  ) {}
 
   isValid() {
     return !!this.mockDefinitionString;
   }
 
+  /**
+   * Sets the string represantation of the file's content from the input-file component.
+   *
+   * @param fileStringFromFileInput string representation of the file's content
+   */
   setMockDefinition(fileStringFromFileInput: string) {
     this.mockDefinitionString = fileStringFromFileInput;
   }
+
+  /**
+   * Sets the file name in the component. This value is emited from the input-file component.
+   *
+   * @param fileStringName string representation of the file's name
+   */
   setMockDefinitionName(fileStringName: string) {
     this.mockDefinitionNameString = fileStringName;
   }
@@ -54,6 +60,10 @@ export class ImportFromFileViewComponent implements OnInit {
             this.logger.log('mock definition was saved to the store');
             this.router.navigateByUrl('endpoint-view');
         }
+      },
+      error => {
+        this.logger.log('mock definition is invalid and was not saved to the store');
+        this.errorMessageToEmit.emit(error as string);
       }
     );
 

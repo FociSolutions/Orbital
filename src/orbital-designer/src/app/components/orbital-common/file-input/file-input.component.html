@@ -22,7 +22,9 @@
     matInput
     style="display:none;"
   />
-  <mat-error>
+  <mat-error
+  (errorMessageToEmit)="($event)"
+  >
     {{ errormessage }}
   </mat-error>
 </mat-form-field>
