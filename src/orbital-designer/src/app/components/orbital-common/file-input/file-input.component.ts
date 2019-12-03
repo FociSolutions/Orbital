@@ -31,7 +31,7 @@ export class FileInputComponent implements OnInit {
         this.fileContent.emit(fileReadresult);
         this.logger.log('File Contents emmited');
       },
-     // err => this.errormessage = err
+      err => this.errormessage = err
     );
   }
 /**
