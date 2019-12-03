@@ -9,7 +9,7 @@ import { ScenarioListComponent } from './scenario-list/scenario-list.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { ScenarioListItemComponent } from './scenario-list-item/scenario-list-item.component';
 import { MatCardModule } from '@angular/material/card';
-import { OverviewHeaderComponent } from '../overview/overview.component';
+import { OverviewHeaderComponent } from '../orbital-common/overview/overview.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material';

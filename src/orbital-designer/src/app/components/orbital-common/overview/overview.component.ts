@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
-import { Metadata } from '../../models/mock-definition/metadata.model';
+import { Metadata } from '../../../models/mock-definition/metadata.model';
 
 @Component({
   selector: 'app-overview',
