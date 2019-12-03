@@ -81,15 +81,16 @@ export class SearchableSelectionListComponent implements OnInit {
     this.itemSelected.emit(
       this.matList.selectedOptions.selected.map(option => option.value)
     );
+
+    this.emitSearchResultsSelected();
   }
 
   /**
    * Outputs the selected items through the itemSelected emitter
    * @param event The MatSelectionListChange emitted from the material selection list component
    */
-  optionSelected(event: MatSelectionListChange) {
-    const selected = event.source.selectedOptions.selected;
-    this.itemSelected.emit(selected.map(option => option.value));
+  optionSelected() {
+    this.emitSearchResultsSelected();
   }
 
   /**
@@ -116,6 +117,7 @@ export class SearchableSelectionListComponent implements OnInit {
           value
         )
     );
+    this.emitSearchResultsSelected();
   }
 
   get isEmpty() {
@@ -138,4 +140,14 @@ export class SearchableSelectionListComponent implements OnInit {
     return target.toLowerCase().includes(substring.toLowerCase());
   }
   ngOnInit() {}
+
+  /**
+   * Emits the selected items in the search results that are visible to the user
+   */
+  private emitSearchResultsSelected() {
+    this.itemSelected.emit(this.matList.selectedOptions.selected
+    .filter(e => !this.filteredOutOptions.includes(e))
+    .filter(option => option.selected)
+    .map(option => option.value));
+  }
 }

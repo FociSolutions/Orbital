@@ -8,11 +8,16 @@ import { ImportFromServerViewComponent } from './components/import-from-server-v
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
+import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
 
 const routes: Routes = [
   { path: '', component: HomeViewComponent },
   { path: 'create-new-mock', component: CreateNewMockViewComponent },
   { path: 'import-from-file', component: ImportFromFileViewComponent },
+  {
+    path: 'download-mockdefinitions',
+    component: DownloadMockdefinitionsComponent
+  },
   { path: 'import-from-server', component: ImportFromServerViewComponent },
   {
     path: 'endpoint-view',
