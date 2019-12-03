@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
-import { OverviewComponent } from './overview.component';
+import { OverviewHeaderComponent } from './overview.component';
 
 describe('OverviewComponent', () => {
-  let component: OverviewComponent;
-  let fixture: ComponentFixture<OverviewComponent>;
+  let component: OverviewHeaderComponent;
+  let fixture: ComponentFixture<OverviewHeaderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OverviewComponent],
+      declarations: [OverviewHeaderComponent],
       imports: [MatCardModule]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OverviewComponent);
+    fixture = TestBed.createComponent(OverviewHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

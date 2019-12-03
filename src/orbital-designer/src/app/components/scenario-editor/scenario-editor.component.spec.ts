@@ -5,7 +5,7 @@ import { ScenarioListComponent } from '../scenario-view/scenario-list/scenario-l
 import { ScenarioListItemComponent } from '../scenario-view/scenario-list-item/scenario-list-item.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
-import { OverviewComponent } from '../overview/overview.component';
+import { OverviewHeaderComponent } from '../overview/overview.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import {
   MatCardModule,
@@ -46,7 +46,7 @@ describe('ScenarioEditorComponent', () => {
         ScenarioListItemComponent,
         SideBarComponent,
         GetEndpointScenariosPipe,
-        OverviewComponent,
+        OverviewHeaderComponent,
         AddBodyRuleContainerComponent,
         AddBodyRuleComponent,
         BodyRuleListItemComponent,

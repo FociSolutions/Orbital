@@ -6,7 +6,7 @@ import { Metadata } from '../../models/mock-definition/metadata.model';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit {
+export class OverviewHeaderComponent implements OnInit {
   @Input() metadata: Metadata;
   @Input() header: TemplateRef<any>;
   constructor() {}
