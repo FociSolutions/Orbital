@@ -13,7 +13,7 @@
       >
         <mat-icon mat-list-icon>insert_drive_file_outline</mat-icon>
         <h4 mat-line>{{ mockDefinition.key }}</h4>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="onDismiss(mockDefinition)">
           <mat-icon mat-list-icon>close</mat-icon>
         </button>
       </a>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DesignerStore } from '../../../store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Router } from '@angular/router';
+import { NGXLogger } from 'ngx-logger';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-side-bar',
@@ -13,7 +15,11 @@ export class SideBarComponent implements OnInit {
   selectedMockDefinition: string;
   title = 'MOCK DEFINITIONS';
 
-  constructor(private store: DesignerStore, private router: Router) {
+  constructor(
+    private store: DesignerStore,
+    private router: Router,
+    private logger: NGXLogger
+  ) {
     this.store.state$.subscribe(state => {
       if (!!state.mockDefinition) {
         this.mockDefinitions = state.mockDefinitions;
@@ -41,5 +47,14 @@ export class SideBarComponent implements OnInit {
     this.store.mockDefinition = mockDefinition;
     this.router.navigateByUrl('endpoint-view');
   }
+
+  /**
+   * Dismisses a Mockdefinition from the Designer view
+   */
+  onDismiss(mockDefinition: KeyValue<string, MockDefinition>) {
+    this.mockDefinitions.delete(mockDefinition.key);
+    this.logger.info('Mockdefinition Dismissed', mockDefinition);
+  }
+
   ngOnInit() {}
 }
