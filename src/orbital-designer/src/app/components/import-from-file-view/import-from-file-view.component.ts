@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
 export class ImportFromFileViewComponent implements OnInit {
   private mockDefinitionString: string;
   mockDefinitionNameString: string;
-  @Output() errorMessageToEmit = new EventEmitter<string>();
+  @Output() errorMessageToEmit = new EventEmitter();
 
   constructor(
     private router: Router,
