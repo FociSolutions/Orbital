@@ -22,14 +22,11 @@ export class MockDefinitionService {
    * @param mockDefinition String representation of mock definition
    */
   public deserialize(
-    mockDefinition: File
+    mockDefinition: string
   ): Observable<boolean> {
   return new Observable((observer) => {
-    const fileContent = new FileReader();
-    fileContent.readAsText(mockDefinition);
-    fileContent.onload = () => {
       try {
-        let content = JSON.parse(fileContent.result as string);
+        let content = JSON.parse(mockDefinition);
         content = {
             ...content,
             scenarios: content.scenarios.map(s => ({
@@ -54,7 +51,6 @@ export class MockDefinitionService {
         observer.error(error);
       }
       observer.complete();
-    };
   });
   }
 

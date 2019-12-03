@@ -15,6 +15,7 @@ import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api
 import { OpenAPIV2 } from 'openapi-types';
 import { EMPTY } from 'rxjs';
 import * as yaml from 'js-yaml';
+import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
@@ -29,7 +30,7 @@ describe('CreateNewMockViewComponent', () => {
         LoggerTestingModule,
         RouterTestingModule.withRoutes([])
       ],
-      providers: [Location, DesignerStore, OpenApiSpecService]
+      providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService]
     }).compileComponents();
   }));
 
@@ -95,9 +96,9 @@ describe('CreateNewMockViewComponent', () => {
     component.formGroup.setValue({
       ...component.formGroup.value,
       title,
-      description,
-      openApiFile: new File([validOpenApiText], 'test-file.yml')
+      description
     });
+    component.setOpenApiFile(validOpenApiText);
     openApi = yaml.safeLoad(validOpenApiText);
     return {
       metadata: {

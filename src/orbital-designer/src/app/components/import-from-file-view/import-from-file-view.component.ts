@@ -12,11 +12,10 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./import-from-file-view.component.scss']
 })
 export class ImportFromFileViewComponent implements OnInit {
-  formGroup: FormGroup;
   private router: Router;
   private location: Location;
   private mockDefinitionString: string;
-  private mockDefinitionNameString: string;
+  mockDefinitionNameString: string;
   private mockDefinitionService: MockDefinitionService;
   constructor(
     router: Router,
@@ -27,9 +26,6 @@ export class ImportFromFileViewComponent implements OnInit {
     this.router = router;
     this.location = location;
     this.mockDefinitionService = mockDefinitionService;
-    this.formGroup = new FormGroup({
-      mockDefinitionFile: new FormControl()
-    });
   }
 
   isValid() {
@@ -49,8 +45,7 @@ export class ImportFromFileViewComponent implements OnInit {
    * the form is invalid the function does nothing.
    */
  createMock() {
-    const observable = this.mockDefinitionService.deserialize(this.formGroup.controls
-      .mockDefinitionFile.value as File).pipe(map(
+    const observable = this.mockDefinitionService.deserialize(this.mockDefinitionString).pipe(map(
         value => value
       ));
     observable.subscribe(

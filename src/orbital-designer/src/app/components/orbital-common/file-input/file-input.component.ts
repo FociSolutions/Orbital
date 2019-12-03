@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
+import { ReadFileService } from 'src/app/services/read-file/read-file.service';
+import { map, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-file-input',
@@ -10,8 +11,8 @@ import { NGXLogger } from 'ngx-logger';
 export class FileInputComponent implements OnInit {
   constructor(
     private logger: NGXLogger,
-
-  ){}
+    private readfileparser: ReadFileService
+  ) {}
   fileName = '';
   @Input() label = '';
   @Input() accept = '';
@@ -23,11 +24,14 @@ export class FileInputComponent implements OnInit {
    * Emmits the content of the file as a string
    */
   emitFileContent(file: File) {
-
-
-    this.fileNameEmit.emit(this.fileName);
-    this.fileContent.emit(file as string);
-    this.logger.log('File Contents emmited');
+    this.readfileparser.read(file).subscribe(
+      fileReadresult => {
+        this.fileNameEmit.emit(this.fileName);
+        this.fileContent.emit(fileReadresult);
+        this.logger.log('File Contents emmited');
+      },
+      err => this.errormessage = err
+    );
   }
 
   ngOnInit() {}

@@ -7,8 +7,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 import { Observable, EMPTY } from 'rxjs';
-import { map, flatMap, take, switchMap } from 'rxjs/operators';
-import { ReadFileService } from 'src/app/services/read-file/read-file.service';
+import { map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -17,18 +16,17 @@ import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 })
 export class CreateNewMockViewComponent implements OnInit {
   formGroup: FormGroup;
+  private openApiFile: string;
   constructor(
     private router: Router,
     private location: Location,
     private openapiservice: OpenApiSpecService,
-    private readfileerservice: ReadFileService,
     private store: DesignerStore,
     private logger: NGXLogger
   ) {
     this.formGroup = new FormGroup({
       title: new FormControl(''),
-      description: new FormControl(''),
-      openApiFile: new FormControl()
+      description: new FormControl('')
     });
   }
 
@@ -59,6 +57,9 @@ export class CreateNewMockViewComponent implements OnInit {
     );
   }
 
+  setOpenApiFile(openApiFileString: string) {
+    this.openApiFile = openApiFileString;
+  }
   /**
    * Goes back to the previous location in the app
    */
@@ -77,11 +78,7 @@ export class CreateNewMockViewComponent implements OnInit {
       return EMPTY;
     }
 
-    const obser = this.readfileerservice.read(this.formGroup.value.openApiFile).pipe( map(
-        StringResultFromFileRead => StringResultFromFileRead
-      ),
-      switchMap(value => {
-        return this.openapiservice.readOpenApiSpec(value).pipe(map(
+    const obser = this.openapiservice.readOpenApiSpec(this.openApiFile).pipe(map(
         openapi => ({
           metadata: {
             title: this.formGroup.value.title,
@@ -90,7 +87,7 @@ export class CreateNewMockViewComponent implements OnInit {
           openApi: openapi,
           scenarios: []
         } as MockDefinition)
-      )); }));
+      ));
     return obser;
   }
 }

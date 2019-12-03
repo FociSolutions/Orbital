@@ -6,9 +6,10 @@ import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FileInputComponent } from './file-input.component';
 import * as faker from 'faker';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 
 describe('FileInputComponent', () => {
-  let control: FormControl;
   let component: FileInputComponent;
   let fixture: ComponentFixture<FileInputComponent>;
 
@@ -21,10 +22,18 @@ describe('FileInputComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatInputModule,
-        BrowserAnimationsModule
-      ]
+        BrowserAnimationsModule,
+        LoggerTestingModule
+      ],
+      providers: [ReadFileService]
     }).compileComponents();
   }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(FileInputComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
