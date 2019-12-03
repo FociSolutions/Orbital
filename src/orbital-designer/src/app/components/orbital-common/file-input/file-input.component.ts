@@ -21,7 +21,7 @@ export class FileInputComponent implements OnInit {
   @Output() fileNameEmit = new EventEmitter<string>();
 
   /**
-   * Emmits the content of the file as a string
+   * Emits the content of the file as a string
    */
   emitFileContent(file: File) {
     this.readfileparser.read(file).subscribe(
