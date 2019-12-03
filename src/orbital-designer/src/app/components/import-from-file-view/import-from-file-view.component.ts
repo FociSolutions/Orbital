@@ -51,7 +51,7 @@ export class ImportFromFileViewComponent implements OnInit {
     observable.subscribe(
       value => {
         if (value) {
-            this.logger.log('mock deifinition was saved to the store');
+            this.logger.log('mock definition was saved to the store');
             this.router.navigateByUrl('endpoint-view');
         }
       }
