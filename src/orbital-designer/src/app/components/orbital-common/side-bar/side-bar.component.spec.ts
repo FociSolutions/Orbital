@@ -55,7 +55,7 @@ describe('SideBarComponent', () => {
     });
   });
   // Test the updateSelected method that passes by passing the latest mock definition stored in the state
-  // and compared against a valid mock modefintion.
+  // and compared against a valid mock mockdefinition.
   describe('SideBarComponent.updateSelected', () => {
     it('should return true if the mockDefinitions menu item is updated and navigate to endpoint-view', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
