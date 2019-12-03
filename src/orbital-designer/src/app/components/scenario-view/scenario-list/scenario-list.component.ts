@@ -18,6 +18,12 @@ export class ScenarioListComponent implements OnInit {
   mockDefinition: MockDefinition;
   isHoveringOverMenu: boolean;
 
+  constructor(private store: DesignerStore, private logger: NGXLogger) {
+    this.store.state$.subscribe(state => {
+      this.mockDefinition = state.mockDefinition;
+    });
+  }
+
   /**
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
@@ -26,12 +32,6 @@ export class ScenarioListComponent implements OnInit {
     this.logger.debug(scenario);
     this.logger.debug('scenario to clone emmited');
     this.shouldCloneToView.emit(scenario);
-  }
-
-  constructor(private store: DesignerStore, private logger: NGXLogger) {
-    this.store.state$.subscribe(state => {
-      this.mockDefinition = state.mockDefinition;
-    });
   }
 
   ngOnInit() {}
