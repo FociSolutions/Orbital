@@ -63,7 +63,7 @@ export class ImportFromFileViewComponent implements OnInit {
       },
       error => {
         this.logger.log('mock definition is invalid and was not saved to the store');
-        this.errorMessageToEmit.emit(error as string);
+        this.errorMessageToEmit.emit(error);
       }
     );
 
