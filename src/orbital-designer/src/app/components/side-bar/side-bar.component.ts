@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DesignerStore } from '../../store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValue } from '@angular/common';
 
@@ -45,10 +45,14 @@ export class SideBarComponent implements OnInit {
 
   /**
    * Dismisses a Mockdefinition from the Designer view
+   * Navigates back to homepage if the last mockdefinition is dismissed
    */
   onDismiss(mockDefinition: KeyValue<string, MockDefinition>) {
     this.mockDefinitions.delete(mockDefinition.key);
     this.logger.info('Mockdefinition Dismissed', mockDefinition);
+    if (this.mockDefinitions.size <= 0) {
+      this.router.navigate(['']);
+    }
   }
 
   ngOnInit() {}
