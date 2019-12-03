@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DesignerStore } from '../../store/designer-store';
+import { DesignerStore } from '../../../store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Router } from '@angular/router';
 

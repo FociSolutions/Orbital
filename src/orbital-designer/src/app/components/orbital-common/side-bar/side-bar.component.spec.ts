@@ -6,7 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
-import validMockDefinition from '../../../test-files/test-mockdefinition-object';
+import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';

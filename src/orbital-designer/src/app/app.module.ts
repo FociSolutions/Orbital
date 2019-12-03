@@ -28,7 +28,7 @@ import { FilterInvalidControlsPipe } from './pipes/filter-invalid-controls/filte
 import { EndpointListComponent } from './components/endpoint-view/endpoint-list/endpoint-list.component';
 import { OverviewHeaderComponent } from './components/orbital-common/overview/overview.component';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
-import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
 import { ScenarioListComponent } from './components/scenario-view/scenario-list/scenario-list.component';
 import { ScenarioListItemComponent } from './components/scenario-view/scenario-list-item/scenario-list-item.component';
