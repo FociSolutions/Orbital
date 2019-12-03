@@ -17,7 +17,6 @@ export class ScenarioListComponent implements OnInit {
   triggerOpen: boolean;
   mockDefinition: MockDefinition;
   isHoveringOverMenu: boolean;
-  @Output() shouldClone = new EventEmitter<Scenario>();
 
   /**
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
