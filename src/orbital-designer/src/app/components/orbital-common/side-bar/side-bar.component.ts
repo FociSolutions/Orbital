@@ -55,8 +55,8 @@ export class SideBarComponent implements OnInit {
   onDismiss(mockDefinition: KeyValue<string, MockDefinition>) {
     this.mockDefinitions.delete(mockDefinition.key);
     this.logger.info('Mockdefinition Dismissed', mockDefinition);
-    if (this.mockDefinitions.size <= 0) {
-      this.router.navigate(['']);
+    if (!this.mockDefinitions.size) {
+      this.router.navigate(['/']);
     }
   }
 
