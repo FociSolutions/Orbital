@@ -16,9 +16,9 @@ export class FileInputComponent implements OnInit {
   fileName = '';
   @Input() label = '';
   @Input() accept = '';
-  @Input() errormessage ? = '';
+  @Input() errormessage ?;
   @Output() fileContent = new EventEmitter<string>();
-  @Output() fileNameEmit = new EventEmitter();
+  @Output() fileNameEmit = new EventEmitter<string>();
 
   /**
    * Emits the content of the file as a string
