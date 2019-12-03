@@ -21,7 +21,7 @@ export class ImportFromFileViewComponent implements OnInit {
     router: Router,
     location: Location,
     mockDefinitionService: MockDefinitionService,
-    logger: NGXLogger
+    private logger: NGXLogger
   ) {
     this.router = router;
     this.location = location;
@@ -51,6 +51,7 @@ export class ImportFromFileViewComponent implements OnInit {
     observable.subscribe(
       value => {
         if (value) {
+            this.logger.log('mock deifnition was saved to the store');
             this.router.navigateByUrl('endpoint-view');
         }
       }
