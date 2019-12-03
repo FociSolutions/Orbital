@@ -83,4 +83,15 @@ export class OrbitalAdminService {
     this.logger.debug('Sent GET request to ' + url + '/' + id);
     return this.httpClient.request(request).pipe(timeout(3000));
   }
+   /*
+   * POSTs a list of Mockdefinitions to the server
+   * @param url The url to post the mockdefinitions to
+   * @param mockdefinition The mockdefinitions to be posted
+   */
+  exportMockDefinitions(
+    url: string,
+    mockdefinitions: MockDefinition[]
+  ): Observable<boolean>[] {
+    return mockdefinitions.map((mockdefinition) => this.exportMockDefinition(url, mockdefinition));
+  }
 }

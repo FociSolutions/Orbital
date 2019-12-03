@@ -41,6 +41,7 @@ import { AddMetadataComponent } from './components/scenario-editor/add-metadata/
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
+import { ExportToServerViewComponent } from './export-to-server-view/export-to-server-view.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { DownloadMockdefinitionsComponent } from './components/download-mockdefi
     AddRequestMatchRuleComponent,
     AddMetadataComponent,
     AddResponseComponent,
-    DownloadMockdefinitionsComponent
+    DownloadMockdefinitionsComponent,
+    ExportToServerViewComponent
   ],
   imports: [
     BrowserModule,

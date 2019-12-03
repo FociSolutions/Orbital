@@ -1,0 +1,53 @@
+<mat-card class="column">
+    <mat-card-title class="capitalize">Export to Server</mat-card-title>
+    <mat-card-subtitle
+      >Export local Mockdefinition file(s) to a server</mat-card-subtitle
+    >
+    <div class="column center-hr flex-grow div-body">
+      <app-tool-tip
+        message="Enter the Server URI that your MockDefinition files should be exported to"
+      >
+      <div class="container">
+          <app-text-input
+            title="Server URI"
+            maxLength="200"
+            [control]="inputControl"
+          ></app-text-input>
+          <div *ngIf="disabled" id="submit-buttons">
+            <mat-spinner diameter="25" [id]="getSpinnerId()"></mat-spinner>
+          </div>
+        </div>
+      </app-tool-tip>
+      <div class="error-message">{{ exportStatusMessage }}</div>
+      <app-shuttle-list
+        class="column flex-grow"
+        [list]="formArray.controls"
+        [itemToStringFn]="controlsMockDefinitionToString"
+        [itemTemplate]="listItemTemplate"
+        [emptyListMessage]="emptyListMessageServerBox"
+        leftTitle="Local Files"
+        rightTitle="Files Selected to Export"
+        (outputList)="onListOutput($event)"
+      ></app-shuttle-list>
+    </div>
+    <div class="row button-div">
+      <button mat-raised-button color="primary" (click)="onBack()">
+        Back
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="disabled"
+        (click)="onSubmit()"
+      >
+        Upload
+      </button>
+    </div>
+  </mat-card>
+
+  <ng-template #listItemTemplate let-control="item">
+    <div class="list-item">
+      <h5 class="capitalize">{{ control.value?.metadata?.title }}</h5>
+      <mat-divider></mat-divider>
+    </div>
+  </ng-template>
