@@ -33,8 +33,6 @@ export class ScenarioListComponent implements OnInit {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
     });
-
-    //this.store.selectedScenario = this.scenario;
   }
 
   ngOnInit() {}
