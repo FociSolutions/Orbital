@@ -48,6 +48,13 @@ export class DesignerStore extends Store<State> {
   }
 
   /**
+   * Deletes a mock definition by title
+   */
+   deleteMockDefinitionByTitle(mockTitle: string) {
+     this.state.mockDefinitions.delete(mockTitle);
+  }
+
+  /**
    * This setter updates the selected endpoint for the designer store
    */
   set selectedEndpoint(endpoint: Endpoint) {
