@@ -290,6 +290,32 @@ describe('DesignerStore', () => {
     });
   });
 
+  describe('DesignerStore.appendMockDefinition()', () => {
+    it('should append a mock definition to the store if the store is empty', () => {
+      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.appendMockDefinition(validMockDefinition);
+      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(store.state.mockDefinition).toEqual(null);
+    });
+
+    it('should append a mock definition to the store if the store contains other mock definitions', () => {
+      const mockDef1 = validMockDefinition;
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      mockDef2.metadata.title = faker.random.word();
+      store.mockDefinitions = [mockDef1];
+      store.appendMockDefinition(mockDef2);
+      expect(store.state.mockDefinitions.size).toBe(2);
+    });
+
+    it('should overwrite a mock definition to the store if the store contains other mock definitions when appending', () => {
+      const mockDef1 = validMockDefinition;
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      store.mockDefinitions = [mockDef1];
+      store.appendMockDefinition(mockDef2);
+      expect(store.state.mockDefinitions.size).toBe(1);
+    });
+  });
+
   describe('addOrUpdateScenario', () => {
     it('should add new scenario', () => {
       const mockverb = VerbType.GET;
