@@ -15,7 +15,7 @@ export class FileInputComponent implements OnInit {
   fileName = '';
   @Input() label = '';
   @Input() accept = '';
-  errormessage: string[];
+  errormessages: string[];
   @Output() fileContent = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
 
@@ -30,16 +30,16 @@ export class FileInputComponent implements OnInit {
         this.fileContent.emit(fileReadresult);
         this.logger.log('File Contents emmited');
       },
-      err => this.errormessage = err
+      err => this.errormessages = err
     );
   }
 
 @Input()
   set errorMessage(errorMessage: string[]) {
     if (errorMessage) {
-       this.errormessage = errorMessage;
+       this.errormessages = errorMessage;
     } else {
-      this.errormessage = [];
+      this.errormessages = [];
     }
   }
 
