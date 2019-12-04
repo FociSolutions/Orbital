@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { map} from 'rxjs/operators';
 export class CreateNewMockViewComponent implements OnInit {
   formGroup: FormGroup;
   private openApiFile: string;
-  @Output() errorMessageToEmit = new EventEmitter();
+  errorMessageToEmitFromCreate: string[];
   constructor(
     private router: Router,
     private location: Location,
@@ -56,8 +56,9 @@ export class CreateNewMockViewComponent implements OnInit {
         }
        },
        error => {
-        this.logger.log('mock definition is invalid and was not saved to the store');
+        this.logger.log('openapi file provided is invalid');
         this.logger.log(error);
+        this.errorMessageToEmitFromCreate = error;
       }
     );
   }
@@ -80,7 +81,7 @@ export class CreateNewMockViewComponent implements OnInit {
    formToMockDefinition(): Observable<MockDefinition> {
     if (this.formGroup.invalid) {
       this.logger.debug('Form is invalid');
-      this.errorMessageToEmit.emit('Form is invalid');
+      this.errorMessageToEmitFromCreate = ['Form is invalid'];
       return EMPTY;
     }
 
@@ -92,11 +93,7 @@ export class CreateNewMockViewComponent implements OnInit {
           },
           openApi: openapi,
           scenarios: []
-        } as MockDefinition),
-        error => {
-          this.logger.log('openapi file provided is invalid');
-          this.errorMessageToEmit.emit(error);
-        }
+        } as MockDefinition)
       ));
     return obser;
   }

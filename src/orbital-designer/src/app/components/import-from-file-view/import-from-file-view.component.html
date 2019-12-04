@@ -9,6 +9,7 @@
     (fileNameEmit)="setMockDefinitionName($event)"
     label="Select File - Required"
     accept=".json"
+    [errorMessage]="errorMessageToEmitFromCreate"
   >
   </app-file-input>
   <mat-card-subtitle>Imported Mock Definitions</mat-card-subtitle>
@@ -33,7 +34,6 @@
     <button
       mat-raised-button
       color="primary"
-      [disabled]="isValid()"
       (click)="createMock()"
     >
       Next

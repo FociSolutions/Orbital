@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
-import { map, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-file-input',
@@ -16,7 +15,7 @@ export class FileInputComponent implements OnInit {
   fileName = '';
   @Input() label = '';
   @Input() accept = '';
-  @Input() errormessage ?;
+  errormessage: string[];
   @Output() fileContent = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
 
@@ -34,12 +33,14 @@ export class FileInputComponent implements OnInit {
       err => this.errormessage = err
     );
   }
-/**
- * Listens to the error message emited by the parent component to display it to the user.
- * @param errorMessage string representation of the error emitted by the parent component.
- */
-gotErrorMessage(errorMessage: string) {
-    this.errormessage = errorMessage;
+
+@Input()
+  set errorMessage(errorMessage: string[]) {
+    if (errorMessage) {
+       this.errormessage = errorMessage;
+    } else {
+      this.errormessage = [];
+    }
   }
 
   ngOnInit() {}

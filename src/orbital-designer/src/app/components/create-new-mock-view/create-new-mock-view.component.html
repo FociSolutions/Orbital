@@ -21,6 +21,7 @@
         (fileContent)="setOpenApiFile($event)"
         label="Select File - Required"
         accept=".yml,.yaml, .json"
+        [errorMessage]="errorMessageToEmitFromCreate"
       >
       </app-file-input
     ></app-tool-tip>

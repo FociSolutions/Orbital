@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -14,7 +14,8 @@ import { map } from 'rxjs/operators';
 export class ImportFromFileViewComponent implements OnInit {
   private mockDefinitionString: string;
   mockDefinitionNameString: string;
-  @Output() errorMessageToEmit = new EventEmitter();
+  validFileFlag = true;
+  errorMessageToEmitFromCreate: string[];
 
   constructor(
     private router: Router,
@@ -63,7 +64,8 @@ export class ImportFromFileViewComponent implements OnInit {
       },
       error => {
         this.logger.log('mock definition is invalid and was not saved to the store');
-        this.errorMessageToEmit.emit(error);
+        this.errorMessageToEmitFromCreate = error;
+        this.validFileFlag = false;
       }
     );
 
