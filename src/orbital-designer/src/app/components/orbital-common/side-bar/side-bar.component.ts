@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DesignerStore } from '../../../store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValue } from '@angular/common';
 
@@ -14,6 +14,10 @@ export class SideBarComponent implements OnInit {
   mockDefinitions: Map<string, MockDefinition>;
   selectedMockDefinition: string;
   title = 'MOCK DEFINITIONS';
+
+  triggerOpenConfirmBox: boolean;
+
+  mockDefinitionToBeDismissed: KeyValue<string, MockDefinition>;
 
   constructor(
     private store: DesignerStore,
@@ -60,5 +64,22 @@ export class SideBarComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles the response from the confirm box
+   * @param shouldConfirm The button pressed for the cancel box
+   */
+  onConfirmDialogAction(shouldConfirm: boolean) {
+    this.triggerOpenConfirmBox = true;
+    if (shouldConfirm) {
+      this.onDismiss(this.mockDefinitionToBeDismissed);
+      this.logger.debug('The user has confirmed Mockdefinition deletion');
+    }
+    this.triggerOpenConfirmBox = false;
+  }
   ngOnInit() {}
+
+  openDialogBox(mockDefinition: KeyValue<string, MockDefinition>) {
+    this.mockDefinitionToBeDismissed = mockDefinition;
+    this.triggerOpenConfirmBox = true;
+  }
 }
