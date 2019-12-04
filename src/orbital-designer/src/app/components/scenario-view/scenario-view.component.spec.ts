@@ -335,4 +335,107 @@ describe('ScenarioViewComponent', () => {
       expect(expectedResults).toEqual(1);
     });
   });
+
+  it('should display scenario even if status code is invalid', () => {
+    component.scenarios[0].response.status = 0;
+
+    // component should not crash
+    expect(component).toBeTruthy();
+  });
+
+  it('should return Not Found for a 404 status', () => {
+    const mockverb = VerbType.GET;
+    const path = '/test';
+    const scenario = {
+     id: uuid.v4(),
+     metadata: {
+       title: 'New Scenario',
+       description: ''
+     },
+     mockverb,
+     path,
+     response: {
+       headers: new Map<string, string>(),
+       status: 0,
+       body: ''
+     },
+     requestMatchRules: {
+       headerRules: new Map<string, string>(),
+       queryRules: new Map<string, string>(),
+       bodyRules: [
+         {
+           type: BodyRuleType.BodyEquality,
+           rule: {}
+         }
+       ] as Array<BodyRule>
+     }
+   } as unknown as Scenario;
+    scenario.response.status = 404;
+    expect(component.getScenarioResponseStatusString(scenario)).toBe('Not Found');
+ });
+
+  it('should return Accepted for a 202 status', () => {
+   const mockverb = VerbType.GET;
+   const path = '/test';
+   const scenario = {
+    id: uuid.v4(),
+    metadata: {
+      title: 'New Scenario',
+      description: ''
+    },
+    mockverb,
+    path,
+    response: {
+      headers: new Map<string, string>(),
+      status: 0,
+      body: ''
+    },
+    requestMatchRules: {
+      headerRules: new Map<string, string>(),
+      queryRules: new Map<string, string>(),
+      bodyRules: [
+        {
+          type: BodyRuleType.BodyEquality,
+          rule: {}
+        }
+      ] as Array<BodyRule>
+    }
+  } as unknown as Scenario;
+   scenario.response.status = 202;
+   expect(component.getScenarioResponseStatusString(scenario)).toBe('Accepted');
+ });
+
+  describe('ScenarioListItemComponent.deleteScenario', () => {
+   it('should delete a scenario from the store', () => {
+     const mockverb = VerbType.GET;
+     const path = '/test';
+     const scenario = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      mockverb,
+      path,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    } as unknown as Scenario;
+     store.updateScenarios([scenario]);
+     component.deleteScenario(scenario);
+     expect(store.state.mockDefinition.scenarios).toEqual([]);
+   });
+ });
 });

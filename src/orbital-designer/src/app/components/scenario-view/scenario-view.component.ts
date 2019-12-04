@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { VerbType } from 'src/app/models/verb.type';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import * as HttpStatus from 'http-status-codes';
 
 @Component({
   selector: 'app-scenario-view',
@@ -15,6 +17,8 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./scenario-view.component.scss']
 })
 export class ScenarioViewComponent implements OnInit, OnDestroy {
+  @Input() scenarios: Scenario[] = [];
+  @Output() shouldCloneToView = new EventEmitter<Scenario>();
   private storeSubscription: Subscription;
 
   endpointVerb: VerbType;
@@ -24,13 +28,20 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   filteredList: Scenario[] = [];
 
   errorMessage: string;
+  triggerOpen: boolean;
+  mockDefinition: MockDefinition;
+  isHoveringOverMenu: boolean;
 
   constructor(
     private store: DesignerStore,
     private router: Router,
     private logger: NGXLogger,
     private mockDefinitionService: MockDefinitionService
-  ) {}
+  ) {
+    this.store.state$.subscribe(state => {
+      this.mockDefinition = state.mockDefinition;
+    });
+  }
 
   ngOnInit() {
     this.storeSubscription = this.store.state$.subscribe(state => {
@@ -86,7 +97,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
 
   /**
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
-   * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
+   * then a monotonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
   cloneScenario(scenario: Scenario) {
     this.logger.debug(scenario);
@@ -95,8 +106,63 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
 
     observable.subscribe(result => {
       if (result) {
-        this.logger.log('Scenario successfuly cloned');
+        this.logger.log('Scenario successfully cloned');
       }}
       );
+  }
+
+  /**
+   * Gets the scenario response's status string
+   */
+  getScenarioResponseStatusString(scenario: Scenario) {
+    try {
+      return HttpStatus.getStatusText(scenario.response.status);
+    } catch (Error) {
+      this.logger.warn(
+        `Returning unknown for scenario status as the status is invalid:
+          ${scenario.response.status}`
+      );
+      return 'Unknown';
+    }
+  }
+
+  /**
+   * This method opens the dialog box when called
+   */
+  confirmDeleteDialog() {
+    this.triggerOpen = true;
+  }
+
+  /**
+   * This method delete the scenario in the store when the user clicks on the confirm box and does nothing if the user cancels
+   * the scenario deletion
+   * @param confirmed boolean is true when the user clicks on confirm scenario deletion
+   */
+  onDialogAction(confirmed: boolean, scenario: Scenario) {
+    if (confirmed) {
+      this.deleteScenario(scenario);
+      this.logger.debug(
+        `Scenario ${scenario.metadata.title} deleted successfully`
+      );
+    }
+
+    this.triggerOpen = false;
+    this.logger.debug(
+      `Scenario ${scenario.metadata.title} deletion aborted`
+    );
+  }
+
+  /**
+   * This method updates the store with the current scenario filtered out
+   */
+  deleteScenario(scenario: Scenario) {
+    this.store.deleteScenario(scenario.id);
+  }
+
+  /**
+   * This method sets the body text with the deletion prompt
+   */
+  getBodyText(scenario: Scenario): string {
+    return `Are you sure you want to delete '${scenario.metadata.title.bold()}' ?`;
   }
 }
