@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScenarioEditorComponent } from './scenario-editor.component';
-import { ScenarioListComponent } from '../scenario-view/scenario-list/scenario-list.component';
 import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { OverviewHeaderComponent } from '../orbital-common/overview/overview.component';
@@ -29,9 +28,6 @@ import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './add-response/add-response.component';
-import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
-import { Endpoint } from 'src/app/models/endpoint.model';
-import { VerbType } from 'src/app/models/verb.type';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -41,7 +37,6 @@ describe('ScenarioEditorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ScenarioEditorComponent,
-        ScenarioListComponent,
         SideBarComponent,
         GetEndpointScenariosPipe,
         OverviewHeaderComponent,

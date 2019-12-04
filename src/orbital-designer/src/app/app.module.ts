@@ -30,7 +30,6 @@ import { OverviewHeaderComponent } from './components/orbital-common/overview/ov
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
 import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
-import { ScenarioListComponent } from './components/scenario-view/scenario-list/scenario-list.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
 import { MatExpansionModule, MatChipsModule } from '@angular/material';
 import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule/add-body-rule.component';
@@ -57,7 +56,6 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
     OverviewHeaderComponent,
     SideBarComponent,
     ScenarioViewComponent,
-    ScenarioListComponent,
     SideBarComponent,
     EndpointListItemComponent,
     ScenarioViewComponent,
