@@ -334,13 +334,6 @@ describe('ScenarioViewComponent', () => {
     });
   });
 
-  it('should display scenario even if status code is invalid', () => {
-    component.scenarios[0].response.status = 0;
-
-    // component should not crash
-    expect(component).toBeTruthy();
-  });
-
   it('should return Not Found for a 404 status', () => {
     const mockverb = VerbType.GET;
     const path = '/test';
