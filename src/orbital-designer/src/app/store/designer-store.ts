@@ -52,6 +52,14 @@ export class DesignerStore extends Store<State> {
    */
    deleteMockDefinitionByTitle(mockTitle: string) {
      this.state.mockDefinitions.delete(mockTitle);
+   }
+
+  /**
+   * Appends a mock definition to the store; if one with the same name already exists
+   * it will be overwritten
+   */
+  appendMockDefinition(mockDefinition: MockDefinition) {
+    this.state.mockDefinitions.set(mockDefinition.metadata.title, mockDefinition);
   }
 
   /**
