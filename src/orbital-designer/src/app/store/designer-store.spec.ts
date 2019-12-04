@@ -15,6 +15,7 @@ import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
 import { ReadFileService } from '../services/read-file/read-file.service';
+import * as _ from 'lodash';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -247,6 +248,45 @@ describe('DesignerStore', () => {
       }
       store.updateScenarios(scenarios);
       expect(store.state.mockDefinition.scenarios).toEqual(scenarios);
+    });
+  });
+
+  describe('DesignerStore.deleteMockDefinitionByTitle()', () => {
+    it('should delete a mock definition by title if it exists in the store', () => {
+      store = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef = validMockDefinition;
+      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.state.mockDefinitions.set(mockDef.metadata.title, mockDef);
+      store.deleteMockDefinitionByTitle(mockDef.metadata.title);
+      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(store.state.mockDefinition).toEqual(null);
+    });
+
+    it('should delete only a single mock definition by title if only one matches in the store', () => {
+      store = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef1 = validMockDefinition;
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      mockDef2.metadata.title = faker.random.word();
+      store.mockDefinitions = [mockDef1, mockDef2];
+      store.deleteMockDefinitionByTitle(mockDef2.metadata.title);
+      expect(store.state.mockDefinitions.size).toBe(1);
+    });
+
+    it('should not delete a mock definition by title if there are none in the store', () => {
+      store = new DesignerStore(TestBed.get(NGXLogger));
+      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.deleteMockDefinitionByTitle('Invalid');
+      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(store.state.mockDefinition).toEqual(null);
+    });
+
+    it('should not delete a mock definition by title if it does not exist in the store', () => {
+      store = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef = validMockDefinition;
+      store.mockDefinitions = [mockDef];
+      store.deleteMockDefinitionByTitle('Invalid');
+      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(store.state.mockDefinition).toEqual(mockDef);
     });
   });
 
