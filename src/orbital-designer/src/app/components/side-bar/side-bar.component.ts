@@ -69,6 +69,7 @@ export class SideBarComponent implements OnInit {
       this.logger.debug('The user has confirmed Mockdefinition deletion');
     }
     this.triggerOpenConfirmBox = false;
+    this.logger.debug('The user has canceled Mockdefinition deletion');
   }
   ngOnInit() {}
 
