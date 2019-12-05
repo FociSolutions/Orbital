@@ -59,7 +59,13 @@ export class DesignerStore extends Store<State> {
    * it will be overwritten
    */
   appendMockDefinition(mockDefinition: MockDefinition) {
-    this.state.mockDefinitions.set(mockDefinition.metadata.title, mockDefinition);
+    this.setState({...this.state, mockDefinitions: this.state.mockDefinitions.set(mockDefinition.metadata.title, mockDefinition)});
+
+    this.mockDefinition = this.state.mockDefinitions.values().next().value;
+
+    if (this.mockDefinition) {
+      this.setEndpoints(this.mockDefinition.openApi);
+    }
   }
 
   /**
