@@ -30,6 +30,15 @@
     min-width: 14vw;
     margin-bottom: 2vh;
 
+    mat-icon {
+      opacity: 0.54;
+    }
+
+    h4 {
+      font-weight: 400;
+      padding-left: 1.3em;
+    }
+
     .selected {
       background: #646464 !important;
       color: white !important;
@@ -46,10 +55,6 @@
       .mock-list-item {
         overflow: hidden;
         max-width: 15em;
-
-        mat-icon {
-          padding-right: 0.7em;
-        }
       }
 
       .close-button {
