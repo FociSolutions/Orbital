@@ -64,7 +64,6 @@ export class SideBarComponent implements OnInit {
    * @param shouldConfirm The button pressed for the cancel box
    */
   onConfirmDialogAction(shouldConfirm: boolean) {
-    this.triggerOpenConfirmBox = true;
     if (shouldConfirm) {
       this.onDismiss(this.mockDefinitionToBeDismissed);
       this.logger.debug('The user has confirmed Mockdefinition deletion');
@@ -73,6 +72,10 @@ export class SideBarComponent implements OnInit {
   }
   ngOnInit() {}
 
+  /**
+   * Opens the dialog box for the Mockdefinition to be dismissed
+   * @param mockDefinition The Mockdefinition to be dismissed
+   */
   openDialogBox(mockDefinition: KeyValue<string, MockDefinition>) {
     this.mockDefinitionToBeDismissed = mockDefinition;
     this.triggerOpenConfirmBox = true;
