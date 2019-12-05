@@ -36,11 +36,7 @@ export class FileInputComponent implements OnInit {
 
 @Input()
   set errorMessage(errorMessage: string[]) {
-    if (errorMessage) {
-       this.errormessages = errorMessage;
-    } else {
-      this.errormessages = [];
-    }
+    this.errormessages = errorMessage || [];
   }
 
   ngOnInit() {}

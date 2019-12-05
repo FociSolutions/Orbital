@@ -56,8 +56,8 @@ export class CreateNewMockViewComponent implements OnInit {
         }
        },
        error => {
-        this.logger.log('openapi file provided is invalid');
-        this.logger.log(error);
+        this.logger.error('openapi file provided is invalid');
+        this.logger.error(error);
         this.errorMessageToEmitFromCreate = error;
       }
     );
