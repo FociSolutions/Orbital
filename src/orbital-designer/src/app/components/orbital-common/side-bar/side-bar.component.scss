@@ -39,6 +39,23 @@
         opacity: 1;
       }
     }
+
+    .mock-name {
+      justify-content: space-around;
+
+      .mock-list-item {
+        overflow: hidden;
+        max-width: 15em;
+
+        mat-icon {
+          padding-right: 0.7em;
+        }
+      }
+
+      .close-button {
+        padding-bottom: 3.1em;
+      }
+    }
   }
 
   .side-bar-bottom {
