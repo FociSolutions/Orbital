@@ -65,6 +65,8 @@ export class DesignerStore extends Store<State> {
 
     if (this.mockDefinition) {
       this.setEndpoints(this.mockDefinition.openApi);
+      this.selectedEndpoint = null;
+      this.selectedScenario = null;
     }
   }
 

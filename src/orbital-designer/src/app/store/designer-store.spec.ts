@@ -251,6 +251,21 @@ describe('DesignerStore', () => {
       expect(localStore.state.mockDefinitions.size).toBe(1);
     });
 
+    it('should set the endpoints when appending a single mock definition to a list of none', done => {
+      const localStore = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef = _.cloneDeep(validMockDefinition);
+      localStore.state$.subscribe(state => {
+        // checks if any state's endpoints is not empty (as events are emitted beforehand for mock definition updates)
+        // this will fail if all states have empty endpoints (good) as done will timeout in 5000ms
+        if (state.endpoints.length !== 0) {
+          expect(state.endpoints).not.toEqual([]);
+          done();
+        }
+      });
+
+      localStore.appendMockDefinition(mockDef);
+    });
+
     it('should update the state subscription when the state is changed by appending a single mock definition', done => {
       const localStore = new DesignerStore(TestBed.get(NGXLogger));
       const mockDef = _.cloneDeep(validMockDefinition);
