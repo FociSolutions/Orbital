@@ -16,6 +16,8 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
 import { ReadFileService } from '../services/read-file/read-file.service';
 import * as _ from 'lodash';
+import { interval } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -295,7 +297,7 @@ describe('DesignerStore', () => {
       store.state.mockDefinitions = new Map<string, MockDefinition>();
       store.appendMockDefinition(validMockDefinition);
       expect(store.state.mockDefinitions.size).toBe(1);
-      expect(store.state.mockDefinition).toEqual(null);
+      expect(store.state.mockDefinition).toEqual(validMockDefinition);
     });
 
     it('should append a mock definition to the store if the store contains other mock definitions', () => {
@@ -308,11 +310,76 @@ describe('DesignerStore', () => {
     });
 
     it('should overwrite a mock definition to the store if the store contains other mock definitions when appending', () => {
+      const localStore = new DesignerStore(TestBed.get(NGXLogger));
       const mockDef1 = validMockDefinition;
       const mockDef2 = _.cloneDeep(validMockDefinition);
-      store.mockDefinitions = [mockDef1];
-      store.appendMockDefinition(mockDef2);
-      expect(store.state.mockDefinitions.size).toBe(1);
+      localStore.mockDefinitions = [mockDef1];
+      localStore.appendMockDefinition(mockDef2);
+      expect(localStore.state.mockDefinitions.size).toBe(1);
+    });
+
+    it('should update the state subscription when the state is changed by appending a single mock definition', done => {
+      const localStore = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef = _.cloneDeep(validMockDefinition);
+      localStore.state$.subscribe(state => {
+        if (!!state.mockDefinition) {
+        expect(state.mockDefinition).toEqual(mockDef);
+        done();
+        }
+      });
+
+      localStore.appendMockDefinition(mockDef);
+    });
+
+    it('should update the state subscription when the state is changed when appending', done => {
+      const localStore = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef1 = _.cloneDeep(validMockDefinition);
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      const mockDef3 = _.cloneDeep(validMockDefinition);
+
+      mockDef1.metadata.title = faker.random.word();
+      mockDef2.metadata.title = faker.random.word();
+      mockDef3.metadata.title = faker.random.word();
+
+      localStore.state$.subscribe(state => {
+        if (!!state.mockDefinition) {
+          expect(state.mockDefinition).toEqual(mockDef1);
+          done();
+        }
+      });
+
+      localStore.appendMockDefinition(mockDef1);
+      localStore.appendMockDefinition(mockDef2);
+      localStore.appendMockDefinition(mockDef3);
+
+      // remove one item from the store to simulate queuing
+      localStore.state$.pipe(take(1));
+    });
+
+    // tslint:disable-next-line: max-line-length
+    it('should update the state subscription when the state is changed when appending, and an item already exists with the same name', done => {
+      const localStore = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef1 = _.cloneDeep(validMockDefinition);
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+
+      mockDef1.metadata.title = faker.random.word();
+      mockDef2.metadata.title = mockDef1.metadata.title;
+      mockDef2.scenarios = [{id: faker.random.word()}] as Scenario[];
+
+      let calls = 0;
+      localStore.state$.subscribe(state => {
+        if (!!state.mockDefinition) {
+          if (calls === 1) {
+            expect(state.mockDefinition).toEqual(mockDef1);
+            done();
+          }
+
+          calls++;
+        }
+      });
+
+      localStore.appendMockDefinition(mockDef1);
+      localStore.appendMockDefinition(mockDef2);
     });
   });
 
