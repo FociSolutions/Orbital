@@ -52,11 +52,12 @@ export class DesignerStore extends Store<State> {
    */
    deleteMockDefinitionByTitle(mockTitle: string) {
     if (this.state.mockDefinitions.delete(mockTitle)) {
+      this.logger.debug('Deleting mock ', mockTitle);
       this.setState({...this.state, mockDefinitions: this.state.mockDefinitions});
 
       if (!!this.state.mockDefinitions && this.state.mockDefinitions.size) {
+        this.logger.debug('Mock store contains at least one mock; setting first mock to one in store ', this.state.mockDefinitions);
         this.mockDefinition = this.state.mockDefinitions.values().next().value;
-        this.logger.debug("MOCK DEFINITION FROM TEST", this.state.mockDefinitions.values());
 
         if (this.mockDefinition) {
           this.setEndpoints(this.mockDefinition.openApi);
@@ -73,11 +74,12 @@ export class DesignerStore extends Store<State> {
    */
   public appendMockDefinition(mockDefinition: MockDefinition) {
     this.setState({...this.state, mockDefinitions: this.state.mockDefinitions.set(mockDefinition.metadata.title, mockDefinition)});
-
+    this.logger.debug('New state after appending', this.state);
     this.mockDefinition = this.state.mockDefinitions.values().next().value;
 
     if (this.mockDefinition) {
       this.setEndpoints(this.mockDefinition.openApi);
+      this.logger.debug('Setting endpoints', this.mockDefinition.openApi);
       this.selectedEndpoint = null;
       this.selectedScenario = null;
     }
