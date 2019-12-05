@@ -192,12 +192,10 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.deleteMockDefinitionByTitle()', () => {
     it('should delete a mock definition by title if it exists in the store', () => {
-      const mockDef = validMockDefinition;
-      store.state.mockDefinitions = new Map<string, MockDefinition>();
-      store.state.mockDefinitions.set(mockDef.metadata.title, mockDef);
+      const mockDef = _.cloneDeep(validMockDefinition);
+      store.appendMockDefinition(mockDef);
       store.deleteMockDefinitionByTitle(mockDef.metadata.title);
       expect(store.state.mockDefinitions.size).toBe(0);
-      expect(store.state.mockDefinition).toEqual(null);
     });
 
     it('should delete only a single mock definition by title if only one matches in the store', () => {
@@ -222,6 +220,41 @@ describe('DesignerStore', () => {
       store.deleteMockDefinitionByTitle('Invalid');
       expect(store.state.mockDefinitions.size).toBe(1);
       expect(store.state.mockDefinition).toEqual(mockDef);
+    });
+
+    it('should not throw an exception when trying to delete a mock that does not exist', () => {
+      const localStore = new DesignerStore(TestBed.get(NGXLogger));
+      localStore.deleteMockDefinitionByTitle(faker.random.word());
+    });
+
+    it('should delete the state when the state is changed by deleting a single mock definition', () => {
+      const localStore = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef = _.cloneDeep(validMockDefinition);
+      localStore.appendMockDefinition(mockDef);
+      localStore.deleteMockDefinitionByTitle(mockDef.metadata.title);
+      expect(localStore.state.mockDefinitions.size).toBe(0);
+    });
+
+    it('should delete a single mock definition when multiple exist', () => {
+      const localStore = new DesignerStore(TestBed.get(NGXLogger));
+      const mockDef1 = _.cloneDeep(validMockDefinition);
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      const mockDef3 = _.cloneDeep(validMockDefinition);
+
+      mockDef1.metadata.title = faker.random.word();
+      mockDef2.metadata.title = faker.random.word();
+      mockDef3.metadata.title = faker.random.word();
+
+      localStore.appendMockDefinition(mockDef1);
+      localStore.appendMockDefinition(mockDef2);
+      localStore.appendMockDefinition(mockDef3);
+
+      localStore.deleteMockDefinitionByTitle(mockDef1.metadata.title);
+
+      const expected = new Map<string, MockDefinition>();
+      expected.set(mockDef2.metadata.title, mockDef2);
+      expected.set(mockDef3.metadata.title, mockDef3);
+      expect(localStore.state.mockDefinitions).toEqual(expected);
     });
   });
 
@@ -269,14 +302,13 @@ describe('DesignerStore', () => {
     it('should update the state subscription when the state is changed by appending a single mock definition', done => {
       const localStore = new DesignerStore(TestBed.get(NGXLogger));
       const mockDef = _.cloneDeep(validMockDefinition);
+      localStore.appendMockDefinition(mockDef);
       localStore.state$.subscribe(state => {
         if (!!state.mockDefinition) {
-        expect(state.mockDefinition).toEqual(mockDef);
-        done();
+          expect(state.mockDefinition).toEqual(mockDef);
+          done();
         }
       });
-
-      localStore.appendMockDefinition(mockDef);
     });
 
     it('should update the state subscription when the state is changed when appending', done => {

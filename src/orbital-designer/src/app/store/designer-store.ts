@@ -51,7 +51,20 @@ export class DesignerStore extends Store<State> {
    * Deletes a mock definition by title
    */
    deleteMockDefinitionByTitle(mockTitle: string) {
-     this.state.mockDefinitions.delete(mockTitle);
+    if (this.state.mockDefinitions.delete(mockTitle)) {
+      this.setState({...this.state, mockDefinitions: this.state.mockDefinitions});
+
+      if (!!this.state.mockDefinitions && this.state.mockDefinitions.size) {
+        this.mockDefinition = this.state.mockDefinitions.values().next().value;
+        this.logger.debug("MOCK DEFINITION FROM TEST", this.state.mockDefinitions.values());
+
+        if (this.mockDefinition) {
+          this.setEndpoints(this.mockDefinition.openApi);
+          this.selectedEndpoint = null;
+          this.selectedScenario = null;
+        }
+      }
+    }
    }
 
   /**
