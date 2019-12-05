@@ -37,7 +37,6 @@ describe('CreateNewMockViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateNewMockViewComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
