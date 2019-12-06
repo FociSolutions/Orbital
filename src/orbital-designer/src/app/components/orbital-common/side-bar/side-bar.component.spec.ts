@@ -74,4 +74,19 @@ describe('SideBarComponent', () => {
       expect(routerSpy).toHaveBeenCalled();
     });
   });
+  describe('SideBarComponent.openDialogBox', () => {
+    it('should return to homepage if last mockdefinition is dismissed', () => {
+      const routerSpy = spyOn(TestBed.get(Router), 'navigate');
+      component.mockDefinitions.set(
+        validMockDefinition.metadata.title,
+        validMockDefinition
+      );
+
+      component.onDismiss({
+        key: validMockDefinition.metadata.title,
+        value: validMockDefinition
+      });
+      expect(routerSpy).toHaveBeenCalledWith(['/']);
+    });
+  });
 });
