@@ -67,9 +67,10 @@ export class SideBarComponent implements OnInit {
     if (shouldConfirm) {
       this.onDismiss(this.mockDefinitionToBeDismissed);
       this.logger.debug('The user has confirmed Mockdefinition deletion');
+    } else {
+      this.triggerOpenConfirmBox = false;
+      this.logger.debug('The user has canceled Mockdefinition deletion');
     }
-    this.triggerOpenConfirmBox = false;
-    this.logger.debug('The user has canceled Mockdefinition deletion');
   }
   ngOnInit() {}
 
