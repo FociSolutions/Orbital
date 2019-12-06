@@ -53,7 +53,7 @@ export class SideBarComponent implements OnInit {
   }
 
   /**
-   * Dismisses a Mockdefinition from the Designer view
+   * Dismisses a Mockdefinition from the Designer view removed from the store
    * Navigates back to homepage if the last mockdefinition is dismissed
    */
   onDismiss(mockDefinition: KeyValue<string, MockDefinition>) {
