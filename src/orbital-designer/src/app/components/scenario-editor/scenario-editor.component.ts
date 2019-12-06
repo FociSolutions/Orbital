@@ -59,6 +59,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
           param.scenarioId
         );
         this.retrieveScenario(param.scenarioId);
+        this.store.selectedScenario = this.selectedScenario;
       }
     );
   }

@@ -5,7 +5,6 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
-import { ScenarioListComponent } from './scenario-list/scenario-list.component';
 import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { MatCardModule } from '@angular/material/card';
 import { OverviewHeaderComponent } from '../orbital-common/overview/overview.component';
@@ -34,7 +33,6 @@ describe('ScenarioViewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ScenarioViewComponent,
-        ScenarioListComponent,
         SideBarComponent,
         GetEndpointScenariosPipe,
         GetVerbColorPipe,
@@ -335,4 +333,100 @@ describe('ScenarioViewComponent', () => {
       expect(expectedResults).toEqual(1);
     });
   });
+
+  it('should return Not Found for a 404 status', () => {
+    const mockverb = VerbType.GET;
+    const path = '/test';
+    const scenario = {
+     id: uuid.v4(),
+     metadata: {
+       title: 'New Scenario',
+       description: ''
+     },
+     mockverb,
+     path,
+     response: {
+       headers: new Map<string, string>(),
+       status: 0,
+       body: ''
+     },
+     requestMatchRules: {
+       headerRules: new Map<string, string>(),
+       queryRules: new Map<string, string>(),
+       bodyRules: [
+         {
+           type: BodyRuleType.BodyEquality,
+           rule: {}
+         }
+       ] as Array<BodyRule>
+     }
+   } as unknown as Scenario;
+    scenario.response.status = 404;
+    expect(component.getScenarioResponseStatusString(scenario)).toBe('Not Found');
+ });
+
+  it('should return Accepted for a 202 status', () => {
+   const mockverb = VerbType.GET;
+   const path = '/test';
+   const scenario = {
+    id: uuid.v4(),
+    metadata: {
+      title: 'New Scenario',
+      description: ''
+    },
+    mockverb,
+    path,
+    response: {
+      headers: new Map<string, string>(),
+      status: 0,
+      body: ''
+    },
+    requestMatchRules: {
+      headerRules: new Map<string, string>(),
+      queryRules: new Map<string, string>(),
+      bodyRules: [
+        {
+          type: BodyRuleType.BodyEquality,
+          rule: {}
+        }
+      ] as Array<BodyRule>
+    }
+  } as unknown as Scenario;
+   scenario.response.status = 202;
+   expect(component.getScenarioResponseStatusString(scenario)).toBe('Accepted');
+ });
+
+  describe('ScenarioListItemComponent.deleteScenario', () => {
+   it('should delete a scenario from the store', () => {
+     const mockverb = VerbType.GET;
+     const path = '/test';
+     const scenario = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      mockverb,
+      path,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    } as unknown as Scenario;
+     store.updateScenarios([scenario]);
+     component.deleteScenario(scenario);
+     expect(store.state.mockDefinition.scenarios).toEqual([]);
+   });
+ });
 });
