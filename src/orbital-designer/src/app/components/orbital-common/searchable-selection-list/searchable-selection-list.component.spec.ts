@@ -51,7 +51,7 @@ describe('SearchableSelectionListComponent', () => {
         done();
       });
       matList.selectAll();
-      component.optionSelected(new MatSelectionListChange(matList, null));
+      component.optionSelected();
     });
   });
 

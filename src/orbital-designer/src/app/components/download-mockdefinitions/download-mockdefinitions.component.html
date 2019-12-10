@@ -1,0 +1,45 @@
+<mat-card class="export-to-server mat-elevation-z15">
+  <span class="center">
+    <mat-card-title>Download Mockdefinitions</mat-card-title>
+    <mat-card-subtitle
+      >Download Mockdefinition(s) locally to your machine</mat-card-subtitle
+    >
+    <p class="subtitle">Mockdefinition(s) on Designer</p>
+  </span>
+  <div class="container">
+    <div class="selectionList">
+
+      <app-searchable-selection-list
+        class="list"
+        [list]="list"
+        [itemTemplate]="listItemTemplate"
+        [itemToStringFn]="itemToStringFn"
+        [emptyListMessage]="emptyListMessage"
+        [noSearchResultsMessage]="noSearchResultsMessage"
+        (itemSelected)="onSelect($event)"
+      ></app-searchable-selection-list>
+    </div>
+  </div>
+
+  <div class="row buttons-div">
+    <button mat-raised-button color="primary" (click)="goBack()">
+      Back
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!this.isMockSelected"
+      class="multiline"
+      (click)="downloadMocks()"
+    >
+      Download<br />Selected
+    </button>
+  </div>
+</mat-card>
+
+<ng-template #listItemTemplate let-control="item">
+  <div class="list-item">
+    <h5 class="capitalize">{{ control.value?.metadata?.title }}</h5>
+    <mat-divider></mat-divider>
+  </div>
+</ng-template>

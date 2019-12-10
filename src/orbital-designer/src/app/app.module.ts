@@ -40,6 +40,8 @@ import { BodyRuleListItemComponent } from './components/scenario-editor/add-body
 import { AddMetadataComponent } from './components/scenario-editor/add-metadata/add-metadata.component';
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
+import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
+import { ExportToServerViewComponent } from './export-to-server-view/export-to-server-view.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import { AddResponseComponent } from './components/scenario-editor/add-response/
     BodyRuleListItemComponent,
     AddRequestMatchRuleComponent,
     AddMetadataComponent,
-    AddResponseComponent
+    AddResponseComponent,
+    DownloadMockdefinitionsComponent,
+    ExportToServerViewComponent
   ],
   imports: [
     BrowserModule,
