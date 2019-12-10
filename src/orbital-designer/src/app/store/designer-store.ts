@@ -7,6 +7,7 @@ import { OpenAPIV2 } from 'openapi-types';
 import { VerbType } from '../models/verb.type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
+import Json from '../models/json';
 
 export interface State {
   selectedEndpoint: Endpoint;
@@ -28,14 +29,14 @@ export class DesignerStore extends Store<State> {
     super({
       selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey)),
       selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey)),
-      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
-      mockDefinitions: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)) || new Map<string, MockDefinition>(),
+      mockDefinition: MockDefinition.toMockDefinition(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
+      mockDefinitions: MockDefinition.toMockDefinintionMap(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)) || new Map<string, MockDefinition>(),
       endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
     });
 
     this.state$.subscribe(state => {
-      localStorage.setItem(DesignerStore.mockDefinitionStoreKey, JSON.stringify(state.mockDefinition));
-      localStorage.setItem(DesignerStore.mockDefinitionsStoreKey, JSON.stringify(state.mockDefinitions));
+      localStorage.setItem(DesignerStore.mockDefinitionStoreKey, JSON.stringify(Json.mapToObject(state.mockDefinition)));
+      localStorage.setItem(DesignerStore.mockDefinitionsStoreKey, JSON.stringify(Json.mapToObject(state.mockDefinitions)));
       localStorage.setItem(DesignerStore.endpointsStoreKey, JSON.stringify(state.endpoints));
       localStorage.setItem(DesignerStore.selectedEndpointStoreKey, JSON.stringify(state.selectedEndpoint));
       localStorage.setItem(DesignerStore.selectedScenarioStoreKey, JSON.stringify(state.selectedScenario));

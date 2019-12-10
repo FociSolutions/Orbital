@@ -57,7 +57,7 @@ describe('ImportFromServerViewComponent', () => {
     it('should set the designer stores mockDefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const store = TestBed.get(DesignerStore);
-      const expectedMockDefinition = await MockDefinition.toMockDefinition(
+      const expectedMockDefinition = await MockDefinition.toMockDefinitionAsync(
         JSON.stringify(validMockDefinition)
       );
       const expectedMap = new Map([
