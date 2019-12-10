@@ -18,13 +18,27 @@ export interface State {
 
 Injectable();
 export class DesignerStore extends Store<State> {
+  private static readonly mockDefinitionStoreKey = 'orbital_state_mockDefinition';
+  private static readonly mockDefinitionsStoreKey = 'orbital_state_mockDefinitions';
+  private static readonly endpointsStoreKey = 'orbital_state_enpoints';
+  private static readonly selectedEndpointStoreKey = 'orbital_state_selectedEndpoint';
+  private static readonly selectedScenarioStoreKey = 'orbital_state_selectedScenario';
+
   constructor(private logger: NGXLogger) {
     super({
-      selectedEndpoint: null,
-      selectedScenario: null,
-      mockDefinition: null,
-      mockDefinitions: new Map<string, MockDefinition>(),
-      endpoints: []
+      selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey)),
+      selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey)),
+      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
+      mockDefinitions: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)) || new Map<string, MockDefinition>(),
+      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
+    });
+
+    this.state$.subscribe(state => {
+      localStorage.setItem(DesignerStore.mockDefinitionStoreKey, JSON.stringify(state.mockDefinition));
+      localStorage.setItem(DesignerStore.mockDefinitionsStoreKey, JSON.stringify(state.mockDefinitions));
+      localStorage.setItem(DesignerStore.endpointsStoreKey, JSON.stringify(state.endpoints));
+      localStorage.setItem(DesignerStore.selectedEndpointStoreKey, JSON.stringify(state.selectedEndpoint));
+      localStorage.setItem(DesignerStore.selectedScenarioStoreKey, JSON.stringify(state.selectedScenario));
     });
   }
 
@@ -215,7 +229,7 @@ export class DesignerStore extends Store<State> {
         current = scenario;
         currentMock.scenarios.push(current);
       }
-      this.state.selectedScenario = current;
+      this.selectedScenario = current;
     }
   }
 
