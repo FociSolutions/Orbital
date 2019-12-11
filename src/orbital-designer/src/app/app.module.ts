@@ -87,8 +87,7 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
     ReactiveFormsModule,
     MatMenuModule,
     MatExpansionModule,
-    MatChipsModule,
-    CovalentCodeEditorModule
+    MatChipsModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]
