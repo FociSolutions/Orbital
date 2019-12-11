@@ -42,7 +42,6 @@ import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-r
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
 import { ExportToServerViewComponent } from './export-to-server-view/export-to-server-view.component';
-import { CovalentCodeEditorModule } from '@covalent/code-editor';
 
 @NgModule({
   declarations: [
@@ -90,8 +89,7 @@ import { CovalentCodeEditorModule } from '@covalent/code-editor';
     ReactiveFormsModule,
     MatMenuModule,
     MatExpansionModule,
-    MatChipsModule,
-    CovalentCodeEditorModule
+    MatChipsModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]
