@@ -50,16 +50,18 @@
     }
 
     .mock-name {
-      justify-content: space-around;
+      justify-content: space-between;
 
       .mock-list-item {
         overflow: hidden;
         max-width: 15em;
         cursor: pointer;
+        margin-left: 18px;
       }
 
       .close-button {
         padding-bottom: 3.1em;
+        justify-content: right;
       }
     }
   }
