@@ -22,6 +22,10 @@
     matInput
     style="display:none;"
   />
- <p class="error-message" *ngFor="let message of errormessages">{{message}}</p>
 </mat-form-field>
+<div>
+  <p class="error-message" *ngFor="let message of errormessages">
+    {{ message }}
+  </p>
+</div>
 
