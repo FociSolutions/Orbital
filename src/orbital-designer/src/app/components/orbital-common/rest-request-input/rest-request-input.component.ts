@@ -44,8 +44,6 @@ export class RestRequestInputComponent implements OnInit {
   requestObserver: Observer<
     HttpEvent<HttpResponse<unknown> | HttpErrorResponse>
   >;
-  protocols: string[] = ['http://', 'https://'];
-  selectedProtocol: string = this.protocols[0];
   inputControl: FormControl;
   requestInProgress = false;
   @Input() title = '';
@@ -93,12 +91,15 @@ export class RestRequestInputComponent implements OnInit {
       this.errors = null;
       const request = new HttpRequest(
         this.httpMethod,
-        `${this.selectedProtocol}${this.inputControl.value}${this.concatToURI}`,
+        `${this.inputControl.value}${this.concatToURI}`,
         this.body,
         this.options
       );
 
-      this.httpClient.request(request).pipe(timeout(3000)).subscribe(this.requestObserver);
+      this.httpClient
+        .request(request)
+        .pipe(timeout(3000))
+        .subscribe(this.requestObserver);
     }
   }
 }
