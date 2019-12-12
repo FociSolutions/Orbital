@@ -65,6 +65,7 @@ export class RestRequestInputComponent implements OnInit {
     | 'PUT'
     | 'PATCH' = 'GET';
   @Input() concatToURI = '';
+  @Input() errorText: string;
   @Output() responseReceived: EventEmitter<HttpResponse<unknown>>;
 
   ngOnInit() {

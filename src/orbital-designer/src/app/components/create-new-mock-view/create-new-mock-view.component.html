@@ -6,6 +6,7 @@
       title="Title - Required"
       maxLength="200"
       [control]="formGroup.controls['title']"
+      errorText= "Please input a valid title"
     ></app-text-input>
     <app-text-input
       class="flex-grow capitalize"
@@ -17,9 +18,9 @@
     <app-tool-tip
       message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
       ><app-file-input
-        class="row capitalize"
+        class="column"
         (fileContent)="setOpenApiFile($event)"
-        label="Select File - Required"
+        label="Select OpenAPI File - Required"
         accept=".yml,.yaml, .json"
         [errorMessage]="errorMessageToEmitFromCreate"
       >
