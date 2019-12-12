@@ -13,7 +13,6 @@ export class TextInputComponent implements OnInit {
   @Input() maxLength?: number;
   @Input() multiLine = false;
   @Input() control!: FormControl;
-  @Input() errorText: string;
   constructor() {}
 
   getErrors(): string[] {

@@ -26,7 +26,7 @@ export class CreateNewMockViewComponent implements OnInit {
     private logger: NGXLogger
   ) {
     this.formGroup = new FormGroup({
-      title: new FormControl('', this.validateWhitespace),
+      title: new FormControl('', this.validateTitle),
       description: new FormControl('')
     });
   }
@@ -73,9 +73,12 @@ export class CreateNewMockViewComponent implements OnInit {
     this.location.back();
   }
 
-  validateWhitespace(control: AbstractControl): { [key: string]: any } | null {
+  validateTitle(control: AbstractControl): { [key: string]: any } | null {
     if (control.value.length > 0 && control.value.trim().length === 0) {
       return { key: 'Whitespace Error' };
+    }
+    if (control.value.length <= 0) {
+      return { key: 'Must enter a title' };
     }
   }
 

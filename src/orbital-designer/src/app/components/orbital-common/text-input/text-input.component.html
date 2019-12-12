@@ -8,7 +8,7 @@
     autocomplete="off"
   />
   <mat-error *ngFor="let error of getErrors()">
-     {{ error ? errorText : "Valid Title"}}
+    {{ error }}
   </mat-error>
   <mat-hint *ngIf="!!maxLength" align="end"
     >{{ control.value?.length }}/{{ maxLength }}</mat-hint

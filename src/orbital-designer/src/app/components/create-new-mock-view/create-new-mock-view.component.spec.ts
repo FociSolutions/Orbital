@@ -16,6 +16,7 @@ import { OpenAPIV2 } from 'openapi-types';
 import { EMPTY } from 'rxjs';
 import * as yaml from 'js-yaml';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
+import { FormControl } from '@angular/forms';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
@@ -51,6 +52,25 @@ describe('CreateNewMockViewComponent', () => {
     });
   });
 
+  describe('CreateNewMockViewComponent.validateTitle', () => {
+    it('should return null if title is valid', () => {
+      const formControl: FormControl = new FormControl('ValidTitle');
+      expect(component.validateTitle(formControl)).toBeFalsy();
+    });
+    it('should return error if title is empty', () => {
+      const formControl: FormControl = new FormControl('');
+      expect(component.validateTitle(formControl)).toEqual({
+        key: 'Must enter a title'
+      });
+    });
+    it('should return error if title is just whitespace', () => {
+      const formControl: FormControl = new FormControl('   ');
+      expect(component.validateTitle(formControl)).toEqual({
+        key: 'Whitespace Error'
+      });
+    });
+  });
+
   describe('CreateNewMockViewComponent.formToMockDefinition', () => {
     it('should return a mockdefinition if form is valid', () => {
       const fakeMockDefinition = generateMockDefinitionAndSetForm();
@@ -67,14 +87,13 @@ describe('CreateNewMockViewComponent', () => {
   });
 
   describe('CreateNewMockViewComponent.createMock', () => {
-    it('should set the mockDefinition store and route to mock editor', (done) => {
-      spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake((route) => {
+    it('should set the mockDefinition store and route to mock editor', done => {
+      spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
         expect(route).toEqual('endpoint-view');
         done();
       });
       generateMockDefinitionAndSetForm();
       component.createMock();
-
     });
 
     it('should not navigate or change designer store state if the formGroup is invalid', () => {
