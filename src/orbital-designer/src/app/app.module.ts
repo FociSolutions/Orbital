@@ -40,6 +40,7 @@ import { AddMetadataComponent } from './components/scenario-editor/add-metadata/
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
 import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
+import { WhitespaceDirective } from './directives/whitespace.directive';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
     AddRequestMatchRuleComponent,
     AddMetadataComponent,
     AddResponseComponent,
-    GetVerbStringPipe
+    GetVerbStringPipe,
+    WhitespaceDirective
   ],
   imports: [
     BrowserModule,

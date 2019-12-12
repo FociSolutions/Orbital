@@ -1,13 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 import { Observable, EMPTY } from 'rxjs';
-import { map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -26,7 +26,7 @@ export class CreateNewMockViewComponent implements OnInit {
     private logger: NGXLogger
   ) {
     this.formGroup = new FormGroup({
-      title: new FormControl(''),
+      title: new FormControl('', this.validateWhitespace),
       description: new FormControl('')
     });
   }
@@ -46,7 +46,7 @@ export class CreateNewMockViewComponent implements OnInit {
       return;
     }
     observable.subscribe(
-       value => {
+      value => {
         if (!!value) {
           this.logger.debug('MockDefinition created from form ', value);
           this.store.mockDefinitions = [value];
@@ -54,8 +54,8 @@ export class CreateNewMockViewComponent implements OnInit {
         } else {
           this.logger.log(value);
         }
-       },
-       error => {
+      },
+      error => {
         this.logger.error('openapi file provided is invalid');
         this.logger.error(error);
         this.errorMessageToEmitFromCreate = error;
@@ -73,28 +73,37 @@ export class CreateNewMockViewComponent implements OnInit {
     this.location.back();
   }
 
+  validateWhitespace(control: AbstractControl): { [key: string]: any } | null {
+    if (control.value.length > 0 && control.value.trim().length === 0) {
+      return { key: 'Whitespace Error' };
+    }
+  }
+
   /**
    * formToMockDefinition method is responsible for creating a new MockDefinition from the
    * form values. If the form is invalid then the function will return null, otherwise it uses
    * the form values to create and return a new MockDefinition
    */
-   formToMockDefinition(): Observable<MockDefinition> {
+  formToMockDefinition(): Observable<MockDefinition> {
     if (this.formGroup.invalid) {
       this.logger.debug('Form is invalid');
       this.errorMessageToEmitFromCreate = ['Form is invalid'];
       return EMPTY;
     }
 
-    const obser = this.openapiservice.readOpenApiSpec(this.openApiFile).pipe(map(
-        openapi => ({
-          metadata: {
-            title: this.formGroup.value.title,
-            description: this.formGroup.value.description
-          },
-          openApi: openapi,
-          scenarios: []
-        } as MockDefinition)
-      ));
+    const obser = this.openapiservice.readOpenApiSpec(this.openApiFile).pipe(
+      map(
+        openapi =>
+          ({
+            metadata: {
+              title: this.formGroup.value.title,
+              description: this.formGroup.value.description
+            },
+            openApi: openapi,
+            scenarios: []
+          } as MockDefinition)
+      )
+    );
     return obser;
   }
 }
