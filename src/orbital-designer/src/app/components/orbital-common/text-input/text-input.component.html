@@ -11,7 +11,7 @@
     required
   />
   <mat-error *ngFor="let error of getErrors()">
-    {{ error ? "Please input a valid title" : "Valid Title"}}
+     {{ error ? errorText : "Valid Title"}}
   </mat-error>
   <mat-hint *ngIf="!!maxLength" align="end"
     >{{ control.value?.length }}/{{ maxLength }}</mat-hint
