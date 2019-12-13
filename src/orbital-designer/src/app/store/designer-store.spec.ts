@@ -53,7 +53,7 @@ describe('DesignerStore', () => {
         title: 'New Scenario',
         description: ''
       },
-      mockverb,
+      verb: mockverb,
       path,
       response: {
         headers: new Map<string, string>(),
@@ -70,7 +70,7 @@ describe('DesignerStore', () => {
           }
         ] as Array<BodyRule>
       }
-    } as unknown as Scenario;
+    } as Scenario;
       store.selectedScenario = Expected;
       expect(store.state.selectedScenario).toEqual(Expected);
     });
@@ -226,7 +226,7 @@ describe('DesignerStore', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -243,7 +243,7 @@ describe('DesignerStore', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown as Scenario);
+        }  as Scenario);
       }
       store.updateScenarios(scenarios);
       expect(store.state.mockDefinition.scenarios).toEqual(scenarios);
@@ -262,7 +262,7 @@ describe('DesignerStore', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -279,7 +279,7 @@ describe('DesignerStore', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown as Scenario
+        } as Scenario
       };
       const expected = input.mock.scenarios.length + 1;
 
