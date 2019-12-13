@@ -58,7 +58,7 @@ describe('GetEndpointScenariosPipe', () => {
         title: 'New Scenario',
         description: ''
       },
-      verb: mockVerb,
+      verb: mockVerbs,
       path: mockpaths,
       response: {
         headers: new Map<string, string>(),
