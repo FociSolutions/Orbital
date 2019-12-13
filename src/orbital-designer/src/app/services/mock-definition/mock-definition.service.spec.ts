@@ -42,7 +42,7 @@ describe('MockDefinitionService', () => {
           title: 'New Scenario',
           description: ''
         },
-        mockverb,
+        verb: mockverb,
         path,
         response: {
           headers: new Map<string, string>(),
@@ -59,7 +59,7 @@ describe('MockDefinitionService', () => {
             }
           ] as Array<BodyRule>
         }
-      } as unknown as Scenario;
+      } as Scenario;
 
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -87,7 +87,7 @@ describe('MockDefinitionService', () => {
           title: 'New Scenario',
           description: ''
         },
-        mockverb,
+        verb: mockverb,
         path,
         response: {
           headers: new Map<string, string>(),
@@ -104,7 +104,7 @@ describe('MockDefinitionService', () => {
             }
           ] as Array<BodyRule>
         }
-      } as unknown as Scenario;
+      } as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -141,7 +141,7 @@ describe('MockDefinitionService', () => {
           title: 'New Scenario',
           description: ''
         },
-        mockverb,
+        verb: mockverb,
         path,
         response: {
           headers: new Map<string, string>(),
@@ -158,7 +158,7 @@ describe('MockDefinitionService', () => {
             }
           ] as Array<BodyRule>
         }
-      } as unknown as Scenario;
+      } as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -188,7 +188,7 @@ describe('MockDefinitionService', () => {
           title: 'New Scenario',
           description: ''
         },
-        mockverb,
+        verb: mockverb,
         path,
         response: {
           headers: new Map<string, string>(),
@@ -205,7 +205,7 @@ describe('MockDefinitionService', () => {
             }
           ] as Array<BodyRule>
         }
-      } as unknown as Scenario;
+      } as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -235,7 +235,7 @@ describe('MockDefinitionService', () => {
           title: 'New Scenario',
           description: ''
         },
-        mockverb,
+        verb: mockverb,
         path,
         response: {
           headers: new Map<string, string>(),
@@ -252,7 +252,7 @@ describe('MockDefinitionService', () => {
             }
           ] as Array<BodyRule>
         }
-      } as unknown as Scenario;
+      } as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
