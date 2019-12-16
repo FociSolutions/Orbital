@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import Json from '../../../app/models/json';
 import { cloneDeep } from 'lodash';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -68,18 +68,19 @@ deleteMockDefinition(
     url: string,
     mockDefId: string
   ): Observable<boolean> {
-    const success = this.httpClient
+    return  this.httpClient
       .post<boolean>(url, mockDefId)
-      .pipe(
+      .pipe(map(
+        response => {
+          this.store.mockDefinitions = this.store.mockDefinitions.filter(mock => mock.metadata.title !== mockDefId);
+          this.logger.debug('Mock definition was removed from client and server: ', mockDefId);
+          return response;
+        },
         catchError(error => {
+          this.logger.error(error);
           return throwError(error);
         })
+      )
       );
-
-    if (success) {
-      this.store.mockDefinitions = this.store.mockDefinitions.filter(mock => mock.metadata.title !== mockDefId);
-      this.logger.debug('Mock definition was removed from client and server: ', mockDefId);
-    }
-    return success;
   }
 }
