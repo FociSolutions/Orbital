@@ -16,11 +16,11 @@ import {
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-searchable-selection-list',
-  templateUrl: './searchable-selection-list.component.html',
-  styleUrls: ['./searchable-selection-list.component.scss']
+  selector: 'app-shuttle-sub-list',
+  templateUrl: './shuttle-sub-list.component.html',
+  styleUrls: ['./shuttle-sub-list.component.scss']
 })
-export class SearchableSelectionListComponent implements OnInit {
+export class ShuttleSubListComponent implements OnInit {
   static readonly selectAllString = 'Select All';
   static readonly deselectAllString = 'Deselect All';
 
@@ -47,8 +47,8 @@ export class SearchableSelectionListComponent implements OnInit {
    */
   get checkboxLabel() {
     return this.selectAllChecked
-      ? SearchableSelectionListComponent.deselectAllString
-      : SearchableSelectionListComponent.selectAllString;
+      ? ShuttleSubListComponent.deselectAllString
+      : ShuttleSubListComponent.selectAllString;
   }
 
   /**
@@ -111,7 +111,7 @@ export class SearchableSelectionListComponent implements OnInit {
   onSearchInput(value: string) {
     this.filteredOutOptions = this.matList.options.filter(
       option =>
-        !SearchableSelectionListComponent.ignoreCaseContainsMatch(
+        !ShuttleSubListComponent.ignoreCaseContainsMatch(
           this.itemToStringFn(option.value),
           value
         )

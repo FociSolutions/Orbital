@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ShuttleListComponent } from './shuttle-list.component';
-import { SearchableSelectionListComponent } from './searchable-selection-list/searchable-selection-list.component';
+import { ShuttleSubListComponent } from './shuttle-sub-list/shuttle-sub-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,7 +15,7 @@ describe('ShuttleListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ShuttleListComponent, SearchableSelectionListComponent],
+      declarations: [ShuttleListComponent, ShuttleSubListComponent],
       imports: [
         MatCardModule,
         MatButtonModule,

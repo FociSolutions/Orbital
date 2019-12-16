@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
-import { SearchableSelectionListComponent } from './searchable-selection-list.component';
+import { ShuttleSubListComponent } from './shuttle-sub-list.component';
 import { MatIconModule } from '@angular/material/icon';
 import {
   MatListModule} from '@angular/material/list';
@@ -9,13 +9,13 @@ import {
   MatCheckboxModule} from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 
-describe('SearchableSelectionListComponent', () => {
-  let component: SearchableSelectionListComponent;
-  let fixture: ComponentFixture<SearchableSelectionListComponent>;
+describe('ShuttleSubListComponent', () => {
+  let component: ShuttleSubListComponent;
+  let fixture: ComponentFixture<ShuttleSubListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchableSelectionListComponent],
+      declarations: [ShuttleSubListComponent],
       imports: [
         MatIconModule,
         MatListModule,
@@ -27,7 +27,7 @@ describe('SearchableSelectionListComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchableSelectionListComponent);
+    fixture = TestBed.createComponent(ShuttleSubListComponent);
     component = fixture.componentInstance;
     component.list = faker.random.words().split(' ');
     fixture.detectChanges();
@@ -37,22 +37,22 @@ describe('SearchableSelectionListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('SearchableSelectionListComponent.onSelect()', () => {
-    describe('SearchableSelectionListComponent.checkboxLabel', () => {
+  describe('ShuttleSubListComponent.onSelect()', () => {
+    describe('ShuttleSubListComponent.checkboxLabel', () => {
       it(`should return the select all string if none of the lists options are selected`, () => {
         expect(component.checkboxLabel).toEqual(
-          SearchableSelectionListComponent.selectAllString
+          ShuttleSubListComponent.selectAllString
         );
       });
     });
 
-    describe('SearchableSelectionListComponent.selectAllChecked', () => {
+    describe('ShuttleSubListComponent.selectAllChecked', () => {
       it('should return false if none of the options are selected', () => {
         expect(component.selectAllChecked).toBeFalsy();
       });
     });
 
-    describe('SearchableSelectionListComponent.hideOption', () => {
+    describe('ShuttleSubListComponent.hideOption', () => {
       it('should return false if no options have been filtered', () => {
         expect(component.hideOption(component.list[0])).toBeFalsy();
       });
@@ -62,7 +62,7 @@ describe('SearchableSelectionListComponent', () => {
       });
     });
 
-    describe('SearchableSelectionListComponent.onSearchInput()', () => {
+    describe('ShuttleSubListComponent.onSearchInput()', () => {
       it('should set the filtered options to only options that include text from the input', () => {
         const filteredString = `${component.list[0]}`.substr(0, 1);
         component.list = [...component.list, filteredString];
@@ -81,7 +81,7 @@ describe('SearchableSelectionListComponent', () => {
       it('should return true if the first parameter string start with the second parameter', () => {
         const targetString: string = faker.random.word();
         expect(
-          SearchableSelectionListComponent.ignoreCaseContainsMatch(
+          ShuttleSubListComponent.ignoreCaseContainsMatch(
             targetString,
             targetString.substr(0, 1)
           )
@@ -91,7 +91,7 @@ describe('SearchableSelectionListComponent', () => {
       it('should return false if the first parameter string does not start with in the second parameter', () => {
         const targetString: string = faker.random.word();
         expect(
-          SearchableSelectionListComponent.ignoreCaseContainsMatch(
+          ShuttleSubListComponent.ignoreCaseContainsMatch(
             targetString.substr(0, 1),
             targetString
           )
@@ -101,7 +101,7 @@ describe('SearchableSelectionListComponent', () => {
       it('should ignore case', () => {
         const targetString: string = faker.random.word();
         expect(
-          SearchableSelectionListComponent.ignoreCaseContainsMatch(
+          ShuttleSubListComponent.ignoreCaseContainsMatch(
             targetString.toUpperCase(),
             targetString.substr(0, 1).toLowerCase()
           )
