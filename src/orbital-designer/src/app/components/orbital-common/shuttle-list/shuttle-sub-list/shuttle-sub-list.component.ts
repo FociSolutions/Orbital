@@ -31,7 +31,6 @@ export class ShuttleSubListComponent implements OnInit {
   @Output() itemSelected: EventEmitter<any[]>;
 
   @Input() list: any[] = [];
-  @Input() itemTemplate!: TemplateRef<any>;
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
   @Input() itemToStringFn: (_: any) => string = x => x as string;
