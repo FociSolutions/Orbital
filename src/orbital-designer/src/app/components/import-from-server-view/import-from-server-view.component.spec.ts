@@ -99,31 +99,12 @@ describe('ImportFromServerViewComponent', () => {
 
   describe('ImportFromServerViewComponent.onResponse', () => {
     it('should set the control value to the response body given an http response with an array body', () => {
-      const response = new HttpResponse({
-        body: [faker.random.words()],
-        status: 200
-      });
-      component.onResponse(response);
-      expect(component.formArray.controls[0].value).toEqual(response.body[0]);
+      component.onResponse(validMockDefinition);
+      expect(component.formArray.controls[0].value).toEqual(validMockDefinition);
     });
 
-    it('should not set the control value when given a response is an HttpErrorResponse', () => {
-      const response = new HttpErrorResponse({});
-      component.onResponse(response);
-      expect(component.formArray.length).toBe(0);
-    });
-
-    it('should not set the control value when given a response is an DomException', () => {
-      const response = new DOMException();
-      component.onResponse(response);
-      expect(component.formArray.length).toBe(0);
-    });
-
-    it('should not set the control value when given a response whose body is not an array', () => {
-      const response = new HttpResponse({
-        body: faker.random.words(),
-        status: 200
-      });
+    it('should not set the control value when given a response whose body is null', () => {
+      const response = null;
       component.onResponse(response);
       expect(component.formArray.length).toBe(0);
     });

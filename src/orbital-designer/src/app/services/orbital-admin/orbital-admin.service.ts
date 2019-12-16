@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of, from } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
 import Json from '../../../app/models/json';
@@ -106,14 +106,10 @@ deleteMultipleMockDefinitions(
    * Sends a GET all request to a specified server
    * @param url The url to send the GET request to
    */
-  getAll(url: string): Observable<HttpEvent<unknown>> {
-    const request = new HttpRequest(
-      'GET',
-      url
-    );
-
+  getAll(url: string): Observable<MockDefinition[]> {
     this.logger.debug('Sent GET request to ' + url);
-    return this.httpClient.request(request).pipe(timeout(3000));
+
+    return this.httpClient.get<MockDefinition[]>(url).pipe(timeout(3000));
   }
 
   /**
@@ -121,13 +117,8 @@ deleteMultipleMockDefinitions(
    * @param url The url to send the GET request to
    * @param id The mock definition id to get
    */
-  get(url: string, id: string): Observable<HttpEvent<unknown>> {
-    const request = new HttpRequest(
-      'GET',
-      url + '/' + id
-    );
-
+  get(url: string, id: string): Observable<MockDefinition> {
     this.logger.debug('Sent GET request to ' + url + '/' + id);
-    return this.httpClient.request(request).pipe(timeout(3000));
+    return this.httpClient.get<MockDefinition>(url + '/' + id).pipe(timeout(3000));
   }
 }

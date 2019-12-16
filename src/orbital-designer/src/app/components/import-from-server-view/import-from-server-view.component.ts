@@ -40,9 +40,7 @@ export class ImportFromServerViewComponent implements OnInit {
 
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
-  requestObserver: Observer<
-    HttpEvent<HttpResponse<unknown> | HttpErrorResponse>
-  >;
+  requestObserver: Observer<MockDefinition | MockDefinition[]>;
   options: object = {};
   body?: string = null;
   httpMethod = 'GET';
@@ -77,10 +75,8 @@ export class ImportFromServerViewComponent implements OnInit {
 
     this.requestObserver = {
       next: event => {
-        if (event.type === HttpEventType.Response) {
-          this.onResponse(event);
-          this.errors = '';
-        }
+        this.onResponse(event);
+        this.errors = '';
       },
       error: e => {
         this.errors = e.message;
@@ -113,7 +109,11 @@ export class ImportFromServerViewComponent implements OnInit {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
 
-      this.orbitalService.getAll(`${this.selectedProtocol}${this.inputControl.value}${this.concatToURI}`).subscribe(this.requestObserver);
+      this.orbitalService
+        .getAll(
+          `${this.selectedProtocol}${this.inputControl.value}${this.concatToURI}`
+        )
+        .subscribe(this.requestObserver);
     }
   }
 
@@ -149,17 +149,27 @@ export class ImportFromServerViewComponent implements OnInit {
    * values to the response body. The control is then responsible for validation.
    * @param response HttpResponse received by the input
    */
-  onResponse(
-    response: HttpResponse<unknown> | HttpErrorResponse | DOMException
-  ) {
+  onResponse(response: MockDefinition | MockDefinition[]) {
     this.logger.debug('Received http response', response);
-    if (response instanceof HttpResponse && Array.isArray(response.body)) {
-      this.formArray = new FormArray(
-        response.body.map(
-          obj =>
-            new FormControl(obj, null)
-        )
-      );
+
+    if (!!response) {
+      if (!Array.isArray(response)) {
+        this.formArray = new FormArray([
+          new FormControl(response, null, [
+            mockDefinitionObjectValidatorFactory(this.logger)
+          ])
+        ]);
+      } else {
+        this.formArray = new FormArray(
+          response.map(
+            mockDef =>
+              new FormControl(mockDef, null, [
+                mockDefinitionObjectValidatorFactory(this.logger)
+              ])
+          )
+        );
+      }
+
       this.logger.debug(
         'ImportFormServerViewComponent FormArray value:',
         this.formArray
