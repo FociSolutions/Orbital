@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ShuttleListComponent } from './shuttle-list.component';
-import { SearchableSelectionListComponent } from '../searchable-selection-list/searchable-selection-list.component';
+import { SearchableSelectionListComponent } from './searchable-selection-list/searchable-selection-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
