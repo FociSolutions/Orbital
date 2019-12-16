@@ -120,7 +120,7 @@ describe('ScenarioViewComponent', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -137,7 +137,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        } as Scenario);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -181,7 +181,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        }  as Scenario );
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -215,7 +215,7 @@ describe('ScenarioViewComponent', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -232,7 +232,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        } as Scenario);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -261,7 +261,7 @@ describe('ScenarioViewComponent', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -278,7 +278,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        } as Scenario);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -305,7 +305,7 @@ describe('ScenarioViewComponent', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -322,7 +322,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        } as Scenario);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -375,7 +375,7 @@ describe('ScenarioViewComponent', () => {
         title: 'New Scenario',
         description: ''
       },
-      mockverb,
+      verb: mockverb,
       path,
       response: {
         headers: new Map<string, string>(),
@@ -392,7 +392,7 @@ describe('ScenarioViewComponent', () => {
           }
         ] as Array<BodyRule>
       }
-    } as unknown) as Scenario;
+    } as Scenario);
     scenario.response.status = 404;
     expect(component.getScenarioResponseStatusString(scenario)).toBe(
       'Not Found'
@@ -408,7 +408,7 @@ describe('ScenarioViewComponent', () => {
         title: 'New Scenario',
         description: ''
       },
-      mockverb,
+      verb: mockverb,
       path,
       response: {
         headers: new Map<string, string>(),
@@ -425,7 +425,7 @@ describe('ScenarioViewComponent', () => {
           }
         ] as Array<BodyRule>
       }
-    } as unknown) as Scenario;
+    } as Scenario);
     scenario.response.status = 202;
     expect(component.getScenarioResponseStatusString(scenario)).toBe(
       'Accepted'
@@ -442,7 +442,7 @@ describe('ScenarioViewComponent', () => {
           title: 'New Scenario',
           description: ''
         },
-        mockverb,
+        verb: mockverb,
         path,
         response: {
           headers: new Map<string, string>(),
@@ -459,7 +459,7 @@ describe('ScenarioViewComponent', () => {
             }
           ] as Array<BodyRule>
         }
-      } as unknown) as Scenario;
+      } as Scenario);
       store.updateScenarios([scenario]);
       component.deleteScenario(scenario);
       expect(store.state.mockDefinition.scenarios).toEqual([]);
