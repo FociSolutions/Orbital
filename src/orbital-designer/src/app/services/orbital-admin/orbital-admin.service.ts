@@ -65,10 +65,10 @@ deleteMultipleMockDefinitions(
     url: string,
     mockDefIds: string[]
   ): boolean {
-      let success = false;
+      let success = true;
       mockDefIds.forEach(id => {
         this.deleteMockDefinition(url, id).subscribe(
-          response => success = true,
+          () => {},
           error => success = false
       );
     });
