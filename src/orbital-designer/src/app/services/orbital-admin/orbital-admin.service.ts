@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable, throwError } from 'rxjs';
@@ -68,8 +68,10 @@ deleteMockDefinition(
     url: string,
     mockDefId: string
   ): Observable<boolean> {
+    const fullURL = url + '/' + mockDefId;
+
     return  this.httpClient
-      .post<boolean>(url, mockDefId)
+      .delete<boolean>(fullURL)
       .pipe(map(
         response => {
           this.store.mockDefinitions = this.store.mockDefinitions.filter(mock => mock.metadata.title !== mockDefId);
