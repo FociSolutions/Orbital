@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { FormArray, ValidationErrors, AbstractControl } from '@angular/forms';
+import { FormArray, AbstractControl } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -9,22 +9,12 @@ import Json from '../../models/json';
 import {
   Component,
   OnInit,
-  Input,
-  Injectable,
-  Output,
-  EventEmitter
-} from '@angular/core';
+  Input} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import {
-  HttpClient,
-  HttpResponse,
-  HttpRequest,
-  HttpEventType,
-  HttpEvent,
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observer } from 'rxjs';
-import { timeout } from 'rxjs/operators';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 
 @Component({
@@ -68,7 +58,6 @@ export class ImportFromServerViewComponent implements OnInit {
     private logger: NGXLogger,
     private designerStore: DesignerStore,
     private router: Router,
-    private httpClient: HttpClient,
     private orbitalService: OrbitalAdminService
   ) {
     this.formArray = new FormArray([]);

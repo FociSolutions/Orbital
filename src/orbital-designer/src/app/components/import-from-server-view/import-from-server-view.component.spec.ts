@@ -6,16 +6,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ImportFromServerViewComponent } from './import-from-server-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import * as faker from 'faker';
 import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
-import { FormControl, Validators, FormArray } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import Json from '../../models/json';
-import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 describe('ImportFromServerViewComponent', () => {
