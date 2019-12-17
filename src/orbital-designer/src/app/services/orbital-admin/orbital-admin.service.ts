@@ -53,4 +53,28 @@ export class OrbitalAdminService {
         })
       );
   }
+
+
+/**
+ * Remove multiple MockDefinitions by title
+ * @param url string representation of the orbital server url
+ * @param mockDefIds string arrays containing the mock definition titles to be delted
+ * @returns flag to indicate if the deletion of all mock definitions was successful
+ */
+deleteMultipleMockDefinitions(
+    url: string,
+    mockDefIds: string[]
+  ): boolean {
+      let success = false;
+      mockDefIds.forEach(id => {
+        this.deleteMockDefinition(url, id).subscribe(
+          response => success = true,
+          error => success = false
+      );
+    });
+
+      return success;
+  }
+
+
 }
