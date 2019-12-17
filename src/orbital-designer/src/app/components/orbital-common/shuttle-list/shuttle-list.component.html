@@ -5,7 +5,6 @@
       <app-shuttle-sub-list
         class="list"
         [list]="leftList"
-        [itemToStringFn]="itemToStringFn"
         [emptyListMessage]="emptyListMessage"
         [noSearchResultsMessage]="noSearchResultsMessage"
         (itemSelected)="onSelectLeft($event)"
@@ -22,7 +21,6 @@
       <app-shuttle-sub-list
         class="list"
         [list]="rightList"
-        [itemToStringFn]="itemToStringFn"
         [emptyListMessage]="emptyListMessage"
         [noSearchResultsMessage]="noSearchResultsMessage"
         (itemSelected)="onSelectRight($event)"

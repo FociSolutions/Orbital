@@ -13,6 +13,7 @@ import {
 } from '@angular/material/list';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-shuttle-sub-list',
@@ -29,10 +30,9 @@ export class ShuttleSubListComponent implements OnInit {
 
   @Output() itemSelected: EventEmitter<MockDefinition[]>;
 
-  @Input() list: MockDefinition[] = [];
+  @Input() list: FormControl[] = [];
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
-  @Input() itemToStringFn: (_: any) => string = x => x as string;
 
   constructor() {
     this.itemSelected = new EventEmitter<MockDefinition[]>();
@@ -95,7 +95,7 @@ export class ShuttleSubListComponent implements OnInit {
    * false otherwise
    * @param item The item being checked against
    */
-  hideOption(item: any): boolean {
+  hideOption(item: MockDefinition): boolean {
     if (this.filteredOutOptions.length > 0) {
       return !!this.filteredOutOptions.find(option => option.value === item);
     }
@@ -110,7 +110,7 @@ export class ShuttleSubListComponent implements OnInit {
     this.filteredOutOptions = this.matList.options.filter(
       option =>
         !ShuttleSubListComponent.ignoreCaseContainsMatch(
-          this.itemToStringFn(option.value),
+          (option.value.value as MockDefinition).metadata.title,
           value
         )
     );
