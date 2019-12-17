@@ -26,7 +26,6 @@ import {
 import { Observer } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
-import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-definition-object-validator/mock-definition-object-validator';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -156,17 +155,13 @@ export class ImportFromServerViewComponent implements OnInit {
     if (!!response) {
       if (!Array.isArray(response)) {
         this.formArray = new FormArray([
-          new FormControl(response, null, [
-            mockDefinitionObjectValidatorFactory(this.logger)
-          ])
+          new FormControl(response, null)
         ]);
       } else {
         this.formArray = new FormArray(
           response.map(
             mockDef =>
-              new FormControl(mockDef, null, [
-                mockDefinitionObjectValidatorFactory(this.logger)
-              ])
+              new FormControl(mockDef, null)
           )
         );
       }
