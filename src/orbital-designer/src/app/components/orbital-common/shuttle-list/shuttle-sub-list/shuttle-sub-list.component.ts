@@ -2,9 +2,7 @@ import {
   Component,
   OnInit,
   Input,
-  TemplateRef,
   ViewChild,
-  ElementRef,
   Output,
   EventEmitter
 } from '@angular/core';
@@ -14,6 +12,7 @@ import {
   MatListOption
 } from '@angular/material/list';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-shuttle-sub-list',
@@ -28,15 +27,15 @@ export class ShuttleSubListComponent implements OnInit {
 
   @ViewChild('matList', { static: false }) matList: MatSelectionList;
 
-  @Output() itemSelected: EventEmitter<any[]>;
+  @Output() itemSelected: EventEmitter<MockDefinition[]>;
 
-  @Input() list: any[] = [];
+  @Input() list: MockDefinition[] = [];
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
   @Input() itemToStringFn: (_: any) => string = x => x as string;
 
   constructor() {
-    this.itemSelected = new EventEmitter<any[]>();
+    this.itemSelected = new EventEmitter<MockDefinition[]>();
   }
 
   /**

@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import {
   MatCheckboxModule} from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
+import validMockDefinition from '../../../../../test-files/test-mockdefinition-object';
 
 describe('ShuttleSubListComponent', () => {
   let component: ShuttleSubListComponent;
