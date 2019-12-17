@@ -72,17 +72,11 @@ deleteMockDefinition(
 
     return  this.httpClient
       .delete<boolean>(fullURL)
-      .pipe(map(
-        response => {
-          this.store.mockDefinitions = this.store.mockDefinitions.filter(mock => mock.metadata.title !== mockDefId);
-          this.logger.debug('Mock definition was removed from client and server: ', mockDefId);
-          return response;
-        },
+      .pipe(
         catchError(error => {
           this.logger.error(error);
           return throwError(error);
         })
-      )
       );
   }
 }
