@@ -60,7 +60,7 @@ export class OrbitalAdminService {
  *
  * @param url the orbital server url
  * @param mockDefId the title of the mock definition that will be removed
- * @returns a boolean indicating if the mockdefinition was removed successfully both from client and server.
+ * @returns a boolean indicating if the mockdefinition was removed successfully both the orbital server.
  */
 deleteMockDefinition(
     url: string,
