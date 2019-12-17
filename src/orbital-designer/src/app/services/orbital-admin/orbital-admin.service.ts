@@ -11,7 +11,8 @@ import { cloneDeep } from 'lodash';
   providedIn: 'root'
 })
 export class OrbitalAdminService {
-  constructor(private httpClient: HttpClient, private logger: NGXLogger) {}
+  constructor(private httpClient: HttpClient,
+              private logger: NGXLogger) {}
 
   /**
    * POSTs a Mockdefinition to the server
@@ -49,6 +50,29 @@ export class OrbitalAdminService {
       .post<boolean>(url, Json.mapToObject(mockDefinitionToExport))
       .pipe(
         catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+/**
+ * Removes the specified mock definition from the orbital server
+ *
+ * @param url the orbital server url
+ * @param mockDefId the title of the mock definition that will be removed
+ * @returns a boolean indicating if the mockdefinition was removed successfully both the orbital server.
+ */
+deleteMockDefinition(
+    url: string,
+    mockDefId: string
+  ): Observable<boolean> {
+    const fullURL = url + '/' + mockDefId;
+
+    return  this.httpClient
+      .delete<boolean>(fullURL)
+      .pipe(
+        catchError(error => {
+          this.logger.error(error);
           return throwError(error);
         })
       );
