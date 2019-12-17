@@ -82,7 +82,7 @@ deleteMockDefinition(
 /**
  * Remove multiple MockDefinitions by title
  * @param url string representation of the orbital server url
- * @param mockDefIds string arrays containing the mock definition titles to be delted
+ * @param mockDefIds string arrays containing the mock definition titles to be deleted
  * @returns flag to indicate if the deletion of all mock definitions was successful
  */
 deleteMultipleMockDefinitions(
