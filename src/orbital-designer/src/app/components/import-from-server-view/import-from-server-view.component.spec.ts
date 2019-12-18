@@ -13,8 +13,8 @@ import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
-import Json from '../../models/json';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
+import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
@@ -31,7 +31,7 @@ describe('ImportFromServerViewComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule
       ],
-      providers: [Location, DesignerStore]
+      providers: [Location, DesignerStore, OrbitalAdminService]
     }).compileComponents();
   }));
 
@@ -65,6 +65,10 @@ describe('ImportFromServerViewComponent', () => {
       ]);
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
+
+      console.log(store.state.mockDefinitions);
+      console.log(expectedMap);
+
       expect(store.state.mockDefinitions).toEqual(expectedMap);
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
     });

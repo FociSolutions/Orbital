@@ -22,7 +22,8 @@ export class MockDefinition {
   public static toMockDefinintionMap(
     mockDefinitionMap: string
   ): Map<string, MockDefinition> {
-    const mockMap = Json.objectToMap(JSON.parse(mockDefinitionMap));
+    const mockObject = JSON.parse(mockDefinitionMap) || new Map<string, MockDefinition>();
+    const mockMap = Json.objectToMap(mockObject);
     for (const key in mockMap) {
       if (mockMap.hasOwnProperty(key)) {
         const element = mockMap[key];
@@ -32,9 +33,11 @@ export class MockDefinition {
     return mockMap;
   }
 
-  public static toMockDefinition(mockDefinition: string): MockDefinition{
+  public static toMockDefinition(mockDefinition: string): MockDefinition {
     let content = JSON.parse(mockDefinition);
-    content = MockDefinition.objectToMockDefinition(content);
+    if (!!content) {
+      content = MockDefinition.objectToMockDefinition(content);
+    }
     return content;
   }
 

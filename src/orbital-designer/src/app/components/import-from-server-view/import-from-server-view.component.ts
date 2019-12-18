@@ -71,7 +71,6 @@ export class ImportFromServerViewComponent implements OnInit {
     private logger: NGXLogger,
     private designerStore: DesignerStore,
     private router: Router,
-    private httpClient: HttpClient,
     private orbitalService: OrbitalAdminService
   ) {
     this.formArray = new FormArray([]);
@@ -124,7 +123,7 @@ export class ImportFromServerViewComponent implements OnInit {
    */
   onSubmit() {
     this.designerStore.mockDefinitions = this.mockDefinitions.map(
-      mockDefinition => this.scenarioObjectsToMap(mockDefinition)
+      mockDefinition => MockDefinition.objectToMockDefinition(mockDefinition)
     );
     this.router.navigateByUrl('endpoint-view');
   }

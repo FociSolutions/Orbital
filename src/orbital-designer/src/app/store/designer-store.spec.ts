@@ -14,7 +14,6 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
 import { TestBed } from '@angular/core/testing';
 import * as _ from 'lodash';
-import { interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 describe('DesignerStore', () => {

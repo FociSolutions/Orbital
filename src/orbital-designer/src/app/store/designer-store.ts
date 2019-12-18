@@ -8,6 +8,7 @@ import { VerbType } from '../models/verb.type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 import Json from '../models/json';
+import { cloneDeep } from 'lodash';
 
 export interface State {
   selectedEndpoint: Endpoint;
@@ -35,8 +36,10 @@ export class DesignerStore extends Store<State> {
     });
 
     this.state$.subscribe(state => {
-      localStorage.setItem(DesignerStore.mockDefinitionStoreKey, JSON.stringify(Json.mapToObject(state.mockDefinition)));
-      localStorage.setItem(DesignerStore.mockDefinitionsStoreKey, JSON.stringify(Json.mapToObject(state.mockDefinitions)));
+      const clonedDefinition = cloneDeep(state.mockDefinition);
+      const clonedDefinitions = cloneDeep(state.mockDefinitions);
+      localStorage.setItem(DesignerStore.mockDefinitionStoreKey, JSON.stringify(Json.mapToObject(clonedDefinition)));
+      localStorage.setItem(DesignerStore.mockDefinitionsStoreKey, JSON.stringify(Json.mapToObject(clonedDefinitions)));
       localStorage.setItem(DesignerStore.endpointsStoreKey, JSON.stringify(state.endpoints));
       localStorage.setItem(DesignerStore.selectedEndpointStoreKey, JSON.stringify(state.selectedEndpoint));
       localStorage.setItem(DesignerStore.selectedScenarioStoreKey, JSON.stringify(state.selectedScenario));
