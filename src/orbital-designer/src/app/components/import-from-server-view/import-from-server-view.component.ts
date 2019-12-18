@@ -24,9 +24,9 @@ import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admi
 })
 export class ImportFromServerViewComponent implements OnInit {
   static readonly urlMaxLength = 2048;
-  readonly emptyListMessageServerBox = 'No MockDefinitions';
+  readonly emptyListMessageServerBox = 'No Mockdefinition(s)';
   readonly invalidMockDefinitionsFoundErrorMessage =
-    'One or more invalid Mock Definitions found';
+    'One or more invalid Mockdefinition(s) found';
 
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
