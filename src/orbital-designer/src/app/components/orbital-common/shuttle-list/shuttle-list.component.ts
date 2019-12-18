@@ -25,6 +25,7 @@ export class ShuttleListComponent implements OnInit, OnDestroy {
       this.rightList = [];
     }
   }
+  @Input() itemTemplate!: TemplateRef<any>;
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
 
