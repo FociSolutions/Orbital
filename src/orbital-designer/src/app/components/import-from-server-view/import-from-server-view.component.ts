@@ -142,18 +142,12 @@ export class ImportFromServerViewComponent implements OnInit {
     this.logger.debug('Received http response', response);
 
     if (!!response) {
-      if (!Array.isArray(response)) {
-        this.formArray = new FormArray([
-          new FormControl(response, null)
-        ]);
-      } else {
-        this.formArray = new FormArray(
-          response.map(
-            mockDef =>
-              new FormControl(mockDef, null)
-          )
-        );
-      }
+      this.formArray = new FormArray(
+        response.map(
+          mockDef =>
+            new FormControl(mockDef, null)
+        )
+      );
 
       this.logger.debug(
         'ImportFormServerViewComponent FormArray value:',
