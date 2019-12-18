@@ -25,6 +25,14 @@ namespace Orbital.Mock.Server
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(ConfigAppConfiguration)
                 .UseSerilog()
+                .ConfigureKestrel(serverOptions =>
+                {
+                    // max size of header
+                    serverOptions.Limits.MaxRequestHeadersTotalSize = int.MaxValue - 2;
+
+                    // max size for request buffer size
+                    serverOptions.Limits.MaxRequestBufferSize = null;
+                })
                 .UseStartup<Startup>();
 
         private static void ConfigAppConfiguration(WebHostBuilderContext context, IConfigurationBuilder configurationBuilder)
