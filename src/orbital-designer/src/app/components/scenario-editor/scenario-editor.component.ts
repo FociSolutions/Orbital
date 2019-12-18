@@ -8,8 +8,6 @@ import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { VerbType } from 'src/app/models/verb.type';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import * as _ from 'lodash';
 
 @Component({
