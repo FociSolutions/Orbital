@@ -30,7 +30,7 @@ export class ImportFromServerViewComponent implements OnInit {
 
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
-  requestObserver: Observer<MockDefinition | MockDefinition[]>;
+  requestObserver: Observer<MockDefinition[]>;
   options: object = {};
   body?: string = null;
   httpMethod = 'GET';
@@ -138,7 +138,7 @@ export class ImportFromServerViewComponent implements OnInit {
    * values to the response body. The control is then responsible for validation.
    * @param response HttpResponse received by the input
    */
-  onResponse(response: MockDefinition | MockDefinition[]) {
+  onResponse(response: MockDefinition[]) {
     this.logger.debug('Received http response', response);
 
     if (!!response) {

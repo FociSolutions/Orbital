@@ -95,7 +95,7 @@ describe('ImportFromServerViewComponent', () => {
 
   describe('ImportFromServerViewComponent.onResponse', () => {
     it('should set the control value to the response body given an http response with an array body', () => {
-      component.onResponse(validMockDefinition);
+      component.onResponse([validMockDefinition]);
       expect(component.formArray.controls[0].value).toEqual(validMockDefinition);
     });
 
