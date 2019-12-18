@@ -27,6 +27,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   scenarioId: string;
   selectedScenario: Scenario;
   paramsSubscription: Subscription;
+  storeSubscription: Subscription;
+
+  endpointVerb: VerbType;
+  endpointPath: string;
 
   requestMatchRule: RequestMatchRule;
   metadata: Metadata;
@@ -62,6 +66,13 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.store.selectedScenario = this.selectedScenario;
       }
     );
+
+    this.storeSubscription = this.store.state$.subscribe(state => {
+      if (!!state.mockDefinition && !!state.selectedEndpoint) {
+        this.endpointVerb = state.selectedEndpoint.verb;
+        this.endpointPath = state.selectedEndpoint.path;
+      }
+    });
   }
 
   /**
@@ -69,6 +80,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
   /**

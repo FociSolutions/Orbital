@@ -63,6 +63,10 @@ mat-form-field {
   width: 100%;
 }
 
+mat-chip-list {
+  padding-right: 1em;
+}
+
 app-scenario-card,
 app-add-metadata,
 app-add-request-match-rule {
@@ -109,4 +113,9 @@ div.flex-space-between-large {
   left: 0;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.endpoint-info {
+  display: flex;
+  align-items: center;
 }
