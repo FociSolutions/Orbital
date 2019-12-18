@@ -6,6 +6,7 @@ import {
   EventEmitter,
   OnDestroy
 } from '@angular/core';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-shuttle-list',
@@ -16,9 +17,9 @@ export class ShuttleListComponent implements OnInit, OnDestroy {
   @Input() leftTitle = '';
   @Input() rightTitle = '';
 
-  @Output() outputList: EventEmitter<any[]>;
+  @Output() outputList: EventEmitter<MockDefinition[]>;
 
-  @Input() set list(list: any[]) {
+  @Input() set list(list: MockDefinition[]) {
     if (!!list) {
       this.leftList = list;
       this.rightList = [];
@@ -28,16 +29,16 @@ export class ShuttleListComponent implements OnInit, OnDestroy {
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
 
-  leftList: any[] = [];
-  rightList: any[] = [];
+  leftList: MockDefinition[] = [];
+  rightList: MockDefinition[] = [];
 
-  leftSelected: any[] = [];
-  rightSelected: any[] = [];
+  leftSelected: MockDefinition[] = [];
+  rightSelected: MockDefinition[] = [];
 
-  @Input() itemToStringFn: (_: any) => string = x => x as string;
+  @Input() itemToStringFn: (_: MockDefinition) => string = x => x as unknown as string;
 
   constructor() {
-    this.outputList = new EventEmitter<any[]>();
+    this.outputList = new EventEmitter<MockDefinition[]>();
   }
 
   /**
@@ -51,7 +52,7 @@ export class ShuttleListComponent implements OnInit, OnDestroy {
    * Sets the leftSelected list to the items passed into it
    * @param items The list of items to set as selected from the left list
    */
-  onSelectLeft(items: any[]): void {
+  onSelectLeft(items: MockDefinition[]): void {
     this.leftSelected = [...items];
   }
 
@@ -59,7 +60,7 @@ export class ShuttleListComponent implements OnInit, OnDestroy {
    * Sets the rightSelected list to the items passed into it
    * @param items The list of items to set as selected from the right list
    */
-  onSelectRight(items: any[]): void {
+  onSelectRight(items: MockDefinition[]): void {
     this.rightSelected = [...items];
   }
 
