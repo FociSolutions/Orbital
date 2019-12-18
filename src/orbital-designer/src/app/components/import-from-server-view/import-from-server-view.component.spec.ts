@@ -52,7 +52,7 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.onSubmit', () => {
-    it('should set the designer stores mockDefinitions and navigate to the endpoint-view', async () => {
+    it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
       const service = TestBed.get(MockDefinitionService);
@@ -71,7 +71,7 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.onListOutput', () => {
-    it('should update the list of MockDefinitions using the values from the list of controls', () => {
+    it('should update the list of Mockdefinitions using the values from the list of controls', () => {
       const expectedList = new Array(3).map(
         () => new FormControl(validMockDefinition)
       );
@@ -83,11 +83,11 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.disabled', () => {
-    it('should return true if the mockDefinitions list is empty', () => {
+    it('should return true if the Mockdefinitions list is empty', () => {
       expect(component.disabled).toBeTruthy();
     });
 
-    it('should return false if the mockDefinitions list is not empty', () => {
+    it('should return false if the Mockdefinitions list is not empty', () => {
       component.mockDefinitions = [validMockDefinition];
       expect(component.disabled).toBeFalsy();
     });
