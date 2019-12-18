@@ -16,7 +16,6 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
 import { ReadFileService } from '../services/read-file/read-file.service';
 import * as _ from 'lodash';
-import { interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 describe('DesignerStore', () => {

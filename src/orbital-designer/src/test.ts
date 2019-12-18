@@ -14,6 +14,14 @@ getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
+
+/**
+ * Used to clean up local storage so that each test has a fresh local storage.
+ */
+afterEach(() => {
+  localStorage.clear();
+});
+
 // Then we find all the tests.
 const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
