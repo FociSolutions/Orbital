@@ -67,7 +67,8 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
     AddMetadataComponent,
     GetVerbStringPipe,
     DownloadMockdefinitionsComponent,
-    ExportToServerViewComponent
+    ExportToServerViewComponent,
+    AddResponseComponent
   ],
   imports: [
     BrowserModule,
