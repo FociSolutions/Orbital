@@ -31,7 +31,8 @@ export class DesignerStore extends Store<State> {
       selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey)),
       selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey)),
       mockDefinition: MockDefinition.toMockDefinition(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
-      mockDefinitions: MockDefinition.toMockDefinintionMap(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)) || new Map<string, MockDefinition>(),
+      mockDefinitions: MockDefinition.toMockDefinintionMap(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey))
+      || new Map<string, MockDefinition>(),
       endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
     });
 
