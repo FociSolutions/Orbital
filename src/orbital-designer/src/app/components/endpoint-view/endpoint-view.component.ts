@@ -1,9 +1,7 @@
-import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Endpoint } from 'src/app/models/endpoint.model';
-import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
-import { NGXLogger } from 'ngx-logger';
 import { HttpRequest } from '@angular/common/http';
 
 @Component({
@@ -17,15 +15,10 @@ export class EndpointViewComponent implements OnInit {
   filteredList: Endpoint[] = [];
   httpRequest: HttpRequest<MockDefinition>;
   serverUri: string;
-  uriRegex =
-    '^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.]{1}[a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$';
   isExportedMessage: string;
 
   constructor(
-    private store: DesignerStore,
-    private orbitalAdminService: OrbitalAdminService,
-    private logger: NGXLogger
-  ) {
+    private store: DesignerStore  ) {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
       this.endpointList = [...state.endpoints];
@@ -53,26 +46,6 @@ export class EndpointViewComponent implements OnInit {
    */
   showNotFound() {
     return this.filteredList.length === 0;
-  }
-
-  /**
-   * Subscribes the OrbitalAdminService to POST a Mockdefinition to the server
-   */
-  onSubmit() {
-    this.orbitalAdminService
-      .exportMockDefinition(this.serverUri, this.mockDefinition)
-      .subscribe(
-        data => {
-          this.logger.log(data);
-          this.isExportedMessage =
-            'Mockdefinition successfully uploaded to server';
-        },
-        error => {
-          this.logger.error('Error', error);
-          this.isExportedMessage =
-            'Error uploading Mockdefinition to server: ' + error.statusText;
-        }
-      );
   }
 
   ngOnInit() {}

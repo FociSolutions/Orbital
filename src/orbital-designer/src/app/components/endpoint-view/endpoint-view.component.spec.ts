@@ -72,16 +72,4 @@ describe('EndpointViewComponent', () => {
     });
   });
 
-  describe('EndpointViewComponent.onSubmit()', () => {
-    beforeEach(() => {
-      store.mockDefinition = SampleMockDefinition;
-      fixture.detectChanges();
-    });
-    it('Should change ExportedMessage to contain a message saying there is an error uploading Mockdefinition', done  => {
-      component.onSubmit();
-      expect(component.isExportedMessage).toContain('Error uploading Mockdefinition to server: ');
-      done();
-    });
-
-  });
 });

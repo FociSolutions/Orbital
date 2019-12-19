@@ -11,9 +11,6 @@ import {
   OnInit,
   Input} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import {
-  HttpErrorResponse
-} from '@angular/common/http';
 import { Observer } from 'rxjs';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 
@@ -150,25 +147,6 @@ export class ImportFromServerViewComponent implements OnInit {
       this.logger.debug(
         'ImportFormServerViewComponent FormArray value:',
         this.formArray
-      );
-    } else if (
-      response instanceof HttpErrorResponse ||
-      response instanceof DOMException
-    ) {
-      this.formArray.setErrors({
-        responseError: 'Response returned an error'
-      });
-      this.logger.debug(
-        'ImportFromServerViewComponent formArray.errors: ',
-        this.formArray.errors
-      );
-    } else {
-      this.formArray.setErrors({
-        contentError: 'Expected response body to be an array'
-      });
-      this.logger.debug(
-        'ImportFromServerViewComponent formArray.errors: ',
-        this.formArray.errors
       );
     }
   }
