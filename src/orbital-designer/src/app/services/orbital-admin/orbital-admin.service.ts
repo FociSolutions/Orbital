@@ -79,13 +79,13 @@ export class OrbitalAdminService {
   }
 
 
-  /** 
+  /**
    * @param mockdefinition The mockdefinitions to be posted
    * @param url The url to post the mockdefinitions to
    * POSTs a list of Mockdefinitions to the server
    */
   exportMockDefinitions(
-    url: string, 
+    url: string,
     mockdefinitions: MockDefinition[]
     ): Observable<boolean>[] {
       return mockdefinitions.map((mockdefinition) => this.exportMockDefinition(url, mockdefinition));
@@ -115,12 +115,12 @@ export class OrbitalAdminService {
   }
 
 
-/**
-* Remove multiple MockDefinitions by title
-* @param url string representation of the orbital server url
-* @param mockDefIds string arrays containing the mock definition titles to be deleted
-* @returns flag to indicate if the deletion of all mock definitions was successful
-*/
+ /**
+  * Remove multiple MockDefinitions by title
+  * @param url string representation of the orbital server url
+  * @param mockDefIds string arrays containing the mock definition titles to be deleted
+  * @returns flag to indicate if the deletion of all mock definitions was successful
+  */
   deleteMultipleMockDefinitions(
     url: string,
     mockDefIds: string[]
@@ -136,5 +136,5 @@ export class OrbitalAdminService {
       return success;
   }
 
-  
+
 }
