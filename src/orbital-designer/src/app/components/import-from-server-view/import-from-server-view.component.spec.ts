@@ -66,9 +66,6 @@ describe('ImportFromServerViewComponent', () => {
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
 
-      console.log(store.state.mockDefinitions);
-      console.log(expectedMap);
-
       expect(store.state.mockDefinitions).toEqual(expectedMap);
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
     });
