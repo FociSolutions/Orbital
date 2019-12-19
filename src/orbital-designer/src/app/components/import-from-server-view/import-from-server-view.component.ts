@@ -36,8 +36,6 @@ export class ImportFromServerViewComponent implements OnInit {
   httpMethod = 'GET';
   concatToURI = '';
 
-  protocols: string[] = ['http://', 'https://'];
-  selectedProtocol: string = this.protocols[0];
   inputControl: FormControl;
   requestInProgress = false;
   title = 'Server URI';
@@ -100,7 +98,7 @@ export class ImportFromServerViewComponent implements OnInit {
 
       this.orbitalService
         .getAll(
-          `${this.selectedProtocol}${this.inputControl.value}${this.concatToURI}`
+          `${this.inputControl.value}${this.concatToURI}`
         )
         .subscribe(this.requestObserver);
     }
