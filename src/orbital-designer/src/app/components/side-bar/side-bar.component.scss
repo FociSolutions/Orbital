@@ -30,6 +30,15 @@
     min-width: 14vw;
     margin-bottom: 2vh;
 
+    mat-icon {
+      opacity: 0.54;
+    }
+
+    h4 {
+      font-weight: 400;
+      padding-left: 1.3em;
+    }
+
     .selected {
       background: #646464 !important;
       color: white !important;
@@ -37,6 +46,22 @@
 
       mat-icon {
         opacity: 1;
+      }
+    }
+
+    .mock-name {
+      justify-content: space-between;
+
+      .mock-list-item {
+        overflow: hidden;
+        max-width: 15em;
+        cursor: pointer;
+        margin-left: 18px;
+      }
+
+      .close-button {
+        padding-bottom: 3.1em;
+        justify-content: right;
       }
     }
   }
@@ -51,6 +76,10 @@ mat-action-list button mat-icon {
   opacity: 0.54;
 }
 
+mat-action-list a mat-icon {
+  opacity: 0.54;
+}
+
 mat-action-list button h4 {
   font-size: 0.9em !important;
 }
@@ -61,4 +90,17 @@ mat-action-list button:hover {
   button {
     background: #f0f0f0;
   }
+}
+
+.overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
 }

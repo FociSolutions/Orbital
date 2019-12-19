@@ -19,14 +19,14 @@ describe('MockDefinition.toMockDefinition', () => {
       host: faker.internet.url(),
       basePath: '/' + faker.lorem.word()
     };
-    await MockDefinition.toMockDefinition(JSON.stringify(input)).then(
+    await MockDefinition.toMockDefinitionAsync(JSON.stringify(input)).then(
       actual => fail(actual),
       err => expect(err).not.toBeUndefined()
     );
   });
 
   it('failed because content is not yaml', async () => {
-    await MockDefinition.toMockDefinition('%').then(
+    await MockDefinition.toMockDefinitionAsync('%').then(
       actual => fail(actual),
       err => expect(err).not.toBeUndefined()
     );
@@ -97,7 +97,7 @@ describe('Mockdefinition.exportMockDefinition', () => {
   });
 
   it('failed to parsed model because it contains duplicate scenario ids', async () => {
-    const testMockDefinitionObject = await MockDefinition.toMockDefinition(
+    const testMockDefinitionObject = await MockDefinition.toMockDefinitionAsync(
       testMockDefinitionString
     );
     const invalidMockDefinitionObject = JSON.parse(JSON.stringify(testMockDefinitionObject)) as MockDefinition;
@@ -116,7 +116,7 @@ describe('Mockdefinition.exportMockDefinition', () => {
   });
 
   it('failed to parsed model because it contains a response body which is invalid json', async () => {
-    const testMockDefinitionObject = await MockDefinition.toMockDefinition(
+    const testMockDefinitionObject = await MockDefinition.toMockDefinitionAsync(
       testMockDefinitionString
     );
     const invalidMockDefinitionObject = JSON.parse(JSON.stringify(testMockDefinitionObject)) as MockDefinition;

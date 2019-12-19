@@ -71,7 +71,6 @@ export class ImportFromServerViewComponent implements OnInit {
     private logger: NGXLogger,
     private designerStore: DesignerStore,
     private router: Router,
-    private httpClient: HttpClient,
     private orbitalService: OrbitalAdminService
   ) {
     this.formArray = new FormArray([]);
@@ -124,7 +123,7 @@ export class ImportFromServerViewComponent implements OnInit {
    */
   onSubmit() {
     this.designerStore.mockDefinitions = this.mockDefinitions.map(
-      mockDefinition => this.scenarioObjectsToMap(mockDefinition)
+      mockDefinition => MockDefinition.objectToMockDefinition(mockDefinition)
     );
     this.router.navigateByUrl('endpoint-view');
   }
@@ -176,27 +175,5 @@ export class ImportFromServerViewComponent implements OnInit {
    */
   onBack() {
     this.location.back();
-  }
-
-  /**
-   * Converts scenario header and query properties into es6 Maps. Returns the modified MockDefintion
-   * @param mockDefinition The mockDefinition to modify
-   */
-  private scenarioObjectsToMap(mockDefinition: MockDefinition): MockDefinition {
-    return {
-      ...mockDefinition,
-      scenarios: mockDefinition.scenarios.map(s => ({
-        ...s,
-        response: {
-          ...s.response,
-          headers: Json.objectToMap(s.response.headers)
-        },
-        requestMatchRules: {
-          headerRules: Json.objectToMap(s.requestMatchRules.headerRules),
-          queryRules: Json.objectToMap(s.requestMatchRules.queryRules),
-          bodyRules: s.requestMatchRules.bodyRules
-        }
-      }))
-    };
   }
 }

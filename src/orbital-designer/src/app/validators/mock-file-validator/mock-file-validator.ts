@@ -13,7 +13,7 @@ export function mockFileValidator(
   const fileReader = new FileReader();
   return new Promise(resolve => {
     fileReader.onloadend = () => {
-      MockDefinition.toMockDefinition(fileReader.result as string).then(
+      MockDefinition.toMockDefinitionAsync(fileReader.result as string).then(
         () => resolve(null),
         errs => resolve(errs)
       );

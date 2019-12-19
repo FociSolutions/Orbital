@@ -16,7 +16,7 @@ export class FileParserService {
   readMockDefinition(file: File): Promise<MockDefinition> {
     return new Promise((resolve, reject) => {
       this.read(file).then(contentString => {
-        MockDefinition.toMockDefinition(contentString).then(
+        MockDefinition.toMockDefinitionAsync(contentString).then(
           result => resolve(result),
           err => reject(err)
         );

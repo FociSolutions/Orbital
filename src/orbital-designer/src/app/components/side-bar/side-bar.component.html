@@ -5,15 +5,27 @@
   <mat-divider class="divider"></mat-divider>
   <div class="side-bar-middle">
     <mat-action-list *ngIf="!!mockDefinitions">
-      <button
+      <div
         mat-list-item
+        class="mock-name row center-vt"
         *ngFor="let mockDefinition of mockDefinitions | keyvalue"
         [ngClass]="{ selected: isSelected(mockDefinition.key) }"
-        (click)="updateSelected(mockDefinition.value)"
       >
-        <mat-icon mat-list-icon>insert_drive_file_outline</mat-icon>
-        <h4 mat-line>{{ mockDefinition.key }}</h4>
-      </button>
+        <div
+          class="mock-list-item row center-vt"
+          (click)="updateSelected(mockDefinition.value)"
+        >
+          <mat-icon mat-list-icon>insert_drive_file_outline</mat-icon>
+          <h4 mat-line>{{ mockDefinition.key }}</h4>
+        </div>
+        <button
+          class="close-button"
+          mat-icon-button
+          (click)="openDialogBox(mockDefinition)"
+        >
+          <mat-icon mat-list-icon>close</mat-icon>
+        </button>
+      </div>
     </mat-action-list>
   </div>
   <mat-divider class="divider"></mat-divider>
@@ -40,5 +52,19 @@
         <h4 mat-line>Download Mockdefinitions</h4>
       </button>
     </mat-action-list>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="triggerOpenConfirmBox">
+  <div>
+    <mat-card>
+      <app-dialog-box
+        titleText="Confirm Mockdefinition Dismissal"
+        confirmButtonText="Confirm"
+        cancelButtonText="Cancel"
+        bodyText="Are you sure you want to discard your Mockdefinition?"
+        (choiceBoolean)="onConfirmDialogAction($event)"
+      ></app-dialog-box>
+    </mat-card>
   </div>
 </div>
