@@ -3,7 +3,7 @@ import { Scenario } from './scenario/scenario.model';
 import { OpenAPIV2 } from 'openapi-types';
 import Json from '../json';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
-import yaml from 'js-yaml'
+import yaml from 'js-yaml';
 
 /**
  * Model representation of mock definition
