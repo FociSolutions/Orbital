@@ -3,7 +3,6 @@ import { Scenario } from './scenario/scenario.model';
 import * as yaml from 'js-yaml';
 import { OpenAPIV2 } from 'openapi-types';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
-import Json from '../json';
 
 /**
  * Model representation of mock definition
@@ -15,29 +14,8 @@ export class MockDefinition {
   scenarios: Scenario[] = [];
   openApi: OpenAPIV2.Document;
 
-  /**
-   * Takes a string of a map of mock definitions that have had all maps turned to objects and returns a Map of Mock Definitions
-   * @param mockDefinitionMap a string of a map of mock definitions that have had all maps turned to objects
-   */
-  public static toMockDefinintionMap(
-    mockDefinitionMap: string
-  ): Map<string, MockDefinition> {
-    const mockObject = JSON.parse(mockDefinitionMap) || new Map<string, MockDefinition>();
-    const mockMap = Json.objectToMap(mockObject);
-    for (const key in mockMap) {
-      if (mockMap.hasOwnProperty(key)) {
-        const element = mockMap[key];
-        mockMap.set(key, this.objectToMockDefinition(element));
-      }
-    }
-    return mockMap;
-  }
-
   public static toMockDefinition(mockDefinition: string): MockDefinition {
-    let content = JSON.parse(mockDefinition);
-    if (!!content) {
-      content = MockDefinition.objectToMockDefinition(content);
-    }
+    const content = JSON.parse(mockDefinition);
     return content;
   }
 
@@ -50,40 +28,16 @@ export class MockDefinition {
   ): Promise<MockDefinition> {
     return new Promise((resolve, reject) => {
       try {
-        let content = JSON.parse(mockDefinition);
+        const content = JSON.parse(mockDefinition);
         if (!this.isMockDefinition(content)) {
           reject(['Invalid mock definition']);
         } else {
-          content = MockDefinition.objectToMockDefinition(content);
           resolve(content as MockDefinition);
         }
       } catch (error) {
         reject([error.message]);
       }
     });
-  }
-
-  /**
-   * Takes an object that has had it's maps turned into objects and returns a MockDefinition
-   * @param content a mock definition with objects instead of maps
-   */
-  public static objectToMockDefinition(content: any): MockDefinition {
-    content = {
-      ...content,
-      scenarios: content.scenarios.map(s => ({
-        ...s,
-        response: {
-          ...s.response,
-          headers: Json.objectToMap(s.response.headers)
-        },
-        requestMatchRules: {
-          headerRules: Json.objectToMap(s.requestMatchRules.headerRules),
-          queryRules: Json.objectToMap(s.requestMatchRules.queryRules),
-          bodyRules: s.requestMatchRules.bodyRules
-        }
-      }))
-    };
-    return content;
   }
 
   /**
@@ -143,7 +97,6 @@ export class MockDefinition {
    * Exports the mock defnition as a json string
    */
   public static exportMockDefinition(mockDef: MockDefinition): string {
-    const safeMockDef = Json.mapToObject(mockDef);
-    return JSON.stringify(safeMockDef);
+    return JSON.stringify(mockDef);
   }
 }

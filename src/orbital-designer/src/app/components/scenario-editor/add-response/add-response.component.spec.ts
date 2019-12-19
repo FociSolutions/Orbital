@@ -24,7 +24,7 @@ describe('AddResponseComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
-    component.response = { headers: new Map<string, string>() } as Response;
+    component.response = { headers: {} } as Response;
     fixture.detectChanges();
   });
 
@@ -47,10 +47,10 @@ describe('AddResponseComponent', () => {
   describe('addResponse.saveStatus', () => {
     it('should emit the response if the user wants to save', () => {
       const testStatusCode = 200;
-      const testHeaderResponse: Map<string, string> = new Map<string, string>();
+      const testHeaderResponse: Record<string, string> = {};
       const testBodyResponse = 'NOTVALID';
 
-      testHeaderResponse.set(faker.random.word(), faker.random.word());
+      testHeaderResponse[faker.random.word()] = faker.random.word();
 
       component.statusCode = testStatusCode;
       component.bodyResponse = testBodyResponse;
@@ -79,10 +79,10 @@ describe('AddResponseComponent', () => {
       component.isBodyValid = true;
       component.bodyResponse = '{}';
 
-      const headerMap = new Map<string, string>();
-      headerMap.set(faker.random.word(), faker.random.word());
+      const headerMap = {};
+      headerMap[faker.random.word()] = faker.random.word();
       const saveHeaderMapSpy = spyOn(component.responseOutput, 'emit');
-      component.saveHeaderMap(headerMap);
+      component.saveHeaders(headerMap);
 
       expect(saveHeaderMapSpy).toHaveBeenCalledWith(({
         headers: headerMap,

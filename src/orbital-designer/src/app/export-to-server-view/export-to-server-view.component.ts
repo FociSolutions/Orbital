@@ -46,11 +46,9 @@ export class ExportToServerViewComponent implements OnInit {
    * Moves all mock definitions to the left-hand side of the form; clears right-hand side
    */
   private resetForm() {
-    this.formArray = new FormArray(
-      Array.from(this.store.state.mockDefinitions.values()).map(element => {
-        return new FormControl(element, null);
-      })
-    );
+    const keys = Object.keys(this.store.state.mockDefinitions);
+    const controls = keys.map(k => new FormControl(this.store.state.mockDefinitions[k]));
+    this.formArray = new FormArray(controls);
     this.mockDefinitions = [];
   }
 

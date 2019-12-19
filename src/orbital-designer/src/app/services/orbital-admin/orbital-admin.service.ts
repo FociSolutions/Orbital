@@ -5,7 +5,6 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
-import Json from '../../../app/models/json';
 import { cloneDeep } from 'lodash';
 
 @Injectable({
@@ -47,7 +46,7 @@ export class OrbitalAdminService {
     }
 
     return this.httpClient
-      .post<boolean>(url, Json.mapToObject(mockDefinitionToExport))
+      .post<boolean>(url, mockDefinitionToExport)
       .pipe(
         catchError(error => {
           return throwError(error);

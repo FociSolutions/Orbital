@@ -18,7 +18,7 @@ export class KvpEditComponent implements OnInit {
   /**
    * The new kvp map with the new kvp added in
    */
-  savedKvpMap: Map<string, string>;
+  savedKvpMap: Record<string, string>;
 
   /**
    * The event emitter for the savedKvpMap
@@ -26,8 +26,8 @@ export class KvpEditComponent implements OnInit {
   @Output() savedKvpMapEmitter;
 
   constructor(private logger: NGXLogger) {
-    this.savedKvpMap = new Map<string, string>();
-    this.savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
+    this.savedKvpMap = {};
+    this.savedKvpMapEmitter = new EventEmitter<Record<string, string>>();
   }
 
   ngOnInit() { }
@@ -47,7 +47,7 @@ export class KvpEditComponent implements OnInit {
    * The existing KVP map
    */
   @Input()
-  set kvpMap(savedKvpMap: Map<string, string>) {
+  set kvpMap(savedKvpMap: Record<string, string>) {
     if (savedKvpMap) {
       this.savedKvpMap = savedKvpMap;
     }
@@ -60,10 +60,10 @@ export class KvpEditComponent implements OnInit {
   addKvpToMap(kvpToAdd: KeyValue<string, string>) {
     if (!!kvpToAdd && !!kvpToAdd.key && !!kvpToAdd.value) {
       if (this.isCaseSensitive) {
-        this.savedKvpMap.set(kvpToAdd.key, kvpToAdd.value);
+        this.savedKvpMap[kvpToAdd.key] = kvpToAdd.value;
         this.logger.debug('Adding a case sensitive KVP to Map', kvpToAdd);
       } else {
-        this.savedKvpMap.set(kvpToAdd.key.toLowerCase(), kvpToAdd.value);
+        this.savedKvpMap[kvpToAdd.key.toLowerCase()] = kvpToAdd.value;
         this.logger.debug('Adding a case insensitive KVP to Map', kvpToAdd);
       }
     }
@@ -74,7 +74,7 @@ export class KvpEditComponent implements OnInit {
    */
   deleteKvpFromMap(kvpToDelete: KeyValue<string, string>) {
     if (!!kvpToDelete && !!kvpToDelete.key) {
-      this.savedKvpMap.delete(kvpToDelete.key);
+      delete this.savedKvpMap[kvpToDelete.key];
       this.logger.debug('Delete Header Rule from Map', kvpToDelete);
     }
   }

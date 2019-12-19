@@ -12,8 +12,8 @@ export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRule: RequestMatchRule;
   @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
 
-  headerMatchRules: Map<string, string>;
-  queryMatchRules: Map<string, string>;
+  headerMatchRules: Record<string, string>;
+  queryMatchRules: Record<string, string>;
   bodyMatchRules: BodyRule[];
 
   shouldSave: boolean;
@@ -26,8 +26,8 @@ export class AddRequestMatchRuleComponent implements OnInit {
 
   constructor(private logger: NGXLogger) {
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
-    this.headerMatchRules = new Map<string, string>();
-    this.queryMatchRules = new Map<string, string>();
+    this.headerMatchRules = {};
+    this.queryMatchRules = {};
     this.bodyMatchRules = [];
   }
 
@@ -67,7 +67,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * Handles saving the header match rules kvp values
    * @param event The incoming request match rules
    */
-  handleHeaderKvpOutput(headerMatchRules: Map<string, string>) {
+  handleHeaderKvpOutput(headerMatchRules: Record<string, string>) {
     this.headerEmitted = true;
     this.logger.debug('Set the header match rules to', headerMatchRules);
     this.headerMatchRules = headerMatchRules;
@@ -78,7 +78,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * Handles the query kvp pair output
    * @param queryMatchRules The query match rules to use
    */
-  handleQueryKvpOutput(queryMatchRules: Map<string, string>) {
+  handleQueryKvpOutput(queryMatchRules: Record<string, string>) {
     this.queryEmitted = true;
     this.logger.debug('Set the query match rules to', queryMatchRules);
     this.queryMatchRules = queryMatchRules;

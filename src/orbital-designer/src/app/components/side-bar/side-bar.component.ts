@@ -4,6 +4,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValue } from '@angular/common';
+import { recordMap } from 'src/app/models/record';
 
 @Component({
   selector: 'app-side-bar',
@@ -11,7 +12,7 @@ import { KeyValue } from '@angular/common';
   styleUrls: ['./side-bar.component.scss']
 })
 export class SideBarComponent implements OnInit {
-  mockDefinitions: Map<string, MockDefinition>;
+  mockDefinitions: MockDefinition[];
   selectedMockDefinition: string;
   title = 'MOCK DEFINITIONS';
 
@@ -26,7 +27,7 @@ export class SideBarComponent implements OnInit {
   ) {
     this.store.state$.subscribe(state => {
       if (!!state.mockDefinition) {
-        this.mockDefinitions = state.mockDefinitions;
+        this.mockDefinitions = recordMap(state.mockDefinitions, md => md);
         this.selectedMockDefinition = state.mockDefinition.metadata.title;
       }
     });
@@ -54,7 +55,7 @@ export class SideBarComponent implements OnInit {
   onDismiss(mockDefinition: KeyValue<string, MockDefinition>) {
     this.store.deleteMockDefinitionByTitle(mockDefinition.value.metadata.title);
     this.logger.info('Mockdefinition Dismissed', mockDefinition);
-    if (!this.mockDefinitions.size) {
+    if (this.mockDefinitions.length <= 0) {
       this.router.navigate(['/']);
     } else {
       this.router.navigateByUrl('endpoint-view');

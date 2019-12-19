@@ -12,14 +12,14 @@ export default {
       verb: 'GET',
       path: '/',
       response: {
-        headers: new Map<string, string>(),
+        headers: {},
         status: 404,
         body: ''
       },
       requestMatchRules: {
         bodyRules: [],
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>()
+        headerRules: {},
+        queryRules: {}
       }
     }
   ],

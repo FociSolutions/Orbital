@@ -2,7 +2,7 @@
  * Model representation of a mock response
  */
 export interface Response {
-  headers: Map<string, string>;
+  headers: Record<string, string>;
   body: string;
   status: number;
 }

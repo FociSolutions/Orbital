@@ -34,13 +34,13 @@ export function newScenario(verb: VerbType, path: string): Scenario {
     verb,
     path,
     response: {
-      headers: new Map<string, string>(),
+      headers: {},
       status: 0,
       body: ''
     },
     requestMatchRules: {
-      headerRules: new Map<string, string>(),
-      queryRules: new Map<string, string>(),
+      headerRules: {},
+      queryRules: {},
       bodyRules: [
         {
           type: BodyRuleType.BodyEquality,
