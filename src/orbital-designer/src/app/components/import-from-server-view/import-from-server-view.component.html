@@ -37,7 +37,7 @@
     </app-tool-tip>
     <app-shuttle-list
       class="column flex-grow"
-      [list]="formArray.controls | filterInvalidControls"
+      [list]="formArray.controls"
       [itemToStringFn]="controlsMockDefinitionToString"
       [emptyListMessage]="emptyListMessageServerBox"
       leftTitle="Mockdefinition(s) from Server"

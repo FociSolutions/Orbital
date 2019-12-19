@@ -24,7 +24,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
-import { FilterInvalidControlsPipe } from './pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 import { EndpointListComponent } from './components/endpoint-view/endpoint-list/endpoint-list.component';
 import { OverviewHeaderComponent } from './components/orbital-common/overview/overview.component';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
@@ -39,6 +38,8 @@ import { BodyRuleListItemComponent } from './components/scenario-editor/add-body
 import { AddMetadataComponent } from './components/scenario-editor/add-metadata/add-metadata.component';
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
+import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
+import { ExportToServerViewComponent } from './export-to-server-view/export-to-server-view.component';
 import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
 
 @NgModule({
@@ -51,7 +52,6 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
     ImportFromFileViewComponent,
     ImportFromServerViewComponent,
     EndpointViewComponent,
-    FilterInvalidControlsPipe,
     EndpointListComponent,
     OverviewHeaderComponent,
     SideBarComponent,
@@ -65,8 +65,9 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
     BodyRuleListItemComponent,
     AddRequestMatchRuleComponent,
     AddMetadataComponent,
-    AddResponseComponent,
-    GetVerbStringPipe
+    GetVerbStringPipe,
+    DownloadMockdefinitionsComponent,
+    ExportToServerViewComponent
   ],
   imports: [
     BrowserModule,

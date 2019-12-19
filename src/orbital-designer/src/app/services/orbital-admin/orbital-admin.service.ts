@@ -15,6 +15,28 @@ export class OrbitalAdminService {
   constructor(private httpClient: HttpClient,
               private logger: NGXLogger) {}
 
+
+  /**
+   * Sends a GET request to get a mock definition; the URL should not have a trailing slash
+   * @param url The url to send the GET request to
+   * @param id The mock definition id to get
+   */
+  get(url: string, id: string): Observable<MockDefinition> {
+    this.logger.debug('Sent GET request to ' + url + '/' + id);
+    return this.httpClient.get<MockDefinition>(url + '/' + id).pipe(timeout(3000));
+  }
+
+  /**
+   * Sends a GET all request to a specified server
+   * @param url The url to send the GET request to
+   */
+  getAll(url: string): Observable<MockDefinition[]> {
+    this.logger.debug('Sent GET request to ' + url);
+
+    return this.httpClient.get<MockDefinition[]>(url).pipe(timeout(3000));
+  }
+
+
   /**
    * POSTs a Mockdefinition to the server
    * @param url The url to post the mockdefinition to
@@ -56,6 +78,19 @@ export class OrbitalAdminService {
       );
   }
 
+
+  /** 
+   * @param mockdefinition The mockdefinitions to be posted
+   * @param url The url to post the mockdefinitions to
+   * POSTs a list of Mockdefinitions to the server
+   */
+  exportMockDefinitions(
+    url: string, 
+    mockdefinitions: MockDefinition[]
+    ): Observable<boolean>[] {
+      return mockdefinitions.map((mockdefinition) => this.exportMockDefinition(url, mockdefinition));
+  }
+
 /**
  * Removes the specified mock definition from the orbital server
  *
@@ -63,7 +98,7 @@ export class OrbitalAdminService {
  * @param mockDefId the title of the mock definition that will be removed
  * @returns a boolean indicating if the mockdefinition was removed successfully both the orbital server.
  */
-deleteMockDefinition(
+  deleteMockDefinition(
     url: string,
     mockDefId: string
   ): Observable<boolean> {
@@ -81,12 +116,12 @@ deleteMockDefinition(
 
 
 /**
- * Remove multiple MockDefinitions by title
- * @param url string representation of the orbital server url
- * @param mockDefIds string arrays containing the mock definition titles to be deleted
- * @returns flag to indicate if the deletion of all mock definitions was successful
- */
-deleteMultipleMockDefinitions(
+* Remove multiple MockDefinitions by title
+* @param url string representation of the orbital server url
+* @param mockDefIds string arrays containing the mock definition titles to be deleted
+* @returns flag to indicate if the deletion of all mock definitions was successful
+*/
+  deleteMultipleMockDefinitions(
     url: string,
     mockDefIds: string[]
   ): boolean {
@@ -101,24 +136,5 @@ deleteMultipleMockDefinitions(
       return success;
   }
 
-
-  /**
-   * Sends a GET all request to a specified server
-   * @param url The url to send the GET request to
-   */
-  getAll(url: string): Observable<MockDefinition[]> {
-    this.logger.debug('Sent GET request to ' + url);
-
-    return this.httpClient.get<MockDefinition[]>(url).pipe(timeout(3000));
-  }
-
-  /**
-   * Sends a GET request to get a mock definition; the URL should not have a trailing slash
-   * @param url The url to send the GET request to
-   * @param id The mock definition id to get
-   */
-  get(url: string, id: string): Observable<MockDefinition> {
-    this.logger.debug('Sent GET request to ' + url + '/' + id);
-    return this.httpClient.get<MockDefinition>(url + '/' + id).pipe(timeout(3000));
-  }
+  
 }

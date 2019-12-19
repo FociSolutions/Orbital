@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
@@ -20,7 +19,7 @@ describe('ImportFromServerViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ImportFromServerViewComponent, FilterInvalidControlsPipe],
+      declarations: [ImportFromServerViewComponent],
       imports: [
         MatCardModule,
         RouterTestingModule,

@@ -1,6 +1,8 @@
 # What is Orbital?
 
-Orbital is an HTTP mocking framework that enables teams to achieve rapid software development and testing. Orbital supports mocking services by only providing their  OpenAPI Specifications files in either YAML or JSON format. The framework is  composed of two entities: the Orbital Designer and the Orbital Server. The Designer is a web-based workspace that allows for quick creation and modification of mock scenarios using the desired OpenAPI Specification file. The Designer can be used to export the mock service scenarios to the Server. Besides accepting and storing service mock definitions the Server is capable of of intercepting HTTP requests and response with the best response possible based on the saved mocked service scenarios. The Server also has reserved Admin endpoints to provide the ability to add, edit, delete mock definition files.
+Orbital is an HTTP mocking framework that enables teams to achieve rapid software development and testing. Orbital supports mocking services by using OpenAPI Specifications files in either YAML or JSON format.
+
+The framework is composed of two entities: the Orbital Designer and the Orbital Server. The Designer is a web-based workspace that allows for quick creation and modification of mock scenarios using the desired OpenAPI Specification file. The Designer can be used to export the mock scenarios to the Server. Besides accepting and storing service mock definitions, the Server is capable of of intercepting HTTP requests and response with the best response based on the saved mock scenarios. The Server also has reserved Admin endpoints to provide the ability to add, edit, delete mock definition files.
 
 # Why should you use Orbital?
 
@@ -14,11 +16,11 @@ Normally, creating a back-end API takes many days, if not weeks. During this tim
 - Export to Server: directly export your mocks to Orbital Server
 - OpenAPI compliant: mocks are created using the OpenAPI v2.0 specification
 - Pipeline: each API filter is isolated, allowing for greater security, and better error and load handling
-- Easy to deploy: just two docker containers, and only two commands to run
+- Easy to deploy: just two docker containers
 
 # Getting Started 
 
-**Note: Orbital uses an in-memory datastore. Please save or export all data (via Export to JSON or Export to Server) before exiting, otherwise it will be lost.**
+**Note: Orbital uses an in-memory datastore. Please save or export all data (via Export to File or Export to Server) before exiting, otherwise it will be lost.**
 
 It's very easy to get started; just [download the Docker Engine for Linux, Mac, and Windows](https://hub.docker.com/?overlay=onboarding):
 
@@ -26,9 +28,9 @@ It's very easy to get started; just [download the Docker Engine for Linux, Mac, 
 
 `docker run -p 4200:80 focisolutions/orbitaldesigner`
 
-`docker run -p 5001:80 focisolutions/orbitalmock`
+`docker run -p 5000:80 focisolutions/orbitalmock`
 
-The mock definition designer will be running on `http://localhost:4200`, and the server on `http://localhost:5001`.
+The mock definition designer will be running on `http://localhost:4200`, and the server on `http://localhost:5000`.
 
 ## Using Docker Compose
 
@@ -42,19 +44,21 @@ Install [Docker Compose](https://docs.docker.com/compose/install/)
 
 `docker-compose up -d`
 
+The mock definition designer will be running on `http://localhost:4200`, and the server on `http://localhost:5001`.
+
 # Build From the source
 
 ## Requirements
 
 If you're running Linux, you'll need:
 
-- the [Linux .NET runtime](https://dotnet.microsoft.com/download/linux-package-manager/rhel/runtime-current)
+- the [Linux .NET 2.2 SDK](https://docs.microsoft.com/dotnet/core/install/linux-package-managers)
 - the [Linux npm and the NodeJS package manager](https://nodejs.org/en/download/package-manager/)
 - git via `apt-get install git`
 
 If you're running Windows, you'll need:
 
-- the [Windows .NET runtime](https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.7-windows-hosting-bundle-installer)
+- the [Windows .NET 2.2 SDK](https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-2.2.100-windows-x64-installer)
 - the [Windows npm and the NodeJS package manager](https://nodejs.org/en/download/)
 - the Git [.exe installer for Windows](https://git-scm.com/download/win)
 
@@ -112,12 +116,12 @@ The purpose of a scenario is to describe what the endpoint will expect from the 
 3. Start by filling the **"Metadata"** section. Give the new scenario a name and description. The name is required.
 ![newScenarioMetadata](/readme_images/newScenarioMetadata.png)
 
-4. Click **"Request Match Rules"** and click **"Header Match Rules"**. Enter in *"Content-Type"* as the key and value *"application/json"*.
+4. Click **"Request Match Rules"** and then click **"Header Match Rules"**. Enter in *"Content-Type"* as the key and *"application/json"* as the value.
 
-5. Click **"+"** to the right of the newly entered entry. The entry will appear below.
+5. Click **"+"** next to the value to add it as a header rule. The rule will appear below.
 ![headerMatchRule](/readme_images/headerMatchRule.png)
 
-6. A response has to be defined for this header rule. Click **Response** and enter in the text as shown in this image. In this example, the server will return a 200 with a simple json body like the following:
+6. A response has to be defined for this header rule. Click **Response** and enter in the text as shown below. In this example, the server will return a `200` with the following response:
 ![response](/readme_images/newScenarioResponse.png)
 ```
 {
@@ -127,11 +131,11 @@ The purpose of a scenario is to describe what the endpoint will expect from the 
 
 7. Click **"Save"**.
 
-8. Click **"Back to Endpoints"** to continue to the next step and click **"Confirm"** to discard any unsaved changes since saving. The new scenario will be listed in the scenario view page.
+8. Click **"Back to Endpoints"** to continue to the next step and click **"Confirm"**. The new scenario will be listed in the scenario view page.
 
 ### Export Mock to Orbital Server
 
-To prove that the new scenario works, the mock should be exported to the Orbital Server. At the bottom of the endpoints overview, there is a field to fill in to upload the current mock being modified. Fill in the field with the following URL **"https://localhost:5001/api/v1/OrbitalAdmin"** and click **"Upload"**.
+To test the new scenario, the mock has to be exported to the Orbital Server. Click "Export to Server" in the menu bar, then type in **"http://localhost:5000/api/v1/OrbitalAdmin"** as the URL. Select the mock definition(s) that you would like to export on the left-hand side and click `>` to move them to the pending export view. Then, click **"Upload"** to upload the definitions.
 
 If the upload is successful, the message *"Mockdefinition successfully uploaded to server"* will appear.
 
