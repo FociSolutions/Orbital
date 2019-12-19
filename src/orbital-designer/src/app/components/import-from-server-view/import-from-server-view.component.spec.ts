@@ -66,6 +66,7 @@ describe('ImportFromServerViewComponent', () => {
       });
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
+
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
       expect(storeSpy).toHaveBeenCalled();
     });
