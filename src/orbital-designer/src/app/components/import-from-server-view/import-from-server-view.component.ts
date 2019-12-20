@@ -62,8 +62,8 @@ export class ImportFromServerViewComponent implements OnInit {
         this.onResponse(event);
         this.errors = '';
       },
-      error: e => {
-        this.errors = e.message;
+      error: () => {
+        this.errors = 'File(s) could not be imported because of an error';
         this.requestInProgress = false;
       },
       complete: () => (this.requestInProgress = false)
