@@ -75,7 +75,7 @@ export class CreateNewMockViewComponent implements OnInit {
 
   validateTitle(control: AbstractControl): { [key: string]: any } | null {
     if (control.value.length > 0 && control.value.trim().length === 0) {
-      return { key: 'Whitespace Error' };
+      return { key: 'Title cannot contain only whitespace' };
     }
     if (control.value.length <= 0) {
       return { key: 'Must enter a title' };

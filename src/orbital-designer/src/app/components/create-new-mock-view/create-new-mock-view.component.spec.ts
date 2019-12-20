@@ -66,7 +66,7 @@ describe('CreateNewMockViewComponent', () => {
     it('should return error if title is just whitespace', () => {
       const formControl: FormControl = new FormControl('   ');
       expect(component.validateTitle(formControl)).toEqual({
-        key: 'Whitespace Error'
+        key: 'Title cannot contain only whitespace'
       });
     });
   });
