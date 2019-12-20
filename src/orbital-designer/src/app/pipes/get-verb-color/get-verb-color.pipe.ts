@@ -17,7 +17,7 @@ export class GetVerbColorPipe implements PipeTransform {
    * class for the verb type. If a prefix string is passed into the parameters
    * then the pipe will prefix the color string with the prefix string.
    * @param verb The verb whose color we are trying to get
-   * @param prefix An optional argument that prefixes the verbs
+   * @param prefix An optional argument that prefixes the verbscdf
    * color string with the passed in string
    */
   transform(verb: VerbType, prefix: string = ''): string {

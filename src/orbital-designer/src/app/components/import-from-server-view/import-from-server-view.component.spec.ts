@@ -6,16 +6,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ImportFromServerViewComponent } from './import-from-server-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import * as faker from 'faker';
 import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { FilterInvalidControlsPipe } from 'src/app/pipes/filter-invalid-controls/filter-invalid-controls.pipe';
-import { FormControl, Validators, FormArray } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import Json from '../../models/json';
-import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 describe('ImportFromServerViewComponent', () => {
@@ -24,7 +19,7 @@ describe('ImportFromServerViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ImportFromServerViewComponent, FilterInvalidControlsPipe],
+      declarations: [ImportFromServerViewComponent],
       imports: [
         MatCardModule,
         RouterTestingModule,
@@ -55,20 +50,8 @@ describe('ImportFromServerViewComponent', () => {
     });
   });
 
-  describe('ImportFromServerViewComponent.errors', () => {
-    it('if the formArray errors are null and the formArray is invalid should set the invalid mock definition error message', () => {
-      component.formArray = new FormArray([
-        new FormControl(null, Validators.required)
-      ]);
-      const actual = component.errors;
-      expect(Array.from(Object.values(actual))).toContain(
-        component.invalidMockDefinitionsFoundErrorMessage
-      );
-    });
-  });
-
   describe('ImportFromServerViewComponent.onSubmit', () => {
-    it('should set the designer stores mockDefinitions and navigate to the endpoint-view', async () => {
+    it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
       const service = TestBed.get(MockDefinitionService);
@@ -87,7 +70,7 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.onListOutput', () => {
-    it('should update the list of MockDefinitions using the values from the list of controls', () => {
+    it('should update the list of Mockdefinitions using the values from the list of controls', () => {
       const expectedList = new Array(3).map(
         () => new FormControl(validMockDefinition)
       );
@@ -99,11 +82,11 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.disabled', () => {
-    it('should return true if the mockDefinitions list is empty', () => {
+    it('should return true if the Mockdefinitions list is empty', () => {
       expect(component.disabled).toBeTruthy();
     });
 
-    it('should return false if the mockDefinitions list is not empty', () => {
+    it('should return false if the Mockdefinitions list is not empty', () => {
       component.mockDefinitions = [validMockDefinition];
       expect(component.disabled).toBeFalsy();
     });
@@ -111,31 +94,12 @@ describe('ImportFromServerViewComponent', () => {
 
   describe('ImportFromServerViewComponent.onResponse', () => {
     it('should set the control value to the response body given an http response with an array body', () => {
-      const response = new HttpResponse({
-        body: [faker.random.words()],
-        status: 200
-      });
-      component.onResponse(response);
-      expect(component.formArray.controls[0].value).toEqual(response.body[0]);
+      component.onResponse([validMockDefinition]);
+      expect(component.formArray.controls[0].value).toEqual(validMockDefinition);
     });
 
-    it('should not set the control value when given a response is an HttpErrorResponse', () => {
-      const response = new HttpErrorResponse({});
-      component.onResponse(response);
-      expect(component.formArray.length).toBe(0);
-    });
-
-    it('should not set the control value when given a response is an DomException', () => {
-      const response = new DOMException();
-      component.onResponse(response);
-      expect(component.formArray.length).toBe(0);
-    });
-
-    it('should not set the control value when given a response whose body is not an array', () => {
-      const response = new HttpResponse({
-        body: faker.random.words(),
-        status: 200
-      });
+    it('should not set the control value when given a response whose body is null', () => {
+      const response = null;
       component.onResponse(response);
       expect(component.formArray.length).toBe(0);
     });

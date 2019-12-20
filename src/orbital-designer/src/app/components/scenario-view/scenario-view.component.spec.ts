@@ -7,7 +7,7 @@ import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/g
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
 import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { MatCardModule } from '@angular/material/card';
-import { OverviewHeaderComponent } from '../orbital-common/overview/overview.component';
+import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material';
@@ -120,7 +120,7 @@ describe('ScenarioViewComponent', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -137,7 +137,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        } as Scenario);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -181,7 +181,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        }  as Scenario );
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -215,7 +215,7 @@ describe('ScenarioViewComponent', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -232,7 +232,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        } as Scenario);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -261,7 +261,7 @@ describe('ScenarioViewComponent', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -278,7 +278,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        } as Scenario);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -305,7 +305,7 @@ describe('ScenarioViewComponent', () => {
             title: 'New Scenario',
             description: ''
           },
-          mockverb,
+          verb: mockverb,
           path,
           response: {
             headers: new Map<string, string>(),
@@ -322,7 +322,7 @@ describe('ScenarioViewComponent', () => {
               }
             ] as Array<BodyRule>
           }
-        } as unknown) as Scenario;
+        } as Scenario);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -375,7 +375,7 @@ describe('ScenarioViewComponent', () => {
         title: 'New Scenario',
         description: ''
       },
-      mockverb,
+      verb: mockverb,
       path,
       response: {
         headers: new Map<string, string>(),
@@ -392,7 +392,7 @@ describe('ScenarioViewComponent', () => {
           }
         ] as Array<BodyRule>
       }
-    } as unknown) as Scenario;
+    } as Scenario);
     scenario.response.status = 404;
     expect(component.getScenarioResponseStatusString(scenario)).toBe(
       'Not Found'
@@ -408,7 +408,7 @@ describe('ScenarioViewComponent', () => {
         title: 'New Scenario',
         description: ''
       },
-      mockverb,
+      verb: mockverb,
       path,
       response: {
         headers: new Map<string, string>(),
@@ -425,7 +425,7 @@ describe('ScenarioViewComponent', () => {
           }
         ] as Array<BodyRule>
       }
-    } as unknown) as Scenario;
+    } as Scenario);
     scenario.response.status = 202;
     expect(component.getScenarioResponseStatusString(scenario)).toBe(
       'Accepted'
@@ -442,7 +442,7 @@ describe('ScenarioViewComponent', () => {
           title: 'New Scenario',
           description: ''
         },
-        mockverb,
+        verb: mockverb,
         path,
         response: {
           headers: new Map<string, string>(),
@@ -459,7 +459,7 @@ describe('ScenarioViewComponent', () => {
             }
           ] as Array<BodyRule>
         }
-      } as unknown) as Scenario;
+      } as Scenario);
       store.updateScenarios([scenario]);
       component.deleteScenario(scenario);
       expect(store.state.mockDefinition.scenarios).toEqual([]);

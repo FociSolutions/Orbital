@@ -1,27 +1,47 @@
 <mat-card class="column">
   <mat-card-title class="capitalize">Import from Server</mat-card-title>
   <mat-card-subtitle
-    >Import an existing MockDefinition file below</mat-card-subtitle
+    >Import existing Mockdefinition(s) below</mat-card-subtitle
   >
   <div class="column center-hr flex-grow div-body">
     <app-tool-tip
-      message="Enter the Server URI that your MockDefinition files are hosted on"
+      message="Enter the Server URI that your Mockdefinition(s) are hosted on"
     >
-      <app-rest-request-input
-        title="Server URI"
-        buttonName="Fetch"
-        (responseReceived)="onResponse($event)"
-        [errors]="errors"
-      ></app-rest-request-input>
+
+    <form>
+      <div class="container">
+        <div class="uri-field">
+          <app-text-input
+            [title]="title"
+            maxLength="200"
+            [control]="inputControl"
+          ></app-text-input>
+          <mat-hint class="error-message-import error-message">{{errors}}</mat-hint>
+        </div>
+
+        <div id="submit-buttons">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="sendRequest()"
+            [disabled]="sendRequestDisabled()"
+            class="btn-upload"
+          >
+            Submit</button
+          ><mat-spinner diameter="25" [id]="getSpinnerId()"></mat-spinner>
+
+        </div>
+
+      </div>
+    </form>
     </app-tool-tip>
     <app-shuttle-list
       class="column flex-grow"
-      [list]="formArray.controls | filterInvalidControls"
+      [list]="formArray.controls"
       [itemToStringFn]="controlsMockDefinitionToString"
-      [itemTemplate]="listItemTemplate"
       [emptyListMessage]="emptyListMessageServerBox"
-      leftTitle="Mock Definitions from Server"
-      rightTitle="Mock Definition To Import"
+      leftTitle="Mockdefinition(s) from Server"
+      rightTitle="Mockdefinition(s) To Import"
       (outputList)="onListOutput($event)"
     ></app-shuttle-list>
   </div>
@@ -39,10 +59,3 @@
     </button>
   </div>
 </mat-card>
-
-<ng-template #listItemTemplate let-control="item">
-  <div class="list-item">
-    <h5 class="capitalize">{{ control.value?.metadata?.title }}</h5>
-    <mat-divider></mat-divider>
-  </div>
-</ng-template>

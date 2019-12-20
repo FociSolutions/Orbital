@@ -3,12 +3,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
-import { OverviewHeaderComponent } from '../orbital-common/overview/overview.component';
+import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import {
   MatCardModule,
   MatButtonModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatChipsModule
 } from '@angular/material';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -28,6 +29,8 @@ import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './add-response/add-response.component';
+import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
+import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -42,6 +45,8 @@ describe('ScenarioEditorComponent', () => {
         OverviewHeaderComponent,
         AddBodyRuleContainerComponent,
         AddBodyRuleComponent,
+        GetVerbColorPipe,
+        GetVerbStringPipe,
         BodyRuleListItemComponent,
         AddMetadataComponent,
         AddRequestMatchRuleComponent,
@@ -56,7 +61,8 @@ describe('ScenarioEditorComponent', () => {
         MatExpansionModule,
         BrowserAnimationsModule,
         MatMenuModule,
-        MatIconModule
+        MatIconModule,
+        MatChipsModule
       ],
       providers: [DesignerStore]
     }).compileComponents();

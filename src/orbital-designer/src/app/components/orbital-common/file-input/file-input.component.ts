@@ -23,12 +23,13 @@ export class FileInputComponent implements OnInit {
    * Emits the content of the file as a string
    */
   emitFileContent(file: File) {
+    this.errormessages = [];
     this.readfileparser.read(file).subscribe(
       fileReadresult => {
         this.fileName = file.name;
         this.fileNameEmit.emit(this.fileName);
         this.fileContent.emit(fileReadresult);
-        this.logger.log('File Contents emmited');
+        this.logger.log('File Contents emitted');
       },
       err => this.errormessages = err
     );

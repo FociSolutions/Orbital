@@ -2,9 +2,7 @@ import {
   Component,
   OnInit,
   Input,
-  TemplateRef,
   ViewChild,
-  ElementRef,
   Output,
   EventEmitter
 } from '@angular/core';
@@ -14,13 +12,15 @@ import {
   MatListOption
 } from '@angular/material/list';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-searchable-selection-list',
-  templateUrl: './searchable-selection-list.component.html',
-  styleUrls: ['./searchable-selection-list.component.scss']
+  selector: 'app-shuttle-sub-list',
+  templateUrl: './shuttle-sub-list.component.html',
+  styleUrls: ['./shuttle-sub-list.component.scss']
 })
-export class SearchableSelectionListComponent implements OnInit {
+export class ShuttleSubListComponent implements OnInit {
   static readonly selectAllString = 'Select All';
   static readonly deselectAllString = 'Deselect All';
 
@@ -28,16 +28,14 @@ export class SearchableSelectionListComponent implements OnInit {
 
   @ViewChild('matList', { static: false }) matList: MatSelectionList;
 
-  @Output() itemSelected: EventEmitter<any[]>;
+  @Output() itemSelected: EventEmitter<MockDefinition[]>;
 
-  @Input() list: any[] = [];
-  @Input() itemTemplate!: TemplateRef<any>;
+  @Input() list: FormControl[] = [];
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
-  @Input() itemToStringFn: (_: any) => string = x => x as string;
 
   constructor() {
-    this.itemSelected = new EventEmitter<any[]>();
+    this.itemSelected = new EventEmitter<MockDefinition[]>();
   }
 
   /**
@@ -47,8 +45,8 @@ export class SearchableSelectionListComponent implements OnInit {
    */
   get checkboxLabel() {
     return this.selectAllChecked
-      ? SearchableSelectionListComponent.deselectAllString
-      : SearchableSelectionListComponent.selectAllString;
+      ? ShuttleSubListComponent.deselectAllString
+      : ShuttleSubListComponent.selectAllString;
   }
 
   /**
@@ -81,15 +79,16 @@ export class SearchableSelectionListComponent implements OnInit {
     this.itemSelected.emit(
       this.matList.selectedOptions.selected.map(option => option.value)
     );
+
+    this.emitSearchResultsSelected();
   }
 
   /**
    * Outputs the selected items through the itemSelected emitter
    * @param event The MatSelectionListChange emitted from the material selection list component
    */
-  optionSelected(event: MatSelectionListChange) {
-    const selected = event.source.selectedOptions.selected;
-    this.itemSelected.emit(selected.map(option => option.value));
+  optionSelected() {
+    this.emitSearchResultsSelected();
   }
 
   /**
@@ -97,7 +96,7 @@ export class SearchableSelectionListComponent implements OnInit {
    * false otherwise
    * @param item The item being checked against
    */
-  hideOption(item: any): boolean {
+  hideOption(item: MockDefinition): boolean {
     if (this.filteredOutOptions.length > 0) {
       return !!this.filteredOutOptions.find(option => option.value === item);
     }
@@ -111,11 +110,12 @@ export class SearchableSelectionListComponent implements OnInit {
   onSearchInput(value: string) {
     this.filteredOutOptions = this.matList.options.filter(
       option =>
-        !SearchableSelectionListComponent.ignoreCaseContainsMatch(
-          this.itemToStringFn(option.value),
+        !ShuttleSubListComponent.ignoreCaseContainsMatch(
+          (option.value.value as MockDefinition).metadata.title,
           value
         )
     );
+    this.emitSearchResultsSelected();
   }
 
   get isEmpty() {
@@ -138,4 +138,14 @@ export class SearchableSelectionListComponent implements OnInit {
     return target.toLowerCase().includes(substring.toLowerCase());
   }
   ngOnInit() {}
+
+  /**
+   * Emits the selected items in the search results that are visible to the user
+   */
+  private emitSearchResultsSelected() {
+    this.itemSelected.emit(this.matList.selectedOptions.selected
+    .filter(e => !this.filteredOutOptions.includes(e))
+    .filter(option => option.selected)
+    .map(option => option.value));
+  }
 }

@@ -26,7 +26,7 @@ p#description {
   font-family: Roboto;
 }
 
-app-overview {
+app-overview-header {
   width: 100%;
   height: 19%;
   display: flex;
@@ -61,6 +61,10 @@ div#cancel-save-buttons {
 
 mat-form-field {
   width: 100%;
+}
+
+mat-chip-list {
+  padding-right: 1em;
 }
 
 app-scenario-card,
@@ -109,4 +113,9 @@ div.flex-space-between-large {
   left: 0;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.endpoint-info {
+  display: flex;
+  align-items: center;
 }

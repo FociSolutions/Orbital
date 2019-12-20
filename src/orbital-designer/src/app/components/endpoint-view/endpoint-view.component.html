@@ -6,7 +6,7 @@
       </div>
       <div class="endpoint">
         <div>
-          <app-overview [header]="headerContent"></app-overview>
+          <app-overview-header [header]="headerContent"></app-overview-header>
         </div>
         <div class="column">
           <app-search-bar
@@ -24,29 +24,6 @@
             [endpoints]="filteredList"
           ></app-endpoint-list>
         </div>
-        <form class="server-post" name="server-input">
-          <mat-form-field class="uri-field">
-            <input
-              matInput
-              name="uri-input"
-              placeholder="Server URI"
-              ngModel
-              [pattern]="uriRegex"
-              required
-              [(ngModel)]="serverUri"
-            />
-            <mat-hint>{{ isExportedMessage }}</mat-hint>
-          </mat-form-field>
-          <button
-            class="btn-upload"
-            mat-raised-button
-            color="primary"
-            (click)="onSubmit()"
-          >
-            Upload
-          </button>
-        </form>
-        <div class="status-message"></div>
       </div>
     </div>
   </div>

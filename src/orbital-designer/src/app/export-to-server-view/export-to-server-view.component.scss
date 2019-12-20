@@ -45,7 +45,6 @@ mat-card {
     margin: 0;
   }
 }
-
 .container {
   display: flex;
   flex-direction: row;
@@ -79,11 +78,6 @@ mat-card {
   }
 }
 
-.error-message-import {
-  margin-top: -13px;
-}
-
-.btn-upload {
-  width: 5vw;
-  height: 5vh;
+.error-message {
+  color: grey;
 }

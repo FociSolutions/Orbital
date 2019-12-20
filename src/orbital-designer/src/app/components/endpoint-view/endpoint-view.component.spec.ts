@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { OverviewHeaderComponent } from '../orbital-common/overview/overview.component';
+import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import SampleMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { EndpointListComponent } from './endpoint-list/endpoint-list.component';
@@ -71,4 +71,5 @@ describe('EndpointViewComponent', () => {
       expect(component.showNotFound()).toBeTruthy();
     });
   });
+
 });
