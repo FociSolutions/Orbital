@@ -61,8 +61,8 @@ describe('AddRequestMatchRuleComponent', () => {
     component = fixture.componentInstance;
 
     component.requestMatchRule = ({
-      headerRules: new Map<string, string>(),
-      queryRules: new Map<string, string>(),
+      headerRules: {} as Record<string, string>,
+      queryRules: {} as Record<string, string>,
       bodyRules: [{}] as BodyRule[]
     } as unknown) as RequestMatchRule;
     fixture.detectChanges();
