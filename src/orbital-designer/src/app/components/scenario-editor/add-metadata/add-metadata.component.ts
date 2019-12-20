@@ -138,7 +138,6 @@ export class AddMetadataComponent implements OnInit, AfterContentChecked {
   }
 
   private validateTitle() {
-    console.log(this.metadataTitleProp, this.metadataTitleProp.length);
     if (
       this.metadataTitleProp.length > 0 &&
       this.metadataTitleProp.trim().length === 0
