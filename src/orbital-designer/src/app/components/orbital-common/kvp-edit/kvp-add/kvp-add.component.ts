@@ -51,8 +51,8 @@ export class KvpAddComponent implements OnInit {
    */
   isEmpty(): boolean {
     if (this.key.length === 0 || this.value.length === 0) {
-      this.errorMessage = 'Empty Field(s) Founds: Please Enter All Values';
-      this.logger.debug('Empty Field(s) Founds: Please Enter All Values');
+      this.errorMessage = 'Empty Field(s) Found: Please Enter All Values';
+      this.logger.debug('Empty Field(s) Found: Please Enter All Values');
       return true;
     } else {
       return false;
