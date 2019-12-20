@@ -25,3 +25,7 @@ export function recordMap<K extends string | number | symbol, T, TResult>(record
   return keys.map(k => fn(cloneDeep(record[k])));
 }
 
+export function recordSize<K extends string | number | symbol, T>(record: Record<K, T>): number {
+  const keys = Object.keys(record);
+  return keys.length;
+}

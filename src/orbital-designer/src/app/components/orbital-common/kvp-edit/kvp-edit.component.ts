@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
+import { recordDelete, recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-edit',
@@ -60,10 +61,10 @@ export class KvpEditComponent implements OnInit {
   addKvpToMap(kvpToAdd: KeyValue<string, string>) {
     if (!!kvpToAdd && !!kvpToAdd.key && !!kvpToAdd.value) {
       if (this.isCaseSensitive) {
-        this.savedKvpMap[kvpToAdd.key] = kvpToAdd.value;
+        recordAdd(this.savedKvpMap, kvpToAdd.key, kvpToAdd.value);
         this.logger.debug('Adding a case sensitive KVP to Map', kvpToAdd);
       } else {
-        this.savedKvpMap[kvpToAdd.key.toLowerCase()] = kvpToAdd.value;
+        recordAdd(this.savedKvpMap, kvpToAdd.key.toLowerCase(), kvpToAdd.value);
         this.logger.debug('Adding a case insensitive KVP to Map', kvpToAdd);
       }
     }
@@ -74,7 +75,7 @@ export class KvpEditComponent implements OnInit {
    */
   deleteKvpFromMap(kvpToDelete: KeyValue<string, string>) {
     if (!!kvpToDelete && !!kvpToDelete.key) {
-      delete this.savedKvpMap[kvpToDelete.key];
+      recordDelete(this.savedKvpMap, kvpToDelete.key);
       this.logger.debug('Delete Header Rule from Map', kvpToDelete);
     }
   }

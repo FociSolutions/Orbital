@@ -42,7 +42,7 @@ describe('KvpEditComponent', () => {
       };
       component.isCaseSensitive = true;
       component.addKvpToMap(kvpToAdd);
-      expect(component.savedKvpMap.get(kvpToAdd.key)).toEqual(kvpToAdd.value);
+      expect(component.savedKvpMap[kvpToAdd.key]).toEqual(kvpToAdd.value);
     });
 
     it('Should return a map with the added a case-insensitive kvp', () => {
@@ -52,18 +52,18 @@ describe('KvpEditComponent', () => {
       };
       component.isCaseSensitive = false;
       component.addKvpToMap(kvpToAdd);
-      expect(component.savedKvpMap.get(kvpToAdd.key.toLowerCase())).toEqual(kvpToAdd.value);
+      expect(component.savedKvpMap[kvpToAdd.key.toLowerCase()]).toEqual(kvpToAdd.value);
     });
 
     it('Should not add kvp to map if kvp is empty/null', () => {
-      component.savedKvpMap = new Map<string, string>();
+      component.savedKvpMap = {} as Record<string, string>;
       const kvpToAdd: KeyValue<string, string> = {
         key: null,
         value: ''
       };
 
       component.addKvpToMap(kvpToAdd);
-      expect(component.savedKvpMap.has(kvpToAdd.key)).toBeFalsy();
+      expect(component.savedKvpMap[kvpToAdd.key]).toBeFalsy();
     });
   });
 
@@ -80,11 +80,11 @@ describe('KvpEditComponent', () => {
 
       component.addKvpToMap(kvpToAdd);
       component.deleteKvpFromMap(kvpToAdd);
-      expect(component.savedKvpMap.has(kvpToAdd.key)).toBe(false);
+      expect(component.savedKvpMap[kvpToAdd.key]).toBeFalsy();
     });
 
     it('Should not be able to delete kvp if map if kvp is empty/null', () => {
-      component.savedKvpMap = new Map<string, string>();
+      component.savedKvpMap = {} as Record<string, string>;
       const kvpToAdd: KeyValue<string, string> = {
         key: null,
         value: ''
@@ -92,7 +92,7 @@ describe('KvpEditComponent', () => {
 
       component.addKvpToMap(kvpToAdd);
       component.deleteKvpFromMap(kvpToAdd);
-      expect(component.savedKvpMap.has(kvpToAdd.key)).toBe(false);
+      expect(component.savedKvpMap[kvpToAdd.key]).toBeFalsy();
     });
   });
 
@@ -102,8 +102,8 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should set kvpMap a map with the new kvpmap values', () => {
-      const newKvpMap: Map<string, string> = new Map<string, string>();
-      newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
+      const newKvpMap = {} as Record<string, string>;
+      newKvpMap[faker.lorem.sentence()] = faker.lorem.sentence();
       component.kvpMap = newKvpMap;
       expect(component.savedKvpMap).toEqual(newKvpMap);
     });
@@ -111,8 +111,8 @@ describe('KvpEditComponent', () => {
 
   describe('KvpEditComponent.Save', () => {
     it('Should emit the savedkvp map is Save is set to true', () => {
-      const newKvpMap: Map<string, string> = new Map<string, string>();
-      newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
+      const newKvpMap = {} as Record<string, string>;
+      newKvpMap[faker.lorem.sentence()] = faker.lorem.sentence();
       spyOn(component.savedKvpMapEmitter, 'emit');
       component.Save = true;
 
@@ -122,8 +122,8 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should not emit the savedkvp map is Save is set to false', () => {
-      const newKvpMap: Map<string, string> = new Map<string, string>();
-      newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
+      const newKvpMap = {} as Record<string, string>;
+      newKvpMap[faker.lorem.sentence()] = faker.lorem.sentence();
       spyOn(component.savedKvpMapEmitter, 'emit');
       component.Save = false;
 

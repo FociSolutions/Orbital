@@ -88,10 +88,7 @@ describe('SideBarComponent', () => {
   describe('SideBarComponent.openDialogBox', () => {
     it('should return to homepage if last mockdefinition is dismissed', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigate');
-      component.mockDefinitions.set(
-        validMockDefinition.metadata.title,
-        validMockDefinition
-      );
+      component.mockDefinitions = [validMockDefinition];
 
       component.onDismiss({
         key: validMockDefinition.metadata.title,

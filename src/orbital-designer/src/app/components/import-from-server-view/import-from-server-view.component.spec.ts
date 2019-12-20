@@ -60,13 +60,12 @@ describe('ImportFromServerViewComponent', () => {
       const expectedMockDefinition = await MockDefinition.toMockDefinitionAsync(
         JSON.stringify(validMockDefinition)
       );
-      const expectedMap = new Map([
-        [validMockDefinition.metadata.title, expectedMockDefinition]
-      ]);
+      const expectedMockDefinitions = {};
+      expectedMockDefinitions[validMockDefinition.metadata.title] = expectedMockDefinition;
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
 
-      expect(store.state.mockDefinitions).toEqual(expectedMap);
+      expect(store.state.mockDefinitions).toEqual(expectedMockDefinitions);
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
     });
   });
