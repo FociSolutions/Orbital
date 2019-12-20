@@ -25,12 +25,10 @@ import { ImportFromFileViewComponent } from './components/import-from-file-view/
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
 import { EndpointListComponent } from './components/endpoint-view/endpoint-list/endpoint-list.component';
-import { OverviewComponent } from './components/overview/overview.component';
+import { OverviewHeaderComponent } from './components/orbital-common/overview-header/overview-header.component';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
-import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
-import { ScenarioListComponent } from './components/scenario-view/scenario-list/scenario-list.component';
-import { ScenarioListItemComponent } from './components/scenario-view/scenario-list-item/scenario-list-item.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
 import { MatExpansionModule, MatChipsModule } from '@angular/material';
 import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule/add-body-rule.component';
@@ -42,6 +40,7 @@ import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-r
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
 import { ExportToServerViewComponent } from './export-to-server-view/export-to-server-view.component';
+import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
 
 @NgModule({
   declarations: [
@@ -54,11 +53,9 @@ import { ExportToServerViewComponent } from './export-to-server-view/export-to-s
     ImportFromServerViewComponent,
     EndpointViewComponent,
     EndpointListComponent,
-    OverviewComponent,
+    OverviewHeaderComponent,
     SideBarComponent,
     ScenarioViewComponent,
-    ScenarioListComponent,
-    ScenarioListItemComponent,
     SideBarComponent,
     EndpointListItemComponent,
     ScenarioViewComponent,
@@ -68,9 +65,10 @@ import { ExportToServerViewComponent } from './export-to-server-view/export-to-s
     BodyRuleListItemComponent,
     AddRequestMatchRuleComponent,
     AddMetadataComponent,
-    AddResponseComponent,
+    GetVerbStringPipe,
     DownloadMockdefinitionsComponent,
-    ExportToServerViewComponent
+    ExportToServerViewComponent,
+    AddResponseComponent
   ],
   imports: [
     BrowserModule,

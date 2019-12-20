@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DesignerStore } from '../../store/designer-store';
+import { DesignerStore } from '../../../store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Router } from '@angular/router';
 
@@ -22,7 +22,10 @@ export class SideBarComponent implements OnInit {
     });
   }
 
-  // Pass a string title value selected and set it to the string title.
+  /**
+   * Pass a string title value selected and set it to the string title.
+   * @param title The title
+   */
   isSelected(title: string): boolean {
     if (this.selectedMockDefinition === null) {
       return false;
@@ -30,8 +33,10 @@ export class SideBarComponent implements OnInit {
     return title === this.selectedMockDefinition;
   }
 
-  // Updates the value of the mock definition after selecting it.
-  // this.store.mockDefinition is set and then the state updated.
+  /**
+   * Updates the value of the mock definition after selecting it.
+   * @param mockDefinition: the new mock definition to select
+   */
   updateSelected(mockDefinition: MockDefinition) {
     this.store.mockDefinition = mockDefinition;
     this.router.navigateByUrl('endpoint-view');

@@ -8,8 +8,6 @@ import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { VerbType } from 'src/app/models/verb.type';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import * as _ from 'lodash';
 
 @Component({
@@ -27,6 +25,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   scenarioId: string;
   selectedScenario: Scenario;
   paramsSubscription: Subscription;
+  storeSubscription: Subscription;
+
+  endpointVerb: VerbType;
+  endpointPath: string;
 
   requestMatchRule: RequestMatchRule;
   metadata: Metadata;
@@ -59,8 +61,16 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
           param.scenarioId
         );
         this.retrieveScenario(param.scenarioId);
+        this.store.selectedScenario = this.selectedScenario;
       }
     );
+
+    this.storeSubscription = this.store.state$.subscribe(state => {
+      if (!!state.mockDefinition && !!state.selectedEndpoint) {
+        this.endpointVerb = state.selectedEndpoint.verb;
+        this.endpointPath = state.selectedEndpoint.path;
+      }
+    });
   }
 
   /**
@@ -68,6 +78,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
   /**

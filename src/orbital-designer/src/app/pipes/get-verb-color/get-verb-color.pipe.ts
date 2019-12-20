@@ -5,17 +5,19 @@ import { VerbType } from '../../models/verb.type';
   name: 'getVerbColor'
 })
 export class GetVerbColorPipe implements PipeTransform {
-  private readonly blue: string = 'rgba(0, 163, 255, 0.25)';
-  private readonly green: string = 'rgba(30, 255, 160, 0.25)';
-  private readonly red: string = 'rgba(255, 0, 0, 0.25)';
-  private readonly yellow: string = 'rgba(222, 226, 0, 0.25)';
+  readonly blue: string = 'rgba(0, 163, 255, 0.25)';
+  readonly green: string = 'rgba(30, 255, 160, 0.25)';
+  readonly red: string = 'rgba(255, 0, 0, 0.25)';
+  readonly yellow: string = 'rgba(250, 255, 0, 0.25)';
+  readonly orange: string = 'rgba(255, 165, 0, 0.25)';
+  readonly purple: string = 'rgba(82, 0, 255, 0.25)';
 
   /**
    * Returns a string containing the appropriate bootstrap color
    * class for the verb type. If a prefix string is passed into the parameters
    * then the pipe will prefix the color string with the prefix string.
    * @param verb The verb whose color we are trying to get
-   * @param prefix An optional argument that prefixes the verbs
+   * @param prefix An optional argument that prefixes the verbscdf
    * color string with the passed in string
    */
   transform(verb: VerbType, prefix: string = ''): string {

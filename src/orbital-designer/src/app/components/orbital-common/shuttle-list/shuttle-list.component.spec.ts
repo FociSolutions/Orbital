@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ShuttleListComponent } from './shuttle-list.component';
-import { SearchableSelectionListComponent } from '../searchable-selection-list/searchable-selection-list.component';
+import { ShuttleSubListComponent } from './shuttle-sub-list/shuttle-sub-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +18,7 @@ describe('ShuttleListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ShuttleListComponent, SearchableSelectionListComponent],
+      declarations: [ShuttleListComponent, ShuttleSubListComponent],
       imports: [
         MatCardModule,
         MatButtonModule,
@@ -69,13 +69,6 @@ describe('ShuttleListComponent', () => {
       expect(component.rightList).toEqual([]);
     });
 
-    it('if the list is null, should empty the leftList and empty the rightList', () => {
-      const fakedList = faker.random.words().split(' ');
-      component.rightList = [...fakedList];
-      component.list = null;
-      expect(component.leftList).toEqual([]);
-      expect(component.rightList).toEqual([]);
-    });
   });
 
   describe('ShuttleListComponent.onMoveLeft()', () => {

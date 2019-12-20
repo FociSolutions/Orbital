@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { mockFileValidator } from '../../validators/mock-file-validator/mock-file-validator';
-import { FileParserService } from '../../services/file-parser/file-parser.service';
-import { DesignerStore } from '../../store/designer-store';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
-import { extendBuiltInValidatorFactory } from 'src/app/validators/extend-built-in-validator-factory/extend-built-in-validator-factory';
 import { NGXLogger } from 'ngx-logger';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -15,33 +12,38 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./import-from-file-view.component.scss']
 })
 export class ImportFromFileViewComponent implements OnInit {
-  formGroup: FormGroup;
-  private store: DesignerStore;
-  private router: Router;
-  private location: Location;
-  fileParser: FileParserService;
+  private mockDefinitionString: string;
+  mockDefinitionNameString: string;
+  validFileFlag = true;
+  errorMessageToEmitFromCreate: string[];
+
   constructor(
-    router: Router,
-    location: Location,
-    fileParser: FileParserService,
-    store: DesignerStore,
-    logger: NGXLogger
-  ) {
-    this.router = router;
-    this.location = location;
-    this.fileParser = fileParser;
-    this.store = store;
-    this.formGroup = new FormGroup({
-      mockDefinitionFile: new FormControl(
-        null,
-        extendBuiltInValidatorFactory(Validators.required, logger),
-        mockFileValidator
-      )
-    });
-  }
+    private router: Router,
+    private location: Location,
+    private mockDefinitionService: MockDefinitionService,
+    private logger: NGXLogger
+  ) {}
 
   isValid() {
-    return !this.formGroup.invalid;
+    return !!this.mockDefinitionString;
+  }
+
+  /**
+   * Sets the string represantation of the file's content from the input-file component.
+   *
+   * @param fileStringFromFileInput string representation of the file's content
+   */
+  setMockDefinition(fileStringFromFileInput: string) {
+    this.mockDefinitionString = fileStringFromFileInput;
+  }
+
+  /**
+   * Sets the file name in the component. This value is emited from the input-file component.
+   *
+   * @param fileStringName string representation of the file's name
+   */
+  setMockDefinitionName(fileStringName: string) {
+    this.mockDefinitionNameString = fileStringName;
   }
 
   /**
@@ -49,26 +51,24 @@ export class ImportFromFileViewComponent implements OnInit {
    * in the designer store and navigating to the mock editor if the form is valid. If
    * the form is invalid the function does nothing.
    */
-  async createMock() {
-    const mockDefinition = await this.formToMockDefinition();
-    if (!!mockDefinition) {
-      this.store.mockDefinitions = [mockDefinition];
-      this.router.navigateByUrl('endpoint-view');
-    }
-  }
+ createMock() {
+    const observable = this.mockDefinitionService.deserialize(this.mockDefinitionString).pipe(map(
+        value => value
+      ));
+    observable.subscribe(
+      value => {
+        if (value) {
+            this.logger.log('mock definition was saved to the store');
+            this.router.navigateByUrl('endpoint-view');
+        }
+      },
+      error => {
+        this.logger.log('mock definition is invalid and was not saved to the store');
+        this.errorMessageToEmitFromCreate = error;
+        this.validFileFlag = false;
+      }
+    );
 
-  /**
-   * formToMockDefinition method is responsible for creating a new MockDefinition from the
-   * form values. If the form is invalid then the function will return null, otherwise it uses
-   * the form values to create and return a new MockDefinition
-   */
-  async formToMockDefinition(): Promise<MockDefinition> {
-    if (this.formGroup.invalid) {
-      return null;
-    }
-
-    return await this.fileParser.readMockDefinition(this.formGroup.controls
-      .mockDefinitionFile.value as File);
   }
 
   /**

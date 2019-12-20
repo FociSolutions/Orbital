@@ -18,7 +18,7 @@ Normally, creating a back-end API takes many days, if not weeks. During this tim
 - Pipeline: each API filter is isolated, allowing for greater security, and better error and load handling
 - Easy to deploy: just two docker containers
 
-# Getting Started 
+# Getting Started
 
 **Note: Orbital uses an in-memory datastore. Please save or export all data (via Export to File or Export to Server) before exiting, otherwise it will be lost.**
 

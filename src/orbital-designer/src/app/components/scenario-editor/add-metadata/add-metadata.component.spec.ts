@@ -54,7 +54,12 @@ describe('AddMetadataComponent', () => {
 
   describe('AddMetadataComponent', () => {
     it('should set the setter', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: 'test title',
         description: 'test description'
@@ -68,7 +73,12 @@ describe('AddMetadataComponent', () => {
 
   describe('AddMetadataComponent.validate', () => {
     it('should show an error if the title field is empty', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: '',
         description: faker.random.word().substring(0, 49)
@@ -79,7 +89,12 @@ describe('AddMetadataComponent', () => {
     });
 
     it('should not show an error if the title field is not empty and less than max length', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: faker.random.word().substring(0, 49),
         description: faker.random.word().substring(0, 49)
@@ -90,7 +105,12 @@ describe('AddMetadataComponent', () => {
     });
 
     it('should show an error if the title field is more than or equal to max length', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: 'Z'.repeat(51),
         description: faker.random.word()
@@ -101,7 +121,12 @@ describe('AddMetadataComponent', () => {
     });
 
     it('should show an error if the description field is more than or equal to max length', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: faker.random.word().substring(0, 49),
         description: 'Z'.repeat(501)
@@ -112,7 +137,12 @@ describe('AddMetadataComponent', () => {
     });
 
     it('should not show an error if the description field is empty', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: faker.random.word().substring(0, 49),
         description: ''
@@ -123,7 +153,12 @@ describe('AddMetadataComponent', () => {
     });
 
     it('should not show an error if the description field is undefined', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: faker.random.word().substring(0, 49),
         description: undefined
@@ -136,7 +171,12 @@ describe('AddMetadataComponent', () => {
 
   describe('AddMetadataComponent.saveStatus setter', () => {
     it('should emit the metadata when saved', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: faker.random.word().substring(0, 49),
         description: faker.random.word().substring(0, 49)
@@ -151,7 +191,12 @@ describe('AddMetadataComponent', () => {
     });
 
     it('should not emit the metadata when not saved', () => {
-      const testMockDef = new MockDefinition();
+      const testMockDef = {
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        }
+      } as MockDefinition;
       testMockDef.metadata = ({
         title: faker.random.word().substring(0, 49),
         description: faker.random.word().substring(0, 49)

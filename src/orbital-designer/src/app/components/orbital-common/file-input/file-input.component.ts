@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NGXLogger } from 'ngx-logger';
+import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 
 @Component({
   selector: 'app-file-input',
@@ -8,30 +8,36 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
   styleUrls: ['./file-input.component.scss']
 })
 export class FileInputComponent implements OnInit {
-  errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
-  fileNames = '';
-
-  @Input() control!: FormControl;
+  constructor(
+    private logger: NGXLogger,
+    private readfileparser: ReadFileService
+  ) {}
+  fileName = '';
   @Input() label = '';
   @Input() accept = '';
-  @Input() allowMultiple = false;
-
-  getErrors(): string[] {
-    return !!this.control.errors ? Object.values(this.control.errors) : [];
-  }
+  errormessages: string[];
+  @Output() fileContent = new EventEmitter<string>();
+  @Output() fileNameEmit = new EventEmitter<string>();
 
   /**
-   * Reads the files and sets the value of the control to either the list or the single file
-   * depending on the multiFileInput property.
-   * @param files The filelist passed in from the file input
+   * Emits the content of the file as a string
    */
-  onFileChange(files: FileList) {
-    if (files.length > 0) {
-      this.control.markAsDirty();
-      const filesArray = Array.from(files);
-      this.fileNames = filesArray.map(f => f.name).join(', ');
-      this.control.setValue(this.allowMultiple ? filesArray : filesArray[0]);
-    }
+  emitFileContent(file: File) {
+    this.errormessages = [];
+    this.readfileparser.read(file).subscribe(
+      fileReadresult => {
+        this.fileName = file.name;
+        this.fileNameEmit.emit(this.fileName);
+        this.fileContent.emit(fileReadresult);
+        this.logger.log('File Contents emitted');
+      },
+      err => this.errormessages = err
+    );
+  }
+
+@Input()
+  set errorMessage(errorMessage: string[]) {
+    this.errormessages = errorMessage || [];
   }
 
   ngOnInit() {}

@@ -26,9 +26,10 @@
       color="primary"
       checkboxPosition="before"
     >
-      <ng-container
-        *ngTemplateOutlet="itemTemplate; context: { item: item }"
-      ></ng-container>
+    <div class="list-item">
+      <h5>{{ item.value?.metadata?.title }}</h5>
+      <mat-divider></mat-divider>
+    </div>
     </mat-list-option>
     <mat-list-item class="emptyMessage" *ngIf="isEmpty">
       <span>{{ emptyListMessage }}</span>

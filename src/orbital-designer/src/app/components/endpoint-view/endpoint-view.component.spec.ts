@@ -2,17 +2,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { OverviewComponent } from '../overview/overview.component';
+import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import SampleMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { EndpointListComponent } from './endpoint-list/endpoint-list.component';
 import { EndpointListItemComponent } from './endpoint-list-item/endpoint-list-item.component';
-import { SideBarComponent } from '../side-bar/side-bar.component';
+import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { MatCardModule } from '@angular/material/card';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
+import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
 
 describe('EndpointViewComponent', () => {
   let component: EndpointViewComponent;
@@ -23,11 +25,13 @@ describe('EndpointViewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         EndpointViewComponent,
-        OverviewComponent,
+        OverviewHeaderComponent,
         EndpointListComponent,
         EndpointListItemComponent,
         SideBarComponent,
-        GetEndpointScenariosPipe
+        GetEndpointScenariosPipe,
+        GetVerbStringPipe,
+        GetVerbColorPipe
       ],
       imports: [
         LoggerTestingModule,
@@ -67,4 +71,5 @@ describe('EndpointViewComponent', () => {
       expect(component.showNotFound()).toBeTruthy();
     });
   });
+
 });

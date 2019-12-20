@@ -3,6 +3,8 @@ swagger: "2.0"
 info:
   title: Simple API overview
   version: v2
+host: petstore.swagger.io
+basePath: /v1
 paths:
   /:
     get:

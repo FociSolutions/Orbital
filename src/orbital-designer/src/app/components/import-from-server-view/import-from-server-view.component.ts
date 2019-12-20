@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
-import { FormArray, ValidationErrors, AbstractControl } from '@angular/forms';
+import { FormArray, AbstractControl } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
-import { mockDefinitionObjectValidatorFactory } from 'src/app/validators/mock-definition-object-validator/mock-definition-object-validator';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
@@ -10,22 +9,9 @@ import Json from '../../models/json';
 import {
   Component,
   OnInit,
-  Input,
-  Injectable,
-  Output,
-  EventEmitter
-} from '@angular/core';
+  Input} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import {
-  HttpClient,
-  HttpResponse,
-  HttpRequest,
-  HttpEventType,
-  HttpEvent,
-  HttpErrorResponse
-} from '@angular/common/http';
 import { Observer } from 'rxjs';
-import { timeout } from 'rxjs/operators';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 
 @Component({
@@ -35,22 +21,18 @@ import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admi
 })
 export class ImportFromServerViewComponent implements OnInit {
   static readonly urlMaxLength = 2048;
-  readonly emptyListMessageServerBox = 'No MockDefinitions';
+  readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
   readonly invalidMockDefinitionsFoundErrorMessage =
-    'One or more invalid Mock Definitions found';
+    'One or more invalid Mockdefinition(s) found';
 
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
-  requestObserver: Observer<
-    HttpEvent<HttpResponse<unknown> | HttpErrorResponse>
-  >;
+  requestObserver: Observer<MockDefinition[]>;
   options: object = {};
   body?: string = null;
   httpMethod = 'GET';
   concatToURI = '';
 
-  protocols: string[] = ['http://', 'https://'];
-  selectedProtocol: string = this.protocols[0];
   inputControl: FormControl;
   requestInProgress = false;
   title = 'Server URI';
@@ -71,21 +53,17 @@ export class ImportFromServerViewComponent implements OnInit {
     private logger: NGXLogger,
     private designerStore: DesignerStore,
     private router: Router,
-    private httpClient: HttpClient,
     private orbitalService: OrbitalAdminService
   ) {
     this.formArray = new FormArray([]);
 
     this.requestObserver = {
       next: event => {
-        if (event.type === HttpEventType.Response) {
-          this.onResponse(event);
-          this.errors = '';
-        }
+        this.onResponse(event);
+        this.errors = '';
       },
-      error: e => {
-        this.errors = e.message;
-        this.formArray = new FormArray([]);
+      error: () => {
+        this.errors = 'File(s) could not be imported because of an error';
         this.requestInProgress = false;
       },
       complete: () => (this.requestInProgress = false)
@@ -115,7 +93,11 @@ export class ImportFromServerViewComponent implements OnInit {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
 
-      this.orbitalService.getAll(`${this.selectedProtocol}${this.inputControl.value}${this.concatToURI}`).subscribe(this.requestObserver);
+      this.orbitalService
+        .getAll(
+          `${this.inputControl.value}${this.concatToURI}`
+        )
+        .subscribe(this.requestObserver);
     }
   }
 
@@ -151,19 +133,17 @@ export class ImportFromServerViewComponent implements OnInit {
    * values to the response body. The control is then responsible for validation.
    * @param response HttpResponse received by the input
    */
-  onResponse(
-    response: HttpResponse<unknown> | HttpErrorResponse | DOMException
-  ) {
+  onResponse(response: MockDefinition[]) {
     this.logger.debug('Received http response', response);
-    if (response instanceof HttpResponse && Array.isArray(response.body)) {
+
+    if (!!response) {
       this.formArray = new FormArray(
-        response.body.map(
-          obj =>
-            new FormControl(obj, null, [
-              mockDefinitionObjectValidatorFactory(this.logger)
-            ])
+        response.map(
+          mockDef =>
+            new FormControl(mockDef, null)
         )
       );
+
       this.logger.debug(
         'ImportFormServerViewComponent FormArray value:',
         this.formArray

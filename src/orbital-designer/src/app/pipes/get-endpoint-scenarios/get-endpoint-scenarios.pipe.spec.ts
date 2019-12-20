@@ -1,7 +1,10 @@
 import { GetEndpointScenariosPipe } from './get-endpoint-scenarios.pipe';
 import * as faker from 'faker';
 import { VerbType } from '../../models/verb.type';
-import { newScenario } from '../../models/mock-definition/scenario/scenario.model';
+import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import * as uuid from 'uuid';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 describe('GetEndpointScenariosPipe', () => {
   it('create an instance', () => {
@@ -18,16 +21,61 @@ describe('GetEndpointScenariosPipe', () => {
       VerbType.PUT,
       VerbType.POST
     ]);
-    const mockMatchingScenario = newScenario(mockVerb, mockPath);
-    const mockNonMatchingScenario = newScenario(
-      faker.random.arrayElement([
-        VerbType.GET,
-        VerbType.DELETE,
-        VerbType.POST,
-        VerbType.PUT
-      ]),
-      mockPath + faker.random.words()
-    );
+    const mockMatchingScenario = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      verb: mockVerb,
+      path: mockPath,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    } as Scenario;
+    const mockpaths = mockPath + faker.random.words;
+    const mockVerbs = faker.random.arrayElement([
+      VerbType.GET,
+      VerbType.DELETE,
+      VerbType.PUT,
+      VerbType.POST
+    ]);
+    const mockNonMatchingScenario = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      verb: mockVerbs,
+      path: mockpaths,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    } as Scenario;
     const mockEndpoint = {
       path: mockPath,
       verb: mockVerb,
@@ -51,16 +99,61 @@ describe('GetEndpointScenariosPipe', () => {
       VerbType.PUT,
       VerbType.POST
     ]);
-    const mockMatchingScenario = newScenario(mockVerb, mockPath);
-    const mockNonMatchingScenario = newScenario(
-      faker.random.arrayElement([
-        'gET',
-        'deLetE',
-        'pOST',
-        'PuT'
-      ]),
-      mockPath + faker.random.words()
-    );
+    const mockMatchingScenario = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      verb: mockVerb,
+      path: mockPath,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    } as Scenario;
+    const mockpaths = mockPath + faker.random.words() as string;
+    const mockVerbs = faker.random.arrayElement([
+      'gET',
+      'deLetE',
+      'pOST',
+      'PuT'
+    ]) as VerbType;
+    const mockNonMatchingScenario = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      verb: mockVerbs,
+      path: mockpaths,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    } as Scenario;
     const mockEndpoint = {
       path: mockPath,
       verb: mockVerb,
@@ -84,16 +177,61 @@ describe('GetEndpointScenariosPipe', () => {
       VerbType.PUT,
       VerbType.POST
     ]);
-    const mockMatchingScenario = newScenario(mockVerb, mockPath);
-    const mockNonMatchingScenario = newScenario(
-      faker.random.arrayElement([
-        VerbType.GET,
-        VerbType.DELETE,
-        VerbType.POST,
-        VerbType.PUT
-      ]),
-      mockPath + faker.random.words()
-    );
+    const mockMatchingScenario = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      verb: mockVerb,
+      path: mockPath,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    }  as Scenario;
+    const mockpaths = mockPath + faker.random.words();
+    const mockVerbs = faker.random.arrayElement([
+      VerbType.GET,
+      VerbType.DELETE,
+      VerbType.PUT,
+      VerbType.POST
+    ]);
+    const mockNonMatchingScenario = {
+      id: uuid.v4(),
+      metadata: {
+        title: 'New Scenario',
+        description: ''
+      },
+      verb: mockVerbs,
+      path: mockpaths,
+      response: {
+        headers: new Map<string, string>(),
+        status: 0,
+        body: ''
+      },
+      requestMatchRules: {
+        headerRules: new Map<string, string>(),
+        queryRules: new Map<string, string>(),
+        bodyRules: [
+          {
+            type: BodyRuleType.BodyEquality,
+            rule: {}
+          }
+        ] as Array<BodyRule>
+      }
+    } as Scenario;
 
     const results = pipe.transform(
       [mockMatchingScenario, mockNonMatchingScenario],

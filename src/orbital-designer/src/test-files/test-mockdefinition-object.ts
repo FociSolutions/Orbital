@@ -9,7 +9,7 @@ export default {
         title: 'Another Scenario',
         description: 'Another test scenario'
       },
-      verb: 'GET',
+      verb: 0,
       path: '/',
       response: {
         headers: new Map<string, string>(),

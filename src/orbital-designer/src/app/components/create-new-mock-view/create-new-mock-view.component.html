@@ -17,10 +17,11 @@
     <app-tool-tip
       message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
       ><app-file-input
-        class="row capitalize"
-        [control]="formGroup.controls['openApiFile']"
-        label="Select File - Required"
+        class="column"
+        (fileContent)="setOpenApiFile($event)"
+        label="Select OpenAPI File - Required"
         accept=".yml,.yaml, .json"
+        [errorMessage]="errorMessageToEmitFromCreate"
       >
       </app-file-input
     ></app-tool-tip>

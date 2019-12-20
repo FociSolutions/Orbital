@@ -11,7 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolTipComponent } from './tool-tip/tool-tip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SearchableSelectionListComponent } from './searchable-selection-list/searchable-selection-list.component';
+import { ShuttleSubListComponent } from './shuttle-list/shuttle-sub-list/shuttle-sub-list.component';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -28,7 +28,7 @@ import { MatExpansionModule } from '@angular/material';
     TextInputComponent,
     FileInputComponent,
     ToolTipComponent,
-    SearchableSelectionListComponent,
+    ShuttleSubListComponent,
     SearchBarComponent,
     ShuttleListComponent,
     DialogBoxComponent,
@@ -56,7 +56,7 @@ import { MatExpansionModule } from '@angular/material';
     TextInputComponent,
     FileInputComponent,
     ToolTipComponent,
-    SearchableSelectionListComponent,
+    ShuttleSubListComponent,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,

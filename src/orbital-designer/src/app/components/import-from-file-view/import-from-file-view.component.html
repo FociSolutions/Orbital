@@ -5,19 +5,21 @@
   >
   <app-file-input
     class="capitalize"
-    [control]="formGroup.controls['mockDefinitionFile']"
+    (fileContent)="setMockDefinition($event)"
+    (fileNameEmit)="setMockDefinitionName($event)"
     label="Select File - Required"
     accept=".json"
+    [errorMessage]="errorMessageToEmitFromCreate"
   >
   </app-file-input>
-  <mat-card-subtitle>Imported Mock Definitions</mat-card-subtitle>
+  <mat-card-subtitle>Imported Mockdefinition</mat-card-subtitle>
   <mat-card class="import-from-file">
-    <mat-list *ngIf="!!formGroup.controls.mockDefinitionFile?.value?.name">
+    <mat-list>
       <mat-list-item>
         <h3 matLine>
-          {{ formGroup.controls["mockDefinitionFile"]?.value?.name }}
+          {{ mockDefinitionNameString }}
         </h3>
-        <p *ngIf="!isValid()" matLine>Invalid File</p>
+        <p *ngIf="!isValid()" matLine>Valid File Required</p>
         <mat-icon matListIcon *ngIf="!isValid()">cancel</mat-icon>
         <mat-icon matListIcon *ngIf="isValid()">check_circle_outline</mat-icon>
       </mat-list-item>
@@ -32,7 +34,6 @@
     <button
       mat-raised-button
       color="primary"
-      [disabled]="formGroup.invalid"
       (click)="createMock()"
     >
       Next

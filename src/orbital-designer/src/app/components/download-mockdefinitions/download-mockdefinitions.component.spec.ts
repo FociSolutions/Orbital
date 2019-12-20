@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DownloadMockdefinitionsComponent } from './download-mockdefinitions.component';
-import { SearchableSelectionListComponent } from '../orbital-common/searchable-selection-list/searchable-selection-list.component';
 import {
   MatCardModule,
   MatButtonModule,
@@ -13,6 +12,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import * as faker from 'faker';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { ShuttleSubListComponent } from '../orbital-common/shuttle-list/shuttle-sub-list/shuttle-sub-list.component';
 
 describe('DownloadMockdefinitionsComponent', () => {
   let component: DownloadMockdefinitionsComponent;
@@ -22,7 +22,7 @@ describe('DownloadMockdefinitionsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         DownloadMockdefinitionsComponent,
-        SearchableSelectionListComponent
+        ShuttleSubListComponent
       ],
       imports: [
         MatCardModule,

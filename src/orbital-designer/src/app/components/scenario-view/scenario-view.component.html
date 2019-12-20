@@ -6,7 +6,7 @@
       </div>
       <div class="scenarios">
         <div>
-          <app-overview [header]="headerContent"></app-overview>
+          <app-overview-header [header]="headerContent"></app-overview-header>
         </div>
         <div>
           <app-search-bar
@@ -18,7 +18,82 @@
           <p id="notFoundMessage" *ngIf="this.filteredList.length === 0">
             {{ this.errorMessage }}
           </p>
-          <app-scenario-list [scenarios]="filteredList"></app-scenario-list>
+          <div id="scenario-list">
+            <mat-list class="scenariolistcontainer">
+              <mat-list-item *ngFor="let scenario of filteredList">
+                <div id="scenario-list-item">
+                  <mat-card
+                    *ngIf="!!scenario"
+                    class="scenario-list-item-container min-card-height"
+                  >
+                    <mat-card-content
+                      [routerLink]="
+                        this.isHoveringOverMenu
+                          ? null
+                          : ['/scenario-editor', scenario.id]
+                      "
+                      routerLinkActive="is-active"
+                    >
+                      <mat-card-title>
+                        <div>{{ scenario?.metadata.title }}</div>
+                        <div class="scenario-options-menu">
+                          <button
+                            mat-icon-button
+                            [mat-menu-trigger-for]="menu"
+                            aria-label="Example icon-button with a menu"
+                            (mouseout)="this.isHoveringOverMenu = false"
+                            (mouseover)="this.isHoveringOverMenu = true"
+                          >
+                            <mat-icon>more_horiz</mat-icon>
+                          </button>
+                          <mat-menu #menu="matMenu" xPosition="before">
+                            <button
+                              mat-menu-item
+                              (click)="cloneScenario(scenario)"
+                            >
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Clone</span>
+                            </button>
+                            <button
+                              mat-menu-item
+                              (click)="confirmDeleteDialog()"
+                            >
+                              <mat-icon>delete</mat-icon>
+                              <span>Delete</span>
+                            </button>
+                          </mat-menu>
+                        </div>
+                      </mat-card-title>
+
+                      <mat-card-subtitle>
+                        <div class="subtitle">
+                          <div>{{ scenario?.metadata.description }}</div>
+                          <div>
+                            {{ scenario?.response.status }} |
+                            {{ getScenarioResponseStatusString(scenario) }}
+                          </div>
+                        </div>
+                      </mat-card-subtitle>
+                    </mat-card-content>
+                  </mat-card>
+
+                  <div class="overlay" *ngIf="triggerOpen">
+                    <div class="confirm-scenario-delete-dialog">
+                      <mat-card>
+                        <app-dialog-box
+                          titleText="Confirm Scenario Deletion"
+                          confirmButtonText="DELETE"
+                          cancelButtonText="CANCEL"
+                          [bodyText]="getBodyText(scenario)"
+                          (choiceBoolean)="onDialogAction($event, scenario)"
+                        ></app-dialog-box>
+                      </mat-card>
+                    </div>
+                  </div>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </div>
           <button (click)="addScenario()" id="add" mat-fab color="primary">
             +
           </button>
@@ -40,7 +115,7 @@
   <div class="title row center">
     <mat-chip-list
       ><mat-chip [style.background-color]="this.endpointVerb | getVerbColor">{{
-        this.endpointVerb
+        this.endpointVerb | getVerbString
       }}</mat-chip>
     </mat-chip-list>
     <h3>

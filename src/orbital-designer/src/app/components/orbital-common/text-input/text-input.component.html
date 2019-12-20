@@ -6,6 +6,7 @@
     (focusout)="setDirty()"
     [errorStateMatcher]="errorStateMatcher"
     autocomplete="off"
+    [maxlength]="maxLength"
   />
   <mat-error *ngFor="let error of getErrors()">
     {{ error }}
@@ -24,6 +25,7 @@
     [errorStateMatcher]="errorStateMatcher"
     autocomplete="off"
     (focusout)="setDirty()"
+    [maxlength]="maxLength"
   ></textarea>
   <mat-error *ngFor="let error of getErrors()">
     {{ error }}

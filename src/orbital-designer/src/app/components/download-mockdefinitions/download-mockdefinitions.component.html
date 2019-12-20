@@ -9,15 +9,13 @@
   <div class="container">
     <div class="selectionList">
 
-      <app-searchable-selection-list
+      <app-shuttle-sub-list
         class="list"
         [list]="list"
-        [itemTemplate]="listItemTemplate"
-        [itemToStringFn]="itemToStringFn"
         [emptyListMessage]="emptyListMessage"
         [noSearchResultsMessage]="noSearchResultsMessage"
         (itemSelected)="onSelect($event)"
-      ></app-searchable-selection-list>
+      ></app-shuttle-sub-list>
     </div>
   </div>
 

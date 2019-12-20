@@ -48,7 +48,7 @@ export class AddMetadataComponent implements OnInit, AfterContentChecked {
   set metadataTitle(metadataTitle: string) {
     if (metadataTitle !== undefined) {
       this.logger.debug('Set the metadata title', metadataTitle);
-      this.metadataTitleProp = metadataTitle.trim();
+      this.metadataTitleProp = metadataTitle;
       this.validate();
     }
   }
@@ -138,7 +138,12 @@ export class AddMetadataComponent implements OnInit, AfterContentChecked {
   }
 
   private validateTitle() {
-    if (!this.metadataTitleProp || this.metadataTitleProp.length === 0) {
+    if (
+      this.metadataTitleProp.length > 0 &&
+      this.metadataTitleProp.trim().length === 0
+    ) {
+      this.titleErrorMessage = 'Scenario title cannot contain only whitespace';
+    } else if (!this.metadataTitleProp || this.metadataTitleProp.length === 0) {
       this.logger.debug(
         'AddMetadataComponent:validateTitle: Title is null or empty'
       );

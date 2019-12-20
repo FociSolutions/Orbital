@@ -4,15 +4,17 @@ import { OrbitalAdminService } from './orbital-admin.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('OrbitalAdminService', () => {
-  beforeEach(() =>
+  let service: OrbitalAdminService;
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrbitalAdminService],
       imports: [HttpClientTestingModule, LoggerTestingModule]
-    })
+    });
+    service = TestBed.get(OrbitalAdminService);
+  }
   );
 
   it('should be created', () => {
-    const service: OrbitalAdminService = TestBed.get(OrbitalAdminService);
     expect(service).toBeTruthy();
   });
 });
