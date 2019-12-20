@@ -7,7 +7,7 @@ import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/g
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
 import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { MatCardModule } from '@angular/material/card';
-import { OverviewHeaderComponent } from '../orbital-common/overview/overview.component';
+import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material';

@@ -25,7 +25,7 @@ import { ImportFromFileViewComponent } from './components/import-from-file-view/
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
 import { EndpointListComponent } from './components/endpoint-view/endpoint-list/endpoint-list.component';
-import { OverviewHeaderComponent } from './components/orbital-common/overview/overview.component';
+import { OverviewHeaderComponent } from './components/orbital-common/overview-header/overview-header.component';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
 import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';

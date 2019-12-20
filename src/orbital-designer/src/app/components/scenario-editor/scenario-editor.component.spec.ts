@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
-import { OverviewHeaderComponent } from '../orbital-common/overview/overview.component';
+import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import {
   MatCardModule,

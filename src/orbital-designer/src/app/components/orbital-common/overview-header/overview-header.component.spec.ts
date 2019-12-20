@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
-import { OverviewHeaderComponent } from './overview.component';
+import { OverviewHeaderComponent } from './overview-header.component';
 
-describe('OverviewComponent', () => {
+describe('OverviewHeaderComponent', () => {
   let component: OverviewHeaderComponent;
   let fixture: ComponentFixture<OverviewHeaderComponent>;
 

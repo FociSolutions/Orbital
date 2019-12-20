@@ -2,9 +2,9 @@ import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { Metadata } from '../../../models/mock-definition/metadata.model';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss']
+  selector: 'app-overview-header',
+  templateUrl: './overview-header.component.html',
+  styleUrls: ['./overview-header.component.scss']
 })
 export class OverviewHeaderComponent implements OnInit {
   @Input() metadata: Metadata;
