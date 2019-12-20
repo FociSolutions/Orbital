@@ -110,7 +110,7 @@ export class DesignerStore extends Store<State> {
           this.state.mockDefinitions
         );
         this.mockDefinition = this.state.mockDefinitions[mockDefKeys[0]];
-        this.setEndpoints(this.mockDefinition.openApi);
+        this.setEndpoints(this.state.mockDefinition.openApi);
         this.selectedEndpoint = null;
         this.selectedScenario = null;
       }
@@ -131,8 +131,8 @@ export class DesignerStore extends Store<State> {
     this.mockDefinition = recordFirstOrDefault(this.state.mockDefinitions, null);
 
     if (this.state.mockDefinition) {
-      this.setEndpoints(this.mockDefinition.openApi);
-      this.logger.debug('Setting endpoints', this.mockDefinition.openApi);
+      this.setEndpoints(this.state.mockDefinition.openApi);
+      this.logger.debug('Setting endpoints', this.state.mockDefinition.openApi);
       this.selectedEndpoint = null;
       this.selectedScenario = null;
     }
