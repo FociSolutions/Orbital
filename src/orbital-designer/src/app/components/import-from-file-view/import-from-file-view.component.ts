@@ -1,21 +1,22 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-import-from-file-view',
   templateUrl: './import-from-file-view.component.html',
   styleUrls: ['./import-from-file-view.component.scss']
 })
-export class ImportFromFileViewComponent implements OnInit {
+export class ImportFromFileViewComponent implements OnInit, OnDestroy {
   private mockDefinitionString: string;
   mockDefinitionNameString: string;
-  validFileFlag = true;
+  validFileFlag = false;
   errorMessageToEmitFromCreate: string[];
+  validator: Subscription;
 
   constructor(
     private router: Router,
@@ -25,7 +26,17 @@ export class ImportFromFileViewComponent implements OnInit {
   ) {}
 
   isValid() {
-    return !!this.mockDefinitionString;
+    return this.validFileFlag;
+  }
+
+  /**
+   * Validates the Mockdefinition and returns a boolean validation status
+   */
+  async validateMock(mockDefinitionString: string) {
+    this.validator = this.mockDefinitionService.deserialize(mockDefinitionString).subscribe(
+      () => this.validFileFlag = true,
+      () => this.validFileFlag = false
+    );
   }
 
   /**
@@ -35,6 +46,8 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   setMockDefinition(fileStringFromFileInput: string) {
     this.mockDefinitionString = fileStringFromFileInput;
+
+    this.validateMock(fileStringFromFileInput);
   }
 
   /**
@@ -79,4 +92,8 @@ export class ImportFromFileViewComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.validator.unsubscribe();
+  }
 }
