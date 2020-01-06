@@ -7,6 +7,8 @@ import { OpenAPIV2 } from 'openapi-types';
 import { VerbType } from '../models/verb.type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
+import Json from '../models/json';
+import { cloneDeep } from 'lodash';
 
 export interface State {
   selectedEndpoint: Endpoint;
@@ -18,13 +20,30 @@ export interface State {
 
 Injectable();
 export class DesignerStore extends Store<State> {
+  private static readonly mockDefinitionStoreKey = 'orbital_state_mockDefinition';
+  private static readonly mockDefinitionsStoreKey = 'orbital_state_mockDefinitions';
+  private static readonly endpointsStoreKey = 'orbital_state_enpoints';
+  private static readonly selectedEndpointStoreKey = 'orbital_state_selectedEndpoint';
+  private static readonly selectedScenarioStoreKey = 'orbital_state_selectedScenario';
+
   constructor(private logger: NGXLogger) {
     super({
-      selectedEndpoint: null,
-      selectedScenario: null,
-      mockDefinition: null,
-      mockDefinitions: new Map<string, MockDefinition>(),
-      endpoints: []
+      selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey)),
+      selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey)),
+      mockDefinition: MockDefinition.toMockDefinition(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
+      mockDefinitions: MockDefinition.toMockDefinintionMap(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey))
+      || new Map<string, MockDefinition>(),
+      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
+    });
+
+    this.state$.subscribe(state => {
+      const clonedDefinition = cloneDeep(state.mockDefinition);
+      const clonedDefinitions = cloneDeep(state.mockDefinitions);
+      localStorage.setItem(DesignerStore.mockDefinitionStoreKey, JSON.stringify(Json.mapToObject(clonedDefinition)));
+      localStorage.setItem(DesignerStore.mockDefinitionsStoreKey, JSON.stringify(Json.mapToObject(clonedDefinitions)));
+      localStorage.setItem(DesignerStore.endpointsStoreKey, JSON.stringify(state.endpoints));
+      localStorage.setItem(DesignerStore.selectedEndpointStoreKey, JSON.stringify(state.selectedEndpoint));
+      localStorage.setItem(DesignerStore.selectedScenarioStoreKey, JSON.stringify(state.selectedScenario));
     });
   }
 
@@ -45,6 +64,44 @@ export class DesignerStore extends Store<State> {
       )
     });
     this.mockDefinition = mockDefinitions[0];
+  }
+
+  /**
+   * Deletes a mock definition by title
+   */
+   deleteMockDefinitionByTitle(mockTitle: string) {
+    if (this.state.mockDefinitions.delete(mockTitle)) {
+      this.logger.debug('Deleting mock ', mockTitle);
+      this.setState({...this.state, mockDefinitions: this.state.mockDefinitions});
+
+      if (!!this.state.mockDefinitions && this.state.mockDefinitions.size) {
+        this.logger.debug('Mock store contains at least one mock; setting first mock to one in store ', this.state.mockDefinitions);
+        this.mockDefinition = this.state.mockDefinitions.values().next().value;
+
+        if (this.mockDefinition) {
+          this.setEndpoints(this.mockDefinition.openApi);
+          this.selectedEndpoint = null;
+          this.selectedScenario = null;
+        }
+      }
+    }
+   }
+
+  /**
+   * Appends a mock definition to the store; if one with the same name already exists
+   * it will be overwritten
+   */
+  public appendMockDefinition(mockDefinition: MockDefinition) {
+    this.setState({...this.state, mockDefinitions: this.state.mockDefinitions.set(mockDefinition.metadata.title, mockDefinition)});
+    this.logger.debug('New state after appending', this.state);
+    this.mockDefinition = this.state.mockDefinitions.values().next().value;
+
+    if (this.mockDefinition) {
+      this.setEndpoints(this.mockDefinition.openApi);
+      this.logger.debug('Setting endpoints', this.mockDefinition.openApi);
+      this.selectedEndpoint = null;
+      this.selectedScenario = null;
+    }
   }
 
   /**
@@ -176,7 +233,7 @@ export class DesignerStore extends Store<State> {
         current = scenario;
         currentMock.scenarios.push(current);
       }
-      this.state.selectedScenario = current;
+      this.selectedScenario = current;
     }
   }
 

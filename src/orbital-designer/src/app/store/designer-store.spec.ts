@@ -15,6 +15,8 @@ import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
 import { ReadFileService } from '../services/read-file/read-file.service';
+import * as _ from 'lodash';
+import { take } from 'rxjs/operators';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -247,6 +249,171 @@ describe('DesignerStore', () => {
       }
       store.updateScenarios(scenarios);
       expect(store.state.mockDefinition.scenarios).toEqual(scenarios);
+    });
+  });
+
+  describe('DesignerStore.deleteMockDefinitionByTitle()', () => {
+    it('should delete a mock definition by title if it exists in the store', () => {
+      const mockDef = _.cloneDeep(validMockDefinition);
+      store.appendMockDefinition(mockDef);
+      store.deleteMockDefinitionByTitle(mockDef.metadata.title);
+      expect(store.state.mockDefinitions.size).toBe(0);
+    });
+
+    it('should delete only a single mock definition by title if only one matches in the store', () => {
+      const mockDef1 = validMockDefinition;
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      mockDef2.metadata.title = faker.random.word();
+      store.mockDefinitions = [mockDef1, mockDef2];
+      store.deleteMockDefinitionByTitle(mockDef2.metadata.title);
+      expect(store.state.mockDefinitions.size).toBe(1);
+    });
+
+    it('should not delete a mock definition by title if there are none in the store', () => {
+      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.deleteMockDefinitionByTitle('Invalid');
+      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(store.state.mockDefinition).toEqual(null);
+    });
+
+    it('should not delete a mock definition by title if it does not exist in the store', () => {
+      const mockDef = validMockDefinition;
+      store.mockDefinitions = [mockDef];
+      store.deleteMockDefinitionByTitle('Invalid');
+      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(store.state.mockDefinition).toEqual(mockDef);
+    });
+
+    it('should not throw an exception when trying to delete a mock that does not exist', () => {
+      store.deleteMockDefinitionByTitle(faker.random.word());
+    });
+
+    it('should delete the state when the state is changed by deleting a single mock definition', () => {
+      const mockDef = _.cloneDeep(validMockDefinition);
+      store.appendMockDefinition(mockDef);
+      store.deleteMockDefinitionByTitle(mockDef.metadata.title);
+      expect(store.state.mockDefinitions.size).toBe(0);
+    });
+
+    it('should delete a single mock definition when multiple exist', () => {
+      const mockDef1 = _.cloneDeep(validMockDefinition);
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      const mockDef3 = _.cloneDeep(validMockDefinition);
+
+      mockDef1.metadata.title = faker.random.word();
+      mockDef2.metadata.title = faker.random.word();
+      mockDef3.metadata.title = faker.random.word();
+
+      store.appendMockDefinition(mockDef1);
+      store.appendMockDefinition(mockDef2);
+      store.appendMockDefinition(mockDef3);
+
+      store.deleteMockDefinitionByTitle(mockDef1.metadata.title);
+
+      const expected = new Map<string, MockDefinition>();
+      expected.set(mockDef2.metadata.title, mockDef2);
+      expected.set(mockDef3.metadata.title, mockDef3);
+      expect(store.state.mockDefinitions).toEqual(expected);
+    });
+  });
+
+  describe('DesignerStore.appendMockDefinition()', () => {
+    it('should append a mock definition to the store if the store is empty', () => {
+      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.appendMockDefinition(validMockDefinition);
+      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(store.state.mockDefinition).toEqual(validMockDefinition);
+    });
+
+    it('should append a mock definition to the store if the store contains other mock definitions', () => {
+      const mockDef1 = validMockDefinition;
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      mockDef2.metadata.title = faker.random.word();
+      store.mockDefinitions = [mockDef1];
+      store.appendMockDefinition(mockDef2);
+      expect(store.state.mockDefinitions.size).toBe(2);
+    });
+
+    it('should overwrite a mock definition to the store if the store contains other mock definitions when appending', () => {
+      const mockDef1 = validMockDefinition;
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      store.mockDefinitions = [mockDef1];
+      store.appendMockDefinition(mockDef2);
+      expect(store.state.mockDefinitions.size).toBe(1);
+    });
+
+    it('should set the endpoints when appending a single mock definition to a list of none', done => {
+      const mockDef = _.cloneDeep(validMockDefinition);
+      store.state$.subscribe(state => {
+        // checks if any state's endpoints is not empty (as events are emitted beforehand for mock definition updates)
+        // this will fail if all states have empty endpoints (good) as done will timeout in 5000ms
+        if (state.endpoints.length !== 0) {
+          expect(state.endpoints).not.toEqual([]);
+          done();
+        }
+      });
+
+      store.appendMockDefinition(mockDef);
+    });
+
+    it('should update the state subscription when the state is changed by appending a single mock definition', done => {
+      const mockDef = _.cloneDeep(validMockDefinition);
+      store.appendMockDefinition(mockDef);
+      store.state$.subscribe(state => {
+        if (!!state.mockDefinition) {
+          expect(state.mockDefinition).toEqual(mockDef);
+          done();
+        }
+      });
+    });
+
+    it('should update the state subscription when the state is changed when appending', done => {
+      const mockDef1 = _.cloneDeep(validMockDefinition);
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+      const mockDef3 = _.cloneDeep(validMockDefinition);
+
+      mockDef1.metadata.title = faker.random.word();
+      mockDef2.metadata.title = faker.random.word();
+      mockDef3.metadata.title = faker.random.word();
+
+      store.state$.subscribe(state => {
+        if (!!state.mockDefinition) {
+          expect(state.mockDefinition).toEqual(mockDef1);
+          done();
+        }
+      });
+
+      store.appendMockDefinition(mockDef1);
+      store.appendMockDefinition(mockDef2);
+      store.appendMockDefinition(mockDef3);
+
+      // remove one item from the store to simulate queuing
+      store.state$.pipe(take(1));
+    });
+
+    // tslint:disable-next-line: max-line-length
+    it('should update the state subscription when the state is changed when appending, and an item already exists with the same name', done => {
+      const mockDef1 = _.cloneDeep(validMockDefinition);
+      const mockDef2 = _.cloneDeep(validMockDefinition);
+
+      mockDef1.metadata.title = faker.random.word();
+      mockDef2.metadata.title = mockDef1.metadata.title;
+      mockDef2.scenarios = [{id: faker.random.word()}] as Scenario[];
+
+      let calls = 0;
+      store.state$.subscribe(state => {
+        if (!!state.mockDefinition) {
+          if (calls === 1) {
+            expect(state.mockDefinition).toEqual(mockDef1);
+            done();
+          }
+
+          calls++;
+        }
+      });
+
+      store.appendMockDefinition(mockDef1);
+      store.appendMockDefinition(mockDef2);
     });
   });
 

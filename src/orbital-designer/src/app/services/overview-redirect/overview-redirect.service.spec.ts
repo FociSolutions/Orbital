@@ -6,12 +6,12 @@ import { DesignerStore } from '../../store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('OverviewRedirectService', () => {
-  beforeEach(() =>
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([]), LoggerTestingModule],
       providers: [DesignerStore]
-    })
-  );
+    });
+  });
 
   it('should be created', () => {
     const service: OverviewRedirectService = TestBed.get(

@@ -12,6 +12,8 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
+import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
@@ -64,6 +66,7 @@ describe('ImportFromServerViewComponent', () => {
       });
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
+
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
       expect(storeSpy).toHaveBeenCalled();
     });

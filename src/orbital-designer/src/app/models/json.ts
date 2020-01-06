@@ -4,6 +4,10 @@ export default class Json {
    * the map data. Recurses through an object to apply the change on all levels
    */
   public static mapToObject(o: object): object {
+    if (!o) {
+      return o;
+    }
+
     if (o instanceof Map) {
       const obj = Object.create(null);
       const m: Map<string, any> = o;

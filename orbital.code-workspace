@@ -11,7 +11,14 @@
     }
   ],
   "settings": {
-    "cSpell.words": ["APIV", "controlkey", "maxlength", "minlength", "openapi"]
+    "cSpell.words": [
+      "APIV",
+      "controlkey",
+      "maxlength",
+      "minlength",
+      "openapi"
+    ],
+    "angularKarmaTestExplorer.projectRootPath": "/src/orbital-designer"
   },
   "launch": {
     "configurations": [],

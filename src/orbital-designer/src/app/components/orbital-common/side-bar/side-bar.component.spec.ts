@@ -10,6 +10,8 @@ import validMockDefinition from '../../../../test-files/test-mockdefinition-obje
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import { DialogBoxComponent } from '../../orbital-common/dialog-box/dialog-box.component';
+import { MatCardModule } from '@angular/material';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
@@ -18,11 +20,18 @@ describe('SideBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SideBarComponent ],
-      imports: [ MatSidenavModule, MatDividerModule, MatListModule, MatIconModule, LoggerTestingModule, RouterTestingModule ],
-      providers: [ DesignerStore ]
-    })
-    .compileComponents();
+      declarations: [SideBarComponent, DialogBoxComponent],
+      imports: [
+        MatSidenavModule,
+        MatDividerModule,
+        MatListModule,
+        MatCardModule,
+        MatIconModule,
+        LoggerTestingModule,
+        RouterTestingModule
+      ],
+      providers: [DesignerStore]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -63,6 +72,21 @@ describe('SideBarComponent', () => {
       component.updateSelected(validMockDefinition);
       expect(store.state.mockDefinition).toEqual(expected);
       expect(routerSpy).toHaveBeenCalled();
+    });
+  });
+  describe('SideBarComponent.openDialogBox', () => {
+    it('should return to homepage if last mockdefinition is dismissed', () => {
+      const routerSpy = spyOn(TestBed.get(Router), 'navigate');
+      component.mockDefinitions.set(
+        validMockDefinition.metadata.title,
+        validMockDefinition
+      );
+
+      component.onDismiss({
+        key: validMockDefinition.metadata.title,
+        value: validMockDefinition
+      });
+      expect(routerSpy).toHaveBeenCalledWith(['/']);
     });
   });
 });
