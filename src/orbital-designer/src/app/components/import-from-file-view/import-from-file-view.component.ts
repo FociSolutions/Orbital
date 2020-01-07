@@ -17,7 +17,6 @@ export class ImportFromFileViewComponent implements OnInit {
   mockDefinitionNameString: string;
   validFileFlag = false;
   errorMessageToEmitFromCreate: string[];
-  validator: Subscription;
 
   constructor(
     private router: Router,
