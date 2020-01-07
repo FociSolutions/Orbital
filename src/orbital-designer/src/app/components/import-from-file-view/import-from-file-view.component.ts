@@ -5,6 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -33,7 +34,7 @@ export class ImportFromFileViewComponent implements OnInit, OnDestroy {
    * Validates the Mockdefinition and returns a boolean validation status
    */
   async validateMock(mockDefinitionString: string) {
-    this.validator = this.mockDefinitionService.deserialize(mockDefinitionString).subscribe(
+    MockDefinition.toMockDefinitionAsync(mockDefinitionString).then(
       () => this.validFileFlag = true,
       () => this.validFileFlag = false
     );
