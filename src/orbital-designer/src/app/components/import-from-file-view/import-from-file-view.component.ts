@@ -12,7 +12,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
   templateUrl: './import-from-file-view.component.html',
   styleUrls: ['./import-from-file-view.component.scss']
 })
-export class ImportFromFileViewComponent implements OnInit, OnDestroy {
+export class ImportFromFileViewComponent implements OnInit {
   private mockDefinitionString: string;
   mockDefinitionNameString: string;
   validFileFlag = false;
@@ -93,8 +93,4 @@ export class ImportFromFileViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {}
-
-  ngOnDestroy() {
-    this.validator.unsubscribe();
-  }
 }
