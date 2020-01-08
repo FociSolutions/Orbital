@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models.Converters;
+using Orbital.Mock.Server.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,22 +9,24 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models
 {
-    public class BodyRule : IEquatable<BodyRule>
+    public class BodyRule : IEquatable<BodyRule>, IRule
     {
         /// <summary>
         /// BodyRule Constructor With Optional Parameters
         /// </summary>
-        /// <param name="Type">Enum representing the type of Body Rule created</param>
-        /// <param name="Rule">The Json object used to compare against request bodies for matching</param>
-        public BodyRule(BodyRuleTypes Type = BodyRuleTypes.BodyEquality, JToken Rule = null)
+        /// <param name="RuleType">Enum representing the type of Body Rule created</param>
+        /// <param name="RuleValue">The Json object used to compare against request bodies for matching</param>
+        public BodyRule(Type Type = null,JToken RuleValue = null)
         {
-            this.Rule = Rule == null ? new JObject() : Rule;
-            this.Type = Type;
+            this.RuleValue = RuleValue == null ? new JObject() : RuleValue;
+            this.RuleType = RuleType;
         }
         [JsonProperty("rule")]
-        public JToken Rule { get; set; }
+        public JToken RuleValue { get; set; }
         [JsonProperty("type")]
-        public BodyRuleTypes Type { get; set; }
+        public BodyRuleTypes RuleType { get; set; }
+
+        public Type ComparerType { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -33,13 +36,13 @@ namespace Orbital.Mock.Server.Models
         public bool Equals(BodyRule other)
         {
             return other != null &&
-                this.Type == other.Type &&
-                JObject.DeepEquals(this.Rule, other.Rule);
+                this.RuleType == other.RuleType &&
+                JObject.DeepEquals(this.RuleValue, other.RuleValue);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Type, Rule);
+            return HashCode.Combine(RuleType, RuleValue);
         }
     }
 }

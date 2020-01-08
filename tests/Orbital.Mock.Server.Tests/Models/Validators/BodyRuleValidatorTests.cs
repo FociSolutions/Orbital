@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public void BodyRuleValidatorFailsNullRuleTest()
         {
             var input = fakerBodyRule.Generate();
-            input.Rule = null;
+            input.RuleType = null;
             var Target = new BodyRuleValidator();
             var Actual = Target.Validate(input);
             Assert.False(Actual.IsValid);

@@ -25,7 +25,7 @@ namespace Orbital.Mock.Server.Tests.Models
         {
             var Target = this.fakerBodyRule.Generate();
 
-            var input = new BodyRule(Target.Type, Target.Rule) as object;
+            var input = new BodyRule(Target.RuleType, Target.RuleValue) as object;
 
             Assert.True(Target.Equals(input));
         }
@@ -34,7 +34,7 @@ namespace Orbital.Mock.Server.Tests.Models
         public void BodyRuleEqualsRuleFailsTest()
         {
             var Target = this.fakerBodyRule.Generate();
-            var input = new BodyRule(Target.Type, new JObject()) as object;
+            var input = new BodyRule(Target.RuleType, new JObject()) as object;
             Assert.False(Target.Equals(input));
         }
 
@@ -42,8 +42,8 @@ namespace Orbital.Mock.Server.Tests.Models
         public void BodyRuleEqualsTypeFailsTest()
         {
             var Target = this.fakerBodyRule.Generate();
-            Target.Type = BodyRuleTypes.BodyEquality;
-            var input = new BodyRule(BodyRuleTypes.BodyContains, Target.Rule) as object;
+            Target.RuleType = BodyRuleTypes.BodyEquality;
+            var input = new BodyRule(BodyRuleTypes.BodyContains, Target.RuleValue) as object;
             Assert.False(Target.Equals(input));
         }
     }

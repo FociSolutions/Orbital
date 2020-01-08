@@ -119,7 +119,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return rules;
             }
 
-            return scenario.RequestMatchRules.BodyRules.Select(br => BodyCheck(br.Rule, br.Type, bodyObject, scenario.Id)).ToList();
+            return scenario.RequestMatchRules.BodyRules.Select(br => BodyCheck(br.RuleValue, br.RuleType, bodyObject, scenario.Id)).ToList();
         }
 
         /// <summary>

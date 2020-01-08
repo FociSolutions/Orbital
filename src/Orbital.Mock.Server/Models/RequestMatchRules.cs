@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Orbital.Mock.Server.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models
 {
-    public class RequestMatchRules : IEquatable<RequestMatchRules>
+    public class RequestMatchRules : IEquatable<RequestMatchRules>, IRule
     {
         [JsonProperty("headerRules")]
         public IDictionary<string, string> HeaderRules { get; set; }
@@ -14,6 +15,7 @@ namespace Orbital.Mock.Server.Models
         public IDictionary<string, string> QueryRules { get; set; }
         [JsonProperty("bodyRules")]
         public ICollection<BodyRule> BodyRules { get; set; }
+        public Type ComparerType { get; set; }
 
         public override bool Equals(object obj)
         {
