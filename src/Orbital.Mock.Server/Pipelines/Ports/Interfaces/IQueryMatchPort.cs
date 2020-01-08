@@ -7,7 +7,7 @@ using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
-    public interface IQueryMatchPort
+    public interface IQueryMatchPort : IMatchPort
     {
         ICollection<MatchResult> QueryMatchResults { get; set; }
         IDictionary<string, string> Query { get; set; }

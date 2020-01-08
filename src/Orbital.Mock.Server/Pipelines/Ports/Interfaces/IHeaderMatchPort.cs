@@ -7,7 +7,7 @@ using Orbital.Mock.Server.Models;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
-    public interface IHeaderMatchPort
+    public interface IHeaderMatchPort : IMatchPort
     {
         IDictionary<string, string> Headers { get; set; }
         ICollection<MatchResult> HeaderMatchResults { get; set; }
