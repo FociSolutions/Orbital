@@ -13,7 +13,7 @@ import { KeyValue } from '@angular/common';
 export class SideBarComponent implements OnInit {
   mockDefinitions: Map<string, MockDefinition>;
   selectedMockDefinition: string;
-  title = 'MOCK DEFINITIONS';
+  title = 'MOCKDEFINITIONS';
 
   triggerOpenConfirmBox: boolean;
 
