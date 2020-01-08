@@ -17,7 +17,7 @@ import { OrbitalAdminService } from '../services/orbital-admin/orbital-admin.ser
   styleUrls: ['./export-to-server-view.component.scss']
 })
 export class ExportToServerViewComponent implements OnInit {
-  readonly emptyListMessageServerBox = 'No MockDefinitions';
+  readonly emptyListMessageServerBox = 'No Mockdefinitions';
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
   inputControl: FormControl;
@@ -43,7 +43,7 @@ export class ExportToServerViewComponent implements OnInit {
   }
 
   /**
-   * Moves all mock definitions to the left-hand side of the form; clears right-hand side
+   * Moves all mockdefinitions to the left-hand side of the form; clears right-hand side
    */
   private resetForm() {
     this.formArray = new FormArray(
@@ -101,7 +101,7 @@ export class ExportToServerViewComponent implements OnInit {
       .exportMockDefinitions(
         this.inputControl.value,
         this.formArray.controls.map(formControl => {
-          this.logger.debug('Mock definition to export', formControl.value);
+          this.logger.debug('Mockdefinition to export', formControl.value);
           return formControl.value as MockDefinition;
         })
       )

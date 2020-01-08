@@ -20,8 +20,8 @@
           {{ mockDefinitionNameString }}
         </h3>
         <p *ngIf="!isValid()" matLine>Valid File Required</p>
-        <mat-icon matListIcon *ngIf="!isValid()">cancel</mat-icon>
-        <mat-icon matListIcon *ngIf="isValid()">check_circle_outline</mat-icon>
+        <mat-icon matListIcon *ngIf="!isValid()" color="warn">cancel</mat-icon>
+        <mat-icon matListIcon *ngIf="isValid()" color="primary">check_circle_outline</mat-icon>
       </mat-list-item>
       <mat-divider></mat-divider>
     </mat-list>

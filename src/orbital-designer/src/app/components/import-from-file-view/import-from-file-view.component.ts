@@ -1,10 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -14,7 +15,7 @@ import { map } from 'rxjs/operators';
 export class ImportFromFileViewComponent implements OnInit {
   private mockDefinitionString: string;
   mockDefinitionNameString: string;
-  validFileFlag = true;
+  validFileFlag = false;
   errorMessageToEmitFromCreate: string[];
 
   constructor(
@@ -25,7 +26,17 @@ export class ImportFromFileViewComponent implements OnInit {
   ) {}
 
   isValid() {
-    return !!this.mockDefinitionString;
+    return this.validFileFlag;
+  }
+
+  /**
+   * Validates the Mockdefinition and returns a boolean validation status
+   */
+  async validateMock(mockDefinitionString: string) {
+    MockDefinition.toMockDefinitionAsync(mockDefinitionString).then(
+      () => this.validFileFlag = true,
+      () => this.validFileFlag = false
+    );
   }
 
   /**
@@ -35,6 +46,8 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   setMockDefinition(fileStringFromFileInput: string) {
     this.mockDefinitionString = fileStringFromFileInput;
+
+    this.validateMock(fileStringFromFileInput);
   }
 
   /**
