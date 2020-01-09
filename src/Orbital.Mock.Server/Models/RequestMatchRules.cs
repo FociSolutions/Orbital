@@ -9,11 +9,11 @@ namespace Orbital.Mock.Server.Models
     public class RequestMatchRules : IEquatable<RequestMatchRules>
     {
         [JsonProperty("headerRules")]
-        public IEnumerable<KeyValuePairRule> HeaderRules { get; set; }
+        public ICollection<KeyValuePairRule> HeaderRules { get; set; }
         [JsonProperty("queryRules")]
-        public IEnumerable<KeyValuePairRule> QueryRules { get; set; }
+        public ICollection<KeyValuePairRule> QueryRules { get; set; }
         [JsonProperty("bodyRules")]
-        public IEnumerable<BodyRule> BodyRules { get; set; }
+        public ICollection<BodyRule> BodyRules { get; set; }
         public Type ComparerType { get; set; }
 
         public override bool Equals(object obj)

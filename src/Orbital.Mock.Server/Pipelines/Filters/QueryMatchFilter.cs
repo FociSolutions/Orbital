@@ -23,7 +23,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             foreach (var scenario in port.Scenarios)
             {
                 port.QueryMatchResults.Add(Matcher.MatchByKeyValuePair(
-                    scenario.RequestMatchRules.QueryRules,
+                    scenario.RequestMatchRules.QueryRules.Select(rules => rules.RuleValue),
                     port.Query,
                     scenario.Id));
             }

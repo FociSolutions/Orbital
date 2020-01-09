@@ -1,9 +1,8 @@
 ﻿using Bogus;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Validators;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Models.Validators
@@ -15,8 +14,8 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public RequestMatchRulesValidatorTests()
         {
             this.requestMatchRulesFake = new Faker<RequestMatchRules>()
-                .RuleFor(m => m.HeaderRules, f => new Dictionary<string, string>())
-                .RuleFor(m => m.QueryRules, f => new Dictionary<string, string>())
+                .RuleFor(m => m.HeaderRules, f => new List<KeyValuePairRule>())
+                .RuleFor(m => m.QueryRules, f => new List<KeyValuePairRule>())
                 .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
         }
         [Fact]

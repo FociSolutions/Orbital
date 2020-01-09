@@ -1,8 +1,5 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Orbital.Mock.Server.Models.Rules;
 
 namespace Orbital.Mock.Server.Models.Validators
 {
@@ -13,7 +10,7 @@ namespace Orbital.Mock.Server.Models.Validators
     {
         public BodyRuleValidator()
         {
-            RuleFor(m => m.RuleType).NotNull();
+            RuleFor(m => m.Type).NotNull();
             RuleFor(m => m.RuleValue).NotNull();
         }
     }

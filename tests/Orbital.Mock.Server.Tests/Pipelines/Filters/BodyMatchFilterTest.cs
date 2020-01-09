@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
+using Orbital.Mock.Server.Models.Rules;
+using Orbital.Mock.Server.Models.Interfaces;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
@@ -23,7 +25,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var fakerJObject = new Faker<JObject>()
                             .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
             this.scenarioFaker = new Faker<Scenario>()
@@ -40,7 +42,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].Rule
+                Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].RuleValue
             };
 
             #endregion
@@ -66,7 +68,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule>{new BodyRule(BodyRuleTypes.BodyEquality, new JObject())};
+                new List<BodyRule>{new BodyRule(ComparerType.Equal, new JObject())};
 
             var input = new
             {
@@ -96,7 +98,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'a': 'b'}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Contains, JObject.Parse("{'a': 'b'}")) };
 
             var input = new
             {
@@ -126,7 +128,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'x': {'a': 'b'}}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Contains, JObject.Parse("{'x': {'a': 'b'}}")) };
 
             var input = new
             {
@@ -156,7 +158,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'a': 'b'}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Contains, JObject.Parse("{'a': 'b'}")) };
 
             var input = new
             {
@@ -186,7 +188,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'a': 'b'}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Contains, JObject.Parse("{'a': 'b'}")) };
 
             var input = new
             {
@@ -216,7 +218,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{\"a\": \"b\"}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Contains, JObject.Parse("{\"a\": \"b\"}")) };
 
             var input = new
             {
@@ -246,7 +248,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyEquality, JObject.Parse("{'a': 'b'}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Equal, JObject.Parse("{'a': 'b'}")) };
 
             var input = new
             {
@@ -276,7 +278,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyEquality, JObject.Parse("{'a': 'b'}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Equal, JObject.Parse("{'a': 'b'}")) };
 
             var input = new
             {
@@ -306,7 +308,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyEquality, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Equal, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
 
             var input = new
             {
@@ -336,7 +338,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyEquality, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Equal, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
 
             var input = new
             {
@@ -366,7 +368,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(BodyRuleTypes.BodyContains, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
+                new List<BodyRule> { new BodyRule(ComparerType.Contains, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
 
             var input = new
             {
