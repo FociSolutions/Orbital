@@ -85,8 +85,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             #region TestSetup
             var scenarios = this.fakerScenario.Generate(10);
             //Ensures one of the scenarios request match is unique for the test
-            //scenarios[0].RequestMatchRules.HeaderRules = scenarios[0].RequestMatchRules.HeaderRules.Select(x =>  new KeyValuePair<string,string>(x.RuleValue.Key, x.RuleValue.Value + "-unique")  );
-            //scenarios[0].RequestMatchRules.QueryRules = scenarios[0].RequestMatchRules.QueryRules.Select(x => x.Key, x => x.Value + "-unique");
+            scenarios[0].RequestMatchRules.HeaderRules = scenarios[0].RequestMatchRules.HeaderRules.Select(x =>
+                                                        new KeyValuePairRule(x.Type, new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique"))).ToList();
+            scenarios[0].RequestMatchRules.QueryRules = scenarios[0].RequestMatchRules.QueryRules.Select(x =>
+                                                        new KeyValuePairRule(x.Type, new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique"))).ToList();
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;

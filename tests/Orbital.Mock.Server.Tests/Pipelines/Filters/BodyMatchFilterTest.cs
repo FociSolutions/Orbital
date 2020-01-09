@@ -395,7 +395,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule() };
+                new List<BodyRule> { new BodyRule(ComparerType.Equal,null) };
 
             var input = new
             {

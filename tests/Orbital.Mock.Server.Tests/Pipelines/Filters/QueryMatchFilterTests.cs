@@ -12,6 +12,8 @@ using System.Linq;
 using System.Text;
 using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
+using Orbital.Mock.Server.Models.Rules;
+using Orbital.Mock.Server.Models.Interfaces;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
@@ -22,11 +24,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region TestSetup
             var faker = new Faker();
+            var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
+                .CustomInstantiator(f => new KeyValuePairRule(f.PickRandom<ComparerType>(), new KeyValuePair<string, string>(f.Random.String(), f.Random.String())));
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = faker.Make(10, () => faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())).ToDictionary<string, string>(val => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
+                    QueryRules = fakerHeaderQueryRule.Generate(10)
                 })
                 .RuleFor(m => m.Id, f => f.Random.Word());
 
@@ -35,7 +39,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Query = fakeScenario.RequestMatchRules.QueryRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString())
+                Query = fakeScenario.RequestMatchRules.QueryRules.Select(r => r.RuleValue)
             };
             #endregion
             var Target = new QueryMatchFilter<ProcessMessagePort>();
@@ -53,11 +57,14 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region TestSetup
             var faker = new Faker();
+            var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
+                .CustomInstantiator(f => new KeyValuePairRule(f.PickRandom<ComparerType>(), new KeyValuePair<string, string>(f.Random.String(), f.Random.String())));
+
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = faker.Make(10, () => faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())).ToDictionary<string, string>(val => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
+                    QueryRules = fakerHeaderQueryRule.Generate(10)
                 })
                 .RuleFor(m => m.Id, f => f.Random.Word());
 
