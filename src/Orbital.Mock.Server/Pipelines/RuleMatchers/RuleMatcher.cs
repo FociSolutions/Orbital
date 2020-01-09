@@ -13,7 +13,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
         /// <summary>
         /// Match method that returns a collection of MatchResult
         /// </summary>
-        /// <param name="T">Comparer rule type</param>
+        /// <param name="T">Match rule type</param>
         /// <param name="R">Input for matching</param>
         /// <returns></returns>
         public abstract IEnumerable<MatchResult> Match(IRule T, IMatchPort R);
