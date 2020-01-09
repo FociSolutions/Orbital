@@ -1,7 +1,7 @@
 ﻿namespace Orbital.Mock.Server.Models.Interfaces
 {
     /// <summary>
-    /// Interface to implement comparer types
+    /// Interface to be implemented by all the match rules
     /// </summary>
     public interface IRule
     {
