@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models.Converters;
 using Orbital.Mock.Server.Models.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Orbital.Mock.Server.Models
+namespace Orbital.Mock.Server.Models.Rules
 {
     public class BodyRule : IEquatable<BodyRule>, IRule
     {
@@ -16,17 +12,16 @@ namespace Orbital.Mock.Server.Models
         /// </summary>
         /// <param name="RuleType">Enum representing the type of Body Rule created</param>
         /// <param name="RuleValue">The Json object used to compare against request bodies for matching</param>
-        public BodyRule(Type Type = null,JToken RuleValue = null)
+        public BodyRule(ComparerType RuleType, JToken RuleValue)
         {
             this.RuleValue = RuleValue == null ? new JObject() : RuleValue;
-            this.RuleType = RuleType;
+            this.Type = RuleType;
         }
+
         [JsonProperty("rule")]
         public JToken RuleValue { get; set; }
         [JsonProperty("type")]
-        public BodyRuleTypes RuleType { get; set; }
-
-        public Type ComparerType { get; set; }
+        public ComparerType Type { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -36,13 +31,13 @@ namespace Orbital.Mock.Server.Models
         public bool Equals(BodyRule other)
         {
             return other != null &&
-                this.RuleType == other.RuleType &&
+                this.Type == other.Type &&
                 JObject.DeepEquals(this.RuleValue, other.RuleValue);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(RuleType, RuleValue);
+            return HashCode.Combine(Type, RuleValue);
         }
     }
 }
