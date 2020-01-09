@@ -55,8 +55,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             var Expected = new List<string> { fakeScenario.Id };
 
-            Assert.Equal(Expected.Count(), Actual.Count());
-            Assert.Equal(Expected.First(), Expected.First());
+            Assert.Equal(Expected.First(), Actual.First());
         }
 
         /// <summary>
