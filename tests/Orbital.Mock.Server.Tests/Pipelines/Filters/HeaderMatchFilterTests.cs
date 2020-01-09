@@ -26,7 +26,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
                 .CustomInstantiator(f => new KeyValuePairRule(f.PickRandom<ComparerType>(), new KeyValuePair<string, string>(f.Random.String(), f.Random.String())));
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
-                                        .RuleFor(m => m.HeaderRules, f => fakerHeaderQueryRule.Generate(3));
+                                        .RuleFor(m => m.HeaderRules, f => fakerHeaderQueryRule.Generate(5));
 
             scenarioFaker = new Faker<Scenario>()
                                 .RuleFor(m => m.RequestMatchRules, requestMatchRulesFake)
@@ -71,7 +71,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             var fakeScenario = scenarioFaker.Generate();
 
-            var headers = fakeScenario.RequestMatchRules.HeaderRules.Select(rules => rules.RuleValue);
+            var headers = fakeScenario.RequestMatchRules.HeaderRules.Select(x =>
+                                                        new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique"));
 
             var input = new
             {
@@ -120,7 +121,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         }
 
         [Fact]
-        public void HeaderMatchRulesHasLessHeadersThenRequestHeadersSuccess()
+        public void HeaderMatchRulesHasLessHeadersThanRequestHeadersSuccess()
         {
             #region Test Setup
             var fakeScenario = scenarioFaker.Generate();

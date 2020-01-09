@@ -42,7 +42,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].RuleValue
+                Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()
             };
 
             #endregion
@@ -50,12 +50,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var Target = new BodyMatchFilter<ProcessMessagePort>();
 
             var Actual = Target.Process(new ProcessMessagePort()
-                    {Scenarios = input.Scenarios, Body = input.Body.ToString()})
+                    {Scenarios = input.Scenarios, Body = input.Body})
                 .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
 
             var Expected = new List<string> { fakeScenario.Id };
 
-            Assert.Equal(Expected, Actual);
+            Assert.Equal(Expected.Count(), Actual.Count());
+            Assert.Equal(Expected.First(), Expected.First());
         }
 
         /// <summary>
