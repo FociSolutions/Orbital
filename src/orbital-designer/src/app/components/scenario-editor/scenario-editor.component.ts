@@ -245,8 +245,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         body: ''
       } as Response,
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: []
       } as RequestMatchRule
     } as Scenario;

@@ -2,7 +2,7 @@ import { GetEndpointScenariosPipe } from './get-endpoint-scenarios.pipe';
 import * as faker from 'faker';
 import { VerbType } from '../../models/verb.type';
 import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
@@ -39,7 +39,7 @@ describe('GetEndpointScenariosPipe', () => {
         queryRules: new Map<string, string>(),
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.BodyEquality,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -70,7 +70,7 @@ describe('GetEndpointScenariosPipe', () => {
         queryRules: new Map<string, string>(),
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.BodyEquality,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -117,13 +117,13 @@ describe('GetEndpointScenariosPipe', () => {
         queryRules: new Map<string, string>(),
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.BodyEquality,
             rule: {}
           }
         ] as Array<BodyRule>
       }
     } as Scenario;
-    const mockpaths = mockPath + faker.random.words() as string;
+    const mockpaths = (mockPath + faker.random.words()) as string;
     const mockVerbs = faker.random.arrayElement([
       'gET',
       'deLetE',
@@ -148,7 +148,7 @@ describe('GetEndpointScenariosPipe', () => {
         queryRules: new Map<string, string>(),
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.BodyEquality,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -195,12 +195,12 @@ describe('GetEndpointScenariosPipe', () => {
         queryRules: new Map<string, string>(),
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.BodyEquality,
             rule: {}
           }
         ] as Array<BodyRule>
       }
-    }  as Scenario;
+    } as Scenario;
     const mockpaths = mockPath + faker.random.words();
     const mockVerbs = faker.random.arrayElement([
       VerbType.GET,
@@ -226,7 +226,7 @@ describe('GetEndpointScenariosPipe', () => {
         queryRules: new Map<string, string>(),
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.BodyEquality,
             rule: {}
           }
         ] as Array<BodyRule>

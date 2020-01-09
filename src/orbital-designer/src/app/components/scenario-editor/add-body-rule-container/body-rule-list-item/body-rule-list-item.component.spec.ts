@@ -8,7 +8,7 @@ import { MatInputModule, MatIconModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 describe('BodyRuleListItemComponent', () => {
@@ -46,7 +46,7 @@ describe('BodyRuleListItemComponent', () => {
     it('should emit an event containing the deleted body rule when deleting a body rule', () => {
       const bodyRule = {
         rule: { a: 'b' },
-        type: BodyRuleType.BodyEquality
+        type: RuleType.BodyEquality
       } as BodyRule;
 
       component.bodyRule = bodyRule;
@@ -61,13 +61,13 @@ describe('BodyRuleListItemComponent', () => {
 
   describe('body-rule-list-item.getBodyRule', () => {
     it('should get a body rule successfully', () => {
-      const bodyRule = { rule: { a: 'b' }, type: BodyRuleType.BodyEquality };
+      const bodyRule = { rule: { a: 'b' }, type: RuleType.BodyEquality };
       component.bodyRule = bodyRule;
       expect(component.getBodyRule()).toEqual(JSON.stringify(bodyRule.rule));
     });
 
     it('should not get an invalid body rule', () => {
-      const bodyRule = { rule: undefined, type: BodyRuleType.BodyEquality };
+      const bodyRule = { rule: undefined, type: RuleType.BodyEquality };
       component.bodyRule = bodyRule;
       expect(component.getBodyRule()).toEqual('');
     });
@@ -75,7 +75,7 @@ describe('BodyRuleListItemComponent', () => {
 
   describe('body-rule-list-item.getBodyType', () => {
     it('should get a valid body type', () => {
-      const bodyRule = { rule: {}, type: BodyRuleType.BodyEquality };
+      const bodyRule = { rule: {}, type: RuleType.BodyEquality };
       component.bodyRule = bodyRule;
       expect(component.getBodyType()).toEqual(bodyRule.type);
     });

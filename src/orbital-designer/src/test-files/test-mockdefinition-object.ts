@@ -18,8 +18,8 @@ export default {
       },
       requestMatchRules: {
         bodyRules: [],
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>()
+        headerRules: [],
+        queryRules: []
       }
     }
   ],

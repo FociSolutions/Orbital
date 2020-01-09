@@ -10,19 +10,19 @@ import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      LoggerTestingModule
-    ],
-    providers: [DesignerStore, MockDefinitionService]}).compileComponents());
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [LoggerTestingModule],
+      providers: [DesignerStore, MockDefinitionService]
+    }).compileComponents()
+  );
   beforeEach(() => {
     store = TestBed.get(DesignerStore);
     store.mockDefinition = validMockDefinition as MockDefinition;
-
   });
 
   it('should be created', () => {
@@ -54,7 +54,7 @@ describe('MockDefinitionService', () => {
           queryRules: new Map<string, string>(),
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
+              type: RuleType.BodyEquality,
               rule: {}
             }
           ] as Array<BodyRule>
@@ -67,12 +67,17 @@ describe('MockDefinitionService', () => {
     store.state.mockDefinition.scenarios = scenarios;
 
     const scenarioToClone = JSON.parse(JSON.stringify(scenarios[0]));
-    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
-        expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy') !== -1)).toBeTruthy();
-      }
-    }
-    );
+    service
+      .cloneScenario(validMockDefinition.metadata.title, scenarioToClone)
+      .subscribe({
+        next: r => {
+          expect(
+            store.state.mockDefinition.scenarios.find(
+              x => x.metadata.title.indexOf('-copy') !== -1
+            )
+          ).toBeTruthy();
+        }
+      });
   });
 
   it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', () => {
@@ -99,7 +104,7 @@ describe('MockDefinitionService', () => {
           queryRules: new Map<string, string>(),
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
+              type: RuleType.BodyEquality,
               rule: {}
             }
           ] as Array<BodyRule>
@@ -113,20 +118,32 @@ describe('MockDefinitionService', () => {
 
     const scenarioToClone = JSON.parse(JSON.stringify(scenarios[0]));
 
-    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe();
+    service
+      .cloneScenario(validMockDefinition.metadata.title, scenarioToClone)
+      .subscribe();
 
-    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
-        expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 2') !== -1)).toBeTruthy();
-      }
-    }
-    );
-    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
-        expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 3') !== -1)).toBeTruthy();
-      }
-    }
-    );
+    service
+      .cloneScenario(validMockDefinition.metadata.title, scenarioToClone)
+      .subscribe({
+        next: r => {
+          expect(
+            store.state.mockDefinition.scenarios.find(
+              x => x.metadata.title.indexOf('-copy 2') !== -1
+            )
+          ).toBeTruthy();
+        }
+      });
+    service
+      .cloneScenario(validMockDefinition.metadata.title, scenarioToClone)
+      .subscribe({
+        next: r => {
+          expect(
+            store.state.mockDefinition.scenarios.find(
+              x => x.metadata.title.indexOf('-copy 3') !== -1
+            )
+          ).toBeTruthy();
+        }
+      });
   });
 
   it('should not clone a scenario from the store if the cloned scenario is invalid', () => {
@@ -153,7 +170,7 @@ describe('MockDefinitionService', () => {
           queryRules: new Map<string, string>(),
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
+              type: RuleType.BodyEquality,
               rule: {}
             }
           ] as Array<BodyRule>
@@ -165,15 +182,20 @@ describe('MockDefinitionService', () => {
 
     store.state.mockDefinition.scenarios = scenarios;
 
-    const scenarioLengthComponentExpected = store.state.mockDefinition.scenarios.length;
+    const scenarioLengthComponentExpected =
+      store.state.mockDefinition.scenarios.length;
     const scenarioToClone = null;
-    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      error: r => {
-        const scenarioLengthComponentActual = store.state.mockDefinition.scenarios.length;
-        expect(scenarioLengthComponentActual).toEqual(scenarioLengthComponentExpected);
-      }
-    }
-    );
+    service
+      .cloneScenario(validMockDefinition.metadata.title, scenarioToClone)
+      .subscribe({
+        error: r => {
+          const scenarioLengthComponentActual =
+            store.state.mockDefinition.scenarios.length;
+          expect(scenarioLengthComponentActual).toEqual(
+            scenarioLengthComponentExpected
+          );
+        }
+      });
   });
 
   it('should clone a scenario and ensure that the title and id are different', () => {
@@ -200,7 +222,7 @@ describe('MockDefinitionService', () => {
           queryRules: new Map<string, string>(),
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
+              type: RuleType.BodyEquality,
               rule: {}
             }
           ] as Array<BodyRule>
@@ -212,15 +234,19 @@ describe('MockDefinitionService', () => {
 
     store.state.mockDefinition.scenarios = scenarios;
     const scenarioToClone = scenarios[0];
-    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
-        expect(store.state.mockDefinition.scenarios[0].id).not.toEqual(store.mockDefinition.scenarios[1].id);
-        expect(store.state.mockDefinition.scenarios[0].metadata.title).not.toEqual(store.mockDefinition.scenarios[1].metadata.title);
-      }
-    }
-    );
+    service
+      .cloneScenario(validMockDefinition.metadata.title, scenarioToClone)
+      .subscribe({
+        next: r => {
+          expect(store.state.mockDefinition.scenarios[0].id).not.toEqual(
+            store.mockDefinition.scenarios[1].id
+          );
+          expect(
+            store.state.mockDefinition.scenarios[0].metadata.title
+          ).not.toEqual(store.mockDefinition.scenarios[1].metadata.title);
+        }
+      });
   });
-
 
   it('should clone a scenario and ensure that there exists another scenario with the same contents, except for title and id', () => {
     const scenarios = [];
@@ -247,7 +273,7 @@ describe('MockDefinitionService', () => {
           queryRules: new Map<string, string>(),
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
+              type: RuleType.BodyEquality,
               rule: {}
             }
           ] as Array<BodyRule>
@@ -260,29 +286,40 @@ describe('MockDefinitionService', () => {
     store.state.mockDefinition.scenarios = scenarios;
 
     const scenarioToClone = scenarios[0];
-    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: n => {
-        console.log(n);
-      }
-    });
+    service
+      .cloneScenario(validMockDefinition.metadata.title, scenarioToClone)
+      .subscribe({
+        next: n => {
+          console.log(n);
+        }
+      });
     const componentScenarioClonee = store.state.mockDefinition.scenarios[0];
 
     // ensure that there are two results after the cloning operation
-    const expectedResults = (store.state.mockDefinition.scenarios.filter(aScenario =>
-      aScenario.id !== componentScenarioClonee.id &&
-      aScenario.metadata.title !== componentScenarioClonee.metadata.title &&
-      aScenario.path === componentScenarioClonee.path &&
-      JSON.stringify(aScenario.requestMatchRules.bodyRules) ===
-        JSON.stringify(componentScenarioClonee.requestMatchRules.bodyRules) &&
+    const expectedResults = store.state.mockDefinition.scenarios.filter(
+      aScenario =>
+        aScenario.id !== componentScenarioClonee.id &&
+        aScenario.metadata.title !== componentScenarioClonee.metadata.title &&
+        aScenario.path === componentScenarioClonee.path &&
+        JSON.stringify(aScenario.requestMatchRules.bodyRules) ===
+          JSON.stringify(componentScenarioClonee.requestMatchRules.bodyRules) &&
         JSON.stringify(aScenario.requestMatchRules.headerRules) ===
-      JSON.stringify(componentScenarioClonee.requestMatchRules.headerRules) &&
+          JSON.stringify(
+            componentScenarioClonee.requestMatchRules.headerRules
+          ) &&
         JSON.stringify(aScenario.requestMatchRules.queryRules) ===
-      JSON.stringify(componentScenarioClonee.requestMatchRules.queryRules) &&
-      aScenario.response.body === componentScenarioClonee.response.body &&
-      JSON.stringify(aScenario.response.headers) === JSON.stringify(componentScenarioClonee.response.headers) &&
-      aScenario.response.status === componentScenarioClonee.response.status &&
-      JSON.stringify(aScenario.verb) === JSON.stringify(componentScenarioClonee.verb) &&
-      aScenario.metadata.description === componentScenarioClonee.metadata.description)).length;
+          JSON.stringify(
+            componentScenarioClonee.requestMatchRules.queryRules
+          ) &&
+        aScenario.response.body === componentScenarioClonee.response.body &&
+        JSON.stringify(aScenario.response.headers) ===
+          JSON.stringify(componentScenarioClonee.response.headers) &&
+        aScenario.response.status === componentScenarioClonee.response.status &&
+        JSON.stringify(aScenario.verb) ===
+          JSON.stringify(componentScenarioClonee.verb) &&
+        aScenario.metadata.description ===
+          componentScenarioClonee.metadata.description
+    ).length;
 
     expect(expectedResults).toEqual(1);
   });
@@ -291,12 +328,11 @@ describe('MockDefinitionService', () => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
 
     service.deserialize('%').subscribe({
-      error: (err) => {
+      error: err => {
         expect(err).toBeTruthy();
         done();
       }
-    }
-    );
+    });
   });
 
   it('succeed because content is valid yaml', done => {
@@ -307,7 +343,6 @@ describe('MockDefinitionService', () => {
         expect(t).toBeTruthy();
         done();
       }
-    }
-    );
+    });
   });
 });
