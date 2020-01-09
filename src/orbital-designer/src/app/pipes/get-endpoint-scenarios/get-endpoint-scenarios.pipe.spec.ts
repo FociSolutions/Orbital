@@ -35,11 +35,11 @@ describe('GetEndpointScenariosPipe', () => {
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: RuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -66,11 +66,11 @@ describe('GetEndpointScenariosPipe', () => {
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: RuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -113,11 +113,11 @@ describe('GetEndpointScenariosPipe', () => {
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: RuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -144,11 +144,11 @@ describe('GetEndpointScenariosPipe', () => {
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: RuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -191,11 +191,11 @@ describe('GetEndpointScenariosPipe', () => {
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: RuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -222,11 +222,11 @@ describe('GetEndpointScenariosPipe', () => {
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: RuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>

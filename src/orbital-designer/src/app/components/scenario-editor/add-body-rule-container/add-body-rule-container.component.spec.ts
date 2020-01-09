@@ -61,7 +61,7 @@ describe('AddBodyRuleContainerComponent', () => {
   describe('add-body-rule-container.addBodyRule', () => {
     it('should add a body rule', () => {
       const bodyRuleToAdd = {
-        type: RuleType.BodyEquality,
+        type: RuleType.JSONCONTAINS,
         rule: { a: 'b' }
       } as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
@@ -79,7 +79,7 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should not add a body rule which has an undefined rule', () => {
       const bodyRuleToAdd = ({
         rule: undefined,
-        type: RuleType.BodyContains
+        type: RuleType.JSONCONTAINS
       } as unknown) as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
       const Actual = component.bodyRulesProp;
@@ -101,7 +101,7 @@ describe('AddBodyRuleContainerComponent', () => {
       component.bodyRulesProp = [] as BodyRule[];
 
       const componentBodyRule = [
-        { type: RuleType.BodyEquality, rule: fakeBodyContents }
+        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
       ] as BodyRule[];
       component.bodyRulesProp.push(componentBodyRule[0]);
 
@@ -113,7 +113,7 @@ describe('AddBodyRuleContainerComponent', () => {
       const fakeBodyContents = getFakeBodyContents();
 
       const componentBodyRule = {
-        type: RuleType.BodyEquality,
+        type: RuleType.JSONEQUALITY,
         rule: fakeBodyContents
       } as BodyRule;
       component.bodyRulesProp = [componentBodyRule];
@@ -132,7 +132,7 @@ describe('AddBodyRuleContainerComponent', () => {
 
     it('should save list', () => {
       const input = [
-        { type: RuleType.BodyEquality, rule: getFakeBodyContents() }
+        { type: RuleType.JSONEQUALITY, rule: getFakeBodyContents() }
       ] as BodyRule[];
 
       component.bodyRules = input;
@@ -144,7 +144,7 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should emit the body rules when the save state is true', () => {
       const fakeBodyContents = getFakeBodyContents();
       const componentBodyRule = [
-        { type: RuleType.BodyEquality, rule: fakeBodyContents }
+        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
       ] as BodyRule[];
       component.addBodyRule(componentBodyRule[0]);
 
@@ -159,7 +159,7 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should not emit the body rules when the save state is false', () => {
       const fakeBodyContents = getFakeBodyContents();
       const componentBodyRule = [
-        { type: RuleType.BodyEquality, rule: fakeBodyContents }
+        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
       ] as BodyRule[];
       component.addBodyRule(componentBodyRule[0]);
 
