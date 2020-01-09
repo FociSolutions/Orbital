@@ -1,11 +1,17 @@
 ﻿namespace Orbital.Mock.Server.Models.Interfaces
 {
+    /// <summary>
+    /// Interface to be implemented by all the match rules
+    /// </summary>
     public interface IRule
     {
         ComparerType Type { get; set; }
     }
 
-   public enum ComparerType
+    /// <summary>
+    /// Enum that indicates which comparer to use
+    /// </summary>
+    public enum ComparerType
     {
         Regex = 0,
         StartWith,
