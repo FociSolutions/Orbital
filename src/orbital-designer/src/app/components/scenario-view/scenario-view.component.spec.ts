@@ -20,7 +20,7 @@ import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { VerbType } from 'src/app/models/verb.type';
 import * as uuid from 'uuid';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 
@@ -114,7 +114,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const mockverb = VerbType.GET;
         const path = '/test';
-        const scenario = ({
+        const scenario = {
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
@@ -132,12 +132,12 @@ describe('ScenarioViewComponent', () => {
             queryRules: new Map<string, string>(),
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.BodyEquality,
                 rule: {}
               }
             ] as Array<BodyRule>
           }
-        } as Scenario);
+        } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -158,7 +158,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const mockverb = VerbType.GET;
         const path = '/test';
-        const scenario = ({
+        const scenario = {
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
@@ -176,12 +176,12 @@ describe('ScenarioViewComponent', () => {
             queryRules: new Map<string, string>(),
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.BodyEquality,
                 rule: {}
               }
             ] as Array<BodyRule>
           }
-        }  as Scenario );
+        } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -209,7 +209,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const mockverb = VerbType.GET;
         const path = '/test';
-        const scenario = ({
+        const scenario = {
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
@@ -227,12 +227,12 @@ describe('ScenarioViewComponent', () => {
             queryRules: new Map<string, string>(),
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.BodyEquality,
                 rule: {}
               }
             ] as Array<BodyRule>
           }
-        } as Scenario);
+        } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -255,7 +255,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const mockverb = VerbType.GET;
         const path = '/test';
-        const scenario = ({
+        const scenario = {
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
@@ -273,12 +273,12 @@ describe('ScenarioViewComponent', () => {
             queryRules: new Map<string, string>(),
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.BodyEquality,
                 rule: {}
               }
             ] as Array<BodyRule>
           }
-        } as Scenario);
+        } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -299,7 +299,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 3; i++) {
         const mockverb = VerbType.GET;
         const path = '/' + faker.random.words();
-        const scenario = ({
+        const scenario = {
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
@@ -317,12 +317,12 @@ describe('ScenarioViewComponent', () => {
             queryRules: new Map<string, string>(),
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.BodyEquality,
                 rule: {}
               }
             ] as Array<BodyRule>
           }
-        } as Scenario);
+        } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -369,7 +369,7 @@ describe('ScenarioViewComponent', () => {
   it('should return Not Found for a 404 status', () => {
     const mockverb = VerbType.GET;
     const path = '/test';
-    const scenario = ({
+    const scenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
@@ -387,12 +387,12 @@ describe('ScenarioViewComponent', () => {
         queryRules: new Map<string, string>(),
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.BodyEquality,
             rule: {}
           }
         ] as Array<BodyRule>
       }
-    } as Scenario);
+    } as Scenario;
     scenario.response.status = 404;
     expect(component.getScenarioResponseStatusString(scenario)).toBe(
       'Not Found'
@@ -402,7 +402,7 @@ describe('ScenarioViewComponent', () => {
   it('should return Accepted for a 202 status', () => {
     const mockverb = VerbType.GET;
     const path = '/test';
-    const scenario = ({
+    const scenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
@@ -420,12 +420,12 @@ describe('ScenarioViewComponent', () => {
         queryRules: new Map<string, string>(),
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.BodyEquality,
             rule: {}
           }
         ] as Array<BodyRule>
       }
-    } as Scenario);
+    } as Scenario;
     scenario.response.status = 202;
     expect(component.getScenarioResponseStatusString(scenario)).toBe(
       'Accepted'
@@ -436,7 +436,7 @@ describe('ScenarioViewComponent', () => {
     it('should delete a scenario from the store', () => {
       const mockverb = VerbType.GET;
       const path = '/test';
-      const scenario = ({
+      const scenario = {
         id: uuid.v4(),
         metadata: {
           title: 'New Scenario',
@@ -454,12 +454,12 @@ describe('ScenarioViewComponent', () => {
           queryRules: new Map<string, string>(),
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
+              type: RuleType.BodyEquality,
               rule: {}
             }
           ] as Array<BodyRule>
         }
-      } as Scenario);
+      } as Scenario;
       store.updateScenarios([scenario]);
       component.deleteScenario(scenario);
       expect(store.state.mockDefinition.scenarios).toEqual([]);

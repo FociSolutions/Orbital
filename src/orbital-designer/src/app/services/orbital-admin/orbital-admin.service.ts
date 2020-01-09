@@ -12,9 +12,7 @@ import { cloneDeep } from 'lodash';
   providedIn: 'root'
 })
 export class OrbitalAdminService {
-  constructor(private httpClient: HttpClient,
-              private logger: NGXLogger) {}
-
+  constructor(private httpClient: HttpClient, private logger: NGXLogger) {}
 
   /**
    * Sends a GET request to get a mock definition; the URL should not have a trailing slash
@@ -23,7 +21,9 @@ export class OrbitalAdminService {
    */
   get(url: string, id: string): Observable<MockDefinition> {
     this.logger.debug('Sent GET request to ' + url + '/' + id);
-    return this.httpClient.get<MockDefinition>(url + '/' + id).pipe(timeout(3000));
+    return this.httpClient
+      .get<MockDefinition>(url + '/' + id)
+      .pipe(timeout(3000));
   }
 
   /**
@@ -35,7 +35,6 @@ export class OrbitalAdminService {
 
     return this.httpClient.get<MockDefinition[]>(url).pipe(timeout(3000));
   }
-
 
   /**
    * POSTs a Mockdefinition to the server
@@ -57,10 +56,10 @@ export class OrbitalAdminService {
         ) {
           scenario.requestMatchRules.bodyRules.forEach(bodyRule => {
             switch (bodyRule.type) {
-              case 'bodyEquality':
+              case 1:
                 bodyRule.type = 1;
                 break;
-              case 'bodyContains':
+              case 2:
                 bodyRule.type = 2;
                 break;
             }
@@ -78,7 +77,6 @@ export class OrbitalAdminService {
       );
   }
 
-
   /**
    * @param mockdefinition The mockdefinitions to be posted
    * @param url The url to post the mockdefinitions to
@@ -87,54 +85,45 @@ export class OrbitalAdminService {
   exportMockDefinitions(
     url: string,
     mockdefinitions: MockDefinition[]
-    ): Observable<boolean>[] {
-      return mockdefinitions.map((mockdefinition) => this.exportMockDefinition(url, mockdefinition));
+  ): Observable<boolean>[] {
+    return mockdefinitions.map(mockdefinition =>
+      this.exportMockDefinition(url, mockdefinition)
+    );
   }
 
-/**
- * Removes the specified mock definition from the orbital server
- *
- * @param url the orbital server url
- * @param mockDefId the title of the mock definition that will be removed
- * @returns a boolean indicating if the mockdefinition was removed successfully both the orbital server.
- */
-  deleteMockDefinition(
-    url: string,
-    mockDefId: string
-  ): Observable<boolean> {
+  /**
+   * Removes the specified mock definition from the orbital server
+   *
+   * @param url the orbital server url
+   * @param mockDefId the title of the mock definition that will be removed
+   * @returns a boolean indicating if the mockdefinition was removed successfully both the orbital server.
+   */
+  deleteMockDefinition(url: string, mockDefId: string): Observable<boolean> {
     const fullURL = url + '/' + mockDefId;
 
-    return  this.httpClient
-      .delete<boolean>(fullURL)
-      .pipe(
-        catchError(error => {
-          this.logger.error(error);
-          return throwError(error);
-        })
-      );
+    return this.httpClient.delete<boolean>(fullURL).pipe(
+      catchError(error => {
+        this.logger.error(error);
+        return throwError(error);
+      })
+    );
   }
 
-
- /**
-  * Remove multiple MockDefinitions by title
-  * @param url string representation of the orbital server url
-  * @param mockDefIds string arrays containing the mock definition titles to be deleted
-  * @returns flag to indicate if the deletion of all mock definitions was successful
-  */
-  deleteMultipleMockDefinitions(
-    url: string,
-    mockDefIds: string[]
-  ): boolean {
-      let success = true;
-      mockDefIds.forEach(id => {
-        this.deleteMockDefinition(url, id).subscribe(
-          () => {},
-          error => success = false
+  /**
+   * Remove multiple MockDefinitions by title
+   * @param url string representation of the orbital server url
+   * @param mockDefIds string arrays containing the mock definition titles to be deleted
+   * @returns flag to indicate if the deletion of all mock definitions was successful
+   */
+  deleteMultipleMockDefinitions(url: string, mockDefIds: string[]): boolean {
+    let success = true;
+    mockDefIds.forEach(id => {
+      this.deleteMockDefinition(url, id).subscribe(
+        () => {},
+        error => (success = false)
       );
     });
 
-      return success;
+    return success;
   }
-
-
 }

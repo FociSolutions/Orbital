@@ -10,7 +10,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
 import { TestBed } from '@angular/core/testing';
 import { Scenario } from '../models/mock-definition/scenario/scenario.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
@@ -50,29 +50,29 @@ describe('DesignerStore', () => {
       const mockverb = VerbType.GET;
       const path = faker.random.words();
       const Expected = {
-      id: uuid.v4(),
-      metadata: {
-        title: 'New Scenario',
-        description: ''
-      },
-      verb: mockverb,
-      path,
-      response: {
-        headers: new Map<string, string>(),
-        status: 0,
-        body: ''
-      },
-      requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
-        bodyRules: [
-          {
-            type: BodyRuleType.BodyEquality,
-            rule: {}
-          }
-        ] as Array<BodyRule>
-      }
-    } as Scenario;
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        verb: mockverb,
+        path,
+        response: {
+          headers: new Map<string, string>(),
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: new Map<string, string>(),
+          queryRules: new Map<string, string>(),
+          bodyRules: [
+            {
+              type: RuleType.BodyEquality,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as Scenario;
       store.selectedScenario = Expected;
       expect(store.state.selectedScenario).toEqual(Expected);
     });
@@ -114,32 +114,32 @@ describe('DesignerStore', () => {
         next: fileread => {
           service.readOpenApiSpec(fileread).subscribe({
             next: n => {
-            store.setEndpoints(n, false);
-            for (const path of Object.keys(n.paths)) {
-              for (const verb of acceptedVerbs) {
-                if (!!n.paths[path][verb]) {
-                  expect(
-                    store.state.endpoints.findIndex(
-                      endpoint =>
-                        endpoint.path === path &&
-                        endpoint.verb === VerbType[verb.toUpperCase()] &&
-                        endpoint.spec === n.paths[path][verb]
-                    )
-                  ).toBeGreaterThan(-1);
+              store.setEndpoints(n, false);
+              for (const path of Object.keys(n.paths)) {
+                for (const verb of acceptedVerbs) {
+                  if (!!n.paths[path][verb]) {
+                    expect(
+                      store.state.endpoints.findIndex(
+                        endpoint =>
+                          endpoint.path === path &&
+                          endpoint.verb === VerbType[verb.toUpperCase()] &&
+                          endpoint.spec === n.paths[path][verb]
+                      )
+                    ).toBeGreaterThan(-1);
+                  }
                 }
               }
+              expect(
+                store.state.endpoints.findIndex(e => e === originalEndpoint)
+              ).toBeGreaterThan(-1);
+              done();
             }
-            expect(
-              store.state.endpoints.findIndex(e => e === originalEndpoint)
-            ).toBeGreaterThan(-1);
-            done();
-          }});
+          });
         }
       });
 
       store.setState({ ...store.state, endpoints: [originalEndpoint] });
       expect(store.state.endpoints).toEqual([originalEndpoint]);
-
     });
   });
 
@@ -221,8 +221,7 @@ describe('DesignerStore', () => {
       for (let i = 0; i < 10; i++) {
         const mockverb = VerbType.GET;
         const path = 'pets';
-        scenarios.push(
-          {
+        scenarios.push({
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
@@ -240,12 +239,12 @@ describe('DesignerStore', () => {
             queryRules: new Map<string, string>(),
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.BodyEquality,
                 rule: {}
               }
             ] as Array<BodyRule>
           }
-        }  as Scenario);
+        } as Scenario);
       }
       store.updateScenarios(scenarios);
       expect(store.state.mockDefinition.scenarios).toEqual(scenarios);
@@ -398,7 +397,7 @@ describe('DesignerStore', () => {
 
       mockDef1.metadata.title = faker.random.word();
       mockDef2.metadata.title = mockDef1.metadata.title;
-      mockDef2.scenarios = [{id: faker.random.word()}] as Scenario[];
+      mockDef2.scenarios = [{ id: faker.random.word() }] as Scenario[];
 
       let calls = 0;
       store.state$.subscribe(state => {
@@ -441,7 +440,7 @@ describe('DesignerStore', () => {
             queryRules: new Map<string, string>(),
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.BodyEquality,
                 rule: {}
               }
             ] as Array<BodyRule>

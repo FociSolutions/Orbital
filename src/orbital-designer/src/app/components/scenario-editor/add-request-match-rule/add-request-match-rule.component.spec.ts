@@ -19,7 +19,7 @@ import { KvpEditComponent } from '../../orbital-common/kvp-edit/kvp-edit.compone
 import { KvpListItemComponent } from '../../orbital-common/kvp-edit/kvp-list-item/kvp-list-item.component';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { AddBodyRuleContainerComponent } from '../add-body-rule-container/add-body-rule-container.component';
 import { AddBodyRuleComponent } from '../add-body-rule-container/add-body-rule/add-body-rule.component';
 import { BodyRuleListItemComponent } from '../add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
@@ -93,7 +93,7 @@ describe('AddRequestMatchRuleComponent', () => {
   describe('add-request-match-rule.handleBodyOutput', () => {
     it('should set the body match rules if it is truthy', () => {
       const bodyMatchRules = [
-        { type: BodyRuleType.BodyEquality, rule: { a: faker.random.word() } }
+        { type: RuleType.BodyEquality, rule: { a: faker.random.word() } }
       ] as BodyRule[];
       component.handleBodyOutput(bodyMatchRules);
       expect(component.bodyMatchRules).toEqual(bodyMatchRules);
@@ -109,7 +109,7 @@ describe('AddRequestMatchRuleComponent', () => {
       testQueryMatchRules.set(faker.random.word(), faker.random.word());
       component.requestMatchRule.headerRules = testHeaderMatchRules;
       testBodyMatchRules[0].rule = { a: faker.random.word() };
-      testBodyMatchRules[0].type = BodyRuleType.BodyEquality;
+      testBodyMatchRules[0].type = RuleType.BodyEquality;
 
       spyOn(component.requestMatchRuleOutput, 'emit');
       component.saveStatus = true;
@@ -123,7 +123,7 @@ describe('AddRequestMatchRuleComponent', () => {
 
       testHeaderMatchRules.set(faker.random.word(), faker.random.word());
       testBodyMatchRules[0].rule = { a: faker.random.word() };
-      testBodyMatchRules[0].type = BodyRuleType.BodyEquality;
+      testBodyMatchRules[0].type = RuleType.BodyEquality;
 
       spyOn(component.requestMatchRuleOutput, 'emit');
 
