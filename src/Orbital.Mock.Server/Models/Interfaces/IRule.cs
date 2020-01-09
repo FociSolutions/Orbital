@@ -2,7 +2,7 @@
 {
     public interface IRule
     {
-        ComparerType Type { get; }
+        ComparerType Type { get; set; }
     }
 
     public enum ComparerType
