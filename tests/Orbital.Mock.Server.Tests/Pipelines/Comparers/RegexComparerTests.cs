@@ -13,7 +13,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         {
             var regex = "[ae]";
             var valueToEvaluate = "gray";
-            var actual = RegexComparer.Compare(regex, valueToEvaluate);
+            var actual = RegexComparer.Compare(valueToEvaluate, regex);
 
             Assert.True(actual);
         }
@@ -23,7 +23,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         {
             var regex = "[ae]";
             var valueToEvaluate = "box";
-            var actual = RegexComparer.Compare(regex, valueToEvaluate);
+            var actual = RegexComparer.Compare(valueToEvaluate, regex);
 
             Assert.False(actual);
         }
