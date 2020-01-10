@@ -46,7 +46,7 @@ describe('BodyRuleListItemComponent', () => {
     it('should emit an event containing the deleted body rule when deleting a body rule', () => {
       const bodyRule = {
         rule: { a: 'b' },
-        type: RuleType.BodyEquality
+        type: RuleType.JSONEQUALITY
       } as BodyRule;
 
       component.bodyRule = bodyRule;
@@ -61,13 +61,13 @@ describe('BodyRuleListItemComponent', () => {
 
   describe('body-rule-list-item.getBodyRule', () => {
     it('should get a body rule successfully', () => {
-      const bodyRule = { rule: { a: 'b' }, type: RuleType.BodyEquality };
+      const bodyRule = { rule: { a: 'b' }, type: RuleType.JSONEQUALITY };
       component.bodyRule = bodyRule;
       expect(component.getBodyRule()).toEqual(JSON.stringify(bodyRule.rule));
     });
 
     it('should not get an invalid body rule', () => {
-      const bodyRule = { rule: undefined, type: RuleType.BodyEquality };
+      const bodyRule = { rule: undefined, type: RuleType.JSONEQUALITY };
       component.bodyRule = bodyRule;
       expect(component.getBodyRule()).toEqual('');
     });
@@ -75,9 +75,9 @@ describe('BodyRuleListItemComponent', () => {
 
   describe('body-rule-list-item.getBodyType', () => {
     it('should get a valid body type', () => {
-      const bodyRule = { rule: {}, type: RuleType.BodyEquality };
+      const bodyRule = { rule: {}, type: RuleType.JSONEQUALITY };
       component.bodyRule = bodyRule;
-      expect(component.getBodyType()).toEqual(bodyRule.type);
+      expect(component.getBodyType() === bodyRule.type).toBeTruthy();
     });
 
     it('should not get an invalid body type', () => {

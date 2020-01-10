@@ -61,7 +61,7 @@ describe('AddBodyRuleContainerComponent', () => {
   describe('add-body-rule-container.addBodyRule', () => {
     it('should add a body rule', () => {
       const bodyRuleToAdd = {
-        type: RuleType.JSONCONTAINS,
+        type: RuleType.JSONEQUALITY,
         rule: { a: 'b' }
       } as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
