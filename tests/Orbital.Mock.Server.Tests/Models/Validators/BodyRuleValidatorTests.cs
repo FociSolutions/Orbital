@@ -4,6 +4,7 @@ using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Validators;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Models.Validators
 {

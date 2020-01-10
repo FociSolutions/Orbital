@@ -7,7 +7,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces
     /// <summary>
     /// Interface contains method signature of matching method
     /// </summary>
-    /// <typeparam name="T">Comparer rule type</typeparam>
+    /// <typeparam name="T">Match rule type</typeparam>
     /// <typeparam name="R">Input for matching</typeparam>
     public interface IRuleMatcher<T,R> where T:IRule where R:IMatchPort
     {

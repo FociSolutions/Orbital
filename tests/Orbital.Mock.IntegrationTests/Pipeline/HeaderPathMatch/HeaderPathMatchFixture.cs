@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.IntegrationTests.Pipeline.HeaderPathMatch
 {
