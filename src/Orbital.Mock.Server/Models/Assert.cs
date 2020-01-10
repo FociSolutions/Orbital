@@ -12,12 +12,12 @@ namespace Orbital.Mock.Server.Models
         /// </summary>
         public string Actual { get; set; }
         /// <summary>
-        /// Assert Property designating Expeceted value
+        /// Assert Property designating Expected value
         /// </summary>
         public string Expect { get; set; }
         /// <summary>
         /// Assert Property designating the comparer type
         /// </summary>
-        public ComparerType Rule{ get; set; }
+        public ComparerType Rule { get; set; }
     }
 }
