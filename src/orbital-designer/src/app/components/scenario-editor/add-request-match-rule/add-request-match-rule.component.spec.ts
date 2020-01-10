@@ -74,8 +74,8 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('add-request-match-rule.handleHeaderKvpOutput', () => {
     it('should set the header match rules if it is truthy', () => {
-      const headerMatchRules = new Map<string, string>();
-      headerMatchRules.set(faker.random.word(), faker.random.word());
+      const headerMatchRules = [];
+      headerMatchRules.push(faker.random.word(), faker.random.word());
       component.handleHeaderKvpOutput(headerMatchRules);
       expect(component.headerMatchRules).toEqual(headerMatchRules);
     });
@@ -83,8 +83,8 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('add-request-match-rule.handleQueryKvpOutput', () => {
     it('should set the query match rules if it is truthy', () => {
-      const queryMatchRules = new Map<string, string>();
-      queryMatchRules.set(faker.random.word(), faker.random.word());
+      const queryMatchRules = [];
+      queryMatchRules.push(faker.random.word(), faker.random.word());
       component.handleQueryKvpOutput(queryMatchRules);
       expect(component.queryMatchRules).toEqual(queryMatchRules);
     });
@@ -93,7 +93,7 @@ describe('AddRequestMatchRuleComponent', () => {
   describe('add-request-match-rule.handleBodyOutput', () => {
     it('should set the body match rules if it is truthy', () => {
       const bodyMatchRules = [
-        { type: RuleType.BodyEquality, rule: { a: faker.random.word() } }
+        { type: RuleType.JSONEQUALITY, rule: { a: faker.random.word() } }
       ] as BodyRule[];
       component.handleBodyOutput(bodyMatchRules);
       expect(component.bodyMatchRules).toEqual(bodyMatchRules);
@@ -109,7 +109,7 @@ describe('AddRequestMatchRuleComponent', () => {
       testQueryMatchRules.set(faker.random.word(), faker.random.word());
       component.requestMatchRule.headerRules = testHeaderMatchRules;
       testBodyMatchRules[0].rule = { a: faker.random.word() };
-      testBodyMatchRules[0].type = RuleType.BodyEquality;
+      testBodyMatchRules[0].type = RuleType.JSONEQUALITY;
 
       spyOn(component.requestMatchRuleOutput, 'emit');
       component.saveStatus = true;
@@ -118,12 +118,12 @@ describe('AddRequestMatchRuleComponent', () => {
     });
 
     it('should not emit the request match rules if the query match rules are invalid', () => {
-      const testHeaderMatchRules = new Map<string, string>();
+      const testHeaderMatchRules = [];
       const testBodyMatchRules: BodyRule[] = [{}] as BodyRule[];
 
-      testHeaderMatchRules.set(faker.random.word(), faker.random.word());
+      testHeaderMatchRules.push(faker.random.word(), faker.random.word());
       testBodyMatchRules[0].rule = { a: faker.random.word() };
-      testBodyMatchRules[0].type = RuleType.BodyEquality;
+      testBodyMatchRules[0].type = RuleType.JSONEQUALITY;
 
       spyOn(component.requestMatchRuleOutput, 'emit');
 
@@ -139,11 +139,11 @@ describe('AddRequestMatchRuleComponent', () => {
     });
 
     it('should not emit the request match rules if the body match rules are invalid', () => {
-      const testHeaderMatchRules = new Map<string, string>();
-      const testQueryMatchRules = new Map<string, string>();
+      const testHeaderMatchRules = [];
+      const testQueryMatchRules = [];
 
-      testHeaderMatchRules.set(faker.random.word(), faker.random.word());
-      testQueryMatchRules.set(faker.random.word(), faker.random.word());
+      testHeaderMatchRules.push(faker.random.word(), faker.random.word());
+      testQueryMatchRules.push(faker.random.word(), faker.random.word());
 
       spyOn(component.requestMatchRuleOutput, 'emit');
 
