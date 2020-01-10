@@ -6,7 +6,7 @@
         "title": "Get Header List Filtered",
         "description": "Gets the list of pets but filters out based on animal type"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/petHeaders",
       "response": {
         "headers": {},
@@ -14,10 +14,15 @@
         "body": "{\n  \"petHeaders\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
       },
       "requestMatchRules": {
-        "headerRules": {
-          "animal-type": "dog"
-        },
-        "queryRules": {},
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "animal-type": "dog"
+            }
+          }
+        ],
+        "queryRules": [],
         "bodyRules": []
       }
     }
