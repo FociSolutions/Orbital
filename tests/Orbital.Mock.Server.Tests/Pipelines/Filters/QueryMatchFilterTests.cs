@@ -24,13 +24,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region TestSetup
             var faker = new Faker();
-            var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
+            var fakerQueryRule = new Faker<KeyValuePairRule>()
                 .CustomInstantiator(f => new KeyValuePairRule(f.PickRandom<ComparerType>(), new KeyValuePair<string, string>(f.Random.String(), f.Random.String())));
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = fakerHeaderQueryRule.Generate(10)
+                    QueryRules = fakerQueryRule.Generate(10)
                 })
                 .RuleFor(m => m.Id, f => f.Random.Word());
 
@@ -57,14 +57,14 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region TestSetup
             var faker = new Faker();
-            var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
+            var fakerQueryRule = new Faker<KeyValuePairRule>()
                 .CustomInstantiator(f => new KeyValuePairRule(f.PickRandom<ComparerType>(), new KeyValuePair<string, string>(f.Random.String(), f.Random.String())));
 
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = fakerHeaderQueryRule.Generate(10)
+                    QueryRules = fakerQueryRule.Generate(10)
                 })
                 .RuleFor(m => m.Id, f => f.Random.Word());
 
