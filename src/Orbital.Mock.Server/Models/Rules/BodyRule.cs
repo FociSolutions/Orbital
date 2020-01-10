@@ -8,7 +8,7 @@ namespace Orbital.Mock.Server.Models.Rules
     public class BodyRule : IEquatable<BodyRule>, IRule
     {
         /// <summary>
-        /// BodyRule Constructor With Optional Parameters
+        /// BodyRule Constructor
         /// </summary>
         /// <param name="RuleType">Enum representing the type of Body Rule created</param>
         /// <param name="RuleValue">The Json object used to compare against request bodies for matching</param>
