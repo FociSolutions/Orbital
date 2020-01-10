@@ -1,9 +1,8 @@
 ﻿using Bogus;
 using Orbital.Mock.Server.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Models
 {

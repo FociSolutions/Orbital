@@ -1,10 +1,9 @@
-﻿using System.Net.Http;
-using System.Text;
-using System;
-using LightBDD.XUnit2;
+﻿using LightBDD.XUnit2;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
-using Xunit;
+using System.Net.Http;
+using System.Text;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.IntegrationTests.Pipeline.QueryPathMatch
 {

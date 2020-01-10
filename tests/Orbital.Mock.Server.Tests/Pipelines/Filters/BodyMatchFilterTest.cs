@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters;
@@ -7,9 +6,8 @@ using Orbital.Mock.Server.Pipelines.Ports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
