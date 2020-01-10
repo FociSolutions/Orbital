@@ -53,7 +53,7 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.BodyMatchJsonEquality
 
         private void Then_the_response_should_contain_the_scenario_body()
         {
-
+            var result = httpMessage.Content.ReadAsStringAsync().Result;
             Assert.True(JToken.DeepEquals(
                     JToken.Parse(httpMessage.Content.ReadAsStringAsync().Result),
                     this.expected));

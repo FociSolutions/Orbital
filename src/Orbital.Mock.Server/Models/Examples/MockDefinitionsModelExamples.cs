@@ -67,8 +67,8 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 queryRules[i].Add("alt", "json");
                 queryRules[i].Add("prettyPrint", "true");
 
-                bodyRules[i].Add(new BodyRule(ComparerType.Contains, JObject.FromObject(new { ruleType = "Use Body Contains" }) ));
-                bodyRules[i].Add(new BodyRule (ComparerType.Equal, JObject.FromObject(new { ruleType = "Use Body Equality" }) ));
+                bodyRules[i].Add(new BodyRule(ComparerType.Contains, JObject.FromObject(new { ruleType = "Use Body Contains" })));
+                bodyRules[i].Add(new BodyRule(ComparerType.Equal, JObject.FromObject(new { ruleType = "Use Body Equality" })));
             }
 
             scenarios.Add(new Scenario()
@@ -78,8 +78,8 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Verb = 0,
                 Path = "/pets",
                 Response = new MockResponse { Status = 0, Body = "Scenario 1", Headers = headers[0] },
-                RequestMatchRules = new RequestMatchRules { HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule(ComparerType.Contains, new KeyValuePair<string, string>(headers[0].Keys.ToList().First(), headers[0].Values.ToList().First())) }, 
-                                                            QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule(ComparerType.Contains, new KeyValuePair<string, string>(queryRules[0].Keys.ToList().First(), queryRules[0].Values.ToList().First())) }, 
+                RequestMatchRules = new RequestMatchRules { HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.Contains, RuleValue = new KeyValuePair<string, string>(headers[0].Keys.ToList().First(), headers[0].Values.ToList().First()) } },
+                    QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.Contains, RuleValue = new KeyValuePair<string, string>(queryRules[0].Keys.ToList().First(), queryRules[0].Values.ToList().First())} }, 
                                                             BodyRules = bodyRules[0] }
             });
             scenarios.Add(new Scenario()
@@ -90,8 +90,8 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Path = "/pets",
                 Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Testing scenario 2", Headers = headers[1] },
                 RequestMatchRules = new RequestMatchRules {
-                    HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule(ComparerType.Contains, new KeyValuePair<string, string>(headersRules[1].Keys.ToList().First(), headersRules[1].Values.ToList().First())) },
-                    QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule(ComparerType.Contains, new KeyValuePair<string, string>(queryRules[1].Keys.ToList().First(), queryRules[1].Values.ToList().First())) },
+                    HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.Contains, RuleValue = new KeyValuePair<string, string>(headersRules[1].Keys.ToList().First(), headersRules[1].Values.ToList().First()) } },
+                    QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.Contains, RuleValue = new KeyValuePair<string, string>(queryRules[1].Keys.ToList().First(), queryRules[1].Values.ToList().First()) } },
                     BodyRules = bodyRules[1] }
             });
             scenarios.Add(new Scenario()
@@ -102,8 +102,8 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Path = "/pets",
                 Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Scenario 3", Headers = headers[2] },
                 RequestMatchRules = new RequestMatchRules {
-                    HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule(ComparerType.Contains, new KeyValuePair<string, string>(headersRules[2].Keys.ToList().First(), headersRules[2].Values.ToList().First())) },
-                    QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule(ComparerType.Contains, new KeyValuePair<string, string>(queryRules[2].Keys.ToList().First(), queryRules[2].Values.ToList().First())) },
+                    HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule(){ Type = ComparerType.Contains, RuleValue = new KeyValuePair<string, string>(headersRules[2].Keys.ToList().First(), headersRules[2].Values.ToList().First()) } },
+                    QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.Contains, RuleValue = new KeyValuePair<string, string>(queryRules[2].Keys.ToList().First(), queryRules[2].Values.ToList().First()) } },
                     BodyRules = bodyRules[2] }
             });
 

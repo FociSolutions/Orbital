@@ -38,7 +38,7 @@ namespace Orbital.Mock.Server.LongRunningTests
             var fakerBodyRule = new Faker<BodyRule>()
                 .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
             var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule(f.PickRandom<ComparerType>(), new KeyValuePair<string, string>(f.Random.String(), f.Random.String())));
+                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
             var fakerResponse = new Faker<MockResponse>()
                 .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -185,9 +185,9 @@ namespace Orbital.Mock.Server.LongRunningTests
             // generate 10 unique scenarios (it doesn't matter what they do) as long as they get mostly through the pipeline
             var scenarios = _fakerScenario.Generate(10);
             scenarios[0].RequestMatchRules.HeaderRules = scenarios[0].RequestMatchRules.HeaderRules.Select( x =>
-                                                         new KeyValuePairRule(x.Type, new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique"))).ToList();
+                                                    new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
             scenarios[0].RequestMatchRules.QueryRules = scenarios[0].RequestMatchRules.QueryRules.Select(x =>
-                                                         new KeyValuePairRule(x.Type, new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique"))).ToList();
+                                                         new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
             httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb.ToString();
