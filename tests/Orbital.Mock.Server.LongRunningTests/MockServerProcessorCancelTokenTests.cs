@@ -18,6 +18,7 @@ using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Tests;
 using Orbital.Mock.Server.Tests.Pipelines.Filters;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.LongRunningTests
 {

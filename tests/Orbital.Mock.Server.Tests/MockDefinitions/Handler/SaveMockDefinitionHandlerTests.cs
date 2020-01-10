@@ -1,14 +1,13 @@
 ﻿using Bogus;
 using Microsoft.Extensions.Caching.Memory;
-using NSubstitute;
 using Orbital.Mock.Server.Handlers;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 {

@@ -17,6 +17,7 @@ using System.Threading;
 using Orbital.Mock.Server.Tests.Models.Validators;
 using Orbital.Mock.Server.Tests.Pipelines.Filters;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Pipelines
 {
