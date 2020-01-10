@@ -6,7 +6,7 @@
         "title": "Get List Success",
         "description": "Retrieves a list of pets"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/pets",
       "response": {
         "headers": {
@@ -59,10 +59,11 @@
             "type": 3
           }
         ],
-        "headerRules": {
-        },
-        "queryRules": {
-        }
+        "headerRules": [
+        ],
+        "queryRules": [
+
+        ]
       }
     },
     {
@@ -71,7 +72,7 @@
         "title": "Get List Filtered",
         "description": "Gets the list of pets but filters out based on animal type"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/pets",
       "response": {
         "headers": {
@@ -97,7 +98,7 @@
         "title": "Add Pet Success",
         "description": "Successfully added a pet"
       },
-      "verb": "POST",
+      "verb": 3,
       "path": "/pets",
       "response": {
         "headers": {
@@ -110,8 +111,8 @@
         "headerRules": {
           "Content-Type": "application/json"
         },
-        "queryRules": {
-        },
+        "queryRules": [
+        ],
         "bodyRules": [
           {
             "type": 3,
@@ -131,7 +132,7 @@
         "title": "Add Pet Failure",
         "description": "Fails to add the pet due to missing type property"
       },
-      "verb": "POST",
+      "verb": 3,
       "path": "/pets",
       "response": {
         "headers": {
@@ -164,7 +165,7 @@
         "title": "Get Pet Success",
         "description": "Successfully gets the pets information"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/pets/{petId}",
       "response": {
         "headers": {
@@ -189,7 +190,7 @@
         "title": "Get Pet Not Found",
         "description": "Failed finding the pet via its id"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/pets/{petId}",
       "response": {
         "headers": {

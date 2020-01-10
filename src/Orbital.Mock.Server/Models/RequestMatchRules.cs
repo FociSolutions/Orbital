@@ -14,7 +14,6 @@ namespace Orbital.Mock.Server.Models
         public ICollection<KeyValuePairRule> QueryRules { get; set; }
         [JsonProperty("bodyRules")]
         public ICollection<BodyRule> BodyRules { get; set; }
-        public Type ComparerType { get; set; }
 
         public override bool Equals(object obj)
         {
