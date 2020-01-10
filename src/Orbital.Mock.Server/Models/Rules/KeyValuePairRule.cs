@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Orbital.Mock.Server.Models.Rules
 {
-    public class KeyValuePairRule : IRule, IEqualityComparer<KeyValuePair<string, string>>
+    public class KeyValuePairRule : IRule
     {
         /// <summary>
         /// KeyValuePairRule Constructor With Parameters
@@ -19,14 +19,5 @@ namespace Orbital.Mock.Server.Models.Rules
 
         public ComparerType Type { get; set; }
 
-        public bool Equals(KeyValuePair<string, string> rulePair, KeyValuePair<string, string> requestPair)
-        {
-            return rulePair.Value == requestPair.Value;
-        }
-
-        public int GetHashCode(KeyValuePair<string, string> obj)
-        {
-            return obj.Key.GetHashCode();
-        }
     }
 }
