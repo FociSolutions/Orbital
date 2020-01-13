@@ -21,7 +21,7 @@ namespace Orbital.Mock.Server.Models.Converters
         /// Loads key value pair json object and creates a c# KeyValuePair object with the Name and Value of the JObject
         /// </summary>
         /// <param name="reader">The JsonReader that reads the incoming json</param>
-        /// <returns></returns>
+        /// <returns>The new key value pair </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject obj = JObject.Load(reader);
