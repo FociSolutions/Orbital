@@ -22,28 +22,29 @@ namespace Orbital.Mock.Server.Factories
                 case IQueryMatchPort queryType:
                     foreach(var kvpRequest in request)
                     {
-                        var assert = port.Headers.Where(kv => kv.Key == kvpRequest.Key);
-                        var querykeyassert = new Assert() { Actual = kvpRequest.Key, Expect = assert.First().Key, Rule = port.Type };
-                        var queryvalueassert = new Assert() { Actual = kvpRequest.Value, Expect = assert.First().Value, Rule = port.Type };
-                        asserts.Add(querykeyassert);
-                        asserts.Add(queryvalueassert);
+                        AddAsserts(port, asserts, kvpRequest);
                     }
-                    
-               break;
+
+                    break;
 
                 case IHeaderMatchPort headerType:
                     foreach (var kvpRequest in request)
                     {
-                        var assert = port.Query.Where(kv => kv.Key == kvpRequest.Key);
-                        var headerkeyassert = new Assert() { Actual = kvpRequest.Key, Expect = assert.First().Key, Rule = port.Type };
-                        var headervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = assert.First().Value, Rule = port.Type };
-                        asserts.Add(headerkeyassert);
-                        asserts.Add(headervalueassert);
+                        AddAsserts(port, asserts, kvpRequest);
                     }
                 break;
             }
 
             return asserts;
+        }
+
+        private static void AddAsserts<T>(T port, List<Assert> asserts, KeyValuePair<string, string> kvpRequest) where T : IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort
+        {
+            var assert = port.Headers.Where(kv => kv.Key == kvpRequest.Key);
+            var queryheaderkeyassert = new Assert() { Actual = kvpRequest.Key, Expect = assert.First().Key, Rule = port.Type };
+            var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = assert.First().Value, Rule = port.Type };
+            asserts.Add(queryheaderkeyassert);
+            asserts.Add(queryheadervalueassert);
         }
     }
 }
