@@ -11,7 +11,6 @@ import * as HttpStatus from 'http-status-codes';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { NGXLogger } from 'ngx-logger';
-import { KeyValuePairRule, KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
 @Component({
   selector: 'app-add-response',
@@ -22,7 +21,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
 
-  headers: KeyValuePairRule;
+  headers: Map<string, string> = new Map<string, string>();
 
   /**
    *  The validBodyResponse after it has been validated
@@ -147,7 +146,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * Wait for header FVP map, then trigger emitter if current response is valid
    * @param map Response KVP map
    */
-  saveHeaderMap(map: KeyValuePairRule) {
+  saveHeaderMap(map: Map<string, string>) {
     if (this.isStatusCodeValid && this.isBodyValid) {
       if (this.statusCodeEntered) {
         const responseToEmit = {

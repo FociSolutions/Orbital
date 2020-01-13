@@ -1,6 +1,5 @@
 import { VerbType } from '../app/models/verb.type';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
 export default {
   scenarios: [
@@ -13,7 +12,7 @@ export default {
       verb: 0,
       path: '/',
       response: {
-        headers: [],
+        headers: new Map<string, string>(),
         status: 404,
         body: ''
       },

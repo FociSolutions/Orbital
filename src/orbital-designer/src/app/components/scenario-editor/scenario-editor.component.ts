@@ -241,7 +241,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       verb: scenarioVerb,
       path: scenarioPath,
       response: {
-        headers: [],
+        headers: new Map<string, string>(),
         body: ''
       } as Response,
       requestMatchRules: {
