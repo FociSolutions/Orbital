@@ -18,7 +18,7 @@ namespace Orbital.Mock.Server.Tests.Models
         }
 
         [Fact]
-        public void BodyRuleEqualsSuccessTest()
+        public void KeyValuePairRuleEqualsSuccessTest()
         {
             var Target = this.fakerKeyValuePairRule.Generate();
 
@@ -28,7 +28,7 @@ namespace Orbital.Mock.Server.Tests.Models
         }
 
         [Fact]
-        public void BodyRuleEqualsRuleFailsTest()
+        public void KeyValuePairRuleEqualsRuleFailsTest()
         {
             var Target = this.fakerKeyValuePairRule.Generate();
             var input = new KeyValuePairRule() { Type = Target.Type, RuleValue = new KeyValuePair<string, string>() } as object;
@@ -36,7 +36,7 @@ namespace Orbital.Mock.Server.Tests.Models
         }
 
         [Fact]
-        public void BodyRuleEqualsTypeFailsTest()
+        public void KeyValuePairRuleEqualsTypeFailsTest()
         {
             var Target = this.fakerKeyValuePairRule.Generate();
             Target.Type = ComparerType.Equal;
