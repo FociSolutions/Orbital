@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace Orbital.Mock.Server.Factories
 {
-    public class AssertFactory
+    public class AssertFactory : IAssertFactory
     {
         public IEnumerable<Assert> CreateAssert<T, R>(T port, R request) where T : IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort where R: JToken, IEnumerable<KeyValuePair<string, string>>
         {
