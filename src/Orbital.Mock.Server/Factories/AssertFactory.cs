@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Orbital.Mock.Server.Factories
                 case IQueryMatchPort queryType:
                     foreach(var kvpRequest in request)
                     {
-                        AddAsserts(port, asserts, kvpRequest);
+                        AddAsserts(port.Query, asserts, kvpRequest, port.Type);
                     }
 
                     break;
@@ -30,7 +31,7 @@ namespace Orbital.Mock.Server.Factories
                 case IHeaderMatchPort headerType:
                     foreach (var kvpRequest in request)
                     {
-                        AddAsserts(port, asserts, kvpRequest);
+                        AddAsserts(port.Headers, asserts, kvpRequest, port.Type);
                     }
                 break;
             }
@@ -38,11 +39,19 @@ namespace Orbital.Mock.Server.Factories
             return asserts;
         }
 
-        private static void AddAsserts<T>(T port, List<Assert> asserts, KeyValuePair<string, string> kvpRequest) where T : IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort
+        /// <summary>
+        /// This will take in the port, the list of asserts and 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="portKvs"></param>
+        /// <param name="asserts"></param>
+        /// <param name="kvpRequest"></param>
+        /// <param name="comparerType"></param>
+        private static void AddAsserts(IEnumerable<KeyValuePair<string, string>> portKvs, List<Assert> asserts, KeyValuePair<string, string> kvpRequest, ComparerType comparerType)
         {
-            var assert = port.Headers.Where(kv => kv.Key == kvpRequest.Key);
-            var queryheaderkeyassert = new Assert() { Actual = kvpRequest.Key, Expect = assert.First().Key, Rule = port.Type };
-            var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = assert.First().Value, Rule = port.Type };
+            var assert = portKvs.Where(kv => kv.Key == kvpRequest.Key);
+            var queryheaderkeyassert = new Assert() { Actual = kvpRequest.Key, Expect = assert.First().Key, Rule = comparerType };
+            var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = assert.First().Value, Rule = comparerType };
             asserts.Add(queryheaderkeyassert);
             asserts.Add(queryheadervalueassert);
         }
