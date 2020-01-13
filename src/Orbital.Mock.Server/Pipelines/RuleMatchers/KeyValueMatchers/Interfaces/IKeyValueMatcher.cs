@@ -1,0 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Orbital.Mock.Server.Pipelines.RuleMatchers.KeyValueMatchers.Interfaces
+{
+    interface IKeyValueMatcher
+    {
+    }
+}
