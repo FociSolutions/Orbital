@@ -1,8 +1,10 @@
+import { KeyValuePairRule } from './key-value-pair-rule.model';
+
 /**
  * Model representation of a mock response
  */
 export interface Response {
-  headers: Map<string, string>;
+  headers: KeyValuePairRule;
   body: string;
   status: number;
 }
