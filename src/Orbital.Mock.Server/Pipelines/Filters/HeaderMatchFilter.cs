@@ -1,6 +1,7 @@
 ﻿using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using Orbital.Mock.Server.Models;
+using System.Linq;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
@@ -20,7 +21,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             foreach (var scenario in port.Scenarios)
             {
                 port.HeaderMatchResults.Add(Matcher.MatchByKeyValuePair(
-                    scenario.RequestMatchRules.HeaderRules,
+                    scenario.RequestMatchRules.HeaderRules.Select(rules => rules.RuleValue),
                     port.Headers,
                     scenario.Id));
             }

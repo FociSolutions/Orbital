@@ -1,3 +1,4 @@
+using Orbital.Mock.Server.Models.Rules;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,11 +15,11 @@ namespace Orbital.Mock.Server.Models
         /// <param name="requestDictionary">The actual response dictionary</param>
         /// <param name="scenarioId">The scenario id to use to create the MatchResult</param>
         /// <returns>The MatchResult corresponding to the match level of these two dictionaries</returns>
-        public static MatchResult MatchByKeyValuePair(IDictionary<string, string> matchRules, IDictionary<string, string> requestDictionary, string scenarioId)
+        public static MatchResult MatchByKeyValuePair(IEnumerable<KeyValuePair<string, string>> matchRules, IEnumerable<KeyValuePair<string, string>> requestDictionary, string scenarioId)
         {
             var rule = new MatchResult(MatchResultType.Ignore, scenarioId);
 
-            if (matchRules != null && matchRules.Count > 0)
+            if (matchRules != null && matchRules.Count() > 0)
             {
                 rule = matchRules.Except(requestDictionary).Any()
                 ? new MatchResult(MatchResultType.Fail, scenarioId)

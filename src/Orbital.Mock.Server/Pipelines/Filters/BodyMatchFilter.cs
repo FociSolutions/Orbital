@@ -6,6 +6,7 @@ using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System.Linq;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
@@ -119,7 +120,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return rules;
             }
 
-            return scenario.RequestMatchRules.BodyRules.Select(br => BodyCheck(br.Rule, br.Type, bodyObject, scenario.Id)).ToList();
+            return scenario.RequestMatchRules.BodyRules.Select(br => BodyCheck(br.RuleValue, br.Type, bodyObject, scenario.Id)).ToList();
         }
 
         /// <summary>
@@ -191,16 +192,16 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <param name="bodyObject">The contents of the body to check</param>
         /// <param name="scenarioId">The id of the scenario</param>
         /// <returns>The processed match result</returns>
-        private static MatchResult BodyCheck(JToken bodyRule, BodyRuleTypes bodyRuleType, JToken bodyObject, string scenarioId)
+        private static MatchResult BodyCheck(JToken bodyRule, ComparerType bodyRuleType, JToken bodyObject, string scenarioId)
         {
             var matchResult = new MatchResult(MatchResultType.Fail, scenarioId);
 
             switch (bodyRuleType)
             {
-                case BodyRuleTypes.BodyContains:
+                case ComparerType.Contains:
                     matchResult = BodyContains(bodyRule, bodyObject, scenarioId);
                     break;
-                case BodyRuleTypes.BodyEquality:
+                case ComparerType.Equal:
                     matchResult = BodyEquality(bodyRule, bodyObject, scenarioId);
                     break;
             }

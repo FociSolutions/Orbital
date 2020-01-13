@@ -1,7 +1,9 @@
 ﻿using Bogus;
 using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
 using Xunit;
+using Orbital.Mock.Server.Models.Rules;
+using Orbital.Mock.Server.Models.Interfaces;
+
 using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Models
@@ -15,14 +17,14 @@ namespace Orbital.Mock.Server.Tests.Models
             var fakerJObject = new Faker<JObject>()
                 .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             this.fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
         }
         [Fact]
         public void BodyRuleEqualsSuccessTest()
         {
             var Target = this.fakerBodyRule.Generate();
 
-            var input = new BodyRule(Target.Type, Target.Rule) as object;
+            var input = new BodyRule(Target.Type, Target.RuleValue) as object;
 
             Assert.True(Target.Equals(input));
         }
@@ -39,8 +41,8 @@ namespace Orbital.Mock.Server.Tests.Models
         public void BodyRuleEqualsTypeFailsTest()
         {
             var Target = this.fakerBodyRule.Generate();
-            Target.Type = BodyRuleTypes.BodyEquality;
-            var input = new BodyRule(BodyRuleTypes.BodyContains, Target.Rule) as object;
+            Target.Type = ComparerType.Equal;
+            var input = new BodyRule(ComparerType.Contains, Target.RuleValue) as object;
             Assert.False(Target.Equals(input));
         }
     }

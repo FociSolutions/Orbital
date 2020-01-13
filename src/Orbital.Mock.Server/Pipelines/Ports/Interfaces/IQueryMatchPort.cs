@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Rules;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {
     public interface IQueryMatchPort : IMatchPort
     {
         ICollection<MatchResult> QueryMatchResults { get; set; }
-        IDictionary<string, string> Query { get; set; }
+        IEnumerable<KeyValuePair<string, string>> Query { get; set; }
 
     }
 }
