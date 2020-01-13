@@ -5,6 +5,8 @@ import { OrbitalCommonModule } from '../orbital-common.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyValue } from '@angular/common';
+import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
 describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
@@ -36,23 +38,27 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should return a map with the added a case-sensitive kvp', () => {
-      const kvpToAdd: KeyValue<string, string> = {
-        key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+      const kvpToAdd: KeyValuePairRule = {
+        rule: (faker.lorem.sentence(), faker.lorem.sentence()),
+        type: faker.random.number({ min: 0, max: 8 })
       };
       component.isCaseSensitive = true;
-      component.addKvpToMap(kvpToAdd);
-      expect(component.savedKvpMap.get(kvpToAdd.key)).toEqual(kvpToAdd.value);
+      component.addKvpRuleToMap(kvpToAdd);
+      expect(component.savedKvpRules.includes(kvpToAdd)).toBeTruthy();
     });
 
     it('Should return a map with the added a case-insensitive kvp', () => {
-      const kvpToAdd: KeyValue<string, string> = {
-        key: faker.lorem.sentence().toUpperCase(),
-        value: faker.lorem.sentence().toUpperCase()
+      const kvpToAdd: KeyValuePairRule = {
+        rule: (faker.lorem.sentence().toUpperCase(), faker.lorem.sentence()),
+        type: faker.random.number({ min: 0, max: 8 })
       };
       component.isCaseSensitive = false;
-      component.addKvpToMap(kvpToAdd);
-      expect(component.savedKvpMap.get(kvpToAdd.key.toLowerCase())).toEqual(kvpToAdd.value);
+      component.addKvpRuleToMap(kvpToAdd);
+      expect(
+        component.savedKvpRules.find(
+          element => kvpToAdd.rule.key.toLowerCase() === element.rule.key
+        )
+      ).toBeTruthy();
     });
 
     it('Should not add kvp to map if kvp is empty/null', () => {
@@ -62,7 +68,7 @@ describe('KvpEditComponent', () => {
         value: ''
       };
 
-      component.addKvpToMap(kvpToAdd);
+      component.addKvpRuleToMap(kvpToAdd);
       expect(component.savedKvpMap.has(kvpToAdd.key)).toBeFalsy();
     });
   });
@@ -78,7 +84,7 @@ describe('KvpEditComponent', () => {
         value: faker.lorem.sentence()
       };
 
-      component.addKvpToMap(kvpToAdd);
+      component.addKvpRuleToMap(kvpToAdd);
       component.deleteKvpFromMap(kvpToAdd);
       expect(component.savedKvpMap.has(kvpToAdd.key)).toBe(false);
     });
