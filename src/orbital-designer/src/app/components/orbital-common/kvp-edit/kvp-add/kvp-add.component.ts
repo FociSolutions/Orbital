@@ -2,8 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { stringify } from 'querystring';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 
 @Component({
   selector: 'app-kvp-add',
@@ -12,7 +11,7 @@ import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 })
 export class KvpAddComponent implements OnInit {
   // The kvp to be outputted to parent
-  @Output() kvp = new EventEmitter<KeyValuePairRule>();
+  @Output() kvp = new EventEmitter<KeyValuePair>();
 
   // The key and value properties that were bound to the template
   key: string;
@@ -34,12 +33,11 @@ export class KvpAddComponent implements OnInit {
    */
   onAdd() {
     if (!this.isEmpty()) {
-      const kvpRuleAdd: KeyValuePairRule = {
+      const kvpRuleAdd: KeyValuePair = {
         rule: { key: this.key.trim(), value: this.value } as KeyValue<
           string,
           string
-        >,
-        type: RuleType.TEXTEQUALS
+        >
       };
 
       this.kvp.emit(kvpRuleAdd);

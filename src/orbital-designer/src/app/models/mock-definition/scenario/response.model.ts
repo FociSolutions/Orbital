@@ -1,8 +1,10 @@
+import { KeyValuePair } from './key-value-pair.model';
+
 /**
  * Model representation of a mock response
  */
 export interface Response {
-  headers: Map<string, string>;
+  headers: KeyValuePair;
   body: string;
   status: number;
 }

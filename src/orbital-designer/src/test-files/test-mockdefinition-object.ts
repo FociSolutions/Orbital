@@ -1,7 +1,7 @@
 import { VerbType } from '../app/models/verb.type';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
-export default {
+export default ({
   scenarios: [
     {
       id: '72dded1d-3755-4749-9aad-f7b4d769ea57',
@@ -12,7 +12,7 @@ export default {
       verb: 0,
       path: '/',
       response: {
-        headers: new Map<string, string>(),
+        headers: [],
         status: 404,
         body: ''
       },
@@ -67,4 +67,4 @@ export default {
     title: 'Test Mock',
     description: 'A Test Mock'
   }
-} as MockDefinition;
+} as unknown) as MockDefinition;

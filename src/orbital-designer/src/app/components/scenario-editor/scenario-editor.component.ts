@@ -240,10 +240,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       metadata: {} as Metadata,
       verb: scenarioVerb,
       path: scenarioPath,
-      response: {
-        headers: new Map<string, string>(),
+      response: ({
+        headers: [],
         body: ''
-      } as Response,
+      } as unknown) as Response,
       requestMatchRules: {
         headerRules: [],
         queryRules: [],
