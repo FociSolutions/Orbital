@@ -73,6 +73,7 @@ export class KvpEditComponent implements OnInit {
         this.savedKvpRules.push(kvpRuleToAdd);
         this.logger.debug('Adding a case sensitive KVP to Map', kvpRuleToAdd);
       } else {
+        kvpRuleToAdd.rule.key.toLowerCase();
         this.savedKvpRules.push(kvpRuleToAdd);
         this.logger.debug('Adding a case insensitive KVP to Map', kvpRuleToAdd);
       }
