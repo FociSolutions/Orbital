@@ -7,12 +7,23 @@ using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
+using Orbital.Mock.Server.Factories.Interfaces;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class BodyMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IBodyMatchPort, IScenariosPort
     {
+
+        private IAssertFactory assertFactory;
+        private IRuleMatcher ruleMatcher;
+
+        public BodyMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
+        {
+            this.assertFactory = assertFactory;
+            this.ruleMatcher = ruleMatcher;
+        }
         /// <summary>
         /// Process that returns the port after adding a list of scenario Id's
         /// that have any body rule that matches the body of the request.
@@ -29,7 +40,15 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             }
             else
             {
-                port.BodyMatchResults = port.Scenarios.SelectMany(s => ProcessScenarios(bodyObject, s)).ToList();
+
+                foreach (var scenario in port.Scenarios)
+                {
+                    var assetsList = assertFactory.CreateAssert(port, port.Body);
+                    port.BodyMatchResults.Add(ruleMatcher.Match(assetsList.ToArray())
+                    ? new MatchResult(MatchResultType.Fail, scenario.Id)
+                    : new MatchResult(MatchResultType.Success, scenario.Id));
+
+                }
             }
 
             return port;
@@ -107,64 +126,6 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             return true;
         }
 
-        /// <summary>
-        /// Get the match result for the scenario for a given JObject request
-        /// </summary>
-        /// <param name="bodyObject">The request json</param>
-        /// <param name="scenario">The scenario to match against</param>
-        private static IEnumerable<MatchResult> ProcessScenarios(JToken bodyObject, Scenario scenario)
-        {
-            if(scenario.RequestMatchRules.BodyRules == null)
-            {
-                var rules = new List<MatchResult>() { new MatchResult(MatchResultType.Ignore, scenario.Id)};
-                return rules;
-            }
-
-            return scenario.RequestMatchRules.BodyRules.Select(br => BodyCheck(br.RuleValue, br.Type, bodyObject, scenario.Id)).ToList();
-        }
-
-        /// <summary>
-        /// Checks to see if the body in the request matches the body in the scenario using DeepEquals
-        /// </summary>
-        /// <param name="bodyRule">The rule to process</param>
-        /// <param name="bodyObject">The request json object</param>
-        /// <param name="scenarioId">The scenario being worked against</param>
-        private static MatchResult BodyEquality(JToken bodyRule, JToken bodyObject, string scenarioId)
-        {
-            MatchResult successfulResult = new MatchResult(MatchResultType.Success, scenarioId);
-            MatchResult failureResult = new MatchResult(MatchResultType.Fail, scenarioId);
-            if (bodyObject.Type == JTokenType.String && bodyRule.Type == JTokenType.String)
-            {
-                return bodyObject.Value<string>().Equals(bodyRule.Value<string>()) ?
-                successfulResult :
-                failureResult;
-            }
-            return JToken.DeepEquals(bodyRule, bodyObject)
-                ? successfulResult
-                : failureResult;
-        }
-
-        /// <summary>
-        /// Checks if a string or JSON object is contained within another one
-        /// </summary>
-        /// <param name="bodyRule">The body rule to check</param>
-        /// <param name="bodyObject">The contents of the body rule</param>
-        /// <param name="scenarioId">The id of the scenario</param>
-        /// <returns>Whether it contains the JSON object or string, depending on the incoming type</returns>
-        private static MatchResult BodyContains(JToken bodyRule, JToken bodyObject, string scenarioId)
-        {
-            MatchResult successfulResult = new MatchResult(MatchResultType.Success, scenarioId);
-            MatchResult failureResult = new MatchResult(MatchResultType.Fail, scenarioId);
-            if (bodyObject.Type == JTokenType.String && bodyRule.Type == JTokenType.String)
-            {
-                return bodyObject.Value<string>().Contains(bodyRule.Value<string>()) ?
-                successfulResult :
-                failureResult;
-            }
-            return DeepContains(bodyRule.HasValues ? bodyRule.First : bodyRule, bodyObject) ?
-                successfulResult :
-                failureResult;
-        }
 
         /// <summary>
         /// Checks if a JSON object is contained within another one recursively
@@ -184,29 +145,5 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             return false;
         }
 
-        /// <summary>
-        /// Checks if the body contains or equals the match rule
-        /// </summary>
-        /// <param name="bodyRule">The body rule to check</param>
-        /// <param name="bodyRuleType">The type of the body rule</param>
-        /// <param name="bodyObject">The contents of the body to check</param>
-        /// <param name="scenarioId">The id of the scenario</param>
-        /// <returns>The processed match result</returns>
-        private static MatchResult BodyCheck(JToken bodyRule, ComparerType bodyRuleType, JToken bodyObject, string scenarioId)
-        {
-            var matchResult = new MatchResult(MatchResultType.Fail, scenarioId);
-
-            switch (bodyRuleType)
-            {
-                case ComparerType.Contains:
-                    matchResult = BodyContains(bodyRule, bodyObject, scenarioId);
-                    break;
-                case ComparerType.Equal:
-                    matchResult = BodyEquality(bodyRule, bodyObject, scenarioId);
-                    break;
-            }
-
-            return matchResult;
-        }
     }
 }
