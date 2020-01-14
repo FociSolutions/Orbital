@@ -1,21 +1,18 @@
 ﻿using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using System.Collections.Generic;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines.RuleMatchers
 {
     /// <summary>
     /// Abstract class for matching 
     /// </summary>
-    abstract public class RuleMatcher
+    abstract class RuleMatcher : IRuleMatcher
     {
         /// <summary>
-        /// Match method that returns a collection of MatchResult
+        /// Method to match properties in the assert collection
         /// </summary>
-        /// <param name="T">Match rule type</param>
-        /// <param name="R">Input for matching</param>
+        /// <param name="asserts">collection of assert objects</param>
         /// <returns></returns>
-        public abstract IEnumerable<MatchResult> Match(IRule T, IMatchPort R);
+        public abstract bool Match(Assert[] asserts);
     }
 }

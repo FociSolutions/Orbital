@@ -1,6 +1,4 @@
 ﻿using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces
 {
@@ -9,9 +7,13 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces
     /// </summary>
     /// <typeparam name="T">Match rule type</typeparam>
     /// <typeparam name="R">Input for matching</typeparam>
-    public interface IRuleMatcher<T,R> where T:IRule where R:IMatchPort
+    public interface IRuleMatcher
     {
-
-        MatchResult Match(T rule, R input);
+        /// <summary>
+        /// Method to determine matching
+        /// </summary>
+        /// <param name="asserts">Collection of comparison properties</param>
+        /// <returns></returns>
+        bool Match(Assert[] asserts);
     }
 }
