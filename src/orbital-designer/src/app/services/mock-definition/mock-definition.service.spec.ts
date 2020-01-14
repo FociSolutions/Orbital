@@ -11,6 +11,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
@@ -45,7 +46,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: ([] as unknown) as KeyValuePair,
           status: 0,
           body: ''
         },
@@ -95,7 +96,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: ([] as unknown) as KeyValuePair,
           status: 0,
           body: ''
         },
@@ -161,7 +162,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: ([] as unknown) as KeyValuePair,
           status: 0,
           body: ''
         },
@@ -213,7 +214,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: ([] as unknown) as KeyValuePair,
           status: 0,
           body: ''
         },
@@ -264,7 +265,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: ([] as unknown) as KeyValuePair,
           status: 0,
           body: ''
         },

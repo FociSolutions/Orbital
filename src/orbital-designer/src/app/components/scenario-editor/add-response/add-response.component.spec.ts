@@ -5,6 +5,8 @@ import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module'
 import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
+import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
@@ -24,7 +26,9 @@ describe('AddResponseComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
-    component.response = { headers: new Map<string, string>() } as Response;
+    component.response = ([
+      { headers: [], body: '', status: 0 }
+    ] as unknown) as Response;
     fixture.detectChanges();
   });
 
@@ -47,10 +51,12 @@ describe('AddResponseComponent', () => {
   describe('addResponse.saveStatus', () => {
     it('should emit the response if the user wants to save', () => {
       const testStatusCode = 200;
-      const testHeaderResponse: Map<string, string> = new Map<string, string>();
+      const testHeaderResponse: KeyValuePair[] = [
+        {
+          rule: (faker.lorem.sentence(), faker.lorem.sentence())
+        }
+      ];
       const testBodyResponse = 'NOTVALID';
-
-      testHeaderResponse.set(faker.random.word(), faker.random.word());
 
       component.statusCode = testStatusCode;
       component.bodyResponse = testBodyResponse;
@@ -58,11 +64,11 @@ describe('AddResponseComponent', () => {
       spyOn(component.isValid, 'emit');
       spyOn(component.responseOutput, 'emit');
 
-      const testResponse = {
+      const testResponse = ({
         headers: testHeaderResponse,
         body: testBodyResponse,
         status: +testStatusCode
-      } as Response;
+      } as unknown) as Response;
 
       component.response = testResponse;
       component.saveStatus = true;
@@ -79,8 +85,7 @@ describe('AddResponseComponent', () => {
       component.isBodyValid = true;
       component.bodyResponse = '{}';
 
-      const headerMap = new Map<string, string>();
-      headerMap.set(faker.random.word(), faker.random.word());
+      const headerMap = (faker.lorem.sentence(), faker.lorem.sentence());
       const saveHeaderMapSpy = spyOn(component.responseOutput, 'emit');
       component.saveHeaderMap(headerMap);
 

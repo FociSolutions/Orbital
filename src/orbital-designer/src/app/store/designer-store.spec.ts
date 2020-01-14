@@ -17,6 +17,7 @@ import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec
 import { ReadFileService } from '../services/read-file/read-file.service';
 import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
+import { KeyValuePair } from '../models/mock-definition/scenario/key-value-pair.model';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -58,7 +59,7 @@ describe('DesignerStore', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: ([] as unknown) as KeyValuePair,
           status: 0,
           body: ''
         },
@@ -230,7 +231,7 @@ describe('DesignerStore', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: ([] as unknown) as KeyValuePair,
             status: 0,
             body: ''
           },
@@ -431,7 +432,7 @@ describe('DesignerStore', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: ([] as unknown) as KeyValuePair,
             status: 0,
             body: ''
           },
