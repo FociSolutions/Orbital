@@ -53,7 +53,6 @@ namespace Orbital.Mock.Server.Tests.Factories
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Key));
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Value));
             }
-
         }
 
         [Fact]
@@ -91,7 +90,6 @@ namespace Orbital.Mock.Server.Tests.Factories
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Key));
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Value));
             }
-
         }
 
         [Fact]
@@ -120,10 +118,8 @@ namespace Orbital.Mock.Server.Tests.Factories
             #endregion
 
             var actual = Target.CreateAssert(port, input.Body);
-
             
             Assert.NotNull(actual.Select(a => a.Expect == input.Body));
-
         }
     }
 }
