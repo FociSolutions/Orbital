@@ -18,6 +18,8 @@ using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 namespace Orbital.Mock.Server
 {
@@ -52,9 +54,10 @@ namespace Orbital.Mock.Server
             services.AddMediatR(typeof(Startup).Assembly);
 
             services.AddSingleton<IAssertFactory, AssertFactory>();
+            services.AddSingleton<IRuleMatcher, RuleMatcher>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
-                var processor = new MockServerProcessor(new AssertFactory());
+                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
                 processor.Start();
                 return processor;
             });

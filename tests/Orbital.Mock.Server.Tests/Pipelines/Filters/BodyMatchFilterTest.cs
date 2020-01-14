@@ -11,6 +11,8 @@ using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Interfaces;
 
 using Assert = Xunit.Assert;
+using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
@@ -46,7 +48,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
                     {Scenarios = input.Scenarios, Body = input.Body})
@@ -77,7 +79,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
                     { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -107,7 +109,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -137,7 +139,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -167,7 +169,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -197,7 +199,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -227,7 +229,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -257,7 +259,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -287,7 +289,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -317,7 +319,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -347,7 +349,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -377,7 +379,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -404,7 +406,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
                     { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -429,7 +431,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>();
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
                     { Scenarios = input.Scenarios, Body = input.Body })
