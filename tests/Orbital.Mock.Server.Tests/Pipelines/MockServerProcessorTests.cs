@@ -20,6 +20,7 @@ using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Interfaces;
 using Assert = Xunit.Assert;
 using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
 
 namespace Orbital.Mock.Server.Tests.Pipelines
 {
@@ -61,7 +62,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(validMethods));
-            this.mockServerProcessor = new MockServerProcessor(new AssertFactory());
+            this.mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
         }
         [Fact]
         public void MockServerProcessorStopAfterStartTest()
