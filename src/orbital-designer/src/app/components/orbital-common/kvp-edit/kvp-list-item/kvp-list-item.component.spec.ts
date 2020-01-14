@@ -32,8 +32,11 @@ describe('KvpListItemComponent', () => {
 
     it('Should contain correct key value pair', () => {
       const input: KeyValuePairRule = {
-        rule: (faker.lorem.sentence(), faker.lorem.sentence()),
-        type: faker.random.number({ min: 0, max: 8 })
+        type: faker.random.number({ min: 0, max: 8 }),
+        rule: {
+          key: faker.lorem.sentence(),
+          value: faker.lorem.sentence()
+        }
       };
 
       component.kvp = input;
