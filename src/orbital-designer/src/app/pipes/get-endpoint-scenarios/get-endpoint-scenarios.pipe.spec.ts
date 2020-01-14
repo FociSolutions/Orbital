@@ -5,6 +5,7 @@ import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 
 describe('GetEndpointScenariosPipe', () => {
   it('create an instance', () => {
@@ -30,7 +31,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: new Map<string, string>(),
+        headers: ([] as unknown) as KeyValuePair,
         status: 0,
         body: ''
       },
@@ -61,7 +62,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: new Map<string, string>(),
+        headers: ([] as unknown) as KeyValuePair,
         status: 0,
         body: ''
       },
@@ -108,7 +109,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: new Map<string, string>(),
+        headers: ([] as unknown) as KeyValuePair,
         status: 0,
         body: ''
       },
@@ -139,7 +140,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: new Map<string, string>(),
+        headers: ([] as unknown) as KeyValuePair,
         status: 0,
         body: ''
       },
@@ -186,7 +187,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: new Map<string, string>(),
+        headers: ([] as unknown) as KeyValuePair,
         status: 0,
         body: ''
       },
@@ -217,7 +218,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: new Map<string, string>(),
+        headers: ([] as unknown) as KeyValuePair,
         status: 0,
         body: ''
       },

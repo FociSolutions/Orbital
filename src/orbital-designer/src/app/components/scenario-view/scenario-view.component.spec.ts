@@ -23,6 +23,7 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
+import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -123,7 +124,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: ([] as unknown) as KeyValuePair,
             status: 0,
             body: ''
           },
@@ -167,7 +168,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: ([] as unknown) as KeyValuePair,
             status: 0,
             body: ''
           },
@@ -218,7 +219,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: ([] as unknown) as KeyValuePair,
             status: 0,
             body: ''
           },
@@ -264,7 +265,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: ([] as unknown) as KeyValuePair,
             status: 0,
             body: ''
           },
@@ -308,7 +309,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: ([] as unknown) as KeyValuePair,
             status: 0,
             body: ''
           },
@@ -378,7 +379,7 @@ describe('ScenarioViewComponent', () => {
       verb: mockverb,
       path,
       response: {
-        headers: new Map<string, string>(),
+        headers: ([] as unknown) as KeyValuePair,
         status: 0,
         body: ''
       },
@@ -411,7 +412,7 @@ describe('ScenarioViewComponent', () => {
       verb: mockverb,
       path,
       response: {
-        headers: new Map<string, string>(),
+        headers: ([] as unknown) as KeyValuePair,
         status: 0,
         body: ''
       },
@@ -445,7 +446,7 @@ describe('ScenarioViewComponent', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: ([] as unknown) as KeyValuePair,
           status: 0,
           body: ''
         },

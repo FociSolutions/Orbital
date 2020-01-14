@@ -4,6 +4,7 @@ import { KvpAddComponent } from './kvp-add.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
+import { KeyValue } from '@angular/common';
 
 describe('KvpAddComponent', () => {
   let component: KvpAddComponent;
@@ -59,11 +60,11 @@ describe('KvpAddComponent', () => {
   });
 
   describe('KvpAddComponent.onAdd', () => {
-    it('Should set key and value to kvpAdd and isValid to true', () => {
+    it('Should set key and value to kvpAdd and isValid to true', done => {
       const input = {
         key: faker.lorem.sentence(),
         value: faker.lorem.sentence()
-      };
+      } as KeyValue<string, string>;
       component.key = input.key;
       component.value = input.value;
 
@@ -72,8 +73,11 @@ describe('KvpAddComponent', () => {
           expect(component.isValid).toBeTruthy();
           expect(actual.key).toEqual(input.key);
           expect(actual.value).toEqual(input.value);
+          done();
         },
-        err => fail(`Unexpected error: ${err.message}`)
+        err => {
+          return fail(`Unexpected error: ${err.message}`);
+        }
       );
 
       component.onAdd();

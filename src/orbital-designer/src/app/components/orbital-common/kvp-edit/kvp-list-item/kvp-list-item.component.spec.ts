@@ -3,6 +3,7 @@ import * as faker from 'faker';
 import { KvpListItemComponent } from './kvp-list-item.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
 import { KeyValue } from '@angular/common';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
 describe('KvpListItemComponent', () => {
   let component: KvpListItemComponent;
@@ -30,9 +31,9 @@ describe('KvpListItemComponent', () => {
     });
 
     it('Should contain correct key value pair', () => {
-      const input: KeyValue<string, string> = {
-        key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+      const input: KeyValuePairRule = {
+        rule: (faker.lorem.sentence(), faker.lorem.sentence()),
+        type: faker.random.number({ min: 0, max: 8 })
       };
 
       component.kvp = input;
@@ -43,9 +44,9 @@ describe('KvpListItemComponent', () => {
 
   describe('onRemove', () => {
     it('Should emit a remove event', () => {
-      const input: KeyValue<string, string> = {
-        key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+      const input: KeyValuePairRule = {
+        rule: (faker.lorem.sentence(), faker.lorem.sentence()),
+        type: faker.random.number({ min: 0, max: 8 })
       };
 
       component.kvp = input;
