@@ -15,7 +15,7 @@ variables:
 resources:
   containers:
   - container: node
-    image: selenium/node-chrome:latest
+    image: selenium/node-chrome:3.141.59
     options: --user 0:0
 
 stages:
