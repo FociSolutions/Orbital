@@ -54,7 +54,7 @@ namespace Orbital.Mock.Server
             services.AddSingleton<IAssertFactory, AssertFactory>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
-                var processor = new MockServerProcessor();
+                var processor = new MockServerProcessor(new AssertFactory());
                 processor.Start();
                 return processor;
             });
