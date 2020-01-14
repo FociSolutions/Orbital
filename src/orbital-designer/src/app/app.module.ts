@@ -41,6 +41,9 @@ import { AddResponseComponent } from './components/scenario-editor/add-response/
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
 import { ExportToServerViewComponent } from './export-to-server-view/export-to-server-view.component';
 import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
+import { KvpListItemRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-list-item-rule/kvp-list-item-rule.component';
+import { KvpAddRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-add-rule/kvp-add-rule.component';
+import { KvpEditRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +71,10 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
     GetVerbStringPipe,
     DownloadMockdefinitionsComponent,
     ExportToServerViewComponent,
-    AddResponseComponent
+    AddResponseComponent,
+    KvpListItemRuleComponent,
+    KvpAddRuleComponent,
+    KvpEditRuleComponent
   ],
   imports: [
     BrowserModule,

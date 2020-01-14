@@ -8,6 +8,7 @@ import { KeyValue } from '@angular/common';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
+import { MatCardModule } from '@angular/material';
 
 describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
