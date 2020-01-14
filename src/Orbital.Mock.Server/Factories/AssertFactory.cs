@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Factories.Interfaces;
+﻿using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
@@ -10,43 +9,50 @@ namespace Orbital.Mock.Server.Factories
 {
     public class AssertFactory : IAssertFactory
     {
-        public IEnumerable<Assert> CreateAssert<T, R>(T port, R request) where T : IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort where R: JToken, IEnumerable<KeyValuePair<string, string>>
+        /// <inheritdoc />
+        public IEnumerable<Assert> CreateAssert(IQueryMatchPort port, IEnumerable<KeyValuePair<string, string>> request)
         {
             var asserts = new List<Assert>();
-            switch (port.GetType())
+            foreach (var kvpRequest in request)
             {
-                case IBodyMatchPort bodyType:
-                    var bodyAssert = new Assert() { Actual = request.ToString(), Expect = port.Body, Rule = port.Type };
-                    asserts.Add(bodyAssert);
-                break;
+                AddAsserts(port.Query, asserts, kvpRequest, port.Type);
+            }
 
-                case IQueryMatchPort queryType:
-                    foreach(var kvpRequest in request)
-                    {
-                        AddAsserts(port.Query, asserts, kvpRequest, port.Type);
-                    }
 
-                    break;
+            return asserts;
+        }
 
-                case IHeaderMatchPort headerType:
-                    foreach (var kvpRequest in request)
-                    {
-                        AddAsserts(port.Headers, asserts, kvpRequest, port.Type);
-                    }
-                break;
+        /// <inheritdoc />
+        public IEnumerable<Assert> CreateAssert(IBodyMatchPort port, string request)
+        {
+            var asserts = new List<Assert>();
+            var bodyAssert = new Assert() { Actual = request, Expect = port.Body, Rule = port.Type };
+            asserts.Add(bodyAssert);
+
+            return asserts;
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Assert> CreateAssert(IHeaderMatchPort port, IEnumerable<KeyValuePair<string, string>> request)
+        {
+            var asserts = new List<Assert>();
+
+            foreach (var kvpRequest in request)
+            {
+                AddAsserts(port.Headers, asserts, kvpRequest, port.Type);
             }
 
             return asserts;
         }
 
         /// <summary>
-        /// This will take in the port, the list of asserts and 
+        /// This will take in the port key/value pair list, the list of asserts, and the request key/value pair list
+        /// to confirm there is a match in the keys, create 2 asserts for the key and value, and finally add them to the list.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="portKvs"></param>
-        /// <param name="asserts"></param>
-        /// <param name="kvpRequest"></param>
-        /// <param name="comparerType"></param>
+        /// <param name="portKvs">Key/value pair list from the port</param>
+        /// <param name="asserts">List of asserts to be returned from the factory</param>
+        /// <param name="kvpRequest">List of key/value pairs from the request</param>
+        /// <param name="comparerType">Type of comparer to be used against the request</param>
         private static void AddAsserts(IEnumerable<KeyValuePair<string, string>> portKvs, List<Assert> asserts, KeyValuePair<string, string> kvpRequest, ComparerType comparerType)
         {
             var assert = portKvs.Where(kv => kv.Key == kvpRequest.Key);

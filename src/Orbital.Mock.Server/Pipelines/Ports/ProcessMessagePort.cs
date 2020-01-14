@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
@@ -45,6 +46,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public IEnumerable<KeyValuePair<string, string>> Query { get; set; }
 
         public MockResponse SelectedResponse { get; set; }
+        public ComparerType Type { get; set; }
 
         public IFaultablePort AppendFault(Exception e)
         {
