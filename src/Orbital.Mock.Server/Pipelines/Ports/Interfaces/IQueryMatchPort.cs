@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Rules;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {

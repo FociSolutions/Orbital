@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Http;
+using Orbital.Mock.Server.Factories.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -32,9 +33,9 @@ namespace Orbital.Mock.Server.Pipelines
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
         public bool PipelineIsRunning { get; private set;  }
 
-        public MockServerProcessor()
+        public MockServerProcessor(IAssertFactory assertFactory)
             : this(new PathValidationFilter<ProcessMessagePort>(),
-                  new QueryMatchFilter<ProcessMessagePort>(),
+                  new QueryMatchFilter<ProcessMessagePort>(assertFactory),
                   new EndpointMatchFilter<ProcessMessagePort>(),
                   new BodyMatchFilter<ProcessMessagePort>(),
                   new HeaderMatchFilter<ProcessMessagePort>(),

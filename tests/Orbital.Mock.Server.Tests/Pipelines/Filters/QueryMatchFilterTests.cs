@@ -8,11 +8,14 @@ using Xunit;
 using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Interfaces;
 using Assert = Xunit.Assert;
+using Orbital.Mock.Server.Factories;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class QueryMatchFilterTests
     {
+        private AssertFactory assertFactory = new AssertFactory();
+
         [Fact]
         public void QueryMatchFilterMatchSuccessTest()
         {
@@ -36,7 +39,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Query = fakeScenario.RequestMatchRules.QueryRules.Select(r => r.RuleValue)
             };
             #endregion
-            var Target = new QueryMatchFilter<ProcessMessagePort>();
+            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory);
 
             var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
                 .QueryMatchResults.Where(x =>x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
@@ -50,6 +53,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void QueryMatchFilterNoMatchTest()
         {
             #region TestSetup
+            var assertFactory = new AssertFactory();
             var faker = new Faker();
             var fakerQueryRule = new Faker<KeyValuePairRule>()
                 .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
@@ -70,7 +74,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Query = new Dictionary<string, string>()
             };
             #endregion
-            var Target = new QueryMatchFilter<ProcessMessagePort>();
+            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory);
 
             var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
                 .QueryMatchResults.Where(x => x.Match == MatchResultType.Success).Select(y => y.ScenarioId).ToList();
@@ -88,7 +92,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Query = new Dictionary<string, string>()
             };
             #endregion
-            var Target = new QueryMatchFilter<ProcessMessagePort>();
+            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory);
 
             var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).QueryMatchResults;
 
@@ -110,7 +114,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Faults = new List<string>() { "fault" }
             };
             #endregion
-            var Target = new QueryMatchFilter<ProcessMessagePort>();
+            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory);
 
             var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Faults = input.Faults }).QueryMatchResults;
 

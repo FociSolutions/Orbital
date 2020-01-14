@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
+using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Models.Rules;
@@ -55,7 +56,7 @@ namespace Orbital.Mock.Server.LongRunningTests
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(_validMethods));
-            _mockServerProcessor = new MockServerProcessor();
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory());
         }
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequest()
         {
-            _mockServerProcessor = new MockServerProcessor();
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory());
 
             var scenarios = GenerateRandomScenarios(out var httpContext);
 
@@ -135,7 +136,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequestEnsuringInterpipelineEventsAreProcessed()
         {
-            _mockServerProcessor = new MockServerProcessor();
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory());
 
             var Target = _mockServerProcessor;
 
