@@ -23,6 +23,7 @@ import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { AddBodyRuleContainerComponent } from '../add-body-rule-container/add-body-rule-container.component';
 import { AddBodyRuleComponent } from '../add-body-rule-container/add-body-rule/add-body-rule.component';
 import { BodyRuleListItemComponent } from '../add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -74,8 +75,16 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('add-request-match-rule.handleHeaderKvpOutput', () => {
     it('should set the header match rules if it is truthy', () => {
-      const headerMatchRules = [];
-      headerMatchRules.push(faker.random.word(), faker.random.word());
+      const headerMatchRules: KeyValuePairRule[] = [
+        {
+          type: faker.random.number({ min: 0, max: 8 }),
+          rule: {
+            key: faker.lorem.sentence().toUpperCase(),
+            value: faker.lorem.sentence()
+          }
+        }
+      ];
+
       component.handleHeaderKvpOutput(headerMatchRules);
       expect(component.headerMatchRules).toEqual(headerMatchRules);
     });
@@ -83,8 +92,15 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('add-request-match-rule.handleQueryKvpOutput', () => {
     it('should set the query match rules if it is truthy', () => {
-      const queryMatchRules = [];
-      queryMatchRules.push(faker.random.word(), faker.random.word());
+      const queryMatchRules: KeyValuePairRule[] = [
+        {
+          type: faker.random.number({ min: 0, max: 8 }),
+          rule: {
+            key: faker.lorem.sentence().toUpperCase(),
+            value: faker.lorem.sentence()
+          }
+        }
+      ];
       component.handleQueryKvpOutput(queryMatchRules);
       expect(component.queryMatchRules).toEqual(queryMatchRules);
     });
@@ -102,11 +118,10 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('AddRequestMatchRule.Save', () => {
     it('should not emit the request match rules if the header match rules are invalid', () => {
-      const testQueryMatchRules = new Map<string, string>();
+      const testQueryMatchRules = [];
       const testHeaderMatchRules = null;
       const testBodyMatchRules: BodyRule[] = [{}] as BodyRule[];
 
-      testQueryMatchRules.set(faker.random.word(), faker.random.word());
       component.requestMatchRule.headerRules = testHeaderMatchRules;
       testBodyMatchRules[0].rule = { a: faker.random.word() };
       testBodyMatchRules[0].type = RuleType.JSONEQUALITY;
@@ -118,12 +133,24 @@ describe('AddRequestMatchRuleComponent', () => {
     });
 
     it('should not emit the request match rules if the query match rules are invalid', () => {
-      const testHeaderMatchRules = [];
-      const testBodyMatchRules: BodyRule[] = [{}] as BodyRule[];
-
-      testHeaderMatchRules.push(faker.random.word(), faker.random.word());
-      testBodyMatchRules[0].rule = { a: faker.random.word() };
-      testBodyMatchRules[0].type = RuleType.JSONEQUALITY;
+      const testHeaderMatchRules: KeyValuePairRule[] = [
+        {
+          type: faker.random.number({ min: 0, max: 8 }),
+          rule: {
+            key: faker.lorem.sentence().toUpperCase(),
+            value: faker.lorem.sentence()
+          }
+        }
+      ];
+      const testBodyMatchRules: KeyValuePairRule[] = [
+        {
+          type: null,
+          rule: {
+            key: faker.lorem.sentence().toUpperCase(),
+            value: faker.lorem.sentence()
+          }
+        }
+      ];
 
       spyOn(component.requestMatchRuleOutput, 'emit');
 
@@ -139,11 +166,24 @@ describe('AddRequestMatchRuleComponent', () => {
     });
 
     it('should not emit the request match rules if the body match rules are invalid', () => {
-      const testHeaderMatchRules = [];
-      const testQueryMatchRules = [];
-
-      testHeaderMatchRules.push(faker.random.word(), faker.random.word());
-      testQueryMatchRules.push(faker.random.word(), faker.random.word());
+      const testHeaderMatchRules: KeyValuePairRule[] = [
+        {
+          type: faker.random.number({ min: 0, max: 8 }),
+          rule: {
+            key: faker.lorem.sentence().toUpperCase(),
+            value: faker.lorem.sentence()
+          }
+        }
+      ];
+      const testQueryMatchRules: KeyValuePairRule[] = [
+        {
+          type: faker.random.number({ min: 0, max: 8 }),
+          rule: {
+            key: faker.lorem.sentence().toUpperCase(),
+            value: faker.lorem.sentence()
+          }
+        }
+      ];
 
       spyOn(component.requestMatchRuleOutput, 'emit');
 
