@@ -18,7 +18,6 @@ namespace Orbital.Mock.Server.Factories
                 AddAsserts(port.Query, asserts, kvpRequest, port.Type);
             }
 
-
             return asserts;
         }
 
