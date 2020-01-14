@@ -22,7 +22,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
 
-  headers: KeyValuePair;
+  headers: KeyValuePair[];
 
   /**
    *  The validBodyResponse after it has been validated
@@ -147,7 +147,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * Wait for header FVP map, then trigger emitter if current response is valid
    * @param map Response KVP map
    */
-  saveHeaderMap(headerKvp: KeyValuePair) {
+  saveHeaderMap(headerKvp: KeyValuePair[]) {
     if (this.isStatusCodeValid && this.isBodyValid) {
       if (this.statusCodeEntered) {
         const responseToEmit = {

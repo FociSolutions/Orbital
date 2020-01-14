@@ -6,7 +6,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyValue } from '@angular/common';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 
 describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
@@ -38,7 +38,7 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should return a map with the added a case-sensitive kvp', () => {
-      const kvpToAdd: KeyValuePairRule = {
+      const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: {
           key: faker.lorem.sentence(),
@@ -51,7 +51,7 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should return a map with the added a case-insensitive kvp', () => {
-      const kvpToAdd: KeyValuePairRule = {
+      const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: {
           key: faker.lorem.sentence().toUpperCase(),
@@ -69,7 +69,7 @@ describe('KvpEditComponent', () => {
 
     it('Should not add kvp to map if kvp is empty/null', () => {
       component.savedKvpRules = [];
-      const kvpToAdd: KeyValuePairRule = {
+      const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: null
       };
@@ -87,7 +87,7 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should return a map without the deleted kvp', () => {
-      const kvpToAdd: KeyValuePairRule = {
+      const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: {
           key: faker.lorem.sentence().toUpperCase(),
@@ -107,7 +107,7 @@ describe('KvpEditComponent', () => {
 
     it('Should not be able to delete kvp if map if kvp is empty/null', () => {
       component.savedKvpRules = [];
-      const kvpToAdd: KeyValuePairRule = {
+      const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: null
       };

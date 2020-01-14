@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
+import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-rule.model';
 
 @Component({
   selector: 'app-kvp-add',
@@ -34,11 +35,10 @@ export class KvpAddComponent implements OnInit {
   onAdd() {
     if (!this.isEmpty()) {
       const kvpRuleAdd: KeyValuePair = {
-        rule: { key: this.key.trim(), value: this.value } as KeyValue<
-          string,
-          string
-        >
+        rule: {} as KeyValueIndexSig
       };
+
+      kvpRuleAdd.rule[this.key.trim()] = this.value;
 
       this.kvp.emit(kvpRuleAdd);
       this.isValid = true;
