@@ -3,6 +3,16 @@
     <mat-form-field class="kvp-key">
       <input matInput placeholder="Key" [(ngModel)]="key" name="key-input" />
     </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Select Rule</mat-label>
+      <mat-select [(ngModel)]="selectedValue" name="food">
+        <mat-option *ngFor="let rule of rules" [value]="rule.value">
+          {{rule.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-form-field class="kvp-value">
       <input
         matInput

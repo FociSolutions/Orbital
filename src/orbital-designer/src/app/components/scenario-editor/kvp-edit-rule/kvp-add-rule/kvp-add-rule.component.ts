@@ -7,6 +7,7 @@ import { NGXLogger } from 'ngx-logger';
   templateUrl: './kvp-add-rule.component.html',
   styleUrls: ['./kvp-add-rule.component.scss']
 })
+
 export class KvpAddRuleComponent implements OnInit {
   // The kvp to be outputted to parent
   @Output() kvp = new EventEmitter<KeyValue<string, string>>();
@@ -16,6 +17,15 @@ export class KvpAddRuleComponent implements OnInit {
   value: string;
   isValid: boolean;
   errorMessage: string;
+
+  selectedValue: string;
+
+  rules = [
+    {value: 'starts-with', viewValue: 'Starts With'},
+    {value: 'contains', viewValue: 'Contains'},
+    {value: 'equals', viewValue: 'Equals'},
+    {value: 'regex', viewValue: 'Regex'}
+  ];
 
   constructor(private logger: NGXLogger) {}
 
