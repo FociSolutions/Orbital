@@ -3,6 +3,7 @@ using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Factories.Interfaces;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
@@ -10,8 +11,9 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         where T : IFaultablePort, IQueryMatchPort, IScenariosPort
     {
         private IAssertFactory assertFactory;
+        private IRuleMatcher ruleMatcher;
 
-        public QueryMatchFilter(IAssertFactory assertFactory)
+        public QueryMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
         {
             this.assertFactory = assertFactory;
         }
@@ -29,6 +31,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             foreach (var scenario in port.Scenarios)
             {
                 var assetsList = assertFactory.CreateAssert(port, port.Query);
+
                 port.QueryMatchResults.Add(Matcher.MatchByKeyValuePair(
                     scenario.RequestMatchRules.QueryRules.Select(rules => rules.RuleValue),
                     port.Query,
