@@ -2,12 +2,22 @@
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using Orbital.Mock.Server.Models;
 using System.Linq;
+using Orbital.Mock.Server.Factories.Interfaces;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class HeaderMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IScenariosPort, IHeaderMatchPort
     {
+        private IAssertFactory assertFactory;
+        private IRuleMatcher ruleMatcher;
+
+        public HeaderMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
+        {
+            this.assertFactory = assertFactory;
+            this.ruleMatcher = ruleMatcher;
+        }
         /// <summary>
         /// Process that returns the port after adding a list of scenario Id's
         /// that have a header rule that matches the header of the request.
@@ -20,10 +30,10 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             foreach (var scenario in port.Scenarios)
             {
-                port.HeaderMatchResults.Add(Matcher.MatchByKeyValuePair(
-                    scenario.RequestMatchRules.HeaderRules.Select(rules => rules.RuleValue),
-                    port.Headers,
-                    scenario.Id));
+                var assetsList = assertFactory.CreateAssert(port, port.Headers);
+                port.HeaderMatchResults.Add(ruleMatcher.Match(assetsList.ToArray())
+                ? new MatchResult(MatchResultType.Fail, scenario.Id)
+                : new MatchResult(MatchResultType.Success, scenario.Id));
             }
 
             return port;

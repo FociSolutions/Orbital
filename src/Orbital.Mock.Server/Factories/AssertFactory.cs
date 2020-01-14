@@ -55,7 +55,7 @@ namespace Orbital.Mock.Server.Factories
         private static void AddAsserts(IEnumerable<KeyValuePair<string, string>> portKvs, List<Assert> asserts, KeyValuePair<string, string> kvpRequest, ComparerType comparerType)
         {
             var assert = portKvs.Where(kv => kv.Key == kvpRequest.Key);
-            var queryheaderkeyassert = new Assert() { Actual = kvpRequest.Key, Expect = assert.First().Key, Rule = comparerType };
+            var queryheaderkeyassert = new Assert() { Actual = kvpRequest.Key, Expect = assert.First().Key, Rule = ComparerType.Equal };
             var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = assert.First().Value, Rule = comparerType };
             asserts.Add(queryheaderkeyassert);
             asserts.Add(queryheadervalueassert);

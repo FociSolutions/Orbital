@@ -38,7 +38,7 @@ namespace Orbital.Mock.Server.Pipelines
                   new QueryMatchFilter<ProcessMessagePort>(assertFactory),
                   new EndpointMatchFilter<ProcessMessagePort>(),
                   new BodyMatchFilter<ProcessMessagePort>(),
-                  new HeaderMatchFilter<ProcessMessagePort>(),
+                  new HeaderMatchFilter<ProcessMessagePort>(assertFactory),
                   new ResponseSelectorFilter<ProcessMessagePort>())
         {
         }

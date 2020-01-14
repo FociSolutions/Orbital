@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
+﻿using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System.Collections.Generic;
 

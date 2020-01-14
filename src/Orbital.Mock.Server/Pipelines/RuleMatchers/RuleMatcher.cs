@@ -13,22 +13,25 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
         /// <inheritdoc/>
         public bool Match(Assert[] asserts)
         {
-            var isMatch = false;
+            var isMatch = true;
             foreach(var assert in asserts)
             {
-                switch (assert.Rule)
+                if (isMatch)
                 {
-                    case ComparerType.Regex:
-                       isMatch = RegexComparer.Compare(assert.Actual, assert.Expect);
-                        break;
-                    case ComparerType.Contains:
-                        break;
-                    case ComparerType.StartWith:
-                        break;
-                    case ComparerType.EndWith:
-                        break;
-                    case ComparerType.Equal:
-                        break;
+                    switch (assert.Rule)
+                    {
+                        case ComparerType.Regex:
+                            isMatch = RegexComparer.Compare(assert.Actual, assert.Expect);
+                            break;
+                        case ComparerType.Contains:
+                            break;
+                        case ComparerType.StartWith:
+                            break;
+                        case ComparerType.EndWith:
+                            break;
+                        case ComparerType.Equal:
+                            break;
+                    }
                 }
             }
             return isMatch;

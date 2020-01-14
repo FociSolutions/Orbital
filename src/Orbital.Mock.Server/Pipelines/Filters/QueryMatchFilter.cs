@@ -11,10 +11,12 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         where T : IFaultablePort, IQueryMatchPort, IScenariosPort
     {
         private IAssertFactory assertFactory;
+        private IRuleMatcher ruleMatcher;
 
-        public QueryMatchFilter(IAssertFactory assertFactory)
+        public QueryMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
         {
             this.assertFactory = assertFactory;
+            this.ruleMatcher = ruleMatcher;
         }
         /// <summary>
         /// Process that returns the port after adding a list of scenario Id's
@@ -30,9 +32,9 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             foreach (var scenario in port.Scenarios)
             {
                 var assetsList = assertFactory.CreateAssert(port, port.Query);
-                port.QueryMatchResults.Add(Matcher.MatchByKeyValuePair(
-                    assetsList.ToArray(),
-                    scenario.Id));
+                port.QueryMatchResults.Add(ruleMatcher.Match(assetsList.ToArray())
+                ? new MatchResult(MatchResultType.Fail, scenario.Id)
+                : new MatchResult(MatchResultType.Success, scenario.Id));
                 
             }
 
