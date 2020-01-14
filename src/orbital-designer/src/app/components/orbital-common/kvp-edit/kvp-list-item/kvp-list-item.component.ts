@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 
 @Component({
   selector: 'app-kvp-list-item',
@@ -8,28 +8,31 @@ import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-va
   styleUrls: ['./kvp-list-item.component.scss']
 })
 export class KvpListItemComponent implements OnInit {
-  currentKVP: KeyValuePairRule;
+  currentKVP: KeyValuePairType;
 
   /**
    * The kvp to be deleted by the parent
    */
-  @Output() removeKvp: EventEmitter<KeyValuePairRule>;
+  @Output() removeKvp: EventEmitter<KeyValuePairType>;
 
   constructor() {
-    this.removeKvp = new EventEmitter<KeyValuePairRule>();
+    this.removeKvp = new EventEmitter<KeyValuePairType>();
     this.currentKVP = {
       type: 0,
       rule: {
-        key: '',
-        value: ''
+        '': ''
       }
-    } as KeyValuePairRule;
+    } as KeyValuePairType;
   }
 
   ngOnInit() {}
 
+  get key() {
+    return Object.keys(this.currentKVP.rule)[0];
+  }
+
   @Input()
-  set kvp(input: KeyValuePairRule) {
+  set kvp(input: KeyValuePairType) {
     if (input) {
       this.currentKVP = input;
     }

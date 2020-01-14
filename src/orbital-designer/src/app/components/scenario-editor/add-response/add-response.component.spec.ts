@@ -6,7 +6,7 @@ import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;

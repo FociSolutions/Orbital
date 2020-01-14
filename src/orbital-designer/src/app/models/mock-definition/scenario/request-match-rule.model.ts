@@ -1,12 +1,12 @@
 import { BodyRule } from './body-rule.model';
-import { KeyValuePairRule } from './key-value-pair-rule.model';
+import { KeyValuePairType } from './key-value-pair-type.model';
 
 /**
  * Model representation of a request matching rule
  */
 export interface RequestMatchRule {
-  headerRules: KeyValuePairRule[];
-  queryRules: KeyValuePairRule[];
+  headerRules: KeyValuePairType[];
+  queryRules: KeyValuePairType[];
   bodyRules: BodyRule[];
 }
 // <br/>

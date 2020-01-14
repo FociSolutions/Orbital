@@ -1,10 +1,10 @@
-import { KeyValue } from '@angular/common';
 import { RuleType } from './rule.type';
+import { KeyValueIndexSig } from './key-value-rule.model';
 
 /**
  * Model representation of KeyValue pair matching rule
  */
-export interface KeyValuePairRule {
+export interface KeyValuePairType {
   type: RuleType;
-  rule: KeyValue<string, string>;
+  rule: KeyValueIndexSig;
 }

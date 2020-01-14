@@ -23,7 +23,7 @@ import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { AddBodyRuleContainerComponent } from '../add-body-rule-container/add-body-rule-container.component';
 import { AddBodyRuleComponent } from '../add-body-rule-container/add-body-rule/add-body-rule.component';
 import { BodyRuleListItemComponent } from '../add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -75,7 +75,7 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('add-request-match-rule.handleHeaderKvpOutput', () => {
     it('should set the header match rules if it is truthy', () => {
-      const headerMatchRules: KeyValuePairRule[] = [
+      const headerMatchRules: KeyValuePairType[] = [
         {
           type: faker.random.number({ min: 0, max: 8 }),
           rule: {
@@ -92,7 +92,7 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('add-request-match-rule.handleQueryKvpOutput', () => {
     it('should set the query match rules if it is truthy', () => {
-      const queryMatchRules: KeyValuePairRule[] = [
+      const queryMatchRules: KeyValuePairType[] = [
         {
           type: faker.random.number({ min: 0, max: 8 }),
           rule: {
@@ -133,7 +133,7 @@ describe('AddRequestMatchRuleComponent', () => {
     });
 
     it('should not emit the request match rules if the query match rules are invalid', () => {
-      const testHeaderMatchRules: KeyValuePairRule[] = [
+      const testHeaderMatchRules: KeyValuePairType[] = [
         {
           type: faker.random.number({ min: 0, max: 8 }),
           rule: {
@@ -142,7 +142,7 @@ describe('AddRequestMatchRuleComponent', () => {
           }
         }
       ];
-      const testBodyMatchRules: KeyValuePairRule[] = [
+      const testBodyMatchRules: KeyValuePairType[] = [
         {
           type: null,
           rule: {
@@ -166,7 +166,7 @@ describe('AddRequestMatchRuleComponent', () => {
     });
 
     it('should not emit the request match rules if the body match rules are invalid', () => {
-      const testHeaderMatchRules: KeyValuePairRule[] = [
+      const testHeaderMatchRules: KeyValuePairType[] = [
         {
           type: faker.random.number({ min: 0, max: 8 }),
           rule: {
@@ -175,7 +175,7 @@ describe('AddRequestMatchRuleComponent', () => {
           }
         }
       ];
-      const testQueryMatchRules: KeyValuePairRule[] = [
+      const testQueryMatchRules: KeyValuePairType[] = [
         {
           type: faker.random.number({ min: 0, max: 8 }),
           rule: {
