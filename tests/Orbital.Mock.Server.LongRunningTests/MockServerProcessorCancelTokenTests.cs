@@ -18,6 +18,7 @@ using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Orbital.Mock.Server.Tests;
 using Orbital.Mock.Server.Tests.Pipelines.Filters;
 using Xunit;
@@ -56,7 +57,7 @@ namespace Orbital.Mock.Server.LongRunningTests
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(_validMethods));
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory());
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequest()
         {
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory());
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
 
             var scenarios = GenerateRandomScenarios(out var httpContext);
 
@@ -136,7 +137,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequestEnsuringInterpipelineEventsAreProcessed()
         {
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory());
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
 
             var Target = _mockServerProcessor;
 
