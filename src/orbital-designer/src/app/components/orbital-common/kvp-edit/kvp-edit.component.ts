@@ -61,25 +61,30 @@ export class KvpEditComponent implements OnInit {
    * @param kvp The KeyValue pair being taken in from the child component to be added
    */
   addKvpRuleToMap(kvpRuleToAdd: KeyValuePairRule) {
-    if (
-      this.savedKvpRules.length !== 0 ||
-      !this.savedKvpRules
-        .map(item => item.rule.key)
-        .includes(kvpRuleToAdd.rule.key)
-    ) {
-      kvpRuleToAdd.type = RuleType.TEXTEQUALS;
+    if (kvpRuleToAdd.rule) {
+      if (
+        this.savedKvpRules.length !== 0 ||
+        !this.savedKvpRules
+          .map(item => item.rule.key)
+          .includes(kvpRuleToAdd.rule.key)
+      ) {
+        kvpRuleToAdd.type = RuleType.TEXTEQUALS;
 
-      if (this.isCaseSensitive) {
-        this.savedKvpRules.push(kvpRuleToAdd);
-        this.logger.debug('Adding a case sensitive KVP to Map', kvpRuleToAdd);
+        if (this.isCaseSensitive) {
+          this.savedKvpRules.push(kvpRuleToAdd);
+          this.logger.debug('Adding a case sensitive KVP to Map', kvpRuleToAdd);
+        } else {
+          kvpRuleToAdd.rule.key = kvpRuleToAdd.rule.key.toLowerCase();
+          this.savedKvpRules.push(kvpRuleToAdd);
+          this.logger.debug(
+            'Adding a case insensitive KVP to Map',
+            kvpRuleToAdd
+          );
+        }
       } else {
-        kvpRuleToAdd.rule.key.toLowerCase();
-        this.savedKvpRules.push(kvpRuleToAdd);
-        this.logger.debug('Adding a case insensitive KVP to Map', kvpRuleToAdd);
+        this.deleteKvpRuleFromMap(kvpRuleToAdd);
+        this.addKvpRuleToMap(kvpRuleToAdd);
       }
-    } else {
-      this.deleteKvpRuleFromMap(kvpRuleToAdd);
-      this.addKvpRuleToMap(kvpRuleToAdd);
     }
   }
   /**
@@ -88,6 +93,7 @@ export class KvpEditComponent implements OnInit {
    */
   deleteKvpRuleFromMap(kvpRuleToDelete: KeyValuePairRule) {
     if (
+      kvpRuleToDelete.rule &&
       this.savedKvpRules
         .map(item => item.rule.key)
         .includes(kvpRuleToDelete.rule.key)

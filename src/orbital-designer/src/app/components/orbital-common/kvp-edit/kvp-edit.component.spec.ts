@@ -49,9 +49,11 @@ describe('KvpEditComponent', () => {
 
     it('Should return a map with the added a case-insensitive kvp', () => {
       const kvpToAdd: KeyValuePairRule = {
-        rule: ((faker.lorem.sentence().toUpperCase(),
-        faker.lorem.sentence()) as unknown) as KeyValue<string, string>,
-        type: faker.random.number({ min: 0, max: 8 })
+        type: faker.random.number({ min: 0, max: 8 }),
+        rule: {
+          key: faker.lorem.sentence().toUpperCase(),
+          value: faker.lorem.sentence()
+        }
       };
       component.isCaseSensitive = false;
       component.addKvpRuleToMap(kvpToAdd);
@@ -65,15 +67,13 @@ describe('KvpEditComponent', () => {
     it('Should not add kvp to map if kvp is empty/null', () => {
       component.savedKvpRules = [];
       const kvpToAdd: KeyValuePairRule = {
-        rule: null,
-        type: faker.random.number({ min: 0, max: 8 })
+        type: faker.random.number({ min: 0, max: 8 }),
+        rule: null
       };
 
       component.addKvpRuleToMap(kvpToAdd);
       expect(
-        component.savedKvpRules.find(
-          element => kvpToAdd.rule.key === element.rule.key
-        )
+        component.savedKvpRules.find(element => element.rule === null)
       ).toBeFalsy();
     });
   });
@@ -85,8 +85,11 @@ describe('KvpEditComponent', () => {
 
     it('Should return a map without the deleted kvp', () => {
       const kvpToAdd: KeyValuePairRule = {
-        rule: (faker.lorem.sentence().toUpperCase(), faker.lorem.sentence()),
-        type: faker.random.number({ min: 0, max: 8 })
+        type: faker.random.number({ min: 0, max: 8 }),
+        rule: {
+          key: faker.lorem.sentence().toUpperCase(),
+          value: faker.lorem.sentence()
+        }
       };
 
       component.addKvpRuleToMap(kvpToAdd);
@@ -102,8 +105,8 @@ describe('KvpEditComponent', () => {
     it('Should not be able to delete kvp if map if kvp is empty/null', () => {
       component.savedKvpRules = [];
       const kvpToAdd: KeyValuePairRule = {
-        rule: null,
-        type: faker.random.number({ min: 0, max: 8 })
+        type: faker.random.number({ min: 0, max: 8 }),
+        rule: null
       };
 
       component.addKvpRuleToMap(kvpToAdd);

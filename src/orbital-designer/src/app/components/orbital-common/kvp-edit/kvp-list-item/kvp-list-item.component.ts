@@ -17,7 +17,13 @@ export class KvpListItemComponent implements OnInit {
 
   constructor() {
     this.removeKvp = new EventEmitter<KeyValuePairRule>();
-    this.currentKVP = {} as KeyValuePairRule;
+    this.currentKVP = {
+      type: 0,
+      rule: {
+        key: '',
+        value: ''
+      }
+    } as KeyValuePairRule;
   }
 
   ngOnInit() {}

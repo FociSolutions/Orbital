@@ -71,8 +71,8 @@ describe('KvpAddComponent', () => {
       component.kvp.subscribe(
         actual => {
           expect(component.isValid).toBeTruthy();
-          expect(actual.key).toEqual(input.key);
-          expect(actual.value).toEqual(input.value);
+          expect(actual.rule.key).toEqual(input.key);
+          expect(actual.rule.value).toEqual(input.value);
           done();
         },
         err => {
