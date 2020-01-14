@@ -1,16 +1,31 @@
-<mat-card>
-  <div class="kvp-added-item">
-    <div class="kvp-added-key">
-      {{ currentKVP.key }}
-    </div>
-    <div class="kvp-added-value">
-      {{ currentKVP.value }}
-    </div>
+<mat-card class="kvp-add-card">
+  <form class="kvp-add">
+    <mat-form-field class="kvp-key">
+      <input matInput placeholder="Key" [(ngModel)]="currentKVP.key" name="key-input" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Select Rule</mat-label>
+      <mat-select [(ngModel)]="type" name="type">
+        <mat-option *ngFor="let rule of rules" [value]="rule.value">
+          {{rule.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="kvp-value">
+      <input
+        matInput
+        placeholder="Value"
+        [(ngModel)]="currentKVP.value"
+        name="value-input"
+      />
+    </mat-form-field>
 
     <div class="delete-button-container">
       <button class="delete-button" (click)="onRemove()">
         <mat-icon>close</mat-icon>
       </button>
     </div>
-  </div>
+  </form>
 </mat-card>

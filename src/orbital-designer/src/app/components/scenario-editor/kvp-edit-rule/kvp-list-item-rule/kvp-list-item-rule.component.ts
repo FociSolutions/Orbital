@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 @Component({
   selector: 'app-kvp-list-item-rule',
@@ -8,6 +9,14 @@ import { KeyValue } from '@angular/common';
 })
 export class KvpListItemRuleComponent implements OnInit {
   currentKVP: KeyValue<string, string>;
+
+  type: RuleType;
+  rules = [
+    {value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With'},
+    {value: RuleType.TEXTCONTAINS, viewValue: 'Contains'},
+    {value: RuleType.TEXTEQUALS, viewValue: 'Equals'},
+    {value: RuleType.REGEX, viewValue: 'Regex'}
+  ];
 
   /**
    * The kvp to be deleted by the parent

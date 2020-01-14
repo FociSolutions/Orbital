@@ -14,3 +14,19 @@ p.description {
 .divider-padding {
   margin-top: 1em;
 }
+
+.kvp-edit-rule {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kvp-edit-rule-key {
+  padding-left: 1.3em;
+  padding-right: 5em;
+  width: 12%;
+}
+
+.kvp-edit-rule-value {
+  padding-right: 5em;
+}
