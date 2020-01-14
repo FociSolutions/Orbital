@@ -13,7 +13,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces
         /// Method to determine matching
         /// </summary>
         /// <param name="asserts">Collection of comparison properties</param>
-        /// <returns></returns>
+        /// <returns>Boolean true or false value</returns>
         bool Match(Assert[] asserts);
     }
 }

@@ -8,11 +8,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
     /// </summary>
     abstract class RuleMatcher : IRuleMatcher
     {
-        /// <summary>
-        /// Method to match properties in the assert collection
-        /// </summary>
-        /// <param name="asserts">collection of assert objects</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public abstract bool Match(Assert[] asserts);
     }
 }
