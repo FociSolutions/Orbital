@@ -6,7 +6,7 @@
         "title": "Get Header List Filtered",
         "description": "Gets the list of pets but filters out based on animal type"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/petHeaders",
       "response": {
         "headers": {},
@@ -29,7 +29,7 @@
         "title": "Get List Success",
         "description": "Retrieves a list of pets"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/petHeaders",
       "response": {
         "headers": {

@@ -129,6 +129,7 @@ namespace Orbital.Mock.Server.Pipelines
 
 
             Enum.TryParse(input.ServerHttpRequest.Method, true, out HttpMethod verb);
+            
 
             var port = new ProcessMessagePort()
             {
