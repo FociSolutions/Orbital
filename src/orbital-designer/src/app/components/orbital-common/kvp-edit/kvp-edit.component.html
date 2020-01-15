@@ -8,9 +8,11 @@
 <div *ngIf="!this.savedKvpRules?.length">
   No rules Added
 </div>
-<div *ngFor="let kv of savedKvpRules">
-  <app-kvp-list-item
-    [kvp]="kv"
-    (removeKvp)="deleteKvpRuleFromMap($event)"
-  ></app-kvp-list-item>
+<div *ngIf="this.savedKvpRules?.length">
+  <div *ngFor="let kv of savedKvpRules">
+    <app-kvp-list-item
+      [kvp]="kv"
+      (removeKvp)="deleteKvpRuleFromMap($event)"
+    ></app-kvp-list-item>
+  </div>
 </div>

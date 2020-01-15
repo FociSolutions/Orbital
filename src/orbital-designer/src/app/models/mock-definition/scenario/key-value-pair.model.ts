@@ -1,4 +1,4 @@
-import { KeyValueIndexSig } from './key-value-rule.model';
+import { KeyValueIndexSig } from './key-value-index-sig.model';
 
 /**
  * Model representation of KeyValue pair
