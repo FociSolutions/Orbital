@@ -9,6 +9,7 @@ import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 import { MatCardModule } from '@angular/material';
+import { KvpListItemRuleComponent } from '../../scenario-editor/kvp-edit-rule/kvp-list-item-rule/kvp-list-item-rule.component';
 
 describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
@@ -20,7 +21,7 @@ describe('KvpEditComponent', () => {
         OrbitalCommonModule,
         LoggerTestingModule,
         BrowserAnimationsModule
-      ]
+      ], declarations: [KvpListItemRuleComponent]
     }).compileComponents();
   }));
 

@@ -2,14 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpListItemRuleComponent } from './kvp-list-item-rule.component';
 import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
-import { KeyValue } from '@angular/common';
 import { MatCardModule } from '@angular/material';
 import { KvpAddRuleComponent } from '../kvp-add-rule/kvp-add-rule.component';
 import { KvpEditRuleComponent } from '../kvp-edit-rule.component';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 describe('KvpListItemRuleComponent', () => {
   let component: KvpListItemRuleComponent;
@@ -41,9 +40,11 @@ describe('KvpListItemRuleComponent', () => {
     });
 
     it('Should contain correct key value pair', () => {
-      const input: KeyValuePairRule = {
+      const kvp = {};
+      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
+      const input: KeyValuePairType = {
         type: RuleType.TEXTEQUALS,
-        rule: {key: faker.lorem.sentence(), value: faker.lorem.sentence()} as KeyValue<string, string>
+        rule: kvp as KeyValueIndexSig
       };
 
       component.kvp = input;
@@ -54,9 +55,11 @@ describe('KvpListItemRuleComponent', () => {
 
   describe('onRemove', () => {
     it('Should emit a remove event', () => {
-      const input: KeyValuePairRule = {
+      const kvp = {};
+      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
+      const input: KeyValuePairType = {
         type: RuleType.TEXTEQUALS,
-        rule: {key: faker.lorem.sentence(), value: faker.lorem.sentence()} as KeyValue<string, string>
+        rule: kvp as KeyValueIndexSig
       };
 
       component.kvp = input;

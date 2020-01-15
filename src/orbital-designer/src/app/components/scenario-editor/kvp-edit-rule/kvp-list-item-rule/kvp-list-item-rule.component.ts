@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-kvp-list-item-rule',
@@ -9,7 +11,35 @@ import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-va
   styleUrls: ['./kvp-list-item-rule.component.scss']
 })
 export class KvpListItemRuleComponent implements OnInit {
-  currentKVP: KeyValuePairRule;
+  currentKVP: KeyValuePairType;
+
+  get key(): string {
+    return KeyValueIndexSig.getKey(this.currentKVP.rule);
+  }
+
+  get value(): string {
+    return KeyValueIndexSig.getValue(this.currentKVP.rule);
+  }
+
+  get ruleType(): RuleType {
+    return this.currentKVP.type;
+  }
+
+  // tslint:disable-next-line: adjacent-overload-signatures
+  set key(localKey: string) {
+    this.logger.debug("SET KEY", localKey);
+    this.currentKVP.rule = KeyValueIndexSig.setKey(localKey, this.currentKVP.rule);
+  }
+
+  // tslint:disable-next-line: adjacent-overload-signatures
+  set value(value: string) {
+    this.currentKVP.rule = KeyValueIndexSig.setValue(value, this.currentKVP.rule);
+  }
+
+  // tslint:disable-next-line: adjacent-overload-signatures
+  set ruleType(rule: RuleType) {
+    this.currentKVP.type = rule;
+  }
 
   type: RuleType;
   rules = [
@@ -26,17 +56,22 @@ export class KvpListItemRuleComponent implements OnInit {
   /**
    * The kvp to be deleted by the parent
    */
-  @Output() removeKvp: EventEmitter<KeyValuePairRule>;
+  @Output() removeKvp: EventEmitter<KeyValuePairType>;
 
-  constructor() {
-    this.removeKvp = new EventEmitter<KeyValuePairRule>();
-    this.currentKVP = {type: RuleType.TEXTEQUALS, rule: { key: '', value: '' } as KeyValue<string, string>};
+  constructor(private logger: NGXLogger) {
+    this.removeKvp = new EventEmitter<KeyValuePairType>();
+    let kvp = {"test": "testval"};
+    this.currentKVP = {type: RuleType.TEXTEQUALS, rule: kvp as KeyValueIndexSig} as KeyValuePairType;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.logger.debug("GOt to here");
+    this.key = "test key 2";
+    this.value = "test value 2";
+  }
 
   @Input()
-  set kvp(input: KeyValuePairRule) {
+  set kvp(input: KeyValuePairType) {
     if (input) {
       this.currentKVP = input;
     }

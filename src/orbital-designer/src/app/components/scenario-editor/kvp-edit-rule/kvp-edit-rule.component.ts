@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
+import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 
 @Component({
   selector: 'app-kvp-edit-rule',
@@ -20,7 +21,7 @@ export class KvpEditRuleComponent implements OnInit {
   /**
    * The new kvp map with the new kvp added in
    */
-  savedKvpMap: KeyValuePairRule[];
+  savedKvpMap: KeyValuePairType[];
 
   /**
    * The event emitter for the savedKvpMap
@@ -28,14 +29,9 @@ export class KvpEditRuleComponent implements OnInit {
   @Output() savedKvpMapEmitter;
 
   constructor(private logger: NGXLogger) {
-    this.savedKvpMap = [{
-      type: RuleType.JSONCONTAINS,
-      rule: {
-        key: 'test key',
-        value: 'test value'
-      }
-    }];
-    this.savedKvpMapEmitter = new EventEmitter<KeyValuePairRule>();
+    this.savedKvpMapEmitter = new EventEmitter<KeyValuePairType>();
+    let kvp = {"test": "testval"};
+    this.savedKvpMap = [{type: RuleType.TEXTEQUALS as RuleType, rule: kvp as KeyValueIndexSig}] as KeyValuePairType[];
   }
 
   ngOnInit() { }
@@ -55,7 +51,7 @@ export class KvpEditRuleComponent implements OnInit {
    * The existing KVP map
    */
   @Input()
-  set kvpMap(savedKvpMap: KeyValuePairRule[]) {
+  set kvpMap(savedKvpMap: KeyValuePairType[]) {
     if (savedKvpMap) {
       this.savedKvpMap = savedKvpMap;
     }
@@ -65,7 +61,7 @@ export class KvpEditRuleComponent implements OnInit {
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the map
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
-  deleteKvpFromMap(kvpToDelete: KeyValuePairRule) {
+  deleteKvpFromRule(kvpToDelete: KeyValuePairType) {
     if (!!kvpToDelete && !!kvpToDelete.rule.key) {
       this.savedKvpMap = this.savedKvpMap.filter(element => element.rule.key !== kvpToDelete.rule.key);
       this.logger.debug('Delete Header Rule from Map', kvpToDelete);
