@@ -68,13 +68,11 @@ export class OrbitalAdminService {
       });
     }
 
-    return this.httpClient
-      .post<boolean>(url, Json.mapToObject(mockDefinitionToExport))
-      .pipe(
-        catchError(error => {
-          return throwError(error);
-        })
-      );
+    return this.httpClient.post<boolean>(url, mockDefinitionToExport).pipe(
+      catchError(error => {
+        return throwError(error);
+      })
+    );
   }
 
   /**

@@ -8,7 +8,7 @@ namespace Orbital.Mock.Server.Models.Rules
 {
     public class KeyValuePairRule : IEquatable<KeyValuePairRule>, IRule
     {
-       // [JsonConverter(typeof(KeyValueConverter))]
+        [JsonConverter(typeof(KeyValueConverter))]
         [JsonProperty("rule")]
         public KeyValuePair<string, string> RuleValue { get; set; }
 
