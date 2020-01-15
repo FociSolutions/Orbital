@@ -5,6 +5,8 @@ import { OrbitalCommonModule } from '../../orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { KeyValue } from '@angular/common';
+import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 describe('KvpAddComponent', () => {
   let component: KvpAddComponent;
@@ -61,18 +63,23 @@ describe('KvpAddComponent', () => {
 
   describe('KvpAddComponent.onAdd', () => {
     it('Should set key and value to kvpAdd and isValid to true', done => {
+      let kvp = {} as KeyValueIndexSig;
+      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
+
       const input = {
-        key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
-      } as KeyValue<string, string>;
-      component.key = input.key;
-      component.value = input.value;
+        rule: kvp
+      } as KeyValuePair;
+
+      component.key = KeyValueIndexSig.getKey(input.rule);
+      component.value = KeyValueIndexSig.getValue(input.rule);
 
       component.kvp.subscribe(
         actual => {
           expect(component.isValid).toBeTruthy();
-          expect(actual.rule.key).toEqual(input.key);
-          expect(actual.rule.value).toEqual(input.value);
+          expect(KeyValueIndexSig.getKey(actual.rule)).toEqual(component.key);
+          expect(KeyValueIndexSig.getValue(actual.rule)).toEqual(
+            component.value
+          );
           done();
         },
         err => {

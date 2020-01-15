@@ -124,7 +124,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: ([] as unknown) as KeyValuePair,
+            headers: {},
             status: 0,
             body: ''
           },
@@ -168,7 +168,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: ([] as unknown) as KeyValuePair,
+            headers: {},
             status: 0,
             body: ''
           },
@@ -219,7 +219,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: ([] as unknown) as KeyValuePair,
+            headers: {},
             status: 0,
             body: ''
           },
@@ -265,7 +265,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: ([] as unknown) as KeyValuePair,
+            headers: {},
             status: 0,
             body: ''
           },
@@ -309,7 +309,7 @@ describe('ScenarioViewComponent', () => {
           verb: mockverb,
           path,
           response: {
-            headers: ([] as unknown) as KeyValuePair,
+            headers: {},
             status: 0,
             body: ''
           },
@@ -379,7 +379,7 @@ describe('ScenarioViewComponent', () => {
       verb: mockverb,
       path,
       response: {
-        headers: ([] as unknown) as KeyValuePair,
+        headers: {},
         status: 0,
         body: ''
       },
@@ -412,7 +412,7 @@ describe('ScenarioViewComponent', () => {
       verb: mockverb,
       path,
       response: {
-        headers: ([] as unknown) as KeyValuePair,
+        headers: {},
         status: 0,
         body: ''
       },
@@ -446,7 +446,7 @@ describe('ScenarioViewComponent', () => {
         verb: mockverb,
         path,
         response: {
-          headers: ([] as unknown) as KeyValuePair,
+          headers: {},
           status: 0,
           body: ''
         },

@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyValue } from '@angular/common';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
@@ -51,18 +52,19 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should return a map with the added a case-insensitive kvp', () => {
+      let kvp = {} as KeyValueIndexSig;
+      kvp[faker.lorem.sentence().toUpperCase()] = faker.lorem.sentence();
       const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
-        rule: {
-          key: faker.lorem.sentence().toUpperCase(),
-          value: faker.lorem.sentence()
-        }
+        rule: kvp
       };
       component.isCaseSensitive = false;
       component.addKvpRuleToMap(kvpToAdd);
       expect(
         component.savedKvpRules.find(
-          element => kvpToAdd.rule.key.toLowerCase() === element.rule.key
+          element =>
+            KeyValueIndexSig.getKey(kvpToAdd.rule).toLowerCase() ===
+            KeyValueIndexSig.getKey(element.rule)
         )
       ).toBeTruthy();
     });
