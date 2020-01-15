@@ -31,7 +31,6 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             foreach (var scenario in port.Scenarios)
             {
-                port.Type = scenario.RequestMatchRules.QueryRules.First().Type;
                 var assetsList = assertFactory.CreateAssert(scenario.RequestMatchRules.QueryRules, port.Query);
                 port.QueryMatchResults.Add(ruleMatcher.Match(assetsList.ToArray())
                 ? new MatchResult(MatchResultType.Success, scenario.Id)

@@ -44,6 +44,8 @@ namespace Orbital.Mock.Server.Factories
         /// <param name="kvpRequest">List of key/value pairs from the request</param>
         private void AddAsserts(ICollection<KeyValuePairRule> rules, List<Assert> asserts, KeyValuePair<string, string> kvpRequest)
         {
+            var rulesfound = rules.Where(kv => kv.RuleValue.Key == kvpRequest.Key);
+            if (rulesfound.Count() == 0) { return; }
             var rule = rules.Where(kv => kv.RuleValue.Key == kvpRequest.Key).First();
             var matchedAssertWithRequest = asserts.Where(kv => kv.Expect == kvpRequest.Key).First();
             var index = asserts.FindIndex(a => a.Expect == matchedAssertWithRequest.Expect);
