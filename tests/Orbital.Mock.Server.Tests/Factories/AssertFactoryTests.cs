@@ -40,11 +40,10 @@ namespace Orbital.Mock.Server.Tests.Factories
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Query = fakeScenario.RequestMatchRules.QueryRules.Select(r => r.RuleValue)
             };
-            var port = new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query, Type = ComparerType.Equal };
 
             #endregion
 
-            var actual = Target.CreateAssert(port as IQueryMatchPort, input.Query);
+            var actual = Target.CreateAssert(fakeScenario.RequestMatchRules.QueryRules, input.Query);
 
             foreach(var expected in input.Query)
             {
@@ -77,11 +76,10 @@ namespace Orbital.Mock.Server.Tests.Factories
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Header = fakeScenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue)
             };
-            var port = new ProcessMessagePort { Scenarios = input.Scenarios,  Headers = input.Header, Type = ComparerType.Equal };
 
             #endregion
 
-            var actual = Target.CreateAssert(port as IHeaderMatchPort, input.Header);
+            var actual = Target.CreateAssert(fakeScenario.RequestMatchRules.HeaderRules, input.Header);
 
             foreach (var expected in input.Header)
             {
@@ -113,11 +111,10 @@ namespace Orbital.Mock.Server.Tests.Factories
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()
             };
-            var port = new ProcessMessagePort { Scenarios = input.Scenarios, Body = input.Body, Type = ComparerType.Equal };
 
             #endregion
 
-            var actual = Target.CreateAssert(port, input.Body);
+            var actual = Target.CreateAssert(fakeScenario.RequestMatchRules.BodyRules, input.Body);
             
             Assert.NotNull(actual.Select(a => a.Expect == input.Body));
         }

@@ -40,13 +40,14 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             }
             else
             {
-
+                
                 foreach (var scenario in port.Scenarios)
                 {
-                    var assetsList = assertFactory.CreateAssert(port, port.Body);
+                    port.Type = scenario.RequestMatchRules.BodyRules.First().Type;
+                    var assetsList = assertFactory.CreateAssert(scenario.RequestMatchRules.BodyRules, port.Body);
                     port.BodyMatchResults.Add(ruleMatcher.Match(assetsList.ToArray())
-                    ? new MatchResult(MatchResultType.Fail, scenario.Id)
-                    : new MatchResult(MatchResultType.Success, scenario.Id));
+                    ? new MatchResult(MatchResultType.Success, scenario.Id)
+                    : new MatchResult(MatchResultType.Fail, scenario.Id));
 
                 }
             }

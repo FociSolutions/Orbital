@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System;
 using System.Collections.Generic;
