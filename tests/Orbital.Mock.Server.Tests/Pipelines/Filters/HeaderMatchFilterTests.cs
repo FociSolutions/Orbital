@@ -25,10 +25,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public HeaderMatchFilterTests()
         {
             Randomizer.Seed = new Random(FilterTestHelpers.Seed);
-            var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() {Type =  f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+
+            var fakerHeaderRule = new Faker<KeyValuePairRule>()
+                .CustomInstantiator(f => new KeyValuePairRule() {Type =  f.PickRandomWithout<ComparerType>(ComparerType.Regex), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
-                                        .RuleFor(m => m.HeaderRules, f => fakerHeaderQueryRule.Generate(5));
+                                        .RuleFor(m => m.HeaderRules, f => fakerHeaderRule.Generate(5));
 
             scenarioFaker = new Faker<Scenario>()
                                 .RuleFor(m => m.RequestMatchRules, requestMatchRulesFake)
@@ -96,7 +97,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         }
 
         [Fact]
-        public void HeaderMatchRulesHasMoreHeadersThenRequestHeadersFailure()
+        public void HeaderMatchRulesHasMoreHeadersThanRequestHeadersFailure()
         {
             #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
@@ -148,9 +149,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             var Actual = Target.Process(port)
                 .HeaderMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
-            var Expected = new List<string>() { fakeScenario.Id };
+            var Expected =  fakeScenario.Id;
 
-            Assert.Equal(Expected, Actual);
+            Assert.Contains(Expected, Actual);
         }
 
         [Fact]
@@ -163,8 +164,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Headers = new Dictionary<string, string>()
-
+                Headers = fakeScenario.RequestMatchRules.HeaderRules.Select(x =>
+                                                        new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique"))
             };
 
             #endregion
