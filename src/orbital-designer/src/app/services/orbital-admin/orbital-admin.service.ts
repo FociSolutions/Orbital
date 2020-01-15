@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable, throwError, of, from } from 'rxjs';
@@ -68,7 +68,11 @@ export class OrbitalAdminService {
       });
     }
 
-    return this.httpClient.post<boolean>(url, mockDefinitionToExport).pipe(
+    this.logger.debug( JSON.stringify(Json.mapToObject(mockdefinition)));
+
+    return this.httpClient.post<boolean>(url,
+      JSON.stringify(Json.mapToObject(mockdefinition)), { headers: new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'})
+    }).pipe(
       catchError(error => {
         return throwError(error);
       })
