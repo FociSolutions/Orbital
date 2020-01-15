@@ -46,7 +46,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: ([] as unknown) as KeyValuePair,
+          headers: {},
           status: 0,
           body: ''
         },
@@ -96,7 +96,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: ([] as unknown) as KeyValuePair,
+          headers: {},
           status: 0,
           body: ''
         },
@@ -162,7 +162,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: ([] as unknown) as KeyValuePair,
+          headers: {},
           status: 0,
           body: ''
         },
@@ -214,7 +214,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: ([] as unknown) as KeyValuePair,
+          headers: {},
           status: 0,
           body: ''
         },
@@ -265,7 +265,7 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: ([] as unknown) as KeyValuePair,
+          headers: {},
           status: 0,
           body: ''
         },

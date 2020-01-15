@@ -31,7 +31,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: ([] as unknown) as KeyValuePair,
+        headers: {},
         status: 0,
         body: ''
       },
@@ -62,7 +62,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: ([] as unknown) as KeyValuePair,
+        headers: {},
         status: 0,
         body: ''
       },
@@ -109,7 +109,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: ([] as unknown) as KeyValuePair,
+        headers: {},
         status: 0,
         body: ''
       },
@@ -140,7 +140,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: ([] as unknown) as KeyValuePair,
+        headers: {},
         status: 0,
         body: ''
       },
@@ -187,7 +187,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: ([] as unknown) as KeyValuePair,
+        headers: {},
         status: 0,
         body: ''
       },
@@ -218,7 +218,7 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: ([] as unknown) as KeyValuePair,
+        headers: {},
         status: 0,
         body: ''
       },

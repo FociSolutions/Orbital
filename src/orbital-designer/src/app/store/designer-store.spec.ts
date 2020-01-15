@@ -59,7 +59,7 @@ describe('DesignerStore', () => {
         verb: mockverb,
         path,
         response: {
-          headers: ([] as unknown) as KeyValuePair,
+          headers: {},
           status: 0,
           body: ''
         },
@@ -231,7 +231,7 @@ describe('DesignerStore', () => {
           verb: mockverb,
           path,
           response: {
-            headers: ([] as unknown) as KeyValuePair,
+            headers: {},
             status: 0,
             body: ''
           },
@@ -432,7 +432,7 @@ describe('DesignerStore', () => {
           verb: mockverb,
           path,
           response: {
-            headers: ([] as unknown) as KeyValuePair,
+            headers: {},
             status: 0,
             body: ''
           },
