@@ -25,18 +25,14 @@ export class KvpListItemRuleComponent implements OnInit {
     return this.currentKVP.type;
   }
 
-  // tslint:disable-next-line: adjacent-overload-signatures
   set key(localKey: string) {
-    this.logger.debug("SET KEY", localKey);
     this.currentKVP.rule = KeyValueIndexSig.setKey(localKey, this.currentKVP.rule);
   }
 
-  // tslint:disable-next-line: adjacent-overload-signatures
   set value(value: string) {
     this.currentKVP.rule = KeyValueIndexSig.setValue(value, this.currentKVP.rule);
   }
 
-  // tslint:disable-next-line: adjacent-overload-signatures
   set ruleType(rule: RuleType) {
     this.currentKVP.type = rule;
   }
