@@ -51,7 +51,7 @@ namespace Orbital.Mock.Server.Factories
 
             matchedAssertWithRequest.Actual = kvpRequest.Key;
             var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = rule.RuleValue.Value, Rule = matchedAssertWithRequest.Rule };
-            asserts[index] = queryheadervalueassert;
+            asserts[index] = matchedAssertWithRequest;
             asserts.Add(queryheadervalueassert);
 
         }
