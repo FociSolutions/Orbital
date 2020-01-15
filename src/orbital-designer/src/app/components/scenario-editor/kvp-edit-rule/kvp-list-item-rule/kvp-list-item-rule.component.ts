@@ -54,17 +54,12 @@ export class KvpListItemRuleComponent implements OnInit {
    */
   @Output() removeKvp: EventEmitter<KeyValuePairType>;
 
-  constructor(private logger: NGXLogger) {
+  constructor() {
     this.removeKvp = new EventEmitter<KeyValuePairType>();
-    let kvp = {"test": "testval"};
-    this.currentKVP = {type: RuleType.TEXTEQUALS, rule: kvp as KeyValueIndexSig} as KeyValuePairType;
+    this.currentKVP = {type: RuleType.TEXTEQUALS, rule: {"test": "testval"} as KeyValueIndexSig} as KeyValuePairType;
   }
 
-  ngOnInit() {
-    this.logger.debug("GOt to here");
-    this.key = "test key 2";
-    this.value = "test value 2";
-  }
+  ngOnInit() {}
 
   @Input()
   set kvp(input: KeyValuePairType) {
