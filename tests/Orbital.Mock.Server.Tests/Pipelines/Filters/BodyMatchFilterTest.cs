@@ -54,9 +54,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                     {Scenarios = input.Scenarios, Body = input.Body})
                 .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
 
-            var Expected = new List<string> { fakeScenario.Id };
+            var Expected = fakeScenario.Id ;
 
-            Assert.Equal(Expected.First(), Actual.First());
+            Assert.Equal(Expected, Actual.First());
         }
 
         /// <summary>
@@ -175,9 +175,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
                 .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
 
-            var Expected = new List<string> { fakeScenario.Id };
+            var Expected =  fakeScenario.Id;
 
-            Assert.Equal(Expected, Actual);
+            Assert.Contains(Expected, Actual);
         }
 
         /// <summary>
