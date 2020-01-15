@@ -31,8 +31,8 @@ export class KvpEditRuleComponent implements OnInit {
     this.savedKvpMap = [{
       type: RuleType.JSONCONTAINS,
       rule: {
-        key: "test key",
-        value: "test value"
+        key: 'test key',
+        value: 'test value'
       }
     }];
     this.savedKvpMapEmitter = new EventEmitter<KeyValuePairRule>();
@@ -65,9 +65,9 @@ export class KvpEditRuleComponent implements OnInit {
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the map
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
-  deleteKvpFromMap(kvpToDelete: KeyValue<string, string>) {
-    if (!!kvpToDelete && !!kvpToDelete.key) {
-      this.savedKvpMap = this.savedKvpMap.filter(element => element.rule.key !== kvpToDelete.key);
+  deleteKvpFromMap(kvpToDelete: KeyValuePairRule) {
+    if (!!kvpToDelete && !!kvpToDelete.rule.key) {
+      this.savedKvpMap = this.savedKvpMap.filter(element => element.rule.key !== kvpToDelete.rule.key);
       this.logger.debug('Delete Header Rule from Map', kvpToDelete);
     }
   }
