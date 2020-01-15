@@ -5,7 +5,7 @@
 <div>
   <p class="description">{{ listKvpTitle }}</p>
 </div>
-<div *ngIf="!this.savedKvpMap?.size">
+<div *ngIf="!hasValuesAdded()">
   No rules Added
 </div>
 <div *ngFor="let kv of savedKvpMap | keyvalue">

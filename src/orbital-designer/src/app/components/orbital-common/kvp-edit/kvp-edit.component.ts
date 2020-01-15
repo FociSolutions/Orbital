@@ -79,4 +79,9 @@ export class KvpEditComponent implements OnInit {
       this.logger.debug('Delete Header Rule from Map', kvpToDelete);
     }
   }
+
+  hasValuesAdded() {
+    const keys = Object.keys(this.savedKvpMap);
+    return keys.length > 0;
+  }
 }
