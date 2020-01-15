@@ -14,7 +14,7 @@ namespace Orbital.Mock.Server.Factories
         public IEnumerable<Assert> CreateAssert(ICollection<BodyRule> rules, string request)
         {
             var asserts = new List<Assert>();
-            foreach(var rule in rules)
+            foreach (var rule in rules)
             {
                 var bodyAssert = new Assert() { Actual = request, Expect = rule.RuleValue.ToString(), Rule = rule.Type };
                 asserts.Add(bodyAssert);
@@ -54,7 +54,7 @@ namespace Orbital.Mock.Server.Factories
             var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = rule.RuleValue.Value, Rule = matchedAssertWithRequest.Rule };
             asserts[index] = queryheadervalueassert;
             asserts.Add(queryheadervalueassert);
-            
+
         }
     }
 }
