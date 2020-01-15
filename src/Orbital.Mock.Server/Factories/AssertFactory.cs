@@ -36,7 +36,7 @@ namespace Orbital.Mock.Server.Factories
         }
 
         /// <summary>
-        /// This will take in the port key/value pair list, the list of asserts, and the request key/value pair list
+        /// This will take in the key/value pair rule list, the list of asserts, and the request key/value pair list
         /// to confirm there is a match in the keys, create 2 asserts for the key and value, and finally add them to the list.
         /// </summary>
         /// <param name="rules">Key/value pair list rules</param>
