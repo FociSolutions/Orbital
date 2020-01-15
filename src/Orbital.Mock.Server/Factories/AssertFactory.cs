@@ -1,6 +1,5 @@
 ﻿using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Models.Rules;
 using System.Collections.Generic;
 using System.Linq;
