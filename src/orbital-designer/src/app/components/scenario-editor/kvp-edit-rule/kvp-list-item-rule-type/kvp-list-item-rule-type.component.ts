@@ -33,7 +33,7 @@ export class KvpListItemRuleTypeComponent implements OnInit {
     this.removeKvp = new EventEmitter<KeyValuePairType>();
     this.currentKVP = {
       type: RuleType.TEXTEQUALS,
-      rule: { test: 'testval' } as KeyValueIndexSig
+      rule: {} as KeyValueIndexSig
     } as KeyValuePairType;
   }
 

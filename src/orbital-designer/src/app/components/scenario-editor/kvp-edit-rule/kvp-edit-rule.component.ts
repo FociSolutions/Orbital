@@ -28,12 +28,12 @@ export class KvpEditRuleComponent implements OnInit {
   @Output() savedKvpMapEmitter;
 
   constructor(private logger: NGXLogger) {
-    this.savedKvpMapEmitter = new EventEmitter<KeyValuePairType>();
-    const kvp = {test: 'testval'};
-    this.savedKvpMap = [{type: RuleType.TEXTEQUALS as RuleType, rule: kvp as KeyValueIndexSig}] as KeyValuePairType[];
+    this.savedKvpMapEmitter = new EventEmitter<KeyValuePairType[]>();
+    const kvp = {};
+    this.savedKvpMap = [] as KeyValuePairType[];
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   /**
    * This setter calls the emitter for the savedkvpmap if shouldSave is true
@@ -62,7 +62,9 @@ export class KvpEditRuleComponent implements OnInit {
    */
   deleteKvpFromRule(kvpToDelete: KeyValuePairType) {
     if (!!kvpToDelete && !!kvpToDelete.rule) {
-      this.savedKvpMap = this.savedKvpMap.filter(element => element.rule.key !== kvpToDelete.rule.key);
+      this.savedKvpMap = this.savedKvpMap.filter(
+        element => element.rule !== kvpToDelete.rule
+      );
       this.logger.debug('Delete Header Rule from Map', kvpToDelete);
     }
   }
