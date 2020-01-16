@@ -119,6 +119,7 @@ describe('KvpEditRuleComponent', () => {
       const kvpMap = [
         { type: RuleType.TEXTEQUALS as RuleType, rule: kvp as KeyValueIndexSig }
       ] as KeyValuePairType[];
+      component.savedKvpMap = kvpMap;
       spyOn(component.savedKvpMapEmitter, 'emit');
       component.Save = true;
       expect(component.savedKvpMapEmitter.emit).toHaveBeenCalledWith(kvpMap);
@@ -154,6 +155,7 @@ describe('KvpEditRuleComponent', () => {
           rule: { testthree: 'testval' } as KeyValueIndexSig
         }
       ] as KeyValuePairType[];
+      component.savedKvpMap = kvpMap;
       spyOn(component.savedKvpMapEmitter, 'emit');
       component.Save = true;
       expect(component.savedKvpMapEmitter.emit).toHaveBeenCalledWith(kvpMap);
