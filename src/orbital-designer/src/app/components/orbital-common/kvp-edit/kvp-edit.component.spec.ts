@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 import { MatCardModule } from '@angular/material';
+// tslint:disable-next-line: max-line-length
 import { KvpListItemRuleTypeComponent } from '../../scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 
 describe('KvpEditComponent', () => {
