@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { KeyValue } from '@angular/common';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
@@ -54,7 +53,7 @@ export class KvpListItemRuleComponent implements OnInit {
    */
   @Output() removeKvp: EventEmitter<KeyValuePairType>;
 
-  constructor() {
+  constructor(private logger: NGXLogger) {
     this.removeKvp = new EventEmitter<KeyValuePairType>();
     this.currentKVP = {type: RuleType.TEXTEQUALS, rule: {"test": "testval"} as KeyValueIndexSig} as KeyValuePairType;
   }
