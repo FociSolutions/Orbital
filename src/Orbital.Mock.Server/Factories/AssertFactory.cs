@@ -1,5 +1,6 @@
 ﻿using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Models.Rules;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,50 +11,39 @@ namespace Orbital.Mock.Server.Factories
     {
 
         /// <inheritdoc />
-        public IEnumerable<Assert> CreateAssert(ICollection<BodyRule> rules, string request)
+        public IEnumerable<Assert> CreateAssert(BodyRule rule, string request)
         {
             var asserts = new List<Assert>();
-            foreach (var rule in rules)
-            {
-                var bodyAssert = new Assert() { Actual = request, Expect = rule.RuleValue.ToString(), Rule = rule.Type };
-                asserts.Add(bodyAssert);
-            }
+            var bodyAssert = new Assert() { Actual = request, Expect = rule.RuleValue.ToString(), Rule = rule.Type };
+            asserts.Add(bodyAssert);
 
             return asserts;
         }
 
         /// <inheritdoc />
-        public IEnumerable<Assert> CreateAssert(ICollection<KeyValuePairRule> rules, IEnumerable<KeyValuePair<string, string>> request)
+        public IEnumerable<Assert> CreateAssert(KeyValuePairRule rule, IEnumerable<KeyValuePair<string, string>> request)
         {
-            var ruleAsserts = rules.Select(r => new Assert() { Expect = r.RuleValue.Key, Rule = r.Type, Actual = string.Empty }).ToList();
+            var ruleAsserts = new List<Assert>();
 
             foreach (var kvpRequest in request)
             {
-                AddAsserts(rules, ruleAsserts, kvpRequest);
+                if (kvpRequest.Key == rule.RuleValue.Key)
+                {
+                    var queryheaderkeyassert = new Assert()
+                    {
+                        Expect = rule.RuleValue.Key,
+                        Actual = kvpRequest.Key,
+                        Rule = ComparerType.Equal
+                    };
+
+                    var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = rule.RuleValue.Value, Rule = rule.Type };
+
+                    ruleAsserts.Add(queryheaderkeyassert);
+                    ruleAsserts.Add(queryheadervalueassert);
+                }
             }
             return ruleAsserts;
         }
 
-        /// <summary>
-        /// This will take in the key/value pair rule list, the list of asserts, and the request key/value pair list
-        /// to confirm there is a match in the keys, create 2 asserts for the key and value, and finally add them to the list.
-        /// </summary>
-        /// <param name="rules">Key/value pair list rules</param>
-        /// <param name="asserts">List of asserts to be returned from the factory</param>
-        /// <param name="kvpRequest">List of key/value pairs from the request</param>
-        private void AddAsserts(ICollection<KeyValuePairRule> rules, List<Assert> asserts, KeyValuePair<string, string> kvpRequest)
-        {
-            var rulesfound = rules.Where(kv => kv.RuleValue.Key == kvpRequest.Key);
-            if (rulesfound.Count() == 0) { return; }
-            var rule = rules.Where(kv => kv.RuleValue.Key == kvpRequest.Key).First();
-            var matchedAssertWithRequest = asserts.Where(kv => kv.Expect == kvpRequest.Key).First();
-            var index = asserts.FindIndex(a => a.Expect == matchedAssertWithRequest.Expect);
-
-            matchedAssertWithRequest.Actual = kvpRequest.Key;
-            var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = rule.RuleValue.Value, Rule = matchedAssertWithRequest.Rule };
-            asserts[index] = matchedAssertWithRequest;
-            asserts.Add(queryheadervalueassert);
-
-        }
     }
 }

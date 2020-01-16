@@ -18,8 +18,6 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
             var isMatch = true;
             foreach(var assert in asserts)
             {
-                if (isMatch)
-                {
                     switch (assert.Rule)
                     {
                         case ComparerType.Regex:
@@ -58,7 +56,6 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                            
                             break;
                     }
-                }
             }
             return isMatch;
         }

@@ -1,18 +1,14 @@
 ﻿using Bogus;
 using Newtonsoft.Json.Linq;
-using NSubstitute;
 using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Pipelines.Ports;
-using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 using Assert = Xunit.Assert;
+using AssertOrbital = Orbital.Mock.Server.Models.Assert;
 
 namespace Orbital.Mock.Server.Tests.Factories
 {
@@ -40,18 +36,22 @@ namespace Orbital.Mock.Server.Tests.Factories
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Query = fakeScenario.RequestMatchRules.QueryRules.Select(r => r.RuleValue)
             };
-
+            var actual = new List<AssertOrbital>();
             #endregion
+            foreach (var rule in fakeScenario.RequestMatchRules.QueryRules)
+            {
+                actual.AddRange(Target.CreateAssert(rule, input.Query));
+                
+            }
 
-            var actual = Target.CreateAssert(fakeScenario.RequestMatchRules.QueryRules, input.Query);
-
-            foreach(var expected in input.Query)
+            foreach (var expected in input.Query)
             {
                 Assert.NotNull(actual.Select(a => a.Expect == expected.Key));
                 Assert.NotNull(actual.Select(a => a.Expect == expected.Value));
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Key));
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Value));
             }
+
         }
 
         [Fact]
@@ -76,10 +76,13 @@ namespace Orbital.Mock.Server.Tests.Factories
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Header = fakeScenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue)
             };
-
+            var actual = new List<AssertOrbital>();
             #endregion
-
-            var actual = Target.CreateAssert(fakeScenario.RequestMatchRules.HeaderRules, input.Header);
+            foreach(var rule in fakeScenario.RequestMatchRules.HeaderRules)
+            {
+                actual.AddRange(Target.CreateAssert(rule, input.Header));
+            }
+            
 
             foreach (var expected in input.Header)
             {
@@ -111,10 +114,13 @@ namespace Orbital.Mock.Server.Tests.Factories
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()
             };
-
+            var actual = new List<AssertOrbital>();
             #endregion
 
-            var actual = Target.CreateAssert(fakeScenario.RequestMatchRules.BodyRules, input.Body);
+            foreach(var rule in fakeScenario.RequestMatchRules.BodyRules)
+            {
+                actual.AddRange(Target.CreateAssert(rule, input.Body));
+            }
             
             Assert.NotNull(actual.Select(a => a.Expect == input.Body));
         }

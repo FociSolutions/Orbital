@@ -6,7 +6,6 @@ using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using System.Linq;
 using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
@@ -43,12 +42,14 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 
                 foreach (var scenario in port.Scenarios)
                 {
-                    var assertsList = assertFactory.CreateAssert(scenario.RequestMatchRules.BodyRules, port.Body);
-                    foreach (var assert in assertsList) {
-                        Assert[] asserts = { assert };
-                        port.BodyMatchResults.Add(ruleMatcher.Match(asserts)
-                        ? new MatchResult(MatchResultType.Success, scenario.Id)
-                        : new MatchResult(MatchResultType.Fail, scenario.Id));
+                    foreach(var rule in scenario.RequestMatchRules.BodyRules)
+                    {
+                        var assertsList = assertFactory.CreateAssert(rule, port.Body);
+                        port.BodyMatchResults.Add(ruleMatcher.Match(assertsList.ToArray())
+                                   ? new MatchResult(MatchResultType.Success, scenario.Id)
+                                     : new MatchResult(MatchResultType.Fail, scenario.Id));
+                        
+                        
                     }
                 }
             }

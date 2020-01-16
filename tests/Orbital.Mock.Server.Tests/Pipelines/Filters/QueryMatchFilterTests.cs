@@ -46,9 +46,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
                 .QueryMatchResults.Where(x =>x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
 
-            var Expected = new List<string> { fakeScenario.Id };
+            var Expected = fakeScenario.Id;
 
-            Assert.Equal(Expected, Actual);
+            Assert.Contains(Expected, Actual);
         }
 
         [Fact]

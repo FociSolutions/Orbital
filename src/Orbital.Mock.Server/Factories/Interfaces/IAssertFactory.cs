@@ -9,17 +9,17 @@ namespace Orbital.Mock.Server.Factories.Interfaces
         /// <summary>
         /// Create Assert model based on the rules provided and the request IEnumerable of key/value pair
         /// </summary>
-        /// <param name="rules">A collection of KeyValuePairRules containing rules and rule type</param>
+        /// <param name="rules">KeyValuePairRules containing rules and rule type</param>
         /// <param name="request">the request key/value pairs</param>
         /// <returns>An IEnumerable of Assert models containing expected rule, actual values from the request, and the comparer type</returns>
-        IEnumerable<Assert> CreateAssert(ICollection<KeyValuePairRule> rules, IEnumerable<KeyValuePair<string, string>> request);
+        IEnumerable<Assert> CreateAssert(KeyValuePairRule rules, IEnumerable<KeyValuePair<string, string>> request);
 
         /// <summary>
         /// Create Assert model based on the body match port provided and the request JToken
         /// </summary>
-        /// <param name="rules">A collection of BodyRules containing rules and rule type</param>
+        /// <param name="rules"> BodyRule containing rules and rule type</param>
         /// <param name="request">the request JToken as a string</param>
         /// <returns>An IEnumerable of Assert models containing expected value, actual values from the request, and the comparer type</returns>
-        IEnumerable<Assert> CreateAssert(ICollection<BodyRule> rules, string request);
+        IEnumerable<Assert> CreateAssert(BodyRule rules, string request);
     }
 }

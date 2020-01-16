@@ -31,10 +31,21 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             foreach (var scenario in port.Scenarios)
             {
-                var assetsList = assertFactory.CreateAssert(scenario.RequestMatchRules.QueryRules, port.Query);
-                port.QueryMatchResults.Add(ruleMatcher.Match(assetsList.ToArray())
-                ? new MatchResult(MatchResultType.Success, scenario.Id)
-                : new MatchResult(MatchResultType.Fail, scenario.Id));
+                foreach (var rule in scenario.RequestMatchRules.QueryRules)
+                {
+                    var assertsList = assertFactory.CreateAssert(rule, port.Query);
+                    if (assertsList.Count() == 0)
+                    {
+                        port.QueryMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id));
+                    }
+                    else
+                    {
+                        port.QueryMatchResults.Add(ruleMatcher.Match(assertsList.ToArray())
+                                    ? new MatchResult(MatchResultType.Success, scenario.Id)
+                                    : new MatchResult(MatchResultType.Fail, scenario.Id));
+                    }
+                    
+                }
 
             }
 
