@@ -34,14 +34,21 @@
   display: flex;
   flex: 1;
   justify-content: flex-end;
+  padding-right: 1em;
 }
 
 .kvp-value {
-  padding-right: 5em;
+  min-width: 25em;
+}
+
+.kvp-type {
+  padding-right: 2em;
 }
 
 .kvp-key {
   width: 12%;
+  margin-left: 1.5em;
+  margin-right: 2em;
 }
 
 .rule-type {

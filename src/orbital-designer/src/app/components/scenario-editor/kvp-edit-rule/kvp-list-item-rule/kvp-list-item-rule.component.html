@@ -1,15 +1,21 @@
 <mat-card class="kvp-add-card">
-  <form class="kvp-add">
+  <form class="kvp-added-item">
     <mat-form-field class="kvp-key">
-      <input matInput placeholder="Key" [(ngModel)]="key" name="key-input" [ngModelOptions]="{standalone: true}"/>
+      <input
+        matInput
+        placeholder="Key"
+        [(ngModel)]="key"
+        name="key-input"
+        [ngModelOptions]="{ standalone: true }"
+      />
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="kvp-type">
       <mat-label>Select Rule</mat-label>
       <mat-select [(ngModel)]="ruleType" name="rule-type">
         <div *ngFor="let rule of rules">
           <mat-option [value]="rule.value">
-            {{rule.viewValue}}
+            {{ rule.viewValue }}
           </mat-option>
         </div>
       </mat-select>
@@ -21,7 +27,7 @@
         placeholder="Value"
         [(ngModel)]="value"
         name="value-input"
-        [ngModelOptions]="{standalone: true}"
+        [ngModelOptions]="{ standalone: true }"
       />
     </mat-form-field>
 
