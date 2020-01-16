@@ -70,7 +70,7 @@ describe('KvpAddRuleComponent', () => {
 
   describe('KvpAddRuleComponent.onAdd', () => {
     it('Should set key and value to kvpAdd and isValid to true', () => {
-      let kvp = {};
+      const kvp = {};
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input = {
         type: RuleType.TEXTEQUALS,

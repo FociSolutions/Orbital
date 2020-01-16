@@ -29,7 +29,7 @@ export class KvpEditRuleComponent implements OnInit {
 
   constructor(private logger: NGXLogger) {
     this.savedKvpMapEmitter = new EventEmitter<KeyValuePairType>();
-    let kvp = {"test": "testval"};
+    const kvp = {test: 'testval'};
     this.savedKvpMap = [{type: RuleType.TEXTEQUALS as RuleType, rule: kvp as KeyValueIndexSig}] as KeyValuePairType[];
   }
 

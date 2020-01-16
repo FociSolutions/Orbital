@@ -12,30 +12,6 @@ import { NGXLogger } from 'ngx-logger';
 export class KvpListItemRuleComponent implements OnInit {
   currentKVP: KeyValuePairType;
 
-  get key(): string {
-    return KeyValueIndexSig.getKey(this.currentKVP.rule);
-  }
-
-  get value(): string {
-    return KeyValueIndexSig.getValue(this.currentKVP.rule);
-  }
-
-  get ruleType(): RuleType {
-    return this.currentKVP.type;
-  }
-
-  set key(localKey: string) {
-    this.currentKVP.rule = KeyValueIndexSig.setKey(localKey, this.currentKVP.rule);
-  }
-
-  set value(value: string) {
-    this.currentKVP.rule = KeyValueIndexSig.setValue(value, this.currentKVP.rule);
-  }
-
-  set ruleType(rule: RuleType) {
-    this.currentKVP.type = rule;
-  }
-
   type: RuleType;
   rules = [
     {value: RuleType.REGEX, viewValue: 'Regex'},
@@ -55,7 +31,7 @@ export class KvpListItemRuleComponent implements OnInit {
 
   constructor(private logger: NGXLogger) {
     this.removeKvp = new EventEmitter<KeyValuePairType>();
-    this.currentKVP = {type: RuleType.TEXTEQUALS, rule: {"test": "testval"} as KeyValueIndexSig} as KeyValuePairType;
+    this.currentKVP = {type: RuleType.TEXTEQUALS, rule: {test: 'testval'} as KeyValueIndexSig} as KeyValuePairType;
   }
 
   ngOnInit() {}
@@ -65,6 +41,30 @@ export class KvpListItemRuleComponent implements OnInit {
     if (input) {
       this.currentKVP = input;
     }
+  }
+
+  get key(): string {
+    return KeyValueIndexSig.getKey(this.currentKVP.rule);
+  }
+
+  set key(localKey: string) {
+    this.currentKVP.rule = KeyValueIndexSig.setKey(localKey, this.currentKVP.rule);
+  }
+
+  get value(): string {
+    return KeyValueIndexSig.getValue(this.currentKVP.rule);
+  }
+
+  set value(value: string) {
+    this.currentKVP.rule = KeyValueIndexSig.setValue(value, this.currentKVP.rule);
+  }
+
+  get ruleType(): RuleType {
+    return this.currentKVP.type;
+  }
+
+  set ruleType(rule: RuleType) {
+    this.currentKVP.type = rule;
   }
 
   /**

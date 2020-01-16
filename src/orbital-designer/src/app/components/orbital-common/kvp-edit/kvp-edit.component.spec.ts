@@ -53,7 +53,7 @@ describe('KvpEditComponent', () => {
     });
 
     it('Should return a map with the added a case-insensitive kvp', () => {
-      let kvp = {} as KeyValueIndexSig;
+      const kvp = {} as KeyValueIndexSig;
       kvp[faker.lorem.sentence().toUpperCase()] = faker.lorem.sentence();
       const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),

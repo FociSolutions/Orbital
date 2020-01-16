@@ -17,7 +17,7 @@ export class KeyValueIndexSig {
     key: string,
     kvIndex: KeyValueIndexSig
   ): KeyValueIndexSig {
-    let newkvIndex = {};
+    const newkvIndex = {};
     newkvIndex[key] = this.getValue(kvIndex);
     return newkvIndex as KeyValueIndexSig;
   }
@@ -26,7 +26,7 @@ export class KeyValueIndexSig {
     value: string,
     kvIndex: KeyValueIndexSig
   ): KeyValueIndexSig {
-    let newkvIndex = {};
+    const newkvIndex = {};
     newkvIndex[this.getKey(kvIndex)] = value;
     return newkvIndex as KeyValueIndexSig;
   }

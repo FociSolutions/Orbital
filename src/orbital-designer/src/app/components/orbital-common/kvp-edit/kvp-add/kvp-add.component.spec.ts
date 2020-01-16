@@ -63,7 +63,7 @@ describe('KvpAddComponent', () => {
 
   describe('KvpAddComponent.onAdd', () => {
     it('Should set key and value to kvpAdd and isValid to true', done => {
-      let kvp = {} as KeyValueIndexSig;
+      const kvp = {} as KeyValueIndexSig;
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
 
       const input = {
