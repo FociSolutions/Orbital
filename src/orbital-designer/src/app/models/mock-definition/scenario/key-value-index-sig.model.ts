@@ -30,8 +30,4 @@ export class KeyValueIndexSig {
     newkvIndex[this.getKey(kvIndex)] = value;
     return newkvIndex as KeyValueIndexSig;
   }
-
-  public static stringify(kvIndex: KeyValueIndexSig) {
-    return kvIndex as object;
-  }
 }
