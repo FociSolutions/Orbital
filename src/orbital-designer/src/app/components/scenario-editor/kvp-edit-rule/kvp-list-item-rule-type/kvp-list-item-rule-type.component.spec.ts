@@ -53,6 +53,24 @@ describe('KvpListItemRuleComponent', () => {
 
       expect(component.currentKVP).toEqual(input);
     });
+
+    it('Should set the key for current kvp', () => {
+      const testKey = faker.lorem.sentence();
+      component.key = testKey;
+      expect(component.key).toEqual(testKey);
+    });
+
+    it('Should set the value for current kvp', () => {
+      const testValue = faker.lorem.sentence();
+      component.value = testValue;
+      expect(component.value).toEqual(testValue);
+    });
+
+    it('Should set the rule type for current rule type', () => {
+      const testRule = faker.random.number({ min: 0, max: 8 });
+      component.ruleType = testRule;
+      expect(component.ruleType).toEqual(testRule);
+    });
   });
 
   describe('onRemove', () => {
