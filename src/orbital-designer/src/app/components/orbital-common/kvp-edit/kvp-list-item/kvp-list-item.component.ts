@@ -27,10 +27,16 @@ export class KvpListItemComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * Gets the key from the currentKVP
+   */
   get key() {
     return Object.keys(this.currentKVP.rule)[0];
   }
 
+  /**
+   * Sets the current KVP
+   */
   @Input()
   set kvp(input: KeyValuePairType) {
     if (input) {

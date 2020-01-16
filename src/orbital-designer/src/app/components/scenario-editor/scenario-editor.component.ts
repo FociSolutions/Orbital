@@ -110,6 +110,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     this.saveScenario();
   }
 
+  /**
+   * Updates the store with the new scenario
+   */
+
   saveScenario() {
     if (
       this.metadataMatchRuleValid &&

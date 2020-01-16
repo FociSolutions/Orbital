@@ -14,15 +14,15 @@ export class KvpListItemRuleComponent implements OnInit {
 
   type: RuleType;
   rules = [
-    {value: RuleType.REGEX, viewValue: 'Regex'},
-    {value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With'},
-    {value: RuleType.TEXTENDSWITH, viewValue: 'Ends With'},
-    {value: RuleType.TEXTCONTAINS, viewValue: 'Contains'},
-    {value: RuleType.TEXTEQUALS, viewValue: 'Equals'},
-    {value: RuleType.JSONPATH, viewValue: 'JSON Path'},
-    {value: RuleType.JSONEQUALITY, viewValue: 'JSON Equality'},
-    {value: RuleType.JSONCONTAINS, viewValue: 'JSON Contains'},
-    {value: RuleType.JSONSCHEMA, viewValue: 'JSON Schema'},
+    { value: RuleType.REGEX, viewValue: 'Regex' },
+    { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
+    { value: RuleType.TEXTENDSWITH, viewValue: 'Ends With' },
+    { value: RuleType.TEXTCONTAINS, viewValue: 'Contains' },
+    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
+    { value: RuleType.JSONPATH, viewValue: 'JSON Path' },
+    { value: RuleType.JSONEQUALITY, viewValue: 'JSON Equality' },
+    { value: RuleType.JSONCONTAINS, viewValue: 'JSON Contains' },
+    { value: RuleType.JSONSCHEMA, viewValue: 'JSON Schema' }
   ];
   /**
    * The kvp to be deleted by the parent
@@ -31,7 +31,10 @@ export class KvpListItemRuleComponent implements OnInit {
 
   constructor(private logger: NGXLogger) {
     this.removeKvp = new EventEmitter<KeyValuePairType>();
-    this.currentKVP = {type: RuleType.TEXTEQUALS, rule: {test: 'testval'} as KeyValueIndexSig} as KeyValuePairType;
+    this.currentKVP = {
+      type: RuleType.TEXTEQUALS,
+      rule: { test: 'testval' } as KeyValueIndexSig
+    } as KeyValuePairType;
   }
 
   ngOnInit() {}
@@ -43,25 +46,52 @@ export class KvpListItemRuleComponent implements OnInit {
     }
   }
 
+  /**
+   * Gets the key from the current kvp
+   */
+
   get key(): string {
     return KeyValueIndexSig.getKey(this.currentKVP.rule);
   }
+  /**
+   * Sets the key for the current kvp
+   */
 
   set key(localKey: string) {
-    this.currentKVP.rule = KeyValueIndexSig.setKey(localKey, this.currentKVP.rule);
+    this.currentKVP.rule = KeyValueIndexSig.setKey(
+      localKey,
+      this.currentKVP.rule
+    );
   }
-
+  /**
+   * Gets the value from the current kvp
+   */
   get value(): string {
     return KeyValueIndexSig.getValue(this.currentKVP.rule);
   }
 
+  /**
+   * Sets the value for the current kvp
+   */
+
   set value(value: string) {
-    this.currentKVP.rule = KeyValueIndexSig.setValue(value, this.currentKVP.rule);
+    this.currentKVP.rule = KeyValueIndexSig.setValue(
+      value,
+      this.currentKVP.rule
+    );
   }
+
+  /**
+   * Gets the value from the current kvp type
+   */
 
   get ruleType(): RuleType {
     return this.currentKVP.type;
   }
+
+  /**
+   * Sets the value for the current kvp type
+   */
 
   set ruleType(rule: RuleType) {
     this.currentKVP.type = rule;
