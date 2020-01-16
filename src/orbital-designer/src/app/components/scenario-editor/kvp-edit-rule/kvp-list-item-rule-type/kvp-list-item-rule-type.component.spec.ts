@@ -1,9 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
-import { KvpListItemRuleComponent } from './kvp-list-item-rule.component';
+import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type.component';
 import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
 import { MatCardModule } from '@angular/material';
-import { KvpAddRuleComponent } from '../kvp-add-rule/kvp-add-rule.component';
 import { KvpEditRuleComponent } from '../kvp-edit-rule.component';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,21 +11,23 @@ import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-va
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('KvpListItemRuleComponent', () => {
-  let component: KvpListItemRuleComponent;
-  let fixture: ComponentFixture<KvpListItemRuleComponent>;
+  let component: KvpListItemRuleTypeComponent;
+  let fixture: ComponentFixture<KvpListItemRuleTypeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
-      declarations: [
-        KvpListItemRuleComponent,
-        KvpAddRuleComponent,
-        KvpEditRuleComponent]
+      imports: [
+        OrbitalCommonModule,
+        MatCardModule,
+        BrowserAnimationsModule,
+        LoggerTestingModule
+      ],
+      declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KvpListItemRuleComponent);
+    fixture = TestBed.createComponent(KvpListItemRuleTypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

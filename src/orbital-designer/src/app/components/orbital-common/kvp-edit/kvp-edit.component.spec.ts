@@ -6,7 +6,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
-import { KvpListItemRuleComponent } from '../../scenario-editor/kvp-edit-rule/kvp-list-item-rule/kvp-list-item-rule.component';
+import { KvpListItemRuleTypeComponent } from '../../scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { MatCardModule } from '@angular/material';
 
 describe('KvpEditComponent', () => {
@@ -20,7 +20,8 @@ describe('KvpEditComponent', () => {
         LoggerTestingModule,
         BrowserAnimationsModule,
         MatCardModule
-      ], declarations: [KvpListItemRuleComponent]
+      ],
+      declarations: [KvpListItemRuleTypeComponent]
     }).compileComponents();
   }));
 

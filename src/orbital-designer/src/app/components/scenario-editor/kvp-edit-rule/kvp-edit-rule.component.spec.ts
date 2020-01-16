@@ -1,12 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as faker from 'faker';
 import { KvpEditRuleComponent } from './kvp-edit-rule.component';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { KeyValue } from '@angular/common';
-import { KvpListItemRuleComponent } from './kvp-list-item-rule/kvp-list-item-rule.component';
-import { KvpAddRuleComponent } from './kvp-add-rule/kvp-add-rule.component';
+import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { MatCardModule } from '@angular/material';
 
 describe('KvpEditRuleComponent', () => {
@@ -21,11 +18,7 @@ describe('KvpEditRuleComponent', () => {
         BrowserAnimationsModule,
         MatCardModule
       ],
-      declarations: [
-        KvpListItemRuleComponent,
-        KvpAddRuleComponent,
-        KvpEditRuleComponent
-      ]
+      declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent]
     }).compileComponents();
   }));
 

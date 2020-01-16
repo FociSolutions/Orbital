@@ -5,11 +5,11 @@ import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-va
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
-  selector: 'app-kvp-list-item-rule',
-  templateUrl: './kvp-list-item-rule.component.html',
-  styleUrls: ['./kvp-list-item-rule.component.scss']
+  selector: 'app-kvp-list-item-rule-type',
+  templateUrl: './kvp-list-item-rule-type.component.html',
+  styleUrls: ['./kvp-list-item-rule-type.component.scss']
 })
-export class KvpListItemRuleComponent implements OnInit {
+export class KvpListItemRuleTypeComponent implements OnInit {
   currentKVP: KeyValuePairType;
 
   type: RuleType;

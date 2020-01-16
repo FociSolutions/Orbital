@@ -9,9 +9,9 @@
     No rules Added KVP Rule
   </div>
   <div *ngFor="let kv of savedKvpMap">
-    <app-kvp-list-item-rule
+    <app-kvp-list-item-rule-type
       [kvp]="kv"
       (removeKvp)="deleteKvpFromRule($event)"
-    ></app-kvp-list-item-rule>
+    ></app-kvp-list-item-rule-type>
   </div>
 </div>
