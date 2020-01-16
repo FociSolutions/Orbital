@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';

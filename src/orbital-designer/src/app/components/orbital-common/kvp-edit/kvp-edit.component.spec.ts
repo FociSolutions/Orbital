@@ -4,12 +4,10 @@ import { KvpEditComponent } from './kvp-edit.component';
 import { OrbitalCommonModule } from '../orbital-common.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { KeyValue } from '@angular/common';
-import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
-import { MatCardModule } from '@angular/material';
 import { KvpListItemRuleComponent } from '../../scenario-editor/kvp-edit-rule/kvp-list-item-rule/kvp-list-item-rule.component';
+import { MatCardModule } from '@angular/material';
 
 describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
@@ -20,7 +18,8 @@ describe('KvpEditComponent', () => {
       imports: [
         OrbitalCommonModule,
         LoggerTestingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatCardModule
       ], declarations: [KvpListItemRuleComponent]
     }).compileComponents();
   }));

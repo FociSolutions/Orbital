@@ -9,6 +9,7 @@ import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('KvpListItemRuleComponent', () => {
   let component: KvpListItemRuleComponent;
@@ -16,7 +17,7 @@ describe('KvpListItemRuleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule],
+      imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
       declarations: [
         KvpListItemRuleComponent,
         KvpAddRuleComponent,

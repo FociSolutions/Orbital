@@ -7,6 +7,8 @@ import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { KvpListItemRuleComponent } from '../kvp-list-item-rule/kvp-list-item-rule.component';
 import { MatCardModule } from '@angular/material';
 import { KvpEditRuleComponent } from '../kvp-edit-rule.component';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 describe('KvpAddRuleComponent', () => {
   let component: KvpAddRuleComponent;
@@ -68,16 +70,17 @@ describe('KvpAddRuleComponent', () => {
 
   describe('KvpAddRuleComponent.onAdd', () => {
     it('Should set key and value to kvpAdd and isValid to true', () => {
+      let kvp = {};
+      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input = {
-        key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+        type: RuleType.TEXTEQUALS,
+        rule: kvp
       };
-      component.key = input.key;
-      component.value = input.value;
+      component.key = KeyValueIndexSig.getKey(input.rule);
+      component.value = KeyValueIndexSig.getValue(input.rule);
 
       component.kvp.subscribe(
         actual => {
-          expect(component.isValid).toBeTruthy();
           expect(actual).toEqual(input);
         },
         err => fail(`Unexpected error: ${err.message}`)

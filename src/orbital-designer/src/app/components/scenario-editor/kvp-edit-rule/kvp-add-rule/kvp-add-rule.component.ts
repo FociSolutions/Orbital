@@ -35,12 +35,11 @@ export class KvpAddRuleComponent implements OnInit {
    */
   onAdd() {
     if (!this.isEmpty()) {
+      let kvp = {};
+      kvp[this.key.trim()] = this.value;
       const kvpAdd: KeyValuePairType = {
         type: RuleType.TEXTEQUALS,
-        rule: {
-          key: this.key.trim(),
-          value: this.value
-        }
+        rule: kvp
       };
 
       this.kvp.emit(kvpAdd);
