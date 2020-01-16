@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 foreach(var rule in scenario.RequestMatchRules.HeaderRules)
                 {
                     var assertsList = assertFactory.CreateAssert(rule, port.Headers);
-                    if (assertsList.Count() == 0)
+                    if (!assertsList.Any())
                     {
                         port.HeaderMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id));
                     }
