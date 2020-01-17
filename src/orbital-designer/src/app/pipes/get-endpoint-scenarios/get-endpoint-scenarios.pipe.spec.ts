@@ -125,12 +125,7 @@ describe('GetEndpointScenariosPipe', () => {
       }
     } as Scenario;
     const mockpaths = (mockPath + faker.random.words()) as string;
-    const mockVerbs = faker.random.arrayElement([
-      'gET',
-      'deLetE',
-      'pOST',
-      'PuT'
-    ]) as VerbType;
+    const mockVerbs = faker.random.number({min: 0, max: 3});
     const mockNonMatchingScenario = {
       id: uuid.v4(),
       metadata: {

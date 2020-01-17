@@ -43,7 +43,7 @@ describe('AddResponseComponent', () => {
     });
 
     it('should expect the corresponding status code message in the status field if the status code is invalid', () => {
-      component.statusCode = faker.lorem.words();
+      component.statusCode = -faker.random.number({min: 0, max: 500});
       expect(component.isStatusCodeValid).toBeFalsy();
     });
   });
@@ -53,7 +53,7 @@ describe('AddResponseComponent', () => {
       const testStatusCode = 200;
       const testHeaderResponse: KeyValuePair[] = [
         {
-          rule: (faker.lorem.sentence(), faker.lorem.sentence())
+          rule: {test: faker.lorem.sentence()}
         }
       ];
       const testBodyResponse = 'NOTVALID';
@@ -85,7 +85,7 @@ describe('AddResponseComponent', () => {
       component.isBodyValid = true;
       component.bodyResponse = '{}';
 
-      const headerMap = (faker.lorem.sentence(), faker.lorem.sentence());
+      const headerMap = [{rule: {test: faker.lorem.sentence()}}];
       const saveHeaderMapSpy = spyOn(component.responseOutput, 'emit');
       component.saveHeaderMap(headerMap);
 

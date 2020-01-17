@@ -47,8 +47,10 @@ describe('KvpListItemComponent', () => {
 
   describe('onRemove', () => {
     it('Should emit a remove event', () => {
+      const kvp = {};
+      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairType = {
-        rule: (faker.lorem.sentence(), faker.lorem.sentence()),
+        rule: kvp,
         type: faker.random.number({ min: 0, max: 8 })
       };
 
