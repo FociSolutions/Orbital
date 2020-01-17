@@ -30,7 +30,7 @@ export class KvpEditComponent implements OnInit {
   @Output() savedKvpMapEmitter;
 
   constructor(private logger: NGXLogger) {
-    this.savedKvpRules = [] as KeyValuePairType[];
+    this.savedKvpRules = [];
     this.savedKvpMapEmitter = new EventEmitter<KeyValuePairType[]>();
   }
 
