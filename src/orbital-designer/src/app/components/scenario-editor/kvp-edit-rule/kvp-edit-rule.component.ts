@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 
 @Component({
@@ -29,7 +27,6 @@ export class KvpEditRuleComponent implements OnInit {
 
   constructor(private logger: NGXLogger) {
     this.savedKvpMapEmitter = new EventEmitter<KeyValuePairType[]>();
-    const kvp = {};
     this.savedKvpMap = [] as KeyValuePairType[];
   }
 
