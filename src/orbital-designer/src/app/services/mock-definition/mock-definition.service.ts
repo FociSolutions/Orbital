@@ -22,27 +22,7 @@ export class MockDefinitionService {
     return new Observable(observer => {
       try {
         let content = JSON.parse(mockDefinition);
-        content = {
-          ...content,
-          scenarios: content.scenarios.map(s => ({
-            ...s,
-            response: {
-              ...s.response,
-              headers: s.response.headers
-            },
-            requestMatchRules: {
-              headerRules: s.requestMatchRules.headerRules,
-              queryRules: s.requestMatchRules.queryRules,
-              bodyRules: s.requestMatchRules.bodyRules
-            }
-          }))
-        };
-        const titlemockdef = (content as MockDefinition).metadata.title;
         this.store.mockDefinitions = [content];
-        this.store.state.mockDefinitions.set(
-          titlemockdef,
-          content as MockDefinition
-        );
         this.store.state.mockDefinition = content as MockDefinition;
         observer.next(true);
       } catch (error) {
