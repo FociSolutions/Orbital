@@ -18,16 +18,16 @@ export class KvpEditRuleComponent implements OnInit {
   /**
    * The new kvp map with the new kvp added in
    */
-  savedKvpMap: KeyValuePairType[];
+  savedKvpType: KeyValuePairType[];
 
   /**
    * The event emitter for the savedKvpMap
    */
-  @Output() savedKvpMapEmitter: EventEmitter<KeyValuePairType[]>;
+  @Output() savedKvpEmitter: EventEmitter<KeyValuePairType[]>;
 
   constructor(private logger: NGXLogger) {
-    this.savedKvpMapEmitter = new EventEmitter<KeyValuePairType[]>();
-    this.savedKvpMap = [] as KeyValuePairType[];
+    this.savedKvpEmitter = new EventEmitter<KeyValuePairType[]>();
+    this.savedKvpType = [] as KeyValuePairType[];
   }
 
   ngOnInit() {}
@@ -38,8 +38,8 @@ export class KvpEditRuleComponent implements OnInit {
   @Input()
   set Save(shouldSave: boolean) {
     if (shouldSave) {
-      this.savedKvpMapEmitter.emit(this.savedKvpMap);
-      this.logger.debug('KVP map has been saved', this.savedKvpMap);
+      this.savedKvpEmitter.emit(this.savedKvpType);
+      this.logger.debug('KVP map has been saved', this.savedKvpType);
     }
   }
 
@@ -47,9 +47,9 @@ export class KvpEditRuleComponent implements OnInit {
    * The existing KVP map
    */
   @Input()
-  set kvpMap(savedKvpMap: KeyValuePairType[]) {
-    if (savedKvpMap) {
-      this.savedKvpMap = savedKvpMap;
+  set kvpType(savedKvpType: KeyValuePairType[]) {
+    if (savedKvpType) {
+      this.savedKvpType = savedKvpType;
     }
   }
 
@@ -59,10 +59,10 @@ export class KvpEditRuleComponent implements OnInit {
    */
   deleteKvpFromRule(kvpToDelete: KeyValuePairType) {
     if (!!kvpToDelete && !!kvpToDelete.rule) {
-      this.savedKvpMap = this.savedKvpMap.filter(
+      this.savedKvpType = this.savedKvpType.filter(
         element => element.rule !== kvpToDelete.rule
       );
-      this.logger.debug('Delete Header Rule from Map', kvpToDelete);
+      this.logger.debug('Delete Header Rule from KVP', kvpToDelete);
     }
   }
 }
