@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material';
 import { RuleType } from '../../../../../src/app/models/mock-definition/scenario/rule.type';
 import { KeyValueIndexSig } from '../../../../../src/app/models/mock-definition/scenario/key-value-index-sig.model';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import * as faker from 'faker';
 describe('KvpEditRuleComponent', () => {
   let component: KvpEditRuleComponent;
   let fixture: ComponentFixture<KvpEditRuleComponent>;
@@ -37,7 +38,7 @@ describe('KvpEditRuleComponent', () => {
   describe('KvpEditRuleComponent.deleteKvpFromRule', () => {
     it('should not delete the kvp if it is undefined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: 'testval' } as KeyValueIndexSig }
+        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: faker.random.word() } as KeyValueIndexSig }
       ] as KeyValuePairType[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(undefined);
@@ -55,7 +56,7 @@ describe('KvpEditRuleComponent', () => {
 
     it('should delete the kvp if it defined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: 'testval' } as KeyValueIndexSig }
+        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: faker.random.word() } as KeyValueIndexSig }
       ] as KeyValuePairType[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(kvpType[0]);
@@ -87,7 +88,7 @@ describe('KvpEditRuleComponent', () => {
   describe('KvpEditRuleComponent.kvpType setter', () => {
     it('should not set the kvpType if it is undefined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: 'testval' } as KeyValueIndexSig }
+        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: faker.random.word() } as KeyValueIndexSig }
       ] as KeyValuePairType[];
 
       // it is ok to set it twice (normally this is redundant) as it is checking if the setter
@@ -99,7 +100,7 @@ describe('KvpEditRuleComponent', () => {
 
     it('should set the kvpType if it is defined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: 'testval' } as KeyValueIndexSig }
+        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: faker.random.word() } as KeyValueIndexSig }
       ] as KeyValuePairType[];
       component.kvpType = kvpType;
       expect(component.savedKvpType).toEqual(kvpType);
@@ -139,18 +140,19 @@ describe('KvpEditRuleComponent', () => {
     });
 
     it('should emit the savedKvp if it should save and the kvp contains multiple items', () => {
+      const randomValue = faker.random.word();
       const kvpType = [
         {
           type: RuleType.TEXTEQUALS as RuleType,
-          rule: { test: 'testval' } as KeyValueIndexSig
+          rule: { test: randomValue } as KeyValueIndexSig
         },
         {
           type: RuleType.TEXTCONTAINS as RuleType,
-          rule: { testtwo: 'testval' } as KeyValueIndexSig
+          rule: { testtwo: randomValue } as KeyValueIndexSig
         },
         {
           type: RuleType.TEXTEQUALS as RuleType,
-          rule: { testthree: 'testval' } as KeyValueIndexSig
+          rule: { testthree: randomValue } as KeyValueIndexSig
         }
       ] as KeyValuePairType[];
       component.savedKvpType = kvpType;

@@ -36,12 +36,12 @@ describe('KvpListItemRuleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('kvp', () => {
+  describe('kvp-list-item-rule-type', () => {
     beforeEach(() => {
       fixture.detectChanges();
     });
 
-    it('Should contain correct key value pair', () => {
+    it('should contain correct key value pair', () => {
       const kvp = {};
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairType = {
@@ -54,19 +54,19 @@ describe('KvpListItemRuleComponent', () => {
       expect(component.currentKVP).toEqual(input);
     });
 
-    it('Should set the key for current kvp', () => {
+    it('should set the key for current kvp', () => {
       const testKey = faker.lorem.sentence();
       component.key = testKey;
       expect(component.key).toEqual(testKey);
     });
 
-    it('Should set the value for current kvp', () => {
+    it('should set the value for current kvp', () => {
       const testValue = faker.lorem.sentence();
       component.value = testValue;
       expect(component.value).toEqual(testValue);
     });
 
-    it('Should set the rule type for current rule type', () => {
+    it('should set the rule type for current rule type', () => {
       const testRule = faker.random.number({ min: 0, max: 8 });
       component.ruleType = testRule;
       expect(component.ruleType).toEqual(testRule);
@@ -74,7 +74,7 @@ describe('KvpListItemRuleComponent', () => {
   });
 
   describe('onRemove', () => {
-    it('Should emit a remove event', () => {
+    it('should emit a remove event', () => {
       const kvp = {};
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairType = {
@@ -86,8 +86,8 @@ describe('KvpListItemRuleComponent', () => {
       component.onRemove();
 
       component.removeKvp.subscribe(
-        actual => expect(actual).toEqual(input),
-        err => fail(`Unexpected error: ${err.message}`)
+        (actual: KeyValuePairType) => expect(actual).toEqual(input),
+        (err: { message: any; }) => fail(`Unexpected error: ${err.message}`)
       );
     });
   });
