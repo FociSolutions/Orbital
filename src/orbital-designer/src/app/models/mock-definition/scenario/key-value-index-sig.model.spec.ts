@@ -34,4 +34,11 @@ describe('KeyValueIndexSig', () => {
     const Expected = undefined;
     expect(KeyValueIndexSig.getValue(Actual)).toBe(Expected);
   });
+
+  it('should set the value using setKey when the object is not initialized with a key or value', async () => {
+    let Actual = {} as KeyValueIndexSig;
+    const Expected = faker.random.word();
+    Actual = KeyValueIndexSig.setValue(Expected, Actual);
+    expect(KeyValueIndexSig.getValue(Actual)).toBe(Expected);
+  });
 });
