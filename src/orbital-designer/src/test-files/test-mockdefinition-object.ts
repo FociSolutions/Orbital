@@ -66,4 +66,4 @@ export default ({
     title: 'Test Mock',
     description: 'A Test Mock'
   }
-} as unknown) as MockDefinition;
+}) as MockDefinition;
