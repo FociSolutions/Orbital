@@ -133,7 +133,7 @@ describe('KvpEditComponent', () => {
     it('Should set kvpMap a map with the new kvpmap values', () => {
       const newKvpRuleMap = [];
       newKvpRuleMap.push(faker.lorem.sentence(), faker.lorem.sentence());
-      component.kvpMap = newKvpRuleMap;
+      component.kvpRule = newKvpRuleMap;
       expect(component.savedKvpRules).toEqual(newKvpRuleMap);
     });
   });

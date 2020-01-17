@@ -48,10 +48,10 @@ export class KvpEditComponent implements OnInit {
   }
 
   /**
-   * The existing KVP map
+   * The existing KVP array
    */
   @Input()
-  set kvpMap(savedKvpRules: KeyValuePairType[]) {
+  set kvpRule(savedKvpRules: KeyValuePairType[]) {
     if (savedKvpRules) {
       this.savedKvpRules = savedKvpRules;
     }

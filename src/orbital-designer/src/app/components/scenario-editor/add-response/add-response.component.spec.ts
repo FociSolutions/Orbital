@@ -6,7 +6,6 @@ import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
-import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
@@ -43,7 +42,7 @@ describe('AddResponseComponent', () => {
     });
 
     it('should expect the corresponding status code message in the status field if the status code is invalid', () => {
-      component.statusCode = -faker.random.number({min: 0, max: 500});
+      component.statusCode = -faker.random.number({ min: 0, max: 500 });
       expect(component.isStatusCodeValid).toBeFalsy();
     });
   });
@@ -53,7 +52,7 @@ describe('AddResponseComponent', () => {
       const testStatusCode = 200;
       const testHeaderResponse: KeyValuePair[] = [
         {
-          rule: {test: faker.lorem.sentence()}
+          rule: { test: faker.lorem.sentence() }
         }
       ];
       const testBodyResponse = 'NOTVALID';
@@ -85,7 +84,7 @@ describe('AddResponseComponent', () => {
       component.isBodyValid = true;
       component.bodyResponse = '{}';
 
-      const headerMap = [{rule: {test: faker.lorem.sentence()}}];
+      const headerMap = [{ rule: { test: faker.lorem.sentence() } }];
       const saveHeaderMapSpy = spyOn(component.responseOutput, 'emit');
       component.saveHeaderMap(headerMap);
 

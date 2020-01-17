@@ -21,7 +21,7 @@ export class MockDefinitionService {
   public deserialize(mockDefinition: string): Observable<boolean> {
     return new Observable(observer => {
       try {
-        let content = JSON.parse(mockDefinition);
+        const content = JSON.parse(mockDefinition);
         this.store.mockDefinitions = [content];
         this.store.state.mockDefinition = content as MockDefinition;
         observer.next(true);
