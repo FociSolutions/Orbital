@@ -5,10 +5,10 @@
   <div>
     <p class="description">{{ listKvpTitle }}</p>
   </div>
-  <div *ngIf="!this.savedKvpMap?.length">
+  <div *ngIf="!this.savedKvpType?.length">
     No rules Added KVP Rule
   </div>
-  <div *ngFor="let kv of savedKvpMap">
+  <div *ngFor="let kv of savedKvpType">
     <app-kvp-list-item-rule-type
       [kvp]="kv"
       (removeKvp)="deleteKvpFromRule($event)"

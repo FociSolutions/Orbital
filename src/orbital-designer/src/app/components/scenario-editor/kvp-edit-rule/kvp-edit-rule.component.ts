@@ -21,7 +21,7 @@ export class KvpEditRuleComponent implements OnInit {
   savedKvpType: KeyValuePairType[];
 
   /**
-   * The event emitter for the savedKvpMap
+   * The event emitter for the savedKvpType
    */
   @Output() savedKvpEmitter: EventEmitter<KeyValuePairType[]>;
 
