@@ -38,7 +38,8 @@ describe('KvpEditRuleComponent', () => {
   describe('KvpEditRuleComponent.deleteKvpFromRule', () => {
     it('should not delete the kvp if it is undefined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: faker.random.word() } as KeyValueIndexSig }
+        { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
+          rule: { test: faker.random.word() } as KeyValueIndexSig }
       ] as KeyValuePairType[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(undefined);
@@ -47,7 +48,7 @@ describe('KvpEditRuleComponent', () => {
 
     it('should not delete the kvp if the rule is undefined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: undefined }
+        { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType, rule: undefined }
       ] as KeyValuePairType[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(undefined);
@@ -56,7 +57,8 @@ describe('KvpEditRuleComponent', () => {
 
     it('should delete the kvp if it defined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: faker.random.word() } as KeyValueIndexSig }
+        { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
+          rule: { test: faker.random.word() } as KeyValueIndexSig }
       ] as KeyValuePairType[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(kvpType[0]);
@@ -64,19 +66,20 @@ describe('KvpEditRuleComponent', () => {
     });
 
     it('should delete the kvp by key if there are multiple similar kvps', () => {
+      const randomWord = faker.random.word();
       // this has to have the same value for all the values to make sure that it is not deleting by value
       const kvpType = [
         {
-          type: RuleType.TEXTEQUALS as RuleType,
-          rule: { test: 'testval' } as KeyValueIndexSig
+          type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
+          rule: { test: randomWord } as KeyValueIndexSig
         },
         {
-          type: RuleType.TEXTCONTAINS as RuleType,
-          rule: { testtwo: 'testval' } as KeyValueIndexSig
+          type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
+          rule: { testtwo: randomWord } as KeyValueIndexSig
         },
         {
-          type: RuleType.TEXTEQUALS as RuleType,
-          rule: { testthree: 'testval' } as KeyValueIndexSig
+          type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
+          rule: { testthree: randomWord } as KeyValueIndexSig
         }
       ] as KeyValuePairType[];
       component.savedKvpType = kvpType;
@@ -88,7 +91,8 @@ describe('KvpEditRuleComponent', () => {
   describe('KvpEditRuleComponent.kvpType setter', () => {
     it('should not set the kvpType if it is undefined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: faker.random.word() } as KeyValueIndexSig }
+        { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
+          rule: { test: faker.random.word() } as KeyValueIndexSig }
       ] as KeyValuePairType[];
 
       // it is ok to set it twice (normally this is redundant) as it is checking if the setter
@@ -100,7 +104,8 @@ describe('KvpEditRuleComponent', () => {
 
     it('should set the kvpType if it is defined', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: { test: faker.random.word() } as KeyValueIndexSig }
+        { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
+          rule: { test: faker.random.word() } as KeyValueIndexSig }
       ] as KeyValuePairType[];
       component.kvpType = kvpType;
       expect(component.savedKvpType).toEqual(kvpType);
@@ -116,7 +121,7 @@ describe('KvpEditRuleComponent', () => {
 
     it('should emit the savedKvp if it should save', () => {
       const kvpType = [
-        { type: RuleType.TEXTEQUALS as RuleType, rule: {} as KeyValueIndexSig }
+        { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType, rule: {} as KeyValueIndexSig }
       ] as KeyValuePairType[];
       component.savedKvpType = kvpType;
       spyOn(component.savedKvpEmitter, 'emit');
@@ -143,15 +148,15 @@ describe('KvpEditRuleComponent', () => {
       const randomValue = faker.random.word();
       const kvpType = [
         {
-          type: RuleType.TEXTEQUALS as RuleType,
+          type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { test: randomValue } as KeyValueIndexSig
         },
         {
-          type: RuleType.TEXTCONTAINS as RuleType,
+          type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { testtwo: randomValue } as KeyValueIndexSig
         },
         {
-          type: RuleType.TEXTEQUALS as RuleType,
+          type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { testthree: randomValue } as KeyValueIndexSig
         }
       ] as KeyValuePairType[];
