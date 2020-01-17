@@ -1,5 +1,5 @@
 /**
- * Enum representation for different body rule types
+ * Enum representation for different comparers
  */
 export enum RuleType {
   REGEX = 0,
