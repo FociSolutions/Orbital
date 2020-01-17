@@ -46,12 +46,12 @@ export class OrbitalAdminService {
     mockdefinition: MockDefinition
   ): Observable<boolean> {
     this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
-    const mockDefinitionToExport = cloneDeep(mockdefinition);
-
-    this.logger.debug(JSON.stringify(Json.mapToObject(mockDefinitionToExport)));
+    const mockDefinitionToExport = JSON.stringify(Json.mapToObject(mockdefinition));
+    this.logger.debug('Mockdefinition in JSON format: ', mockDefinitionToExport);
 
     return this.httpClient.post<boolean>(url,
-      JSON.stringify(Json.mapToObject(mockDefinitionToExport)), { headers: new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'})
+      mockDefinitionToExport,
+      { headers: new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'})
     }).pipe(
       catchError(error => {
         return throwError(error);
