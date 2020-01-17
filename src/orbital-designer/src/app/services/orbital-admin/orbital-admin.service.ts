@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEvent, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpRequest,
+  HttpEvent,
+  HttpHeaders
+} from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable, throwError, of, from } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
-import Json from '../../../app/models/json';
-import { cloneDeep } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -46,17 +49,23 @@ export class OrbitalAdminService {
     mockdefinition: MockDefinition
   ): Observable<boolean> {
     this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
-    const mockDefinitionToExport = JSON.stringify(Json.mapToObject(mockdefinition));
-    this.logger.debug('Mockdefinition in JSON format: ', mockDefinitionToExport);
-
-    return this.httpClient.post<boolean>(url,
-      mockDefinitionToExport,
-      { headers: new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'})
-    }).pipe(
-      catchError(error => {
-        return throwError(error);
-      })
+    const mockDefinitionToExport = JSON.stringify(mockdefinition);
+    this.logger.debug(
+      'Mockdefinition in JSON format: ',
+      mockDefinitionToExport
     );
+
+    return this.httpClient
+      .post<boolean>(url, mockDefinitionToExport, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json; charset=utf-8'
+        })
+      })
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
   }
 
   /**
