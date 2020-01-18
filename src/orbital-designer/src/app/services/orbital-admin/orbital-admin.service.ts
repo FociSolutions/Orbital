@@ -10,6 +10,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Observable, throwError, of, from } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,11 @@ export class OrbitalAdminService {
     mockdefinition: MockDefinition
   ): Observable<boolean> {
     this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
-    const mockDefinitionToExport = JSON.stringify(mockdefinition);
+    const mockDefinitionToExport = JSON.parse(JSON.stringify(mockdefinition));
+
+    mockDefinitionToExport.scenarios.map(scenario => {
+      scenario.response.headers = this.convertHeaders(scenario.response.headers);
+    });
     this.logger.debug(
       'Mockdefinition in JSON format: ',
       mockDefinitionToExport
@@ -82,6 +87,21 @@ export class OrbitalAdminService {
     );
   }
 
+  /**
+   * A temporary function which removes the type-shim and formats the headers into a key:value pair format.
+   * This method is temporary and will be removed in a future issue.
+   * It is required to export mocks to the server.
+   * @param headers
+   */
+  convertHeaders(headers: any) {
+    var result = {};
+    headers.forEach(header => {
+      var key = Object.keys(header.rule)[0];
+      var value = header.rule[key];
+      result[key] = value;
+    });
+    return result;
+  }
   /**
    * Removes the specified mock definition from the orbital server
    *
