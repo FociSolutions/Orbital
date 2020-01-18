@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 @Component({
   selector: 'app-kvp-list-item',
@@ -31,7 +32,7 @@ export class KvpListItemComponent implements OnInit {
    * Gets the key from the currentKVP
    */
   get key() {
-    return Object.keys(this.currentKVP.rule)[0];
+    return KeyValueIndexSig.getKey(this.currentKVP.rule);
   }
 
   /**
