@@ -13,7 +13,6 @@ export class KvpEditRuleComponent implements OnInit {
    */
   @Input() addKvpTitle: string;
   @Input() listKvpTitle: string;
-  @Input() isCaseSensitive: boolean;
 
   /**
    * The new kvp map with the new kvp added in
