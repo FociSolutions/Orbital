@@ -5,13 +5,13 @@
   <div>
     <p class="description">{{ listKvpTitle }}</p>
   </div>
-  <div *ngIf="!this.savedKvpType?.length">
-    No rules Added KVP Rule
-  </div>
-  <div *ngFor="let kv of savedKvpType">
-    <app-kvp-list-item-rule-type
-      [kvp]="kv"
-      (removeKvp)="deleteKvpFromRule($event)"
-    ></app-kvp-list-item-rule-type>
-  </div>
+  <ng-template [ngIf]="!this.savedKvpType?.length" [ngIfElse]="noRulesAdded">
+    <div *ngFor="let kv of savedKvpType">
+      <app-kvp-list-item-rule-type [kvp]="kv" (removeKvp)="deleteKvpFromRule($event)"></app-kvp-list-item-rule-type>
+    </div>
+  </ng-template>
 </div>
+
+<ng-template #noRulesAdded>
+  No rules Added KVP Rule
+</ng-template>
