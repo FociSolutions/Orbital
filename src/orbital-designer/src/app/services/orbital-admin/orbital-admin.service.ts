@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
-  HttpRequest,
-  HttpEvent,
   HttpHeaders
 } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable, throwError, of, from } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -100,13 +98,13 @@ export class OrbitalAdminService {
    * A temporary function which removes the type-shim and formats the headers into a key:value pair format.
    * This method is temporary and will be removed in a future issue.
    * It is required to export mocks to the server.
-   * @param headers
+   * @param headers The headers to convert
    */
   convertHeaders(headers: any) {
-    var result = {};
+    const result = {};
     headers.forEach(header => {
-      var key = Object.keys(header.rule)[0];
-      var value = header.rule[key];
+      const key = Object.keys(header.rule)[0];
+      const value = header.rule[key];
       result[key] = value;
     });
     return result;
@@ -140,7 +138,7 @@ export class OrbitalAdminService {
     mockDefIds.forEach(id => {
       this.deleteMockDefinition(url, id).subscribe(
         () => {},
-        error => (success = false)
+        () => (success = false)
       );
     });
 
