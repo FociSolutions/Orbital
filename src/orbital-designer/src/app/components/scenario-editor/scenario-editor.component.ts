@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterContentChecked,
+  ChangeDetectorRef
+} from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
@@ -15,7 +21,8 @@ import * as _ from 'lodash';
   templateUrl: './scenario-editor.component.html',
   styleUrls: ['./scenario-editor.component.scss']
 })
-export class ScenarioEditorComponent implements OnInit, OnDestroy {
+export class ScenarioEditorComponent
+  implements OnInit, OnDestroy, AfterContentChecked {
   readonly headerMatchRuleTitle = 'Header Match Rule';
   readonly headerMatchRuleListTitle = 'Header Rules';
 
@@ -45,7 +52,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: DesignerStore,
     private logger: NGXLogger,
-    private activatedRouter: ActivatedRoute
+    private activatedRouter: ActivatedRoute,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   /**
@@ -71,6 +79,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.endpointPath = state.selectedEndpoint.path;
       }
     });
+  }
+
+  ngAfterContentChecked(): void {
+    this.cdRef.detectChanges();
   }
 
   /**
