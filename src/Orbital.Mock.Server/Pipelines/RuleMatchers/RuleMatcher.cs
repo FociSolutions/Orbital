@@ -29,15 +29,16 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                             
                             break;
                         case ComparerType.TEXTSTARTSWITH:
+                            isMatch = TextComparer.StartsWith(assert.Actual, assert.Expect);
 
                             break;
                         case ComparerType.TEXTENDSWITH:
+                            isMatch = TextComparer.EndsWith(assert.Actual, assert.Expect);
 
                             break;
                         case ComparerType.TEXTEQUALS:
-                            isMatch = TextComparer.StartsWith(assert.Actual, assert.Expect);
-                            isMatch = TextComparer.EndsWith(assert.Actual, assert.Expect);
-                           
+                            isMatch = TextComparer.Equals(assert.Actual, assert.Expect);
+
                             break;
                         case ComparerType.JSONCONTAINS:
                             var actual = JToken.Parse(assert.Actual);
