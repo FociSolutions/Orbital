@@ -26,7 +26,7 @@
           [isCaseSensitive]="false"
           [Save]="this.shouldSave"
           [kvpRule]="this.requestMatchRule?.headerRules"
-          (savedKvpMapEmitter)="handleHeaderKvpOutput($event)"
+          (savedKvpEmitter)="handleHeaderKvpOutput($event)"
         >
         </app-kvp-edit>
       </mat-expansion-panel>
@@ -45,7 +45,7 @@
           [isCaseSensitive]="true"
           [Save]="this.shouldSave"
           [kvpRule]="this.requestMatchRule?.queryRules"
-          (savedKvpMapEmitter)="handleQueryKvpOutput($event)"
+          (savedKvpEmitter)="handleQueryKvpOutput($event)"
         >
         </app-kvp-edit>
       </mat-expansion-panel>

@@ -35,7 +35,7 @@
       [isCaseSensitive]="false"
       [Save]="this.shouldSave"
       [kvpRule]="this.headers"
-      (savedKvpMapEmitter)="saveHeaderMap($event)"
+      (savedKvpEmitter)="saveHeaderMap($event)"
     ></app-kvp-edit>
     <div class="response-body">
       <mat-form-field>
