@@ -23,8 +23,7 @@ export class ExportToServerViewComponent implements OnInit {
   isUploadingMocks: boolean;
 
   controlsMockDefinitionToString = (control: AbstractControl) =>
-    // tslint:disable-next-line: semicolon
-    (control.value as MockDefinition).metadata.title;
+    (control.value as MockDefinition).metadata.title
 
   constructor(
     private location: Location,
