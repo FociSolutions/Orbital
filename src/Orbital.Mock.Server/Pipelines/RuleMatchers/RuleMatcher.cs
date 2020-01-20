@@ -32,16 +32,16 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                             }
                             catch
                             {
-                                isMatch = assert.Actual.Contains(assert.Expect);
+                                isMatch = TextComparer.Contains(assert.Actual, assert.Expect);
                             }
                             
                             break;
                         case ComparerType.StartWith:
-                            isMatch = assert.Actual.StartsWith(assert.Expect);
-                            break;
+                            isMatch = TextComparer.StartsWith(assert.Actual, assert.Expect);
+                        break;
                         case ComparerType.EndWith:
-                            isMatch = assert.Actual.EndsWith(assert.Expect);
-                            break;
+                            isMatch = TextComparer.EndsWith(assert.Actual, assert.Expect);
+                        break;
                         case ComparerType.Equal:
                             try
                             {
@@ -51,8 +51,8 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                             }
                             catch
                             {
-                               isMatch = assert.Actual.Equals(assert.Expect);
-                            }
+                               isMatch = TextComparer.Equals(assert.Actual, assert.Expect);
+                        }
                            
                             break;
                     }
