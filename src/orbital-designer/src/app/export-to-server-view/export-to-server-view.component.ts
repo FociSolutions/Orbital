@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import {
-  FormControl,
-  FormArray,
-  AbstractControl} from '@angular/forms';
+import { FormControl, FormArray, AbstractControl } from '@angular/forms';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from '../store/designer-store';
 import { NGXLogger } from 'ngx-logger';
@@ -26,6 +23,7 @@ export class ExportToServerViewComponent implements OnInit {
   isUploadingMocks: boolean;
 
   controlsMockDefinitionToString = (control: AbstractControl) =>
+    // tslint:disable-next-line: semicolon
     (control.value as MockDefinition).metadata.title;
 
   constructor(
