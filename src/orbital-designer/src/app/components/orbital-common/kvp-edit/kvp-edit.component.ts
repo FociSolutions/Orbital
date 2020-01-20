@@ -58,33 +58,42 @@ export class KvpEditComponent implements OnInit {
   }
 
   /**
-   * This method listens to the event emitter from the child component and adds the KeyValue pair into the map
+   * This method listens to the event emitter from the child component and adds the KeyValue pair into the map.
+   * If another kvp that has the same key as the one that is being added exists, then it will overwrite it, depending
+   * on the case-insensitive options.
    * @param kvp The KeyValue pair being taken in from the child component to be added
    */
   addKvpRuleToMap(kvpRuleToAdd: KeyValuePairType) {
     if (kvpRuleToAdd.rule) {
+      // always set to TEXTEQUALS (for now, as the UI does not have the component implemented)
       kvpRuleToAdd.type = RuleType.TEXTEQUALS;
 
       if (this.isCaseSensitive) {
-        // delete the rule if it exists
+        // try to delete kvp if it already exists
         this.deleteKvpRuleFromMap(kvpRuleToAdd);
-        this.logger.debug('Adding a case sensitive KVP to Map', kvpRuleToAdd);
       } else {
-        const kvpInListToDelete = this.savedKvpRules.find(
-          val =>
-            KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
-            KeyValueIndexSig.getKey(kvpRuleToAdd.rule).toLowerCase()
-        );
-
-        // try to delete it if it exists
-        this.deleteKvpRuleFromMap(kvpInListToDelete);
+        // lowercase the key
         kvpRuleToAdd.rule = KeyValueIndexSig.setKey(
           KeyValueIndexSig.getKey(kvpRuleToAdd.rule).toLowerCase(),
           kvpRuleToAdd.rule
         );
-        this.logger.debug('Adding a case insensitive KVP to Map', kvpRuleToAdd);
+
+        // check if the key exists (case-insensitively) already; if so, delete it
+        this.deleteKvpRuleFromMap(this.savedKvpRules.find(
+          val =>
+            KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
+            KeyValueIndexSig.getKey(kvpRuleToAdd.rule)
+        ));
       }
 
+      // unconditionally add as it has already been deleted if it exists, otherwise, it is new
+      // and has to be added
+      this.logger.debug(
+        'Adding a case ' +
+          (this.isCaseSensitive ? 'in' : '') +
+          'sensitive KVP to Map',
+          kvpRuleToAdd
+      );
       this.savedKvpRules.push(kvpRuleToAdd);
     }
   }

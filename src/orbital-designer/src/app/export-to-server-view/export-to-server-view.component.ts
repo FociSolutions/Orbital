@@ -3,17 +3,13 @@ import { Location } from '@angular/common';
 import {
   FormControl,
   FormArray,
-  AbstractControl,
-  Validators
-} from '@angular/forms';
+  AbstractControl} from '@angular/forms';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from '../store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { OrbitalAdminService } from '../services/orbital-admin/orbital-admin.service';
 import { Observable } from 'rxjs/internal/Observable';
-import { from } from 'rxjs/internal/observable/from';
-import { mergeMap, finalize } from 'rxjs/operators';
-import { url } from 'inspector';
+import { finalize } from 'rxjs/operators';
 import { every } from 'lodash';
 
 @Component({
