@@ -13,6 +13,9 @@ import {
 import { FormControl, Validators } from '@angular/forms';
 import { Observer } from 'rxjs';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
+import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -140,7 +143,7 @@ export class ImportFromServerViewComponent implements OnInit {
       this.formArray = new FormArray(
         response.map(
           mockDef =>
-            new FormControl(mockDef, null)
+            new FormControl(this.convertHeaders(mockDef), null)
         )
       );
 
@@ -149,6 +152,23 @@ export class ImportFromServerViewComponent implements OnInit {
         this.formArray
       );
     }
+  }
+
+  /**
+   * This code is temporary and will be removed in a future issue. It is used to convert the headers from an object
+   * form on the server to a list form on the client. When the kvp-edit-rule component is implemented, this function
+   * can be removed as the list will expect an object.
+   * @param mockDef The mockdefinition
+   */
+  convertHeaders(mockDef: MockDefinition) {
+    mockDef.scenarios.forEach(scenario => {
+      scenario.response.headers = Object.entries(scenario.response.headers).map(header => {
+        const tmp = {};
+        tmp[header[0]] = header[1];
+        return {rule: tmp} as KeyValuePair;
+      });
+    });
+    return mockDef;
   }
 
   /**
