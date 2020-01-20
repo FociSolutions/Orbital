@@ -70,20 +70,17 @@ export class KvpEditComponent implements OnInit {
 
       if (this.isCaseSensitive) {
         // try to delete kvp if it already exists
-        this.deleteKvpRule(kvpRuleToAdd);
+        this.deleteKvpRule(kvpRuleToAdd, true);
       } else {
-        // lowercase the key
-        kvpRuleToAdd.rule = KeyValueIndexSig.setKey(
-          KeyValueIndexSig.getKey(kvpRuleToAdd.rule).toLowerCase(),
-          kvpRuleToAdd.rule
-        );
-
         // check if the key exists (case-insensitively) already; if so, delete it
-        this.deleteKvpRule(this.savedKvpRules.find(
-          val =>
-            KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
-            KeyValueIndexSig.getKey(kvpRuleToAdd.rule)
-        ));
+        this.deleteKvpRule(
+          this.savedKvpRules.find(
+            val =>
+              KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
+              KeyValueIndexSig.getKey(kvpRuleToAdd.rule)
+          ),
+          false
+        );
       }
 
       // unconditionally add as it has already been deleted if it exists, otherwise, it is new
@@ -92,7 +89,7 @@ export class KvpEditComponent implements OnInit {
         'Adding a case ' +
           (this.isCaseSensitive ? 'in' : '') +
           'sensitive KVP to list',
-          kvpRuleToAdd
+        kvpRuleToAdd
       );
       this.savedKvpRules.push(kvpRuleToAdd);
     }
@@ -101,7 +98,18 @@ export class KvpEditComponent implements OnInit {
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
-  deleteKvpRule(kvpRuleToDelete: KeyValuePairType) {
+  deleteKvpRule(
+    kvpRuleToDelete: KeyValuePairType,
+    isRuleCaseSensitive: boolean
+  ) {
+    if (!isRuleCaseSensitive) {
+      // lowercase the key  if not case sensitive
+      kvpRuleToDelete.rule = KeyValueIndexSig.setKey(
+        KeyValueIndexSig.getKey(kvpRuleToDelete.rule).toLowerCase(),
+        kvpRuleToDelete.rule
+      );
+    }
+
     if (!!kvpRuleToDelete && !!kvpRuleToDelete.rule) {
       this.savedKvpRules = this.savedKvpRules.filter(
         toDelete =>
