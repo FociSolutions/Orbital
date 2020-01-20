@@ -10,6 +10,11 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { DesignerStore } from '../store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { OrbitalAdminService } from '../services/orbital-admin/orbital-admin.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { from } from 'rxjs/internal/observable/from';
+import { mergeMap, finalize } from 'rxjs/operators';
+import { url } from 'inspector';
+import { every } from 'lodash';
 
 @Component({
   selector: 'app-export-to-server-view',
@@ -25,19 +30,17 @@ export class ExportToServerViewComponent implements OnInit {
   isUploadingMocks: boolean;
 
   controlsMockDefinitionToString = (control: AbstractControl) =>
-    (control.value as MockDefinition).metadata.title
+    (control.value as MockDefinition).metadata.title;
 
   constructor(
     private location: Location,
     private store: DesignerStore,
     private logger: NGXLogger,
-    private service: OrbitalAdminService) {
-  }
+    private service: OrbitalAdminService
+  ) {}
 
   ngOnInit() {
-    this.inputControl = new FormControl(
-      ''
-    );
+    this.inputControl = new FormControl('');
 
     this.resetForm();
   }
@@ -60,54 +63,44 @@ export class ExportToServerViewComponent implements OnInit {
   async onSubmit() {
     this.isUploadingMocks = true;
     this.logger.debug('URL contents before uploading', this.inputControl.value);
-
-    const mockDefinitionExportResults = this.exportMocksFromForm();
-
-    let exportStatusSuccess: boolean;
-    await Promise.all(mockDefinitionExportResults)
-      .then(
-        exportStatuses => {
-          this.logger.debug(
-            'Received response from export to server promise resolution',
-            exportStatuses
-          );
-          exportStatusSuccess = exportStatuses.every(
-            exportStatus => exportStatus
-          );
+    return this.exportMocksFromForm()
+      .pipe(
+        finalize(() => {
+          this.isUploadingMocks = false;
+          this.resetForm();
+        })
+      )
+      .subscribe(
+        uploadMockStatus => {
+          if (every(uploadMockStatus)) {
+            this.logger.debug(
+              'Received response from export to server promise resolution'
+            );
+            this.exportStatusMessage = 'File(s) successfully exported';
+          } else {
+            this.exportStatusMessage =
+              'File(s) could not be exported because of an error';
+          }
         },
         () => {
-          exportStatusSuccess = false;
+          this.exportStatusMessage =
+            'File(s) could not be exported because of an error';
         }
-      )
-      .finally(() => {
-        this.isUploadingMocks = false;
-      });
-
-    if (exportStatusSuccess) {
-      this.exportStatusMessage = 'File(s) successfully exported';
-    } else {
-      this.exportStatusMessage = 'File(s) could not be exported because of an error';
-    }
-
-    this.resetForm();
+      );
   }
 
   /**
    * Exports the mocks from the form, and returns a list of promises representing the state
    * of the export
    */
-  exportMocksFromForm(): Promise<boolean>[] {
-    return this.service
-      .exportMockDefinitions(
-        this.inputControl.value,
-        this.formArray.controls.map(formControl => {
-          this.logger.debug('Mockdefinition to export', formControl.value);
-          return formControl.value as MockDefinition;
-        })
-      )
-      .map(mockDefinitionExportResult => {
-        return mockDefinitionExportResult.toPromise();
-      });
+  exportMocksFromForm(): Observable<boolean[]> {
+    return this.service.exportMockDefinitions(
+      this.inputControl.value,
+      this.formArray.controls.map(formControl => {
+        this.logger.debug('Mockdefinition to export', formControl.value);
+        return formControl.value as MockDefinition;
+      })
+    );
   }
 
   /**

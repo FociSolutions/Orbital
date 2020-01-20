@@ -5,8 +5,8 @@ import {
 } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable, throwError, forkJoin } from 'rxjs';
-import { catchError, mergeMap, flatMap } from 'rxjs/operators';
+import { Observable, throwError, forkJoin, from, of } from 'rxjs';
+import { catchError, mergeMap, flatMap, map, reduce, every } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -133,15 +133,8 @@ export class OrbitalAdminService {
    * @param mockDefIds string arrays containing the mock definition titles to be deleted
    * @returns flag to indicate if the deletion of all mock definitions was successful
    */
-  deleteMultipleMockDefinitions(url: string, mockDefIds: string[]): boolean {
-    let success = true;
-    mockDefIds.forEach(id => {
-      this.deleteMockDefinition(url, id).subscribe(
-        () => {},
-        () => (success = false)
-      );
-    });
-
-    return success;
+  deleteMultipleMockDefinitions(url: string, mockDefIds: string[]): Observable<boolean> {
+    return from(mockDefIds).pipe(mergeMap(id => this.deleteMockDefinition(url, id)),
+    every(result => result));
   }
 }
