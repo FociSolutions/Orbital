@@ -15,7 +15,7 @@ export class KvpEditRuleComponent implements OnInit {
   @Input() listKvpTitle: string;
 
   /**
-   * The new kvp map with the new kvp added in
+   * The new kvp list with the new kvp added in
    */
   savedKvpType: KeyValuePairType[];
 
@@ -32,18 +32,18 @@ export class KvpEditRuleComponent implements OnInit {
   ngOnInit() {}
 
   /**
-   * This setter calls the emitter for the savedkvpmap if shouldSave is true
+   * This setter calls the emitter for the saved kvp list if shouldSave is true
    */
   @Input()
   set Save(shouldSave: boolean) {
     if (shouldSave) {
       this.savedKvpEmitter.emit(this.savedKvpType);
-      this.logger.debug('KVP map has been saved', this.savedKvpType);
+      this.logger.debug('KVP list has been saved', this.savedKvpType);
     }
   }
 
   /**
-   * The existing KVP map
+   * The existing KVP list
    */
   @Input()
   set kvpType(savedKvpType: KeyValuePairType[]) {
@@ -53,7 +53,7 @@ export class KvpEditRuleComponent implements OnInit {
   }
 
   /**
-   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the map
+   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
   deleteKvpFromRule(kvpToDelete: KeyValuePairType) {
