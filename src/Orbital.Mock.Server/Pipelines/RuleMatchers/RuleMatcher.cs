@@ -3,6 +3,7 @@ using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Comparers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+using System;
 using System.Linq;
 
 namespace Orbital.Mock.Server.Pipelines.RuleMatchers
@@ -41,17 +42,34 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
 
                             break;
                         case ComparerType.JSONCONTAINS:
+
+                        try {
                             var actual = JToken.Parse(assert.Actual);
                             var expected = JToken.Parse(assert.Expect);
                             isMatch = DeepContains(expected.HasValues ? expected.First : expected, actual);
+                        }
+                        catch (Exception e)
+                        {
+                            isMatch = false;
+                            break;
+                        }
+                            
 
                             break;
                         case ComparerType.JSONEQUALITY:
+                        try
+                        {
                             var actualEquality = JToken.Parse(assert.Actual);
                             var expectedEquality = JToken.Parse(assert.Expect);
                             isMatch = JToken.DeepEquals(expectedEquality, actualEquality);
-
+                        }
+                        catch (Exception e)
+                        {
+                            isMatch = false;
                             break;
+                        }
+
+                        break;
                         case ComparerType.JSONPATH:
 
                             break;

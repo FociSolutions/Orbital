@@ -44,9 +44,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var fakerJObject = new Faker<JObject>()
                 .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
+                .CustomInstantiator(f => new BodyRule(f.PickRandomWithout<ComparerType>(ComparerType.JSONSCHEMA, ComparerType.JSONPATH, ComparerType.TEXTCONTAINS, ComparerType.TEXTENDSWITH, ComparerType.TEXTEQUALS,ComparerType.TEXTSTARTSWITH, ComparerType.REGEX), fakerJObject.Generate()));
             var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandomWithout<ComparerType>(ComparerType.JSONCONTAINS, ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
             var fakerResponse = new Faker<MockResponse>()
                    .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
