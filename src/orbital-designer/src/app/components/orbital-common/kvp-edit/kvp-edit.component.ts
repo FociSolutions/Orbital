@@ -70,16 +70,21 @@ export class KvpEditComponent implements OnInit {
 
       if (this.isCaseSensitive) {
         // try to delete kvp if it already exists
-        this.deleteKvpRule(kvpRuleToAdd, true);
+        this.deleteKvpRule(kvpRuleToAdd);
       } else {
+        // lowercase the key
+        kvpRuleToAdd.rule = KeyValueIndexSig.setKey(
+          KeyValueIndexSig.getKey(kvpRuleToAdd.rule).toLowerCase(),
+          kvpRuleToAdd.rule
+        );
+
         // check if the key exists (case-insensitively) already; if so, delete it
         this.deleteKvpRule(
           this.savedKvpRules.find(
             val =>
               KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
               KeyValueIndexSig.getKey(kvpRuleToAdd.rule)
-          ),
-          false
+          )
         );
       }
 
@@ -98,25 +103,37 @@ export class KvpEditComponent implements OnInit {
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
-  deleteKvpRule(
-    kvpRuleToDelete: KeyValuePairType,
-    isRuleCaseSensitive: boolean
-  ) {
-    if (!isRuleCaseSensitive) {
-      // lowercase the key  if not case sensitive
-      kvpRuleToDelete.rule = KeyValueIndexSig.setKey(
-        KeyValueIndexSig.getKey(kvpRuleToDelete.rule).toLowerCase(),
-        kvpRuleToDelete.rule
-      );
-    }
+  deleteKvpRule(kvpRuleToDelete: KeyValuePairType) {
+    let ruleToDelete = kvpRuleToDelete;
 
     if (!!kvpRuleToDelete && !!kvpRuleToDelete.rule) {
-      this.savedKvpRules = this.savedKvpRules.filter(
-        toDelete =>
-          KeyValueIndexSig.getKey(toDelete.rule) !==
-          KeyValueIndexSig.getKey(kvpRuleToDelete.rule)
-      );
-      this.logger.debug('Delete Header Rule', kvpRuleToDelete);
+      if (kvpRuleToDelete.rule) {
+        // always set to TEXTEQUALS (for now, as the UI does not have the component implemented)
+        kvpRuleToDelete.type = RuleType.TEXTEQUALS;
+
+        if (!this.isCaseSensitive) {
+          // try to delete kvp if it already exists
+
+          // lowercase the key
+          kvpRuleToDelete.rule = KeyValueIndexSig.setKey(
+            KeyValueIndexSig.getKey(kvpRuleToDelete.rule).toLowerCase(),
+            kvpRuleToDelete.rule
+          );
+
+          // check if the key exists (case-insensitively) already; if so, delete it
+          ruleToDelete = this.savedKvpRules.find(
+            val =>
+              KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
+              KeyValueIndexSig.getKey(kvpRuleToDelete.rule)
+          );
+        }
+        this.savedKvpRules = this.savedKvpRules.filter(
+          toDelete =>
+            KeyValueIndexSig.getKey(toDelete.rule) !==
+            KeyValueIndexSig.getKey(kvpRuleToDelete.rule)
+        );
+        this.logger.debug('Delete Header Rule', kvpRuleToDelete);
+      }
     }
   }
 }
