@@ -130,7 +130,7 @@ export class KvpEditComponent implements OnInit {
         this.savedKvpRules = this.savedKvpRules.filter(
           toDelete =>
             KeyValueIndexSig.getKey(toDelete.rule) !==
-            KeyValueIndexSig.getKey(kvpRuleToDelete.rule)
+            KeyValueIndexSig.getKey(ruleToDelete.rule)
         );
         this.logger.debug('Delete Header Rule', kvpRuleToDelete);
       }
