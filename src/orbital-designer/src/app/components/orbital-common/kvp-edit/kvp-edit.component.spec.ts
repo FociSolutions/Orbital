@@ -36,12 +36,12 @@ describe('KvpEditComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('KvpEditComponent.addKvpToMap', () => {
+  describe('KvpEditComponent.addKvp', () => {
     beforeEach(() => {
       fixture.detectChanges();
     });
 
-    it('Should return a map with the added a case-sensitive kvp', () => {
+    it('Should return a list of KeyValuePairTypes with the added a case-sensitive kvp', () => {
       const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: {
@@ -50,11 +50,11 @@ describe('KvpEditComponent', () => {
         }
       };
       component.isCaseSensitive = true;
-      component.addKvpRuleToMap(kvpToAdd);
+      component.addKvpRule(kvpToAdd);
       expect(component.savedKvpRules.includes(kvpToAdd)).toBeTruthy();
     });
 
-    it('Should return a map with the added a case-insensitive kvp', () => {
+    it('Should return a list of KeyValuePairTypes with the added a case-insensitive kvp', () => {
       const kvp = {} as KeyValueIndexSig;
       kvp[faker.lorem.sentence().toUpperCase()] = faker.lorem.sentence();
       const kvpToAdd: KeyValuePairType = {
@@ -62,7 +62,7 @@ describe('KvpEditComponent', () => {
         rule: kvp
       };
       component.isCaseSensitive = false;
-      component.addKvpRuleToMap(kvpToAdd);
+      component.addKvpRule(kvpToAdd);
       expect(
         component.savedKvpRules.find(
           element =>
@@ -72,26 +72,26 @@ describe('KvpEditComponent', () => {
       ).toBeTruthy();
     });
 
-    it('Should not add kvp to map if kvp is empty/null', () => {
+    it('Should not add kvp to the kvps if kvp is empty/null', () => {
       component.savedKvpRules = [];
       const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: null
       };
 
-      component.addKvpRuleToMap(kvpToAdd);
+      component.addKvpRule(kvpToAdd);
       expect(
         component.savedKvpRules.find(element => element.rule === null)
       ).toBeFalsy();
     });
   });
 
-  describe('KvpEditComponent.deleteKvpFromMap', () => {
+  describe('KvpEditComponent.deleteKvp', () => {
     beforeEach(() => {
       fixture.detectChanges();
     });
 
-    it('Should return a map without the deleted kvp', () => {
+    it('Should return the kvps without the deleted kvp', () => {
       const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: {
@@ -100,8 +100,8 @@ describe('KvpEditComponent', () => {
         }
       };
 
-      component.addKvpRuleToMap(kvpToAdd);
-      component.deleteKvpRuleFromMap(kvpToAdd);
+      component.addKvpRule(kvpToAdd);
+      component.deleteKvpRule(kvpToAdd);
 
       expect(
         component.savedKvpRules.find(
@@ -110,53 +110,49 @@ describe('KvpEditComponent', () => {
       ).toBeFalsy();
     });
 
-    it('Should not be able to delete kvp if map if kvp is empty/null', () => {
+    it('Should not be able to delete kvp from kvps if kvp is empty/null', () => {
       component.savedKvpRules = [];
       const kvpToAdd: KeyValuePairType = {
         type: faker.random.number({ min: 0, max: 8 }),
         rule: null
       };
 
-      component.addKvpRuleToMap(kvpToAdd);
-      component.deleteKvpRuleFromMap(kvpToAdd);
+      component.addKvpRule(kvpToAdd);
+      component.deleteKvpRule(kvpToAdd);
       expect(
         component.savedKvpRules.find(element => kvpToAdd.rule === element.rule)
       ).toBeFalsy();
     });
   });
 
-  describe('KvpEditComponent.kvpMap', () => {
+  describe('KvpEditComponent.kvp', () => {
     beforeEach(() => {
       fixture.detectChanges();
     });
 
-    it('Should set kvpMap a map with the new kvpmap values', () => {
-      const newKvpRuleMap = [];
-      newKvpRuleMap.push(faker.lorem.sentence(), faker.lorem.sentence());
-      component.kvpRule = newKvpRuleMap;
-      expect(component.savedKvpRules).toEqual(newKvpRuleMap);
+    it('Should set newKvpRule list with new values', () => {
+      const newKvpRule = [];
+      newKvpRule.push(faker.lorem.sentence(), faker.lorem.sentence());
+      component.kvpRule = newKvpRule;
+      expect(component.savedKvpRules).toEqual(newKvpRule);
     });
   });
 
   describe('KvpEditComponent.Save', () => {
-    it('Should emit the savedkvp map is Save is set to true', () => {
-      const newKvpMap: Map<string, string> = new Map<string, string>();
-      newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
-      spyOn(component.savedKvpMapEmitter, 'emit');
+    it('Should emit the kvp is Save is set to true', () => {
+      spyOn(component.savedKvpEmitter, 'emit');
       component.Save = true;
 
-      expect(component.savedKvpMapEmitter.emit).toHaveBeenCalledWith(
+      expect(component.savedKvpEmitter.emit).toHaveBeenCalledWith(
         component.savedKvpRules
       );
     });
 
-    it('Should not emit the savedkvp map is Save is set to false', () => {
-      const newKvpMap: Map<string, string> = new Map<string, string>();
-      newKvpMap.set(faker.lorem.sentence(), faker.lorem.sentence());
-      spyOn(component.savedKvpMapEmitter, 'emit');
+    it('Should not emit the kvp is Save is set to false', () => {
+      spyOn(component.savedKvpEmitter, 'emit');
       component.Save = false;
 
-      expect(component.savedKvpMapEmitter.emit).not.toHaveBeenCalled();
+      expect(component.savedKvpEmitter.emit).not.toHaveBeenCalled();
     });
   });
 });

@@ -30,7 +30,7 @@ export class KvpAddComponent implements OnInit {
   }
 
   /**
-   * Checks to see if the kvp inputs are empty and has no duplicates already in the map and adds them to the kvpMap
+   * Checks to see if the kvp inputs are empty and has no duplicates already in the list and adds them to the list
    */
   onAdd() {
     if (!this.isEmpty()) {

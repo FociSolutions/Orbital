@@ -20,30 +20,30 @@ export class KvpEditComponent implements OnInit {
   @Input() isCaseSensitive: boolean;
 
   /**
-   * The new kvp map with the new kvp added in
+   * The new kvps with the new kvp added in
    */
   savedKvpRules: KeyValuePairType[];
 
   /**
-   * The event emitter for the savedKvpMap
+   * The event emitter for the saved kvps
    */
-  @Output() savedKvpMapEmitter;
+  @Output() savedKvpEmitter;
 
   constructor(private logger: NGXLogger) {
     this.savedKvpRules = [];
-    this.savedKvpMapEmitter = new EventEmitter<KeyValuePairType[]>();
+    this.savedKvpEmitter = new EventEmitter<KeyValuePairType[]>();
   }
 
   ngOnInit() {}
 
   /**
-   * This setter calls the emitter for the savedkvpmap if shouldSave is true
+   * This setter calls the emitter for the saved kvps if shouldSave is true
    */
   @Input()
   set Save(shouldSave: boolean) {
     if (shouldSave) {
-      this.savedKvpMapEmitter.emit(this.savedKvpRules);
-      this.logger.debug('KVP map has been saved', this.savedKvpRules);
+      this.savedKvpEmitter.emit(this.savedKvpRules);
+      this.logger.debug('KVP has been saved', this.savedKvpRules);
     }
   }
 
@@ -58,19 +58,19 @@ export class KvpEditComponent implements OnInit {
   }
 
   /**
-   * This method listens to the event emitter from the child component and adds the KeyValue pair into the map.
+   * This method listens to the event emitter from the child component and adds the KeyValue pair into the list.
    * If another kvp that has the same key as the one that is being added exists, then it will overwrite it, depending
    * on the case-insensitive options.
    * @param kvp The KeyValue pair being taken in from the child component to be added
    */
-  addKvpRuleToMap(kvpRuleToAdd: KeyValuePairType) {
+  addKvpRule(kvpRuleToAdd: KeyValuePairType) {
     if (kvpRuleToAdd.rule) {
       // always set to TEXTEQUALS (for now, as the UI does not have the component implemented)
       kvpRuleToAdd.type = RuleType.TEXTEQUALS;
 
       if (this.isCaseSensitive) {
         // try to delete kvp if it already exists
-        this.deleteKvpRuleFromMap(kvpRuleToAdd);
+        this.deleteKvpRule(kvpRuleToAdd);
       } else {
         // lowercase the key
         kvpRuleToAdd.rule = KeyValueIndexSig.setKey(
@@ -79,7 +79,7 @@ export class KvpEditComponent implements OnInit {
         );
 
         // check if the key exists (case-insensitively) already; if so, delete it
-        this.deleteKvpRuleFromMap(this.savedKvpRules.find(
+        this.deleteKvpRule(this.savedKvpRules.find(
           val =>
             KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
             KeyValueIndexSig.getKey(kvpRuleToAdd.rule)
@@ -91,24 +91,24 @@ export class KvpEditComponent implements OnInit {
       this.logger.debug(
         'Adding a case ' +
           (this.isCaseSensitive ? 'in' : '') +
-          'sensitive KVP to Map',
+          'sensitive KVP to list',
           kvpRuleToAdd
       );
       this.savedKvpRules.push(kvpRuleToAdd);
     }
   }
   /**
-   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the map
+   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
-  deleteKvpRuleFromMap(kvpRuleToDelete: KeyValuePairType) {
+  deleteKvpRule(kvpRuleToDelete: KeyValuePairType) {
     if (!!kvpRuleToDelete && !!kvpRuleToDelete.rule) {
       this.savedKvpRules = this.savedKvpRules.filter(
         toDelete =>
           KeyValueIndexSig.getKey(toDelete.rule) !==
           KeyValueIndexSig.getKey(kvpRuleToDelete.rule)
       );
-      this.logger.debug('Delete Header Rule from Map', kvpRuleToDelete);
+      this.logger.debug('Delete Header Rule', kvpRuleToDelete);
     }
   }
 }
