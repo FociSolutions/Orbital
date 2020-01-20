@@ -48,7 +48,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                             var expected = JToken.Parse(assert.Expect);
                             isMatch = DeepContains(expected.HasValues ? expected.First : expected, actual);
                         }
-                        catch (Exception e)
+                        catch (JsonReaderException e)
                         {
                             isMatch = false;
                             break;
@@ -63,7 +63,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                             var expectedEquality = JToken.Parse(assert.Expect);
                             isMatch = JToken.DeepEquals(expectedEquality, actualEquality);
                         }
-                        catch (Exception e)
+                        catch (JsonReaderException e)
                         {
                             isMatch = false;
                             break;
