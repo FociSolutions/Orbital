@@ -34,8 +34,8 @@ describe('ShuttleSubListComponent', () => {
     component = fixture.componentInstance;
     const mock1 = _.cloneDeep(validMockDefinition);
     const mock2 = _.cloneDeep(validMockDefinition);
-    mock2.metadata.title = 'BBB';
-    mock2.metadata.title = 'AAA';
+    mock1.metadata.title = faker.random.word();
+    mock2.metadata.title = faker.random.word();
     component.list = [mock1, mock2].map(mock => new FormControl(mock, null));
     fixture.detectChanges();
   });
