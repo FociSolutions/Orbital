@@ -5,8 +5,8 @@ import {
 } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError, forkJoin } from 'rxjs';
+import { catchError, mergeMap, flatMap } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -88,10 +88,10 @@ export class OrbitalAdminService {
   exportMockDefinitions(
     url: string,
     mockdefinitions: MockDefinition[]
-  ): Observable<boolean>[] {
-    return mockdefinitions.map(mockdefinition =>
+  ): Observable<boolean[]> {
+    return forkJoin(mockdefinitions.map(mockdefinition =>
       this.exportMockDefinition(url, mockdefinition)
-    );
+    ));
   }
 
   /**
