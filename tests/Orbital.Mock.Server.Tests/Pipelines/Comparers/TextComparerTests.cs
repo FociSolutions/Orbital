@@ -29,7 +29,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         public void SuccessContainsComparison()
         {
             var rule = "gray";
-            var valueToEvaluate = "gra";
+            var valueToEvaluate = "a";
             var actual = TextComparer.Contains(valueToEvaluate, rule);
 
             Assert.True(actual);
