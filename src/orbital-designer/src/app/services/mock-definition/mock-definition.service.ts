@@ -23,7 +23,6 @@ export class MockDefinitionService {
       try {
         const content = JSON.parse(mockDefinition);
         this.store.mockDefinitions = [content];
-        this.store.state.mockDefinition = content as MockDefinition;
         observer.next(true);
       } catch (error) {
         observer.error(error);
