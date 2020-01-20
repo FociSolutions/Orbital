@@ -1,5 +1,5 @@
 <p class="description">{{ addKvpTitle }}</p>
-<app-kvp-add (kvp)="addKvpRuleToMap($event)"></app-kvp-add>
+<app-kvp-add (kvp)="addKvpRule($event)"></app-kvp-add>
 
 <mat-divider class="divider-padding"></mat-divider>
 <div>
@@ -12,7 +12,7 @@
   <div *ngFor="let kv of savedKvpRules">
     <app-kvp-list-item
       [kvp]="kv"
-      (removeKvp)="deleteKvpRuleFromMap($event)"
+      (removeKvp)="deleteKvpRule($event)"
     ></app-kvp-list-item>
   </div>
 </div>
