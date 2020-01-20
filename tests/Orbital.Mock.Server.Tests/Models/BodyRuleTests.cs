@@ -41,8 +41,8 @@ namespace Orbital.Mock.Server.Tests.Models
         public void BodyRuleEqualsTypeFailsTest()
         {
             var Target = this.fakerBodyRule.Generate();
-            Target.Type = ComparerType.Equal;
-            var input = new BodyRule(ComparerType.Contains, Target.RuleValue) as object;
+            Target.Type = ComparerType.JSONEQUALITY;
+            var input = new BodyRule(ComparerType.JSONCONTAINS, Target.RuleValue) as object;
             Assert.False(Target.Equals(input));
         }
     }

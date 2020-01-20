@@ -13,10 +13,14 @@
     /// </summary>
     public enum ComparerType
     {
-        Regex = 0,
-        StartWith,
-        EndWith,
-        Equal,
-        Contains
+        REGEX = 0,
+        TEXTSTARTSWITH,
+        TEXTENDSWITH,
+        TEXTCONTAINS,
+        TEXTEQUALS,
+        JSONPATH,
+        JSONEQUALITY,
+        JSONCONTAINS,
+        JSONSCHEMA
     };
 }

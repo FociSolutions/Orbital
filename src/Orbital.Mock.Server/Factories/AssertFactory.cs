@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Factories
                     {
                         Expect = rule.RuleValue.Key,
                         Actual = kvpRequest.Key,
-                        Rule = ComparerType.Equal
+                        Rule = ComparerType.TEXTEQUALS
                     };
 
                     var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = rule.RuleValue.Value, Rule = rule.Type };

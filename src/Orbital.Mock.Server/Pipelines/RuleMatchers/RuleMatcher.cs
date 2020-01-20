@@ -20,42 +20,45 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
             {
                     switch (assert.Rule)
                     {
-                        case ComparerType.Regex:
+                        case ComparerType.REGEX:
                             isMatch = RegexComparer.Compare(assert.Actual, assert.Expect);
+
                             break;
-                        case ComparerType.Contains:
-                            try
-                            {
-                                var actual = JToken.Parse(assert.Actual);
-                                var expected = JToken.Parse(assert.Expect);
-                                isMatch = DeepContains(expected.HasValues ? expected.First : expected, actual);
-                            }
-                            catch
-                            {
-                                isMatch = assert.Actual.Contains(assert.Expect);
-                            }
+                        case ComparerType.TEXTCONTAINS:
+                            isMatch = assert.Actual.Contains(assert.Expect);
                             
                             break;
-                        case ComparerType.StartWith:
+                        case ComparerType.TEXTSTARTSWITH:
                             isMatch = assert.Actual.StartsWith(assert.Expect);
+
                             break;
-                        case ComparerType.EndWith:
+                        case ComparerType.TEXTENDSWITH:
                             isMatch = assert.Actual.EndsWith(assert.Expect);
+
                             break;
-                        case ComparerType.Equal:
-                            try
-                            {
-                                var actual = JToken.Parse(assert.Actual);
-                                var expected = JToken.Parse(assert.Expect);
-                                isMatch = JToken.DeepEquals(expected, actual);
-                            }
-                            catch
-                            {
-                               isMatch = assert.Actual.Equals(assert.Expect);
-                            }
+                        case ComparerType.TEXTEQUALS:
+                            isMatch = assert.Actual.Equals(assert.Expect);
                            
                             break;
-                    }
+                        case ComparerType.JSONCONTAINS:
+                            var actual = JToken.Parse(assert.Actual);
+                            var expected = JToken.Parse(assert.Expect);
+                            isMatch = DeepContains(expected.HasValues ? expected.First : expected, actual);
+
+                            break;
+                        case ComparerType.JSONEQUALITY:
+                            var actualEquality = JToken.Parse(assert.Actual);
+                            var expectedEquality = JToken.Parse(assert.Expect);
+                            isMatch = JToken.DeepEquals(expectedEquality, actualEquality);
+
+                            break;
+                        case ComparerType.JSONPATH:
+
+                            break;
+                        case ComparerType.JSONSCHEMA:
+
+                            break;
+                }
             }
             return isMatch;
         }

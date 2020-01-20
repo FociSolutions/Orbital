@@ -39,8 +39,8 @@ namespace Orbital.Mock.Server.Tests.Models
         public void KeyValuePairRuleEqualsTypeFailsTest()
         {
             var Target = this.fakerKeyValuePairRule.Generate();
-            Target.Type = ComparerType.Equal;
-            var input = new KeyValuePairRule() { Type = ComparerType.Contains, RuleValue = Target.RuleValue };
+            Target.Type = ComparerType.TEXTEQUALS;
+            var input = new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = Target.RuleValue };
             Assert.False(Target.Equals(input));
         }
     }

@@ -27,7 +27,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             Randomizer.Seed = new Random(FilterTestHelpers.Seed);
 
             var fakerHeaderRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() {Type = ComparerType.Equal, RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+                .CustomInstantiator(f => new KeyValuePairRule() {Type = ComparerType.TEXTEQUALS, RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                                         .RuleFor(m => m.HeaderRules, f => fakerHeaderRule.Generate(5));
 
