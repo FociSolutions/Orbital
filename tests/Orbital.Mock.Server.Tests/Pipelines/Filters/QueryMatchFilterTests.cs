@@ -24,7 +24,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region TestSetup
             var faker = new Faker();
             var fakerQueryRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandomWithout<ComparerType>(ComparerType.JSONCONTAINS,ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandomWithout<ComparerType>(ComparerType.JSONCONTAINS,ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA, ComparerType.REGEX), RuleValue = new KeyValuePair<string, string>(f.Random.AlphaNumeric(15), f.Random.AlphaNumeric(15)) });
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules

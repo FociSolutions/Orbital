@@ -27,7 +27,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
 
                             break;
                         case ComparerType.TEXTCONTAINS:
-                                isMatch = TextComparer.Contains(assert.Actual, assert.Expect);
+                            isMatch = TextComparer.Contains(assert.Actual, assert.Expect);
                             
                             break;
                         case ComparerType.TEXTSTARTSWITH:
@@ -44,36 +44,35 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                             break;
                         case ComparerType.JSONCONTAINS:
 
-                        try {
-                            var actual = JToken.Parse(assert.Actual);
-                            var expected = JToken.Parse(assert.Expect);
-                            isMatch = DeepContains(expected.HasValues ? expected.First : expected, actual);
-                        }
-                        catch (JsonReaderException e)
-                        {
-                            isMatch = false;
-                            break;
-                        }
+                            try
+                            {
+                                var actual = JToken.Parse(assert.Actual);
+                                var expected = JToken.Parse(assert.Expect);
+                                isMatch = DeepContains(expected.HasValues ? expected.First : expected, actual);
+                            }
+                            catch (JsonReaderException)
+                            {
+                                isMatch = false;
+                            }
                             
-
                             break;
                         case ComparerType.JSONEQUALITY:
-                        try
-                        {
-                            var actualEquality = JToken.Parse(assert.Actual);
-                            var expectedEquality = JToken.Parse(assert.Expect);
-                            isMatch = JToken.DeepEquals(expectedEquality, actualEquality);
-                        }
-                        catch (JsonReaderException e)
-                        {
-                            isMatch = false;
-                            break;
-                        }
 
-                        break;
+                            try
+                            {
+                                var actualEquality = JToken.Parse(assert.Actual);
+                                var expectedEquality = JToken.Parse(assert.Expect);
+                                isMatch = JToken.DeepEquals(expectedEquality, actualEquality);
+                            }
+                            catch (JsonReaderException e)
+                            {
+                                isMatch = false;
+                            }
+
+                            break;
                         case ComparerType.JSONPATH:
 
-                            break;
+
                         case ComparerType.JSONSCHEMA:
 
                             break;
