@@ -1,8 +1,7 @@
 import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
-import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { saveAs } from 'file-saver';
 import Json from 'src/app/models/json';

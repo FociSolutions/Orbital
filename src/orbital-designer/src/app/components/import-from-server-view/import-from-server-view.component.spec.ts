@@ -11,9 +11,6 @@ import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
-import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
-import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
@@ -30,7 +27,7 @@ describe('ImportFromServerViewComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule
       ],
-      providers: [Location, DesignerStore, MockDefinitionService]
+      providers: [Location, DesignerStore]
     }).compileComponents();
   }));
 
@@ -56,7 +53,6 @@ describe('ImportFromServerViewComponent', () => {
     it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
-      const service = TestBed.get(MockDefinitionService);
       service.deserialize(
         JSON.stringify(validMockDefinition)
       ).subscribe({
