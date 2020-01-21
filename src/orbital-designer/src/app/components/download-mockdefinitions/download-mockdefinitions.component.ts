@@ -27,9 +27,7 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.list = Array.from(this.store.state.mockDefinitions.values()).map(mockDefinition => {
-      return new FormControl(mockDefinition, null);
-    });
+    this.list = recordMap(this.store.state.mockDefinitions, md => new FormControl(md));
   }
 
   itemToStringFn = (control: AbstractControl) =>
