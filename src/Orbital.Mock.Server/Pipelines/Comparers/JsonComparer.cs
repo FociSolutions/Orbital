@@ -1,16 +1,14 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Pipelines.Comparers
 {
     public static class JsonComparer
     {
         /// <summary>
-        /// compares two json blobs for equality. If a blob is not JSON, then they are considered not equal.
+        /// Compares two JSON blobs for equality. If a blob is not 
+        /// JSON, then they are considered not equal.
         /// </summary>
         /// <param name="expected"> expected json blob</param>
         /// <param name="actual"> actualy json blob</param>
@@ -30,11 +28,11 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
         }
 
         /// <summary>
-        /// String overload ov the private Deep Contains
+        /// String overload of the private Deep Contains
         /// </summary>
-        /// <param name="needle"></param>
-        /// <param name="haystack"></param>
-        /// <returns></returns>
+        /// <param name="needle"> The string to check </param>
+        /// <param name="haystack">The larger string to check against </param>
+        /// <returns> Whether it contains the JSON string</returns>
         public static bool DeepContains(string needle, string haystack)
         {
             try
