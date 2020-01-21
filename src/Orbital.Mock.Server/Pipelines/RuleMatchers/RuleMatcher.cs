@@ -17,7 +17,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
         /// <inheritdoc/>
         public bool Match(Assert[] asserts)
         {
-            return asserts.Select(ExecuteComparer).Any(x => !x);
+            return !asserts.Select(ExecuteComparer).Any(x => !x);
         }
 
         private bool ExecuteComparer(Assert assert)
