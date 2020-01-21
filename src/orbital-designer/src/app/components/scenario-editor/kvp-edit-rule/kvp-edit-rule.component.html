@@ -5,7 +5,7 @@
   <div>
     <p class="description">{{ listKvpTitle }}</p>
   </div>
-  <ng-template [ngIf]="this.savedKvpType?.length" [ngIfElse]="noRulesAdded">
+  <ng-template [ngIf]="!!this.savedKvpType && this.savedKvpType.length" [ngIfElse]="noRulesAdded">
     <div *ngFor="let kv of savedKvpType">
       <app-kvp-list-item-rule-type [kvp]="kv" (removeKvp)="deleteKvpFromRule($event)"></app-kvp-list-item-rule-type>
     </div>

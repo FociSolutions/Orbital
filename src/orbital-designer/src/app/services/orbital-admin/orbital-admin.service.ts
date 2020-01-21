@@ -9,6 +9,7 @@ import { Observable, throwError, forkJoin, from } from 'rxjs';
 import { catchError, mergeMap, every } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { cloneDeep } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -48,19 +49,7 @@ export class OrbitalAdminService {
     mockdefinition: MockDefinition
   ): Observable<boolean> {
     this.logger.debug('Mockdefinition has been exported: ', mockdefinition);
-    const mockDefinitionToExport = JSON.parse(JSON.stringify(mockdefinition));
-
-    // header key-value fix
-    mockDefinitionToExport.scenarios.forEach(scenario => {
-      scenario.response.headers = this.convertHeaders(scenario.response.headers);
-    });
-
-    // body rule string fix
-    mockDefinitionToExport.scenarios.forEach(scenario => {
-      scenario.requestMatchRules.bodyRules.forEach(bodyRule => {
-        bodyRule.type = +bodyRule.type;
-      });
-    });
+    const mockDefinitionToExport = cloneDeep(mockdefinition);
 
     this.logger.debug(
       'Mockdefinition in JSON format: ',

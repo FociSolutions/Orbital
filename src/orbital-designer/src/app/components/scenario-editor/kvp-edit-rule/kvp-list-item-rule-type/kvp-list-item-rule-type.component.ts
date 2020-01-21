@@ -30,10 +30,6 @@ export class KvpListItemRuleTypeComponent implements OnInit {
 
   constructor() {
     this.removeKvp = new EventEmitter<KeyValuePairType>();
-    this.currentKVP = {
-      type: RuleType.TEXTEQUALS,
-      rule: {} as KeyValueIndexSig
-    } as KeyValuePairType;
   }
 
   ngOnInit() {}
