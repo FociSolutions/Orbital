@@ -36,6 +36,16 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         }
 
         [Fact]
+        public void SuccessDeepContainsNestedJsonComparison()
+        {
+            var rule = "{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}";
+            var valueToEvaluate = "{'a': 'b'}";
+            var actual = JsonComparer.DeepContains(valueToEvaluate, rule);
+
+            Assert.True(actual);
+        }
+
+        [Fact]
         public void FailDeepContainsComparisonString()
         {
             var rule = "{\"fruit\": \"Apple\",\"size\": \"Large\",\"color\": \"Red\"}";
