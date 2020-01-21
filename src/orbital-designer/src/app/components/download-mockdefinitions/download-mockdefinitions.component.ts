@@ -6,6 +6,7 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { saveAs } from 'file-saver';
 import Json from 'src/app/models/json';
+import { recordMap } from 'src/app/models/record';
 
 @Component({
   selector: 'app-download-mockdefinitions',

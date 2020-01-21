@@ -6,11 +6,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
-import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
+import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { DialogBoxComponent } from '../../orbital-common/dialog-box/dialog-box.component';
+import { DialogBoxComponent } from '../orbital-common/dialog-box/dialog-box.component';
 import { MatCardModule } from '@angular/material';
 
 describe('SideBarComponent', () => {
@@ -46,6 +46,17 @@ describe('SideBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // Checks that the h1 rendered content is equals to "MOCKDEFINITIONS"
+  it('should render title in h1 tag', async(() => {
+    // tslint:disable-next-line: no-shadowed-variable
+    const fixture = TestBed.createComponent(SideBarComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain(
+      'MOCK DEFINITIONS'
+    );
+  }));
+
   // Check if a valid mockdefinition is passed to the isSelected method.
   // Then, confirm the value returned is selected by having a true response.
   describe('SideBarComponent.isSelected', () => {
@@ -64,7 +75,7 @@ describe('SideBarComponent', () => {
     });
   });
   // Test the updateSelected method that passes by passing the latest mock definition stored in the state
-  // and compared against a valid mock mockdefinition.
+  // and compared against a valid mock modefintion.
   describe('SideBarComponent.updateSelected', () => {
     it('should return true if the mockDefinitions menu item is updated and navigate to endpoint-view', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
@@ -77,10 +88,7 @@ describe('SideBarComponent', () => {
   describe('SideBarComponent.openDialogBox', () => {
     it('should return to homepage if last mockdefinition is dismissed', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigate');
-      component.mockDefinitions.set(
-        validMockDefinition.metadata.title,
-        validMockDefinition
-      );
+      component.mockDefinitions = [validMockDefinition];
 
       component.onDismiss({
         key: validMockDefinition.metadata.title,

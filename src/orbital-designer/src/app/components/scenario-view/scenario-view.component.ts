@@ -6,10 +6,10 @@ import { NGXLogger } from 'ngx-logger';
 import * as uuid from 'uuid';
 import { Subscription } from 'rxjs';
 import { VerbType } from 'src/app/models/verb.type';
-import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import * as HttpStatus from 'http-status-codes';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-scenario-view',
@@ -31,12 +31,12 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   triggerOpen: boolean;
   mockDefinition: MockDefinition;
   isHoveringOverMenu: boolean;
+  scenario: Scenario;
 
   constructor(
     private store: DesignerStore,
     private router: Router,
-    private logger: NGXLogger,
-    private mockDefinitionService: MockDefinitionService
+    private logger: NGXLogger
   ) {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
@@ -55,6 +55,10 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
           'ScenarioViewComponent:ngOnInit: Resulting ScenarioList: ',
           this.scenarioList
         );
+
+        if (!!this.scenario) {
+          this.store.selectedScenario = this.scenario;
+        }
       }
     });
 
@@ -97,18 +101,34 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
 
   /**
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
-   * then a monotonically increasing integer will be appended such that it does not conflict with any existing scenario names.
+   * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
-  cloneScenario(scenario: Scenario) {
-    this.logger.debug(scenario);
-    const observable = this.mockDefinitionService.cloneScenario(this.store.state.mockDefinition.metadata.title, scenario).pipe(map(
-      value => value));
+  cloneScenario() {
+    if (!this.scenario || !this.scenario.id || !this.scenario.metadata || !this.scenario.metadata.title) {
+      this.logger.warn('Scenario not cloned because it contains undefined attributes');
+      return;
+    }
 
-    observable.subscribe(result => {
-      if (result) {
-        this.logger.log('Scenario successfully cloned');
-      }}
-      );
+    // copy scenario using deep copy
+    const clonedScenario = _.cloneDeep(this.scenario);
+    clonedScenario.id = uuid.v4();
+    clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
+
+    const originalScenarioIndex = this.mockDefinition.scenarios.indexOf(this.scenario);
+
+    // ensure that there are no naming conflicts; if there are, repeat until a name is found
+    if (!this.mockDefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
+      let copyCounter = 2;
+      while (this.mockDefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title + ' ' + copyCounter)) {
+        copyCounter++;
+      }
+
+      clonedScenario.metadata.title = clonedScenario.metadata.title + ' ' + copyCounter;
+    }
+
+    this.mockDefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
+    this.store.updateScenarios([...this.mockDefinition.scenarios]);
+    this.logger.warn('Scenario successfully cloned: ', clonedScenario);
   }
 
   /**
