@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
-import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
+import { recordDelete, recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-edit',
@@ -18,120 +17,71 @@ export class KvpEditComponent implements OnInit {
   @Input() isCaseSensitive: boolean;
 
   /**
-   * The new kvps with the new kvp added in
+   * The new kvp map with the new kvp added in
    */
-  savedKvpRules: KeyValuePairType[];
+  savedKvpMap: Record<string, string>;
 
   /**
-   * The event emitter for the saved kvps
+   * The event emitter for the savedKvpMap
    */
-  @Output() savedKvpEmitter;
+  @Output() savedKvpMapEmitter;
 
   constructor(private logger: NGXLogger) {
-    this.savedKvpRules = [];
-    this.savedKvpEmitter = new EventEmitter<KeyValuePairType[]>();
+    this.savedKvpMap = {};
+    this.savedKvpMapEmitter = new EventEmitter<Record<string, string>>();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   /**
-   * This setter calls the emitter for the saved kvps if shouldSave is true
+   * This setter calls the emitter for the savedkvpmap if shouldSave is true
    */
   @Input()
   set Save(shouldSave: boolean) {
     if (shouldSave) {
-      this.savedKvpEmitter.emit(this.savedKvpRules);
-      this.logger.debug('KVP has been saved', this.savedKvpRules);
+      this.savedKvpMapEmitter.emit(this.savedKvpMap);
+      this.logger.debug('KVP map has been saved', this.savedKvpMap);
     }
   }
 
   /**
-   * The existing KVP array
+   * The existing KVP map
    */
   @Input()
-  set kvpRule(savedKvpRules: KeyValuePairType[]) {
-    if (savedKvpRules) {
-      this.savedKvpRules = savedKvpRules;
+  set kvpMap(savedKvpMap: Record<string, string>) {
+    if (savedKvpMap) {
+      this.savedKvpMap = savedKvpMap;
     }
   }
 
   /**
-   * This method listens to the event emitter from the child component and adds the KeyValue pair into the list.
-   * If another kvp that has the same key as the one that is being added exists, then it will overwrite it, depending
-   * on the case-insensitive options.
+   * This method listens to the event emitter from the child component and adds the KeyValue pair into the map
    * @param kvp The KeyValue pair being taken in from the child component to be added
    */
-  addKvpRule(kvpRuleToAdd: KeyValuePairType) {
-    if (kvpRuleToAdd.rule) {
-      // always set to TEXTEQUALS (for now, as the UI does not have the component implemented)
-      kvpRuleToAdd.type = RuleType.TEXTEQUALS;
-
+  addKvpToMap(kvpToAdd: KeyValue<string, string>) {
+    if (!!kvpToAdd && !!kvpToAdd.key && !!kvpToAdd.value) {
       if (this.isCaseSensitive) {
-        // try to delete kvp if it already exists
-        this.deleteKvpRule(kvpRuleToAdd);
+        recordAdd(this.savedKvpMap, kvpToAdd.key, kvpToAdd.value);
+        this.logger.debug('Adding a case sensitive KVP to Map', kvpToAdd);
       } else {
-        // lowercase the key
-        kvpRuleToAdd.rule = KeyValueIndexSig.setKey(
-          KeyValueIndexSig.getKey(kvpRuleToAdd.rule).toLowerCase(),
-          kvpRuleToAdd.rule
-        );
-
-        // check if the key exists (case-insensitively) already; if so, delete it
-        this.deleteKvpRule(
-          this.savedKvpRules.find(
-            val =>
-              KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
-              KeyValueIndexSig.getKey(kvpRuleToAdd.rule)
-          )
-        );
+        recordAdd(this.savedKvpMap, kvpToAdd.key.toLowerCase(), kvpToAdd.value);
+        this.logger.debug('Adding a case insensitive KVP to Map', kvpToAdd);
       }
-
-      // unconditionally add as it has already been deleted if it exists, otherwise, it is new
-      // and has to be added
-      this.logger.debug(
-        'Adding a case ' +
-          (this.isCaseSensitive ? 'in' : '') +
-          'sensitive KVP to list',
-        kvpRuleToAdd
-      );
-      this.savedKvpRules.push(kvpRuleToAdd);
     }
   }
   /**
-   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
+   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the map
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
-  deleteKvpRule(kvpRuleToDelete: KeyValuePairType) {
-    let ruleToDelete = kvpRuleToDelete;
-
-    if (!!kvpRuleToDelete && !!kvpRuleToDelete.rule) {
-      if (kvpRuleToDelete.rule) {
-        // always set to TEXTEQUALS (for now, as the UI does not have the component implemented)
-        kvpRuleToDelete.type = RuleType.TEXTEQUALS;
-
-        if (!this.isCaseSensitive) {
-          // try to delete kvp if it already exists
-
-          // lowercase the key
-          kvpRuleToDelete.rule = KeyValueIndexSig.setKey(
-            KeyValueIndexSig.getKey(kvpRuleToDelete.rule).toLowerCase(),
-            kvpRuleToDelete.rule
-          );
-
-          // check if the key exists (case-insensitively) already; if so, delete it
-          ruleToDelete = this.savedKvpRules.find(
-            val =>
-              KeyValueIndexSig.getKey(val.rule).toLowerCase() ===
-              KeyValueIndexSig.getKey(kvpRuleToDelete.rule)
-          );
-        }
-        this.savedKvpRules = this.savedKvpRules.filter(
-          toDelete =>
-            KeyValueIndexSig.getKey(toDelete.rule) !==
-            KeyValueIndexSig.getKey(ruleToDelete.rule)
-        );
-        this.logger.debug('Delete Header Rule', kvpRuleToDelete);
-      }
+  deleteKvpFromMap(kvpToDelete: KeyValue<string, string>) {
+    if (!!kvpToDelete && !!kvpToDelete.key) {
+      recordDelete(this.savedKvpMap, kvpToDelete.key);
+      this.logger.debug('Delete Header Rule from Map', kvpToDelete);
     }
+  }
+
+  hasValuesAdded() {
+    const keys = Object.keys(this.savedKvpMap);
+    return keys.length > 0;
   }
 }

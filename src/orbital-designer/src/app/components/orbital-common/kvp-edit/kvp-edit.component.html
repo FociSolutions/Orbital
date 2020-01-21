@@ -1,18 +1,16 @@
 <p class="description">{{ addKvpTitle }}</p>
-<app-kvp-add (kvp)="addKvpRule($event)"></app-kvp-add>
+<app-kvp-add (kvp)="addKvpToMap($event)"></app-kvp-add>
 
 <mat-divider class="divider-padding"></mat-divider>
 <div>
   <p class="description">{{ listKvpTitle }}</p>
 </div>
-<div *ngIf="!this.savedKvpRules?.length">
+<div *ngIf="!hasValuesAdded()">
   No rules Added
 </div>
-<div *ngIf="this.savedKvpRules?.length">
-  <div *ngFor="let kv of savedKvpRules">
-    <app-kvp-list-item
-      [kvp]="kv"
-      (removeKvp)="deleteKvpRule($event)"
-    ></app-kvp-list-item>
-  </div>
+<div *ngFor="let kv of savedKvpMap | keyvalue">
+  <app-kvp-list-item
+    [kvp]="kv"
+    (removeKvp)="deleteKvpFromMap($event)"
+  ></app-kvp-list-item>
 </div>

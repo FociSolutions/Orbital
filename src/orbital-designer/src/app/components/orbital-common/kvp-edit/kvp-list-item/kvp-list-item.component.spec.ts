@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpListItemComponent } from './kvp-list-item.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
-import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValue } from '@angular/common';
 
 describe('KvpListItemComponent', () => {
   let component: KvpListItemComponent;
@@ -30,12 +30,9 @@ describe('KvpListItemComponent', () => {
     });
 
     it('Should contain correct key value pair', () => {
-      const input: KeyValuePairType = {
-        type: faker.random.number({ min: 0, max: 8 }),
-        rule: {
-          key: faker.lorem.sentence(),
-          value: faker.lorem.sentence()
-        }
+      const input: KeyValue<string, string> = {
+        key: faker.lorem.sentence(),
+        value: faker.lorem.sentence()
       };
 
       component.kvp = input;
@@ -46,11 +43,9 @@ describe('KvpListItemComponent', () => {
 
   describe('onRemove', () => {
     it('Should emit a remove event', () => {
-      const kvp = {};
-      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
-      const input: KeyValuePairType = {
-        rule: kvp,
-        type: faker.random.number({ min: 0, max: 8 })
+      const input: KeyValue<string, string> = {
+        key: faker.lorem.sentence(),
+        value: faker.lorem.sentence()
       };
 
       component.kvp = input;

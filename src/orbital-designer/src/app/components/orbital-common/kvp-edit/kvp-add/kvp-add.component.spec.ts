@@ -4,8 +4,6 @@ import { KvpAddComponent } from './kvp-add.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
-import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
-import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 describe('KvpAddComponent', () => {
   let component: KvpAddComponent;
@@ -52,38 +50,24 @@ describe('KvpAddComponent', () => {
       component.key = faker.lorem.sentence();
       expect(component.isEmpty()).toBe(false);
     });
-
-    it('Should return false if key is whitespace and value is non-empty', () => {
-      component.value = faker.lorem.sentence();
-      component.key = ' ';
-      expect(component.isEmpty()).toBe(true);
-    });
   });
 
   describe('KvpAddComponent.onAdd', () => {
-    it('Should set key and value to kvpAdd and isValid to true', done => {
-      const kvp = {} as KeyValueIndexSig;
-      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
-
+    it('Should set key and value to kvpAdd and isValid to true', () => {
       const input = {
-        rule: kvp
-      } as KeyValuePair;
-
-      component.key = KeyValueIndexSig.getKey(input.rule);
-      component.value = KeyValueIndexSig.getValue(input.rule);
+        key: faker.lorem.sentence(),
+        value: faker.lorem.sentence()
+      };
+      component.key = input.key;
+      component.value = input.value;
 
       component.kvp.subscribe(
         actual => {
           expect(component.isValid).toBeTruthy();
-          expect(KeyValueIndexSig.getKey(actual.rule)).toEqual(component.key);
-          expect(KeyValueIndexSig.getValue(actual.rule)).toEqual(
-            component.value
-          );
-          done();
+          expect(actual.key).toEqual(input.key);
+          expect(actual.value).toEqual(input.value);
         },
-        err => {
-          return fail(`Unexpected error: ${err.message}`);
-        }
+        err => fail(`Unexpected error: ${err.message}`)
       );
 
       component.onAdd();

@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  AfterContentChecked,
-  ChangeDetectorRef
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
@@ -14,6 +8,8 @@ import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { VerbType } from 'src/app/models/verb.type';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import * as _ from 'lodash';
 
 @Component({
@@ -21,8 +17,7 @@ import * as _ from 'lodash';
   templateUrl: './scenario-editor.component.html',
   styleUrls: ['./scenario-editor.component.scss']
 })
-export class ScenarioEditorComponent
-  implements OnInit, OnDestroy, AfterContentChecked {
+export class ScenarioEditorComponent implements OnInit, OnDestroy {
   readonly headerMatchRuleTitle = 'Header Match Rule';
   readonly headerMatchRuleListTitle = 'Header Rules';
 
@@ -33,9 +28,6 @@ export class ScenarioEditorComponent
   selectedScenario: Scenario;
   paramsSubscription: Subscription;
   storeSubscription: Subscription;
-
-  endpointVerb: VerbType;
-  endpointPath: string;
 
   requestMatchRule: RequestMatchRule;
   metadata: Metadata;
@@ -90,7 +82,6 @@ export class ScenarioEditorComponent
    */
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
-    this.storeSubscription.unsubscribe();
   }
 
   /**
@@ -121,10 +112,6 @@ export class ScenarioEditorComponent
     this.requestMatchRule = requestMatchRule;
     this.saveScenario();
   }
-
-  /**
-   * Updates the store with the new scenario
-   */
 
   saveScenario() {
     if (
@@ -256,13 +243,13 @@ export class ScenarioEditorComponent
       metadata: {} as Metadata,
       verb: scenarioVerb,
       path: scenarioPath,
-      response: ({
-        headers: [],
+      response: {
+        headers: {},
         body: ''
-      } as unknown) as Response,
+      } as Response,
       requestMatchRules: {
-        headerRules: [],
-        queryRules: [],
+        headerRules: {},
+        queryRules: {},
         bodyRules: []
       } as RequestMatchRule
     } as Scenario;
