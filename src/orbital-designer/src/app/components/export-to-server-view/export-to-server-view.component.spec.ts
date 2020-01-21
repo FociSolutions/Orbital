@@ -7,8 +7,8 @@
  import { LoggerTestingModule } from 'ngx-logger/testing';
  import { OrbitalCommonModule } from 'src/app/components/orbital-common/orbital-common.module';
  import { ExportToServerViewComponent } from './export-to-server-view.component';
- import { DesignerStore } from '../store/designer-store';
- import { OrbitalAdminService } from '../services/orbital-admin/orbital-admin.service';
+ import { DesignerStore } from '../../store/designer-store';
+ import { OrbitalAdminService } from '../../services/orbital-admin/orbital-admin.service';
 
  describe('ExportToServerViewComponent', () => {
   let component: ExportToServerViewComponent;
