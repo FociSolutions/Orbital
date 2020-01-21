@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import deepEqual from 'deep-equal';
+import * as deepEqual from 'deep-equal';
 import { EventEmitter } from '@angular/core';
 import { ValidJsonService } from '../../../../services/valid-json/valid-json.service';
 
