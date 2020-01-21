@@ -51,12 +51,12 @@ export class OrbitalAdminService {
     const mockDefinitionToExport = JSON.parse(JSON.stringify(mockdefinition));
 
     // header key-value fix
-    mockDefinitionToExport.scenarios.map(scenario => {
+    mockDefinitionToExport.scenarios.forEach(scenario => {
       scenario.response.headers = this.convertHeaders(scenario.response.headers);
     });
 
     // body rule string fix
-    mockDefinitionToExport.scenarios.map(scenario => {
+    mockDefinitionToExport.scenarios.forEach(scenario => {
       scenario.requestMatchRules.bodyRules.forEach(bodyRule => {
         bodyRule.type = +bodyRule.type;
       });
