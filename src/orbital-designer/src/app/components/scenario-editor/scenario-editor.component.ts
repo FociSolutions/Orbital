@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
@@ -8,8 +8,6 @@ import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { VerbType } from 'src/app/models/verb.type';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 import * as _ from 'lodash';
 
 @Component({
@@ -39,6 +37,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   metadataMatchRuleValid = false;
 
   triggerOpenCancelBox: boolean;
+
+  endpointVerb: VerbType;
+  endpointPath: string;
 
   constructor(
     private router: Router,

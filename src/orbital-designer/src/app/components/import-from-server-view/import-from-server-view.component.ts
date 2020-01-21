@@ -105,9 +105,7 @@ export class ImportFromServerViewComponent implements OnInit {
    * The function called on submit. Sets the mockDefinitions in the DesignerStore
    */
   onSubmit() {
-    this.designerStore.mockDefinitions = this.mockDefinitions.map(
-      mockDefinition => MockDefinition.objectToMockDefinition(mockDefinition)
-    );
+    this.designerStore.mockDefinitions = this.mockDefinitions;
     this.router.navigateByUrl('endpoint-view');
   }
 
@@ -140,7 +138,7 @@ export class ImportFromServerViewComponent implements OnInit {
       this.formArray = new FormArray(
         response.map(
           mockDef =>
-            new FormControl(this.convertHeaders(mockDef), null)
+            new FormControl(mockDef, null)
         )
       );
 
@@ -149,23 +147,6 @@ export class ImportFromServerViewComponent implements OnInit {
         this.formArray
       );
     }
-  }
-
-  /**
-   * This code is temporary and will be removed in a future issue. It is used to convert the headers from an object
-   * form on the server to a list form on the client. When the kvp-edit-rule component is implemented, this function
-   * can be removed as the list will expect an object.
-   * @param mockDef The mockdefinition
-   */
-  convertHeaders(mockDef: MockDefinition) {
-    mockDef.scenarios.forEach(scenario => {
-      scenario.response.headers = Object.entries(scenario.response.headers).map(header => {
-        const tmp = {};
-        tmp[header[0]] = header[1];
-        return {rule: tmp} as KeyValuePair;
-      });
-    });
-    return mockDef;
   }
 
   /**

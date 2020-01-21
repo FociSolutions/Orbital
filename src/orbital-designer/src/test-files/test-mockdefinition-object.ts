@@ -11,7 +11,7 @@ export default ({
       verb: 0,
       path: '/',
       response: {
-        headers: [],
+        headers: {},
         status: 404,
         body: ''
       },

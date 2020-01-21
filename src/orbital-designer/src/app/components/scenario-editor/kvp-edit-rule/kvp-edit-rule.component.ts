@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 @Component({
   selector: 'app-kvp-edit-rule',
@@ -17,7 +19,7 @@ export class KvpEditRuleComponent implements OnInit {
   /**
    * The new kvp list with the new kvp added in
    */
-  savedKvpType: KeyValuePairType[];
+  @Input() savedKvpType: KeyValuePairType[];
 
   /**
    * The event emitter for the savedKvpType
@@ -26,7 +28,9 @@ export class KvpEditRuleComponent implements OnInit {
 
   constructor(private logger: NGXLogger) {
     this.savedKvpEmitter = new EventEmitter<KeyValuePairType[]>();
-    this.savedKvpType = [] as KeyValuePairType[];
+    const tmp = {};
+    tmp['a'] = 'b';
+    this.savedKvpType = [{type: RuleType.JSONSCHEMA, rule: tmp as KeyValueIndexSig}] as KeyValuePairType[];
   }
 
   ngOnInit() {}
