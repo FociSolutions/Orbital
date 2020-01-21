@@ -4,7 +4,6 @@ import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
-import Json from '../../models/json';
 
 import {
   Component,
@@ -13,8 +12,6 @@ import {
 import { FormControl, Validators } from '@angular/forms';
 import { Observer } from 'rxjs';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 
 @Component({

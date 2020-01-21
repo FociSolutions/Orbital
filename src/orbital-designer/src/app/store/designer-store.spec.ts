@@ -17,7 +17,6 @@ import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec
 import { ReadFileService } from '../services/read-file/read-file.service';
 import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
-import { KeyValuePair } from '../models/mock-definition/scenario/key-value-pair.model';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;

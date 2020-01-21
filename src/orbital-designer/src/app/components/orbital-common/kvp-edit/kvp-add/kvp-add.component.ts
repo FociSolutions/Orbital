@@ -1,8 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
-import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 @Component({

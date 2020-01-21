@@ -4,7 +4,6 @@ import { KvpAddComponent } from './kvp-add.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
-import { KeyValue } from '@angular/common';
 import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 

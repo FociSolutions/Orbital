@@ -5,8 +5,8 @@ import {
 } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable, throwError, forkJoin, from, of } from 'rxjs';
-import { catchError, mergeMap, flatMap, map, reduce, every } from 'rxjs/operators';
+import { Observable, throwError, forkJoin, from } from 'rxjs';
+import { catchError, mergeMap, every } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
 import * as _ from 'lodash';
 
