@@ -17,86 +17,32 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
         /// <inheritdoc/>
         public bool Match(Assert[] asserts)
         {
-            var isMatch = true;
-            foreach(var assert in asserts)
-            {
-                    switch (assert.Rule)
-                    {
-                        case ComparerType.REGEX:
-                            isMatch = RegexComparer.Compare(assert.Actual, assert.Expect);
-
-                            break;
-                        case ComparerType.TEXTCONTAINS:
-                            isMatch = TextComparer.Contains(assert.Actual, assert.Expect);
-                            
-                            break;
-                        case ComparerType.TEXTSTARTSWITH:
-                            isMatch = TextComparer.StartsWith(assert.Actual, assert.Expect);
-
-                            break;
-                        case ComparerType.TEXTENDSWITH:
-                            isMatch = TextComparer.EndsWith(assert.Actual, assert.Expect);
-
-                            break;
-                        case ComparerType.TEXTEQUALS:
-                            isMatch = TextComparer.Equals(assert.Actual, assert.Expect);
-
-                            break;
-                        case ComparerType.JSONCONTAINS:
-
-                            try
-                            {
-                                var actual = JToken.Parse(assert.Actual);
-                                var expected = JToken.Parse(assert.Expect);
-                                isMatch = DeepContains(expected.HasValues ? expected.First : expected, actual);
-                            }
-                            catch (JsonReaderException)
-                            {
-                                isMatch = false;
-                            }
-                            
-                            break;
-                        case ComparerType.JSONEQUALITY:
-
-                            try
-                            {
-                                var actualEquality = JToken.Parse(assert.Actual);
-                                var expectedEquality = JToken.Parse(assert.Expect);
-                                isMatch = JToken.DeepEquals(expectedEquality, actualEquality);
-                            }
-                            catch (JsonReaderException e)
-                            {
-                                isMatch = false;
-                            }
-
-                            break;
-                        case ComparerType.JSONPATH:
-
-
-                        case ComparerType.JSONSCHEMA:
-
-                            break;
-                }
-            }
-            return isMatch;
+            return asserts.Select(ExecuteComparer).Any(x => !x);
         }
 
-        /// <summary>
-        /// Checks if a JSON object is contained within another one recursively
-        /// </summary>
-        /// <param name="needle">The object to check</param>
-        /// <param name="haystack">The larger object to check against</param>
-        /// <returns>Whether it contains the JSON object</returns>
-        private bool DeepContains(JToken needle, JToken haystack)
+        private bool ExecuteComparer(Assert assert)
         {
-            foreach (JProperty prop in haystack.OfType<JProperty>())
+            switch (assert.Rule)
             {
-                if (JToken.DeepEquals(needle, prop) || DeepContains(needle, prop.Value))
-                {
-                    return true;
-                }
+                case ComparerType.REGEX:
+                    return RegexComparer.Compare(assert.Actual, assert.Expect);
+                case ComparerType.TEXTCONTAINS:
+                    return TextComparer.Contains(assert.Actual, assert.Expect);
+                case ComparerType.TEXTSTARTSWITH:
+                    return TextComparer.StartsWith(assert.Actual, assert.Expect);
+                case ComparerType.TEXTENDSWITH:
+                    return TextComparer.EndsWith(assert.Actual, assert.Expect);                    
+                case ComparerType.TEXTEQUALS:
+                    return TextComparer.Equals(assert.Actual, assert.Expect);                    
+                case ComparerType.JSONCONTAINS:
+                    return JsonComparer.DeepContains(assert.Expect, assert.Actual);
+                case ComparerType.JSONEQUALITY:
+                    return JsonComparer.DeepEqual(assert.Expect, assert.Actual);
+                case ComparerType.JSONPATH:
+                case ComparerType.JSONSCHEMA:
+                default:
+                    return false;
             }
-            return false;
-        }
+        }       
     }
 }
