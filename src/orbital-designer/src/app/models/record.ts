@@ -13,7 +13,7 @@ export function recordDelete<K extends string | number | symbol, T>(record: Reco
 export function recordFirstOrDefault<K extends string | number | symbol, T>(record: Record<K, T>, fallback: T): T {
   const keys = Object.keys(record);
 
-  if(keys.length <= 0) {
+  if (keys.length <= 0) {
     return fallback;
   }
 
