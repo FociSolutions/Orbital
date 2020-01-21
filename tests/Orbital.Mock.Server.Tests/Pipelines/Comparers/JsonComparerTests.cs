@@ -1,7 +1,5 @@
-﻿using Orbital.Mock.Server.Pipelines.Comparers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
+using Orbital.Mock.Server.Pipelines.Comparers;
 using Xunit;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
@@ -14,7 +12,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             var rule = "{\"fruit\": \"Apple\",\"size\": \"Large\",\"color\": \"Red\"}";
             var valueToEvaluate = "{\"fruit\": \"Apple\",\"size\": \"Large\",\"color\": \"Red\"}";
             var actual = JsonComparer.DeepEqual(valueToEvaluate, rule);
-
             Assert.True(actual);
         }
 
@@ -39,10 +36,20 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         }
 
         [Fact]
-        public void FailDeepContainsComparison()
+        public void FailDeepContainsComparisonString()
         {
             var rule = "{\"fruit\": \"Apple\",\"size\": \"Large\",\"color\": \"Red\"}";
-            var valueToEvaluate = "{\"Apple\"}";
+            var valueToEvaluate = "\"Apple\"";
+            var actual = JsonComparer.DeepContains(valueToEvaluate, rule);
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void FailDeepContainsComparisonNumber()
+        {
+            var rule = "{\"fruit\": \"Apple\",\"size\": 1,\"color\": \"Red\"}";
+            var valueToEvaluate = "1";
             var actual = JsonComparer.DeepContains(valueToEvaluate, rule);
 
             Assert.False(actual);

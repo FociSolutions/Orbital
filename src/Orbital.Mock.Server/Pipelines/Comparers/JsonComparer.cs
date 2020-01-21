@@ -37,8 +37,8 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
         {
             try
             {
-                var actual = JToken.Parse(needle);
-                var expected = JToken.Parse(haystack);
+                var expected = JToken.Parse(needle);
+                var actual = JToken.Parse(haystack);
 
                 return DeepContains(expected.HasValues ? expected.First : expected, actual);
             }
@@ -61,7 +61,7 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
                 if (JToken.DeepEquals(needle, prop) || DeepContains(needle, prop.Value))
                 {
                     return true;
-                }
+                }                
             }
             return false;
         }
