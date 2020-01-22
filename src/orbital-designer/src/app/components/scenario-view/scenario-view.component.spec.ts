@@ -367,6 +367,74 @@ describe('ScenarioViewComponent', () => {
     });
   });
 
+  describe('ScenarioViewComponent.deleteScenario', () => {
+    it('should set the triggerOpen to scenarioId', () => {
+      const mockverb = VerbType.GET;
+      const path = '/test';
+      const scenario = {
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        verb: mockverb,
+        path,
+        response: {
+          headers: {},
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: [],
+          queryRules: [],
+          bodyRules: [
+            {
+              type: RuleType.JSONEQUALITY,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as Scenario;
+
+      component.confirmDeleteDialog(scenario);
+      expect(component.triggerOpen).toEqual(scenario.id);
+    });
+  });
+
+  describe('ScenarioViewComponent.showDialog', () => {
+    it('should set the triggerOpen to scenarioId', () => {
+      const mockverb = VerbType.GET;
+      const path = '/test';
+      const scenario = {
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        verb: mockverb,
+        path,
+        response: {
+          headers: {},
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: [],
+          queryRules: [],
+          bodyRules: [
+            {
+              type: RuleType.JSONEQUALITY,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as Scenario;
+
+      component.showDialog(scenario);
+      expect(component.triggerOpen).toEqual(scenario.id);
+    });
+  });
+
   it('should return Not Found for a 404 status', () => {
     const mockverb = VerbType.GET;
     const path = '/test';
