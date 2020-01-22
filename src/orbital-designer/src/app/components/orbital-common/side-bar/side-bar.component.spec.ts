@@ -90,10 +90,7 @@ describe('SideBarComponent', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigate');
       component.mockDefinitions = [validMockDefinition];
 
-      component.onDismiss({
-        key: validMockDefinition.metadata.title,
-        value: validMockDefinition
-      });
+      component.onDismiss(validMockDefinition);
       expect(routerSpy).toHaveBeenCalledWith(['/']);
     });
   });

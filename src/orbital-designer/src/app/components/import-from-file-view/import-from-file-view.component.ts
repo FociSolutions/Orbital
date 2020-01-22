@@ -16,7 +16,6 @@ import { NGXLogger } from 'ngx-logger';
 export class ImportFromFileViewComponent implements OnInit {
   formGroup: FormGroup;
   private store: DesignerStore;
-  private router: Router;
   private location: Location;
 
   private mockDefinitionString: string;
@@ -25,7 +24,7 @@ export class ImportFromFileViewComponent implements OnInit {
   validFileFlag = false;
   fileParser: FileParserService;
   constructor(
-    router: Router,
+    private router: Router,
     location: Location,
     fileParser: FileParserService,
     store: DesignerStore,

@@ -144,9 +144,8 @@ describe('ScenarioViewComponent', () => {
       }
 
       store.state.mockDefinition.scenarios = scenarios;
-      component.scenario = scenarios[0];
 
-      component.cloneScenario();
+      component.cloneScenario(scenarios[0]);
 
       expect(
         store.state.mockDefinition.scenarios.find(
@@ -189,11 +188,10 @@ describe('ScenarioViewComponent', () => {
       }
 
       store.state.mockDefinition.scenarios = scenarios;
-      component.scenario = scenarios[0];
 
-      component.cloneScenario();
-      component.cloneScenario();
-      component.cloneScenario();
+      component.cloneScenario(scenarios[0]);
+      component.cloneScenario(scenarios[0]);
+      component.cloneScenario(scenarios[0]);
 
       expect(
         store.state.mockDefinition.scenarios.find(
@@ -245,7 +243,7 @@ describe('ScenarioViewComponent', () => {
       const scenarioLengthComponentExpected =
         store.state.mockDefinition.scenarios.length;
       component.scenario = null;
-      component.cloneScenario();
+      component.cloneScenario(scenarios[0]);
 
       const scenarioLengthComponentActual =
         store.state.mockDefinition.scenarios.length;
@@ -288,8 +286,7 @@ describe('ScenarioViewComponent', () => {
       }
 
       store.state.mockDefinition.scenarios = scenarios;
-      component.scenario = scenarios[0];
-      component.cloneScenario();
+      component.cloneScenario(scenarios[0]);
 
       expect(store.state.mockDefinition.scenarios[0].id).not.toEqual(
         store.state.mockDefinition.scenarios[1].id
@@ -333,9 +330,8 @@ describe('ScenarioViewComponent', () => {
       }
 
       store.state.mockDefinition.scenarios = scenarios;
-      component.scenario = scenarios[0];
 
-      component.cloneScenario();
+      component.cloneScenario(scenarios[0]);
 
       const componentScenarioClonee = store.state.mockDefinition.scenarios[0];
 
