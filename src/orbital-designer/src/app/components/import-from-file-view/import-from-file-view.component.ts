@@ -18,6 +18,10 @@ export class ImportFromFileViewComponent implements OnInit {
   private store: DesignerStore;
   private router: Router;
   private location: Location;
+
+  private mockDefinitionString: string;
+  mockDefinitionNameString: string;
+  validFileFlag = false;
   fileParser: FileParserService;
   constructor(
     router: Router,
@@ -67,6 +71,26 @@ export class ImportFromFileViewComponent implements OnInit {
 
     return await this.fileParser.readMockDefinition(this.formGroup.controls
       .mockDefinitionFile.value as File);
+  }
+
+  /**
+   * Sets the string represantation of the file's content from the input-file component.
+   *
+   * @param fileStringFromFileInput string representation of the file's content
+   */
+  setMockDefinition(fileStringFromFileInput: string) {
+    this.mockDefinitionString = fileStringFromFileInput;
+
+    this.validateMock(fileStringFromFileInput);
+  }
+
+  /**
+   * Sets the file name in the component. This value is emited from the input-file component.
+   *
+   * @param fileStringName string representation of the file's name
+   */
+  setMockDefinitionName(fileStringName: string) {
+    this.mockDefinitionNameString = fileStringName;
   }
 
   /**
