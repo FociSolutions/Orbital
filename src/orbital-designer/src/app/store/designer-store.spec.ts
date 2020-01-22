@@ -17,6 +17,7 @@ import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec
 import { ReadFileService } from '../services/read-file/read-file.service';
 import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
+import { recordSize, recordAdd } from '../models/record';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -170,15 +171,16 @@ describe('DesignerStore', () => {
   describe('DesignerStore.mockDefinitions', () => {
     it('should update the list of MockDefinitions', () => {
       const mockDef = validMockDefinition;
-      const expectedMap = new Map([[mockDef.metadata.title, mockDef]]);
-      expect(store.state.mockDefinitions.size).toBe(0);
+      const expectedMap = {} as Record<string, MockDefinition>;
+      recordAdd(expectedMap, mockDef.metadata.title, mockDef);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
       store.mockDefinitions = [mockDef];
       expect(store.state.mockDefinitions).toEqual(expectedMap);
     });
 
     it('should set the mockDefinition property of the state to be the first mock definition in the list', () => {
       const mockDef = validMockDefinition;
-      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
       store.mockDefinitions = [mockDef];
       expect(store.state.mockDefinition).toEqual(mockDef);
     });
@@ -256,7 +258,7 @@ describe('DesignerStore', () => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
       store.deleteMockDefinitionByTitle(mockDef.metadata.title);
-      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
     });
 
     it('should delete only a single mock definition by title if only one matches in the store', () => {
@@ -265,13 +267,13 @@ describe('DesignerStore', () => {
       mockDef2.metadata.title = faker.random.word();
       store.mockDefinitions = [mockDef1, mockDef2];
       store.deleteMockDefinitionByTitle(mockDef2.metadata.title);
-      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(recordSize(store.state.mockDefinitions)).toBe(1);
     });
 
     it('should not delete a mock definition by title if there are none in the store', () => {
-      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.state.mockDefinitions = {} as Record<string, MockDefinition>;
       store.deleteMockDefinitionByTitle('Invalid');
-      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
       expect(store.state.mockDefinition).toEqual(null);
     });
 
@@ -279,7 +281,7 @@ describe('DesignerStore', () => {
       const mockDef = validMockDefinition;
       store.mockDefinitions = [mockDef];
       store.deleteMockDefinitionByTitle('Invalid');
-      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(recordSize(store.state.mockDefinitions)).toBe(1);
       expect(store.state.mockDefinition).toEqual(mockDef);
     });
 
@@ -291,7 +293,7 @@ describe('DesignerStore', () => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
       store.deleteMockDefinitionByTitle(mockDef.metadata.title);
-      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
     });
 
     it('should delete a single mock definition when multiple exist', () => {
@@ -309,18 +311,18 @@ describe('DesignerStore', () => {
 
       store.deleteMockDefinitionByTitle(mockDef1.metadata.title);
 
-      const expected = new Map<string, MockDefinition>();
-      expected.set(mockDef2.metadata.title, mockDef2);
-      expected.set(mockDef3.metadata.title, mockDef3);
+      const expected = {} as Record<string, MockDefinition>;
+      recordAdd(expected, mockDef2.metadata.title, mockDef2);
+      recordAdd(expected, mockDef3.metadata.title, mockDef3);
       expect(store.state.mockDefinitions).toEqual(expected);
     });
   });
 
   describe('DesignerStore.appendMockDefinition()', () => {
     it('should append a mock definition to the store if the store is empty', () => {
-      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.state.mockDefinitions = {} as Record<string, MockDefinition>;
       store.appendMockDefinition(validMockDefinition);
-      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(recordSize(store.state.mockDefinitions)).toBe(1);
       expect(store.state.mockDefinition).toEqual(validMockDefinition);
     });
 
@@ -330,7 +332,7 @@ describe('DesignerStore', () => {
       mockDef2.metadata.title = faker.random.word();
       store.mockDefinitions = [mockDef1];
       store.appendMockDefinition(mockDef2);
-      expect(store.state.mockDefinitions.size).toBe(2);
+      expect(recordSize(store.state.mockDefinitions)).toBe(2);
     });
 
     it('should overwrite a mock definition to the store if the store contains other mock definitions when appending', () => {
@@ -338,7 +340,7 @@ describe('DesignerStore', () => {
       const mockDef2 = _.cloneDeep(validMockDefinition);
       store.mockDefinitions = [mockDef1];
       store.appendMockDefinition(mockDef2);
-      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(recordSize(store.state.mockDefinitions)).toBe(1);
     });
 
     it('should set the endpoints when appending a single mock definition to a list of none', done => {

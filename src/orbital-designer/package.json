@@ -42,7 +42,7 @@
     "@angular/compiler-cli": "~8.0.1",
     "@angular/language-service": "~8.0.1",
     "@types/faker": "^4.1.9",
-    "@types/jasmine": "^3.3.16",
+    "@types/jasmine": "^3.5.1",
     "@types/jasminewd2": "~2.0.3",
     "@types/js-yaml": "^3.12.1",
     "@types/lodash.clonedeep": "^4.5.6",

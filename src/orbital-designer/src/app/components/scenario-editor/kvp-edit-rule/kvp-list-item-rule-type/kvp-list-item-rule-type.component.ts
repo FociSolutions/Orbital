@@ -46,7 +46,7 @@ export class KvpListItemRuleTypeComponent implements OnInit {
    */
 
   get key(): string {
-    return KeyValueIndexSig.getKey(this.currentKVP.rule);
+    if (!!this.currentKVP) { return KeyValueIndexSig.getKey(this.currentKVP.rule); }
   }
   /**
    * Sets the key for the current kvp
@@ -56,13 +56,13 @@ export class KvpListItemRuleTypeComponent implements OnInit {
     this.currentKVP.rule = KeyValueIndexSig.setKey(
       localKey,
       this.currentKVP.rule
-    );
+    ) || {};
   }
   /**
    * Gets the value from the current kvp
    */
   get value(): string {
-    return KeyValueIndexSig.getValue(this.currentKVP.rule);
+    if (!!this.currentKVP) { return KeyValueIndexSig.getValue(this.currentKVP.rule); }
   }
 
   /**
@@ -81,7 +81,7 @@ export class KvpListItemRuleTypeComponent implements OnInit {
    */
 
   get ruleType(): RuleType {
-    return this.currentKVP.type;
+    if (!!this.currentKVP) { return this.currentKVP.type; }
   }
 
   /**
@@ -89,7 +89,7 @@ export class KvpListItemRuleTypeComponent implements OnInit {
    */
 
   set ruleType(rule: RuleType) {
-    this.currentKVP.type = rule;
+    if (!!this.currentKVP) { this.currentKVP.type = rule; }
   }
 
   /**

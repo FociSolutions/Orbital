@@ -33,7 +33,7 @@ export class MockDefinition {
         if (!this.isMockDefinition(content)) {
           reject(['Invalid mock definition']);
         } else {
-          resolve(content as MockDefinition);
+          resolve(content);
         }
       } catch (error) {
         reject([error.message]);

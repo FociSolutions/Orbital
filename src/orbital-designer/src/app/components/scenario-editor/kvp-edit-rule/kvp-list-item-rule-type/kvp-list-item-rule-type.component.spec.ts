@@ -4,11 +4,11 @@ import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type.componen
 import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
 import { MatCardModule } from '@angular/material';
 import { KvpEditRuleComponent } from '../kvp-edit-rule.component';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
-import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { KeyValuePairType } from '../../../../models/mock-definition/scenario/key-value-pair-type.model';
+import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
+import { KeyValueIndexSig } from '../../../../models/mock-definition/scenario/key-value-index-sig.model';
 
 describe('KvpListItemRuleComponent', () => {
   let component: KvpListItemRuleTypeComponent;
@@ -39,6 +39,7 @@ describe('KvpListItemRuleComponent', () => {
   describe('kvp-list-item-rule-type', () => {
     beforeEach(() => {
       fixture.detectChanges();
+      component.currentKVP = {} as KeyValuePairType;
     });
 
     it('should contain correct key value pair', () => {
@@ -55,12 +56,14 @@ describe('KvpListItemRuleComponent', () => {
     });
 
     it('should set the key for current kvp', () => {
+      component.currentKVP = {rule: {a: 'b'} as KeyValueIndexSig, type: RuleType.TEXTEQUALS} as KeyValuePairType;
       const testKey = faker.lorem.sentence();
       component.key = testKey;
       expect(component.key).toEqual(testKey);
     });
 
     it('should set the value for current kvp', () => {
+      component.currentKVP = {rule: {}, type: RuleType.TEXTEQUALS} as KeyValuePairType;
       const testValue = faker.lorem.sentence();
       component.value = testValue;
       expect(component.value).toEqual(testValue);

@@ -5,13 +5,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { DesignerStore } from 'src/app/store/designer-store';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
+import { DesignerStore } from '../../../store/designer-store';
+import { MockDefinition } from '../../../models/mock-definition/mock-definition.model';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
@@ -36,7 +36,7 @@ describe('SideBarComponent', () => {
 
   beforeEach(() => {
     store = TestBed.get(DesignerStore);
-    store.mockDefinition = validMockDefinition as MockDefinition;
+    store.mockDefinition = validMockDefinition;
     fixture = TestBed.createComponent(SideBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

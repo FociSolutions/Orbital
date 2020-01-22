@@ -39,7 +39,7 @@ describe('AddResponseComponent', () => {
     });
 
     it('should expect the corresponding status code message in the status field if the status code is invalid', () => {
-      component.statusCode = 200;
+      component.statusCode = -1;
       expect(component.isStatusCodeValid).toBeFalsy();
     });
   });

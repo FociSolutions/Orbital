@@ -5,7 +5,8 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import {
   MatCardModule,
   MatButtonModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatChipsModule
 } from '@angular/material';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -25,12 +26,13 @@ import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './add-response/add-response.component';
-import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
-import { Endpoint } from 'src/app/models/endpoint.model';
-import { VerbType } from 'src/app/models/verb.type';
 import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
+import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
+import { GetVerbStringPipe } from '../../pipes/get-verb-string/get-verb-string.pipe';
+import { KvpEditRuleComponent } from './kvp-edit-rule/kvp-edit-rule.component';
+import { KvpListItemRuleTypeComponent } from './kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -48,7 +50,11 @@ describe('ScenarioEditorComponent', () => {
         BodyRuleListItemComponent,
         AddMetadataComponent,
         AddRequestMatchRuleComponent,
-        AddResponseComponent
+        AddResponseComponent,
+        GetVerbColorPipe,
+        GetVerbStringPipe,
+        KvpEditRuleComponent,
+        KvpListItemRuleTypeComponent
       ],
       imports: [
         LoggerTestingModule,
@@ -59,7 +65,8 @@ describe('ScenarioEditorComponent', () => {
         MatExpansionModule,
         BrowserAnimationsModule,
         MatMenuModule,
-        MatIconModule
+        MatIconModule,
+        MatChipsModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
