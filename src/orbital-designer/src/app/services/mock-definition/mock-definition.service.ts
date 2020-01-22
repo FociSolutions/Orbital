@@ -34,11 +34,11 @@ export class MockDefinitionService {
               ...s,
               response: {
                 ...s.response,
-                headers: Json.objectToMap(s.response.headers)
+                headers: s.response.headers
               },
               requestMatchRules: {
-                headerRules: Json.objectToMap(s.requestMatchRules.headerRules),
-                queryRules: Json.objectToMap(s.requestMatchRules.queryRules),
+                headerRules: s.requestMatchRules.headerRules,
+                queryRules: s.requestMatchRules.queryRules,
                 bodyRules: s.requestMatchRules.bodyRules
               }
             }))
