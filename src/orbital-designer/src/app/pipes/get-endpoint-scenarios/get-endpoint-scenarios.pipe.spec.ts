@@ -5,7 +5,6 @@ import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
 
 describe('GetEndpointScenariosPipe', () => {
   it('create an instance', () => {

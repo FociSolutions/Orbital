@@ -1,5 +1,5 @@
 <p class="description">{{ addKvpTitle }}</p>
-<app-kvp-add (kvp)="addKvpToMap($event)"></app-kvp-add>
+<app-kvp-add (kvp)="addKvp($event)"></app-kvp-add>
 
 <mat-divider class="divider-padding"></mat-divider>
 <div>
@@ -8,9 +8,9 @@
 <div *ngIf="!hasValuesAdded()">
   No rules Added
 </div>
-<div *ngFor="let kv of savedKvpMap | keyvalue">
+<div *ngFor="let kv of savedKvp | keyvalue">
   <app-kvp-list-item
     [kvp]="kv"
-    (removeKvp)="deleteKvpFromMap($event)"
+    (removeKvp)="deleteKvp($event)"
   ></app-kvp-list-item>
 </div>
