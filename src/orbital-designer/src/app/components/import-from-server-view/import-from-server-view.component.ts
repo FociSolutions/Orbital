@@ -1,18 +1,13 @@
 import { Location } from '@angular/common';
-import { FormArray, AbstractControl } from '@angular/forms';
-import { NGXLogger } from 'ngx-logger';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { DesignerStore } from 'src/app/store/designer-store';
+import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import {
-  Component,
-  OnInit,
-  Input} from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { NGXLogger } from 'ngx-logger';
 import { Observer } from 'rxjs';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
-import { KeyValuePair } from 'src/app/models/mock-definition/scenario/key-value-pair.model';
+import { DesignerStore } from 'src/app/store/designer-store';
+
 
 @Component({
   selector: 'app-import-from-server-view',

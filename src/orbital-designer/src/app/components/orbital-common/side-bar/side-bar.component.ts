@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
-import { KeyValue } from '@angular/common';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { recordMap } from 'src/app/models/record';
 import { DesignerStore } from 'src/app/store/designer-store';
 
