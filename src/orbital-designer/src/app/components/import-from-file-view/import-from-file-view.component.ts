@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { FileParserService } from '../../services/file-parser/file-parser.service';
-import { DesignerStore } from '../../store/designer-store';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { NGXLogger } from 'ngx-logger';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -13,62 +13,30 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./import-from-file-view.component.scss']
 })
 export class ImportFromFileViewComponent implements OnInit {
-  formGroup: FormGroup;
-  private store: DesignerStore;
-  private location: Location;
-
   private mockDefinitionString: string;
-  errorMessageToEmitFromCreate: string[];
   mockDefinitionNameString: string;
   validFileFlag = false;
-  fileParser: FileParserService;
+  errorMessageToEmitFromCreate: string[];
+
   constructor(
     private router: Router,
-    location: Location,
-    fileParser: FileParserService,
-    store: DesignerStore,
-    logger: NGXLogger
-  ) {
-    this.router = router;
-    this.location = location;
-    this.fileParser = fileParser;
-    this.store = store;
-    this.formGroup = new FormGroup({
-      mockDefinitionFile: new FormControl(
-        null
-      )
-    });
-    this.errorMessageToEmitFromCreate = [];
-  }
+    private location: Location,
+    private mockDefinitionService: MockDefinitionService,
+    private logger: NGXLogger
+  ) {}
 
   isValid() {
-    return !this.formGroup.invalid;
+    return this.validFileFlag;
   }
 
   /**
-   * createMock is a function that is responsible for storing the new MockDefinition
-   * in the designer store and navigating to the mock editor if the form is valid. If
-   * the form is invalid the function does nothing.
+   * Validates the Mockdefinition and returns a boolean validation status
    */
-  async createMock() {
-    const mockDefinition = await this.formToMockDefinition();
-    if (!!mockDefinition) {
-      this.store.mockDefinitions = [mockDefinition];
-      this.router.navigateByUrl('endpoint-view');
-    }
-  }
-
-  /**
-   * formToMockDefinition method is responsible for creating a new MockDefinition from the
-   * form values. If the form is invalid then the function will return null, otherwise it uses
-   * the form values to create and return a new MockDefinition
-   */
-  async formToMockDefinition(): Promise<MockDefinition> {
-    if (this.formGroup.invalid) {
-      return null;
-    }
-
-    return await MockDefinition.toMockDefinitionAsync(this.mockDefinitionString);
+  async validateMock(mockDefinitionString: string) {
+    MockDefinition.toMockDefinitionAsync(mockDefinitionString).then(
+      () => this.validFileFlag = true,
+      () => this.validFileFlag = false
+    );
   }
 
   /**
@@ -92,13 +60,28 @@ export class ImportFromFileViewComponent implements OnInit {
   }
 
   /**
-   * Validates the Mockdefinition and returns a boolean validation status
+   * createMock is a function that is responsible for storing the new MockDefinition
+   * in the designer store and navigating to the mock editor if the form is valid. If
+   * the form is invalid the function does nothing.
    */
-  async validateMock(mockDefinitionString: string) {
-    MockDefinition.toMockDefinitionAsync(mockDefinitionString).then(
-      () => this.validFileFlag = true,
-      () => this.validFileFlag = false
+ createMock() {
+    const observable = this.mockDefinitionService.deserialize(this.mockDefinitionString).pipe(map(
+        value => value
+      ));
+    observable.subscribe(
+      value => {
+        if (value) {
+            this.logger.log('mock definition was saved to the store');
+            this.router.navigateByUrl('endpoint-view');
+        }
+      },
+      error => {
+        this.logger.log('mock definition is invalid and was not saved to the store');
+        this.errorMessageToEmitFromCreate = error;
+        this.validFileFlag = false;
+      }
     );
+
   }
 
   /**
