@@ -45,7 +45,7 @@ export class KvpEditComponent implements OnInit {
   }
 
   /**
-   * The existing KVP map
+   * The existing KVP record
    */
   @Input()
   set kvpMap(savedKvpMap: Record<string, string>) {
