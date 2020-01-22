@@ -76,7 +76,7 @@ export class DesignerStore extends Store<State> {
   }
 
   /**
-   * This setter updates the mockDefinitions map with the mockDefinitions parameter
+   * This setter updates the Mockdefinitions map with the Mockdefinitions parameter
    * It creates a new Map for the store in order to trigger any render changes relying on this map.
    * Also updates the mockDefinition to the first mockDefinition in the list
    */

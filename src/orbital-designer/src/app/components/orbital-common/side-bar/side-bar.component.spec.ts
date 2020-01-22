@@ -69,15 +69,15 @@ describe('SideBarComponent', () => {
   });
   // Check if a false value was passed to the isSelected method.
   describe('SideBarComponent.isSelected', () => {
-    it('should return false if the mockDefinitions title list is not selected', () => {
+    it('should return false if the Mockdefinitions title list is not selected', () => {
       const title = validMockDefinition.metadata.title + 'false';
       expect(component.isSelected(title)).toBeFalsy();
     });
   });
   // Test the updateSelected method that passes by passing the latest mock definition stored in the state
-  // and compared against a valid mock modefintion.
+  // and compared against a valid mock Mockdefinitions.
   describe('SideBarComponent.updateSelected', () => {
-    it('should return true if the mockDefinitions menu item is updated and navigate to endpoint-view', () => {
+    it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const expected = validMockDefinition;
       component.updateSelected(validMockDefinition);

@@ -39,7 +39,7 @@ export class ExportToServerViewComponent implements OnInit {
   }
 
   /**
-   * Moves all mockdefinitions to the left-hand side of the form; clears right-hand side
+   * Moves all Mockdefinitions to the left-hand side of the form; clears right-hand side
    */
   private resetForm() {
     const keys = Object.keys(this.store.state.mockDefinitions);
@@ -95,7 +95,7 @@ export class ExportToServerViewComponent implements OnInit {
   }
 
   /**
-   * Sets the mockDefinitions property equal to the list of MockDefinitions derived from the
+   * Sets the mockDefinitions property equal to the list of Mockdefinitions derived from the
    * FormControl values.
    * @param list The list of FormControls given by the shuttle list when the user moves items from
    * one list to the other.

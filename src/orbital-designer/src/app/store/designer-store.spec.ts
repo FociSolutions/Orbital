@@ -169,7 +169,7 @@ describe('DesignerStore', () => {
   });
 
   describe('DesignerStore.mockDefinitions', () => {
-    it('should update the list of MockDefinitions', () => {
+    it('should update the list of Mockdefinitions', () => {
       const mockDef = validMockDefinition;
       const expectedMap = {} as Record<string, MockDefinition>;
       recordAdd(expectedMap, mockDef.metadata.title, mockDef);

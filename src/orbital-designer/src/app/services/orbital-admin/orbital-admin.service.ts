@@ -70,8 +70,8 @@ export class OrbitalAdminService {
   }
 
   /**
-   * @param mockdefinition The mockdefinitions to be posted
-   * @param url The url to post the mockdefinitions to
+   * @param mockdefinition The Mockdefinitions to be posted
+   * @param url The url to post the Mockdefinitions to
    * POSTs a list of Mockdefinitions to the server
    */
   exportMockDefinitions(

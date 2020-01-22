@@ -102,7 +102,7 @@ export class ImportFromServerViewComponent implements OnInit {
   }
 
   /**
-   * The function called on submit. Sets the mockDefinitions in the DesignerStore
+   * The function called on submit. Sets the Mockdefinitions in the DesignerStore
    */
   onSubmit() {
     this.designerStore.mockDefinitions = this.mockDefinitions;
@@ -110,7 +110,7 @@ export class ImportFromServerViewComponent implements OnInit {
   }
 
   /**
-   * Sets the mockDefinitions property equal to the list of MockDefinitions derived from the
+   * Sets the Mockdefinitions property equal to the list of MockDefinitions derived from the
    * FormControl values.
    * @param list The list of FormControls given by the shuttle list when the user moves items from
    * one list to the other.
