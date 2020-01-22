@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Router } from '@angular/router';
@@ -103,30 +110,54 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
-  cloneScenario() {
-    if (!this.scenario || !this.scenario.id || !this.scenario.metadata || !this.scenario.metadata.title) {
-      this.logger.warn('Scenario not cloned because it contains undefined attributes');
+  cloneScenario(scenario: Scenario) {
+    if (
+      !scenario ||
+      !scenario.id ||
+      !scenario.metadata ||
+      !scenario.metadata.title
+    ) {
+      this.logger.warn(
+        'Scenario not cloned because it contains undefined attributes'
+      );
       return;
     }
 
     // copy scenario using deep copy
-    const clonedScenario = _.cloneDeep(this.scenario);
+    const clonedScenario = _.cloneDeep(scenario);
     clonedScenario.id = uuid.v4();
     clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
 
-    const originalScenarioIndex = this.mockDefinition.scenarios.indexOf(this.scenario);
+    const originalScenarioIndex = this.mockDefinition.scenarios.indexOf(
+      scenario
+    );
 
     // ensure that there are no naming conflicts; if there are, repeat until a name is found
-    if (!this.mockDefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
+    if (
+      !this.mockDefinition.scenarios.find(
+        x => x.metadata.title === clonedScenario.metadata.title
+      )
+    ) {
       let copyCounter = 2;
-      while (this.mockDefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title + ' ' + copyCounter)) {
+      while (
+        this.mockDefinition.scenarios.find(
+          x =>
+            x.metadata.title ===
+            clonedScenario.metadata.title + ' ' + copyCounter
+        )
+      ) {
         copyCounter++;
       }
 
-      clonedScenario.metadata.title = clonedScenario.metadata.title + ' ' + copyCounter;
+      clonedScenario.metadata.title =
+        clonedScenario.metadata.title + ' ' + copyCounter;
     }
 
-    this.mockDefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
+    this.mockDefinition.scenarios.splice(
+      originalScenarioIndex + 1,
+      0,
+      clonedScenario
+    );
     this.store.updateScenarios([...this.mockDefinition.scenarios]);
     this.logger.warn('Scenario successfully cloned: ', clonedScenario);
   }
@@ -167,9 +198,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
     }
 
     this.triggerOpen = false;
-    this.logger.debug(
-      `Scenario ${scenario.metadata.title} deletion aborted`
-    );
+    this.logger.debug(`Scenario ${scenario.metadata.title} deletion aborted`);
   }
 
   /**
