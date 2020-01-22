@@ -103,7 +103,8 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
    * then a montonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
-  cloneScenario() {
+  cloneScenario(scenario: Scenario) {
+    this.scenario = scenario;
     if (!this.scenario || !this.scenario.id || !this.scenario.metadata || !this.scenario.metadata.title) {
       this.logger.warn('Scenario not cloned because it contains undefined attributes');
       return;
