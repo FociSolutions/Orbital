@@ -37,8 +37,7 @@ export class ImportFromFileViewComponent implements OnInit {
     this.store = store;
     this.formGroup = new FormGroup({
       mockDefinitionFile: new FormControl(
-        null,
-        mockFileValidator
+        null
       )
     });
     this.errorMessageToEmitFromCreate = ['The mockdefinition could not be uploaded because it is invalid'];
@@ -71,8 +70,7 @@ export class ImportFromFileViewComponent implements OnInit {
       return null;
     }
 
-    return await this.fileParser.readMockDefinition(this.formGroup.controls
-      .mockDefinitionFile.value as File);
+    return await MockDefinition.toMockDefinitionAsync(this.mockDefinitionString);
   }
 
   /**
