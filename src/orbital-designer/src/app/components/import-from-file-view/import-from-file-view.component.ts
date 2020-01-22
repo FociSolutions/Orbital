@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { mockFileValidator } from '../../validators/mock-file-validator/mock-file-validator';
 import { FileParserService } from '../../services/file-parser/file-parser.service';
 import { DesignerStore } from '../../store/designer-store';
@@ -91,6 +91,16 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   setMockDefinitionName(fileStringName: string) {
     this.mockDefinitionNameString = fileStringName;
+  }
+
+  /**
+   * Validates the Mockdefinition and returns a boolean validation status
+   */
+  async validateMock(mockDefinitionString: string) {
+    MockDefinition.toMockDefinitionAsync(mockDefinitionString).then(
+      () => this.validFileFlag = true,
+      () => this.validFileFlag = false
+    );
   }
 
   /**
