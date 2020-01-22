@@ -83,6 +83,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
    */
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
   /**
