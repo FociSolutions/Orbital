@@ -81,7 +81,7 @@ export class ExportToServerViewComponent implements OnInit {
   }
 
   /**
-   * Exports the mocks from the form, and returns a list of promises representing the state
+   * Exports the mocks from the form, and returns a list of observables representing the state
    * of the export
    */
   exportMocksFromForm(): Observable<boolean[]> {
