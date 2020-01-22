@@ -35,7 +35,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   filteredList: Scenario[] = [];
 
   errorMessage: string;
-  triggerOpen: boolean;
+  triggerOpen: string;
   mockDefinition: MockDefinition;
   isHoveringOverMenu: boolean;
   scenario: Scenario;
@@ -180,8 +180,8 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   /**
    * This method opens the dialog box when called
    */
-  confirmDeleteDialog() {
-    this.triggerOpen = true;
+  confirmDeleteDialog(scenario: Scenario) {
+    this.triggerOpen = scenario.id;
   }
 
   /**
@@ -197,7 +197,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.triggerOpen = false;
+    this.triggerOpen = null;
     this.logger.debug(`Scenario ${scenario.metadata.title} deletion aborted`);
   }
 
@@ -206,6 +206,10 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    */
   deleteScenario(scenario: Scenario) {
     this.store.deleteScenario(scenario.id);
+  }
+
+  showDialog(scenario: Scenario) {
+    return this.triggerOpen === scenario.id;
   }
 
   /**
