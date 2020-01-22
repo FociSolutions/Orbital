@@ -250,8 +250,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         body: ''
       } as Response,
       requestMatchRules: {
-        headerRules: {},
-        queryRules: {},
+        headerRules: [],
+        queryRules: [],
         bodyRules: []
       } as RequestMatchRule
     } as Scenario;
