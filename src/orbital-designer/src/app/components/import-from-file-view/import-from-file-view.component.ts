@@ -40,7 +40,7 @@ export class ImportFromFileViewComponent implements OnInit {
         null
       )
     });
-    this.errorMessageToEmitFromCreate = ['The mockdefinition could not be uploaded because it is invalid'];
+    this.errorMessageToEmitFromCreate = [];
   }
 
   isValid() {
