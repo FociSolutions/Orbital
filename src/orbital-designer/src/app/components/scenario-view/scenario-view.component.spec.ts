@@ -430,7 +430,8 @@ describe('ScenarioViewComponent', () => {
       } as Scenario;
 
       component.showDialog(scenario);
-      expect(component.triggerOpen).toEqual(scenario.id);
+      component.confirmDeleteDialog(scenario);
+      expect(component.triggerOpen).toBeTruthy();
     });
   });
 
