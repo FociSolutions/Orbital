@@ -75,7 +75,7 @@ export class MockDefinitionService {
           // copy scenario using deep copy
           const clonedScenario = _.cloneDeep(scenario);
           clonedScenario.id = uuid.v4();
-          clonedScenario.metadata.title = clonedScenario.metadata.title + ' -copy';
+          clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
           const scenariomockdefinition = this.store.state.mockDefinitions[mockId];
           this.store.state.mockDefinition = scenariomockdefinition;
           const originalScenarioIndex = scenariomockdefinition.scenarios.indexOf(scenario);
