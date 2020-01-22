@@ -18,7 +18,7 @@ export class SideBarComponent implements OnInit {
 
   triggerOpenConfirmBox: boolean;
 
-  mockDefinitionToBeDismissed: KeyValue<string, MockDefinition>;
+  mockDefinitionToBeDismissed: MockDefinition;
 
   constructor(
     private store: DesignerStore,
@@ -52,8 +52,8 @@ export class SideBarComponent implements OnInit {
    * Dismisses a Mockdefinition from the side bar view and removes it from the store
    * Navigates back to homepage if the last mockdefinition is dismissed
    */
-  onDismiss(mockDefinition: KeyValue<string, MockDefinition>) {
-    this.store.deleteMockDefinitionByTitle(mockDefinition.value.metadata.title);
+  onDismiss(mockDefinition: MockDefinition) {
+    this.store.deleteMockDefinitionByTitle(mockDefinition.metadata.title);
     this.logger.info('Mockdefinition Dismissed', mockDefinition);
     if (this.mockDefinitions.length <= 0) {
       this.router.navigate(['/']);
@@ -81,7 +81,7 @@ export class SideBarComponent implements OnInit {
    * Opens the dialog box for the Mockdefinition to be dismissed
    * @param mockDefinition The Mockdefinition to be dismissed
    */
-  openDialogBox(mockDefinition: KeyValue<string, MockDefinition>) {
+  openDialogBox(mockDefinition: MockDefinition) {
     this.mockDefinitionToBeDismissed = mockDefinition;
     this.triggerOpenConfirmBox = true;
   }
