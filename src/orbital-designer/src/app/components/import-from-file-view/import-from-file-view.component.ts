@@ -20,7 +20,7 @@ export class ImportFromFileViewComponent implements OnInit {
   private location: Location;
 
   private mockDefinitionString: string;
-  errorMessageToEmitFromCreate: string;
+  errorMessageToEmitFromCreate: string[];
   mockDefinitionNameString: string;
   validFileFlag = false;
   fileParser: FileParserService;
@@ -41,7 +41,7 @@ export class ImportFromFileViewComponent implements OnInit {
         mockFileValidator
       )
     });
-    this.errorMessageToEmitFromCreate = "The mockdefinition could not be uploaded because it is invalid";
+    this.errorMessageToEmitFromCreate = ['The mockdefinition could not be uploaded because it is invalid'];
   }
 
   isValid() {
