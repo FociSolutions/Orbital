@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { map } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
@@ -40,7 +39,7 @@ export class ImportFromFileViewComponent implements OnInit {
   }
 
   /**
-   * Sets the string represantation of the file's content from the input-file component.
+   * Sets the string representation of the file's content from the input-file component.
    *
    * @param fileStringFromFileInput string representation of the file's content
    */
@@ -51,7 +50,7 @@ export class ImportFromFileViewComponent implements OnInit {
   }
 
   /**
-   * Sets the file name in the component. This value is emited from the input-file component.
+   * Sets the file name in the component. This value is emitted from the input-file component.
    *
    * @param fileStringName string representation of the file's name
    */

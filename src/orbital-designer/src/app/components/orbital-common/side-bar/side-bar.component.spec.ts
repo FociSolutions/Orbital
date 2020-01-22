@@ -60,7 +60,7 @@ describe('SideBarComponent', () => {
   // Check if a valid mockdefinition is passed to the isSelected method.
   // Then, confirm the value returned is selected by having a true response.
   describe('SideBarComponent.isSelected', () => {
-    it('should return true if selected a valid Mock Defintion', () => {
+    it('should return true if selected a valid Mock Definition', () => {
       const title = component.selectedMockDefinition;
       const expected = validMockDefinition.metadata.title;
       expect(expected).toEqual(title);
