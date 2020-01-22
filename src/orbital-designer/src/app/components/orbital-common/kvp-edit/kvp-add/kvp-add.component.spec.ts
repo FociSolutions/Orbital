@@ -50,6 +50,12 @@ describe('KvpAddComponent', () => {
       component.key = faker.lorem.sentence();
       expect(component.isEmpty()).toBe(false);
     });
+
+    it('Should return false if key is whitespace and value is non-empty', () => {
+      component.value = faker.lorem.sentence();
+      component.key = ' ';
+      expect(component.isEmpty()).toBe(true);
+    });
   });
 
   describe('KvpAddComponent.onAdd', () => {
