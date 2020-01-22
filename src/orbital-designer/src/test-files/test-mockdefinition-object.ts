@@ -1,4 +1,5 @@
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 export default ({
   scenarios: [
@@ -11,7 +12,7 @@ export default ({
       verb: 0,
       path: '/',
       response: {
-        headers: {},
+        headers: {} as Record<string, string>,
         status: 404,
         body: ''
       },
@@ -20,7 +21,7 @@ export default ({
         headerRules: [],
         queryRules: []
       }
-    }
+    } as Scenario
   ],
   openApi: {
     swagger: '2.0',
