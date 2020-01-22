@@ -242,8 +242,7 @@ describe('ScenarioViewComponent', () => {
 
       const scenarioLengthComponentExpected =
         store.state.mockDefinition.scenarios.length;
-      component.scenario = null;
-      component.cloneScenario(scenarios[0]);
+      component.cloneScenario(null);
 
       const scenarioLengthComponentActual =
         store.state.mockDefinition.scenarios.length;
