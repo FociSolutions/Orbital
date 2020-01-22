@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
-import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 @Component({
   selector: 'app-import-from-file-view',

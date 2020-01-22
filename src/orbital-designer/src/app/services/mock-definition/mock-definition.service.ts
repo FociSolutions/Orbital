@@ -7,6 +7,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Observable, EMPTY } from 'rxjs';
 import * as uuid from 'uuid';
 import * as _ from 'lodash';
+import { recordAdd } from 'src/app/models/record';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class MockDefinitionService {
           };
         const titlemockdef = (content as MockDefinition).metadata.title;
         this.store.mockDefinitions = [content];
-        this.store.state.mockDefinitions.set(titlemockdef, content as MockDefinition);
+        recordAdd(this.store.state.mockDefinitions, titlemockdef, content);
         this.store.state.mockDefinition = content as MockDefinition;
         observer.next(true);
       } catch (error) {
@@ -75,7 +76,7 @@ export class MockDefinitionService {
           const clonedScenario = _.cloneDeep(scenario);
           clonedScenario.id = uuid.v4();
           clonedScenario.metadata.title = clonedScenario.metadata.title + ' -copy';
-          const scenariomockdefinition = this.store.state.mockDefinitions.get(mockId);
+          const scenariomockdefinition = this.store.state.mockDefinitions[mockId];
           this.store.state.mockDefinition = scenariomockdefinition;
           const originalScenarioIndex = scenariomockdefinition.scenarios.indexOf(scenario);
 
