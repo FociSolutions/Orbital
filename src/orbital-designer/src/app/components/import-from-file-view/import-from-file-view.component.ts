@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { mockFileValidator } from '../../validators/mock-file-validator/mock-file-validator';
 import { FileParserService } from '../../services/file-parser/file-parser.service';
 import { DesignerStore } from '../../store/designer-store';
 import { Router } from '@angular/router';
