@@ -18,7 +18,7 @@ import * as yaml from 'js-yaml';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 import { FormControl } from '@angular/forms';
 
-fdescribe('CreateNewMockViewComponent', () => {
+describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
   let fixture: ComponentFixture<CreateNewMockViewComponent>;
   beforeEach(async(() => {
