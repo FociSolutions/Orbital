@@ -21,6 +21,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
 
   rules = RuleType;
   rulesOptions = [];
+  selectedRule: string;
 
   shouldSave: boolean;
   panelExpanded: boolean;
@@ -38,8 +39,10 @@ export class AddRequestMatchRuleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rulesOptions = Object.keys(this.rules);
-    this.rulesOptions = this.rulesOptions.slice(this.rulesOptions.length / 2);
+    // TODO: Change this logic to kvp-list-item-rule-type component
+    // this.rulesOptions = Object.keys(this.rules);
+    // this.rulesOptions = this.rulesOptions.slice(this.rulesOptions.length / 2);
+    // console.log(this.selectedRule);
   }
 
   /*
@@ -103,5 +106,9 @@ export class AddRequestMatchRuleComponent implements OnInit {
     this.logger.debug('Set the body match rules to', bodyMatchRules);
     this.bodyMatchRules = bodyMatchRules;
     this._save();
+  }
+
+  addRule() {
+    console.log(this.selectedRule);
   }
 }

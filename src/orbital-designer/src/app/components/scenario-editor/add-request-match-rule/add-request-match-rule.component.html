@@ -13,14 +13,15 @@
       >
     </mat-expansion-panel-header>
     <mat-accordion>
-      <mat-form-field>
+      <!-- Add logic to kvp-list-item-rule-type component-->
+      <!-- <mat-form-field>
         <mat-label>Add New Rule</mat-label>
-        <mat-select>
+        <mat-select [(value)]="selectedRule" ngModelChange>
           <mat-option *ngFor="let rule of rulesOptions" [value]="rule">
             {{ rule | titlecase }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
       <mat-expansion-panel class="mat-elevation-z0">
         <mat-expansion-panel-header class="right-aligned-header">
           <mat-panel-title>
