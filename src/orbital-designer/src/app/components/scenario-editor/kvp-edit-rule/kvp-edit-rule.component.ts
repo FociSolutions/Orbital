@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 @Component({
   selector: 'app-kvp-edit-rule',
@@ -17,7 +18,7 @@ export class KvpEditRuleComponent implements OnInit {
   /**
    * The new kvp list with the new kvp added in
    */
-  @Input() savedKvpType: KeyValuePairType[];
+  @Input() savedKvpType: KeyValuePairType[] = tienes que poner una regla con regex y empty string;
 
   /**
    * The event emitter for the savedKvpType

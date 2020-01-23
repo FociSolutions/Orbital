@@ -9,7 +9,8 @@ import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/reques
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
-
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
@@ -110,7 +111,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
    */
   handleRequestMatchRuleOutput(requestMatchRule: RequestMatchRule) {
     this.logger.debug('handleRequestMatchRuleOutput:', requestMatchRule);
-    this.requestMatchRuleValid = requestMatchRule !== ({} as RequestMatchRule);
+    this.requestMatchRuleValid = requestMatchRule !== ({} as RequestMatchRule) && this.findInvalidRegexRule(requestMatchRule);
     this.requestMatchRule = requestMatchRule;
     this.saveScenario();
   }
@@ -255,5 +256,19 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         bodyRules: []
       } as RequestMatchRule
     } as Scenario;
+  }
+
+  private findInvalidRegexRule(
+    requestMatchRule: RequestMatchRule
+  ): boolean {
+
+    const rule = requestMatchRule.headerRules.find(r => r.type === RuleType.REGEX && KeyValueIndexSig.getValue(r.rule).trim().length === 0);
+
+    if (rule) {
+      return false;
+    } else {
+      return true;
+    }
+
   }
 }
