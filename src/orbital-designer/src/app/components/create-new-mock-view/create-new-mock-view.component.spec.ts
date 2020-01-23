@@ -18,7 +18,7 @@ import * as yaml from 'js-yaml';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 import { FormControl } from '@angular/forms';
 
-describe('CreateNewMockViewComponent', () => {
+fdescribe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
   let fixture: ComponentFixture<CreateNewMockViewComponent>;
   beforeEach(async(() => {
@@ -36,7 +36,11 @@ describe('CreateNewMockViewComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateNewMockViewComponent);
+    try {
+      fixture = TestBed.createComponent(CreateNewMockViewComponent);
+    } catch (error) {
+      fail(`Component was not created correctly. Error is: ${error}`);
+    }
     component = fixture.componentInstance;
   });
 

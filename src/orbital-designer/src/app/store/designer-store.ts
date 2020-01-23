@@ -24,7 +24,7 @@ export class DesignerStore extends Store<State> {
     'orbital_state_mockDefinition';
   private static readonly mockDefinitionsStoreKey =
     'orbital_state_mockDefinitions';
-  private static readonly endpointsStoreKey = 'orbital_state_enpoints';
+  private static readonly endpointsStoreKey = 'orbital_state_endpoints';
   private static readonly selectedEndpointStoreKey =
     'orbital_state_selectedEndpoint';
   private static readonly selectedScenarioStoreKey =
@@ -38,7 +38,7 @@ export class DesignerStore extends Store<State> {
       selectedScenario: JSON.parse(
         localStorage.getItem(DesignerStore.selectedScenarioStoreKey)
       ),
-      mockDefinition: JSON.parse(DesignerStore.mockDefinitionStoreKey),
+      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
       mockDefinitions: JSON.parse(
         localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)
       ) || {},

@@ -11,6 +11,7 @@ import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import testMockDefinitionString from '../../../../test-files/test-mockdefinition-file.mock';
+import testMockDefinitionObject from '../../../../test-files/test-mockdefinition-object';
 
 describe('ShuttleListComponent', () => {
   let component: ShuttleListComponent;
@@ -43,9 +44,7 @@ describe('ShuttleListComponent', () => {
 
   describe('ShuttleListComponent.onSelectLeft()', () => {
     it('should set the leftSelected list to the list passed into it when the second parameter is true', () => {
-      const expectedList = MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      );
+      const expectedList: MockDefinition = testMockDefinitionObject;
       component.onSelectLeft([expectedList]);
       expect(component.leftSelected).toEqual([expectedList]);
     });
@@ -61,9 +60,7 @@ describe('ShuttleListComponent', () => {
 
   describe('ShuttleListComponent.list', () => {
     it('if the list is not null, should set the leftList to the incoming list and the rightList to an empty list', () => {
-      const expectedList = [MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      )];
+      const expectedList = [testMockDefinitionObject];
       component.list = [...expectedList];
       expect(component.leftList).toEqual(expectedList);
       expect(component.rightList).toEqual([]);
@@ -73,26 +70,19 @@ describe('ShuttleListComponent', () => {
 
   describe('ShuttleListComponent.onMoveLeft()', () => {
     it('should move the items in rightSelected to the leftList when the first parameter is false', () => {
-      const expectedList = [MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      )];
+      const expectedList = [testMockDefinitionObject];
       component.rightSelected = [...expectedList];
       component.onMoveLeft();
       expect(component.leftList).toEqual(expectedList);
     });
 
     it('should append to the leftList and not overwrite', () => {
-      const expectedList = [MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      ), MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      ), MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      )];
+      const expectedList = [testMockDefinitionObject,
+        testMockDefinitionObject,
+        testMockDefinitionObject,
+        testMockDefinitionObject];
 
-      const fakedList = [MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      )];
+      const fakedList = [testMockDefinitionObject];
       component.leftList = expectedList;
       component.rightSelected = [...fakedList];
       component.onMoveLeft();
@@ -103,9 +93,7 @@ describe('ShuttleListComponent', () => {
     });
 
     it('should clear the rightSelected', () => {
-      component.leftSelected = [MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      )];
+      component.leftSelected = [testMockDefinitionObject];
       component.onMoveLeft();
       expect(component.rightSelected).toEqual([]);
     });
@@ -113,26 +101,18 @@ describe('ShuttleListComponent', () => {
 
   describe('ShuttleListComponent.onMoveRight()', () => {
     it('should move the items in leftSelected to the rightList when the first parameter is true or empty', () => {
-      const expectedList = [MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      ), MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      ), MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      )];
+      const expectedList = [testMockDefinitionObject,
+        testMockDefinitionObject,
+        testMockDefinitionObject];
       component.leftSelected = [...expectedList];
       component.onMoveRight();
       expect(component.rightList).toEqual(expectedList);
     });
 
     it('should append to the rightList and not overwrite', () => {
-      const fakedList = [MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      ), MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      ), MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      )];
+      const fakedList = [testMockDefinitionObject,
+        testMockDefinitionObject,
+        testMockDefinitionObject];
       const originalListItem = fakedList[0];
       component.rightList = [originalListItem];
       component.leftSelected = [...fakedList];
@@ -144,13 +124,9 @@ describe('ShuttleListComponent', () => {
     });
 
     it('should clear the leftSelected', () => {
-      component.leftSelected = [MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      ), MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      ), MockDefinition.toMockDefinition(
-        testMockDefinitionString
-      )];
+      component.leftSelected = [testMockDefinitionObject,
+        testMockDefinitionObject,
+        testMockDefinitionObject];
       component.onMoveRight();
       expect(component.leftSelected).toEqual([]);
     });
