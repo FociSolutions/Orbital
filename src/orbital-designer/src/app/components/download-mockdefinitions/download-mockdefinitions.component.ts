@@ -4,7 +4,6 @@ import { AbstractControl, FormControl } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { saveAs } from 'file-saver';
-import Json from 'src/app/models/json';
 import { recordMap } from 'src/app/models/record';
 
 @Component({
@@ -62,7 +61,7 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
   downloadMocks() {
     this.selected.forEach(mockDefinition => {
       const blob = new Blob(
-        [JSON.stringify(Json.mapToObject(mockDefinition.value))],
+        [JSON.stringify(mockDefinition.value)],
         { type: 'text/plain;charset=utf-8' }
       );
       saveAs(blob, mockDefinition.value.metadata.title + '.json');

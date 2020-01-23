@@ -1,7 +1,6 @@
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Injectable } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
-import Json from 'src/app/models/json';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable, EMPTY } from 'rxjs';

@@ -143,8 +143,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   }
 
   /**
-   * Wait for header FVP map, then trigger emitter if current response is valid
-   * @param map Response KVP map
+   * Wait for header KVP , then trigger emitter if current response is valid
+   * @param map Response KVP
    */
   saveHeaders(map: Record<string, string>) {
     if (this.isStatusCodeValid && this.isBodyValid) {

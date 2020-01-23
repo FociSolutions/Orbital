@@ -73,19 +73,19 @@ describe('AddResponseComponent', () => {
     });
   });
 
-  describe('addResponse.saveHeaderMap', () => {
+  describe('addResponse.saveHeaderRecord', () => {
     it('should emit the response if the status code and body is valid', () => {
       component.statusCode = 200;
       component.isBodyValid = true;
       component.bodyResponse = '{}';
 
-      const headerMap = {};
-      headerMap[faker.random.word()] = faker.random.word();
-      const saveHeaderMapSpy = spyOn(component.responseOutput, 'emit');
-      component.saveHeaders(headerMap);
+      const headerRecord = {};
+      headerRecord[faker.random.word()] = faker.random.word();
+      const saveHeaderRecordSpy = spyOn(component.responseOutput, 'emit');
+      component.saveHeaders(headerRecord);
 
-      expect(saveHeaderMapSpy).toHaveBeenCalledWith(({
-        headers: headerMap,
+      expect(saveHeaderRecordSpy).toHaveBeenCalledWith(({
+        headers: headerRecord,
         body: component.bodyResponse,
         status: +component.statusCode
       } as unknown) as Response);
