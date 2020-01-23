@@ -4,6 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { KeyValue } from '@angular/common';
 import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 @Component({
   selector: 'app-add-request-match-rule',
@@ -17,6 +18,9 @@ export class AddRequestMatchRuleComponent implements OnInit {
   headerMatchRules: KeyValuePairType[];
   queryMatchRules: KeyValuePairType[];
   bodyMatchRules: BodyRule[];
+
+  rules = RuleType;
+  rulesOptions = [];
 
   shouldSave: boolean;
   panelExpanded: boolean;
@@ -33,7 +37,10 @@ export class AddRequestMatchRuleComponent implements OnInit {
     this.bodyMatchRules = [];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.rulesOptions = Object.keys(this.rules);
+    this.rulesOptions = this.rulesOptions.slice(this.rulesOptions.length / 2);
+  }
 
   /*
    * Sets the save status
