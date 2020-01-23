@@ -42,7 +42,7 @@ export class DesignerStore extends Store<State> {
       mockDefinitions: JSON.parse(
         localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)
       ) || {},
-      endpoints: []
+      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
     });
 
     this.state$.subscribe(state => {
