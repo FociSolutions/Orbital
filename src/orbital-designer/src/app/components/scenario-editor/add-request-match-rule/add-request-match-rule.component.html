@@ -24,7 +24,7 @@
       </mat-form-field> -->
       <mat-form-field>
         <mat-label>Add New Rule</mat-label>
-        <mat-select [(value)]="selectedRule" ngModelChange>
+        <mat-select [(value)]="selectedRuleType" ngModelChange>
           <mat-option *ngFor="let rule of ruleTypes" [value]="rule">
             {{ rule }}
           </mat-option>
