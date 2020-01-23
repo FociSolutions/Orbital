@@ -258,6 +258,12 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
     } as Scenario;
   }
 
+  /**
+   * This private method checks if header rules and query rules have rules of type regex
+   * and return a boolean value if it find any of the rules with no value in the k/v pair.
+   *
+   * @param requestMatchRule the scenario rules to be saved
+   */
   private findInvalidRegexRule(
     requestMatchRule: RequestMatchRule
   ): boolean {
