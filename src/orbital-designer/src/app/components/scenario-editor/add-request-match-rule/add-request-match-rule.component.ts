@@ -19,9 +19,12 @@ export class AddRequestMatchRuleComponent implements OnInit {
   queryMatchRules: KeyValuePairType[];
   bodyMatchRules: BodyRule[];
 
-  rules = RuleType;
-  rulesOptions = [];
-  selectedRule: string;
+  // rules = RuleType;
+  // rulesOptions = [];
+  // selectedRule: string;
+
+  ruleTypes: string[] = ['Header', 'Query', 'Body', 'Path'];
+  selectedRuleType: string;
 
   shouldSave: boolean;
   panelExpanded: boolean;
@@ -108,7 +111,5 @@ export class AddRequestMatchRuleComponent implements OnInit {
     this._save();
   }
 
-  addRule() {
-    console.log(this.selectedRule);
-  }
+  addRule() {}
 }
