@@ -2,6 +2,7 @@
   <form class="kvp-added-item">
     <mat-form-field class="kvp-key">
       <input
+        #inputkey
         matInput
         placeholder="Key"
         maxlength="200"
@@ -9,6 +10,7 @@
         name="key-input"
         [ngModelOptions]="{ standalone: true }"
       />
+      <mat-hint> {{inputkey.value?.length || 0}}/200</mat-hint>
     </mat-form-field>
 
     <mat-form-field class="kvp-type">
@@ -24,6 +26,7 @@
 
     <mat-form-field class="kvp-value">
       <input
+        #inputvalue
         matInput
         maxlength="3000"
         placeholder="Value"
@@ -31,7 +34,7 @@
         name="value-input"
         [ngModelOptions]="{ standalone: true }"
       />
-
+      <mat-hint> {{inputvalue.value?.length || 0}}/3000</mat-hint>
     </mat-form-field>
     <div class="error-message" *ngIf="isValid()">
       Regex value is required
