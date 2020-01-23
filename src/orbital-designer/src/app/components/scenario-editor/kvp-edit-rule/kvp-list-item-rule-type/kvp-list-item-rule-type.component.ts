@@ -100,7 +100,7 @@ export class KvpListItemRuleTypeComponent implements OnInit {
   }
 
   isValid() {
-    if (this.currentKVP.type === RuleType.REGEX ) {
+    if (!!this.currentKVP && (this.currentKVP.type === RuleType.REGEX )) {
       return KeyValueIndexSig.getValue(this.currentKVP.rule).trim().length === 0;
     }
     return true;
