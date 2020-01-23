@@ -4,6 +4,7 @@
       <input
         matInput
         placeholder="Key"
+        maxlength="200"
         [(ngModel)]="key"
         name="key-input"
         [ngModelOptions]="{ standalone: true }"
@@ -24,6 +25,7 @@
     <mat-form-field class="kvp-value">
       <input
         matInput
+        maxlength="3000"
         placeholder="Value"
         [(ngModel)]="value"
         name="value-input"
