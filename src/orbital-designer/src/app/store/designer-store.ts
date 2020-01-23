@@ -38,15 +38,11 @@ export class DesignerStore extends Store<State> {
       selectedScenario: JSON.parse(
         localStorage.getItem(DesignerStore.selectedScenarioStoreKey)
       ),
-      mockDefinition: MockDefinition.toMockDefinition(
-        localStorage.getItem(DesignerStore.mockDefinitionStoreKey)
-      ),
-      mockDefinitions:
-        JSON.parse(
-          localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)
-        ) || {},
-      endpoints:
-        JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
+      mockDefinition: JSON.parse(DesignerStore.mockDefinitionStoreKey),
+      mockDefinitions: JSON.parse(
+        localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)
+      ) || {},
+      endpoints: []
     });
 
     this.state$.subscribe(state => {
