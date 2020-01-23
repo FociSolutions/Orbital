@@ -111,5 +111,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
     this._save();
   }
 
-  addRule() {}
+  addRule() {
+    console.log(this.selectedRuleType);
+  }
 }

@@ -22,14 +22,17 @@
           </mat-option>
         </mat-select>
       </mat-form-field> -->
-      <mat-form-field>
-        <mat-label>Add New Rule</mat-label>
-        <mat-select [(value)]="selectedRuleType" ngModelChange>
+      <mat-form-field class="add-new-rule-dropdown">
+        <mat-label>Choose Rule To Add</mat-label>
+        <mat-select [(value)]="selectedRuleType">
           <mat-option *ngFor="let rule of ruleTypes" [value]="rule">
             {{ rule }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-button mat-raised-button color="primary" (click)="addRule()">
+        Add Rule
+      </button>
       <mat-expansion-panel class="mat-elevation-z0">
         <mat-expansion-panel-header class="right-aligned-header">
           <mat-panel-title>
