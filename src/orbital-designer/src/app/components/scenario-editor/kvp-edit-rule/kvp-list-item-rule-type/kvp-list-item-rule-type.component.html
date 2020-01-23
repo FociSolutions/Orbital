@@ -36,7 +36,7 @@
       />
       <mat-hint> {{inputvalue.value?.length || 0}}/3000</mat-hint>
     </mat-form-field>
-    <div class="error-message" *ngIf="isValid()">
+    <div class="error-message" *ngIf="isValueEmpty()">
       Regex value is required
     </div>
 
