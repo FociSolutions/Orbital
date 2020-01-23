@@ -98,4 +98,11 @@ export class KvpListItemRuleTypeComponent implements OnInit {
   onRemove() {
     this.removeKvp.emit(this.currentKVP);
   }
+
+  isValid() {
+    if (this.currentKVP.type === RuleType.REGEX ) {
+      return KeyValueIndexSig.getValue(this.currentKVP.rule).trim().length === 0;
+    }
+    return true;
+  }
 }

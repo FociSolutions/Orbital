@@ -29,7 +29,11 @@
         name="value-input"
         [ngModelOptions]="{ standalone: true }"
       />
+
     </mat-form-field>
+    <div class="error-message" *ngIf="isValid()">
+      Regex value is required
+    </div>
 
     <div class="delete-button-container">
       <button class="delete-button" (click)="onRemove()">

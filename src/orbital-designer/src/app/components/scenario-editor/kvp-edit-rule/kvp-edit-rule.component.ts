@@ -18,7 +18,7 @@ export class KvpEditRuleComponent implements OnInit {
   /**
    * The new kvp list with the new kvp added in
    */
-  @Input() savedKvpType: KeyValuePairType[] = tienes que poner una regla con regex y empty string;
+  @Input() savedKvpType: KeyValuePairType[];
 
   /**
    * The event emitter for the savedKvpType
