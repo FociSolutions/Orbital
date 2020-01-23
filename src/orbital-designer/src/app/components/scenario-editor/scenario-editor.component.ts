@@ -262,9 +262,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
     requestMatchRule: RequestMatchRule
   ): boolean {
 
-    const rule = requestMatchRule.headerRules.find(r => r.type === RuleType.REGEX && KeyValueIndexSig.getValue(r.rule).trim().length === 0);
+    const headerule = requestMatchRule.headerRules.find(r => r.type === RuleType.REGEX && KeyValueIndexSig.getValue(r.rule).trim().length === 0);
+    const queryule = requestMatchRule.queryRules.find(r => r.type === RuleType.REGEX && KeyValueIndexSig.getValue(r.rule).trim().length === 0);
 
-    if (rule) {
+    if (headerule || queryule) {
       return false;
     } else {
       return true;
