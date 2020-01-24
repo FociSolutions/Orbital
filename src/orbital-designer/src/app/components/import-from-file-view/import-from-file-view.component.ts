@@ -31,20 +31,20 @@ export class ImportFromFileViewComponent implements OnInit {
    * Validates the Mockdefinition and returns a boolean validation status
    */
   async validateMock(mockDefinitionString: string) {
-    this.mockDefinitionService.validateMockDefinition(mockDefinitionString).pipe(map(
-      value => value
-    )).subscribe(
-      value =>{
-      if(value){
-        this.validFileFlag = true;
-      }
-    },
-    ()=>{
-      this.logger.log('mock definition file selected is not valid');
-      this.validFileFlag = false;
-    }
-
-    )
+    this.mockDefinitionService
+      .validateMockDefinition(mockDefinitionString)
+      .pipe(map(value => value))
+      .subscribe(
+        value => {
+          if (value) {
+            this.validFileFlag = true;
+          }
+        },
+        () => {
+          this.logger.log('mock definition file selected is not valid');
+          this.validFileFlag = false;
+        }
+      );
   }
 
   /**
@@ -72,22 +72,24 @@ export class ImportFromFileViewComponent implements OnInit {
    * in the designer store and navigating to the mock editor if the form is valid. If
    * the form is invalid the function does nothing.
    */
- createMock() {
-     this.mockDefinitionService.AddMockDefinitionToStore(this.mockDefinitionString).pipe(map(
-        value => value
-      )).subscribe(
-      value => {
-        if (value) {
+  createMock() {
+    this.mockDefinitionService
+      .AddMockDefinitionToStore(this.mockDefinitionString)
+      .pipe(map(value => value))
+      .subscribe(
+        value => {
+          if (value) {
             this.logger.log('mock definition was saved to the store');
             this.router.navigateByUrl('endpoint-view');
+          }
+        },
+        error => {
+          this.logger.log(
+            'mock definition is invalid and was not saved to the store'
+          );
+          this.errorMessageToEmitFromCreate = error;
         }
-      },
-      error => {
-        this.logger.log('mock definition is invalid and was not saved to the store');
-        this.errorMessageToEmitFromCreate = error;
-      }
-    );
-
+      );
   }
 
   /**
