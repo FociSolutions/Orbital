@@ -44,7 +44,7 @@ export class BodyRuleListItemComponent implements OnInit {
    */
   getBodyType() {
     if (this.bodyRule.type) {
-      return this.bodyRule.type;
+      return RuleType[this.bodyRule.type];
     } else {
       return '';
     }

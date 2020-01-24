@@ -77,7 +77,7 @@ describe('BodyRuleListItemComponent', () => {
     it('should get a valid body type', () => {
       const bodyRule = { rule: {}, type: RuleType.JSONEQUALITY };
       component.bodyRule = bodyRule;
-      expect(component.getBodyType() === bodyRule.type).toBeTruthy();
+      expect(component.getBodyType() === RuleType[bodyRule.type]).toBeTruthy();
     });
 
     it('should not get an invalid body type', () => {
