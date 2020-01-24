@@ -7,7 +7,7 @@ import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type/kvp-list
 import { MatCardModule } from '@angular/material';
 import { RuleType } from '../../../../../src/app/models/mock-definition/scenario/rule.type';
 import { KeyValueIndexSig } from '../../../../../src/app/models/mock-definition/scenario/key-value-index-sig.model';
-import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import * as faker from 'faker';
 describe('KvpEditRuleComponent', () => {
   let component: KvpEditRuleComponent;
@@ -40,7 +40,7 @@ describe('KvpEditRuleComponent', () => {
       const kvpType = [
         { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { test: faker.random.word() } as KeyValueIndexSig }
-      ] as KeyValuePairType[];
+      ] as KeyValuePairRule[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(undefined);
       expect(component.savedKvpType.length).toBe(1);
@@ -49,7 +49,7 @@ describe('KvpEditRuleComponent', () => {
     it('should not delete the kvp if the rule is undefined', () => {
       const kvpType = [
         { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType, rule: undefined }
-      ] as KeyValuePairType[];
+      ] as KeyValuePairRule[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(undefined);
       expect(component.savedKvpType.length).toBe(1);
@@ -59,7 +59,7 @@ describe('KvpEditRuleComponent', () => {
       const kvpType = [
         { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { test: faker.random.word() } as KeyValueIndexSig }
-      ] as KeyValuePairType[];
+      ] as KeyValuePairRule[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(kvpType[0]);
       expect(component.savedKvpType.length).toBe(0);
@@ -81,7 +81,7 @@ describe('KvpEditRuleComponent', () => {
           type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { testthree: randomWord } as KeyValueIndexSig
         }
-      ] as KeyValuePairType[];
+      ] as KeyValuePairRule[];
       component.savedKvpType = kvpType;
       component.deleteKvpFromRule(kvpType[0]);
       expect(component.savedKvpType.length).toBe(2);
@@ -93,7 +93,7 @@ describe('KvpEditRuleComponent', () => {
       const kvpType = [
         { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { test: faker.random.word() } as KeyValueIndexSig }
-      ] as KeyValuePairType[];
+      ] as KeyValuePairRule[];
 
       // it is ok to set it twice (normally this is redundant) as it is checking if the setter
       // does not set if it is previously defined
@@ -106,7 +106,7 @@ describe('KvpEditRuleComponent', () => {
       const kvpType = [
         { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { test: faker.random.word() } as KeyValueIndexSig }
-      ] as KeyValuePairType[];
+      ] as KeyValuePairRule[];
       component.kvpType = kvpType;
       expect(component.savedKvpType).toEqual(kvpType);
     });
@@ -122,7 +122,7 @@ describe('KvpEditRuleComponent', () => {
     it('should emit the savedKvp if it should save', () => {
       const kvpType = [
         { type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType, rule: {} as KeyValueIndexSig }
-      ] as KeyValuePairType[];
+      ] as KeyValuePairRule[];
       component.savedKvpType = kvpType;
       spyOn(component.savedKvpEmitter, 'emit');
       component.Save = true;
@@ -130,7 +130,7 @@ describe('KvpEditRuleComponent', () => {
     });
 
     it('should emit the savedKvp if it should save and the kvp is empty', () => {
-      const kvpType = [] as KeyValuePairType[];
+      const kvpType = [] as KeyValuePairRule[];
       component.savedKvpType = kvpType;
       spyOn(component.savedKvpEmitter, 'emit');
       component.Save = true;
@@ -138,7 +138,7 @@ describe('KvpEditRuleComponent', () => {
     });
 
     it('should emit an empty savedKvp when the component is initialized', () => {
-      const kvpType = [] as KeyValuePairType[];
+      const kvpType = [] as KeyValuePairRule[];
       spyOn(component.savedKvpEmitter, 'emit');
       component.Save = true;
       expect(component.savedKvpEmitter.emit).toHaveBeenCalledWith(kvpType);
@@ -159,7 +159,7 @@ describe('KvpEditRuleComponent', () => {
           type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
           rule: { testthree: randomValue } as KeyValueIndexSig
         }
-      ] as KeyValuePairType[];
+      ] as KeyValuePairRule[];
       component.savedKvpType = kvpType;
       spyOn(component.savedKvpEmitter, 'emit');
       component.Save = true;
