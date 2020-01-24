@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -27,6 +28,17 @@ export class ImportFromFileViewComponent implements OnInit {
     return this.validFileFlag;
   }
 
+
+  /**
+   * Validates the Mockdefinition and returns a boolean validation status
+   */
+  async validateMock(mockDefinitionString: string) {
+    MockDefinition.toMockDefinitionAsync(mockDefinitionString).then(
+      () => this.validFileFlag = true,
+      () => this.validFileFlag = false
+    );
+  }
+
   /**
    * Sets the string representation of the file's content from the input-file component.
    *
@@ -34,6 +46,7 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   setMockDefinition(fileStringFromFileInput: string) {
     this.mockDefinitionString = fileStringFromFileInput;
+    this.validateMock(fileStringFromFileInput);
   }
 
   /**
