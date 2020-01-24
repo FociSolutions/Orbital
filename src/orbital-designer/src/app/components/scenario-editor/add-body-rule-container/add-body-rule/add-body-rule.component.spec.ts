@@ -10,6 +10,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as faker from 'faker';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('AddBodyRuleComponent', () => {
   let component: AddBodyRuleComponent;
@@ -17,7 +18,7 @@ describe('AddBodyRuleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddBodyRuleComponent],
+      declarations: [AddBodyRuleComponent, GetRuleTypeStringPipe],
       imports: [
         MatCardModule,
         MatFormFieldModule,

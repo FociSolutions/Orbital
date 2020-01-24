@@ -10,6 +10,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('BodyRuleListItemComponent', () => {
   let component: BodyRuleListItemComponent;
@@ -17,7 +18,7 @@ describe('BodyRuleListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BodyRuleListItemComponent],
+      declarations: [BodyRuleListItemComponent, GetRuleTypeStringPipe],
       imports: [
         MatCardModule,
         MatFormFieldModule,
@@ -77,7 +78,7 @@ describe('BodyRuleListItemComponent', () => {
     it('should get a valid body type', () => {
       const bodyRule = { rule: {}, type: RuleType.JSONEQUALITY };
       component.bodyRule = bodyRule;
-      expect(component.getBodyType() === RuleType[bodyRule.type]).toBeTruthy();
+      expect(component.getBodyType() === RuleType[bodyRule.type]);
     });
 
     it('should not get an invalid body type', () => {

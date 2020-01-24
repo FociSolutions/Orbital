@@ -26,6 +26,7 @@ import { BodyRuleListItemComponent } from '../add-body-rule-container/body-rule-
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { KvpEditRuleComponent } from '../kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from '../kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -42,7 +43,8 @@ describe('AddRequestMatchRuleComponent', () => {
         AddBodyRuleComponent,
         BodyRuleListItemComponent,
         KvpEditRuleComponent,
-        KvpListItemRuleTypeComponent
+        KvpListItemRuleTypeComponent,
+        GetRuleTypeStringPipe
       ],
       imports: [
         LoggerTestingModule,
