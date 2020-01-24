@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
 @Component({
   selector: 'app-kvp-edit-rule',
@@ -17,15 +17,15 @@ export class KvpEditRuleComponent implements OnInit {
   /**
    * The new kvp list with the new kvp added in
    */
-  @Input() savedKvpType: KeyValuePairType[];
+  @Input() savedKvpType: KeyValuePairRule[];
 
   /**
    * The event emitter for the savedKvpType
    */
-  @Output() savedKvpEmitter: EventEmitter<KeyValuePairType[]>;
+  @Output() savedKvpEmitter: EventEmitter<KeyValuePairRule[]>;
 
   constructor(private logger: NGXLogger) {
-    this.savedKvpEmitter = new EventEmitter<KeyValuePairType[]>();
+    this.savedKvpEmitter = new EventEmitter<KeyValuePairRule[]>();
     this.savedKvpType = [];
   }
 
@@ -46,7 +46,7 @@ export class KvpEditRuleComponent implements OnInit {
    * The existing KVP list
    */
   @Input()
-  set kvpType(savedKvpType: KeyValuePairType[]) {
+  set kvpType(savedKvpType: KeyValuePairRule[]) {
     if (savedKvpType) {
       this.savedKvpType = savedKvpType;
     }
@@ -56,7 +56,7 @@ export class KvpEditRuleComponent implements OnInit {
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
-  deleteKvpFromRule(kvpToDelete: KeyValuePairType) {
+  deleteKvpFromRule(kvpToDelete: KeyValuePairRule) {
     if (!!kvpToDelete && !!kvpToDelete.rule) {
       this.savedKvpType = this.savedKvpType.filter(
         element => element.rule !== kvpToDelete.rule

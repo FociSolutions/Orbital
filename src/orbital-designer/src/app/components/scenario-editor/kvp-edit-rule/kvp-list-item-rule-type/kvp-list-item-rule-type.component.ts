@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValuePairType } from 'src/app/models/mock-definition/scenario/key-value-pair-type.model';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
 
 @Component({
@@ -9,7 +9,7 @@ import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-va
   styleUrls: ['./kvp-list-item-rule-type.component.scss']
 })
 export class KvpListItemRuleTypeComponent implements OnInit {
-  currentKVP: KeyValuePairType;
+  currentKVP: KeyValuePairRule;
 
   type: RuleType;
   rules = [
@@ -26,16 +26,16 @@ export class KvpListItemRuleTypeComponent implements OnInit {
   /**
    * The kvp to be deleted by the parent
    */
-  @Output() removeKvp: EventEmitter<KeyValuePairType>;
+  @Output() removeKvp: EventEmitter<KeyValuePairRule>;
 
   constructor() {
-    this.removeKvp = new EventEmitter<KeyValuePairType>();
+    this.removeKvp = new EventEmitter<KeyValuePairRule>();
   }
 
   ngOnInit() {}
 
   @Input()
-  set kvp(input: KeyValuePairType) {
+  set kvp(input: KeyValuePairRule) {
     if (input) {
       this.currentKVP = input;
     }
