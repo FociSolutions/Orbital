@@ -26,11 +26,7 @@ export class KvpAddRuleComponent implements OnInit {
     { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
     { value: RuleType.TEXTENDSWITH, viewValue: 'Ends With' },
     { value: RuleType.TEXTCONTAINS, viewValue: 'Contains' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
-    { value: RuleType.JSONPATH, viewValue: 'JSON Path' },
-    { value: RuleType.JSONEQUALITY, viewValue: 'JSON Equality' },
-    { value: RuleType.JSONCONTAINS, viewValue: 'JSON Contains' },
-    { value: RuleType.JSONSCHEMA, viewValue: 'JSON Schema' }
+    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' }
   ];
 
   constructor(private logger: NGXLogger) {}

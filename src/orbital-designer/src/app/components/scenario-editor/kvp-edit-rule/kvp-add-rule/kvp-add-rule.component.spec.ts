@@ -59,7 +59,7 @@ describe('KvpAddComponent', () => {
     });
   });
 
-  fdescribe('KvpAddComponent.onAdd', () => {
+  describe('KvpAddComponent.onAdd', () => {
     it('Should set key and value to kvpAdd and isValid to true', () => {
       const input = {
         key: faker.lorem.sentence(),
@@ -68,7 +68,7 @@ describe('KvpAddComponent', () => {
       component.key = input.key;
       component.value = input.value;
       component.ruleType = RuleType.TEXTSTARTSWITH;
-
+      component.onAdd();
       component.kvp.subscribe(
         actual => {
           expect(component.isValid).toBeTruthy();
@@ -78,8 +78,6 @@ describe('KvpAddComponent', () => {
         },
         err => fail(`Unexpected error: ${err.message}`)
       );
-
-      component.onAdd();
     });
 
     it('Should set isValid to false if isEmpty is true', () => {
