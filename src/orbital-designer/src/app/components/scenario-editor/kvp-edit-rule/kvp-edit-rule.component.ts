@@ -64,4 +64,14 @@ export class KvpEditRuleComponent implements OnInit {
       this.logger.debug('Delete Header Rule from KVP', kvpToDelete);
     }
   }
+
+  /**
+   * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
+   * @param kvp The KeyValue pair being taken in from the child component to be added
+   */
+  addKvp(kvpToAdd: KeyValuePairRule) {
+    this.savedKvpType.push(kvpToAdd);
+    console.log(this.savedKvpType);
+    console.log(kvpToAdd);
+  }
 }
