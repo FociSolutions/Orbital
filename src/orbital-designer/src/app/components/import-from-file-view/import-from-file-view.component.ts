@@ -1,9 +1,9 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
-import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { map } from 'rxjs/operators';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
@@ -28,7 +28,6 @@ export class ImportFromFileViewComponent implements OnInit {
     return this.validFileFlag;
   }
 
-
   /**
    * Validates the Mockdefinition and returns a boolean validation status
    */
@@ -46,6 +45,7 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   setMockDefinition(fileStringFromFileInput: string) {
     this.mockDefinitionString = fileStringFromFileInput;
+
     this.validateMock(fileStringFromFileInput);
   }
 
@@ -72,7 +72,6 @@ export class ImportFromFileViewComponent implements OnInit {
         if (value) {
             this.logger.log('mock definition was saved to the store');
             this.router.navigateByUrl('endpoint-view');
-            this.validFileFlag = true;
         }
       },
       error => {
