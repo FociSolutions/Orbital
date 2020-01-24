@@ -33,6 +33,7 @@ import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pi
 import { GetVerbStringPipe } from '../../pipes/get-verb-string/get-verb-string.pipe';
 import { KvpEditRuleComponent } from './kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from './kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -54,7 +55,8 @@ describe('ScenarioEditorComponent', () => {
         GetVerbColorPipe,
         GetVerbStringPipe,
         KvpEditRuleComponent,
-        KvpListItemRuleTypeComponent
+        KvpListItemRuleTypeComponent,
+        GetRuleTypeStringPipe
       ],
       imports: [
         LoggerTestingModule,

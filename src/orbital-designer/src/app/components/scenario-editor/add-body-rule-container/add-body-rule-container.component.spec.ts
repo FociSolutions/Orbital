@@ -18,6 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('AddBodyRuleContainerComponent', () => {
   let component: AddBodyRuleContainerComponent;
@@ -29,7 +30,8 @@ describe('AddBodyRuleContainerComponent', () => {
         AddBodyRuleContainerComponent,
         AddBodyRuleComponent,
         BodyRuleListItemComponent,
-        BodyRuleListItemComponent
+        BodyRuleListItemComponent,
+        GetRuleTypeStringPipe
       ],
       imports: [
         MatExpansionModule,

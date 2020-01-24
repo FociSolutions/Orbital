@@ -11,37 +11,32 @@ import { recordAdd } from 'src/app/models/record';
 @Injectable({
   providedIn: 'root'
 })
-
 export class MockDefinitionService {
-  constructor(
-    private store: DesignerStore, private logger: NGXLogger
-  ) {}
+  constructor(private store: DesignerStore, private logger: NGXLogger) {}
 
   /**
    * Parse provided string to mock definition, save it in the store and make it the current mockdefinition in the store.
    * @param mockDefinition String representation of mock definition
    */
-  public deserialize(
-    mockDefinition: string
-  ): Observable<boolean> {
-  return new Observable((observer) => {
+  public AddMockDefinitionToStore(mockDefinition: string): Observable<boolean> {
+    return new Observable(observer => {
       try {
         let content = JSON.parse(mockDefinition);
         content = {
-            ...content,
-            scenarios: content.scenarios.map(s => ({
-              ...s,
-              response: {
-                ...s.response,
-                headers: s.response.headers
-              },
-              requestMatchRules: {
-                headerRules: s.requestMatchRules.headerRules,
-                queryRules: s.requestMatchRules.queryRules,
-                bodyRules: s.requestMatchRules.bodyRules
-              }
-            }))
-          };
+          ...content,
+          scenarios: content.scenarios.map(s => ({
+            ...s,
+            response: {
+              ...s.response,
+              headers: s.response.headers
+            },
+            requestMatchRules: {
+              headerRules: s.requestMatchRules.headerRules,
+              queryRules: s.requestMatchRules.queryRules,
+              bodyRules: s.requestMatchRules.bodyRules
+            }
+          }))
+        };
         const titlemockdef = (content as MockDefinition).metadata.title;
         this.store.mockDefinitions = [content];
         recordAdd(this.store.state.mockDefinitions, titlemockdef, content);
@@ -51,7 +46,38 @@ export class MockDefinitionService {
         observer.error(error);
       }
       observer.complete();
-  });
+    });
+  }
+
+  /**
+   * Validates if a string is a valid mockdefinition.
+   * @param mockDefinition String representation of mock definition
+   */
+  public validateMockDefinition(mockDefinition: string): Observable<boolean> {
+    return new Observable(observer => {
+      try {
+        let content = JSON.parse(mockDefinition);
+        content = {
+          ...content,
+          scenarios: content.scenarios.map(s => ({
+            ...s,
+            response: {
+              ...s.response,
+              headers: s.response.headers
+            },
+            requestMatchRules: {
+              headerRules: s.requestMatchRules.headerRules,
+              queryRules: s.requestMatchRules.queryRules,
+              bodyRules: s.requestMatchRules.bodyRules
+            }
+          }))
+        };
+        observer.next(true);
+      } catch (error) {
+        observer.error(error);
+      }
+      observer.complete();
+    });
   }
 
   /*
@@ -63,40 +89,63 @@ export class MockDefinitionService {
     mockId: string,
     scenario: Scenario
   ): Observable<boolean> {
-    return new Observable((observer) => {
-        try {
-          if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {
-            this.logger.warn('Scenario not cloned because it contains undefined attributes');
-            observer.next(false);
-            return;
-          }
-
-          // copy scenario using deep copy
-          const clonedScenario = _.cloneDeep(scenario);
-          clonedScenario.id = uuid.v4();
-          clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
-          const scenariomockdefinition = this.store.state.mockDefinitions[mockId];
-          this.store.state.mockDefinition = scenariomockdefinition;
-          const originalScenarioIndex = scenariomockdefinition.scenarios.indexOf(scenario);
-
-          // ensure that there are no naming conflicts; if there are, repeat until a name is found
-          if (!scenariomockdefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
-            let copyCounter = 2;
-            while (scenariomockdefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title + ' ' + copyCounter)) {
-              copyCounter++;
-            }
-
-            clonedScenario.metadata.title = clonedScenario.metadata.title + ' ' + copyCounter;
-          }
-          scenariomockdefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
-          this.store.updateScenarios([...scenariomockdefinition.scenarios]);
-          this.logger.warn('Scenario successfully cloned: ', clonedScenario);
-          observer.next(true);
-        } catch (error) {
-          observer.error(error);
+    return new Observable(observer => {
+      try {
+        if (
+          !scenario ||
+          !scenario.id ||
+          !scenario.metadata ||
+          !scenario.metadata.title
+        ) {
+          this.logger.warn(
+            'Scenario not cloned because it contains undefined attributes'
+          );
+          observer.next(false);
+          return;
         }
-        observer.complete();
-    });
-    }
 
+        // copy scenario using deep copy
+        const clonedScenario = _.cloneDeep(scenario);
+        clonedScenario.id = uuid.v4();
+        clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
+        const scenariomockdefinition = this.store.state.mockDefinitions[mockId];
+        this.store.state.mockDefinition = scenariomockdefinition;
+        const originalScenarioIndex = scenariomockdefinition.scenarios.indexOf(
+          scenario
+        );
+
+        // ensure that there are no naming conflicts; if there are, repeat until a name is found
+        if (
+          !scenariomockdefinition.scenarios.find(
+            x => x.metadata.title === clonedScenario.metadata.title
+          )
+        ) {
+          let copyCounter = 2;
+          while (
+            scenariomockdefinition.scenarios.find(
+              x =>
+                x.metadata.title ===
+                clonedScenario.metadata.title + ' ' + copyCounter
+            )
+          ) {
+            copyCounter++;
+          }
+
+          clonedScenario.metadata.title =
+            clonedScenario.metadata.title + ' ' + copyCounter;
+        }
+        scenariomockdefinition.scenarios.splice(
+          originalScenarioIndex + 1,
+          0,
+          clonedScenario
+        );
+        this.store.updateScenarios([...scenariomockdefinition.scenarios]);
+        this.logger.warn('Scenario successfully cloned: ', clonedScenario);
+        observer.next(true);
+      } catch (error) {
+        observer.error(error);
+      }
+      observer.complete();
+    });
+  }
 }
