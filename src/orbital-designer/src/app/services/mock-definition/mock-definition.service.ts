@@ -21,7 +21,7 @@ export class MockDefinitionService {
    * Parse provided string to mock definition, save it in the store and make it the current mockdefinition in the store.
    * @param mockDefinition String representation of mock definition
    */
-  public deserialize(
+  public AddMockDefinitionToStore(
     mockDefinition: string
   ): Observable<boolean> {
   return new Observable((observer) => {
@@ -46,6 +46,40 @@ export class MockDefinitionService {
         this.store.mockDefinitions = [content];
         recordAdd(this.store.state.mockDefinitions, titlemockdef, content);
         this.store.state.mockDefinition = content as MockDefinition;
+        observer.next(true);
+      } catch (error) {
+        observer.error(error);
+      }
+      observer.complete();
+  });
+  }
+
+
+   /**
+   * Validates if a string is a valid mockdefinition.
+   * @param mockDefinition String representation of mock definition
+   */
+  public validateMockDefinition(
+    mockDefinition: string
+  ): Observable<boolean> {
+  return new Observable((observer) => {
+      try {
+        let content = JSON.parse(mockDefinition);
+        content = {
+            ...content,
+            scenarios: content.scenarios.map(s => ({
+              ...s,
+              response: {
+                ...s.response,
+                headers: s.response.headers
+              },
+              requestMatchRules: {
+                headerRules: s.requestMatchRules.headerRules,
+                queryRules: s.requestMatchRules.queryRules,
+                bodyRules: s.requestMatchRules.bodyRules
+              }
+            }))
+          };
         observer.next(true);
       } catch (error) {
         observer.error(error);

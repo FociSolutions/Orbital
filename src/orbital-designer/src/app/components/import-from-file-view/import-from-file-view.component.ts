@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -32,10 +31,20 @@ export class ImportFromFileViewComponent implements OnInit {
    * Validates the Mockdefinition and returns a boolean validation status
    */
   async validateMock(mockDefinitionString: string) {
-    MockDefinition.toMockDefinitionAsync(mockDefinitionString).then(
-      () => this.validFileFlag = true,
-      () => this.validFileFlag = false
-    );
+    this.mockDefinitionService.validateMockDefinition(mockDefinitionString).pipe(map(
+      value => value
+    )).subscribe(
+      value =>{
+      if(value){
+        this.validFileFlag = true;
+      }
+    },
+    ()=>{
+      this.logger.log('mock definition file selected is not valid');
+      this.validFileFlag = false;
+    }
+
+    )
   }
 
   /**
@@ -64,10 +73,9 @@ export class ImportFromFileViewComponent implements OnInit {
    * the form is invalid the function does nothing.
    */
  createMock() {
-    const observable = this.mockDefinitionService.deserialize(this.mockDefinitionString).pipe(map(
+     this.mockDefinitionService.AddMockDefinitionToStore(this.mockDefinitionString).pipe(map(
         value => value
-      ));
-    observable.subscribe(
+      )).subscribe(
       value => {
         if (value) {
             this.logger.log('mock definition was saved to the store');
@@ -77,7 +85,6 @@ export class ImportFromFileViewComponent implements OnInit {
       error => {
         this.logger.log('mock definition is invalid and was not saved to the store');
         this.errorMessageToEmitFromCreate = error;
-        this.validFileFlag = false;
       }
     );
 
