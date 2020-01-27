@@ -23,6 +23,9 @@ export function recordDelete<K extends string | number | symbol, T>(
   return record;
 }
 
+/**
+ * Updates an existing record with a new key name
+ */
 export function recordUpdateKeyName<K extends string | number | symbol, T>(
   o: Record<K, T>,
   oldKey: K,
@@ -56,6 +59,9 @@ export function recordFirstOrDefault<K extends string | number | symbol, T>(
   return record[keys[0]];
 }
 
+/**
+ * Get's key name from the record provided
+ */
 export function recordFirstOrDefaultKey<T>(
   record: Record<string, T>,
   fallback: string
