@@ -38,7 +38,7 @@ export class KvpAddRuleComponent implements OnInit {
   }
 
   /**
-   * Checks to see if the kvp inputs are empty and has no duplicates already in the kvp and adds them to the kvp
+   * Checks to see if the kvp inputs are empty and adds them to the kvp
    */
   onAdd() {
     if (!this.isEmpty()) {
@@ -60,12 +60,12 @@ export class KvpAddRuleComponent implements OnInit {
   }
 
   /**
-   * Returns true if either the key or the value fields are empty and false otherwise
+   * Returns true if the key field is empty and false otherwise
    */
   isEmpty(): boolean {
     if (this.key.trim().length === 0) {
-      this.errorMessage = 'Empty Field(s) Found: Please Enter All Values';
-      this.logger.debug('Empty Field(s) Found: Please Enter All Values');
+      this.errorMessage = 'Empty Key Field Found: Please Enter All Values';
+      this.logger.debug('Empty Key Field Found: Please Enter All Values');
       return true;
     } else {
       return false;
