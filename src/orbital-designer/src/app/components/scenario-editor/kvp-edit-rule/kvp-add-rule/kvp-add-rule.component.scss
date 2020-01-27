@@ -9,15 +9,20 @@
 }
 
 .kvp-value {
-  padding-right: 5em;
+  width: 25em;
 }
 
 .kvp-key {
   padding-left: 1.3em;
-  padding-right: 5em;
   width: 12%;
 }
 
 .error-message {
   padding-left: 1.6em;
+}
+
+.row {
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }

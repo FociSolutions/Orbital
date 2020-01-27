@@ -17,8 +17,7 @@ p.description {
 
 .kvp-edit-rule {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 }
 
 .kvp-edit-rule-key {
