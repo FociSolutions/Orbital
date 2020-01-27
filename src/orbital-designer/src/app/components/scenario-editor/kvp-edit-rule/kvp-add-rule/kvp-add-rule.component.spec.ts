@@ -57,7 +57,7 @@ describe('KvpAddComponent', () => {
   });
 
   describe('KvpAddComponent.onAdd', () => {
-    it('Should set key and value to kvp when onAdd() is called, kvp is emitted, and IsValid is true.', done => {
+    it('Should set key and value to kvp when onAdd() is called, kvp is emitted, and IsValid is true.', () => {
       const input = {
         key: faker.lorem.sentence(),
         value: faker.lorem.sentence()
@@ -69,7 +69,6 @@ describe('KvpAddComponent', () => {
       component.onAdd();
       expect(component.kvp.emit).toHaveBeenCalled();
       expect(component.isValid).toBe(true);
-      done();
     });
 
     it('Should set isValid to false if isEmpty is true', () => {
