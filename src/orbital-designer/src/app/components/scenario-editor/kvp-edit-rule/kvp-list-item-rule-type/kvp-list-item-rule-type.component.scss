@@ -1,5 +1,7 @@
-.kvp-added-item {
+.row {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .mat-card {
@@ -11,7 +13,6 @@
 .kvp-added-key {
   border-bottom: 1px solid #9b9b9b;
   margin-left: 1.3em;
-  margin-right: 8.5em;
   width: 12%;
   word-wrap: break-word;
   word-break: break-all;
@@ -19,10 +20,9 @@
 
 .kvp-added-value {
   border-bottom: 1px solid #9b9b9b;
-  margin-right: 2em;
-  min-width: 30%;
   word-wrap: break-word;
   word-break: break-all;
+  width: 25em;
 }
 
 .delete-button {
@@ -32,17 +32,11 @@
 
 .delete-button-container {
   display: flex;
-  flex: 1;
-  justify-content: flex-end;
   padding-right: 1em;
 }
 
 .kvp-value {
   min-width: 25em;
-}
-
-.kvp-type {
-  margin-right: 12em;
 }
 
 .kvp-key {
