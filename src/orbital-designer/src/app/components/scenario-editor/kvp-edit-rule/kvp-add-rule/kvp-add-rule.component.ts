@@ -64,8 +64,8 @@ export class KvpAddRuleComponent implements OnInit {
    */
   isKeyEmpty(): boolean {
     if (this.key.trim().length === 0) {
-      this.errorMessage = 'Empty Key Field Found: Please Enter All Values';
-      this.logger.debug('Empty Key Field Found: Please Enter All Values');
+      this.errorMessage = 'Empty Key Field Found: Please Enter Value';
+      this.logger.debug('Empty Key Field Found: Please Enter Value');
       return true;
     }
 
