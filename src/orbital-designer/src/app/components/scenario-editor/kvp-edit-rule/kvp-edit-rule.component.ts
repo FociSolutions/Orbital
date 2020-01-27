@@ -53,7 +53,7 @@ export class KvpEditRuleComponent implements OnInit {
 
   /**
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
-   * @param kvp The KeyValue pair being taken in from the child component to be deleted
+   * @param kvp The KeyValue pair rule being taken in from the child component to be deleted
    */
   deleteKvpFromRule(kvpToDelete: KeyValuePairRule) {
     if (!!kvpToDelete && !!kvpToDelete.rule) {
@@ -66,7 +66,7 @@ export class KvpEditRuleComponent implements OnInit {
 
   /**
    * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
-   * @param kvp The KeyValue pair being taken in from the child component to be added
+   * @param kvp The KeyValue pair rule being taken in from the child component to be added
    */
   addKvp(kvpToAdd: KeyValuePairRule) {
     if (this.savedKvpType.find(r => r.rule === kvpToAdd.rule)) {
