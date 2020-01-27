@@ -38,7 +38,7 @@ export class KvpAddRuleComponent implements OnInit {
   }
 
   /**
-   * Checks to see if the kvp inputs are empty and adds them to the kvp
+   * Checks to see if the kvp key is not empty and adds it if it is not empty
    */
   onAdd() {
     if (!this.isKeyEmpty()) {
