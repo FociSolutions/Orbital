@@ -1,7 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefault, recordFirstOrDefaultKey, recordAdd, recordUpdateKeyName } from 'src/app/models/record';
+import {
+  recordFirstOrDefault,
+  recordFirstOrDefaultKey,
+  recordAdd,
+  recordUpdateKeyName
+} from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-list-item-rule-type',
@@ -13,15 +18,11 @@ export class KvpListItemRuleTypeComponent implements OnInit {
 
   type: RuleType;
   rules = [
-    { value: RuleType.REGEX, viewValue: 'Regex' },
+    { value: RuleType.REGEX, viewValue: 'Matches Regex' },
     { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
     { value: RuleType.TEXTENDSWITH, viewValue: 'Ends With' },
     { value: RuleType.TEXTCONTAINS, viewValue: 'Contains' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
-    { value: RuleType.JSONPATH, viewValue: 'JSON Path' },
-    { value: RuleType.JSONEQUALITY, viewValue: 'JSON Equality' },
-    { value: RuleType.JSONCONTAINS, viewValue: 'JSON Contains' },
-    { value: RuleType.JSONSCHEMA, viewValue: 'JSON Schema' }
+    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' }
   ];
   /**
    * The kvp to be deleted by the parent
@@ -46,7 +47,9 @@ export class KvpListItemRuleTypeComponent implements OnInit {
    */
 
   get key(): string {
-    if (!!this.currentKVP) { return recordFirstOrDefaultKey(this.currentKVP.rule, ''); }
+    if (!!this.currentKVP) {
+      return recordFirstOrDefaultKey(this.currentKVP.rule, '');
+    }
   }
   /**
    * Sets the key for the current kvp
@@ -60,7 +63,9 @@ export class KvpListItemRuleTypeComponent implements OnInit {
    * Gets the value from the current kvp
    */
   get value(): string {
-    if (!!this.currentKVP) { return recordFirstOrDefault(this.currentKVP.rule, ''); }
+    if (!!this.currentKVP) {
+      return recordFirstOrDefault(this.currentKVP.rule, '');
+    }
   }
 
   /**
@@ -77,7 +82,9 @@ export class KvpListItemRuleTypeComponent implements OnInit {
    */
 
   get ruleType(): RuleType {
-    if (!!this.currentKVP) { return this.currentKVP.type; }
+    if (!!this.currentKVP) {
+      return this.currentKVP.type;
+    }
   }
 
   /**
@@ -85,7 +92,9 @@ export class KvpListItemRuleTypeComponent implements OnInit {
    */
 
   set ruleType(rule: RuleType) {
-    if (!!this.currentKVP) { this.currentKVP.type = rule; }
+    if (!!this.currentKVP) {
+      this.currentKVP.type = rule;
+    }
   }
 
   /**
@@ -96,7 +105,7 @@ export class KvpListItemRuleTypeComponent implements OnInit {
   }
 
   isValueEmpty() {
-    if (!!this.currentKVP && (this.currentKVP.type === RuleType.REGEX )) {
+    if (!!this.currentKVP && this.currentKVP.type === RuleType.REGEX) {
       return recordFirstOrDefault(this.currentKVP.rule, '').trim().length === 0;
     }
     return false;
