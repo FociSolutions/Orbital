@@ -42,7 +42,7 @@ describe('KvpEditRuleComponent', () => {
             min: 0,
             max: Object.keys(RuleType).length - 1
           }) as RuleType,
-          rule: { test: faker.random.word() } as Record<string, string>
+          rule: { test: faker.random.word() }
         }
       ] as KeyValuePairRule[];
       component.savedKvpType = kvpType;
