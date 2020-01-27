@@ -12,7 +12,6 @@ export class KvpEditRuleComponent implements OnInit {
    * The add and list tiles to be added in the template
    */
   @Input() addKvpTitle: string;
-  @Input() listKvpTitle: string;
 
   /**
    * The new kvp list with the new kvp added in

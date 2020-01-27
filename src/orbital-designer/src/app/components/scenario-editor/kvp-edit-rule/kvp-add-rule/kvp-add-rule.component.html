@@ -1,5 +1,7 @@
 <mat-card class="kvp-add-card">
+  <mat-card-content>
   <form class="kvp-add">
+    <div class="row">
     <mat-form-field class="kvp-key">
       <input matInput placeholder="Key" [(ngModel)]="key" name="key-input" />
     </mat-form-field>
@@ -24,8 +26,10 @@
     <button mat-mini-fab class="add-button" color="primary" (click)="onAdd()">
       <mat-icon>add</mat-icon>
     </button>
+  </div>
   </form>
   <div class="error-message" *ngIf="!this.isValid">
     {{ this.errorMessage }}
   </div>
+  </mat-card-content>
 </mat-card>
