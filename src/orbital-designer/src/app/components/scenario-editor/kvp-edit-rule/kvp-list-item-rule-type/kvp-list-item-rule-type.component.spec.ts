@@ -97,11 +97,11 @@ describe('KvpListItemRuleComponent', () => {
       };
 
       component.kvp = input;
-      component.onRemove();
 
-      component.removeKvp.subscribe((actual: KeyValuePairRule) =>
-        expect(actual).toEqual(input)
-      );
+      component.removeKvp.subscribe((actual: KeyValuePairRule) => {
+        expect(actual).toEqual(input);
+      });
+      component.onRemove();
     });
   });
 });
