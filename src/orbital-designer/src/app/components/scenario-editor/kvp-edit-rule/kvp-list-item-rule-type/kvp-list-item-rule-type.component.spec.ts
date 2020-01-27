@@ -99,9 +99,8 @@ describe('KvpListItemRuleComponent', () => {
       component.kvp = input;
       component.onRemove();
 
-      component.removeKvp.subscribe(
-        (actual: KeyValuePairRule) => expect(actual).toEqual(input),
-        (err: { message: any }) => fail(`Unexpected error: ${err.message}`)
+      component.removeKvp.subscribe((actual: KeyValuePairRule) =>
+        expect(actual).toEqual(input)
       );
     });
   });
