@@ -57,7 +57,7 @@ describe('KvpAddComponent', () => {
   });
 
   describe('KvpAddComponent.onAdd', () => {
-    it('Should set key and value to kvpAdd, emit it, reset values and IsValid is true.', done => {
+    it('Should set key and value to kvp when onAdd() is called, kvp is emitted, and IsValid is true.', done => {
       const input = {
         key: faker.lorem.sentence(),
         value: faker.lorem.sentence()
