@@ -222,7 +222,9 @@ describe('KvpEditRuleComponent', () => {
           min: 0,
           max: Object.keys(RuleType).length - 1
         }) as RuleType,
-        rule: {} as Record<string, string>
+        rule: {
+          [faker.random.word()]: faker.random.word()
+        } as Record<string, string>
       } as KeyValuePairRule;
       component.addKvp(kvp);
       expect(component.savedKvpType.length).toBe(1);
@@ -236,7 +238,9 @@ describe('KvpEditRuleComponent', () => {
         min: 0,
         max: Object.keys(RuleType).length - 1
       }) as RuleType,
-      rule: {} as Record<string, string>
+      rule: {
+        [faker.random.word()]: faker.random.word()
+      } as Record<string, string>
     } as KeyValuePairRule;
     component.addKvp(kvp);
     component.addKvp(kvp);
