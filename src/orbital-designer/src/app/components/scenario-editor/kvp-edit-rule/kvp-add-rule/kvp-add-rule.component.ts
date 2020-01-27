@@ -3,7 +3,6 @@ import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
-import { KeyValueIndexSig } from '../../../../models/mock-definition/scenario/key-value-index-sig.model';
 
 @Component({
   selector: 'app-kvp-add-rule',
@@ -39,16 +38,15 @@ export class KvpAddRuleComponent implements OnInit {
   }
 
   /**
-   * Checks to see if the kvp inputs are empty and has no duplicates already in the kvp and adds them to the kvp
+   * Checks to see if the kvp inputs are empty and adds them to the kvp
    */
   onAdd() {
     if (!this.isEmpty()) {
       const kvpAdd = {
         type: this.ruleType,
-          rule: {
-            key: this.key,
-            value: this.value
-          }
+        rule: {
+          [this.key]: this.value
+        }
       } as KeyValuePairRule;
 
       this.kvp.emit(kvpAdd);
@@ -62,12 +60,12 @@ export class KvpAddRuleComponent implements OnInit {
   }
 
   /**
-   * Returns true if either the key or the value fields are empty and false otherwise
+   * Returns true if the key field is empty and false otherwise
    */
   isEmpty(): boolean {
     if (this.key.trim().length === 0) {
-      this.errorMessage = 'Empty Field(s) Found: Please Enter All Values';
-      this.logger.debug('Empty Field(s) Found: Please Enter All Values');
+      this.errorMessage = 'Empty Key Field Found: Please Enter All Values';
+      this.logger.debug('Empty Key Field Found: Please Enter All Values');
       return true;
     } else {
       return false;

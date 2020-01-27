@@ -70,7 +70,6 @@ export class KvpEditRuleComponent implements OnInit {
    */
   addKvp(kvpToAdd: KeyValuePairRule) {
     this.savedKvpType.push(kvpToAdd);
-    console.log(this.savedKvpType);
-    console.log(kvpToAdd);
+    this.logger.debug(this.savedKvpType);
   }
 }
