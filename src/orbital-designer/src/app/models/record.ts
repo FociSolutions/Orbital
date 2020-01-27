@@ -60,7 +60,7 @@ export function recordFirstOrDefault<K extends string | number | symbol, T>(
 }
 
 /**
- * Get's key name from the record provided
+ * Gets the key's name from the provided record
  */
 export function recordFirstOrDefaultKey<K extends string | number | symbol, T>(
   record: Record<K, T>,
