@@ -67,8 +67,8 @@ export class KvpAddRuleComponent implements OnInit {
       this.errorMessage = 'Empty Key Field Found: Please Enter All Values';
       this.logger.debug('Empty Key Field Found: Please Enter All Values');
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 }
