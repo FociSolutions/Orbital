@@ -3,7 +3,6 @@ import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
-import { KeyValueIndexSig } from '../../../../models/mock-definition/scenario/key-value-index-sig.model';
 
 @Component({
   selector: 'app-kvp-add-rule',
@@ -45,10 +44,9 @@ export class KvpAddRuleComponent implements OnInit {
     if (!this.isEmpty()) {
       const kvpAdd = {
         type: this.ruleType,
-          rule: {
-            key: this.key,
-            value: this.value
-          }
+        rule: {
+          [this.key]: this.value
+        }
       } as KeyValuePairRule;
 
       this.kvp.emit(kvpAdd);

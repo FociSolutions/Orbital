@@ -10,7 +10,7 @@ import { Response } from 'src/app/models/mock-definition/scenario/response.model
 import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValueIndexSig } from 'src/app/models/mock-definition/scenario/key-value-index-sig.model';
+import { recordFirstOrDefault } from 'src/app/models/record';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
@@ -269,9 +269,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   ): boolean {
 
     const headerule = requestMatchRule.headerRules.find(r => r.type === RuleType.REGEX
-                                                        && KeyValueIndexSig.getValue(r.rule).trim().length === 0);
+                                                        && recordFirstOrDefault(r.rule, '').trim().length === 0);
     const queryule = requestMatchRule.queryRules.find(r => r.type === RuleType.REGEX
-                                                      && KeyValueIndexSig.getValue(r.rule).trim().length === 0);
+                                                      && recordFirstOrDefault(r.rule, '').trim().length === 0);
 
     if (headerule || queryule) {
       return false;
