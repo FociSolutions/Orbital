@@ -9,16 +9,11 @@
 }
 
 .kvp-value {
-  padding-right: 5em;
-}
-
-.kvp-type {
-  margin-right: 12em;
+  width: 25em;
 }
 
 .kvp-key {
   padding-left: 1.3em;
-  padding-right: 5em;
   width: 12%;
 }
 
@@ -28,4 +23,6 @@
 
 .row {
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }
