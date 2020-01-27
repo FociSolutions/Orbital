@@ -20,7 +20,7 @@ export class KvpAddRuleComponent implements OnInit {
   errorMessage: string;
 
   ruleType: RuleType;
-  rules = [
+  readonly rules = [
     { value: RuleType.REGEX, viewValue: 'Regex' },
     { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
     { value: RuleType.TEXTENDSWITH, viewValue: 'Ends With' },
