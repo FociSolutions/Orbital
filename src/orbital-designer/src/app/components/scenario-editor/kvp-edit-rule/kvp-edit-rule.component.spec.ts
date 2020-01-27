@@ -56,8 +56,7 @@ describe('KvpEditRuleComponent', () => {
           type: faker.random.number({
             min: 0,
             max: Object.keys(RuleType).length - 1
-          }) as RuleType,
-          rule: undefined
+          }) as RuleType
         }
       ] as KeyValuePairRule[];
       component.savedKvpType = kvpType;

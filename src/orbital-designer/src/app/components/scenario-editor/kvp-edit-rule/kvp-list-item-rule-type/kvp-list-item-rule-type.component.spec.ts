@@ -45,8 +45,11 @@ describe('KvpListItemRuleComponent', () => {
       const kvp = {};
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairRule = {
-        type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
-        rule: kvp as Record<string, string>
+        type: faker.random.number({
+          min: 0,
+          max: Object.keys(RuleType).length - 1
+        }) as RuleType,
+        rule: kvp
       };
 
       component.kvp = input;
@@ -55,21 +58,30 @@ describe('KvpListItemRuleComponent', () => {
     });
 
     it('should set the key for current kvp', () => {
-      component.currentKVP = {rule: {a: 'b'} as Record<string, string>, type: RuleType.TEXTEQUALS} as KeyValuePairRule;
+      component.currentKVP = {
+        rule: { a: 'b' },
+        type: RuleType.TEXTEQUALS
+      } as KeyValuePairRule;
       const testKey = faker.lorem.sentence();
       component.key = testKey;
       expect(component.key).toEqual(testKey);
     });
 
     it('should set the value for current kvp', () => {
-      component.currentKVP = {rule: {}, type: RuleType.TEXTEQUALS} as KeyValuePairRule;
+      component.currentKVP = {
+        rule: {},
+        type: RuleType.TEXTEQUALS
+      } as KeyValuePairRule;
       const testValue = faker.lorem.sentence();
       component.value = testValue;
       expect(component.value).toEqual(testValue);
     });
 
     it('should set the rule type for current rule type', () => {
-      const testRule = faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 });
+      const testRule = faker.random.number({
+        min: 0,
+        max: Object.keys(RuleType).length - 1
+      });
       component.ruleType = testRule;
       expect(component.ruleType).toEqual(testRule);
     });
@@ -81,7 +93,7 @@ describe('KvpListItemRuleComponent', () => {
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairRule = {
         type: RuleType.TEXTEQUALS,
-        rule: kvp as Record<string, string>
+        rule: kvp
       };
 
       component.kvp = input;
@@ -89,7 +101,7 @@ describe('KvpListItemRuleComponent', () => {
 
       component.removeKvp.subscribe(
         (actual: KeyValuePairRule) => expect(actual).toEqual(input),
-        (err: { message: any; }) => fail(`Unexpected error: ${err.message}`)
+        (err: { message: any }) => fail(`Unexpected error: ${err.message}`)
       );
     });
   });
