@@ -62,8 +62,8 @@ export function recordFirstOrDefault<K extends string | number | symbol, T>(
 /**
  * Get's key name from the record provided
  */
-export function recordFirstOrDefaultKey<T>(
-  record: Record<string, T>,
+export function recordFirstOrDefaultKey<K extends string | number | symbol, T>(
+  record: Record<K, T>,
   fallback: string
 ): string {
   const keys = Object.keys(record);
