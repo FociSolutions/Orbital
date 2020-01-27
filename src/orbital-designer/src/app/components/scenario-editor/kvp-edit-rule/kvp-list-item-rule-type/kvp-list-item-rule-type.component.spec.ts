@@ -46,7 +46,7 @@ describe('KvpListItemRuleComponent', () => {
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairRule = {
         type: faker.random.number({ min: 0, max: Object.keys(RuleType).length - 1 }) as RuleType,
-        rule: kvp as KeyValueIndexSig
+        rule: kvp as Record<string, string>
       };
 
       component.kvp = input;
@@ -55,7 +55,7 @@ describe('KvpListItemRuleComponent', () => {
     });
 
     it('should set the key for current kvp', () => {
-      component.currentKVP = {rule: {a: 'b'} as KeyValueIndexSig, type: RuleType.TEXTEQUALS} as KeyValuePairRule;
+      component.currentKVP = {rule: {a: 'b'} as Record<string, string>, type: RuleType.TEXTEQUALS} as KeyValuePairRule;
       const testKey = faker.lorem.sentence();
       component.key = testKey;
       expect(component.key).toEqual(testKey);
@@ -81,7 +81,7 @@ describe('KvpListItemRuleComponent', () => {
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairRule = {
         type: RuleType.TEXTEQUALS,
-        rule: kvp as KeyValueIndexSig
+        rule: kvp as Record<string, string>
       };
 
       component.kvp = input;
