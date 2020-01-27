@@ -31,36 +31,33 @@ describe('KvpAddComponent', () => {
   });
 
   describe('KvpAddRuleComponent.isEmpty', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
     it('Should return true if the key is empty', () => {
       component.key = '';
       component.value = faker.lorem.sentence();
-      expect(component.isEmpty()).toBe(true);
+      expect(component.isKeyEmpty()).toBe(true);
     });
 
     it('Should return true if the value is empty', () => {
       component.value = '';
       component.key = faker.lorem.sentence();
-      expect(component.isEmpty()).toBe(false);
+      expect(component.isKeyEmpty()).toBe(false);
     });
 
     it('Should return false if both value and key are not empty', () => {
       component.value = faker.lorem.sentence();
       component.key = faker.lorem.sentence();
-      expect(component.isEmpty()).toBe(false);
+      expect(component.isKeyEmpty()).toBe(false);
     });
 
     it('Should return false if key is whitespace and value is non-empty', () => {
       component.value = faker.lorem.sentence();
       component.key = ' ';
-      expect(component.isEmpty()).toBe(true);
+      expect(component.isKeyEmpty()).toBe(true);
     });
   });
 
   describe('KvpAddComponent.onAdd', () => {
-    it('Should set key and value to kvpAdd and isValid to true', () => {
+    it('Should set key and value to kvp when onAdd() is called, kvp is emitted, and IsValid is true.', () => {
       const input = {
         key: faker.lorem.sentence(),
         value: faker.lorem.sentence()
@@ -68,23 +65,17 @@ describe('KvpAddComponent', () => {
       component.key = input.key;
       component.value = input.value;
       component.ruleType = RuleType.TEXTSTARTSWITH;
+      spyOn(component.kvp, 'emit');
       component.onAdd();
-      component.kvp.subscribe(
-        actual => {
-          expect(component.isValid).toBeTruthy();
-          expect(actual.key).toEqual(input.key);
-          expect(actual.value).toEqual(input.value);
-          expect(actual.ruleType).toEqual(RuleType.TEXTSTARTSWITH);
-        },
-        err => fail(`Unexpected error: ${err.message}`)
-      );
+      expect(component.kvp.emit).toHaveBeenCalled();
+      expect(component.isValid).toBe(true);
     });
 
     it('Should set isValid to false if isEmpty is true', () => {
       component.key = '';
       component.value = '';
       component.onAdd();
-      expect(component.isValid).toBeFalsy();
+      expect(component.isValid).toBe(false);
     });
   });
 });

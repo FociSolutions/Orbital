@@ -23,6 +23,9 @@ export function recordDelete<K extends string | number | symbol, T>(
   return record;
 }
 
+/**
+ * Updates an existing record with a new key name
+ */
 export function recordUpdateKeyName<K extends string | number | symbol, T>(
   o: Record<K, T>,
   oldKey: K,
@@ -56,8 +59,11 @@ export function recordFirstOrDefault<K extends string | number | symbol, T>(
   return record[keys[0]];
 }
 
-export function recordFirstOrDefaultKey<T>(
-  record: Record<string, T>,
+/**
+ * Gets the key's name from the provided record
+ */
+export function recordFirstOrDefaultKey<K extends string | number | symbol, T>(
+  record: Record<K, T>,
   fallback: string
 ): string {
   const keys = Object.keys(record);

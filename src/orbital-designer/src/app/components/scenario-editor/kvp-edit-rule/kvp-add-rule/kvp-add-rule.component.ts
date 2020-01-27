@@ -20,7 +20,7 @@ export class KvpAddRuleComponent implements OnInit {
   errorMessage: string;
 
   ruleType: RuleType;
-  rules = [
+  readonly rules = [
     { value: RuleType.REGEX, viewValue: 'Regex' },
     { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
     { value: RuleType.TEXTENDSWITH, viewValue: 'Ends With' },
@@ -38,10 +38,10 @@ export class KvpAddRuleComponent implements OnInit {
   }
 
   /**
-   * Checks to see if the kvp inputs are empty and adds them to the kvp
+   * Checks to see if the kvp key is not empty and adds it if it is not empty
    */
   onAdd() {
-    if (!this.isEmpty()) {
+    if (!this.isKeyEmpty()) {
       const kvpAdd = {
         type: this.ruleType,
         rule: {
@@ -62,13 +62,13 @@ export class KvpAddRuleComponent implements OnInit {
   /**
    * Returns true if the key field is empty and false otherwise
    */
-  isEmpty(): boolean {
+  isKeyEmpty(): boolean {
     if (this.key.trim().length === 0) {
-      this.errorMessage = 'Empty Key Field Found: Please Enter All Values';
-      this.logger.debug('Empty Key Field Found: Please Enter All Values');
+      this.errorMessage = 'Empty Key Field Found: Please Enter Value';
+      this.logger.debug('Empty Key Field Found: Please Enter Value');
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 }
