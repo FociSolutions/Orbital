@@ -41,7 +41,7 @@ export class KvpAddRuleComponent implements OnInit {
    * Checks to see if the kvp inputs are empty and adds them to the kvp
    */
   onAdd() {
-    if (!this.isEmpty()) {
+    if (!this.isKeyEmpty()) {
       const kvpAdd = {
         type: this.ruleType,
         rule: {
@@ -62,7 +62,7 @@ export class KvpAddRuleComponent implements OnInit {
   /**
    * Returns true if the key field is empty and false otherwise
    */
-  isEmpty(): boolean {
+  isKeyEmpty(): boolean {
     if (this.key.trim().length === 0) {
       this.errorMessage = 'Empty Key Field Found: Please Enter All Values';
       this.logger.debug('Empty Key Field Found: Please Enter All Values');
