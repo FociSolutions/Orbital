@@ -228,7 +228,7 @@ describe('KvpEditRuleComponent', () => {
       } as KeyValuePairRule;
       component.addKvp(kvp);
       expect(component.savedKvpType.length).toBe(1);
-      expect(component.savedKvpType[0] === kvp).toBe(true);
+      expect(component.savedKvpType[0]).toEqual(kvp);
     });
   });
 

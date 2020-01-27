@@ -59,7 +59,7 @@ describe('KvpListItemRuleComponent', () => {
 
     it('should set the key for current kvp', () => {
       component.currentKVP = {
-        rule: { a: 'b' },
+        rule: { a: faker.lorem.sentence() },
         type: RuleType.TEXTEQUALS
       } as KeyValuePairRule;
       const testKey = faker.lorem.sentence();
