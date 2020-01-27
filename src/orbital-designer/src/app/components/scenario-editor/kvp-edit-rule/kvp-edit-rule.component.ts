@@ -69,7 +69,7 @@ export class KvpEditRuleComponent implements OnInit {
    * @param kvp The KeyValue pair rule being taken in from the child component to be added
    */
   addKvp(kvpToAdd: KeyValuePairRule) {
-    if (this.savedKvpType.find(r => r.rule === kvpToAdd.rule)) {
+    if (!this.savedKvpType.includes(kvpToAdd)) {
       this.savedKvpType.push(kvpToAdd);
       this.logger.debug('KvpEditRuleComponent: ' + this.savedKvpType);
     }
