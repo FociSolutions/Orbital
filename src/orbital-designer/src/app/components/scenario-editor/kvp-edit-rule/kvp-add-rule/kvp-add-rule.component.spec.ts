@@ -85,6 +85,7 @@ describe('KvpAddComponent', () => {
     it('Should set isValid to false if isEmpty is true', () => {
       component.key = '';
       component.value = '';
+      component.ruleType = null;
       component.onAdd();
       expect(component.isValid).toBe(false);
     });
