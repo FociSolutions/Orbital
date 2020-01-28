@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { recordFirstOrDefaultKey } from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-edit-rule',
@@ -69,7 +70,11 @@ export class KvpEditRuleComponent implements OnInit {
    * @param kvp The KeyValue pair rule being taken in from the child component to be added
    */
   addKvp(kvpToAdd: KeyValuePairRule) {
-    const rulefound = this.savedKvpType.find(r => r.rule === kvpToAdd.rule);
+    const rulefound = this.savedKvpType.find(
+      r =>
+        recordFirstOrDefaultKey(r.rule, '') ===
+        recordFirstOrDefaultKey(kvpToAdd.rule, '')
+    );
     if (!rulefound) {
       this.savedKvpType.push(kvpToAdd);
       this.logger.debug('KvpEditRuleComponent: ', this.savedKvpType);
