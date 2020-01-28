@@ -31,7 +31,7 @@ describe('KvpAddComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fdescribe('KvpAddRuleComponent.isEmpty', () => {
+  describe('KvpAddRuleComponent.isEmpty', () => {
     it('Should return true if the key is empty', () => {
       component.key = '';
       component.value = faker.lorem.sentence();
