@@ -8,7 +8,9 @@
             placeholder="Key"
             [(ngModel)]="key"
             name="key-input"
+            maxlength="200"
           />
+          <mat-hint> {{ key?.length || 0 }}/200</mat-hint>
         </mat-form-field>
         <mat-form-field class="kvp-value">
           <input
@@ -16,7 +18,9 @@
             placeholder="Value"
             [(ngModel)]="value"
             name="value-input"
+            maxlength="3000"
           />
+          <mat-hint> {{ value?.length || 0 }}/3000</mat-hint>
         </mat-form-field>
         <mat-form-field class="kvp-type">
           <mat-label>Select Rule</mat-label>
