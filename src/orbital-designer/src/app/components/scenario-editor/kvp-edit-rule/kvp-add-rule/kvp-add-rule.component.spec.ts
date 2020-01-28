@@ -77,18 +77,32 @@ describe('KvpAddComponent', () => {
       component.onAdd();
       expect(component.isValid).toBe(false);
     });
+
+    it('Should set isValid to false if isRegexEmpty is true', () => {
+      component.key = faker.lorem.sentence();
+      component.ruleType = RuleType.REGEX;
+      component.onAdd();
+      expect(component.isValid).toBe(false);
+    });
+    it('Should set isValid to true if isRegexEmpty is false', () => {
+      component.key = faker.lorem.sentence();
+      component.value = faker.lorem.sentence();
+      component.ruleType = RuleType.REGEX;
+      component.onAdd();
+      expect(component.isValid).toBe(true);
+    });
   });
   describe('KvpAddComponent.isRegexEmpty', () => {
-    it('Should return false if rule type is regex and value is undefined', () => {
+    it('Should return true if rule type is regex and value is undefined', () => {
       const input = {
         key: faker.lorem.sentence()
       };
       component.key = input.key;
       component.ruleType = RuleType.REGEX;
-      expect(component.isRegexEmpty()).toBe(false);
+      expect(component.isRegexEmpty()).toBe(true);
     });
 
-    it('Should return true if rule type is REGEX and value is defined', () => {
+    it('Should return false if rule type is REGEX and value is defined', () => {
       const input = {
         key: faker.lorem.sentence(),
         value: faker.lorem.sentence()
@@ -96,7 +110,7 @@ describe('KvpAddComponent', () => {
       component.key = input.key;
       component.value = input.value;
       component.ruleType = RuleType.REGEX;
-      expect(component.isValid).toBe(true);
+      expect(component.isRegexEmpty()).toBe(false);
     });
   });
 });
