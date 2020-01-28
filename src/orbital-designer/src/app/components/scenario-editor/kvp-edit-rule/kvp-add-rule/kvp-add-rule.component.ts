@@ -93,6 +93,8 @@ export class KvpAddRuleComponent implements OnInit {
       this.errorMessage = 'Empty Compare Type: Please Select a valid compare type';
       this.logger.debug('Empty Compare Type: Please Select a valid compare type');
       return true;
+    } else {
+      return false;
     }
   }
 }

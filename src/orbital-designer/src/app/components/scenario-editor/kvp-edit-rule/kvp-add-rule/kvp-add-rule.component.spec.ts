@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
+import { min } from 'rxjs/operators';
 
 describe('KvpAddComponent', () => {
   let component: KvpAddRuleComponent;
@@ -30,7 +31,7 @@ describe('KvpAddComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('KvpAddRuleComponent.isEmpty', () => {
+  fdescribe('KvpAddRuleComponent.isEmpty', () => {
     it('Should return true if the key is empty', () => {
       component.key = '';
       component.value = faker.lorem.sentence();
@@ -53,6 +54,16 @@ describe('KvpAddComponent', () => {
       component.value = faker.lorem.sentence();
       component.key = ' ';
       expect(component.isKeyEmpty()).toBe(true);
+    });
+
+    it('Should return true if the value is empty', () => {
+      component.ruleType = null;
+      expect(component.isRuleTypeEmpty()).toBe(true);
+    });
+
+    it('Should return false if the value is valid', () => {
+      component.ruleType = 2;
+      expect(component.isRuleTypeEmpty()).toBe(false);
     });
   });
 
