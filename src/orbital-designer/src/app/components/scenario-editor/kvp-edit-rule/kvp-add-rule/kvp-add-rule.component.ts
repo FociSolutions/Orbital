@@ -72,6 +72,9 @@ export class KvpAddRuleComponent implements OnInit {
     return false;
   }
 
+  /**
+   * Returns true if the value for the Regex rule type is empty and false otherwise
+   */
   isRegexEmpty(): boolean {
     if (!this.value && this.ruleType === RuleType.REGEX) {
       this.errorMessage = 'A Regex Value Must be Entered';
