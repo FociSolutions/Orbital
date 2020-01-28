@@ -22,7 +22,11 @@
   border-bottom: 1px solid #9b9b9b;
   word-wrap: break-word;
   word-break: break-all;
-  width: 25em;
+}
+
+.kvp-value {
+  flex: 1;
+  padding-right: 3vw;
 }
 
 .delete-button {
@@ -33,10 +37,6 @@
 .delete-button-container {
   display: flex;
   padding-right: 1em;
-}
-
-.kvp-value {
-  min-width: 25em;
 }
 
 .kvp-key {
