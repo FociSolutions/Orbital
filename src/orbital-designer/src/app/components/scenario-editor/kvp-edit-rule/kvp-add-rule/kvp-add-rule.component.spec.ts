@@ -78,4 +78,25 @@ describe('KvpAddComponent', () => {
       expect(component.isValid).toBe(false);
     });
   });
+  describe('KvpAddComponent.isRegexEmpty', () => {
+    it('Should return false if rule type is regex and value is undefined', () => {
+      const input = {
+        key: faker.lorem.sentence()
+      };
+      component.key = input.key;
+      component.ruleType = RuleType.REGEX;
+      expect(component.isRegexEmpty()).toBe(false);
+    });
+
+    it('Should return true if rule type is REGEX and value is defined', () => {
+      const input = {
+        key: faker.lorem.sentence(),
+        value: faker.lorem.sentence()
+      };
+      component.key = input.key;
+      component.value = input.value;
+      component.ruleType = RuleType.REGEX;
+      expect(component.isValid).toBe(true);
+    });
+  });
 });
