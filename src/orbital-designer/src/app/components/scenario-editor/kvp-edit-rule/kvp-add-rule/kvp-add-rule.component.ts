@@ -35,13 +35,14 @@ export class KvpAddRuleComponent implements OnInit {
     this.value = '';
     this.isValid = true;
     this.errorMessage = '';
+    this.ruleType = null;
   }
 
   /**
    * Checks to see if the kvp key is not empty and adds it if it is not empty
    */
   onAdd() {
-    if (!this.isKeyEmpty() && !this.isRegexEmpty()) {
+    if (!this.isKeyEmpty() && !this.isRegexEmpty() && !this.isRuleTypeEmpty()) {
       const kvpAdd = {
         type: this.ruleType,
         rule: {
@@ -81,6 +82,17 @@ export class KvpAddRuleComponent implements OnInit {
       return true;
     } else {
       return false;
+    }
+  }
+
+  /*
+   * Returns true if the compareType is empty
+   */
+  isRuleTypeEmpty(): boolean {
+    if (this.ruleType === null ) {
+      this.errorMessage = 'Empty Compare Type: Please Select a valid compare type';
+      this.logger.debug('Empty Compare Type: Please Select a valid compare type');
+      return true;
     }
   }
 }
