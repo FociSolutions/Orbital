@@ -62,7 +62,7 @@ describe('KvpAddComponent', () => {
     });
 
     it('Should return false if the value is valid', () => {
-      component.ruleType = 2;
+      component.ruleType = RuleType.TEXTENDSWITH;
       expect(component.isRuleTypeEmpty()).toBe(false);
     });
   });
