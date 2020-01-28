@@ -10,10 +10,10 @@
               [value]="this.bodyType"
               (valueChange)="this.bodyType = $event"
             >
-              <mat-option value="{{ bodyRuleTypeValues.JSONCONTAINS }}">{{
+              <mat-option [value]="bodyRuleTypeValues.JSONCONTAINS">{{
                 bodyRuleTypeValues.JSONCONTAINS | getRuleTypeString
               }}</mat-option>
-              <mat-option value="{{ bodyRuleTypeValues.JSONEQUALITY }}">{{
+              <mat-option [value]="bodyRuleTypeValues.JSONEQUALITY">{{
                 bodyRuleTypeValues.JSONEQUALITY | getRuleTypeString
               }}</mat-option>
             </mat-select>
