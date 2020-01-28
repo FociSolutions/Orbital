@@ -88,12 +88,12 @@ export class KvpAddRuleComponent implements OnInit {
    * Returns true if the compareType is empty
    */
   isRuleTypeEmpty(): boolean {
-    if (this.ruleType === null ) {
+    if (this.ruleType === undefined) {
       this.errorMessage = 'Empty Compare Type: Please Select a valid compare type';
       this.logger.debug('Empty Compare Type: Please Select a valid compare type');
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 }

@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
-import { min } from 'rxjs/operators';
 
 describe('KvpAddComponent', () => {
   let component: KvpAddRuleComponent;
