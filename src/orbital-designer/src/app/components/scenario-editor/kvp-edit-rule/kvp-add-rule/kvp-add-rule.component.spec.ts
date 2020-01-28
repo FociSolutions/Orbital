@@ -56,7 +56,7 @@ describe('KvpAddComponent', () => {
     });
 
     it('Should return true if the value is empty', () => {
-      component.ruleType = null;
+      component.ruleType = undefined;
       expect(component.isRuleTypeEmpty()).toBe(true);
     });
 
