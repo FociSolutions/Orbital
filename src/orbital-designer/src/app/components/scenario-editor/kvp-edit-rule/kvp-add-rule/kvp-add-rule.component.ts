@@ -35,7 +35,6 @@ export class KvpAddRuleComponent implements OnInit {
     this.value = '';
     this.isValid = true;
     this.errorMessage = '';
-    this.ruleType = null;
   }
 
   /**
