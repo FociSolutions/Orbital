@@ -37,7 +37,7 @@ describe('KvpAddComponent', () => {
       expect(component.isKeyEmpty()).toBe(true);
     });
 
-    it('Should return true if the value is empty', () => {
+    it('Should return false if the value is empty', () => {
       component.value = '';
       component.key = faker.lorem.sentence();
       expect(component.isKeyEmpty()).toBe(false);
