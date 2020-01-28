@@ -41,7 +41,7 @@ export class KvpAddRuleComponent implements OnInit {
    * Checks to see if the kvp key is not empty and adds it if it is not empty
    */
   onAdd() {
-    if (!this.isKeyEmpty()) {
+    if (!this.isKeyEmpty() && this.isRegexEmpty()) {
       const kvpAdd = {
         type: this.ruleType,
         rule: {
@@ -70,5 +70,12 @@ export class KvpAddRuleComponent implements OnInit {
     }
 
     return false;
+  }
+
+  isRegexEmpty(): boolean {
+    if (!(!this.value && this.ruleType === RuleType.REGEX)) {
+      this.errorMessage = 'A Regex Value Must be Entered';
+      return true;
+    }
   }
 }
