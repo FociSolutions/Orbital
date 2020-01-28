@@ -21,7 +21,7 @@ export class KvpAddRuleComponent implements OnInit {
 
   ruleType: RuleType;
   readonly rules = [
-    { value: RuleType.REGEX, viewValue: 'Regex' },
+    { value: RuleType.REGEX, viewValue: 'Matches Regex' },
     { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
     { value: RuleType.TEXTENDSWITH, viewValue: 'Ends With' },
     { value: RuleType.TEXTCONTAINS, viewValue: 'Contains' },
