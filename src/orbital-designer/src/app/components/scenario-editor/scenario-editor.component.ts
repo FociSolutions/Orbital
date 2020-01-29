@@ -311,14 +311,14 @@ export class ScenarioEditorComponent
     );
     if (headerfound) {
       this.logger.error(
-        'This header rule contains an empty rule:  ',
+        'This header rule contains an empty rule(s):  ',
         headerfound
       );
       return true;
     }
     if (queryfound) {
       this.logger.error(
-        'This query rule contains an empty rule:  ',
+        'This query rule contains an empty rule(s):  ',
         headerfound
       );
       return true;
