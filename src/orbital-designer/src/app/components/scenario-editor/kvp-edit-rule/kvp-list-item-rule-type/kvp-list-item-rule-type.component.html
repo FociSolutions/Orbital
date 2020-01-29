@@ -26,9 +26,6 @@
         />
         <mat-hint> {{ inputvalue.value?.length || 0 }}/3000</mat-hint>
       </mat-form-field>
-      <div class="error-message" *ngIf="isValueEmpty()">
-        Regex value is required
-      </div>
 
       <mat-form-field class="kvp-type">
         <mat-label>Select Rule</mat-label>
@@ -46,6 +43,9 @@
           <mat-icon>close</mat-icon>
         </button>
       </div>
+    </div>
+    <div class="error-message" *ngIf="isValueEmpty()">
+      Regex value is required
     </div>
   </form>
 </mat-card>
