@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  AfterContentChecked
+} from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
@@ -10,13 +16,17 @@ import { Response } from 'src/app/models/mock-definition/scenario/response.model
 import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { recordFirstOrDefault } from 'src/app/models/record';
+import {
+  recordFirstOrDefault,
+  recordFirstOrDefaultKey
+} from 'src/app/models/record';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
   styleUrls: ['./scenario-editor.component.scss']
 })
-export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class ScenarioEditorComponent
+  implements OnInit, OnDestroy, AfterContentChecked {
   readonly headerMatchRuleTitle = 'Header Match Rule';
   readonly headerMatchRuleListTitle = 'Header Rules';
 
@@ -111,7 +121,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
    */
   handleRequestMatchRuleOutput(requestMatchRule: RequestMatchRule) {
     this.logger.debug('handleRequestMatchRuleOutput:', requestMatchRule);
-    this.requestMatchRuleValid = requestMatchRule !== ({} as RequestMatchRule) && this.findInvalidRegexRule(requestMatchRule);
+    this.requestMatchRuleValid =
+      requestMatchRule !== ({} as RequestMatchRule) &&
+      this.findInvalidRegexRule(requestMatchRule) &&
+      !this.isThereAnyHeaderQueryKeyEmpty(requestMatchRule);
     this.requestMatchRule = requestMatchRule;
     this.saveScenario();
   }
@@ -264,20 +277,52 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
    *
    * @param requestMatchRule the scenario rules to be saved
    */
-  private findInvalidRegexRule(
-    requestMatchRule: RequestMatchRule
-  ): boolean {
-
-    const headerule = requestMatchRule.headerRules.find(r => r.type === RuleType.REGEX
-                                                        && recordFirstOrDefault(r.rule, '').trim().length === 0);
-    const queryule = requestMatchRule.queryRules.find(r => r.type === RuleType.REGEX
-                                                      && recordFirstOrDefault(r.rule, '').trim().length === 0);
+  private findInvalidRegexRule(requestMatchRule: RequestMatchRule): boolean {
+    const headerule = requestMatchRule.headerRules.find(
+      r =>
+        r.type === RuleType.REGEX &&
+        recordFirstOrDefault(r.rule, '').trim().length === 0
+    );
+    const queryule = requestMatchRule.queryRules.find(
+      r =>
+        r.type === RuleType.REGEX &&
+        recordFirstOrDefault(r.rule, '').trim().length === 0
+    );
 
     if (headerule || queryule) {
       return false;
     } else {
       return true;
     }
+  }
 
+  /**
+   * This private method checks if header rules and query rules have rules with empty keys.
+   * @param requestMatchRule the scenario rules to be saved
+   */
+  private isThereAnyHeaderQueryKeyEmpty(
+    requestMatchRule: RequestMatchRule
+  ): boolean {
+    const headerfound = requestMatchRule.headerRules.find(
+      r => recordFirstOrDefaultKey(r.rule, '').trim().length === 0
+    );
+    const queryfound = requestMatchRule.queryRules.find(
+      r => recordFirstOrDefaultKey(r.rule, '').trim().length === 0
+    );
+    if (headerfound) {
+      this.logger.error(
+        'This header rule contains an empty rule:  ',
+        headerfound
+      );
+      return true;
+    }
+    if (queryfound) {
+      this.logger.error(
+        'This query rule contains an empty rule:  ',
+        headerfound
+      );
+      return true;
+    }
+    return false;
   }
 }

@@ -104,6 +104,9 @@ export class KvpListItemRuleTypeComponent implements OnInit {
     this.removeKvp.emit(this.currentKVP);
   }
 
+  /**
+   * check if value is empty when selecting Regex as rule type
+   */
   isValueEmpty() {
     if (!!this.currentKVP && this.currentKVP.type === RuleType.REGEX) {
       return recordFirstOrDefault(this.currentKVP.rule, '').trim().length === 0;
