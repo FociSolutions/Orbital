@@ -16,6 +16,7 @@
         "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    },\n    {\n      \"id\": \"2\",\n      \"name\": \"Hamtaro\",\n      \"type\": \"hamster\",\n      \"description\": \"Likes trail mix\"\n    },\n    {\n      \"id\": \"3\",\n      \"name\": \"Whisker\",\n      \"type\": \"cat\",\n      \"descriptions\": \"Likes hamtaro\"\n    }\n  ]\n}"
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -44,6 +45,7 @@
         "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -57,8 +59,9 @@
             "type": 3,
             "rule": {
               "animal-type": "dog"
+            }
           }
-        }],
+        ],
         "bodyRules": []
       }
     },
@@ -78,6 +81,7 @@
         "body": "Resource Successfully Created"
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -116,6 +120,7 @@
         "body": "Error: Could not create resource. Missing property \"type\" of pet"
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -153,6 +158,7 @@
         "body": "{\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n}"
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -181,6 +187,7 @@
         "body": "Pet not found. Check that id is correct."
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
