@@ -1,5 +1,6 @@
 import { BodyRule } from './body-rule.model';
 import { KeyValuePairRule } from './key-value-pair-rule.model';
+import { URLRule } from './url-rule.model';
 
 /**
  * Model representation of a request matching rule
@@ -8,4 +9,5 @@ export interface RequestMatchRule {
   headerRules: KeyValuePairRule[];
   queryRules: KeyValuePairRule[];
   bodyRules: BodyRule[];
+  urlRules: URLRule[];
 }
