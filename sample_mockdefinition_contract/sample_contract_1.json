@@ -237,7 +237,7 @@
           {
             "type": 4,
             "rule": {
-              "url": "/pets/34/shots/12"
+              "urlPath": "/pets/34/shots/12"
             }
           }
         ]
