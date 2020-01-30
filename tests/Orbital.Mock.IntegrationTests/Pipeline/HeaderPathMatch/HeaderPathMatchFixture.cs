@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.IntegrationTests.Pipeline.HeaderPathMatch
 {
@@ -36,25 +37,25 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.HeaderPathMatch
 
         private void Given_the_request_matches_against_a_scenario()
         {
-            foreach (var key in this.scenario.RequestMatchRules.HeaderRules.Keys)
+            foreach (var keyval in this.scenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue))
             {
-                this.request.Headers.Add(key, this.scenario.RequestMatchRules.HeaderRules[key]);
+                this.request.Headers.Add(keyval.Key, keyval.Value);
             }
         }
 
         private void Given_the_request_header_values_do_not_match_against_a_scenario()
         {
-            foreach (var key in this.scenario.RequestMatchRules.HeaderRules.Keys)
+            foreach (var keyval in this.scenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue))
             {
-                this.request.Headers.Add(key, $"{this.scenario.RequestMatchRules.HeaderRules[key]}-diff");
+                this.request.Headers.Add(keyval.Key, $"{keyval.Value}-diff");
             }
         }
 
         private void Given_the_request_header_keys_do_not_match_against_a_scenario()
         {
-            foreach (var key in this.scenario.RequestMatchRules.HeaderRules.Keys)
+            foreach (var keyval in this.scenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue))
             {
-                this.request.Headers.Add(key.Substring(0, key.Length / 2), this.scenario.RequestMatchRules.HeaderRules[key]);
+                this.request.Headers.Add(keyval.Key.Substring(0, keyval.Key.Length / 2), keyval.Value);
             }
         }
 

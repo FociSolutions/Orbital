@@ -2,7 +2,7 @@ import { GetEndpointScenariosPipe } from './get-endpoint-scenarios.pipe';
 import * as faker from 'faker';
 import { VerbType } from '../../models/verb.type';
 import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
@@ -30,16 +30,16 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: new Map<string, string>(),
+        headers: {},
         status: 0,
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -61,16 +61,16 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: new Map<string, string>(),
+        headers: {},
         status: 0,
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -108,28 +108,23 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: new Map<string, string>(),
+        headers: {},
         status: 0,
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
       }
     } as Scenario;
-    const mockpaths = mockPath + faker.random.words() as string;
-    const mockVerbs = faker.random.arrayElement([
-      'gET',
-      'deLetE',
-      'pOST',
-      'PuT'
-    ]) as VerbType;
+    const mockpaths = (mockPath + faker.random.words()) as string;
+    const mockVerbs = faker.random.number({min: 0, max: 3});
     const mockNonMatchingScenario = {
       id: uuid.v4(),
       metadata: {
@@ -139,16 +134,16 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: new Map<string, string>(),
+        headers: {},
         status: 0,
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
@@ -186,21 +181,21 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerb,
       path: mockPath,
       response: {
-        headers: new Map<string, string>(),
+        headers: {},
         status: 0,
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>
       }
-    }  as Scenario;
+    } as Scenario;
     const mockpaths = mockPath + faker.random.words();
     const mockVerbs = faker.random.arrayElement([
       VerbType.GET,
@@ -217,16 +212,16 @@ describe('GetEndpointScenariosPipe', () => {
       verb: mockVerbs,
       path: mockpaths,
       response: {
-        headers: new Map<string, string>(),
+        headers: {},
         status: 0,
         body: ''
       },
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: [
           {
-            type: BodyRuleType.BodyEquality,
+            type: RuleType.JSONEQUALITY,
             rule: {}
           }
         ] as Array<BodyRule>

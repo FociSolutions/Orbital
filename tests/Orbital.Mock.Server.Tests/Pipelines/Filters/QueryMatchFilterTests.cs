@@ -1,32 +1,35 @@
 ﻿using Bogus;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.Extensions.Primitives;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
-using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
+using Orbital.Mock.Server.Models.Rules;
+using Orbital.Mock.Server.Models.Interfaces;
+using Assert = Xunit.Assert;
+using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class QueryMatchFilterTests
     {
+        private AssertFactory assertFactory = new AssertFactory();
+        private RuleMatcher ruleMatcher = new RuleMatcher();
+
         [Fact]
         public void QueryMatchFilterMatchSuccessTest()
         {
             #region TestSetup
             var faker = new Faker();
+            var fakerQueryRule = new Faker<KeyValuePairRule>()
+                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandomWithout<ComparerType>(ComparerType.JSONCONTAINS,ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA, ComparerType.REGEX), RuleValue = new KeyValuePair<string, string>(f.Random.AlphaNumeric(15), f.Random.AlphaNumeric(15)) });
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = faker.Make(10, () => faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())).ToDictionary<string, string>(val => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
+                    QueryRules = fakerQueryRule.Generate(10)
                 })
                 .RuleFor(m => m.Id, f => f.Random.Word());
 
@@ -35,29 +38,33 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Query = fakeScenario.RequestMatchRules.QueryRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString())
+                Query = fakeScenario.RequestMatchRules.QueryRules.Select(r => r.RuleValue)
             };
             #endregion
-            var Target = new QueryMatchFilter<ProcessMessagePort>();
+            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
                 .QueryMatchResults.Where(x =>x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
 
-            var Expected = new List<string> { fakeScenario.Id };
+            var Expected = fakeScenario.Id;
 
-            Assert.Equal(Expected, Actual);
+            Assert.Contains(Expected, Actual);
         }
 
         [Fact]
         public void QueryMatchFilterNoMatchTest()
         {
             #region TestSetup
+            var assertFactory = new AssertFactory();
             var faker = new Faker();
+            var fakerQueryRule = new Faker<KeyValuePairRule>()
+                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
                 {
-                    QueryRules = faker.Make(10, () => faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())).ToDictionary<string, string>(val => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
+                    QueryRules = fakerQueryRule.Generate(10)
                 })
                 .RuleFor(m => m.Id, f => f.Random.Word());
 
@@ -69,7 +76,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Query = new Dictionary<string, string>()
             };
             #endregion
-            var Target = new QueryMatchFilter<ProcessMessagePort>();
+            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
                 .QueryMatchResults.Where(x => x.Match == MatchResultType.Success).Select(y => y.ScenarioId).ToList();
@@ -87,7 +94,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Query = new Dictionary<string, string>()
             };
             #endregion
-            var Target = new QueryMatchFilter<ProcessMessagePort>();
+            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).QueryMatchResults;
 
@@ -109,7 +116,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Faults = new List<string>() { "fault" }
             };
             #endregion
-            var Target = new QueryMatchFilter<ProcessMessagePort>();
+            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Faults = input.Faults }).QueryMatchResults;
 

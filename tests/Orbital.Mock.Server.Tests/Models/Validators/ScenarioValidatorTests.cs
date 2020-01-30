@@ -1,11 +1,10 @@
 ﻿using Bogus;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Validators;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Models.Validators
 {

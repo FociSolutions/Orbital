@@ -24,7 +24,7 @@ describe('AddResponseComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
-    component.response = { headers: new Map<string, string>() } as Response;
+    component.response = { headers: {} } as Response;
     fixture.detectChanges();
   });
 
@@ -39,7 +39,7 @@ describe('AddResponseComponent', () => {
     });
 
     it('should expect the corresponding status code message in the status field if the status code is invalid', () => {
-      component.statusCode = faker.lorem.words();
+      component.statusCode = -1;
       expect(component.isStatusCodeValid).toBeFalsy();
     });
   });
@@ -47,10 +47,10 @@ describe('AddResponseComponent', () => {
   describe('addResponse.saveStatus', () => {
     it('should emit the response if the user wants to save', () => {
       const testStatusCode = 200;
-      const testHeaderResponse: Map<string, string> = new Map<string, string>();
+      const testHeaderResponse: Record<string, string> = {};
       const testBodyResponse = 'NOTVALID';
 
-      testHeaderResponse.set(faker.random.word(), faker.random.word());
+      testHeaderResponse[faker.random.word()] = faker.random.word();
 
       component.statusCode = testStatusCode;
       component.bodyResponse = testBodyResponse;
@@ -73,19 +73,19 @@ describe('AddResponseComponent', () => {
     });
   });
 
-  describe('addResponse.saveHeaderMap', () => {
+  describe('addResponse.saveHeaderRecord', () => {
     it('should emit the response if the status code and body is valid', () => {
       component.statusCode = 200;
       component.isBodyValid = true;
       component.bodyResponse = '{}';
 
-      const headerMap = new Map<string, string>();
-      headerMap.set(faker.random.word(), faker.random.word());
-      const saveHeaderMapSpy = spyOn(component.responseOutput, 'emit');
-      component.saveHeaderMap(headerMap);
+      const headerRecord = {};
+      headerRecord[faker.random.word()] = faker.random.word();
+      const saveHeaderRecordSpy = spyOn(component.responseOutput, 'emit');
+      component.saveHeaders(headerRecord);
 
-      expect(saveHeaderMapSpy).toHaveBeenCalledWith(({
-        headers: headerMap,
+      expect(saveHeaderRecordSpy).toHaveBeenCalledWith(({
+        headers: headerRecord,
         body: component.bodyResponse,
         status: +component.statusCode
       } as unknown) as Response);

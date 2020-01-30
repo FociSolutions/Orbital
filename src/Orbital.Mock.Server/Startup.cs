@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Orbital.Mock.Server.Registrations;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Orbital.Mock.Server.Models.Validators;
 using MediatR;
 using Orbital.Mock.Server.Models.Converters;
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Middleware;
-using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Factories.Interfaces;
+using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 namespace Orbital.Mock.Server
 {
@@ -58,14 +53,16 @@ namespace Orbital.Mock.Server
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
 
+            services.AddSingleton<IAssertFactory, AssertFactory>();
+            services.AddSingleton<IRuleMatcher, RuleMatcher>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
-                var processor = new MockServerProcessor();
+                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
                 processor.Start();
                 return processor;
             });
-
             services.AddSingleton<CommonData>();
+
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
         }

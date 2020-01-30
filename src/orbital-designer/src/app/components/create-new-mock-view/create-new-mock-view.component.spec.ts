@@ -36,7 +36,11 @@ describe('CreateNewMockViewComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateNewMockViewComponent);
+    try {
+      fixture = TestBed.createComponent(CreateNewMockViewComponent);
+    } catch (error) {
+      fail(`Component was not created correctly. Error is: ${error}`);
+    }
     component = fixture.componentInstance;
   });
 

@@ -10,7 +10,6 @@ import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
 
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
@@ -45,17 +44,15 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: {},
           status: 0,
           body: ''
         },
         requestMatchRules: {
-          headerRules: new Map<string, string>(),
-          queryRules: new Map<string, string>(),
+          headerRules: [],
+          queryRules: [],
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
-              rule: {}
             }
           ] as Array<BodyRule>
         }
@@ -90,17 +87,15 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: {},
           status: 0,
           body: ''
         },
         requestMatchRules: {
-          headerRules: new Map<string, string>(),
-          queryRules: new Map<string, string>(),
+          headerRules: [],
+          queryRules: [],
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
-              rule: {}
             }
           ] as Array<BodyRule>
         }
@@ -144,17 +139,15 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: {},
           status: 0,
           body: ''
         },
         requestMatchRules: {
-          headerRules: new Map<string, string>(),
-          queryRules: new Map<string, string>(),
+          headerRules: [],
+          queryRules: [],
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
-              rule: {}
             }
           ] as Array<BodyRule>
         }
@@ -191,17 +184,15 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: {},
           status: 0,
           body: ''
         },
         requestMatchRules: {
-          headerRules: new Map<string, string>(),
-          queryRules: new Map<string, string>(),
+          headerRules: [],
+          queryRules: [],
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
-              rule: {}
             }
           ] as Array<BodyRule>
         }
@@ -238,17 +229,15 @@ describe('MockDefinitionService', () => {
         verb: mockverb,
         path,
         response: {
-          headers: new Map<string, string>(),
+          headers: {},
           status: 0,
           body: ''
         },
         requestMatchRules: {
-          headerRules: new Map<string, string>(),
-          queryRules: new Map<string, string>(),
+          headerRules: [],
+          queryRules: [],
           bodyRules: [
             {
-              type: BodyRuleType.BodyEquality,
-              rule: {}
             }
           ] as Array<BodyRule>
         }
@@ -290,7 +279,7 @@ describe('MockDefinitionService', () => {
   it('failed because content is not yaml', done => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
 
-    service.deserialize('%').subscribe({
+    service.AddMockDefinitionToStore('%').subscribe({
       error: (err) => {
         expect(err).toBeTruthy();
         done();
@@ -302,7 +291,31 @@ describe('MockDefinitionService', () => {
   it('succeed because content is valid yaml', done => {
     const service: MockDefinitionService = TestBed.get(MockDefinitionService);
 
-    service.deserialize(validMockDefinitionFile).subscribe({
+    service.AddMockDefinitionToStore(validMockDefinitionFile).subscribe({
+      next: t => {
+        expect(t).toBeTruthy();
+        done();
+      }
+    }
+    );
+  });
+
+  it('validation fails because content is not yaml', done => {
+    const service: MockDefinitionService = TestBed.get(MockDefinitionService);
+
+    service.validateMockDefinition('%').subscribe({
+      error: (err) => {
+        expect(err).toBeTruthy();
+        done();
+      }
+    }
+    );
+  });
+
+  it('validation succeeds because content is valid yaml', done => {
+    const service: MockDefinitionService = TestBed.get(MockDefinitionService);
+
+    service.validateMockDefinition(validMockDefinitionFile).subscribe({
       next: t => {
         expect(t).toBeTruthy();
         done();

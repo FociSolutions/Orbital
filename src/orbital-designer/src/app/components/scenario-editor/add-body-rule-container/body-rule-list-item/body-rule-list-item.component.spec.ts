@@ -8,8 +8,9 @@ import { MatInputModule, MatIconModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('BodyRuleListItemComponent', () => {
   let component: BodyRuleListItemComponent;
@@ -17,7 +18,7 @@ describe('BodyRuleListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BodyRuleListItemComponent],
+      declarations: [BodyRuleListItemComponent, GetRuleTypeStringPipe],
       imports: [
         MatCardModule,
         MatFormFieldModule,
@@ -46,7 +47,7 @@ describe('BodyRuleListItemComponent', () => {
     it('should emit an event containing the deleted body rule when deleting a body rule', () => {
       const bodyRule = {
         rule: { a: 'b' },
-        type: BodyRuleType.BodyEquality
+        type: RuleType.JSONEQUALITY
       } as BodyRule;
 
       component.bodyRule = bodyRule;
@@ -61,13 +62,13 @@ describe('BodyRuleListItemComponent', () => {
 
   describe('body-rule-list-item.getBodyRule', () => {
     it('should get a body rule successfully', () => {
-      const bodyRule = { rule: { a: 'b' }, type: BodyRuleType.BodyEquality };
+      const bodyRule = { rule: { a: 'b' }, type: RuleType.JSONEQUALITY };
       component.bodyRule = bodyRule;
       expect(component.getBodyRule()).toEqual(JSON.stringify(bodyRule.rule));
     });
 
     it('should not get an invalid body rule', () => {
-      const bodyRule = { rule: undefined, type: BodyRuleType.BodyEquality };
+      const bodyRule = { rule: undefined, type: RuleType.JSONEQUALITY };
       component.bodyRule = bodyRule;
       expect(component.getBodyRule()).toEqual('');
     });
@@ -75,9 +76,9 @@ describe('BodyRuleListItemComponent', () => {
 
   describe('body-rule-list-item.getBodyType', () => {
     it('should get a valid body type', () => {
-      const bodyRule = { rule: {}, type: BodyRuleType.BodyEquality };
+      const bodyRule = { rule: {}, type: RuleType.JSONEQUALITY };
       component.bodyRule = bodyRule;
-      expect(component.getBodyType()).toEqual(bodyRule.type);
+      expect(component.getBodyType() === RuleType[bodyRule.type]);
     });
 
     it('should not get an invalid body type', () => {

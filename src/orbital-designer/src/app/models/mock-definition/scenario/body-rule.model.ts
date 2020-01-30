@@ -1,9 +1,9 @@
-import { BodyRuleType } from './body-rule.type';
+import { RuleType } from './rule.type';
 
 /**
  * Model representation of body matching rule
  */
 export interface BodyRule {
-  type: BodyRuleType;
+  type: RuleType;
   rule: object;
 }

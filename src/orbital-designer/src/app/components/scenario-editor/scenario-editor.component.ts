@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  AfterContentChecked
+} from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
@@ -9,13 +15,18 @@ import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/reques
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
-
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import {
+  recordFirstOrDefault,
+  recordFirstOrDefaultKey
+} from 'src/app/models/record';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
   styleUrls: ['./scenario-editor.component.scss']
 })
-export class ScenarioEditorComponent implements OnInit, OnDestroy {
+export class ScenarioEditorComponent
+  implements OnInit, OnDestroy, AfterContentChecked {
   readonly headerMatchRuleTitle = 'Header Match Rule';
   readonly headerMatchRuleListTitle = 'Header Rules';
 
@@ -26,9 +37,6 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   selectedScenario: Scenario;
   paramsSubscription: Subscription;
   storeSubscription: Subscription;
-
-  endpointVerb: VerbType;
-  endpointPath: string;
 
   requestMatchRule: RequestMatchRule;
   metadata: Metadata;
@@ -41,11 +49,15 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
 
   triggerOpenCancelBox: boolean;
 
+  endpointVerb: VerbType;
+  endpointPath: string;
+
   constructor(
     private router: Router,
     private store: DesignerStore,
     private logger: NGXLogger,
-    private activatedRouter: ActivatedRoute
+    private activatedRouter: ActivatedRoute,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   /**
@@ -71,6 +83,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.endpointPath = state.selectedEndpoint.path;
       }
     });
+  }
+
+  ngAfterContentChecked(): void {
+    this.cdRef.detectChanges();
   }
 
   /**
@@ -105,7 +121,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    */
   handleRequestMatchRuleOutput(requestMatchRule: RequestMatchRule) {
     this.logger.debug('handleRequestMatchRuleOutput:', requestMatchRule);
-    this.requestMatchRuleValid = requestMatchRule !== ({} as RequestMatchRule);
+    this.requestMatchRuleValid =
+      requestMatchRule !== ({} as RequestMatchRule) &&
+      this.findInvalidRegexRule(requestMatchRule) &&
+      !this.isThereAnyHeaderQueryKeyEmpty(requestMatchRule);
     this.requestMatchRule = requestMatchRule;
     this.saveScenario();
   }
@@ -241,14 +260,69 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       verb: scenarioVerb,
       path: scenarioPath,
       response: {
-        headers: new Map<string, string>(),
+        headers: {},
         body: ''
       } as Response,
       requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
+        headerRules: [],
+        queryRules: [],
         bodyRules: []
       } as RequestMatchRule
     } as Scenario;
+  }
+
+  /**
+   * This private method checks if header rules and query rules have rules of type regex
+   * and return a boolean value if it finds any of the rules with no value in the k/v pair.
+   *
+   * @param requestMatchRule the scenario rules to be saved
+   */
+  private findInvalidRegexRule(requestMatchRule: RequestMatchRule): boolean {
+    const headerule = requestMatchRule.headerRules.find(
+      r =>
+        r.type === RuleType.REGEX &&
+        recordFirstOrDefault(r.rule, '').trim().length === 0
+    );
+    const queryule = requestMatchRule.queryRules.find(
+      r =>
+        r.type === RuleType.REGEX &&
+        recordFirstOrDefault(r.rule, '').trim().length === 0
+    );
+
+    if (headerule || queryule) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * This private method checks if header rules and query rules have rules with empty keys.
+   * @param requestMatchRule the scenario rules to be saved
+   */
+  private isThereAnyHeaderQueryKeyEmpty(
+    requestMatchRule: RequestMatchRule
+  ): boolean {
+    const headerfound = requestMatchRule.headerRules.find(
+      r => recordFirstOrDefaultKey(r.rule, '').trim().length === 0
+    );
+    const queryfound = requestMatchRule.queryRules.find(
+      r => recordFirstOrDefaultKey(r.rule, '').trim().length === 0
+    );
+    if (headerfound) {
+      this.logger.error(
+        'This header rule contains an empty rule(s):  ',
+        headerfound
+      );
+      return true;
+    }
+    if (queryfound) {
+      this.logger.error(
+        'This query rule contains an empty rule(s):  ',
+        headerfound
+      );
+      return true;
+    }
+    return false;
   }
 }

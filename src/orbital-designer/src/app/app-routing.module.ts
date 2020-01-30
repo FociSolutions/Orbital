@@ -9,7 +9,7 @@ import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
-import { ExportToServerViewComponent } from './export-to-server-view/export-to-server-view.component';
+import { ExportToServerViewComponent } from './components/export-to-server-view/export-to-server-view.component';
 
 const routes: Routes = [
   { path: '', component: HomeViewComponent },

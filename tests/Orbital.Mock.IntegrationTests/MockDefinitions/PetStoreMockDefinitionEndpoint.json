@@ -6,7 +6,7 @@
                 "title": "New Scenario",
                 "description": ""
             },
-            "verb": "GET",
+            "verb": 0,
             "path": "/pets/{petId}",
             "response": {
                 "headers": {},
@@ -15,8 +15,8 @@
             },
             "requestMatchRules": {
                 "bodyRules": [],
-                "headerRules": {},
-                "queryRules": {}
+                "headerRules": [],
+                "queryRules": []
             }
         },
         {
@@ -25,7 +25,7 @@
                 "title": "New Scenario 2",
                 "description": ""
             },
-            "verb": "GET",
+            "verb": 0,
             "path": "/pets",
             "response": {
                 "headers": {},
@@ -34,8 +34,8 @@
             },
             "requestMatchRules": {
                 "bodyRules": [],
-                "headerRules": {},
-                "queryRules": {}
+                "headerRules": [],
+                "queryRules": []
             }
         }
     ],

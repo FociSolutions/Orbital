@@ -2,10 +2,8 @@
 using Microsoft.OpenApi.Models;
 using Orbital.Mock.Server.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Models
 {

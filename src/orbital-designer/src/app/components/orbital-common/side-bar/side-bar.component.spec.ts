@@ -5,13 +5,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { DesignerStore } from 'src/app/store/designer-store';
-import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { DialogBoxComponent } from '../../orbital-common/dialog-box/dialog-box.component';
 import { MatCardModule } from '@angular/material';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
+import { DesignerStore } from '../../../store/designer-store';
+import { MockDefinition } from '../../../models/mock-definition/mock-definition.model';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
@@ -36,7 +36,7 @@ describe('SideBarComponent', () => {
 
   beforeEach(() => {
     store = TestBed.get(DesignerStore);
-    store.mockDefinition = validMockDefinition as MockDefinition;
+    store.mockDefinition = validMockDefinition;
     fixture = TestBed.createComponent(SideBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -46,10 +46,21 @@ describe('SideBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // Checks that the h1 rendered content is equals to "MOCKDEFINITIONS"
+  it('should render title in h1 tag', async(() => {
+    // tslint:disable-next-line: no-shadowed-variable
+    const fixture = TestBed.createComponent(SideBarComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain(
+      'MOCK DEFINITIONS'
+    );
+  }));
+
   // Check if a valid mockdefinition is passed to the isSelected method.
   // Then, confirm the value returned is selected by having a true response.
   describe('SideBarComponent.isSelected', () => {
-    it('should return true if selected a valid Mock Defintion', () => {
+    it('should return true if selected a valid Mock Definition', () => {
       const title = component.selectedMockDefinition;
       const expected = validMockDefinition.metadata.title;
       expect(expected).toEqual(title);
@@ -58,15 +69,15 @@ describe('SideBarComponent', () => {
   });
   // Check if a false value was passed to the isSelected method.
   describe('SideBarComponent.isSelected', () => {
-    it('should return false if the mockDefinitions title list is not selected', () => {
+    it('should return false if the Mockdefinitions title list is not selected', () => {
       const title = validMockDefinition.metadata.title + 'false';
       expect(component.isSelected(title)).toBeFalsy();
     });
   });
   // Test the updateSelected method that passes by passing the latest mock definition stored in the state
-  // and compared against a valid mock mockdefinition.
+  // and compared against a valid mock Mockdefinitions.
   describe('SideBarComponent.updateSelected', () => {
-    it('should return true if the mockDefinitions menu item is updated and navigate to endpoint-view', () => {
+    it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const expected = validMockDefinition;
       component.updateSelected(validMockDefinition);
@@ -77,15 +88,9 @@ describe('SideBarComponent', () => {
   describe('SideBarComponent.openDialogBox', () => {
     it('should return to homepage if last mockdefinition is dismissed', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigate');
-      component.mockDefinitions.set(
-        validMockDefinition.metadata.title,
-        validMockDefinition
-      );
+      component.mockDefinitions = [validMockDefinition];
 
-      component.onDismiss({
-        key: validMockDefinition.metadata.title,
-        value: validMockDefinition
-      });
+      component.onDismiss(validMockDefinition);
       expect(routerSpy).toHaveBeenCalledWith(['/']);
     });
   });

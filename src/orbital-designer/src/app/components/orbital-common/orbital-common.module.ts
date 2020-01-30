@@ -22,6 +22,7 @@ import { KvpEditComponent } from './kvp-edit/kvp-edit.component';
 import { KvpAddComponent } from './kvp-edit/kvp-add/kvp-add.component';
 import { KvpListItemComponent } from './kvp-edit/kvp-list-item/kvp-list-item.component';
 import { MatExpansionModule } from '@angular/material';
+import { KvpAddRuleComponent } from '../scenario-editor/kvp-edit-rule/kvp-add-rule/kvp-add-rule.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatExpansionModule } from '@angular/material';
     DialogBoxComponent,
     KvpEditComponent,
     KvpAddComponent,
-    KvpListItemComponent
+    KvpListItemComponent,
+    KvpAddRuleComponent
   ],
   imports: [
     CommonModule,
@@ -73,7 +75,8 @@ import { MatExpansionModule } from '@angular/material';
     KvpEditComponent,
     KvpAddComponent,
     KvpListItemComponent,
-    MatExpansionModule
+    MatExpansionModule,
+    KvpAddRuleComponent
   ]
 })
 export class OrbitalCommonModule {}

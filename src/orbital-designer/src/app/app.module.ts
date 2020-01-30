@@ -39,8 +39,12 @@ import { AddMetadataComponent } from './components/scenario-editor/add-metadata/
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
-import { ExportToServerViewComponent } from './export-to-server-view/export-to-server-view.component';
+import { ExportToServerViewComponent } from './components/export-to-server-view/export-to-server-view.component';
 import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
+// tslint:disable-next-line: max-line-length
+import { KvpListItemRuleTypeComponent } from './components/scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
+import { KvpEditRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
+import { GetRuleTypeStringPipe } from './pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 @NgModule({
   declarations: [
@@ -68,7 +72,10 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
     GetVerbStringPipe,
     DownloadMockdefinitionsComponent,
     ExportToServerViewComponent,
-    AddResponseComponent
+    AddResponseComponent,
+    KvpListItemRuleTypeComponent,
+    KvpEditRuleComponent,
+    GetRuleTypeStringPipe
   ],
   imports: [
     BrowserModule,

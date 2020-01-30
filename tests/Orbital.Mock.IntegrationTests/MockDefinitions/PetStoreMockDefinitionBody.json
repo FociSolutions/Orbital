@@ -6,11 +6,10 @@
         "title": "Get List Success",
         "description": "Retrieves a list of pets"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/pets",
       "response": {
-        "headers": {
-        },
+        "headers": {},
         "status": "200",
         "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Doggy\",\n      \"type\": \"dog\",\n      \"description\": \"Is sometimes good boy\"\n    },\n    {\n      \"id\": \"2\",\n      \"name\": \"Hamtaro\",\n      \"type\": \"hampster\",\n      \"description\": \"Likes trail mix when he has not eaten it for a while\"\n    },\n    {\n      \"id\": \"3\",\n      \"name\": \"Whisker\",\n      \"type\": \"cat\",\n      \"descriptions\": \"Likes hamtaro\"\n    }\n  ]\n}"
       },
@@ -59,10 +58,8 @@
             "type": 3
           }
         ],
-        "headerRules": {
-        },
-        "queryRules": {
-        }
+        "headerRules": [],
+        "queryRules": []
       }
     },
     {
@@ -71,7 +68,7 @@
         "title": "Get List Filtered",
         "description": "Gets the list of pets but filters out based on animal type"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/pets",
       "response": {
         "headers": {
@@ -81,14 +78,22 @@
         "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {
-          "animal-type": "dog"
-        },
-        "bodyRules": [
-        ]
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [
+          {
+            "type": 3,
+            "rule": {
+              "animal-type": "dog"
+          }
+        }],
+        "bodyRules": []
       }
     },
     {
@@ -97,7 +102,7 @@
         "title": "Add Pet Success",
         "description": "Successfully added a pet"
       },
-      "verb": "POST",
+      "verb": 3,
       "path": "/pets",
       "response": {
         "headers": {
@@ -107,11 +112,15 @@
         "body": "Resource Successfully Created"
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {
-        },
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [],
         "bodyRules": [
           {
             "type": 3,
@@ -131,7 +140,7 @@
         "title": "Add Pet Failure",
         "description": "Fails to add the pet due to missing type property"
       },
-      "verb": "POST",
+      "verb": 3,
       "path": "/pets",
       "response": {
         "headers": {
@@ -141,11 +150,15 @@
         "body": "Error: Could not create resource. Missing property \"type\" of pet"
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {
-        },
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [],
         "bodyRules": [
           {
             "type": 3,
@@ -164,7 +177,7 @@
         "title": "Get Pet Success",
         "description": "Successfully gets the pets information"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/pets/{petId}",
       "response": {
         "headers": {
@@ -174,13 +187,16 @@
         "body": "{\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n}"
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {
-        },
-        "bodyRules": [
-        ]
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [],
+        "bodyRules": []
       }
     },
     {
@@ -189,7 +205,7 @@
         "title": "Get Pet Not Found",
         "description": "Failed finding the pet via its id"
       },
-      "verb": "GET",
+      "verb": 0,
       "path": "/pets/{petId}",
       "response": {
         "headers": {
@@ -199,13 +215,16 @@
         "body": "Pet not found. Check that id is correct."
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {
-        },
-        "bodyRules": [
-        ]
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [],
+        "bodyRules": []
       }
     }
   ],

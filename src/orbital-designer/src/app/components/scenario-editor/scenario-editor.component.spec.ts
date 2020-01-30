@@ -1,9 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScenarioEditorComponent } from './scenario-editor.component';
-import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
-import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
-import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import {
   MatCardModule,
@@ -29,8 +26,14 @@ import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './add-response/add-response.component';
+import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
+import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
+import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
-import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
+import { GetVerbStringPipe } from '../../pipes/get-verb-string/get-verb-string.pipe';
+import { KvpEditRuleComponent } from './kvp-edit-rule/kvp-edit-rule.component';
+import { KvpListItemRuleTypeComponent } from './kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -45,12 +48,15 @@ describe('ScenarioEditorComponent', () => {
         OverviewHeaderComponent,
         AddBodyRuleContainerComponent,
         AddBodyRuleComponent,
-        GetVerbColorPipe,
-        GetVerbStringPipe,
         BodyRuleListItemComponent,
         AddMetadataComponent,
         AddRequestMatchRuleComponent,
-        AddResponseComponent
+        AddResponseComponent,
+        GetVerbColorPipe,
+        GetVerbStringPipe,
+        KvpEditRuleComponent,
+        KvpListItemRuleTypeComponent,
+        GetRuleTypeStringPipe
       ],
       imports: [
         LoggerTestingModule,

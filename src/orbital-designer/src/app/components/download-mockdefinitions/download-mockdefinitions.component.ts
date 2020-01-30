@@ -1,11 +1,10 @@
 import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
-import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { saveAs } from 'file-saver';
-import Json from 'src/app/models/json';
+import { recordMap } from 'src/app/models/record';
 
 @Component({
   selector: 'app-download-mockdefinitions',
@@ -27,9 +26,7 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.list = Array.from(this.store.state.mockDefinitions.values()).map(mockDefinition => {
-      return new FormControl(mockDefinition, null);
-    });
+    this.list = recordMap(this.store.state.mockDefinitions, md => new FormControl(md));
   }
 
   itemToStringFn = (control: AbstractControl) =>
@@ -64,7 +61,7 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
   downloadMocks() {
     this.selected.forEach(mockDefinition => {
       const blob = new Blob(
-        [JSON.stringify(Json.mapToObject(mockDefinition.value))],
+        [JSON.stringify(mockDefinition.value)],
         { type: 'text/plain;charset=utf-8' }
       );
       saveAs(blob, mockDefinition.value.metadata.title + '.json');

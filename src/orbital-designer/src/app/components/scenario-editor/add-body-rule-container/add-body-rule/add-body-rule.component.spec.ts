@@ -8,8 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as faker from 'faker';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('AddBodyRuleComponent', () => {
   let component: AddBodyRuleComponent;
@@ -17,7 +18,7 @@ describe('AddBodyRuleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddBodyRuleComponent],
+      declarations: [AddBodyRuleComponent, GetRuleTypeStringPipe],
       imports: [
         MatCardModule,
         MatFormFieldModule,
@@ -63,10 +64,13 @@ describe('AddBodyRuleComponent', () => {
         });
 
         it('should emit the body rule when it is added', () => {
-          const fakeRule = {a: faker.random.word()};
-          const Expected = {type: BodyRuleType.BodyContains, rule: fakeRule} as BodyRule;
+          const fakeRule = { a: faker.random.word() };
+          const Expected = {
+            type: RuleType.JSONCONTAINS,
+            rule: fakeRule
+          } as BodyRule;
           const bodyRuleOutputSpy = spyOn(component.bodyRuleOutput, 'emit');
-          component.bodyType = BodyRuleType.BodyContains;
+          component.bodyType = RuleType.JSONCONTAINS;
           component.bodyValue = JSON.stringify(fakeRule);
           component.addBodyRule();
 
@@ -80,13 +84,13 @@ describe('AddBodyRuleComponent', () => {
       describe('invalid json', () => {
         it('should not add a rule when an invalid rule is added to an empty list of rules', () => {
           component.bodyValue = 'invalid';
-          component.bodyType = BodyRuleType.BodyEquality;
+          component.bodyType = RuleType.JSONEQUALITY;
           expect(component.bodyRules).toEqual([]);
         });
 
         it('should show the invalid JSON error when invalid JSON is set', () => {
           component.bodyValue = 'invalid';
-          component.bodyType = BodyRuleType.BodyEquality;
+          component.bodyType = RuleType.JSONEQUALITY;
           component.addBodyRule();
           expect(component.errorMessage).toEqual(
             'The body value must be valid JSON'

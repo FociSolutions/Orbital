@@ -1,7 +1,7 @@
-import { VerbType } from '../app/models/verb.type';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
-export default {
+export default ({
   scenarios: [
     {
       id: '72dded1d-3755-4749-9aad-f7b4d769ea57',
@@ -12,16 +12,16 @@ export default {
       verb: 0,
       path: '/',
       response: {
-        headers: new Map<string, string>(),
+        headers: {} as Record<string, string>,
         status: 404,
         body: ''
       },
       requestMatchRules: {
         bodyRules: [],
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>()
+        headerRules: [],
+        queryRules: []
       }
-    }
+    } as Scenario
   ],
   openApi: {
     swagger: '2.0',
@@ -67,4 +67,4 @@ export default {
     title: 'Test Mock',
     description: 'A Test Mock'
   }
-} as MockDefinition;
+}) as MockDefinition;

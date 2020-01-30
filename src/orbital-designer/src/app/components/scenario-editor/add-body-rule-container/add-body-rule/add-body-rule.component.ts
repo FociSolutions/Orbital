@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import deepEqual from 'deep-equal';
+import * as deepEqual from 'deep-equal';
 import { EventEmitter } from '@angular/core';
 import { ValidJsonService } from '../../../../services/valid-json/valid-json.service';
 
@@ -14,13 +14,13 @@ import { ValidJsonService } from '../../../../services/valid-json/valid-json.ser
 export class AddBodyRuleComponent implements OnInit {
   isValid = true;
   errorMessage = '';
-  bodyRuleTypeValues = BodyRuleType;
+  bodyRuleTypeValues = RuleType;
   @Input() bodyRules: BodyRule[] = [];
   @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<
     BodyRule
   >();
 
-  bodyType: BodyRuleType;
+  bodyType: RuleType;
   bodyValue = '';
 
   constructor(

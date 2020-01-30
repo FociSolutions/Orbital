@@ -1,19 +1,8 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  Output,
-  EventEmitter
-} from '@angular/core';
-import {
-  MatSelectionListChange,
-  MatSelectionList,
-  MatListOption
-} from '@angular/material/list';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatListOption, MatSelectionList } from '@angular/material/list';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-shuttle-sub-list',

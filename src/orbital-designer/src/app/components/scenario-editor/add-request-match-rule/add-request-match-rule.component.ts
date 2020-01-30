@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { NGXLogger } from 'ngx-logger';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { KeyValue } from '@angular/common';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
 @Component({
   selector: 'app-add-request-match-rule',
@@ -12,8 +14,8 @@ export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRule: RequestMatchRule;
   @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
 
-  headerMatchRules: Map<string, string>;
-  queryMatchRules: Map<string, string>;
+  headerMatchRules: KeyValuePairRule[];
+  queryMatchRules: KeyValuePairRule[];
   bodyMatchRules: BodyRule[];
 
   shouldSave: boolean;
@@ -26,8 +28,8 @@ export class AddRequestMatchRuleComponent implements OnInit {
 
   constructor(private logger: NGXLogger) {
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
-    this.headerMatchRules = new Map<string, string>();
-    this.queryMatchRules = new Map<string, string>();
+    this.headerMatchRules = [];
+    this.queryMatchRules = [];
     this.bodyMatchRules = [];
   }
 
@@ -67,7 +69,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * Handles saving the header match rules kvp values
    * @param event The incoming request match rules
    */
-  handleHeaderKvpOutput(headerMatchRules: Map<string, string>) {
+  handleHeaderKvpOutput(headerMatchRules: KeyValuePairRule[]) {
     this.headerEmitted = true;
     this.logger.debug('Set the header match rules to', headerMatchRules);
     this.headerMatchRules = headerMatchRules;
@@ -78,7 +80,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * Handles the query kvp pair output
    * @param queryMatchRules The query match rules to use
    */
-  handleQueryKvpOutput(queryMatchRules: Map<string, string>) {
+  handleQueryKvpOutput(queryMatchRules: KeyValuePairRule[]) {
     this.queryEmitted = true;
     this.logger.debug('Set the query match rules to', queryMatchRules);
     this.queryMatchRules = queryMatchRules;

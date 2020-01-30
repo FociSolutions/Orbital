@@ -32,7 +32,11 @@ describe('ShuttleSubListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ShuttleSubListComponent);
     component = fixture.componentInstance;
-    component.list = faker.random.words().split(' ');
+    const mock1 = _.cloneDeep(validMockDefinition);
+    const mock2 = _.cloneDeep(validMockDefinition);
+    mock1.metadata.title = faker.random.word();
+    mock2.metadata.title = faker.random.word();
+    component.list = [mock1, mock2].map(mock => new FormControl(mock, null));
     fixture.detectChanges();
   });
 

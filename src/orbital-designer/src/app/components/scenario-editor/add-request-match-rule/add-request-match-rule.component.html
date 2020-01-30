@@ -1,10 +1,16 @@
 <mat-accordion>
-  <mat-expansion-panel [disabled]="this.isCardDisabled" [expanded]="this.panelExpanded">
+  <mat-expansion-panel
+    [disabled]="this.isCardDisabled"
+    [expanded]="this.panelExpanded"
+  >
     <mat-expansion-panel-header class="right-aligned-header">
       <mat-panel-title>
         Request Match Rules
       </mat-panel-title>
-      <mat-panel-description>Query Match Rules, Header Match Rules and Body Match Rules</mat-panel-description>
+      <mat-panel-description
+        >Query Match Rules, Header Match Rules and Body Match
+        Rules</mat-panel-description
+      >
     </mat-expansion-panel-header>
     <mat-accordion>
       <mat-expansion-panel class="mat-elevation-z0">
@@ -14,10 +20,13 @@
           </mat-panel-title>
           <mat-divider></mat-divider>
         </mat-expansion-panel-header>
-        <app-kvp-edit [addKvpTitle]="'Add New Header Match Rule'" [listKvpTitle]="'Added Header Match Rules'"
-          [isCaseSensitive]="false" [Save]="this.shouldSave" [kvpMap]="this.requestMatchRule?.headerRules"
-          (savedKvpMapEmitter)="handleHeaderKvpOutput($event)">
-        </app-kvp-edit>
+        <app-kvp-edit-rule
+          [savedKvpType]="this.requestMatchRule?.headerRules"
+          [addKvpTitle]="'Add New Header Match Rule'"
+          [Save]="this.shouldSave"
+          (savedKvpEmitter)="handleHeaderKvpOutput($event)"
+        >
+        </app-kvp-edit-rule>
       </mat-expansion-panel>
     </mat-accordion>
     <mat-accordion>
@@ -28,10 +37,13 @@
           </mat-panel-title>
           <mat-divider></mat-divider>
         </mat-expansion-panel-header>
-        <app-kvp-edit [addKvpTitle]="'Add New Query Match Rule'" [listKvpTitle]="'Added Query Match Rules'"
-          [isCaseSensitive]="true" [Save]="this.shouldSave" [kvpMap]="this.requestMatchRule?.queryRules"
-          (savedKvpMapEmitter)="handleQueryKvpOutput($event)">
-        </app-kvp-edit>
+        <app-kvp-edit-rule
+          [savedKvpType]="this.requestMatchRule?.queryRules"
+          [addKvpTitle]="'Add New Query Match Rule'"
+          [Save]="this.shouldSave"
+          (savedKvpEmitter)="handleQueryKvpOutput($event)"
+        >
+        </app-kvp-edit-rule>
       </mat-expansion-panel>
     </mat-accordion>
     <mat-accordion>
@@ -42,8 +54,11 @@
           </mat-panel-title>
           <mat-divider></mat-divider>
         </mat-expansion-panel-header>
-        <app-add-body-rule-container [bodyRules]="this.requestMatchRule?.bodyRules" [saveBodyRules]="this.shouldSave"
-          (bodyRulesOutput)="handleBodyOutput($event)">
+        <app-add-body-rule-container
+          [bodyRules]="this.requestMatchRule?.bodyRules"
+          [saveBodyRules]="this.shouldSave"
+          (bodyRulesOutput)="handleBodyOutput($event)"
+        >
         </app-add-body-rule-container>
       </mat-expansion-panel>
     </mat-accordion>

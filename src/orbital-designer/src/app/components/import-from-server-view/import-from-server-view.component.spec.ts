@@ -6,12 +6,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ImportFromServerViewComponent } from './import-from-server-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import * as faker from 'faker';
 import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 
@@ -30,7 +31,7 @@ describe('ImportFromServerViewComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule
       ],
-      providers: [Location, DesignerStore, MockDefinitionService]
+      providers: [Location, DesignerStore, OrbitalAdminService]
     }).compileComponents();
   }));
 
@@ -55,25 +56,20 @@ describe('ImportFromServerViewComponent', () => {
   describe('ImportFromServerViewComponent.onSubmit', () => {
     it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', async () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      const storeSpy = spyOn(TestBed.get(DesignerStore), 'setState');
-      const service = TestBed.get(MockDefinitionService);
-      service.deserialize(
-        JSON.stringify(validMockDefinition)
-      ).subscribe({
-        next: n => {
-          expect(n).toBeTruthy();
-        }
-      });
+      const store = TestBed.get(DesignerStore);
+      const expectedMockDefinition: MockDefinition = validMockDefinition;
+      const expectedMockDefinitions = {};
+      expectedMockDefinitions[validMockDefinition.metadata.title] = expectedMockDefinition;
       component.mockDefinitions = [validMockDefinition];
       component.onSubmit();
 
+      expect(store.state.mockDefinitions).toEqual(expectedMockDefinitions);
       expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
-      expect(storeSpy).toHaveBeenCalled();
     });
   });
 
   describe('ImportFromServerViewComponent.onListOutput', () => {
-    it('should update the list of Mockdefinitions using the values from the list of controls', () => {
+    it('should update the list of MockDefinitions using the values from the list of controls', () => {
       const expectedList = new Array(3).map(
         () => new FormControl(validMockDefinition)
       );
@@ -97,14 +93,12 @@ describe('ImportFromServerViewComponent', () => {
 
   describe('ImportFromServerViewComponent.onResponse', () => {
     it('should set the control value to the response body given an http response with an array body', () => {
-      component.onResponse([validMockDefinition]);
-      expect(component.formArray.controls[0].value).toEqual(validMockDefinition);
-    });
-
-    it('should not set the control value when given a response whose body is null', () => {
-      const response = null;
-      component.onResponse(response);
-      expect(component.formArray.length).toBe(0);
+      const response = new HttpResponse({
+        body: [faker.random.words()],
+        status: 200
+      });
+      component.onResponse(response.body as unknown as MockDefinition[]);
+      expect(component.formArray.controls[0].value).toEqual(response.body[0]);
     });
   });
 });

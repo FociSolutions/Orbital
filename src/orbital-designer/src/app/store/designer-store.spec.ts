@@ -10,13 +10,14 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
 import { TestBed } from '@angular/core/testing';
 import { Scenario } from '../models/mock-definition/scenario/scenario.model';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
 import { ReadFileService } from '../services/read-file/read-file.service';
 import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
+import { recordSize, recordAdd } from '../models/record';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -50,29 +51,29 @@ describe('DesignerStore', () => {
       const mockverb = VerbType.GET;
       const path = faker.random.words();
       const Expected = {
-      id: uuid.v4(),
-      metadata: {
-        title: 'New Scenario',
-        description: ''
-      },
-      verb: mockverb,
-      path,
-      response: {
-        headers: new Map<string, string>(),
-        status: 0,
-        body: ''
-      },
-      requestMatchRules: {
-        headerRules: new Map<string, string>(),
-        queryRules: new Map<string, string>(),
-        bodyRules: [
-          {
-            type: BodyRuleType.BodyEquality,
-            rule: {}
-          }
-        ] as Array<BodyRule>
-      }
-    } as Scenario;
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: ''
+        },
+        verb: mockverb,
+        path,
+        response: {
+          headers: {},
+          status: 0,
+          body: ''
+        },
+        requestMatchRules: {
+          headerRules: [],
+          queryRules: [],
+          bodyRules: [
+            {
+              type: RuleType.JSONEQUALITY,
+              rule: {}
+            }
+          ] as Array<BodyRule>
+        }
+      } as Scenario;
       store.selectedScenario = Expected;
       expect(store.state.selectedScenario).toEqual(Expected);
     });
@@ -114,32 +115,32 @@ describe('DesignerStore', () => {
         next: fileread => {
           service.readOpenApiSpec(fileread).subscribe({
             next: n => {
-            store.setEndpoints(n, false);
-            for (const path of Object.keys(n.paths)) {
-              for (const verb of acceptedVerbs) {
-                if (!!n.paths[path][verb]) {
-                  expect(
-                    store.state.endpoints.findIndex(
-                      endpoint =>
-                        endpoint.path === path &&
-                        endpoint.verb === VerbType[verb.toUpperCase()] &&
-                        endpoint.spec === n.paths[path][verb]
-                    )
-                  ).toBeGreaterThan(-1);
+              store.setEndpoints(n, false);
+              for (const path of Object.keys(n.paths)) {
+                for (const verb of acceptedVerbs) {
+                  if (!!n.paths[path][verb]) {
+                    expect(
+                      store.state.endpoints.findIndex(
+                        endpoint =>
+                          endpoint.path === path &&
+                          endpoint.verb === VerbType[verb.toUpperCase()] &&
+                          endpoint.spec === n.paths[path][verb]
+                      )
+                    ).toBeGreaterThan(-1);
+                  }
                 }
               }
+              expect(
+                store.state.endpoints.findIndex(e => e === originalEndpoint)
+              ).toBeGreaterThan(-1);
+              done();
             }
-            expect(
-              store.state.endpoints.findIndex(e => e === originalEndpoint)
-            ).toBeGreaterThan(-1);
-            done();
-          }});
+          });
         }
       });
 
       store.setState({ ...store.state, endpoints: [originalEndpoint] });
       expect(store.state.endpoints).toEqual([originalEndpoint]);
-
     });
   });
 
@@ -168,17 +169,18 @@ describe('DesignerStore', () => {
   });
 
   describe('DesignerStore.mockDefinitions', () => {
-    it('should update the list of MockDefinitions', () => {
+    it('should update the list of Mockdefinitions', () => {
       const mockDef = validMockDefinition;
-      const expectedMap = new Map([[mockDef.metadata.title, mockDef]]);
-      expect(store.state.mockDefinitions.size).toBe(0);
+      const expectedMap = {} as Record<string, MockDefinition>;
+      recordAdd(expectedMap, mockDef.metadata.title, mockDef);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
       store.mockDefinitions = [mockDef];
       expect(store.state.mockDefinitions).toEqual(expectedMap);
     });
 
     it('should set the mockDefinition property of the state to be the first mock definition in the list', () => {
       const mockDef = validMockDefinition;
-      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
       store.mockDefinitions = [mockDef];
       expect(store.state.mockDefinition).toEqual(mockDef);
     });
@@ -221,8 +223,7 @@ describe('DesignerStore', () => {
       for (let i = 0; i < 10; i++) {
         const mockverb = VerbType.GET;
         const path = 'pets';
-        scenarios.push(
-          {
+        scenarios.push({
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
@@ -231,21 +232,21 @@ describe('DesignerStore', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: {},
             status: 0,
             body: ''
           },
           requestMatchRules: {
-            headerRules: new Map<string, string>(),
-            queryRules: new Map<string, string>(),
+            headerRules: [],
+            queryRules: [],
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.JSONEQUALITY,
                 rule: {}
               }
             ] as Array<BodyRule>
           }
-        }  as Scenario);
+        } as Scenario);
       }
       store.updateScenarios(scenarios);
       expect(store.state.mockDefinition.scenarios).toEqual(scenarios);
@@ -257,7 +258,7 @@ describe('DesignerStore', () => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
       store.deleteMockDefinitionByTitle(mockDef.metadata.title);
-      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
     });
 
     it('should delete only a single mock definition by title if only one matches in the store', () => {
@@ -266,13 +267,13 @@ describe('DesignerStore', () => {
       mockDef2.metadata.title = faker.random.word();
       store.mockDefinitions = [mockDef1, mockDef2];
       store.deleteMockDefinitionByTitle(mockDef2.metadata.title);
-      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(recordSize(store.state.mockDefinitions)).toBe(1);
     });
 
     it('should not delete a mock definition by title if there are none in the store', () => {
-      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.state.mockDefinitions = {} as Record<string, MockDefinition>;
       store.deleteMockDefinitionByTitle('Invalid');
-      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
       expect(store.state.mockDefinition).toEqual(null);
     });
 
@@ -280,7 +281,7 @@ describe('DesignerStore', () => {
       const mockDef = validMockDefinition;
       store.mockDefinitions = [mockDef];
       store.deleteMockDefinitionByTitle('Invalid');
-      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(recordSize(store.state.mockDefinitions)).toBe(1);
       expect(store.state.mockDefinition).toEqual(mockDef);
     });
 
@@ -292,7 +293,7 @@ describe('DesignerStore', () => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
       store.deleteMockDefinitionByTitle(mockDef.metadata.title);
-      expect(store.state.mockDefinitions.size).toBe(0);
+      expect(recordSize(store.state.mockDefinitions)).toBe(0);
     });
 
     it('should delete a single mock definition when multiple exist', () => {
@@ -310,18 +311,18 @@ describe('DesignerStore', () => {
 
       store.deleteMockDefinitionByTitle(mockDef1.metadata.title);
 
-      const expected = new Map<string, MockDefinition>();
-      expected.set(mockDef2.metadata.title, mockDef2);
-      expected.set(mockDef3.metadata.title, mockDef3);
+      const expected = {} as Record<string, MockDefinition>;
+      recordAdd(expected, mockDef2.metadata.title, mockDef2);
+      recordAdd(expected, mockDef3.metadata.title, mockDef3);
       expect(store.state.mockDefinitions).toEqual(expected);
     });
   });
 
   describe('DesignerStore.appendMockDefinition()', () => {
     it('should append a mock definition to the store if the store is empty', () => {
-      store.state.mockDefinitions = new Map<string, MockDefinition>();
+      store.state.mockDefinitions = {} as Record<string, MockDefinition>;
       store.appendMockDefinition(validMockDefinition);
-      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(recordSize(store.state.mockDefinitions)).toBe(1);
       expect(store.state.mockDefinition).toEqual(validMockDefinition);
     });
 
@@ -331,7 +332,7 @@ describe('DesignerStore', () => {
       mockDef2.metadata.title = faker.random.word();
       store.mockDefinitions = [mockDef1];
       store.appendMockDefinition(mockDef2);
-      expect(store.state.mockDefinitions.size).toBe(2);
+      expect(recordSize(store.state.mockDefinitions)).toBe(2);
     });
 
     it('should overwrite a mock definition to the store if the store contains other mock definitions when appending', () => {
@@ -339,7 +340,7 @@ describe('DesignerStore', () => {
       const mockDef2 = _.cloneDeep(validMockDefinition);
       store.mockDefinitions = [mockDef1];
       store.appendMockDefinition(mockDef2);
-      expect(store.state.mockDefinitions.size).toBe(1);
+      expect(recordSize(store.state.mockDefinitions)).toBe(1);
     });
 
     it('should set the endpoints when appending a single mock definition to a list of none', done => {
@@ -398,7 +399,7 @@ describe('DesignerStore', () => {
 
       mockDef1.metadata.title = faker.random.word();
       mockDef2.metadata.title = mockDef1.metadata.title;
-      mockDef2.scenarios = [{id: faker.random.word()}] as Scenario[];
+      mockDef2.scenarios = [{ id: faker.random.word() }] as Scenario[];
 
       let calls = 0;
       store.state$.subscribe(state => {
@@ -432,16 +433,16 @@ describe('DesignerStore', () => {
           verb: mockverb,
           path,
           response: {
-            headers: new Map<string, string>(),
+            headers: {},
             status: 0,
             body: ''
           },
           requestMatchRules: {
-            headerRules: new Map<string, string>(),
-            queryRules: new Map<string, string>(),
+            headerRules: [],
+            queryRules: [],
             bodyRules: [
               {
-                type: BodyRuleType.BodyEquality,
+                type: RuleType.JSONEQUALITY,
                 rule: {}
               }
             ] as Array<BodyRule>

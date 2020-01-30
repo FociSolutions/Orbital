@@ -6,7 +6,7 @@
         "title": "Add Pet Success",
         "description": "Successfully added a pet"
       },
-      "verb": "Post",
+      "verb": 3,
       "path": "/pets",
       "response": {
         "status": 201,
@@ -17,10 +17,15 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {},
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [],
         "bodyRules": [
           {
             "rule": {
@@ -40,7 +45,7 @@
         "title": "Add Pet Failure",
         "description": "Fails to add the pet due to missing type property"
       },
-      "verb": "Post",
+      "verb": 3,
       "path": "/pets",
       "response": {
         "status": 400,
@@ -51,10 +56,15 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {},
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [],
         "bodyRules": [
           {
             "rule": {
@@ -73,7 +83,7 @@
         "title": "Get Pet Success",
         "description": "Successfully gets the pets information"
       },
-      "verb": "Get",
+      "verb": 0,
       "path": "/pets/{petId}",
       "response": {
         "status": 200,
@@ -84,10 +94,15 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {},
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [],
         "bodyRules": []
       }
     },
@@ -97,7 +112,7 @@
         "title": "Get Pet Not Found",
         "description": "Failed finding the pet via its id"
       },
-      "verb": "Get",
+      "verb": 0,
       "path": "/pets/{petId}",
       "response": {
         "status": 404,
@@ -108,10 +123,15 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {
-          "Content-Type": "application/json"
-        },
-        "queryRules": {},
+        "headerRules": [
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "queryRules": [],
         "bodyRules": []
       }
     },
@@ -121,7 +141,7 @@
         "title": "ddsaasd",
         "description": null
       },
-      "verb": "Get",
+      "verb": 0,
       "path": "/pets",
       "response": {
         "status": 200,
@@ -130,9 +150,14 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {},
-        "queryRules": {},
-        "bodyRules": []
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [{
+          "rule": {
+            "default": "response"
+          },
+          "type": 3
+        }]
       }
     },
     {
@@ -141,7 +166,7 @@
         "title": "ddsaasd-copy 2",
         "description": null
       },
-      "verb": "Get",
+      "verb": 0,
       "path": "/pets",
       "response": {
         "status": 200,
@@ -150,14 +175,14 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {},
-        "queryRules": {},
+        "headerRules": [],
+        "queryRules": [],
         "bodyRules": [
           {
             "rule": {
-              "a": "b"
+              "equality-match": "success"
             },
-            "type": 1
+            "type": 3
           }
         ]
       }
@@ -168,7 +193,7 @@
         "title": "contains",
         "description": null
       },
-      "verb": "Get",
+      "verb": 0,
       "path": "/pets",
       "response": {
         "status": 200,
@@ -177,14 +202,14 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {},
-        "queryRules": {},
+        "headerRules": [],
+        "queryRules": [],
         "bodyRules": [
           {
             "rule": {
               "dog": "yes"
             },
-            "type": 2
+            "type": 4
           }
         ]
       }
@@ -195,7 +220,7 @@
         "title": "contains-for-the-literal",
         "description": null
       },
-      "verb": "Get",
+      "verb": 0,
       "path": "/pets",
       "response": {
         "status": 200,
@@ -204,12 +229,12 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {},
-        "queryRules": {},
+        "headerRules": [],
+        "queryRules": [],
         "bodyRules": [
           {
             "rule": "test-contains",
-            "type": 2
+            "type": 4
           }
         ]
       }
@@ -220,7 +245,7 @@
         "title": "equality-literal-test",
         "description": null
       },
-      "verb": "Get",
+      "verb": 0,
       "path": "/pets",
       "response": {
         "status": 200,
@@ -229,12 +254,12 @@
         "query": {}
       },
       "requestMatchRules": {
-        "headerRules": {},
-        "queryRules": {},
+        "headerRules": [],
+        "queryRules": [],
         "bodyRules": [
           {
             "rule": "equality-literal",
-            "type": 1
+            "type": 3
           }
         ]
       }

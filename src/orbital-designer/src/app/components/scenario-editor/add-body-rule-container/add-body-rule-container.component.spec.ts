@@ -16,8 +16,9 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as faker from 'faker';
-import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('AddBodyRuleContainerComponent', () => {
   let component: AddBodyRuleContainerComponent;
@@ -29,7 +30,8 @@ describe('AddBodyRuleContainerComponent', () => {
         AddBodyRuleContainerComponent,
         AddBodyRuleComponent,
         BodyRuleListItemComponent,
-        BodyRuleListItemComponent
+        BodyRuleListItemComponent,
+        GetRuleTypeStringPipe
       ],
       imports: [
         MatExpansionModule,
@@ -61,7 +63,7 @@ describe('AddBodyRuleContainerComponent', () => {
   describe('add-body-rule-container.addBodyRule', () => {
     it('should add a body rule', () => {
       const bodyRuleToAdd = {
-        type: BodyRuleType.BodyEquality,
+        type: RuleType.JSONEQUALITY,
         rule: { a: 'b' }
       } as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
@@ -79,7 +81,7 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should not add a body rule which has an undefined rule', () => {
       const bodyRuleToAdd = ({
         rule: undefined,
-        type: BodyRuleType.BodyContains
+        type: RuleType.JSONCONTAINS
       } as unknown) as BodyRule;
       component.addBodyRule(bodyRuleToAdd);
       const Actual = component.bodyRulesProp;
@@ -101,7 +103,7 @@ describe('AddBodyRuleContainerComponent', () => {
       component.bodyRulesProp = [] as BodyRule[];
 
       const componentBodyRule = [
-        { type: BodyRuleType.BodyEquality, rule: fakeBodyContents }
+        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
       ] as BodyRule[];
       component.bodyRulesProp.push(componentBodyRule[0]);
 
@@ -113,7 +115,7 @@ describe('AddBodyRuleContainerComponent', () => {
       const fakeBodyContents = getFakeBodyContents();
 
       const componentBodyRule = {
-        type: BodyRuleType.BodyEquality,
+        type: RuleType.JSONEQUALITY,
         rule: fakeBodyContents
       } as BodyRule;
       component.bodyRulesProp = [componentBodyRule];
@@ -132,7 +134,7 @@ describe('AddBodyRuleContainerComponent', () => {
 
     it('should save list', () => {
       const input = [
-        { type: BodyRuleType.BodyEquality, rule: getFakeBodyContents() }
+        { type: RuleType.JSONEQUALITY, rule: getFakeBodyContents() }
       ] as BodyRule[];
 
       component.bodyRules = input;
@@ -144,7 +146,7 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should emit the body rules when the save state is true', () => {
       const fakeBodyContents = getFakeBodyContents();
       const componentBodyRule = [
-        { type: BodyRuleType.BodyEquality, rule: fakeBodyContents }
+        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
       ] as BodyRule[];
       component.addBodyRule(componentBodyRule[0]);
 
@@ -159,7 +161,7 @@ describe('AddBodyRuleContainerComponent', () => {
     it('should not emit the body rules when the save state is false', () => {
       const fakeBodyContents = getFakeBodyContents();
       const componentBodyRule = [
-        { type: BodyRuleType.BodyEquality, rule: fakeBodyContents }
+        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
       ] as BodyRule[];
       component.addBodyRule(componentBodyRule[0]);
 

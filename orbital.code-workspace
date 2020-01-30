@@ -16,6 +16,7 @@
       "controlkey",
       "maxlength",
       "minlength",
+      "mockdefinition",
       "openapi"
     ],
     "angularKarmaTestExplorer.projectRootPath": "/src/orbital-designer"

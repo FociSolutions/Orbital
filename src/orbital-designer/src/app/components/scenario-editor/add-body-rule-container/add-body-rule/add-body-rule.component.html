@@ -10,12 +10,24 @@
               [value]="this.bodyType"
               (valueChange)="this.bodyType = $event"
             >
-              <mat-option value="{{ bodyRuleTypeValues.BodyContains }}"
-                >Body Contains</mat-option
-              >
-              <mat-option value="{{ bodyRuleTypeValues.BodyEquality }}"
-                >Body Equality</mat-option
-              >
+              <mat-option [value]="bodyRuleTypeValues.JSONCONTAINS">{{
+                bodyRuleTypeValues.JSONCONTAINS | getRuleTypeString
+              }}</mat-option>
+              <mat-option [value]="bodyRuleTypeValues.JSONEQUALITY">{{
+                bodyRuleTypeValues.JSONEQUALITY | getRuleTypeString
+              }}</mat-option>
+              <mat-option [value]="bodyRuleTypeValues.TEXTCONTAINS">{{
+                bodyRuleTypeValues.TEXTCONTAINS | getRuleTypeString
+              }}</mat-option>
+              <mat-option [value]="bodyRuleTypeValues.TEXTENDSWITH">{{
+                bodyRuleTypeValues.TEXTENDSWITH | getRuleTypeString
+              }}</mat-option>
+              <mat-option [value]="bodyRuleTypeValues.TEXTEQUALS">{{
+                bodyRuleTypeValues.TEXTEQUALS | getRuleTypeString
+              }}</mat-option>
+              <mat-option [value]="bodyRuleTypeValues.TEXTSTARTSWITH">{{
+                bodyRuleTypeValues.TEXTSTARTSWITH | getRuleTypeString
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

@@ -1,18 +1,13 @@
 import { Location } from '@angular/common';
-import { FormArray, AbstractControl } from '@angular/forms';
-import { NGXLogger } from 'ngx-logger';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { DesignerStore } from 'src/app/store/designer-store';
+import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import Json from '../../models/json';
-
-import {
-  Component,
-  OnInit,
-  Input} from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { NGXLogger } from 'ngx-logger';
 import { Observer } from 'rxjs';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
+import { DesignerStore } from 'src/app/store/designer-store';
+
 
 @Component({
   selector: 'app-import-from-server-view',
@@ -102,17 +97,15 @@ export class ImportFromServerViewComponent implements OnInit {
   }
 
   /**
-   * The function called on submit. Sets the mockDefinitions in the DesignerStore
+   * The function called on submit. Sets the Mockdefinitions in the DesignerStore
    */
   onSubmit() {
-    this.designerStore.mockDefinitions = this.mockDefinitions.map(
-      mockDefinition => MockDefinition.objectToMockDefinition(mockDefinition)
-    );
+    this.designerStore.mockDefinitions = this.mockDefinitions;
     this.router.navigateByUrl('endpoint-view');
   }
 
   /**
-   * Sets the mockDefinitions property equal to the list of MockDefinitions derived from the
+   * Sets the Mockdefinitions property equal to the list of MockDefinitions derived from the
    * FormControl values.
    * @param list The list of FormControls given by the shuttle list when the user moves items from
    * one list to the other.

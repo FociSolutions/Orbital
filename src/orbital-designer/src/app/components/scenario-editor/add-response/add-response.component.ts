@@ -21,7 +21,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
 
-  headers: Map<string, string> = new Map<string, string>();
+  headers: Record<string, string> = {};
 
   /**
    *  The validBodyResponse after it has been validated
@@ -143,10 +143,10 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   }
 
   /**
-   * Wait for header FVP map, then trigger emitter if current response is valid
-   * @param map Response KVP map
+   * Wait for header KVP , then trigger emitter if current response is valid
+   * @param map Response KVP
    */
-  saveHeaderMap(map: Map<string, string>) {
+  saveHeaders(map: Record<string, string>) {
     if (this.isStatusCodeValid && this.isBodyValid) {
       if (this.statusCodeEntered) {
         const responseToEmit = {
@@ -155,13 +155,13 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
           status: +this.statusCode
         } as Response;
         this.logger.debug(
-          'AddResponseComponent:saveHeaderMap: Response has been emitted',
+          'AddResponseComponent:saveHeaders: Response has been emitted',
           responseToEmit
         );
         this.responseOutput.emit(responseToEmit);
       } else {
         this.logger.debug(
-          'AddResponseComponent:saveHeaderMap: Status code should not be empty'
+          'AddResponseComponent:saveHeaders: Status code should not be empty'
         );
         this.isStatusCodeValid = false;
         this.disableCard();

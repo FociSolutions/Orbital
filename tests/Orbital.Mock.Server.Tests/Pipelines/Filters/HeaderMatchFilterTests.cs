@@ -1,28 +1,35 @@
 ﻿using Bogus;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using Orbital.Mock.Server.Tests.Models.Validators;
 using Xunit;
+using Orbital.Mock.Server.Models.Rules;
+using Orbital.Mock.Server.Models.Interfaces;
+using Assert = Xunit.Assert;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+using Orbital.Mock.Server.Factories.Interfaces;
+using Orbital.Mock.Server.Factories;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class HeaderMatchFilterTests
     {
         private readonly Faker<Scenario> scenarioFaker;
+        private IRuleMatcher ruleMatcher = new RuleMatcher();
+        private IAssertFactory assertFactory = new AssertFactory();
 
         public HeaderMatchFilterTests()
         {
             Randomizer.Seed = new Random(FilterTestHelpers.Seed);
+
+            var fakerHeaderRule = new Faker<KeyValuePairRule>()
+                .CustomInstantiator(f => new KeyValuePairRule() {Type = ComparerType.TEXTEQUALS, RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
-                                        .RuleFor(r => r.HeaderRules, f => f.Make(10, () => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength())).ToDictionary(k => k));
+                                        .RuleFor(m => m.HeaderRules, f => fakerHeaderRule.Generate(5));
 
             scenarioFaker = new Faker<Scenario>()
                                 .RuleFor(m => m.RequestMatchRules, requestMatchRulesFake)
@@ -37,7 +44,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
 
-            var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var headers = fakeScenario.RequestMatchRules.HeaderRules.Select(rules => rules.RuleValue);
 
             var input = new
             {
@@ -46,7 +53,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             };
             #endregion
-            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -56,9 +63,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             var Actual = Target.Process(port)
                 .HeaderMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
-            var Expected = new List<string> { fakeScenario.Id };
+            var Expected = fakeScenario.Id;
 
-            Assert.Equal(Expected, Actual);
+            Assert.Contains(Expected, Actual);
 
         }
 
@@ -67,7 +74,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             var fakeScenario = scenarioFaker.Generate();
 
-            var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => new Faker().Random.AlphaNumeric(10));
+            var headers = fakeScenario.RequestMatchRules.HeaderRules.Select(x =>
+                                                        new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique"));
 
             var input = new
             {
@@ -75,7 +83,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = headers
             };
 
-            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -84,17 +92,17 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
 
             var Actual = Target.Process(port).HeaderMatchResults.Where(x => x.Match == MatchResultType.Fail).Select(x => x.ScenarioId).ToList();
-            var Expected = new List<string>() { fakeScenario.Id };
-            Assert.Equal(Expected, Actual);
+            var Expected = fakeScenario.Id;
+            Assert.Contains(Expected, Actual);
         }
 
         [Fact]
-        public void HeaderMatchRulesHasMoreHeadersThenRequestHeadersFailure()
+        public void HeaderMatchRulesHasMoreHeadersThanRequestHeadersIgnore()
         {
             #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
 
-            var headers = fakeScenario.RequestMatchRules.HeaderRules.Skip(3).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var headers = fakeScenario.RequestMatchRules.HeaderRules.Skip(3).Select(r => r.RuleValue);
 
             var input = new
             {
@@ -102,7 +110,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = headers
             };
             #endregion
-            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -110,20 +118,20 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = input.Headers
             };
 
-            var Actual = Target.Process(port).HeaderMatchResults.Where(x => x.Match == MatchResultType.Fail).Select(x => x.ScenarioId).ToList();
-            var Expected = new List<string>() { fakeScenario.Id };
-            Assert.Equal(Expected, Actual);
+            var Actual = Target.Process(port).HeaderMatchResults.Where(x => x.Match == MatchResultType.Ignore).Select(x => x.ScenarioId).ToList();
+            var Expected = fakeScenario.Id;
+            Assert.Contains(Expected, Actual);
         }
 
         [Fact]
-        public void HeaderMatchRulesHasLessHeadersThenRequestHeadersSuccess()
+        public void HeaderMatchRulesHasLessHeadersThanRequestHeadersSuccess()
         {
             #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
 
-            var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var headers = fakeScenario.RequestMatchRules.HeaderRules.ToDictionary(kvp => kvp.RuleValue.Key, kvp => kvp.RuleValue.Value);
 
-            fakeScenario.RequestMatchRules.HeaderRules = fakeScenario.RequestMatchRules.HeaderRules.Skip(3).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            fakeScenario.RequestMatchRules.HeaderRules = fakeScenario.RequestMatchRules.HeaderRules.Skip(3).ToList();
 
             var input = new
             {
@@ -131,7 +139,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = headers
             };
             #endregion
-            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -141,9 +149,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             var Actual = Target.Process(port)
                 .HeaderMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
-            var Expected = new List<string>() { fakeScenario.Id };
+            var Expected =  fakeScenario.Id;
 
-            Assert.Equal(Expected, Actual);
+            Assert.Contains(Expected, Actual);
         }
 
         [Fact]
@@ -151,17 +159,17 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void HeaderMatchFilterNoMatchTest()
         {
             #region Test Setup
-            var fakeScenario = scenarioFaker.Generate();
+            var fakeScenario = scenarioFaker.Generate() ;
 
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Headers = new Dictionary<string, string>()
-
+                Headers = fakeScenario.RequestMatchRules.HeaderRules.Select(x =>
+                                                        new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique"))
             };
 
             #endregion
-            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -188,7 +196,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -214,7 +222,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             };
             #endregion
-            var Target = new HeaderMatchFilter<ProcessMessagePort>();
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var port = new ProcessMessagePort()
             {

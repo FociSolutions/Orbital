@@ -12,12 +12,17 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
+using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Interfaces;
+using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Orbital.Mock.Server.Tests;
 using Orbital.Mock.Server.Tests.Pipelines.Filters;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.LongRunningTests
 {
@@ -34,7 +39,9 @@ namespace Orbital.Mock.Server.LongRunningTests
             var fakerJObject = new Faker<JObject>()
                 .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandom<BodyRuleTypes>(), fakerJObject.Generate()));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
+            var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
+                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
             var fakerResponse = new Faker<MockResponse>()
                 .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -42,15 +49,15 @@ namespace Orbital.Mock.Server.LongRunningTests
                 ));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
-                .RuleFor(m => m.HeaderRules, f => Enumerable.ToDictionary<string, string, string>(f.Make(5, () => f.Random.AlphaNumeric(10)), x => x, _ => f.Random.Word()))
-                .RuleFor(m => m.QueryRules, f => Enumerable.ToDictionary<string, string, string>(f.Make(5, () => f.Random.AlphaNumeric(10)), x => x, _ => f.Random.Word()));
+                .RuleFor(m => m.HeaderRules, f => fakerHeaderQueryRule.Generate(5))
+                .RuleFor(m => m.QueryRules, f => fakerHeaderQueryRule.Generate(5));
             _fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())
                 .RuleFor(m => m.Response, f => fakerResponse.Generate())
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(_validMethods));
-            _mockServerProcessor = new MockServerProcessor();
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
         }
 
         /// <summary>
@@ -80,7 +87,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequest()
         {
-            _mockServerProcessor = new MockServerProcessor();
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
 
             var scenarios = GenerateRandomScenarios(out var httpContext);
 
@@ -130,7 +137,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequestEnsuringInterpipelineEventsAreProcessed()
         {
-            _mockServerProcessor = new MockServerProcessor();
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
 
             var Target = _mockServerProcessor;
 
@@ -180,20 +187,18 @@ namespace Orbital.Mock.Server.LongRunningTests
         {
             // generate 10 unique scenarios (it doesn't matter what they do) as long as they get mostly through the pipeline
             var scenarios = _fakerScenario.Generate(10);
-            scenarios[0].RequestMatchRules.HeaderRules = Enumerable.ToDictionary<KeyValuePair<string, string>, string, string>(scenarios[0].RequestMatchRules.HeaderRules, x => x.Key, x => x.Value + "-unique");
-            scenarios[0].RequestMatchRules.QueryRules =
-                Enumerable.ToDictionary<KeyValuePair<string, string>, string, string>(scenarios[0].RequestMatchRules.QueryRules, x => x.Key, x => x.Value + "-unique");
-
+            scenarios[0].RequestMatchRules.HeaderRules = scenarios[0].RequestMatchRules.HeaderRules.Select( x =>
+                                                    new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
+            scenarios[0].RequestMatchRules.QueryRules = scenarios[0].RequestMatchRules.QueryRules.Select(x =>
+                                                         new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
             httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb.ToString();
             httpContext.Request.Body =
-                new MemoryStream(Encoding.ASCII.GetBytes((string) scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Rule.ToString()));
+                new MemoryStream(Encoding.ASCII.GetBytes((string) scenarios[0].RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()));
             var context = httpContext;
-            Enumerable.ToList<string>(scenarios[0].RequestMatchRules.HeaderRules.Keys).ForEach(k =>
-                context.Request.Headers.Add(k, scenarios[0].RequestMatchRules.HeaderRules[k]));
-            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules
-                .ToDictionary(x => x.Key, x => new StringValues(x.Value)));
+            scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => context.Request.Headers.Add(k.RuleValue.Key, k.RuleValue.Value));
+            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.RuleValue.Key, x => new StringValues(x.RuleValue.Value)));
             return scenarios;
         }
     }

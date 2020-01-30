@@ -8,15 +8,15 @@
       <div
         mat-list-item
         class="mock-name row center-vt"
-        *ngFor="let mockDefinition of mockDefinitions | keyvalue"
-        [ngClass]="{ selected: isSelected(mockDefinition.key) }"
+        *ngFor="let mockDefinition of mockDefinitions"
+        [ngClass]="{ selected: isSelected(mockDefinition.metadata.title) }"
       >
         <div
           class="mock-list-item row center-vt"
-          (click)="updateSelected(mockDefinition.value)"
+          (click)="updateSelected(mockDefinition)"
         >
           <mat-icon mat-list-icon>insert_drive_file_outline</mat-icon>
-          <h4 mat-line>{{ mockDefinition.key }}</h4>
+          <h4 mat-line>{{ mockDefinition.metadata.title }}</h4>
         </div>
         <button
           class="close-button"

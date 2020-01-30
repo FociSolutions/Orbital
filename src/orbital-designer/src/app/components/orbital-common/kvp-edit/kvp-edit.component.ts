@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
+import { recordDelete, recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-edit',
@@ -16,66 +17,71 @@ export class KvpEditComponent implements OnInit {
   @Input() isCaseSensitive: boolean;
 
   /**
-   * The new kvp map with the new kvp added in
+   * The new kvp list with the new kvp added in
    */
-  savedKvpMap: Map<string, string>;
+  savedKvp: Record<string, string>;
 
   /**
-   * The event emitter for the savedKvpMap
+   * The event emitter for the savedKvp
    */
-  @Output() savedKvpMapEmitter;
+  @Output() savedKvpEmitter;
 
   constructor(private logger: NGXLogger) {
-    this.savedKvpMap = new Map<string, string>();
-    this.savedKvpMapEmitter = new EventEmitter<Map<string, string>>();
+    this.savedKvp = {};
+    this.savedKvpEmitter = new EventEmitter<Record<string, string>>();
   }
 
   ngOnInit() { }
 
   /**
-   * This setter calls the emitter for the savedkvpmap if shouldSave is true
+   * This setter calls the emitter for the savedkvp if shouldSave is true
    */
   @Input()
   set Save(shouldSave: boolean) {
     if (shouldSave) {
-      this.savedKvpMapEmitter.emit(this.savedKvpMap);
-      this.logger.debug('KVP map has been saved', this.savedKvpMap);
+      this.savedKvpEmitter.emit(this.savedKvp);
+      this.logger.debug('KVP has been saved', this.savedKvp);
     }
   }
 
   /**
-   * The existing KVP map
+   * The existing KVP record
    */
   @Input()
-  set kvpMap(savedKvpMap: Map<string, string>) {
-    if (savedKvpMap) {
-      this.savedKvpMap = savedKvpMap;
+  set kvp(savedKvp: Record<string, string>) {
+    if (savedKvp) {
+      this.savedKvp = savedKvp;
     }
   }
 
   /**
-   * This method listens to the event emitter from the child component and adds the KeyValue pair into the map
+   * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
    * @param kvp The KeyValue pair being taken in from the child component to be added
    */
-  addKvpToMap(kvpToAdd: KeyValue<string, string>) {
+  addKvp(kvpToAdd: KeyValue<string, string>) {
     if (!!kvpToAdd && !!kvpToAdd.key && !!kvpToAdd.value) {
       if (this.isCaseSensitive) {
-        this.savedKvpMap.set(kvpToAdd.key, kvpToAdd.value);
-        this.logger.debug('Adding a case sensitive KVP to Map', kvpToAdd);
+        recordAdd(this.savedKvp, kvpToAdd.key, kvpToAdd.value);
+        this.logger.debug('Adding a case sensitive KVP', kvpToAdd);
       } else {
-        this.savedKvpMap.set(kvpToAdd.key.toLowerCase(), kvpToAdd.value);
-        this.logger.debug('Adding a case insensitive KVP to Map', kvpToAdd);
+        recordAdd(this.savedKvp, kvpToAdd.key.toLowerCase(), kvpToAdd.value);
+        this.logger.debug('Adding a case insensitive KVP', kvpToAdd);
       }
     }
   }
   /**
-   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the map
+   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
    * @param kvp The KeyValue pair being taken in from the child component to be deleted
    */
-  deleteKvpFromMap(kvpToDelete: KeyValue<string, string>) {
+  deleteKvp(kvpToDelete: KeyValue<string, string>) {
     if (!!kvpToDelete && !!kvpToDelete.key) {
-      this.savedKvpMap.delete(kvpToDelete.key);
-      this.logger.debug('Delete Header Rule from Map', kvpToDelete);
+      recordDelete(this.savedKvp, kvpToDelete.key);
+      this.logger.debug('Delete Header Rule', kvpToDelete);
     }
+  }
+
+  hasValuesAdded() {
+    const keys = Object.keys(this.savedKvp);
+    return keys.length > 0;
   }
 }

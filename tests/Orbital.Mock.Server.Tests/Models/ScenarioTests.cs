@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Orbital.Mock.Server.Models;
 using System.Collections.Generic;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Models
 {
