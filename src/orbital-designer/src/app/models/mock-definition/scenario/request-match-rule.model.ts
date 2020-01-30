@@ -8,4 +8,5 @@ export interface RequestMatchRule {
   headerRules: KeyValuePairRule[];
   queryRules: KeyValuePairRule[];
   bodyRules: BodyRule[];
+  urlRules: KeyValuePairRule[];
 }
