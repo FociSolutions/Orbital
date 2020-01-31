@@ -77,11 +77,11 @@ describe('UrlAddRuleComponent', () => {
   describe('UrlAddRuleComponent.ruleTypeisAcceptAll', () => {
     it('Should return true if ruleType is AcceptAll', () => {
       component.ruleType = RuleType.ACCEPTALL;
-      expect(component.ruleTypeisAcceptAll).toBe(true);
+      expect(component.ruleTypeisAcceptAll()).toBe(true);
     });
     it('Should return false if ruleType is not AcceptAll', () => {
       component.ruleType = RuleType.REGEX;
-      expect(component.ruleTypeisAcceptAll).toBe(false);
+      expect(component.ruleTypeisAcceptAll()).toBe(false);
     });
   });
 });

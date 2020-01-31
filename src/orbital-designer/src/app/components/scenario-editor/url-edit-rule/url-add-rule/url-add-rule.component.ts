@@ -105,7 +105,7 @@ export class UrlAddRuleComponent implements OnInit {
   /**
    * This will return true if the rule type is AcceptAll. false otherwise.
    */
-  ruleTypeisAcceptAll() {
+  ruleTypeisAcceptAll(): boolean {
     return this.ruleType === RuleType.ACCEPTALL;
   }
 }
