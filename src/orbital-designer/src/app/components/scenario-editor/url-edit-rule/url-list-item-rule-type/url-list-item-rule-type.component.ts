@@ -90,7 +90,7 @@ export class UrlListItemRuleTypeComponent implements OnInit {
    * check if value is empty when selecting Regex as rule type
    */
   isValueEmpty() {
-    if (!!this.currentKVP && this.currentKVP.type === RuleType.REGEX) {
+    if (!!this.currentKVP && this.currentKVP.type !== RuleType.ACCEPTALL) {
       return recordFirstOrDefault(this.currentKVP.rule, '').trim().length === 0;
     }
     return false;
