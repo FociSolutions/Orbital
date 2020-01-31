@@ -95,4 +95,11 @@ export class UrlListItemRuleTypeComponent implements OnInit {
     }
     return false;
   }
+
+  /**
+   * This will return true if the rule type is AcceptAll. false otherwise.
+   */
+  ruleTypeisAcceptAll(): boolean {
+    return this.type === RuleType.ACCEPTALL;
+  }
 }
