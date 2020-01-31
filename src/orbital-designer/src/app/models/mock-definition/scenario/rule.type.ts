@@ -10,5 +10,6 @@ export enum RuleType {
   JSONPATH = 5,
   JSONEQUALITY = 6,
   JSONCONTAINS = 7,
-  JSONSCHEMA = 8
+  JSONSCHEMA = 8,
+  ACCEPTALL = 9
 }

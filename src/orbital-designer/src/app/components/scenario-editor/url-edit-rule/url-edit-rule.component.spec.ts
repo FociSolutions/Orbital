@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material';
 import * as faker from 'faker';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
+import { UrlAddRuleComponent } from './url-add-rule/url-add-rule.component';
 
 describe('UrlEditRuleComponent', () => {
   let component: UrlEditRuleComponent;
@@ -20,7 +21,7 @@ describe('UrlEditRuleComponent', () => {
         BrowserAnimationsModule,
         MatCardModule
       ],
-      declarations: [UrlEditRuleComponent]
+      declarations: [UrlEditRuleComponent, UrlAddRuleComponent]
     }).compileComponents();
   }));
 
