@@ -62,9 +62,12 @@ export class UrlAddRuleComponent implements OnInit {
    * Returns true if the value field is empty and false otherwise
    */
   private isValueEmpty(): boolean {
-    if (this.key.trim().length === 0) {
-      this.errorMessage = 'Empty Key Field Found: Please Enter Value';
-      this.logger.debug('Empty Key Field Found: Please Enter Value');
+    if (
+      this.value.trim().length === 0 &&
+      this.ruleType !== RuleType.ACCEPTALL
+    ) {
+      this.errorMessage = 'Empty Value Field Found: Please Enter Value';
+      this.logger.debug('Empty Value Field Found: Please Enter Value');
       return true;
     }
 
@@ -97,5 +100,12 @@ export class UrlAddRuleComponent implements OnInit {
     }
 
     return false;
+  }
+
+  /**
+   * This will return true if the rule type is AcceptAll. false otherwise.
+   */
+  ruleTypeisAcceptAll(): boolean {
+    return this.ruleType === RuleType.ACCEPTALL;
   }
 }

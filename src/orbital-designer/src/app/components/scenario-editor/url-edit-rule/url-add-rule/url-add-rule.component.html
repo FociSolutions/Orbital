@@ -4,6 +4,7 @@
       <div class="row">
         <mat-form-field class="kvp-value">
           <input
+            [disabled]="ruleTypeisAcceptAll()"
             matInput
             placeholder="Value"
             [(ngModel)]="value"
