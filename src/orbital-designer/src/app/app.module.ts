@@ -47,6 +47,7 @@ import { KvpEditRuleComponent } from './components/scenario-editor/kvp-edit-rule
 import { GetRuleTypeStringPipe } from './pipes/get-rule-type-string/get-rule-type-string.pipe';
 import { UrlEditRuleComponent } from './components/scenario-editor/url-edit-rule/url-edit-rule.component';
 import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
+import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 
 @NgModule({
   declarations: [
@@ -78,8 +79,7 @@ import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/
     KvpListItemRuleTypeComponent,
     KvpEditRuleComponent,
     GetRuleTypeStringPipe,
-    UrlEditRuleComponent,
-    UrlAddRuleComponent
+    UrlEditRuleComponent
   ],
   imports: [
     BrowserModule,
