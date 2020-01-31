@@ -17,6 +17,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
   headerMatchRules: KeyValuePairRule[];
   queryMatchRules: KeyValuePairRule[];
   bodyMatchRules: BodyRule[];
+  urlMatchRules: KeyValuePairRule[];
 
   shouldSave: boolean;
   panelExpanded: boolean;
@@ -25,12 +26,14 @@ export class AddRequestMatchRuleComponent implements OnInit {
   headerEmitted: boolean;
   queryEmitted: boolean;
   bodyEmitted: boolean;
+  urlEmitted: boolean;
 
   constructor(private logger: NGXLogger) {
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
     this.headerMatchRules = [];
     this.queryMatchRules = [];
     this.bodyMatchRules = [];
+    this.urlMatchRules = [];
   }
 
   ngOnInit() {}
@@ -47,12 +50,18 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * Emits the request match rule if the header, query, and body fields have already emitted
    */
   _save() {
-    if (this.headerEmitted && this.queryEmitted && this.bodyEmitted) {
+    if (
+      this.headerEmitted &&
+      this.queryEmitted &&
+      this.bodyEmitted &&
+      this.urlEmitted
+    ) {
       // validate request match rules
       const requestToEmit = {
         headerRules: this.headerMatchRules,
         queryRules: this.queryMatchRules,
-        bodyRules: this.bodyMatchRules
+        bodyRules: this.bodyMatchRules,
+        urlRules: this.urlMatchRules
       } as RequestMatchRule;
       this.requestMatchRuleOutput.emit(requestToEmit);
       this.logger.debug(
@@ -62,17 +71,29 @@ export class AddRequestMatchRuleComponent implements OnInit {
       this.headerEmitted = false;
       this.queryEmitted = false;
       this.bodyEmitted = false;
+      this.urlEmitted = false;
     }
   }
 
   /**
    * Handles saving the header match rules kvp values
-   * @param event The incoming request match rules
+   * @param headerMatchRules The incoming request match rules
    */
   handleHeaderKvpOutput(headerMatchRules: KeyValuePairRule[]) {
     this.headerEmitted = true;
     this.logger.debug('Set the header match rules to', headerMatchRules);
     this.headerMatchRules = headerMatchRules;
+    this._save();
+  }
+
+  /**
+   * Handles saving the url match rules kvp values
+   * @param urlMatchRules The incoming request match rules
+   */
+  handleUrlOutput(urlMatchRules: KeyValuePairRule[]) {
+    this.urlEmitted = true;
+    this.logger.debug('Set the url match rules to', urlMatchRules);
+    this.urlMatchRules = urlMatchRules;
     this._save();
   }
 

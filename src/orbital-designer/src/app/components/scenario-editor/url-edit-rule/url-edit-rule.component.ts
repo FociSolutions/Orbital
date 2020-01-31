@@ -14,21 +14,20 @@ export class UrlEditRuleComponent implements OnInit {
   isValid = true;
   errorMessage = '';
   urlRuleTypeValues = RuleType;
-  @Input() urlRules: KeyValuePairRule[] = [];
+  @Input() urlRules: KeyValuePairRule[];
 
   /**
    * The add and list tiles to be added in the template
    */
   @Input() addUrlTitle: string;
 
-  @Output() urlRuleOutput: EventEmitter<KeyValuePairRule[]> = new EventEmitter<
-    KeyValuePairRule[]
-  >();
+  @Output() savedUrlEmitter: EventEmitter<KeyValuePairRule[]>;
 
   urlType: RuleType;
   urlValue = '';
   constructor(private logger: NGXLogger) {
     this.urlRules = [];
+    this.savedUrlEmitter = new EventEmitter<KeyValuePairRule[]>();
   }
 
   /**
@@ -76,7 +75,7 @@ export class UrlEditRuleComponent implements OnInit {
   @Input()
   set Save(shouldSave: boolean) {
     if (shouldSave) {
-      this.urlRuleOutput.emit(this.urlRules);
+      this.savedUrlEmitter.emit(this.urlRules);
       this.logger.debug('URL list has been saved', this.urlRules);
     }
   }

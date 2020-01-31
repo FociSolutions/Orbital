@@ -50,6 +50,23 @@
       <mat-expansion-panel class="mat-elevation-z0">
         <mat-expansion-panel-header class="right-aligned-header">
           <mat-panel-title>
+            Url Path Match Rules
+          </mat-panel-title>
+          <mat-divider></mat-divider>
+        </mat-expansion-panel-header>
+        <app-url-edit-rule
+          [urlRules]="this.requestMatchRule?.urlRules"
+          [addUrlTitle]="'Add New Url Match Rule'"
+          [Save]="this.shouldSave"
+          (savedUrlEmitter)="handleUrlOutput($event)"
+        >
+        </app-url-edit-rule>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+      <mat-expansion-panel class="mat-elevation-z0">
+        <mat-expansion-panel-header class="right-aligned-header">
+          <mat-panel-title>
             Body Match Rules
           </mat-panel-title>
           <mat-divider></mat-divider>
