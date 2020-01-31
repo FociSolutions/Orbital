@@ -145,6 +145,7 @@ export class ScenarioEditorComponent
       this.selectedScenario.requestMatchRules.bodyRules = this.requestMatchRule.bodyRules;
       this.selectedScenario.requestMatchRules.headerRules = this.requestMatchRule.headerRules;
       this.selectedScenario.requestMatchRules.queryRules = this.requestMatchRule.queryRules;
+      this.selectedScenario.requestMatchRules.urlRules = this.requestMatchRule.urlRules;
 
       this.selectedScenario.response.body = this.response.body;
       this.selectedScenario.response.headers = this.response.headers;
@@ -266,7 +267,8 @@ export class ScenarioEditorComponent
       requestMatchRules: {
         headerRules: [],
         queryRules: [],
-        bodyRules: []
+        bodyRules: [],
+        urlRules: []
       } as RequestMatchRule
     } as Scenario;
   }

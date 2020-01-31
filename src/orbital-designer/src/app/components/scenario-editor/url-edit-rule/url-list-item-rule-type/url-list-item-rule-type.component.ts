@@ -3,7 +3,6 @@ import { RuleType } from '../../../../models/mock-definition/scenario/rule.type'
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import {
   recordFirstOrDefaultKey,
-  recordUpdateKeyName,
   recordFirstOrDefault,
   recordAdd
 } from '../../../../models/record';
