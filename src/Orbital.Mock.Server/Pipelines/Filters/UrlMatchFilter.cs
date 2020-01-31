@@ -1,4 +1,5 @@
 ﻿using Orbital.Mock.Server.Factories.Interfaces;
+using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
@@ -7,7 +8,7 @@ using System.Linq;
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class UrlMatchFilter<T> : FaultableBaseFilter<T>
-        where T : IFaultablePort, IURLMatchPort, IScenariosPort, IPathValidationPort
+        where T : IFaultablePort, IUrlMatchPort, IScenariosPort, IPathValidationPort
     {
         private IAssertFactory assertFactory;
         private IRuleMatcher ruleMatcher;
@@ -17,23 +18,28 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             this.assertFactory = assertFactory;
             this.ruleMatcher = ruleMatcher;
         }
-
+        /// <summary>
+        /// Process that returns the port after adding a list of scenario Id's
+        /// that have a header rule that matches the header of the request.
+        /// </summary>
+        /// <param name="port">The port containing necessary data</param>
+        /// <returns>Port containing processed data</returns>
         public override T Process(T port)
         {
             if (!IsPipelineValid(ref port, GetType())) return port;
 
             foreach (var scenario in port.Scenarios)
             {
-                foreach (var rule in scenario.RequestMatchRules.HeaderRules)
+                foreach (var rule in scenario.RequestMatchRules.UrlRules)
                 {
                     var assertsList = assertFactory.CreateAssert(rule, port.Path);
                     if (!assertsList.Any())
                     {
-                        port.HeaderMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id));
+                        port.URLMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id));
                     }
                     else
                     {
-                        port.HeaderMatchResults.Add(ruleMatcher.Match(assertsList.ToArray())
+                        port.URLMatchResults.Add(ruleMatcher.Match(assertsList.ToArray())
                                      ? new MatchResult(MatchResultType.Success, scenario.Id)
                                      : new MatchResult(MatchResultType.Fail, scenario.Id));
                     }
