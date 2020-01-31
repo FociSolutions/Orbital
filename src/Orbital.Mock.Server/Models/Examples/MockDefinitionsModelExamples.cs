@@ -32,6 +32,8 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 new Dictionary<string, string>()
             };
 
+            var urlRules = new List<KeyValuePair<string, string>>();
+
             IDictionary<string, string>[] headersRules = new Dictionary<string, string>[]
             {
                 new Dictionary<string, string>(),
@@ -52,6 +54,11 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 new List<BodyRule>(),
                 new List<BodyRule>()
         };
+
+
+            urlRules.Add(new KeyValuePair<string, string>("url", "pets"));
+            urlRules.Add(new KeyValuePair<string, string>("url", "pet"));
+            urlRules.Add(new KeyValuePair<string, string>("url", "p"));
 
             for (int i = 0; i < 3; i++)
             {
@@ -90,6 +97,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Path = "/pets",
                 Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Testing scenario 2", Headers = headers[1] },
                 RequestMatchRules = new RequestMatchRules {
+                    UrlRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(headersRules[1].Keys.ToList().First(), headersRules[1].Values.ToList().First()) } },
                     HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(headersRules[1].Keys.ToList().First(), headersRules[1].Values.ToList().First()) } },
                     QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(queryRules[1].Keys.ToList().First(), queryRules[1].Values.ToList().First()) } },
                     BodyRules = bodyRules[1] }

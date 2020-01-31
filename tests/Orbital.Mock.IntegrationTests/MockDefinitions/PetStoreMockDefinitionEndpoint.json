@@ -13,11 +13,12 @@
                 "status": "200",
                 "body": "{\"success\": \"true\"}"
             },
-            "requestMatchRules": {
-                "bodyRules": [],
-                "headerRules": [],
-                "queryRules": []
-            }
+          "requestMatchRules": {
+            "urlRules": [],
+            "bodyRules": [],
+            "headerRules": [],
+            "queryRules": []
+          }
         },
         {
             "id": "8e4d3d59-7435-4f76-8757-88bd743c15aa",
@@ -32,11 +33,12 @@
                 "status": "200",
                 "body": "{\"no_param\": \"true\"}"
             },
-            "requestMatchRules": {
-                "bodyRules": [],
-                "headerRules": [],
-                "queryRules": []
-            }
+          "requestMatchRules": {
+            "urlRules": [],
+            "bodyRules": [],
+            "headerRules": [],
+            "queryRules": []
+          }
         }
     ],
     "host": "petstore.swagger.io",

@@ -1,35 +1,8 @@
 {
-  "scenarios": [
-    {
-      "id": "98fdbd41-14e5-401d-833f-59292018557f",
-      "metadata": {
-        "title": "Get Header List Filtered",
-        "description": "Gets the list of pets but filters out based on animal type"
-      },
-      "verb": 0,
-      "path": "/petHeaders",
-      "response": {
-        "headers": {},
-        "status": "200",
-        "body": "{\n  \"petHeaders\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
-      },
-      "requestMatchRules": {
-        "urlRules": [],
-        "headerRules": [
-          {
-            "type": 3,
-            "rule": {
-              "animal-type": "dog"
-            }
-          }
-        ],
-        "queryRules": [],
-        "bodyRules": []
-      }
-    }
-  ],
-  "host": "petstore.swagger.io",
-  "basePath": "/v1",
+  "metadata": {
+    "title": "thisismytest",
+    "description": ""
+  },
   "openApi": {
     "swagger": "2.0",
     "info": {
@@ -41,23 +14,15 @@
     },
     "host": "petstore.swagger.io",
     "basePath": "/v1",
-    "schemes": [
-      "http"
-    ],
-    "consumes": [
-      "application/json"
-    ],
-    "produces": [
-      "application/json"
-    ],
+    "schemes": [ "http" ],
+    "consumes": [ "application/json" ],
+    "produces": [ "application/json" ],
     "paths": {
-      "/petHeaders": {
+      "/pets": {
         "get": {
           "summary": "List all pets",
           "operationId": "listPets",
-          "tags": [
-            "petHeaders"
-          ],
+          "tags": [ "pets" ],
           "parameters": [
             {
               "name": "limit",
@@ -92,27 +57,7 @@
         "post": {
           "summary": "Create a pet",
           "operationId": "createPets",
-          "tags": [
-            "petHeaders"
-          ],
-          "responses": {
-            "201": {
-              "description": "Null response"
-            },
-            "default": {
-              "description": "unexpected error",
-              "schema": {
-                "$ref": "#/definitions/Error"
-              }
-            }
-          }
-        },
-        "put": {
-          "summary": "Update a pet",
-          "operationId": "updatePets",
-          "tags": [
-            "petHeaders"
-          ],
+          "tags": [ "pets" ],
           "responses": {
             "201": {
               "description": "Null response"
@@ -126,13 +71,11 @@
           }
         }
       },
-      "/petHeaders/{petId}": {
+      "/pets/{petId}": {
         "get": {
           "summary": "Info for a specific pet",
           "operationId": "showPetById",
-          "tags": [
-            "petHeaders"
-          ],
+          "tags": [ "pets" ],
           "parameters": [
             {
               "name": "petId",
@@ -162,10 +105,7 @@
     "definitions": {
       "Pet": {
         "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
+        "required": [ "id", "name" ],
         "properties": {
           "id": {
             "type": "integer",
@@ -187,10 +127,7 @@
       },
       "Error": {
         "type": "object",
-        "required": [
-          "code",
-          "message"
-        ],
+        "required": [ "code", "message" ],
         "properties": {
           "code": {
             "type": "integer",
@@ -203,8 +140,108 @@
       }
     }
   },
-  "metadata": {
-    "title": "petHeaders",
-    "description": "Description Test"
-  }
+  "scenarios": [
+    {
+      "id": "669e62db-823f-425f-81dc-360f7121cd04",
+      "metadata": {
+        "title": "sdfsd",
+        "description": "sdfsdf"
+      },
+      "verb": 0,
+      "path": "/pets",
+      "response": {
+        "headers": {},
+        "body": "\"fdg\"",
+        "status": 200
+      },
+      "requestMatchRules": {
+        "headerRules": [
+          {
+            "type": 0,
+            "rule": {
+              "Content-Type": "[application*]"
+            }
+          },
+          {
+            "type": 1,
+            "rule": {
+              "Content-Type1": "application"
+            }
+          },
+          {
+            "type": 2,
+            "rule": {
+              "Content-Type2": "json"
+            }
+          },
+          {
+            "type": 3,
+            "rule": {
+              "Content-Type3": "json"
+            }
+          },
+          {
+            "type": 4,
+            "rule": {
+              "Content-Type4": "application/json"
+            }
+          }
+        ],
+        "queryRules": [
+          {
+            "type": 0,
+            "rule": {
+              "n": "[application*]"
+            }
+          },
+          {
+            "type": 1,
+            "rule": {
+              "n1": "application"
+            }
+          },
+          {
+            "type": 2,
+            "rule": {
+              "n2": "json"
+            }
+          },
+          {
+            "type": 3,
+            "rule": {
+              "n3": "json"
+            }
+          },
+          {
+            "type": 4,
+            "rule": {
+              "n4": "application/json"
+            }
+          }
+        ],
+        "bodyRules": [
+          {
+            "type": 6,
+            "rule": {
+              "n": "[application*]"
+            }
+          },
+          {
+            "type": 7,
+            "rule": {
+              "n1": "application"
+            }
+          }
+        ],
+        "urlRules": [
+          {
+            "type": 4,
+            "rule": {
+              "urlPath": "/pets/34/shots/12"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
