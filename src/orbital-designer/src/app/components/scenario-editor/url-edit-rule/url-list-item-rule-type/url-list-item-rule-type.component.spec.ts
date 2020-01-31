@@ -34,7 +34,7 @@ describe('UrlListItemRuleTypeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('kvp-list-item-rule-type', () => {
+  describe('url-list-item-rule-type', () => {
     beforeEach(() => {
       fixture.detectChanges();
       component.currentKVP = {} as KeyValuePairRule;
@@ -56,7 +56,7 @@ describe('UrlListItemRuleTypeComponent', () => {
       expect(component.currentKVP).toEqual(input);
     });
 
-    it('should set the value for current kvp', () => {
+    it('should set the value for current url kvp', () => {
       component.currentKVP = {
         rule: {},
         type: RuleType.TEXTEQUALS
