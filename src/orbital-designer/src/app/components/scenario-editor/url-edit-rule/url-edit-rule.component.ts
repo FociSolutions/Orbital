@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { EventEmitter } from '@angular/core';
-import * as deepEqual from 'deep-equal';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { recordFirstOrDefaultKey } from '../../../models/record';
 
@@ -24,13 +22,12 @@ export class UrlEditRuleComponent implements OnInit {
   @Input() addUrlTitle: string;
 
   @Output() urlRuleOutput: EventEmitter<KeyValuePairRule[]> = new EventEmitter<
-  KeyValuePairRule[]>();
+    KeyValuePairRule[]
+  >();
 
   urlType: RuleType;
   urlValue = '';
-  constructor(
-    private logger: NGXLogger,
-  ) {
+  constructor(private logger: NGXLogger) {
     this.urlRules = [];
   }
 
@@ -91,7 +88,5 @@ export class UrlEditRuleComponent implements OnInit {
     return !this.isValid;
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

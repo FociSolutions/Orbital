@@ -79,7 +79,9 @@ import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-e
     KvpListItemRuleTypeComponent,
     KvpEditRuleComponent,
     GetRuleTypeStringPipe,
-    UrlEditRuleComponent
+    UrlEditRuleComponent,
+    UrlAddRuleComponent,
+    UrlListItemRuleTypeComponent
   ],
   imports: [
     BrowserModule,
