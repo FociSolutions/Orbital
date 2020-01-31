@@ -3,7 +3,7 @@ import { NGXLogger } from 'ngx-logger';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { EventEmitter } from '@angular/core';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefaultKey } from '../../../models/record';
+import { recordFirstOrDefault } from '../../../models/record';
 
 @Component({
   selector: 'app-url-edit-rule',
@@ -37,8 +37,8 @@ export class UrlEditRuleComponent implements OnInit {
   addKvp(kvpToAdd: KeyValuePairRule) {
     const rulefound = this.urlRules.find(
       r =>
-        recordFirstOrDefaultKey(r.rule, '') ===
-        recordFirstOrDefaultKey(kvpToAdd.rule, '')
+        recordFirstOrDefault(r.rule, '') ===
+        recordFirstOrDefault(kvpToAdd.rule, '')
     );
     if (!rulefound) {
       this.urlRules.push(kvpToAdd);

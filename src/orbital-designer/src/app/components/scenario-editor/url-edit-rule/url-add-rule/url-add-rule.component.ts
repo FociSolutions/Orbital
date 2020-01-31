@@ -38,6 +38,9 @@ export class UrlAddRuleComponent implements OnInit {
    */
   onAdd() {
     if (!this.isValueEmpty() && !this.isRuleTypeEmpty()) {
+      if (this.ruleTypeisAcceptAll()) {
+        this.value = '';
+      }
       const kvpAdd = {
         type: this.ruleType,
         rule: {
@@ -66,7 +69,6 @@ export class UrlAddRuleComponent implements OnInit {
       this.logger.debug('Empty Value Field Found: Please Enter Value');
       return true;
     }
-
     return false;
   }
 

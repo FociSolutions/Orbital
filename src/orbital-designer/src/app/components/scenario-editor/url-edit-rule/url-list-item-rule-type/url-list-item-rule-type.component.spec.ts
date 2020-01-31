@@ -96,11 +96,11 @@ describe('UrlListItemRuleTypeComponent', () => {
 
   describe('UrlListItemRuleComponent.ruleTypeisAcceptAll', () => {
     it('Should return true if ruleType is AcceptAll', () => {
-      component.type = RuleType.ACCEPTALL;
+      component.currentKVP.type = RuleType.ACCEPTALL;
       expect(component.ruleTypeisAcceptAll()).toBeTruthy();
     });
     it('Should return false if ruleType is not AcceptAll', () => {
-      component.type = RuleType.REGEX;
+      component.currentKVP.type = RuleType.REGEX;
       expect(component.ruleTypeisAcceptAll()).toBe(false);
     });
   });

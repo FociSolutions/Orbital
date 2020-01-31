@@ -14,8 +14,7 @@
 
       <mat-form-field class="kvp-value">
         <input
-          #inputvalue
-          [readonly]="ruleTypeisAcceptAll()"
+          [disabled]="ruleTypeisAcceptAll()"
           matInput
           maxlength="3000"
           placeholder="Value"
@@ -23,7 +22,7 @@
           name="value-input"
           [ngModelOptions]="{ standalone: true }"
         />
-        <mat-hint> {{ inputvalue.value?.length || 0 }}/3000</mat-hint>
+        <mat-hint> {{ value?.length || 0 }}/3000</mat-hint>
       </mat-form-field>
 
       <div class="delete-button-container">

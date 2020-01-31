@@ -15,7 +15,6 @@ import {
 export class UrlListItemRuleTypeComponent implements OnInit {
   currentKVP: KeyValuePairRule;
 
-  type: RuleType;
   rules = [
     { value: RuleType.REGEX, viewValue: 'Matches Regex' },
     { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
@@ -54,6 +53,9 @@ export class UrlListItemRuleTypeComponent implements OnInit {
    */
 
   set value(value: string) {
+    if (this.ruleTypeisAcceptAll()) {
+      value = '';
+    }
     const indexKey = recordFirstOrDefaultKey(this.currentKVP.rule, '');
     this.currentKVP.rule = recordAdd(this.currentKVP.rule, indexKey, value);
   }
@@ -99,6 +101,6 @@ export class UrlListItemRuleTypeComponent implements OnInit {
    * This will return true if the rule type is AcceptAll. false otherwise.
    */
   ruleTypeisAcceptAll(): boolean {
-    return this.type === RuleType.ACCEPTALL;
+    return this.currentKVP.type === RuleType.ACCEPTALL;
   }
 }
