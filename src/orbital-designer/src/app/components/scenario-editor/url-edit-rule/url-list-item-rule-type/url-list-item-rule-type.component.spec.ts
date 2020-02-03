@@ -44,10 +44,11 @@ describe('UrlListItemRuleTypeComponent', () => {
       const kvp = {};
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairRule = {
-        type: faker.random.number({
-          min: 0,
-          max: Object.keys(RuleType).length - 1
-        }) as RuleType,
+        type: faker.random.arrayElement([
+          RuleType.ACCEPTALL,
+          RuleType.REGEX,
+          RuleType.TEXTEQUALS
+        ]),
         rule: kvp
       };
 
@@ -67,10 +68,11 @@ describe('UrlListItemRuleTypeComponent', () => {
     });
 
     it('should set the rule type for current rule type', () => {
-      const testRule = faker.random.number({
-        min: 0,
-        max: Object.keys(RuleType).length - 1
-      });
+      const testRule = faker.random.arrayElement([
+        RuleType.ACCEPTALL,
+        RuleType.REGEX,
+        RuleType.TEXTEQUALS
+      ]);
       component.ruleType = testRule;
       expect(component.ruleType).toEqual(testRule);
     });
