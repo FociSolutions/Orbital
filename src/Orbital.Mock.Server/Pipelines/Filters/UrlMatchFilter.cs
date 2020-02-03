@@ -20,7 +20,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         }
         /// <summary>
         /// Process that returns the port after adding a list of scenario Id's
-        /// that have a header rule that matches the header of the request.
+        /// that have a url rule that matches the request path.
         /// </summary>
         /// <param name="port">The port containing necessary data</param>
         /// <returns>Port containing processed data</returns>
