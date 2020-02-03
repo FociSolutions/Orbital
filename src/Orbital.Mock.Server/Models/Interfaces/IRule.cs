@@ -21,6 +21,7 @@
         JSONPATH,
         JSONEQUALITY,
         JSONCONTAINS,
-        JSONSCHEMA
+        JSONSCHEMA,
+        ACCEPTALL
     };
 }

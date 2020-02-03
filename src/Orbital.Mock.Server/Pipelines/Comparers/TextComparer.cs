@@ -21,7 +21,7 @@
         /// <returns>whether a match was found with requestToEvalute and rule provided</returns>
         public static bool Contains(string requestToEvaluate, string rule)
         {
-            return rule.Contains(requestToEvaluate);
+            return requestToEvaluate.Contains(rule);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@
         /// <returns>whether a match was found with requestToEvalute and rule provided</returns>
         public static bool StartsWith(string requestToEvaluate, string rule)
         {
-            return rule.StartsWith(requestToEvaluate);
+            return requestToEvaluate.StartsWith(rule);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@
         /// <returns>whether a match was found with requestToEvalute and rule provided</returns>
         public static bool EndsWith(string requestToEvaluate, string rule)
         {
-            return rule.EndsWith(requestToEvaluate);
+            return requestToEvaluate.EndsWith(rule);
         }
     }
 }
