@@ -65,6 +65,37 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             Assert.Contains(Expected, Actual);
 
         }
+
+        [Fact]
+        public void UrlMatchFilterMatchAcceptAllSuccessTest()
+        {
+            #region Test Setup
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.RequestMatchRules.UrlRules = fakeScenario.RequestMatchRules.UrlRules.Select(r => { r.Type = ComparerType.ACCEPTALL; return r; } ).ToList();
+            var faker = new Faker();
+            var input = new
+            {
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Path = faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())
+
+            };
+            #endregion
+            var Target = new UrlMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+
+            var port = new ProcessMessagePort()
+            {
+                Scenarios = input.Scenarios,
+                Path = input.Path
+            };
+
+            var Actual = Target.Process(port).URLMatchResults
+                .Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
+            var Expected = fakeScenario.Id;
+
+            Assert.Contains(Expected, Actual);
+
+        }
+
         [Fact]
         public void UrlMatchFilterNoMatchTest()
         {
