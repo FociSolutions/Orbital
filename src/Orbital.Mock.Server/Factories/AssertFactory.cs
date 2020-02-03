@@ -45,10 +45,11 @@ namespace Orbital.Mock.Server.Factories
             return ruleAsserts;
         }
 
+        /// <inheritdoc />
         public IEnumerable<Assert> CreateAssert(KeyValuePairRule rules, string request)
         {
             var asserts = new List<Assert>();
-            var UrlAssert = new Assert() { Actual = request, Expect = rules.RuleValue.ToString(), Rule = rules.Type };
+            var UrlAssert = new Assert() { Actual = request, Expect = rules.RuleValue.Value, Rule = rules.Type };
             asserts.Add(UrlAssert);
 
             return asserts;

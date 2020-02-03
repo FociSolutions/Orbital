@@ -23,10 +23,10 @@ namespace Orbital.Mock.Server.Factories.Interfaces
         IEnumerable<Assert> CreateAssert(BodyRule rules, string request);
 
         /// <summary>
-        /// Create Assert model based on the body match port provided and the request JToken
+        /// Create Assert model based on the rules provided and the request path
         /// </summary>
         /// <param name="rules">KeyValuePairRules containing rules and rule type</param>
-        /// <param name="request">the request JToken as a string</param>
+        /// <param name="request">the request path as a string</param>
         /// <returns>An IEnumerable of Assert models containing expected value, actual values from the request, and the comparer type</returns>
         IEnumerable<Assert> CreateAssert(KeyValuePairRule rules, string request);
     }

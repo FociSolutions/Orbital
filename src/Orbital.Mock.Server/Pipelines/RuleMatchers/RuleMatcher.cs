@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                 case ComparerType.TEXTENDSWITH:
                     return TextComparer.EndsWith(assert.Actual, assert.Expect);                    
                 case ComparerType.TEXTEQUALS:
-                    return TextComparer.Equals(assert.Actual, assert.Expect);                    
+                    return TextComparer.Equals(assert.Actual, assert.Expect);
                 case ComparerType.JSONCONTAINS:
                     return JsonComparer.DeepContains(assert.Expect, assert.Actual);
                 case ComparerType.JSONEQUALITY:
