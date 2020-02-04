@@ -27,6 +27,10 @@ export class UrlListItemRuleTypeComponent implements OnInit {
   @Output() removeKvp: EventEmitter<KeyValuePairRule>;
 
   constructor() {
+    // this.currentKVP = {
+    //   rule: {},
+    //   type: null
+    // } as KeyValuePairRule;
     this.removeKvp = new EventEmitter<KeyValuePairRule>();
   }
 
