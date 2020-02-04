@@ -47,6 +47,8 @@ namespace Orbital.Mock.Server.IntegrationTests
                     return @"./MockDefinitions/PetStoreMockDefinitionEndpoint.json";
                 case MockDefinition.BodyJsonContains:
                     return @"./MockDefinitions/PetStoreMockDefinitionBodyJsonContains.json";
+                case MockDefinition.QueryMock:
+                    return @"./MockDefinitions/PetStoreMockDefinitionQuery.json";
                 case MockDefinition.UrlMock:
                     return @"./MockDefinitions/PetStoreMockDefinitionUrl.json";
                 default:
