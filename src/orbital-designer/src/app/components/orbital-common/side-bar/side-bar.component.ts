@@ -13,7 +13,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 export class SideBarComponent implements OnInit {
   mockDefinitions: MockDefinition[];
   selectedMockDefinition: string;
-  title = 'MOCK DEFINITIONS';
+  title = 'MOCKDEFINITIONS';
 
   triggerOpenConfirmBox: boolean;
 
