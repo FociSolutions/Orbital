@@ -7,6 +7,8 @@ import { Observable, EMPTY } from 'rxjs';
 import * as uuid from 'uuid';
 import * as _ from 'lodash';
 import { recordAdd } from 'src/app/models/record';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,9 +33,11 @@ export class MockDefinitionService {
               headers: s.response.headers
             },
             requestMatchRules: {
-              headerRules: s.requestMatchRules.headerRules,
-              queryRules: s.requestMatchRules.queryRules,
-              bodyRules: s.requestMatchRules.bodyRules
+              headerRules:
+                s.requestMatchRules.headerRules || ([] as KeyValuePairRule[]),
+              queryRules:
+                s.requestMatchRules.queryRules || ([] as KeyValuePairRule[]),
+              bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[])
             }
           }))
         };
