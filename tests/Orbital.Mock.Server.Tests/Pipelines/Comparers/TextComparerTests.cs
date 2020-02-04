@@ -30,7 +30,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         {
             var rule = "gray";
             var valueToEvaluate = "a";
-            var actual = TextComparer.Contains(valueToEvaluate, rule);
+            var actual = TextComparer.Contains(rule, valueToEvaluate);
 
             Assert.True(actual);
         }
@@ -50,7 +50,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         {
             var rule = "gray";
             var valueToEvaluate = "gra";
-            var actual = TextComparer.StartsWith(valueToEvaluate, rule);
+            var actual = TextComparer.StartsWith(rule, valueToEvaluate);
 
             Assert.True(actual);
         }
@@ -70,7 +70,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         {
             var rule = "gray";
             var valueToEvaluate = "ay";
-            var actual = TextComparer.EndsWith(valueToEvaluate, rule);
+            var actual = TextComparer.EndsWith(rule, valueToEvaluate);
 
             Assert.True(actual);
         }
