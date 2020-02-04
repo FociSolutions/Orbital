@@ -7,14 +7,24 @@ import {
 } from '@angular/core';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-url-add-rule',
   templateUrl: './url-add-rule.component.html',
   styleUrls: ['./url-add-rule.component.scss']
 })
-export class UrlAddRuleComponent implements OnInit {
+export class UrlAddRuleComponent implements OnInit, OnDestroy {
+  /**
+   * Stores the subscriptions that will be destroyed during OnDestroy
+   */
+  private subscriptions: Subscription[] = [];
   private urlRuleInEdit = {
     rule: { urlPath: '' } as Record<string, string>,
     type: RuleType.ACCEPTALL
@@ -39,35 +49,58 @@ export class UrlAddRuleComponent implements OnInit {
       ruleType: new FormControl(this.urlRuleInEdit.type, [Validators.required])
     });
 
-    this.urlAddRuleFormGroup.get('path').valueChanges.subscribe(path => {
-      this.urlRuleInEdit.rule['urlPath'] = path;
-    });
+    const pathSubscription = this.urlAddRuleFormGroup
+      .get('path')
+      .valueChanges.subscribe(path => {
+        this.urlRuleInEdit.rule['urlPath'] = path;
+      });
 
-    this.urlAddRuleFormGroup.get('ruleType').valueChanges.subscribe(type => {
-      this.urlRuleInEdit.type = type;
+    const ruleTypeSubscription = this.urlAddRuleFormGroup
+      .get('ruleType')
+      .valueChanges.subscribe(type => {
+        this.urlRuleInEdit.type = type;
 
-      if (type === RuleType.ACCEPTALL) {
-        this.path.disable();
-        this.path.setValue('');
-      } else {
-        this.path.enable();
-      }
-    });
+        if (type === RuleType.ACCEPTALL) {
+          this.path.disable();
+          this.path.setValue('');
+        } else {
+          this.path.enable();
+        }
+      });
 
+    this.subscriptions.push(pathSubscription, ruleTypeSubscription);
     this.path.disable();
   }
 
-  get path() {
+  /**
+   * Gets the form control for the 'path'
+   */
+  get path(): AbstractControl {
     return this.urlAddRuleFormGroup.get('path');
   }
 
-  get ruleType() {
+  /**
+   * Gets the form control for the 'ruleType'
+   */
+  get ruleType(): AbstractControl {
     return this.urlAddRuleFormGroup.get('ruleType');
   }
 
-  addUrlRule() {
+  /**
+   * Controls the logic for emmiting a new addUrlRule event
+   */
+  addUrlRule(): void {
     if (this.urlAddRuleFormGroup.valid) {
       this.urlRuleAddedEventEmitter.emit(this.urlRuleInEdit);
     }
+  }
+
+  /**
+   * Implementation for NG On Destroy
+   */
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 }

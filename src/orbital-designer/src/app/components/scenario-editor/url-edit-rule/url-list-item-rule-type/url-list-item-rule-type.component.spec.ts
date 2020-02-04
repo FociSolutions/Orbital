@@ -8,7 +8,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 
-fdescribe('UrlListItemRuleTypeComponent', () => {
+describe('UrlListItemRuleTypeComponent', () => {
   let component: UrlListItemRuleTypeComponent;
   let fixture: ComponentFixture<UrlListItemRuleTypeComponent>;
 
