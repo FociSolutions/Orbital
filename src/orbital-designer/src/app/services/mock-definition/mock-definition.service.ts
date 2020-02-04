@@ -37,8 +37,9 @@ export class MockDefinitionService {
                 s.requestMatchRules.headerRules || ([] as KeyValuePairRule[]),
               queryRules:
                 s.requestMatchRules.queryRules || ([] as KeyValuePairRule[]),
-              bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[])
-              urlRules: s.requestMatchRules.urlRules
+              bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[]),
+              urlRules:
+                s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
             }
           }))
         };
