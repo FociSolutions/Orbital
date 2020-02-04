@@ -101,7 +101,7 @@ export class UrlListItemRuleTypeComponent implements OnInit {
    * This will return true if the rule type is AcceptAll. false otherwise.
    */
   ruleTypeisAcceptAll(): boolean {
-    if (this.currentKVP.type === RuleType.ACCEPTALL) {
+    if (!!this.currentKVP && this.currentKVP.type === RuleType.ACCEPTALL) {
       return true;
     }
     return false;

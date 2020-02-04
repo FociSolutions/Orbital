@@ -27,7 +27,6 @@ describe('UrlListItemRuleTypeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UrlListItemRuleTypeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -36,7 +35,6 @@ describe('UrlListItemRuleTypeComponent', () => {
 
   describe('url-list-item-rule-type', () => {
     beforeEach(() => {
-      fixture.detectChanges();
       component.currentKVP = {} as KeyValuePairRule;
     });
 
@@ -102,8 +100,13 @@ describe('UrlListItemRuleTypeComponent', () => {
         rule: {},
         type: RuleType.ACCEPTALL
       } as KeyValuePairRule;
-      expect(component.ruleTypeisAcceptAll()).toBeTruthy();
+
+      const type = component.currentKVP.type;
+      const othertyoe = component.ruleTypeisAcceptAll();
+
+      expect(othertyoe).toBe(true);
     });
+
     it('Should return false if ruleType is not AcceptAll', () => {
       component.currentKVP = {
         rule: {},
