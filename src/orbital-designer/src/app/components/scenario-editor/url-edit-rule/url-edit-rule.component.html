@@ -8,7 +8,12 @@
   [ngIf]="!!this.urlRules && this.urlRules.length"
   [ngIfElse]="noRulesAdded"
 >
-  <div *ngFor="let kv of urlRules"></div>
+  <div *ngFor="let kv of urlRules">
+    <app-url-list-item-rule-type
+      [kvp]="kv"
+      (removeKvp)="deleteKvpFromRule($event)"
+    ></app-url-list-item-rule-type>
+  </div>
 </ng-template>
 
 <ng-template #noRulesAdded>

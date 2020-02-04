@@ -27,7 +27,6 @@ describe('UrlListItemRuleTypeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UrlListItemRuleTypeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -36,7 +35,6 @@ describe('UrlListItemRuleTypeComponent', () => {
 
   describe('url-list-item-rule-type', () => {
     beforeEach(() => {
-      fixture.detectChanges();
       component.currentKVP = {} as KeyValuePairRule;
     });
 
@@ -44,10 +42,11 @@ describe('UrlListItemRuleTypeComponent', () => {
       const kvp = {};
       kvp[faker.lorem.sentence()] = faker.lorem.sentence();
       const input: KeyValuePairRule = {
-        type: faker.random.number({
-          min: 0,
-          max: Object.keys(RuleType).length - 1
-        }) as RuleType,
+        type: faker.random.arrayElement([
+          RuleType.ACCEPTALL,
+          RuleType.REGEX,
+          RuleType.TEXTEQUALS
+        ]),
         rule: kvp
       };
 
@@ -67,10 +66,11 @@ describe('UrlListItemRuleTypeComponent', () => {
     });
 
     it('should set the rule type for current rule type', () => {
-      const testRule = faker.random.number({
-        min: 0,
-        max: Object.keys(RuleType).length - 1
-      });
+      const testRule = faker.random.arrayElement([
+        RuleType.ACCEPTALL,
+        RuleType.REGEX,
+        RuleType.TEXTEQUALS
+      ]);
       component.ruleType = testRule;
       expect(component.ruleType).toEqual(testRule);
     });
@@ -96,12 +96,23 @@ describe('UrlListItemRuleTypeComponent', () => {
 
   describe('UrlListItemRuleComponent.ruleTypeisAcceptAll', () => {
     it('Should return true if ruleType is AcceptAll', () => {
-      component.type = RuleType.ACCEPTALL;
-      expect(component.ruleTypeisAcceptAll()).toBeTruthy();
+      component.currentKVP = {
+        rule: {},
+        type: RuleType.ACCEPTALL
+      } as KeyValuePairRule;
+
+      const type = component.currentKVP.type;
+      const othertyoe = component.ruleTypeisAcceptAll();
+
+      expect(othertyoe).toBe(true);
     });
+
     it('Should return false if ruleType is not AcceptAll', () => {
-      component.type = RuleType.REGEX;
-      expect(component.ruleTypeisAcceptAll()).toBe(false);
+      component.currentKVP = {
+        rule: {},
+        type: RuleType.REGEX
+      } as KeyValuePairRule;
+      expect(component.ruleTypeisAcceptAll()).toBeFalsy();
     });
   });
 });

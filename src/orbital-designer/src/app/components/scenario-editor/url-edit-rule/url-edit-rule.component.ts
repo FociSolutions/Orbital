@@ -3,7 +3,7 @@ import { NGXLogger } from 'ngx-logger';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { EventEmitter } from '@angular/core';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefaultKey } from '../../../models/record';
+import { recordFirstOrDefault } from '../../../models/record';
 
 @Component({
   selector: 'app-url-edit-rule',
@@ -14,21 +14,20 @@ export class UrlEditRuleComponent implements OnInit {
   isValid = true;
   errorMessage = '';
   urlRuleTypeValues = RuleType;
-  @Input() urlRules: KeyValuePairRule[] = [];
+  @Input() urlRules: KeyValuePairRule[];
 
   /**
    * The add and list tiles to be added in the template
    */
   @Input() addUrlTitle: string;
 
-  @Output() urlRuleOutput: EventEmitter<KeyValuePairRule[]> = new EventEmitter<
-    KeyValuePairRule[]
-  >();
+  @Output() savedUrlEmitter: EventEmitter<KeyValuePairRule[]>;
 
   urlType: RuleType;
   urlValue = '';
   constructor(private logger: NGXLogger) {
     this.urlRules = [];
+    this.savedUrlEmitter = new EventEmitter<KeyValuePairRule[]>();
   }
 
   /**
@@ -38,8 +37,8 @@ export class UrlEditRuleComponent implements OnInit {
   addKvp(kvpToAdd: KeyValuePairRule) {
     const rulefound = this.urlRules.find(
       r =>
-        recordFirstOrDefaultKey(r.rule, '') ===
-        recordFirstOrDefaultKey(kvpToAdd.rule, '')
+        recordFirstOrDefault(r.rule, '') ===
+        recordFirstOrDefault(kvpToAdd.rule, '')
     );
     if (!rulefound) {
       this.urlRules.push(kvpToAdd);
@@ -76,7 +75,7 @@ export class UrlEditRuleComponent implements OnInit {
   @Input()
   set Save(shouldSave: boolean) {
     if (shouldSave) {
-      this.urlRuleOutput.emit(this.urlRules);
+      this.savedUrlEmitter.emit(this.urlRules);
       this.logger.debug('URL list has been saved', this.urlRules);
     }
   }

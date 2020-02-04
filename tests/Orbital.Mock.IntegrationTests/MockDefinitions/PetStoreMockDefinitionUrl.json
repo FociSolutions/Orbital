@@ -1,0 +1,210 @@
+{
+    "scenarios": [
+        {
+            "id": "98fdbd41-14e5-401d-833f-59292018557f",
+            "metadata": {
+                "title": "Get Header List Filtered",
+                "description": "Gets the list of pets but filters out based on animal type"
+            },
+            "verb": 0,
+            "path": "/petUrl/{petId}",
+            "response": {
+                "headers": {},
+                "status": "200",
+                "body": "{\n  \"petUrl\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
+            },
+            "requestMatchRules": {
+                "urlRules": [
+                    {
+                        "type": 9,
+                        "rule": {
+                            "url": ""
+                        }
+                    }
+                ],
+                "headerRules": [],
+                "queryRules": [],
+                "bodyRules": []
+            }
+        }
+    ],
+    "host": "petstore.swagger.io",
+    "basePath": "/v1",
+    "openApi": {
+        "swagger": "2.0",
+        "info": {
+            "version": "1.0.0",
+            "title": "Swagger Petstore",
+            "license": {
+                "name": "MIT"
+            }
+        },
+        "host": "petstore.swagger.io",
+        "basePath": "/v1",
+        "schemes": [
+            "http"
+        ],
+        "consumes": [
+            "application/json"
+        ],
+        "produces": [
+            "application/json"
+        ],
+        "paths": {
+            "/petUrl": {
+                "get": {
+                    "summary": "List all pets",
+                    "operationId": "listPets",
+                    "tags": [
+                        "petUrl"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "description": "How many items to return at one time (max 100)",
+                            "required": false,
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "A paged array of pets",
+                            "headers": {
+                                "x-next": {
+                                    "type": "string",
+                                    "description": "A link to the next page of responses"
+                                }
+                            },
+                            "schema": {
+                                "$ref": "#/definitions/Pets"
+                            }
+                        },
+                        "default": {
+                            "description": "unexpected error",
+                            "schema": {
+                                "$ref": "#/definitions/Error"
+                            }
+                        }
+                    }
+                },
+                "post": {
+                    "summary": "Create a pet",
+                    "operationId": "createPets",
+                    "tags": [
+                        "petUrl"
+                    ],
+                    "responses": {
+                        "201": {
+                            "description": "Null response"
+                        },
+                        "default": {
+                            "description": "unexpected error",
+                            "schema": {
+                                "$ref": "#/definitions/Error"
+                            }
+                        }
+                    }
+                },
+                "put": {
+                    "summary": "Update a pet",
+                    "operationId": "updatePets",
+                    "tags": [
+                        "petUrl"
+                    ],
+                    "responses": {
+                        "201": {
+                            "description": "Null response"
+                        },
+                        "default": {
+                            "description": "unexpected error",
+                            "schema": {
+                                "$ref": "#/definitions/Error"
+                            }
+                        }
+                    }
+                }
+            },
+            "/petUrl/{petId}": {
+                "get": {
+                    "summary": "Info for a specific pet",
+                    "operationId": "showPetById",
+                    "tags": [
+                        "petUrl"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "petId",
+                            "in": "path",
+                            "required": true,
+                            "description": "The id of the pet to retrieve",
+                            "type": "string"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Expected response to a valid request",
+                            "schema": {
+                                "$ref": "#/definitions/Pets"
+                            }
+                        },
+                        "default": {
+                            "description": "unexpected error",
+                            "schema": {
+                                "$ref": "#/definitions/Error"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "definitions": {
+            "Pet": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "tag": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Pets": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/Pet"
+                }
+            },
+            "Error": {
+                "type": "object",
+                "required": [
+                    "code",
+                    "message"
+                ],
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "metadata": {
+        "title": "petUrl",
+        "description": "Description Test"
+    }
+}

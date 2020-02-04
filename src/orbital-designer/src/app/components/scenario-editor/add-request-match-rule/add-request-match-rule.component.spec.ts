@@ -28,6 +28,9 @@ import { KvpEditRuleComponent } from '../kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from '../kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 import { KvpAddRuleComponent } from '../kvp-edit-rule/kvp-add-rule/kvp-add-rule.component';
+import { UrlAddRuleComponent } from '../url-edit-rule/url-add-rule/url-add-rule.component';
+import { UrlEditRuleComponent } from '../url-edit-rule/url-edit-rule.component';
+import { UrlListItemRuleTypeComponent } from '../url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -46,7 +49,10 @@ describe('AddRequestMatchRuleComponent', () => {
         KvpEditRuleComponent,
         KvpListItemRuleTypeComponent,
         GetRuleTypeStringPipe,
-        KvpAddRuleComponent
+        KvpAddRuleComponent,
+        UrlAddRuleComponent,
+        UrlEditRuleComponent,
+        UrlListItemRuleTypeComponent
       ],
       imports: [
         LoggerTestingModule,

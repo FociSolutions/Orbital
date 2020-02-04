@@ -37,11 +37,10 @@ export class UrlAddRuleComponent implements OnInit {
    * Checks to see if the kvp key is not empty and adds it if it is not empty
    */
   onAdd() {
-    if (
-      !this.isValueEmpty() &&
-      !this.isRegexEmpty() &&
-      !this.isRuleTypeEmpty()
-    ) {
+    if (!this.isValueEmpty() && !this.isRuleTypeEmpty()) {
+      if (this.ruleTypeisAcceptAll()) {
+        this.value = '';
+      }
       const kvpAdd = {
         type: this.ruleType,
         rule: {
@@ -70,20 +69,7 @@ export class UrlAddRuleComponent implements OnInit {
       this.logger.debug('Empty Value Field Found: Please Enter Value');
       return true;
     }
-
     return false;
-  }
-
-  /**
-   * Returns true if the value for the Regex rule type is empty and false otherwise
-   */
-  private isRegexEmpty(): boolean {
-    if (!this.value && this.ruleType === RuleType.REGEX) {
-      this.errorMessage = 'A Regex Value Must be Entered';
-      return true;
-    } else {
-      return false;
-    }
   }
 
   /*
