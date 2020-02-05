@@ -40,11 +40,17 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
   ];
 
   urlEditRuleFormGroup: FormGroup;
-
   /**
    * The kvp to be deleted by the parent
    */
   @Output() urlRuleRemovedEventEmitter = new EventEmitter<KeyValuePairRule>();
+
+  @Input()
+  set kvp(input: KeyValuePairRule) {
+    if (input) {
+      this.currentUrlRuleToEdit = input;
+    }
+  }
 
   ngOnInit() {
     this.urlEditRuleFormGroup = new FormGroup({
@@ -56,7 +62,6 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
         Validators.required
       ])
     });
-
     const pathSubscription = this.urlEditRuleFormGroup
       .get('path')
       .valueChanges.subscribe(path => {
@@ -77,14 +82,6 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
       });
 
     this.subscriptions.push(pathSubscription, ruleTypeSubscription);
-    this.path.disable();
-  }
-
-  @Input()
-  set kvp(input: KeyValuePairRule) {
-    if (input) {
-      this.currentUrlRuleToEdit = input;
-    }
   }
 
   /**
