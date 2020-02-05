@@ -13,7 +13,8 @@
     /// </summary>
     public enum ComparerType
     {
-        REGEX = 0,
+        NONE = 0,
+        REGEX,
         TEXTSTARTSWITH,
         TEXTENDSWITH,
         TEXTCONTAINS,

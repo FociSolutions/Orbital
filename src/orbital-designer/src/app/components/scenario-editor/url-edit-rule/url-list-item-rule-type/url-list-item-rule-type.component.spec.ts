@@ -1,24 +1,33 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
-import { MatCardModule } from '@angular/material';
-import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
+import {
+  MatCardModule,
+  MatInputModule,
+  MatIconModule,
+  MatSelectModule
+} from '@angular/material';
 import { UrlListItemRuleTypeComponent } from './url-list-item-rule-type.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-describe('UrlListItemRuleTypeComponent', () => {
+fdescribe('UrlListItemRuleTypeComponent', () => {
   let component: UrlListItemRuleTypeComponent;
   let fixture: ComponentFixture<UrlListItemRuleTypeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        OrbitalCommonModule,
-        MatCardModule,
         BrowserAnimationsModule,
-        LoggerTestingModule
+        LoggerTestingModule,
+        MatInputModule,
+        MatIconModule,
+        MatSelectModule,
+        MatCardModule,
+        FormsModule,
+        ReactiveFormsModule
       ],
       declarations: [UrlListItemRuleTypeComponent]
     }).compileComponents();
@@ -27,92 +36,64 @@ describe('UrlListItemRuleTypeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UrlListItemRuleTypeComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('url-list-item-rule-type', () => {
+  describe('When form group is made', () => {
+    it('should have a path from control', () => {
+      expect(component.path).toBeTruthy();
+    });
+
+    it('should have a ruleType from control', () => {
+      expect(component.ruleType).toBeTruthy();
+    });
+  });
+
+  describe('When the ruleType is ACEEPTALL', () => {
     beforeEach(() => {
-      component.currentKVP = {} as KeyValuePairRule;
+      component.ruleType.setValue(RuleType.ACCEPTALL);
     });
 
-    it('should contain correct key value pair', () => {
-      const kvp = {};
-      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
-      const input: KeyValuePairRule = {
-        type: faker.random.arrayElement([
-          RuleType.ACCEPTALL,
-          RuleType.REGEX,
-          RuleType.TEXTEQUALS
-        ]),
-        rule: kvp
-      };
-
-      component.kvp = input;
-
-      expect(component.currentKVP).toEqual(input);
-    });
-
-    it('should set the value for current url kvp', () => {
-      component.currentKVP = {
-        rule: {},
-        type: RuleType.TEXTEQUALS
-      } as KeyValuePairRule;
-      const testValue = faker.lorem.sentence();
-      component.value = testValue;
-      expect(component.value).toEqual(testValue);
-    });
-
-    it('should set the rule type for current rule type', () => {
-      const testRule = faker.random.arrayElement([
-        RuleType.ACCEPTALL,
-        RuleType.REGEX,
-        RuleType.TEXTEQUALS
-      ]);
-      component.ruleType = testRule;
-      expect(component.ruleType).toEqual(testRule);
+    it('should have the path be disabled', () => {
+      expect(component.path.status).toBe('DISABLED');
     });
   });
 
-  describe('onRemove', () => {
-    it('should emit a remove event', () => {
-      const kvp = {};
-      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
-      const input: KeyValuePairRule = {
-        type: RuleType.TEXTEQUALS,
-        rule: kvp
-      };
+  describe('When the ruleType is REGEX', () => {
+    beforeEach(() => {
+      component.ruleType.setValue(RuleType.REGEX);
+    });
 
-      component.kvp = input;
-
-      component.removeKvp.subscribe((actual: KeyValuePairRule) => {
-        expect(actual).toEqual(input);
+    describe('And path has not been set to a value', () => {
+      it('should have path set to INVALID status', () => {
+        expect(component.path.status).toBe('INVALID');
       });
-      component.onRemove();
-    });
-  });
-
-  describe('UrlListItemRuleComponent.ruleTypeisAcceptAll', () => {
-    it('Should return true if ruleType is AcceptAll', () => {
-      component.currentKVP = {
-        rule: {},
-        type: RuleType.ACCEPTALL
-      } as KeyValuePairRule;
-
-      const type = component.currentKVP.type;
-      const othertyoe = component.ruleTypeisAcceptAll();
-
-      expect(othertyoe).toBe(true);
     });
 
-    it('Should return false if ruleType is not AcceptAll', () => {
-      component.currentKVP = {
-        rule: {},
-        type: RuleType.REGEX
-      } as KeyValuePairRule;
-      expect(component.ruleTypeisAcceptAll()).toBeFalsy();
+    describe('And path has been set to a value', () => {
+      beforeEach(() => {
+        component.path.setValue('cool/path');
+      });
+      it('should have path set to VALID status', () => {
+        expect(component.path.status).toBe('VALID');
+      });
+
+      describe('And the remove button is pushed', () => {
+        it('Should emitt the urlRuleRemovedEventEmitter', done => {
+          component.urlRuleRemovedEventEmitter.subscribe(
+            (url: KeyValuePairRule) => {
+              expect(url.rule).toEqual({ urlPath: 'cool/path' });
+              done();
+            }
+          );
+
+          component.onRemove();
+        });
+      });
     });
   });
 });

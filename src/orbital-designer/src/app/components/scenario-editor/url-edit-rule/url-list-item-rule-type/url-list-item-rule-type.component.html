@@ -1,27 +1,17 @@
 <mat-card class="kvp-add-card">
-  <form class="kvp-added-item">
+  <form class="kvp-added-item" [formGroup]="urlEditRuleFormGroup">
     <div class="row">
       <mat-form-field class="kvp-value">
-        <input
-          [disabled]="ruleTypeisAcceptAll()"
-          matInput
-          maxlength="3000"
-          placeholder="Value"
-          [(ngModel)]="value"
-          name="value-input"
-          [ngModelOptions]="{ standalone: true }"
-        />
-        <mat-hint> {{ value?.length || 0 }}/3000</mat-hint>
+        <input matInput id="kvpaddpath" formControlName="path" />
+        <mat-hint> {{ path.value?.length || 0 }}/3000</mat-hint>
       </mat-form-field>
 
       <mat-form-field class="kvp-type">
         <mat-label>Select Rule</mat-label>
-        <mat-select [(ngModel)]="ruleType" name="rule-type">
-          <div *ngFor="let rule of rules">
-            <mat-option [value]="rule.value">
-              {{ rule.viewValue }}
-            </mat-option>
-          </div>
+        <mat-select formControlName="ruleType" name="rules">
+          <mat-option *ngFor="let rule of rules" [value]="rule.value">
+            {{ rule.viewValue }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -31,8 +21,10 @@
         </button>
       </div>
     </div>
-    <div class="error-message" *ngIf="isValueEmpty()">
-      Regex value is required
+    <div *ngIf="ruleType.invalid && (ruleType.dirty || ruleType.touched)">
+      <mat-error *ngIf="ruleType.errors.required">
+        Url rule type is required
+      </mat-error>
     </div>
   </form>
 </mat-card>

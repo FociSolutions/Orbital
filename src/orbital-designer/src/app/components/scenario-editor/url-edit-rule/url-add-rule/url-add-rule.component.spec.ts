@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 
-fdescribe('UrlAddRuleComponent', () => {
+describe('UrlAddRuleComponent', () => {
   let component: UrlAddRuleComponent;
   let fixture: ComponentFixture<UrlAddRuleComponent>;
 
