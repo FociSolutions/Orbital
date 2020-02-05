@@ -28,10 +28,7 @@ import { Subscription } from 'rxjs';
 })
 export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
-  private currentUrlRuleToEdit = {
-    rule: { urlPath: '' } as Record<string, string>,
-    type: RuleType.ACCEPTALL
-  } as KeyValuePairRule;
+  private currentUrlRuleToEdit = {} as KeyValuePairRule;
 
   readonly rules = [
     { value: RuleType.REGEX, viewValue: 'Matches Regex' },
@@ -54,10 +51,10 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.urlEditRuleFormGroup = new FormGroup({
-      path: new FormControl(this.currentUrlRuleToEdit.rule['urlPath'], [
-        Validators.required,
-        Validators.maxLength(3000)
-      ]),
+      path: new FormControl(
+        recordFirstOrDefault(this.currentUrlRuleToEdit.rule, 'urlPath'),
+        [Validators.required, Validators.maxLength(3000)]
+      ),
       ruleType: new FormControl(this.currentUrlRuleToEdit.type, [
         Validators.required
       ])
@@ -65,7 +62,11 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
     const pathSubscription = this.urlEditRuleFormGroup
       .get('path')
       .valueChanges.subscribe(path => {
-        this.currentUrlRuleToEdit.rule['urlPath'] = path;
+        recordAdd(
+          this.currentUrlRuleToEdit.rule,
+          recordFirstOrDefaultKey(this.currentUrlRuleToEdit.rule, 'urlPath'),
+          path
+        );
       });
 
     const ruleTypeSubscription = this.urlEditRuleFormGroup
@@ -80,6 +81,10 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
           this.path.enable();
         }
       });
+
+    if (this.currentUrlRuleToEdit.type === RuleType.ACCEPTALL) {
+      this.path.disable();
+    }
 
     this.subscriptions.push(pathSubscription, ruleTypeSubscription);
   }
