@@ -54,11 +54,7 @@
           </mat-panel-title>
           <mat-divider></mat-divider>
         </mat-expansion-panel-header>
-        <app-url-edit-rule
-          [urlRules]="this.requestMatchRule?.urlRules"
-          [Save]="this.shouldSave"
-          (savedUrlEmitter)="handleUrlOutput($event)"
-        >
+        <app-url-edit-rule (savedUrlEmitter)="handleUrlOutput($event)">
         </app-url-edit-rule>
       </mat-expansion-panel>
     </mat-accordion>
