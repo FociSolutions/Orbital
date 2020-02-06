@@ -11,7 +11,7 @@ import {
   MatIconModule,
   MatCheckboxModule
 } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
 import { KvpAddComponent } from '../../orbital-common/kvp-edit/kvp-add/kvp-add.component';
@@ -66,7 +66,8 @@ describe('AddRequestMatchRuleComponent', () => {
         LoggerTestingModule,
         MatDividerModule,
         MatIconModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        ReactiveFormsModule
       ]
     }).compileComponents();
   }));

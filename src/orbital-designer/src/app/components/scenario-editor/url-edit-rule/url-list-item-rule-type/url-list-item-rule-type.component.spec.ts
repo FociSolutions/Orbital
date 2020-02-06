@@ -13,7 +13,7 @@ import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/ke
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-fdescribe('UrlListItemRuleTypeComponent', () => {
+describe('UrlListItemRuleTypeComponent', () => {
   let component: UrlListItemRuleTypeComponent;
   let fixture: ComponentFixture<UrlListItemRuleTypeComponent>;
 

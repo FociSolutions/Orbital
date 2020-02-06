@@ -28,7 +28,10 @@ import { Subscription } from 'rxjs';
 })
 export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
-  private currentUrlRuleToEdit = {} as KeyValuePairRule;
+  private currentUrlRuleToEdit = {
+    rule: { urlPath: '' } as Record<string, string>,
+    type: RuleType.ACCEPTALL
+  } as KeyValuePairRule;
 
   readonly rules = [
     { value: RuleType.REGEX, viewValue: 'Matches Regex' },
