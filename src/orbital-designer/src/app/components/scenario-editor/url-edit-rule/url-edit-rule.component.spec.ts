@@ -51,7 +51,7 @@ describe('UrlEditRuleComponent', () => {
         }
       ] as KeyValuePairRule[];
       component.urlRules = kvpType;
-      component.deleteKvpFromRule(undefined);
+      component.deleteUrlEditRuleHandler(undefined);
       expect(component.urlRules.length).toBe(1);
     });
 
@@ -65,7 +65,7 @@ describe('UrlEditRuleComponent', () => {
         }
       ] as KeyValuePairRule[];
       component.urlRules = kvpType;
-      component.deleteKvpFromRule(undefined);
+      component.deleteUrlEditRuleHandler(undefined);
       expect(component.urlRules.length).toBe(1);
     });
 
@@ -80,7 +80,7 @@ describe('UrlEditRuleComponent', () => {
         }
       ] as KeyValuePairRule[];
       component.urlRules = kvpType;
-      component.deleteKvpFromRule(kvpType[0]);
+      component.deleteUrlEditRuleHandler(kvpType[0]);
       expect(component.urlRules.length).toBe(0);
     });
 
@@ -111,42 +111,8 @@ describe('UrlEditRuleComponent', () => {
         }
       ] as KeyValuePairRule[];
       component.urlRules = kvpType;
-      component.deleteKvpFromRule(kvpType[0]);
+      component.deleteUrlEditRuleHandler(kvpType[0]);
       expect(component.urlRules.length).toBe(2);
-    });
-  });
-
-  describe('UrlEditRuleComponent.kvpType setter', () => {
-    it('should not set the kvpType if it is undefined', () => {
-      const kvpType = [
-        {
-          type: faker.random.number({
-            min: 0,
-            max: Object.keys(RuleType).length - 1
-          }) as RuleType,
-          rule: { test: faker.random.word() } as Record<string, string>
-        }
-      ] as KeyValuePairRule[];
-
-      // it is ok to set it twice (normally this is redundant) as it is checking if the setter
-      // does not set if it is previously defined
-      component.kvpType = kvpType;
-      component.kvpType = undefined;
-      expect(component.urlRules).toEqual(kvpType);
-    });
-
-    it('should set the kvpType if it is defined', () => {
-      const kvpType = [
-        {
-          type: faker.random.number({
-            min: 0,
-            max: Object.keys(RuleType).length - 1
-          }) as RuleType,
-          rule: { test: faker.random.word() } as Record<string, string>
-        }
-      ] as KeyValuePairRule[];
-      component.kvpType = kvpType;
-      expect(component.urlRules).toEqual(kvpType);
     });
   });
 
@@ -161,7 +127,7 @@ describe('UrlEditRuleComponent', () => {
           [faker.random.word()]: faker.random.word()
         } as Record<string, string>
       } as KeyValuePairRule;
-      component.addKvp(kvp);
+      component.addUrlEditRuleHandler(kvp);
       expect(component.urlRules.length).toBe(1);
       expect(component.urlRules[0]).toEqual(kvp);
     });
@@ -177,8 +143,8 @@ describe('UrlEditRuleComponent', () => {
         [faker.random.word()]: faker.random.word()
       } as Record<string, string>
     } as KeyValuePairRule;
-    component.addKvp(kvp);
-    component.addKvp(kvp);
+    component.addUrlEditRuleHandler(kvp);
+    component.addUrlEditRuleHandler(kvp);
     expect(component.urlRules.length).toBe(1);
     expect(component.urlRules[0]).toEqual(kvp);
   });

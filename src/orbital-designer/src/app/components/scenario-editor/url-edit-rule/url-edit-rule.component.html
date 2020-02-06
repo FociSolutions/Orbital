@@ -1,12 +1,13 @@
-<p class="description">{{ addUrlTitle }}</p>
+<p class="description">Add New Url Match Rule</p>
 
 <div class="kvp-edit-rule">
   <mat-divider class="divider-padding"></mat-divider>
   <app-url-add-rule
     class="add-rule"
-    (urlRuleAddedEventEmitter)="addKvp($event)"
+    (urlRuleAddedEventEmitter)="addUrlEditRuleHandler($event)"
   ></app-url-add-rule>
 </div>
+
 <ng-template
   [ngIf]="!!this.urlRules && this.urlRules.length"
   [ngIfElse]="noRulesAdded"
@@ -14,7 +15,7 @@
   <div *ngFor="let kv of urlRules">
     <app-url-list-item-rule-type
       [kvp]="kv"
-      (urlRuleRemovedEventEmitter)="deleteKvpFromRule($event)"
+      (urlRuleRemovedEventEmitter)="deleteUrlEditRuleHandler($event)"
     ></app-url-list-item-rule-type>
   </div>
 </ng-template>

@@ -1,4 +1,3 @@
-
 /**
  * Model representation of a mock response
  */
@@ -7,3 +6,9 @@ export interface Response {
   body: string;
   status: number;
 }
+
+export const defaultResponse: Response = {
+  headers: {},
+  body: '',
+  status: 200
+};

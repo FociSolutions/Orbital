@@ -56,7 +56,6 @@
         </mat-expansion-panel-header>
         <app-url-edit-rule
           [urlRules]="this.requestMatchRule?.urlRules"
-          [addUrlTitle]="'Add New Url Match Rule'"
           [Save]="this.shouldSave"
           (savedUrlEmitter)="handleUrlOutput($event)"
         >
