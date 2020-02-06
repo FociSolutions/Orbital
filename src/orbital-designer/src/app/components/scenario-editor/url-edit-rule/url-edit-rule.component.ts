@@ -16,14 +16,11 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
 
   urlRules: KeyValuePairRule[];
 
-  @Output() savedUrlEmitter: EventEmitter<KeyValuePairRule[]>;
-
   constructor(
     private scenarioEditorService: ScenarioEditorService,
     private logger: NGXLogger
   ) {
     this.urlRules = [];
-    this.savedUrlEmitter = new EventEmitter<KeyValuePairRule[]>();
   }
 
   ngOnInit(): void {

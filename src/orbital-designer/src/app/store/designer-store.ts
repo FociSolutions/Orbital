@@ -278,7 +278,6 @@ export class DesignerStore extends Store<State> {
         current = scenario;
         currentMock.scenarios.push(current);
       }
-      this.selectedScenario = current;
     }
   }
 

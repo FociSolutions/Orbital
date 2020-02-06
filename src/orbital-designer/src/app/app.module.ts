@@ -49,6 +49,7 @@ import { UrlEditRuleComponent } from './components/scenario-editor/url-edit-rule
 import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
 // tslint:disable-next-line: max-line-length
 import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
+import { ScenarioEditorService } from './components/scenario-editor/services/scenario-editor.service';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,7 @@ import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-e
     MatExpansionModule,
     MatChipsModule
   ],
-  providers: [DesignerStore],
+  providers: [DesignerStore, ScenarioEditorService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

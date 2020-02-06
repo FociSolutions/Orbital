@@ -7,6 +7,7 @@ import {
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { map, filter } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
+import { DesignerStore } from 'src/app/store/designer-store';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,15 @@ export class ScenarioEditorService {
   private scenarioOnChangeSubject: BehaviorSubject<Scenario>;
   private scenarioOnChangeObservable: Observable<Scenario>;
 
-  constructor() {
+  constructor(private designerStore: DesignerStore) {
     this.scenarioOnChangeSubject = new BehaviorSubject<Scenario>(
       defaultScenario
     );
+
+    this.designerStore.state$.subscribe(state =>
+      this.scenarioOnChangeSubject.next(state.selectedScenario)
+    );
+
     this.scenarioOnChangeObservable = this.scenarioOnChangeSubject.asObservable();
   }
 
