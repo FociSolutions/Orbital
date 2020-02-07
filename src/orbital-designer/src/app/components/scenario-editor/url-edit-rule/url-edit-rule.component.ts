@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { EventEmitter } from '@angular/core';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { recordFirstOrDefault } from '../../../models/record';
 import { ScenarioEditorService } from '../services/scenario-editor.service';
 import { Subscription } from 'rxjs';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-url-edit-rule',
@@ -42,7 +42,8 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
     );
     if (!rulefound) {
       this.urlRules.push(kvpToAdd);
-      this.scenarioEditorService.updateUrlEditRules(this.urlRules);
+      const newUrlRules = cloneDeep(this.urlRules);
+      this.scenarioEditorService.updateUrlEditRules(newUrlRules);
       this.logger.debug('UrlEditRuleComponent: ', this.urlRules);
     }
   }
