@@ -13,7 +13,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { ScenarioEditorService } from '../services/scenario-editor.service';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
-fdescribe('UrlEditRuleComponent', () => {
+describe('UrlEditRuleComponent', () => {
   let component: UrlEditRuleComponent;
   let fixture: ComponentFixture<UrlEditRuleComponent>;
 

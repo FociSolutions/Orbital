@@ -46,7 +46,7 @@ export class ScenarioEditorService {
   }
 
   /**
-   * Updated the Url Edit Rules, and pushed the values to the Scenario Subject
+   * Updates the Url Edit Rules and pushes the new values to the Scenario Subject
    * @param urlEditRules The new list of Url Edit Rules
    */
   updateUrlEditRules(urlEditRules: KeyValuePairRule[]): void {
