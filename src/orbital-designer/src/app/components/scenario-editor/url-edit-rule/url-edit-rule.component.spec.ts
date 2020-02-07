@@ -9,8 +9,11 @@ import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-v
 import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { UrlAddRuleComponent } from './url-add-rule/url-add-rule.component';
 import { UrlListItemRuleTypeComponent } from './url-list-item-rule-type/url-list-item-rule-type.component';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { ScenarioEditorService } from '../services/scenario-editor.service';
+import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
-describe('UrlEditRuleComponent', () => {
+fdescribe('UrlEditRuleComponent', () => {
   let component: UrlEditRuleComponent;
   let fixture: ComponentFixture<UrlEditRuleComponent>;
 
@@ -26,13 +29,17 @@ describe('UrlEditRuleComponent', () => {
         UrlEditRuleComponent,
         UrlAddRuleComponent,
         UrlListItemRuleTypeComponent
-      ]
+      ],
+      providers: [DesignerStore, ScenarioEditorService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UrlEditRuleComponent);
     component = fixture.componentInstance;
+    const designerStore = TestBed.get(DesignerStore) as DesignerStore;
+    designerStore.selectedScenario = defaultScenario;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -116,7 +123,7 @@ describe('UrlEditRuleComponent', () => {
     });
   });
 
-  describe('KvpEditRuleComponent.addKvp', () => {
+  describe('UrlEditRuleComponent.addUrlEditRuleHandler', () => {
     it('should save valid key value pair', () => {
       const kvp = {
         type: faker.random.number({
@@ -143,7 +150,7 @@ describe('UrlEditRuleComponent', () => {
         [faker.random.word()]: faker.random.word()
       } as Record<string, string>
     } as KeyValuePairRule;
-    component.addUrlEditRuleHandler(kvp);
+    component.urlRules = [kvp];
     component.addUrlEditRuleHandler(kvp);
     expect(component.urlRules.length).toBe(1);
     expect(component.urlRules[0]).toEqual(kvp);

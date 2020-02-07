@@ -31,6 +31,8 @@ import { KvpAddRuleComponent } from '../kvp-edit-rule/kvp-add-rule/kvp-add-rule.
 import { UrlAddRuleComponent } from '../url-edit-rule/url-add-rule/url-add-rule.component';
 import { UrlEditRuleComponent } from '../url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from '../url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { ScenarioEditorService } from '../services/scenario-editor.service';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -68,7 +70,8 @@ describe('AddRequestMatchRuleComponent', () => {
         MatIconModule,
         MatCheckboxModule,
         ReactiveFormsModule
-      ]
+      ],
+      providers: [DesignerStore, ScenarioEditorService]
     }).compileComponents();
   }));
 
