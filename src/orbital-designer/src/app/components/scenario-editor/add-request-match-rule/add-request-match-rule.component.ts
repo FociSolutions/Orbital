@@ -12,7 +12,6 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 import { KeyValue } from '@angular/common';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { ScenarioEditorService } from '../services/scenario-editor.service';
-import { url } from 'inspector';
 import { Subscription } from 'rxjs';
 
 @Component({
