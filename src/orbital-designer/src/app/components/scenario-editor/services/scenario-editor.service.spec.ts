@@ -7,7 +7,7 @@ import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
-fdescribe('Service: ScenarioEditor', () => {
+describe('Service: ScenarioEditor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerTestingModule],
