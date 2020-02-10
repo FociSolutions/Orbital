@@ -253,7 +253,7 @@ describe('DesignerStore', () => {
     });
   });
 
-  describe('DesignerStore.deleteMockDefinitionByTitle()', () => {
+  fdescribe('DesignerStore.deleteMockDefinitionByTitle()', () => {
     it('should delete a mock definition by title if it exists in the store', () => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
@@ -283,10 +283,6 @@ describe('DesignerStore', () => {
       store.deleteMockDefinitionByTitle('Invalid');
       expect(recordSize(store.state.mockDefinitions)).toBe(1);
       expect(store.state.mockDefinition).toEqual(mockDef);
-    });
-
-    it('should not throw an exception when trying to delete a mock that does not exist', () => {
-      store.deleteMockDefinitionByTitle(faker.random.word());
     });
 
     it('should delete the state when the state is changed by deleting a single mock definition', () => {
