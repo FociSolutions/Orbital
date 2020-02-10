@@ -45,5 +45,8 @@
     <div class="error-message" *ngIf="!this.isValid">
       {{ this.errorMessage }}
     </div>
+    <div class="error-message" *ngIf="this.ruleIsDuplicated">
+      <mat-error>Rule already exists</mat-error>
+    </div>
   </mat-card-content>
 </mat-card>

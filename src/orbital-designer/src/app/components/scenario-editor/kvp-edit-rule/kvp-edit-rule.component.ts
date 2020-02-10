@@ -24,15 +24,16 @@ export class KvpEditRuleComponent implements OnInit {
    */
   @Output() savedKvpEmitter: EventEmitter<KeyValuePairRule[]>;
 
-  @Output() kvpAddErrorMessage: EventEmitter<string>;
+  @Output() kvpIsDuplicated: EventEmitter<boolean>;
 
   constructor(private logger: NGXLogger) {
     this.savedKvpEmitter = new EventEmitter<KeyValuePairRule[]>();
     this.savedKvpType = [];
-    this.kvpAddErrorMessage = new EventEmitter<string>();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.kvpIsDuplicated = new EventEmitter<boolean>();
+  }
 
   /**
    * This setter calls the emitter for the saved kvp list if shouldSave is true
@@ -81,9 +82,9 @@ export class KvpEditRuleComponent implements OnInit {
     if (!rulefound) {
       this.savedKvpType.push(kvpToAdd);
       this.logger.debug('KvpEditRuleComponent: ', this.savedKvpType);
-      this.kvpAddErrorMessage.emit('');
+      this.kvpIsDuplicated.emit(false);
     } else {
-      this.kvpAddErrorMessage.emit('Rule already exists');
+      this.kvpIsDuplicated.emit(true);
     }
   }
 }

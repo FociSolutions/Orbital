@@ -10,7 +10,7 @@ import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/ke
   styleUrls: ['./kvp-add-rule.component.scss']
 })
 export class KvpAddRuleComponent implements OnInit {
-  @Input() kvpAddedError: EventEmitter<string>;
+  @Input() kvpAddedError: EventEmitter<boolean>;
   // The kvp to be outputted to parent
   @Output() kvp = new EventEmitter<KeyValuePairRule>();
 
@@ -19,6 +19,7 @@ export class KvpAddRuleComponent implements OnInit {
   value: string;
   isValid: boolean;
   errorMessage: string;
+  ruleIsDuplicated: boolean;
 
   ruleType: RuleType;
   readonly rules = [
@@ -36,17 +37,17 @@ export class KvpAddRuleComponent implements OnInit {
     this.value = '';
     this.isValid = true;
     this.errorMessage = '';
+    this.ruleIsDuplicated = false;
 
-    this.kvpAddedError.subscribe((e: string) => {
-      if (!!e) {
-        this.isValid = false;
-        this.errorMessage = e;
-      } else {
-        this.isValid = true;
-        this.key = '';
-        this.value = '';
-      }
-    });
+    if (!!this.kvpAddedError) {
+      this.kvpAddedError.subscribe((e: boolean) => {
+        this.ruleIsDuplicated = e;
+        if (!e) {
+          this.key = '';
+          this.value = '';
+        }
+      });
+    }
   }
 
   /**
@@ -63,6 +64,7 @@ export class KvpAddRuleComponent implements OnInit {
 
       this.kvp.emit(kvpAdd);
       this.logger.debug('KvpAddComponent:onAdd: KVP emitted to parent', kvpAdd);
+      this.isValid = true;
     } else {
       this.isValid = false;
     }
