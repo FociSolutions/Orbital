@@ -253,7 +253,7 @@ describe('DesignerStore', () => {
     });
   });
 
-  fdescribe('DesignerStore.deleteMockDefinitionByTitle()', () => {
+  describe('DesignerStore.deleteMockDefinitionByTitle()', () => {
     it('should delete a mock definition by title if it exists in the store', () => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
