@@ -32,7 +32,7 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
   } as KeyValuePairRule;
   private ruleIsDuplicated = false;
 
-  @Input() urlRuleAddedIsDuplicated: EventEmitter<boolean>;
+  @Input() urlRuleAddedIsDuplicated = new EventEmitter<boolean>();
   @Output() urlRuleAddedEventEmitter = new EventEmitter<KeyValuePairRule>();
 
   readonly rules = [
