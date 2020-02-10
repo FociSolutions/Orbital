@@ -3,7 +3,8 @@ import {
   OnInit,
   EventEmitter,
   Output,
-  OnDestroy
+  OnDestroy,
+  Input
 } from '@angular/core';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
@@ -29,7 +30,9 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
     rule: { urlPath: '' } as Record<string, string>,
     type: RuleType.ACCEPTALL
   } as KeyValuePairRule;
+  private ruleIsDuplicated = false;
 
+  @Input() urlRuleAddedIsDuplicated: EventEmitter<boolean>;
   @Output() urlRuleAddedEventEmitter = new EventEmitter<KeyValuePairRule>();
 
   readonly rules = [
@@ -39,8 +42,10 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
   ];
 
   urlAddRuleFormGroup: FormGroup;
-
   ngOnInit() {
+    const urlDuplicatedSubscription = this.urlRuleAddedIsDuplicated.subscribe(
+      isDuplicated => (this.ruleIsDuplicated = isDuplicated)
+    );
     this.urlAddRuleFormGroup = new FormGroup({
       path: new FormControl(this.urlRuleInEdit.rule['urlPath'], [
         Validators.required,
@@ -68,10 +73,21 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.subscriptions.push(pathSubscription, ruleTypeSubscription);
+    this.subscriptions.push(
+      pathSubscription,
+      ruleTypeSubscription,
+      urlDuplicatedSubscription
+    );
     this.path.disable();
   }
 
+  /**
+   *
+   * Gets the boolean indicating if the rule to be added is duplicated.
+   */
+  get isRuleDuplicated(): boolean {
+    return this.ruleIsDuplicated;
+  }
   /**
    * Gets the form control for the 'path'
    */

@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { recordFirstOrDefault } from '../../../models/record';
@@ -15,12 +21,14 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   urlRules: KeyValuePairRule[];
-
+  @Output() urlRuleIsDuplicated: EventEmitter<boolean>;
   constructor(
     private scenarioEditorService: ScenarioEditorService,
     private logger: NGXLogger
   ) {
     this.urlRules = [];
+    this.urlRuleIsDuplicated = new EventEmitter<boolean>();
+    this.urlRuleIsDuplicated.emit(false);
   }
 
   ngOnInit(): void {
@@ -38,13 +46,16 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
     const rulefound = this.urlRules.find(
       r =>
         recordFirstOrDefault(r.rule, '') ===
-        recordFirstOrDefault(kvpToAdd.rule, '')
+          recordFirstOrDefault(kvpToAdd.rule, '') && r.type === kvpToAdd.type
     );
     if (!rulefound) {
       this.urlRules.push(kvpToAdd);
       const newUrlRules = cloneDeep(this.urlRules);
       this.scenarioEditorService.updateUrlEditRules(newUrlRules);
+      this.urlRuleIsDuplicated.emit(false);
       this.logger.debug('UrlEditRuleComponent: ', this.urlRules);
+    } else {
+      this.urlRuleIsDuplicated.emit(true);
     }
   }
 

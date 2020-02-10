@@ -5,6 +5,7 @@
   <app-url-add-rule
     class="add-rule"
     (urlRuleAddedEventEmitter)="addUrlEditRuleHandler($event)"
+    [urlRuleAddedIsDuplicated]="this.urlRuleIsDuplicated"
   ></app-url-add-rule>
 </div>
 
