@@ -1,15 +1,11 @@
 <mat-accordion>
-  <mat-expansion-panel
-    [disabled]="this.isCardDisabled"
-    [expanded]="this.panelExpanded"
-  >
+  <mat-expansion-panel [disabled]="this.isCardDisabled" [expanded]="this.panelExpanded">
     <mat-expansion-panel-header class="right-aligned-header">
       <mat-panel-title>
         Request Match Rules
       </mat-panel-title>
       <mat-panel-description
-        >Query Match Rules, Header Match Rules, Url Match Rules and Body Match
-        Rules</mat-panel-description
+        >Query Match Rules, Header Match Rules, Url Match Rules and Body Match Rules</mat-panel-description
       >
     </mat-expansion-panel-header>
     <mat-accordion>
@@ -54,7 +50,8 @@
           </mat-panel-title>
           <mat-divider></mat-divider>
         </mat-expansion-panel-header>
-        <app-url-edit-rule> </app-url-edit-rule>
+        <app-url-edit-rule [urlMatchRuleFormGroupInput]="requestMatchRuleFormGroup.controls.urlMatchRules">
+        </app-url-edit-rule>
       </mat-expansion-panel>
     </mat-accordion>
     <mat-accordion>

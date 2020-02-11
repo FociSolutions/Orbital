@@ -9,14 +9,11 @@
   ></app-url-add-rule>
 </div>
 
-<ng-template
-  [ngIf]="!!this.urlRules && this.urlRules.length"
-  [ngIfElse]="noRulesAdded"
->
-  <div *ngFor="let kv of urlRules">
+<ng-template [ngIf]="this.urlMatchRuleFormGroupInput.controls.length" [ngIfElse]="noRulesAdded">
+  <div *ngFor="let urlruleform of urlMatchRuleFormGroupInput.controls; let i = index">
     <app-url-list-item-rule-type
-      [kvp]="kv"
-      (urlRuleRemovedEventEmitter)="deleteUrlEditRuleHandler($event)"
+      [urlEditRuleFormGroup]="urlruleform"
+      (urlRuleRemovedEventEmitter)="deleteUrlEditRuleHandler(i)"
     ></app-url-list-item-rule-type>
   </div>
 </ng-template>

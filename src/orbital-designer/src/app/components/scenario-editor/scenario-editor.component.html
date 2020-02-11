@@ -21,6 +21,7 @@
           <app-add-request-match-rule
             [requestMatchRule]="this.selectedScenario?.requestMatchRules"
             (requestMatchRuleOutput)="handleRequestMatchRuleOutput($event)"
+            [requestMatchRuleFormGroup]="this.scenarioFormGroup.controls.requestMatchRules"
             [saveStatus]="this.shouldSave"
           >
           </app-add-request-match-rule>
@@ -33,22 +34,12 @@
           </app-add-response>
           <div class="row" style="justify-content: space-between">
             <div id="scenario-back-button-div">
-              <button
-                id="go-to-scenarios"
-                color="primary"
-                mat-raised-button
-                (click)="cancel()"
-              >
+              <button id="go-to-scenarios" color="primary" mat-raised-button (click)="cancel()">
                 Back to Scenarios
               </button>
             </div>
             <div id="save-button-div">
-              <button
-                id="save-button"
-                color="primary"
-                mat-raised-button
-                (click)="save()"
-              >
+              <button id="save-button" color="primary" mat-raised-button (click)="save()">
                 Save
               </button>
             </div>
@@ -63,10 +54,9 @@
   <div class="title column center">
     <div class="endpoint-info">
       <mat-chip-list
-        ><mat-chip
-          [style.background-color]="this.endpointVerb | getVerbColor"
-          >{{ this.endpointVerb | getVerbString }}</mat-chip
-        >
+        ><mat-chip [style.background-color]="this.endpointVerb | getVerbColor">{{
+          this.endpointVerb | getVerbString
+        }}</mat-chip>
       </mat-chip-list>
       <h3>
         {{ this.endpointPath }}

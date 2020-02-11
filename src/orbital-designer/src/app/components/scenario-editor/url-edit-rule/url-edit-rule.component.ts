@@ -1,16 +1,10 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Output,
-  EventEmitter
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { recordFirstOrDefault } from '../../../models/record';
-import { ScenarioEditorService } from '../services/scenario-editor.service';
 import { Subscription } from 'rxjs';
-import { cloneDeep } from 'lodash';
+import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
+import { FormArray, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-url-edit-rule',
@@ -22,38 +16,27 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
 
   urlRules: KeyValuePairRule[];
   @Output() urlRuleIsDuplicated: EventEmitter<boolean>;
-  constructor(
-    private scenarioEditorService: ScenarioEditorService,
-    private logger: NGXLogger
-  ) {
+  @Input() urlMatchRuleFormGroupInput: FormArray;
+  constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
     this.urlRules = [];
     this.urlRuleIsDuplicated = new EventEmitter<boolean>();
     this.urlRuleIsDuplicated.emit(false);
   }
 
-  ngOnInit(): void {
-    const urlSubscription = this.scenarioEditorService.urlEditRulesOnChange$.subscribe(
-      rules => (this.urlRules = rules)
-    );
-    this.subscriptions.push(urlSubscription);
-  }
+  ngOnInit(): void {}
 
   /**
    * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
    * @param kvp The KeyValue pair rule being taken in from the child component to be added
    */
   addUrlEditRuleHandler(kvpToAdd: KeyValuePairRule) {
-    const rulefound = this.urlRules.find(
-      r =>
-        recordFirstOrDefault(r.rule, '') ===
-          recordFirstOrDefault(kvpToAdd.rule, '') && r.type === kvpToAdd.type
-    );
-    if (!rulefound) {
-      this.urlRules.push(kvpToAdd);
-      const newUrlRules = cloneDeep(this.urlRules);
-      this.scenarioEditorService.updateUrlEditRules(newUrlRules);
+    const ruleFound = this.isUrlRuleDuplicate(kvpToAdd);
+    if (!ruleFound) {
       this.urlRuleIsDuplicated.emit(false);
-      this.logger.debug('UrlEditRuleComponent: ', this.urlRules);
+      const index = this.urlMatchRuleFormGroupInput.length;
+      const newUrlRuleControl = this.formbuilder.getUrlitemFormGroup(kvpToAdd);
+      this.urlMatchRuleFormGroupInput.insert(index, newUrlRuleControl);
+      this.logger.debug('UrlEditRuleComponent new rule added : ', kvpToAdd);
     } else {
       this.urlRuleIsDuplicated.emit(true);
     }
@@ -63,14 +46,28 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
    * @param kvp The KeyValue pair rule being taken in from the child component to be deleted
    */
-  deleteUrlEditRuleHandler(kvpToDelete: KeyValuePairRule) {
-    if (!!kvpToDelete && !!kvpToDelete.rule) {
-      this.urlRules = this.urlRules.filter(
-        element => element.rule !== kvpToDelete.rule
-      );
-      this.scenarioEditorService.updateUrlEditRules(this.urlRules);
-      this.logger.debug('Delete Path Rule from KVP', kvpToDelete);
+  deleteUrlEditRuleHandler(indexPosition: number) {
+    this.urlMatchRuleFormGroupInput.removeAt(indexPosition);
+    this.logger.debug('Delete Path Rule from url list at index: ', indexPosition);
+  }
+
+  /**
+   * checks if the keyvaluepairrule is inside the current form array
+   *
+   */
+  private isUrlRuleDuplicate(kvpToAdd: KeyValuePairRule): boolean {
+    interface UrlRuleFormGroup {
+      path: string;
+      ruleType: number;
     }
+
+    return this.urlMatchRuleFormGroupInput.controls
+      .map(group => {
+        return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
+      })
+      .some(urlFormGroup => {
+        return urlFormGroup.path === recordFirstOrDefault(kvpToAdd.rule, '') && urlFormGroup.ruleType === kvpToAdd.type;
+      });
   }
 
   /**

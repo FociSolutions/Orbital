@@ -1,33 +1,23 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { NGXLogger } from 'ngx-logger';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { KeyValue } from '@angular/common';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { ScenarioEditorService } from '../services/scenario-editor.service';
-import { Subscription } from 'rxjs';
+import { FormGroup, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-request-match-rule',
   templateUrl: './add-request-match-rule.component.html',
   styleUrls: ['./add-request-match-rule.component.scss']
 })
-export class AddRequestMatchRuleComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRule: RequestMatchRule;
   @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
+  @Input() requestMatchRuleFormGroup: FormGroup;
 
   headerMatchRules: KeyValuePairRule[];
   queryMatchRules: KeyValuePairRule[];
   bodyMatchRules: BodyRule[];
-  urlMatchRules: KeyValuePairRule[];
 
   shouldSave: boolean;
   panelExpanded: boolean;
@@ -37,27 +27,14 @@ export class AddRequestMatchRuleComponent implements OnInit, OnDestroy {
   queryEmitted: boolean;
   bodyEmitted: boolean;
 
-  constructor(
-    private scenarioEditorService: ScenarioEditorService,
-    private logger: NGXLogger
-  ) {
+  constructor(private logger: NGXLogger) {
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
     this.headerMatchRules = [];
     this.queryMatchRules = [];
     this.bodyMatchRules = [];
-    this.urlMatchRules = [];
   }
 
-  ngOnInit() {
-    const urlChangeSubscription = this.scenarioEditorService.urlEditRulesOnChange$.subscribe(
-      urlRules => {
-        this.urlMatchRules = urlRules;
-        this._save();
-      }
-    );
-
-    this.subscriptions.push(urlChangeSubscription);
-  }
+  ngOnInit() {}
 
   /*
    * Sets the save status
@@ -76,14 +53,10 @@ export class AddRequestMatchRuleComponent implements OnInit, OnDestroy {
       const requestToEmit = {
         headerRules: this.headerMatchRules,
         queryRules: this.queryMatchRules,
-        bodyRules: this.bodyMatchRules,
-        urlRules: this.urlMatchRules
+        bodyRules: this.bodyMatchRules
       } as RequestMatchRule;
       this.requestMatchRuleOutput.emit(requestToEmit);
-      this.logger.debug(
-        'The request match rules have been emitted',
-        requestToEmit
-      );
+      this.logger.debug('The request match rules have been emitted', requestToEmit);
       this.headerEmitted = false;
       this.queryEmitted = false;
       this.bodyEmitted = false;
@@ -121,14 +94,5 @@ export class AddRequestMatchRuleComponent implements OnInit, OnDestroy {
     this.logger.debug('Set the body match rules to', bodyMatchRules);
     this.bodyMatchRules = bodyMatchRules;
     this._save();
-  }
-
-  /**
-   * Implementation for NG On Destroy
-   */
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
-      subscription.unsubscribe();
-    });
   }
 }
