@@ -66,10 +66,7 @@ export class ScenarioFormBuilder {
 
   public getUrlItemFormGroup(urlRule: KeyValuePairRule) {
     return new FormGroup({
-      path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
-        Validators.required,
-        Validators.maxLength(3000)
-      ]),
+      path: new FormControl(recordFirstOrDefault(urlRule.rule, ''), [Validators.required, Validators.maxLength(3000)]),
       ruleType: new FormControl(urlRule.type, [Validators.required])
     });
   }
@@ -89,7 +86,7 @@ export class ScenarioFormMapper {
 
     urlRules = urlMatchRules.controls
       .map(group => {
-        return group.value as UrlRuleFormGroup;
+        return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
       })
       .map(urlFormGroup => {
         return {
