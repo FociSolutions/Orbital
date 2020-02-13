@@ -5,7 +5,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 
 describe('UrlListItemRuleTypeComponent', () => {
   let component: UrlListItemRuleTypeComponent;
@@ -30,6 +31,10 @@ describe('UrlListItemRuleTypeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UrlListItemRuleTypeComponent);
     component = fixture.componentInstance;
+    component.urlEditRuleFormGroup = new FormGroup({
+      path: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
+      ruleType: new FormControl(RuleType.NONE, [Validators.required])
+    });
     fixture.detectChanges();
   });
 

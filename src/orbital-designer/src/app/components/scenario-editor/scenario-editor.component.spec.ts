@@ -33,12 +33,13 @@ import { UrlAddRuleComponent } from './url-edit-rule/url-add-rule/url-add-rule.c
 import { UrlEditRuleComponent } from './url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
   let fixture: ComponentFixture<ScenarioEditorComponent>;
+  let scenarioBuilder: ScenarioFormBuilder;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -81,7 +82,8 @@ describe('ScenarioEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
-    component.scenarioFormGroup = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    scenarioBuilder = new ScenarioFormBuilder(new FormBuilder());
+    component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
     component.selectedScenario = defaultScenario;
     fixture.detectChanges();
   });
@@ -139,6 +141,11 @@ describe('ScenarioEditorComponent', () => {
       component.metadataMatchRuleValid = true;
       component.requestMatchRuleValid = true;
       component.responseMatchRuleValid = true;
+      ((component.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
+        .urlMatchRules as FormArray).controls = input.scenario.requestMatchRules.urlRules.map(ur =>
+        scenarioBuilder.getUrlItemFormGroup(ur)
+      );
+
       component.saveScenario();
 
       const actual = store.state.mockDefinition.scenarios.find(s => s.id === input.scenario.id);

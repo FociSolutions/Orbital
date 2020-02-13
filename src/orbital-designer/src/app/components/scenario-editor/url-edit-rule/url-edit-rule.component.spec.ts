@@ -42,49 +42,7 @@ describe('UrlEditRuleComponent', () => {
   });
 
   describe('UrlEditRuleComponent.deleteKvpFromRule', () => {
-    it('should not delete the kvp if it is undefined', () => {
-      const urlRule = {
-        type: faker.random.number({
-          min: 0,
-          max: Object.keys(RuleType).length - 1
-        }) as RuleType,
-        rule: { test: faker.random.word() }
-      } as KeyValuePairRule;
-      component.urlMatchRuleFormArray.push(
-        new FormGroup({
-          path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
-            Validators.required,
-            Validators.maxLength(3000)
-          ]),
-          ruleType: new FormControl(urlRule.type, [Validators.required])
-        })
-      );
-      component.deleteUrlEditRuleHandler(undefined);
-      expect(component.urlMatchRuleFormArray.length).toBe(1);
-    });
-
-    it('should not delete the kvp if the rule is undefined', () => {
-      const urlRule = {
-        type: faker.random.number({
-          min: 0,
-          max: Object.keys(RuleType).length - 1
-        }) as RuleType,
-        rule: { test: faker.random.word() }
-      } as KeyValuePairRule;
-      component.urlMatchRuleFormArray.push(
-        new FormGroup({
-          path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
-            Validators.required,
-            Validators.maxLength(3000)
-          ]),
-          ruleType: new FormControl(urlRule.type, [Validators.required])
-        })
-      );
-      component.deleteUrlEditRuleHandler(undefined);
-      expect(component.urlMatchRuleFormArray.length).toBe(1);
-    });
-
-    it('should delete the kvp if it defined', () => {
+    it('should delete the url rule if it defined', () => {
       const urlRule = {
         type: faker.random.number({
           min: 0,
@@ -105,7 +63,7 @@ describe('UrlEditRuleComponent', () => {
       expect(component.urlMatchRuleFormArray.length).toBe(0);
     });
 
-    it('should delete the kvp by key if there are multiple similar kvps', () => {
+    it('should delete the url rule by key if there are multiple similar kvps', () => {
       const randomWord = faker.random.word();
       // this has to have the same value for all the values to make sure that it is not deleting by value
       const urlRules = [
@@ -165,7 +123,7 @@ describe('UrlEditRuleComponent', () => {
   });
 
   describe('UrlEditRuleComponent.addUrlEditRuleHandler', () => {
-    it('should save valid key value pair', () => {
+    it('should save valid url rule', () => {
       const urlRule = {
         type: faker.random.number({
           min: 0,
@@ -175,21 +133,20 @@ describe('UrlEditRuleComponent', () => {
           [faker.random.word()]: faker.random.word()
         } as Record<string, string>
       } as KeyValuePairRule;
-      component.urlMatchRuleFormArray.push(
-        new FormGroup({
-          path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
-            Validators.required,
-            Validators.maxLength(3000)
-          ]),
-          ruleType: new FormControl(urlRule.type, [Validators.required])
-        })
-      );
+      const urlRuleasFormGroup = new FormGroup({
+        path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
+          Validators.required,
+          Validators.maxLength(3000)
+        ]),
+        ruleType: new FormControl(urlRule.type, [Validators.required])
+      });
+      component.urlMatchRuleFormArray.push(urlRuleasFormGroup);
       expect(component.urlMatchRuleFormArray.length).toBe(1);
-      expect(component.urlMatchRuleFormArray[0]).toEqual(urlRule);
+      expect(component.urlMatchRuleFormArray.at(0)).toEqual(urlRuleasFormGroup);
     });
   });
 
-  it('should not save repeated key value pair', () => {
+  it('should not save repeated url rule', () => {
     const urlRule = {
       type: faker.random.number({
         min: 0,
@@ -199,17 +156,16 @@ describe('UrlEditRuleComponent', () => {
         [faker.random.word()]: faker.random.word()
       } as Record<string, string>
     } as KeyValuePairRule;
-    component.urlMatchRuleFormArray.push(
-      new FormGroup({
-        path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
-          Validators.required,
-          Validators.maxLength(3000)
-        ]),
-        ruleType: new FormControl(urlRule.type, [Validators.required])
-      })
-    );
+    const urlRuleasFormGroup = new FormGroup({
+      path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
+        Validators.required,
+        Validators.maxLength(3000)
+      ]),
+      ruleType: new FormControl(urlRule.type, [Validators.required])
+    });
+    component.urlMatchRuleFormArray.push(urlRuleasFormGroup);
     component.addUrlEditRuleHandler(urlRule);
     expect(component.urlMatchRuleFormArray.length).toBe(1);
-    expect(component.urlMatchRuleFormArray[0]).toEqual(urlRule);
+    expect(component.urlMatchRuleFormArray.at(0)).toEqual(urlRuleasFormGroup);
   });
 });

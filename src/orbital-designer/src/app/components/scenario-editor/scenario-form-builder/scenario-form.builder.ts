@@ -59,8 +59,8 @@ export class ScenarioFormBuilder {
 
   public metadataFormGroup(metadata: Metadata): FormGroup {
     return this.formBuilder.group({
-      title: [metadata.title, [Validators.required, Validators.maxLength(50)]],
-      description: [metadata.description, [Validators.required, Validators.maxLength(500)]]
+      title: [metadata.title, [Validators.maxLength(50)]],
+      description: [metadata.description, [Validators.maxLength(500)]]
     });
   }
 
