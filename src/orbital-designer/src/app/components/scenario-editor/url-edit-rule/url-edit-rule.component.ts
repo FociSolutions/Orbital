@@ -16,7 +16,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
 
   urlRules: KeyValuePairRule[];
   @Output() urlRuleIsDuplicated: EventEmitter<boolean>;
-  @Input() urlMatchRuleFormGroupInput: FormArray;
+  @Input() urlMatchRuleFormArray: FormArray;
   constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
     this.urlRules = [];
     this.urlRuleIsDuplicated = new EventEmitter<boolean>();
@@ -33,9 +33,9 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
     const ruleFound = this.isUrlRuleDuplicate(kvpToAdd);
     if (!ruleFound) {
       this.urlRuleIsDuplicated.emit(false);
-      const index = this.urlMatchRuleFormGroupInput.length;
-      const newUrlRuleControl = this.formbuilder.getUrlitemFormGroup(kvpToAdd);
-      this.urlMatchRuleFormGroupInput.insert(index, newUrlRuleControl);
+      const index = this.urlMatchRuleFormArray.length;
+      const newUrlRuleControl = this.formbuilder.getUrlItemFormGroup(kvpToAdd);
+      this.urlMatchRuleFormArray.insert(index, newUrlRuleControl);
       this.logger.debug('UrlEditRuleComponent new rule added : ', kvpToAdd);
     } else {
       this.urlRuleIsDuplicated.emit(true);
@@ -47,7 +47,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
    * @param kvp The KeyValue pair rule being taken in from the child component to be deleted
    */
   deleteUrlEditRuleHandler(indexPosition: number) {
-    this.urlMatchRuleFormGroupInput.removeAt(indexPosition);
+    this.urlMatchRuleFormArray.removeAt(indexPosition);
     this.logger.debug('Delete Path Rule from url list at index: ', indexPosition);
   }
 
@@ -61,7 +61,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
       ruleType: number;
     }
 
-    return this.urlMatchRuleFormGroupInput.controls
+    return this.urlMatchRuleFormArray.controls
       .map(group => {
         return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
       })

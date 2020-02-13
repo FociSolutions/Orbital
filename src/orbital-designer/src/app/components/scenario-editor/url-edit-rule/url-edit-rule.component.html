@@ -9,8 +9,8 @@
   ></app-url-add-rule>
 </div>
 
-<ng-template [ngIf]="this.urlMatchRuleFormGroupInput.controls.length" [ngIfElse]="noRulesAdded">
-  <div *ngFor="let urlruleform of urlMatchRuleFormGroupInput.controls; let i = index">
+<ng-template [ngIf]="this.urlMatchRuleFormArray.controls.length" [ngIfElse]="noRulesAdded">
+  <div *ngFor="let urlruleform of urlMatchRuleFormArray.controls; let i = index">
     <app-url-list-item-rule-type
       [urlEditRuleFormGroup]="urlruleform"
       (urlRuleRemovedEventEmitter)="deleteUrlEditRuleHandler(i)"

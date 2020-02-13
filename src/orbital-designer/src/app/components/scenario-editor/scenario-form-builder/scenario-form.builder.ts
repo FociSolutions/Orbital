@@ -39,7 +39,7 @@ export class ScenarioFormBuilder {
     return this.formBuilder.group({
       headerMatchRules: this.formBuilder.array,
       queryMatchRules: this.formBuilder.array,
-      urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map(u => this.getUrlitemFormGroup(u))),
+      urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map(u => this.getUrlItemFormGroup(u))),
       bodyMatchRules: this.formBuilder.array
     });
   }
@@ -51,7 +51,7 @@ export class ScenarioFormBuilder {
     });
   }
 
-  public getUrlitemFormGroup(urlRule: KeyValuePairRule) {
+  public getUrlItemFormGroup(urlRule: KeyValuePairRule) {
     return new FormGroup({
       path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
         Validators.required,

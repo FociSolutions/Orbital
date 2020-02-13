@@ -1,19 +1,7 @@
-import {
-  Component,
-  OnInit,
-  EventEmitter,
-  Output,
-  OnDestroy,
-  Input
-} from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, Input } from '@angular/core';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  AbstractControl
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -47,37 +35,26 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
       isDuplicated => (this.ruleIsDuplicated = isDuplicated)
     );
     this.urlAddRuleFormGroup = new FormGroup({
-      path: new FormControl(this.urlRuleInEdit.rule['urlPath'], [
-        Validators.required,
-        Validators.maxLength(3000)
-      ]),
+      path: new FormControl(this.urlRuleInEdit.rule['urlPath'], [Validators.required, Validators.maxLength(3000)]),
       ruleType: new FormControl(this.urlRuleInEdit.type, [Validators.required])
     });
 
-    const pathSubscription = this.urlAddRuleFormGroup
-      .get('path')
-      .valueChanges.subscribe(path => {
-        this.urlRuleInEdit.rule['urlPath'] = path;
-      });
+    const pathSubscription = this.urlAddRuleFormGroup.get('path').valueChanges.subscribe(path => {
+      this.urlRuleInEdit.rule['urlPath'] = path;
+    });
 
-    const ruleTypeSubscription = this.urlAddRuleFormGroup
-      .get('ruleType')
-      .valueChanges.subscribe(type => {
-        this.urlRuleInEdit.type = type;
+    const ruleTypeSubscription = this.urlAddRuleFormGroup.get('ruleType').valueChanges.subscribe(type => {
+      this.urlRuleInEdit.type = type;
 
-        if (type === RuleType.ACCEPTALL) {
-          this.path.disable();
-          this.path.setValue('');
-        } else {
-          this.path.enable();
-        }
-      });
+      if (type === RuleType.ACCEPTALL) {
+        this.path.disable();
+        this.path.setValue('');
+      } else {
+        this.path.enable();
+      }
+    });
 
-    this.subscriptions.push(
-      pathSubscription,
-      ruleTypeSubscription,
-      urlDuplicatedSubscription
-    );
+    this.subscriptions.push(pathSubscription, ruleTypeSubscription, urlDuplicatedSubscription);
     this.path.disable();
   }
 
