@@ -5,6 +5,7 @@ import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { recordFirstOrDefault } from 'src/app/models/record';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
+import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,20 +22,29 @@ export class ScenarioFormBuilder {
     return this.createScenarioForm(defaultScenario);
   }
 
+  /**
+   * Generates a form group with the values provided by the scenario parameter.
+   *
+   * @param scenario the scenario to be used to create the form.
+   */
   createScenarioForm(scenario: Scenario) {
     this.scenarioForm = this.formBuilder.group({
       metadata: this.metadataFormGroup(scenario.metadata),
       requestMatchRules: this.requestMatchRulesFormGroup(scenario.requestMatchRules),
-      response: this.responseFormGroup()
+      response: this.responseFormGroup(scenario.response)
     });
     return this.scenarioForm;
   }
 
-  private responseFormGroup(): FormGroup {
+  /**
+   * Returns a form group with the provided response values.
+   *
+   */
+  public responseFormGroup(response: Response): FormGroup {
     return this.formBuilder.group({
-      statusCode: [''],
+      statusCode: [response.status],
       headerRule: this.formBuilder.array,
-      body: ['']
+      body: [response.body]
     });
   }
 
