@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Scenario, defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
@@ -14,6 +14,9 @@ export class ScenarioFormBuilder {
 
   constructor(private formBuilder: FormBuilder) {}
 
+  /**
+   * Generates a form group for a scenario with default values
+   */
   createNewScenarioForm(): FormGroup {
     return this.createScenarioForm(defaultScenario);
   }
@@ -59,5 +62,31 @@ export class ScenarioFormBuilder {
       ]),
       ruleType: new FormControl(urlRule.type, [Validators.required])
     });
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ScenarioFormMapper {
+  public GetUrlRulesFromForm(urlMatchRules: FormArray) {
+    interface UrlRuleFormGroup {
+      path: string;
+      ruleType: number;
+    }
+
+    let urlRules: KeyValuePairRule[];
+
+    urlRules = urlMatchRules.controls
+      .map(group => {
+        return group.value as UrlRuleFormGroup;
+      })
+      .map(urlFormGroup => {
+        return {
+          type: urlFormGroup.ruleType,
+          rule: { urlPath: urlFormGroup.path }
+        } as KeyValuePairRule;
+      });
+    return urlRules;
   }
 }

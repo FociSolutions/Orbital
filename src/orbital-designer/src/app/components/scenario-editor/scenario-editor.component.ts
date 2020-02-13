@@ -19,7 +19,7 @@ import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
-import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
+import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
 import { FormGroup, FormArray, Form } from '@angular/forms';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 @Component({
@@ -60,7 +60,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
     private logger: NGXLogger,
     private activatedRouter: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
-    private formBuilder: ScenarioFormBuilder
+    private formBuilder: ScenarioFormBuilder,
+    private scenarioFormMapper: ScenarioFormMapper
   ) {}
 
   /**
@@ -138,7 +139,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
         this.selectedScenario
       );
-      const newUrlRules = this.GetUrlRulesFromForm();
+      const newUrlRules = this.scenarioFormMapper.GetUrlRulesFromForm(
+        (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.urlMatchRules as FormArray
+      );
 
       this.selectedScenario.metadata.title = this.metadata.title;
       this.selectedScenario.metadata.description = this.metadata.description;

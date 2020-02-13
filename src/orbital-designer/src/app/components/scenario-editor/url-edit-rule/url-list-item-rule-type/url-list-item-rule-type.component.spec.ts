@@ -1,10 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  MatCardModule,
-  MatInputModule,
-  MatIconModule,
-  MatSelectModule
-} from '@angular/material';
+import { MatCardModule, MatInputModule, MatIconModule, MatSelectModule } from '@angular/material';
 import { UrlListItemRuleTypeComponent } from './url-list-item-rule-type.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -67,12 +62,6 @@ describe('UrlListItemRuleTypeComponent', () => {
       component.ruleType.setValue(RuleType.REGEX);
     });
 
-    describe('And path has not been set to a value', () => {
-      it('should have path set to INVALID status', () => {
-        expect(component.path.status).toBe('INVALID');
-      });
-    });
-
     describe('And path has been set to a value', () => {
       beforeEach(() => {
         component.path.setValue('cool/path');
@@ -83,12 +72,10 @@ describe('UrlListItemRuleTypeComponent', () => {
 
       describe('And the remove button is pushed', () => {
         it('Should emitt the urlRuleRemovedEventEmitter', done => {
-          component.urlRuleRemovedEventEmitter.subscribe(
-            (url: KeyValuePairRule) => {
-              expect(url.rule).toEqual({ urlPath: 'cool/path' });
-              done();
-            }
-          );
+          component.urlRuleRemovedEventEmitter.subscribe((url: KeyValuePairRule) => {
+            expect(url.rule).toEqual({ urlPath: 'cool/path' });
+            done();
+          });
 
           component.onRemove();
         });

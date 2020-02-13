@@ -2,12 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import {
-  MatCardModule,
-  MatButtonModule,
-  MatExpansionModule,
-  MatChipsModule
-} from '@angular/material';
+import { MatCardModule, MatButtonModule, MatExpansionModule, MatChipsModule } from '@angular/material';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -37,6 +32,9 @@ import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-ru
 import { UrlAddRuleComponent } from './url-edit-rule/url-add-rule/url-add-rule.component';
 import { UrlEditRuleComponent } from './url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
+import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
+import { FormBuilder } from '@angular/forms';
+import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -83,6 +81,8 @@ describe('ScenarioEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
+    component.scenarioFormGroup = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    component.selectedScenario = defaultScenario;
     fixture.detectChanges();
   });
 
@@ -103,8 +103,7 @@ describe('ScenarioEditorComponent', () => {
 
   describe('ScenarioEditorComponent.handleRequestMatchRuleOutput', () => {
     it('should set the request match rule to the one that the component emitted', () => {
-      const fakeRequestMatchRule =
-        validMockDefinition.scenarios[0].requestMatchRules;
+      const fakeRequestMatchRule = validMockDefinition.scenarios[0].requestMatchRules;
       component.handleRequestMatchRuleOutput(fakeRequestMatchRule);
       expect(component.requestMatchRule).toEqual(fakeRequestMatchRule);
     });
@@ -113,8 +112,7 @@ describe('ScenarioEditorComponent', () => {
   describe('ScenarioEditorComponent.handleResponseOutput', () => {
     it('should set the response to the response when the component outputs the response', () => {
       component.selectedScenario = validMockDefinition.scenarios[0];
-      const fakeResponse = (validMockDefinition.scenarios[0]
-        .response as unknown) as Response;
+      const fakeResponse = (validMockDefinition.scenarios[0].response as unknown) as Response;
       component.handleResponseOutput(fakeResponse);
       expect(component.response).toEqual(fakeResponse);
     });
@@ -143,9 +141,7 @@ describe('ScenarioEditorComponent', () => {
       component.responseMatchRuleValid = true;
       component.saveScenario();
 
-      const actual = store.state.mockDefinition.scenarios.find(
-        s => s.id === input.scenario.id
-      );
+      const actual = store.state.mockDefinition.scenarios.find(s => s.id === input.scenario.id);
       expect(actual).toBeTruthy();
       expect(actual.metadata.title).toEqual(input.metadata.title);
     });

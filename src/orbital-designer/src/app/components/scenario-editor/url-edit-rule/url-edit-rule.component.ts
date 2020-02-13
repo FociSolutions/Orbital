@@ -14,11 +14,9 @@ import { FormArray, FormGroup } from '@angular/forms';
 export class UrlEditRuleComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
-  urlRules: KeyValuePairRule[];
   @Output() urlRuleIsDuplicated: EventEmitter<boolean>;
   @Input() urlMatchRuleFormArray: FormArray;
   constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
-    this.urlRules = [];
     this.urlRuleIsDuplicated = new EventEmitter<boolean>();
     this.urlRuleIsDuplicated.emit(false);
   }
