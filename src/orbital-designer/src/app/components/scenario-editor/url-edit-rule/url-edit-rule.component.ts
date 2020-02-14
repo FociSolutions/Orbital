@@ -50,6 +50,9 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
   deleteUrlEditRuleHandler(indexPosition: number) {
     this.urlMatchRuleFormArray.removeAt(indexPosition);
     this.logger.debug('Delete Path Rule from url list at index: ', indexPosition);
+    if (!this.checkForMoreDuplicates()) {
+      this.existingUrlRuleAtIndecIsDuplicated.emit(-1);
+    }
   }
 
   /**
@@ -90,11 +93,13 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
           urlFormGroup.path === UrlRuleToFind.path &&
           urlFormGroup.ruleType === UrlRuleToFind.ruleType &&
           index !== indexPosition;
-        if (foundAduplicate && this.checkForMoreDuplicates()) {
+        if (foundAduplicate) {
           this.existingUrlRuleAtIndecIsDuplicated.emit(indexPosition);
+          this.existingUrlRuleAtIndecIsDuplicated.emit(index);
         } else {
           this.existingUrlRuleAtIndecIsDuplicated.emit(-1);
         }
+        this.checkForMoreDuplicates();
         return foundAduplicate;
       });
   }
@@ -119,6 +124,8 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
           urlToCheck.ruleType === urlToCheckAgainst.ruleType &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
+          this.existingUrlRuleAtIndecIsDuplicated.emit(indexToCheckAgainst);
+          this.existingUrlRuleAtIndecIsDuplicated.emit(indexToCheck);
           urlRuleChecks.push(foundDuplicate);
         }
       });
