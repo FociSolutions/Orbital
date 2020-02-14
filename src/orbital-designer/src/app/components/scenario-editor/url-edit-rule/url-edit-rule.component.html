@@ -12,8 +12,11 @@
 <ng-template [ngIf]="this.urlMatchRuleFormArray.controls.length" [ngIfElse]="noRulesAdded">
   <div *ngFor="let urlruleform of urlMatchRuleFormArray.controls; let i = index">
     <app-url-list-item-rule-type
+      [index]="i"
       [urlEditRuleFormGroup]="urlruleform"
       (urlRuleRemovedEventEmitter)="deleteUrlEditRuleHandler(i)"
+      (checkIfRuleIsDuplicatedEmitter)="this.isExistingUrlRuleDuplicated(i)"
+      [ruleIsDuplicatedIndex]="this.existingUrlRuleAtIndecIsDuplicated"
     ></app-url-list-item-rule-type>
   </div>
 </ng-template>

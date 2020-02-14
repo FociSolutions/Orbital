@@ -300,26 +300,4 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
     }
     return false;
   }
-
-  private GetUrlRulesFromForm() {
-    interface UrlRuleFormGroup {
-      path: string;
-      ruleType: number;
-    }
-
-    let urlRules: KeyValuePairRule[];
-
-    urlRules = ((this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
-      .urlMatchRules as FormArray).controls
-      .map(group => {
-        return group.value as UrlRuleFormGroup;
-      })
-      .map(urlFormGroup => {
-        return {
-          type: urlFormGroup.ruleType,
-          rule: { urlPath: urlFormGroup.path }
-        } as KeyValuePairRule;
-      });
-    return urlRules;
-  }
 }

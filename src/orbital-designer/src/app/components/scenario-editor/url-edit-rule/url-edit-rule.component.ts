@@ -4,7 +4,7 @@ import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-v
 import { recordFirstOrDefault } from '../../../models/record';
 import { Subscription } from 'rxjs';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-url-edit-rule',
@@ -15,9 +15,12 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   @Output() urlRuleIsDuplicated: EventEmitter<boolean>;
+  @Output() existingUrlRuleAtIndecIsDuplicated: EventEmitter<number>;
   @Input() urlMatchRuleFormArray: FormArray;
   constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
     this.urlRuleIsDuplicated = new EventEmitter<boolean>();
+    this.existingUrlRuleAtIndecIsDuplicated = new EventEmitter<number>();
+    this.existingUrlRuleAtIndecIsDuplicated.emit(-1);
     this.urlRuleIsDuplicated.emit(false);
   }
 
@@ -65,6 +68,29 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
       })
       .some(urlFormGroup => {
         return urlFormGroup.path === recordFirstOrDefault(kvpToAdd.rule, '') && urlFormGroup.ruleType === kvpToAdd.type;
+      });
+  }
+
+  isExistingUrlRuleDuplicated(indexPosition: number): void {
+    interface UrlRuleFormGroup {
+      path?: string;
+      ruleType: number;
+    }
+    const UrlRuleToFind = (this.urlMatchRuleFormArray.at(indexPosition) as FormGroup).getRawValue() as UrlRuleFormGroup;
+    this.urlMatchRuleFormArray.controls
+      .map(group => {
+        return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
+      })
+      .some((urlFormGroup, index) => {
+        const foundAduplicate =
+          urlFormGroup.path === UrlRuleToFind.path &&
+          urlFormGroup.ruleType === UrlRuleToFind.ruleType &&
+          index !== indexPosition;
+        if (foundAduplicate) {
+          console.log('esta regla esta mal ', indexPosition);
+          this.existingUrlRuleAtIndecIsDuplicated.emit(indexPosition);
+        }
+        return foundAduplicate;
       });
   }
 

@@ -1,8 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefaultKey, recordFirstOrDefault, recordAdd } from '../../../../models/record';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,11 +18,15 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
     { value: RuleType.ACCEPTALL, viewValue: 'Accept All' }
   ];
 
+  @Input() index: number;
   @Input() urlEditRuleFormGroup: FormGroup;
+  @Input() ruleIsDuplicatedIndex = new EventEmitter<number>();
+  private urlruleIsDuplicated = false;
   /**
    * The kvp to be deleted by the parent
    */
   @Output() urlRuleRemovedEventEmitter = new EventEmitter<KeyValuePairRule>();
+  @Output() checkIfRuleIsDuplicatedEmitter = new EventEmitter();
 
   ngOnInit() {
     const ruleTypeSubscription = this.urlEditRuleFormGroup.get('ruleType').valueChanges.subscribe(type => {
@@ -33,13 +36,25 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
       } else {
         this.path.enable();
       }
+      this.ruleType.setErrors(null);
+      this.urlruleIsDuplicated = false;
+      this.checkIfRuleIsDuplicatedEmitter.emit();
+    });
+
+    const pathSubscription = this.urlEditRuleFormGroup.get('path').valueChanges.subscribe(type => {
+      this.urlruleIsDuplicated = false;
+      this.checkIfRuleIsDuplicatedEmitter.emit();
     });
 
     if (this.urlEditRuleFormGroup.controls.ruleType.value === RuleType.ACCEPTALL) {
       this.path.disable();
     }
 
-    this.subscriptions.push(ruleTypeSubscription);
+    const urlDuplicatedSubscription = this.ruleIsDuplicatedIndex.subscribe(
+      isDuplicatedindex => (this.urlruleIsDuplicated = isDuplicatedindex === this.index)
+    );
+
+    this.subscriptions.push(ruleTypeSubscription, urlDuplicatedSubscription, pathSubscription);
   }
 
   /**
@@ -75,5 +90,12 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
+  }
+
+  get isDuplicatedExistingRule(): boolean {
+    if (this.urlruleIsDuplicated) {
+      this.urlEditRuleFormGroup.get('ruleType').setErrors({ incorrect: true });
+      return this.urlruleIsDuplicated;
+    }
   }
 }

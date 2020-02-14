@@ -38,5 +38,10 @@
         Url path cannot exceed 3000 characters
       </mat-error>
     </div>
+    <div *ngIf="this.isDuplicatedExistingRule">
+      <mat-error>
+        Rule is duplicated
+      </mat-error>
+    </div>
   </mat-card-content>
 </mat-card>
