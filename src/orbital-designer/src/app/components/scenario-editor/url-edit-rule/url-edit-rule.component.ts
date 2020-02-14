@@ -87,7 +87,6 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
           urlFormGroup.ruleType === UrlRuleToFind.ruleType &&
           index !== indexPosition;
         if (foundAduplicate) {
-          console.log('esta regla esta mal ', indexPosition);
           this.existingUrlRuleAtIndecIsDuplicated.emit(indexPosition);
         }
         return foundAduplicate;
