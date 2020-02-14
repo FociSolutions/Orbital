@@ -50,9 +50,14 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
       this.path.disable();
     }
 
-    const urlDuplicatedSubscription = this.ruleIsDuplicatedIndex.subscribe(
-      isDuplicatedindex => (this.urlruleIsDuplicated = isDuplicatedindex === this.index)
-    );
+    const urlDuplicatedSubscription = this.ruleIsDuplicatedIndex.subscribe(isDuplicatedindex => {
+      if (isDuplicatedindex === -1) {
+        this.ruleType.setErrors(null);
+        this.urlruleIsDuplicated = false;
+      } else {
+        this.urlruleIsDuplicated = isDuplicatedindex === this.index;
+      }
+    });
 
     this.subscriptions.push(ruleTypeSubscription, urlDuplicatedSubscription, pathSubscription);
   }

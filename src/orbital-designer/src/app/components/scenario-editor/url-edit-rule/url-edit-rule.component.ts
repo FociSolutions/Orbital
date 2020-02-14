@@ -71,6 +71,10 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Check if the modified existing url rules is not a duplicate of another existing rule
+   * @param indexPosition Index position of the url rule that was modified
+   */
   isExistingUrlRuleDuplicated(indexPosition: number): void {
     interface UrlRuleFormGroup {
       path?: string;
@@ -86,13 +90,46 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
           urlFormGroup.path === UrlRuleToFind.path &&
           urlFormGroup.ruleType === UrlRuleToFind.ruleType &&
           index !== indexPosition;
-        if (foundAduplicate) {
+        if (foundAduplicate && this.checkForMoreDuplicates()) {
           this.existingUrlRuleAtIndecIsDuplicated.emit(indexPosition);
+        } else {
+          this.existingUrlRuleAtIndecIsDuplicated.emit(-1);
         }
         return foundAduplicate;
       });
   }
 
+  /**
+   *
+   * Double check to confirm there are no duplicates in the list of existing url rules
+   */
+  private checkForMoreDuplicates(): boolean {
+    interface UrlRuleFormGroup {
+      path?: string;
+      ruleType: number;
+    }
+    const urlRuleChecks: boolean[] = [];
+    const urlRules = this.urlMatchRuleFormArray.controls.map(group => {
+      return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
+    });
+    urlRules.forEach((urlToCheck, indexToCheck) => {
+      urlRules.forEach((urlToCheckAgainst, indexToCheckAgainst) => {
+        const foundDuplicate =
+          urlToCheck.path === urlToCheckAgainst.path &&
+          urlToCheck.ruleType === urlToCheckAgainst.ruleType &&
+          indexToCheck !== indexToCheckAgainst;
+        if (foundDuplicate) {
+          urlRuleChecks.push(foundDuplicate);
+        }
+      });
+    });
+
+    if (urlRuleChecks.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   /**
    * Implementation for NG On Destroy
    */
