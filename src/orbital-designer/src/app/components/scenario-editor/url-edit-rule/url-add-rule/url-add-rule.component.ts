@@ -40,10 +40,12 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
     });
 
     const pathSubscription = this.urlAddRuleFormGroup.get('path').valueChanges.subscribe(path => {
+      this.ruleIsDuplicated = false;
       this.urlRuleInEdit.rule['urlPath'] = path;
     });
 
     const ruleTypeSubscription = this.urlAddRuleFormGroup.get('ruleType').valueChanges.subscribe(type => {
+      this.ruleIsDuplicated = false;
       this.urlRuleInEdit.type = type;
 
       if (type === RuleType.ACCEPTALL) {
@@ -85,8 +87,6 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
   addUrlRule(): void {
     if (this.urlAddRuleFormGroup.valid) {
       this.urlRuleAddedEventEmitter.emit(this.urlRuleInEdit);
-      this.urlAddRuleFormGroup.get('path').setValue('');
-      this.urlAddRuleFormGroup.get('ruleType').setValue(RuleType.ACCEPTALL);
     }
   }
 
