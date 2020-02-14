@@ -16,7 +16,7 @@
       [urlEditRuleFormGroup]="urlruleform"
       (urlRuleRemovedEventEmitter)="deleteUrlEditRuleHandler(i)"
       (checkIfRuleIsDuplicatedEmitter)="this.isExistingUrlRuleDuplicated(i)"
-      [ruleIsDuplicatedIndex]="this.existingUrlRuleAtIndecIsDuplicated"
+      ruleIsDuplicatedIndex="this.existingUrlRuleAtIndecIsDuplicated"
     ></app-url-list-item-rule-type>
   </div>
 </ng-template>

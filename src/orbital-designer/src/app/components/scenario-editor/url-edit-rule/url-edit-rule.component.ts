@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefault } from '../../../models/record';
+import { recordFirstOrDefault, recordAdd } from '../../../models/record';
 import { Subscription } from 'rxjs';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
@@ -15,16 +15,23 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   @Output() urlRuleIsDuplicated: EventEmitter<boolean>;
-  @Output() existingUrlRuleAtIndecIsDuplicated: EventEmitter<number>;
+  @Output() existingUrlRuleAtIndecIsDuplicated: Record<number, boolean>;
   @Input() urlMatchRuleFormArray: FormArray;
   constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
     this.urlRuleIsDuplicated = new EventEmitter<boolean>();
-    this.existingUrlRuleAtIndecIsDuplicated = new EventEmitter<number>();
-    this.existingUrlRuleAtIndecIsDuplicated.emit(-1);
+    this.existingUrlRuleAtIndecIsDuplicated = {} as Record<number, boolean>;
+    //this.existingUrlRuleAtIndecIsDuplicated = new EventEmitter<Record<number, boolean>>();
+    //this.existingUrlRuleAtIndecIsDuplicated.emit({} as Record<number, boolean>);
     this.urlRuleIsDuplicated.emit(false);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const urlMatchRuleFormArraySubscription = this.urlMatchRuleFormArray.valueChanges.subscribe(rules => {
+      console.log('List updated!');
+      this.checkForMoreDuplicates();
+    });
+    this.subscriptions.push(urlMatchRuleFormArraySubscription);
+  }
 
   /**
    * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
@@ -50,9 +57,10 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
   deleteUrlEditRuleHandler(indexPosition: number) {
     this.urlMatchRuleFormArray.removeAt(indexPosition);
     this.logger.debug('Delete Path Rule from url list at index: ', indexPosition);
-    if (!this.checkForMoreDuplicates()) {
-      this.existingUrlRuleAtIndecIsDuplicated.emit(-1);
-    }
+    this.checkForMoreDuplicates();
+    // if (!this.checkForMoreDuplicates()) {
+    //   this.existingUrlRuleAtIndecIsDuplicated.emit({} as Record<number, boolean>);
+    // }
   }
 
   /**
@@ -83,25 +91,24 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
       path?: string;
       ruleType: number;
     }
+    const checkRecords = {} as Record<number, boolean>;
     const UrlRuleToFind = (this.urlMatchRuleFormArray.at(indexPosition) as FormGroup).getRawValue() as UrlRuleFormGroup;
-    this.urlMatchRuleFormArray.controls
-      .map(group => {
-        return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
-      })
-      .some((urlFormGroup, index) => {
-        const foundAduplicate =
-          urlFormGroup.path === UrlRuleToFind.path &&
-          urlFormGroup.ruleType === UrlRuleToFind.ruleType &&
-          index !== indexPosition;
-        if (foundAduplicate) {
-          this.existingUrlRuleAtIndecIsDuplicated.emit(indexPosition);
-          this.existingUrlRuleAtIndecIsDuplicated.emit(index);
-        } else {
-          this.existingUrlRuleAtIndecIsDuplicated.emit(-1);
-        }
-        this.checkForMoreDuplicates();
-        return foundAduplicate;
-      });
+    const currentUrlRules = this.urlMatchRuleFormArray.controls.map(group => {
+      return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
+    });
+    const rulesFoundIndex = currentUrlRules.findIndex(
+      (urlFormGroup, index) =>
+        urlFormGroup.path === UrlRuleToFind.path &&
+        urlFormGroup.ruleType === UrlRuleToFind.ruleType &&
+        index !== indexPosition
+    );
+
+    // recordAdd(checkRecords, indexPosition, true);
+    // recordAdd(checkRecords, rulesFoundIndex, true);
+    recordAdd(this.existingUrlRuleAtIndecIsDuplicated, indexPosition, true);
+    recordAdd(this.existingUrlRuleAtIndecIsDuplicated, rulesFoundIndex, true);
+
+    //this.existingUrlRuleAtIndecIsDuplicated.emit(checkRecords);
   }
 
   /**
@@ -118,17 +125,23 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
       return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
     });
     urlRules.forEach((urlToCheck, indexToCheck) => {
+      const checkRecords = {} as Record<number, boolean>;
       urlRules.forEach((urlToCheckAgainst, indexToCheckAgainst) => {
         const foundDuplicate =
           urlToCheck.path === urlToCheckAgainst.path &&
           urlToCheck.ruleType === urlToCheckAgainst.ruleType &&
           indexToCheck !== indexToCheckAgainst;
+        recordAdd(checkRecords, indexToCheckAgainst, foundDuplicate);
+        recordAdd(this.existingUrlRuleAtIndecIsDuplicated, indexToCheckAgainst, foundDuplicate);
         if (foundDuplicate) {
-          this.existingUrlRuleAtIndecIsDuplicated.emit(indexToCheckAgainst);
-          this.existingUrlRuleAtIndecIsDuplicated.emit(indexToCheck);
+          // this.existingUrlRuleAtIndecIsDuplicated.emit(indexToCheckAgainst);
+          // this.existingUrlRuleAtIndecIsDuplicated.emit(indexToCheck);
           urlRuleChecks.push(foundDuplicate);
         }
       });
+      console.log('check for duplicates');
+      console.log(checkRecords);
+      // this.existingUrlRuleAtIndecIsDuplicated.emit(checkRecords);
     });
 
     if (urlRuleChecks.length > 0) {
