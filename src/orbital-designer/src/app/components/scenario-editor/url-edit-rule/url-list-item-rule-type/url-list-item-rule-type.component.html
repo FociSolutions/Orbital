@@ -24,13 +24,13 @@
       </div>
     </form>
 
-    <div *ngIf="ruleType.invalid && (ruleType.dirty || ruleType.touched)">
+    <div *ngIf="ruleType.invalid && ruleType.dirty">
       <mat-error *ngIf="ruleType.errors.required">
         Url rule type is required
       </mat-error>
     </div>
 
-    <div *ngIf="path.invalid && (path.dirty || path.touched)">
+    <div *ngIf="path.invalid && path.dirty">
       <mat-error *ngIf="path.errors.required">
         Url path is required
       </mat-error>
@@ -38,7 +38,7 @@
         Url path cannot exceed 3000 characters
       </mat-error>
     </div>
-    <div *ngIf="this.isDuplicatedExistingRule">
+    <div *ngIf="path.touched && ruleType.touched">
       <mat-error>
         Rule is duplicated
       </mat-error>

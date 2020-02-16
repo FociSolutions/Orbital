@@ -10,7 +10,7 @@ import { getRecordValueAtKey } from 'src/app/models/record';
   templateUrl: './url-list-item-rule-type.component.html',
   styleUrls: ['./url-list-item-rule-type.component.scss']
 })
-export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy, OnChanges {
+export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   readonly rules = [
@@ -19,50 +19,28 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy, OnChange
     { value: RuleType.ACCEPTALL, viewValue: 'Accept All' }
   ];
 
-  @Input() index: number;
   @Input() urlEditRuleFormGroup: FormGroup;
-  @Input() ruleIsDuplicatedIndex: Record<number, boolean>;
-  private urlruleIsDuplicated = false;
   /**
    * The kvp to be deleted by the parent
    */
   @Output() urlRuleRemovedEventEmitter = new EventEmitter<KeyValuePairRule>();
-  @Output() checkIfRuleIsDuplicatedEmitter = new EventEmitter();
 
-  ngOnChanges(changes: SimpleChanges): void {
-    for (let propName in changes) {
-      if (propName === 'ruleIsDuplicatedIndex') {
-        console.log('Estos son mis simple changes', changes);
-        const indexValueReturned = getRecordValueAtKey(this.ruleIsDuplicatedIndex, this.index, false);
-        console.log('esto me devolvio!', indexValueReturned);
-        console.log('desde el index ', this.index);
-        if (!indexValueReturned) {
-          this.ruleType.setErrors(null);
-          this.urlruleIsDuplicated = false;
-        } else {
-          console.log('you found me');
-          this.urlruleIsDuplicated = true;
-        }
-      }
-    }
-  }
   ngOnInit() {
     const ruleTypeSubscription = this.urlEditRuleFormGroup.get('ruleType').valueChanges.subscribe(type => {
       if (type === RuleType.ACCEPTALL) {
         this.path.disable();
         this.path.setValue('');
+        this.urlEditRuleFormGroup.markAsUntouched({ onlySelf: true });
       } else {
         this.path.enable();
       }
-      console.log('cambie desde rule en index ', this.index);
     });
 
-    const pathSubscription = this.urlEditRuleFormGroup.get('path').valueChanges.subscribe(type => {
-      console.log('cambie desde path en index ', this.index);
-    });
+    const pathSubscription = this.urlEditRuleFormGroup.get('path').valueChanges.subscribe(path => {});
 
     if (this.urlEditRuleFormGroup.controls.ruleType.value === RuleType.ACCEPTALL) {
       this.path.disable();
+      this.urlEditRuleFormGroup.markAsUntouched({ onlySelf: true });
     }
 
     this.subscriptions.push(ruleTypeSubscription, pathSubscription);
@@ -101,13 +79,5 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy, OnChange
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
-  }
-
-  get isDuplicatedExistingRule(): boolean {
-    if (this.urlruleIsDuplicated) {
-      console.log('you are wrong bitch');
-      this.urlEditRuleFormGroup.get('ruleType').setErrors({ incorrect: true });
-      return this.urlruleIsDuplicated;
-    }
   }
 }
