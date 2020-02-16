@@ -45,17 +45,6 @@ export function recordFirstOrDefault<K extends string | number | symbol, T>(reco
   return record[keys[0]];
 }
 
-export function getRecordValueAtKey<K extends string | number | symbol, T>(
-  records: Record<K, T>,
-  key: K,
-  fallback: T
-): T {
-  if (!!records[key]) {
-    return fallback;
-  }
-  return records[key];
-}
-
 /**
  * Gets the key's name from the provided record
  */

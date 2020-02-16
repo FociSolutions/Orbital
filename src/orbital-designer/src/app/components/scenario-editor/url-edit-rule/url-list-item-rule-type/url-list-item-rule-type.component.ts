@@ -3,7 +3,6 @@ import { RuleType } from '../../../../models/mock-definition/scenario/rule.type'
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { getRecordValueAtKey } from 'src/app/models/record';
 
 @Component({
   selector: 'app-url-list-item-rule-type',
@@ -36,14 +35,12 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
       }
     });
 
-    const pathSubscription = this.urlEditRuleFormGroup.get('path').valueChanges.subscribe(path => {});
-
     if (this.urlEditRuleFormGroup.controls.ruleType.value === RuleType.ACCEPTALL) {
       this.path.disable();
       this.urlEditRuleFormGroup.markAsUntouched({ onlySelf: true });
     }
 
-    this.subscriptions.push(ruleTypeSubscription, pathSubscription);
+    this.subscriptions.push(ruleTypeSubscription);
   }
 
   /**
