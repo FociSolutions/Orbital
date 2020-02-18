@@ -79,6 +79,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
    * Double check to confirm there are no duplicates in the list of existing url rules
    */
   private checkForDuplicates(): void {
+    this.urlMatchRuleFormArray.setErrors(null);
     this.urlMatchRuleFormArray.markAsUntouched();
     interface UrlRuleFormGroup {
       path?: string;
@@ -94,14 +95,11 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
           urlToCheck.ruleType === urlToCheckAgainst.ruleType &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
-          (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('path').markAsTouched({ onlySelf: true });
-          (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('ruleType').markAsTouched({ onlySelf: true });
-          (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup)
-            .get('path')
-            .markAsTouched({ onlySelf: true });
-          (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup)
-            .get('ruleType')
-            .markAsTouched({ onlySelf: true });
+          (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('path').markAsTouched();
+          (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('ruleType').markAsTouched();
+          (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('path').markAsTouched();
+          (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('ruleType').markAsTouched();
+          this.urlMatchRuleFormArray.setErrors({ duplicated: true });
         }
       });
     });
