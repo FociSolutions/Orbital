@@ -29,15 +29,16 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
       if (type === RuleType.ACCEPTALL) {
         this.path.disable();
         this.path.setValue('');
-        this.urlEditRuleFormGroup.markAsUntouched({ onlySelf: true });
+        this.urlEditRuleFormGroup.markAsUntouched();
       } else {
         this.path.enable();
       }
+      this.urlEditRuleFormGroup.updateValueAndValidity();
     });
 
     if (this.urlEditRuleFormGroup.controls.ruleType.value === RuleType.ACCEPTALL) {
       this.path.disable();
-      this.urlEditRuleFormGroup.markAsUntouched({ onlySelf: true });
+      this.urlEditRuleFormGroup.markAsUntouched();
     }
 
     this.subscriptions.push(ruleTypeSubscription);
