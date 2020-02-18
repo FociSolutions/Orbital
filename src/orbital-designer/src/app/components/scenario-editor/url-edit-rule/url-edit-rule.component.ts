@@ -23,7 +23,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const urlMatchRuleFormArraySubscription = this.urlMatchRuleFormArray.valueChanges.subscribe(rules => {
-      console.log('List updated!');
+      this.logger.debug('UrlEditRuleComponent checking for duplicate rules : ', this.urlMatchRuleFormArray);
       this.checkForDuplicates();
     });
     this.subscriptions.push(urlMatchRuleFormArraySubscription);
@@ -80,7 +80,6 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
    */
   private checkForDuplicates(): void {
     this.urlMatchRuleFormArray.markAsUntouched();
-    console.log('starting double check');
     interface UrlRuleFormGroup {
       path?: string;
       ruleType: number;
@@ -95,7 +94,6 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
           urlToCheck.ruleType === urlToCheckAgainst.ruleType &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
-          console.log('you are duplicated!', urlToCheck.path, urlToCheck.ruleType);
           (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('path').markAsTouched({ onlySelf: true });
           (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('ruleType').markAsTouched({ onlySelf: true });
           (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup)
