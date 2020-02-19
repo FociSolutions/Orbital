@@ -47,6 +47,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                 .CustomInstantiator(f => new BodyRule(f.PickRandomWithout<ComparerType>(ComparerType.JSONSCHEMA, ComparerType.JSONPATH, ComparerType.TEXTCONTAINS, ComparerType.TEXTENDSWITH, ComparerType.TEXTEQUALS,ComparerType.TEXTSTARTSWITH, ComparerType.REGEX), fakerJObject.Generate()));
             var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
                 .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandomWithout<ComparerType>(ComparerType.JSONCONTAINS, ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+            var fakerUrlRule = new Faker<KeyValuePairRule>()
+                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandomWithout<ComparerType>(ComparerType.JSONCONTAINS, ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA, ComparerType.TEXTCONTAINS, ComparerType.TEXTENDSWITH, ComparerType.TEXTSTARTSWITH, ComparerType.REGEX), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
             var fakerResponse = new Faker<MockResponse>()
                    .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -55,7 +57,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                     .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
                     .RuleFor(m => m.HeaderRules, f => fakerHeaderQueryRule.Generate(3))
-                    .RuleFor(m => m.QueryRules, f => fakerHeaderQueryRule.Generate(3));
+                    .RuleFor(m => m.QueryRules, f => fakerHeaderQueryRule.Generate(3))
+                    .RuleFor(m => m.UrlRules, f => fakerUrlRule.Generate(3));
             this.fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())
                 .RuleFor(m => m.Response, f => fakerResponse.Generate())
@@ -91,6 +94,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             scenarios[0].RequestMatchRules.HeaderRules = scenarios[0].RequestMatchRules.HeaderRules.Select(x =>
                                                         new KeyValuePairRule() {Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
             scenarios[0].RequestMatchRules.QueryRules = scenarios[0].RequestMatchRules.QueryRules.Select(x =>
+                                                        new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
+            scenarios[0].RequestMatchRules.UrlRules = scenarios[0].RequestMatchRules.UrlRules.Select(x =>
                                                         new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
 
             var httpContext = new DefaultHttpContext();

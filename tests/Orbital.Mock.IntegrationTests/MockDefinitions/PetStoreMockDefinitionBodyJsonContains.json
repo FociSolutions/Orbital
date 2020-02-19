@@ -17,6 +17,7 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -56,6 +57,7 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -94,6 +96,7 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -123,6 +126,7 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,
@@ -150,14 +154,17 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [],
         "queryRules": [],
-        "bodyRules": [{
-          "rule": {
-            "default": "response"
-          },
-          "type": 3
-        }]
+        "bodyRules": [
+          {
+            "rule": {
+              "default": "response"
+            },
+            "type": 3
+          }
+        ]
       }
     },
     {
@@ -175,6 +182,7 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [],
         "queryRules": [],
         "bodyRules": [
@@ -202,6 +210,7 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [],
         "queryRules": [],
         "bodyRules": [
@@ -229,6 +238,7 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [],
         "queryRules": [],
         "bodyRules": [
@@ -254,6 +264,7 @@
         "query": {}
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [],
         "queryRules": [],
         "bodyRules": [

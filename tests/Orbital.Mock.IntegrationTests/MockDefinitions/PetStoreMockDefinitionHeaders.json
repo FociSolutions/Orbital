@@ -14,6 +14,7 @@
         "body": "{\n  \"petHeaders\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
       },
       "requestMatchRules": {
+        "urlRules": [],
         "headerRules": [
           {
             "type": 3,

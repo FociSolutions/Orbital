@@ -12,7 +12,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     /// Model class representing a port for message processor pipelines
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort
+    public class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort, IUrlMatchPort
     {
         public ProcessMessagePort()
         {
@@ -20,6 +20,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             this.QueryMatchResults = new List<MatchResult>();
             this.HeaderMatchResults = new List<MatchResult>();
             this.BodyMatchResults = new List<MatchResult>();
+            this.URLMatchResults = new List<MatchResult>();
             this.Query = new List<KeyValuePair<string, string>>();
             this.Headers = new List<KeyValuePair<string, string>>();
         }
@@ -41,6 +42,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public ICollection<MatchResult> BodyMatchResults { get; set; }
 
         public ICollection<MatchResult> QueryMatchResults { get; set; }
+
+        public ICollection<MatchResult> URLMatchResults { get; set; }
 
         public IEnumerable<KeyValuePair<string, string>> Query { get; set; }
 

@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
+﻿using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Comparers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using System;
 using System.Linq;
 
 namespace Orbital.Mock.Server.Pipelines.RuleMatchers
@@ -31,9 +28,11 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                 case ComparerType.TEXTSTARTSWITH:
                     return TextComparer.StartsWith(assert.Actual, assert.Expect);
                 case ComparerType.TEXTENDSWITH:
-                    return TextComparer.EndsWith(assert.Actual, assert.Expect);                    
+                    return TextComparer.EndsWith(assert.Actual, assert.Expect);
                 case ComparerType.TEXTEQUALS:
-                    return TextComparer.Equals(assert.Actual, assert.Expect);                    
+                    return TextComparer.Equals(assert.Actual, assert.Expect);
+                case ComparerType.ACCEPTALL:
+                    return true;
                 case ComparerType.JSONCONTAINS:
                     return JsonComparer.DeepContains(assert.Expect, assert.Actual);
                 case ComparerType.JSONEQUALITY:
@@ -43,6 +42,6 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                 default:
                     return false;
             }
-        }       
+        }
     }
 }

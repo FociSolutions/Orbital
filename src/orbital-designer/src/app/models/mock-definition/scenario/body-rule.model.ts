@@ -7,3 +7,8 @@ export interface BodyRule {
   type: RuleType;
   rule: object;
 }
+
+export const defaultBodyRule: BodyRule = {
+  type: RuleType.NONE,
+  rule: {}
+};

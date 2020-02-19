@@ -1,0 +1,47 @@
+<mat-card class="kvp-add-card">
+  <mat-card-content>
+    <form class="kvp-added-item" [formGroup]="urlEditRuleFormGroup">
+      <div class="row">
+        <mat-form-field class="kvp-value">
+          <input matInput id="kvpaddpath" formControlName="path" />
+          <mat-hint> {{ path.value?.length || 0 }}/3000</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="kvp-type">
+          <mat-label>Select Rule</mat-label>
+          <mat-select formControlName="ruleType" name="rules">
+            <mat-option *ngFor="let rule of rules" [value]="rule.value">
+              {{ rule.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="delete-button-container">
+          <button class="delete-button" (click)="onRemove()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div *ngIf="ruleType.invalid && ruleType.dirty">
+      <mat-error *ngIf="ruleType.errors.required">
+        Url rule type is required
+      </mat-error>
+    </div>
+
+    <div *ngIf="path.invalid && path.dirty">
+      <mat-error *ngIf="path.errors.required">
+        Url path is required
+      </mat-error>
+      <mat-error *ngIf="path.errors.maxlength">
+        Url path cannot exceed 3000 characters
+      </mat-error>
+    </div>
+    <div *ngIf="path.touched && ruleType.touched">
+      <mat-error>
+        Rule is duplicated
+      </mat-error>
+    </div>
+  </mat-card-content>
+</mat-card>

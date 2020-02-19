@@ -285,10 +285,6 @@ describe('DesignerStore', () => {
       expect(store.state.mockDefinition).toEqual(mockDef);
     });
 
-    it('should not throw an exception when trying to delete a mock that does not exist', () => {
-      store.deleteMockDefinitionByTitle(faker.random.word());
-    });
-
     it('should delete the state when the state is changed by deleting a single mock definition', () => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);

@@ -8,7 +8,11 @@ import { VerbType } from '../models/verb.type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
-import { recordDelete, recordAdd, recordFirstOrDefault } from '../models/record';
+import {
+  recordDelete,
+  recordAdd,
+  recordFirstOrDefault
+} from '../models/record';
 
 export interface State {
   selectedEndpoint: Endpoint;
@@ -38,11 +42,15 @@ export class DesignerStore extends Store<State> {
       selectedScenario: JSON.parse(
         localStorage.getItem(DesignerStore.selectedScenarioStoreKey)
       ),
-      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
-      mockDefinitions: JSON.parse(
-        localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)
-      ) || {},
-      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
+      mockDefinition: JSON.parse(
+        localStorage.getItem(DesignerStore.mockDefinitionStoreKey)
+      ),
+      mockDefinitions:
+        JSON.parse(
+          localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)
+        ) || {},
+      endpoints:
+        JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
     });
 
     this.state$.subscribe(state => {
@@ -81,7 +89,7 @@ export class DesignerStore extends Store<State> {
     this.setState({
       ...this.state,
       mockDefinitions: mockDefinitions.reduce(
-        (next, current) => (recordAdd(next, current.metadata.title, current)),
+        (next, current) => recordAdd(next, current.metadata.title, current),
         {} as Record<string, MockDefinition>
       )
     });
@@ -120,10 +128,17 @@ export class DesignerStore extends Store<State> {
     this.logger.debug('Appending mock definition', mockDefinition);
     this.setState({
       ...this.state,
-      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition)
+      mockDefinitions: recordAdd(
+        this.state.mockDefinitions,
+        mockDefinition.metadata.title,
+        mockDefinition
+      )
     });
     this.logger.debug('New state after appending', this.state);
-    this.mockDefinition = recordFirstOrDefault(this.state.mockDefinitions, null);
+    this.mockDefinition = recordFirstOrDefault(
+      this.state.mockDefinitions,
+      null
+    );
 
     if (this.state.mockDefinition) {
       this.selectedEndpoint = null;
@@ -193,7 +208,11 @@ export class DesignerStore extends Store<State> {
    */
   set mockDefinition(mockDefinition: MockDefinition) {
     const mockDefinitionCopy = { ...mockDefinition };
-    const mockDefinitions = recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinitionCopy);
+    const mockDefinitions = recordAdd(
+      this.state.mockDefinitions,
+      mockDefinition.metadata.title,
+      mockDefinitionCopy
+    );
     this.logger.debug('Setting mockDefinition to ', mockDefinition);
     this.setState({
       ...this.state,
@@ -245,6 +264,8 @@ export class DesignerStore extends Store<State> {
           scenario.requestMatchRules.headerRules;
         current.requestMatchRules.queryRules =
           scenario.requestMatchRules.queryRules;
+        current.requestMatchRules.urlRules =
+          scenario.requestMatchRules.urlRules;
 
         current.response.body = scenario.response.body;
         current.response.headers = scenario.response.headers;
@@ -257,7 +278,6 @@ export class DesignerStore extends Store<State> {
         current = scenario;
         currentMock.scenarios.push(current);
       }
-      this.selectedScenario = current;
     }
   }
 

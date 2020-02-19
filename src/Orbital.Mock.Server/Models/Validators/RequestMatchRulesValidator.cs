@@ -1,8 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models.Validators
 {
@@ -13,6 +9,7 @@ namespace Orbital.Mock.Server.Models.Validators
     {
         public RequestMatchRulesValidator()
         {
+            RuleFor(x => x.UrlRules).NotNull();
             RuleFor(x => x.HeaderRules).NotNull();
             RuleFor(x => x.QueryRules).NotNull();
             RuleFor(x => x.BodyRules).NotNull();

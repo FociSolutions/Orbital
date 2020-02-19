@@ -23,7 +23,7 @@ module.exports = function(config) {
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['spec', 'kjhtml', 'progress', 'jasmine-diff'],
+    reporters: ['spec', 'kjhtml', 'progress'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

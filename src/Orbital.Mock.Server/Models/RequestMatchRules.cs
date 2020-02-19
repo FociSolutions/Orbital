@@ -8,6 +8,8 @@ namespace Orbital.Mock.Server.Models
 {
     public class RequestMatchRules : IEquatable<RequestMatchRules>
     {
+        [JsonProperty("urlRules")]
+        public ICollection<KeyValuePairRule> UrlRules { get; set; }
         [JsonProperty("headerRules")]
         public ICollection<KeyValuePairRule> HeaderRules { get; set; }
         [JsonProperty("queryRules")]
@@ -23,6 +25,7 @@ namespace Orbital.Mock.Server.Models
         public bool Equals(RequestMatchRules other)
         {
             return other != null &&
+                UrlRules.Count() == other.UrlRules.Count() && !UrlRules.Except(other.UrlRules).Any() &&
                 HeaderRules.Count() == other.HeaderRules.Count() && !HeaderRules.Except(other.HeaderRules).Any() &&
                 QueryRules.Count() == other.QueryRules.Count() && !QueryRules.Except(other.QueryRules).Any() &&
                 BodyRules.Count() == other.BodyRules.Count() && other.BodyRules.All(br1 => BodyRules.Any(br2 => br1.Equals(br2)));
@@ -30,7 +33,7 @@ namespace Orbital.Mock.Server.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(HeaderRules, QueryRules, BodyRules);
+            return HashCode.Combine(UrlRules, HeaderRules, QueryRules, BodyRules);
         }
     }
 }

@@ -12,22 +12,24 @@ export class GetRuleTypeStringPipe implements PipeTransform {
   transform(ruleType: RuleType): string {
     switch (+ruleType) {
       case 0:
-        return 'Regex';
+        return 'None';
       case 1:
-        return 'Text: Starts With';
+        return 'Regex';
       case 2:
-        return 'Text: Ends With';
+        return 'Text: Starts With';
       case 3:
-        return 'Text: Contains';
+        return 'Text: Ends With';
       case 4:
-        return 'Text: Equals';
+        return 'Text: Contains';
       case 5:
-        return 'JSON: Path';
+        return 'Text: Equals';
       case 6:
-        return 'JSON: Equality';
+        return 'JSON: Path';
       case 7:
-        return 'JSON: Contains';
+        return 'JSON: Equality';
       case 8:
+        return 'JSON: Contains';
+      case 9:
         return 'JSON: Schema';
       default:
         return 'Invalid Rule';

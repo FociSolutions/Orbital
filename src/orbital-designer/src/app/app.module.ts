@@ -45,6 +45,10 @@ import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe'
 import { KvpListItemRuleTypeComponent } from './components/scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { KvpEditRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
 import { GetRuleTypeStringPipe } from './pipes/get-rule-type-string/get-rule-type-string.pipe';
+import { UrlEditRuleComponent } from './components/scenario-editor/url-edit-rule/url-edit-rule.component';
+import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
+// tslint:disable-next-line: max-line-length
+import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +79,10 @@ import { GetRuleTypeStringPipe } from './pipes/get-rule-type-string/get-rule-typ
     AddResponseComponent,
     KvpListItemRuleTypeComponent,
     KvpEditRuleComponent,
-    GetRuleTypeStringPipe
+    GetRuleTypeStringPipe,
+    UrlEditRuleComponent,
+    UrlAddRuleComponent,
+    UrlListItemRuleTypeComponent
   ],
   imports: [
     BrowserModule,

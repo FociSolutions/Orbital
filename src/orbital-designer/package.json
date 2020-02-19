@@ -9,7 +9,7 @@
     "test": "ng test",
     "test-ci": "ng test --code-coverage --karmaConfig=./karma.ci.conf.js",
     "lint": "ng lint",
-    "e2e": "webdriver-manager update --versions.chrome 78.0.3904.105 && ng e2e --webdriver-update=false"
+    "e2e": "webdriver-manager update --versions.chrome 80.0.3987.16 && ng e2e --webdriver-update=false"
   },
   "private": true,
   "dependencies": {
@@ -61,7 +61,7 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "karma-junit-reporter": "^1.2.0",
     "karma-spec-reporter": "0.0.32",
-    "protractor": "5.4.0",
+    "protractor": "^5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.4.3"

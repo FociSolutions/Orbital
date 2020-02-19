@@ -3,7 +3,9 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectorRef,
-  AfterContentChecked
+  AfterContentChecked,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -16,17 +18,16 @@ import { Response } from 'src/app/models/mock-definition/scenario/response.model
 import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import {
-  recordFirstOrDefault,
-  recordFirstOrDefaultKey
-} from 'src/app/models/record';
+import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
+import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
+import { FormGroup, FormArray, Form } from '@angular/forms';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
   styleUrls: ['./scenario-editor.component.scss']
 })
-export class ScenarioEditorComponent
-  implements OnInit, OnDestroy, AfterContentChecked {
+export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentChecked {
   readonly headerMatchRuleTitle = 'Header Match Rule';
   readonly headerMatchRuleListTitle = 'Header Rules';
 
@@ -51,13 +52,16 @@ export class ScenarioEditorComponent
 
   endpointVerb: VerbType;
   endpointPath: string;
+  scenarioFormGroup: FormGroup;
 
   constructor(
     private router: Router,
     private store: DesignerStore,
     private logger: NGXLogger,
     private activatedRouter: ActivatedRoute,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private formBuilder: ScenarioFormBuilder,
+    private scenarioFormMapper: ScenarioFormMapper
   ) {}
 
   /**
@@ -65,18 +69,13 @@ export class ScenarioEditorComponent
    */
   ngOnInit() {
     this.triggerOpenCancelBox = false;
-    this.paramsSubscription = this.activatedRouter.params.subscribe(
-      (param: Params) => {
-        this.scenarioId = param.scenarioId;
-        this.logger.debug(
-          'ScenarioEditorComponent:ngOnInit: Retrieved Scenario ID from URL',
-          param.scenarioId
-        );
-        this.retrieveScenario(param.scenarioId);
-        this.store.selectedScenario = this.selectedScenario;
-      }
-    );
-
+    this.paramsSubscription = this.activatedRouter.params.subscribe((param: Params) => {
+      this.scenarioId = param.scenarioId;
+      this.logger.debug('ScenarioEditorComponent:ngOnInit: Retrieved Scenario ID from URL', param.scenarioId);
+      this.retrieveScenario(param.scenarioId);
+      this.scenarioFormGroup = this.formBuilder.createScenarioForm(this.selectedScenario);
+      this.store.selectedScenario = this.selectedScenario;
+    });
     this.storeSubscription = this.store.state$.subscribe(state => {
       if (!!state.mockDefinition && !!state.selectedEndpoint) {
         this.endpointVerb = state.selectedEndpoint.verb;
@@ -110,7 +109,7 @@ export class ScenarioEditorComponent
    */
   handleMetadataOutput(metadata: Metadata) {
     this.logger.debug('handleMetadataOutput:', metadata);
-    this.metadataMatchRuleValid = !!metadata.title;
+    this.metadataMatchRuleValid = !!metadata.title && metadata.description.length <= 500;
     this.metadata = metadata;
     this.saveScenario();
   }
@@ -133,11 +132,15 @@ export class ScenarioEditorComponent
     if (
       this.metadataMatchRuleValid &&
       this.requestMatchRuleValid &&
-      this.responseMatchRuleValid
+      this.responseMatchRuleValid &&
+      this.scenarioFormGroup.valid
     ) {
       this.logger.debug(
         'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
         this.selectedScenario
+      );
+      const newUrlRules = this.scenarioFormMapper.GetUrlRulesFromForm(
+        (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.urlMatchRules as FormArray
       );
 
       this.selectedScenario.metadata.title = this.metadata.title;
@@ -145,6 +148,7 @@ export class ScenarioEditorComponent
       this.selectedScenario.requestMatchRules.bodyRules = this.requestMatchRule.bodyRules;
       this.selectedScenario.requestMatchRules.headerRules = this.requestMatchRule.headerRules;
       this.selectedScenario.requestMatchRules.queryRules = this.requestMatchRule.queryRules;
+      this.selectedScenario.requestMatchRules.urlRules = newUrlRules;
 
       this.selectedScenario.response.body = this.response.body;
       this.selectedScenario.response.headers = this.response.headers;
@@ -152,10 +156,7 @@ export class ScenarioEditorComponent
 
       this.store.addOrUpdateScenario(this.selectedScenario);
 
-      this.logger.debug(
-        'ScenarioEditorComponent:saveScenario: Updated the provided scenario',
-        this.selectedScenario
-      );
+      this.logger.debug('ScenarioEditorComponent:saveScenario: Updated the provided scenario', this.selectedScenario);
 
       this.requestMatchRuleValid = false;
       this.router.navigateByUrl('/scenario-view');
@@ -198,10 +199,7 @@ export class ScenarioEditorComponent
    * @param shouldCancel The button pressed for the cancel box
    */
   onCancelDialogAction(shouldCancel: boolean) {
-    this.logger.debug(
-      'User answer for scenario-editor cancel box',
-      shouldCancel
-    );
+    this.logger.debug('User answer for scenario-editor cancel box', shouldCancel);
     this.triggerOpenCancelBox = false;
     if (shouldCancel) {
       this.logger.debug('The user has cancelled; navigating to endpoint-view');
@@ -231,11 +229,7 @@ export class ScenarioEditorComponent
     } else {
       const endpointVerb = this.store.state.selectedEndpoint.verb;
       const endpointPath = this.store.state.selectedEndpoint.path;
-      this.selectedScenario = this.createEmptyScenario(
-        scenarioId,
-        endpointVerb,
-        endpointPath
-      );
+      this.selectedScenario = this.createEmptyScenario(scenarioId, endpointVerb, endpointPath);
       this.logger.debug(
         `ScenarioEditorComponent:retrieveScenario: Scenario not find, new scenario were created for (${endpointPath}, ${endpointVerb})`,
         this.selectedScenario
@@ -249,11 +243,7 @@ export class ScenarioEditorComponent
    * @param scenarioVerb Verb of the scenario
    * @param scenarioPath Path of the scenario
    */
-  private createEmptyScenario(
-    scenarioId: string,
-    scenarioVerb: VerbType,
-    scenarioPath: string
-  ): Scenario {
+  private createEmptyScenario(scenarioId: string, scenarioVerb: VerbType, scenarioPath: string): Scenario {
     return {
       id: scenarioId,
       metadata: {} as Metadata,
@@ -266,7 +256,8 @@ export class ScenarioEditorComponent
       requestMatchRules: {
         headerRules: [],
         queryRules: [],
-        bodyRules: []
+        bodyRules: [],
+        urlRules: []
       } as RequestMatchRule
     } as Scenario;
   }
@@ -279,14 +270,10 @@ export class ScenarioEditorComponent
    */
   private findInvalidRegexRule(requestMatchRule: RequestMatchRule): boolean {
     const headerule = requestMatchRule.headerRules.find(
-      r =>
-        r.type === RuleType.REGEX &&
-        recordFirstOrDefault(r.rule, '').trim().length === 0
+      r => r.type === RuleType.REGEX && recordFirstOrDefault(r.rule, '').trim().length === 0
     );
     const queryule = requestMatchRule.queryRules.find(
-      r =>
-        r.type === RuleType.REGEX &&
-        recordFirstOrDefault(r.rule, '').trim().length === 0
+      r => r.type === RuleType.REGEX && recordFirstOrDefault(r.rule, '').trim().length === 0
     );
 
     if (headerule || queryule) {
@@ -300,27 +287,15 @@ export class ScenarioEditorComponent
    * This private method checks if header rules and query rules have rules with empty keys.
    * @param requestMatchRule the scenario rules to be saved
    */
-  private isThereAnyHeaderQueryKeyEmpty(
-    requestMatchRule: RequestMatchRule
-  ): boolean {
-    const headerfound = requestMatchRule.headerRules.find(
-      r => recordFirstOrDefaultKey(r.rule, '').trim().length === 0
-    );
-    const queryfound = requestMatchRule.queryRules.find(
-      r => recordFirstOrDefaultKey(r.rule, '').trim().length === 0
-    );
+  private isThereAnyHeaderQueryKeyEmpty(requestMatchRule: RequestMatchRule): boolean {
+    const headerfound = requestMatchRule.headerRules.find(r => recordFirstOrDefaultKey(r.rule, '').trim().length === 0);
+    const queryfound = requestMatchRule.queryRules.find(r => recordFirstOrDefaultKey(r.rule, '').trim().length === 0);
     if (headerfound) {
-      this.logger.error(
-        'This header rule contains an empty rule(s):  ',
-        headerfound
-      );
+      this.logger.error('This header rule contains an empty rule(s):  ', headerfound);
       return true;
     }
     if (queryfound) {
-      this.logger.error(
-        'This query rule contains an empty rule(s):  ',
-        headerfound
-      );
+      this.logger.error('This query rule contains an empty rule(s):  ', headerfound);
       return true;
     }
     return false;

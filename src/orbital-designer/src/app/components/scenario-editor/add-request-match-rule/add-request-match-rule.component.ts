@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { NGXLogger } from 'ngx-logger';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { KeyValue } from '@angular/common';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { FormGroup, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-request-match-rule',
@@ -13,6 +13,7 @@ import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-va
 export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRule: RequestMatchRule;
   @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
+  @Input() requestMatchRuleFormGroup: FormGroup;
 
   headerMatchRules: KeyValuePairRule[];
   queryMatchRules: KeyValuePairRule[];
@@ -55,10 +56,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
         bodyRules: this.bodyMatchRules
       } as RequestMatchRule;
       this.requestMatchRuleOutput.emit(requestToEmit);
-      this.logger.debug(
-        'The request match rules have been emitted',
-        requestToEmit
-      );
+      this.logger.debug('The request match rules have been emitted', requestToEmit);
       this.headerEmitted = false;
       this.queryEmitted = false;
       this.bodyEmitted = false;
@@ -67,7 +65,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
 
   /**
    * Handles saving the header match rules kvp values
-   * @param event The incoming request match rules
+   * @param headerMatchRules The incoming request match rules
    */
   handleHeaderKvpOutput(headerMatchRules: KeyValuePairRule[]) {
     this.headerEmitted = true;

@@ -2,12 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import {
-  MatCardModule,
-  MatButtonModule,
-  MatExpansionModule,
-  MatChipsModule
-} from '@angular/material';
+import { MatCardModule, MatButtonModule, MatExpansionModule, MatChipsModule } from '@angular/material';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -34,10 +29,17 @@ import { GetVerbStringPipe } from '../../pipes/get-verb-string/get-verb-string.p
 import { KvpEditRuleComponent } from './kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from './kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
+import { UrlAddRuleComponent } from './url-edit-rule/url-add-rule/url-add-rule.component';
+import { UrlEditRuleComponent } from './url-edit-rule/url-edit-rule.component';
+import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
+import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
   let fixture: ComponentFixture<ScenarioEditorComponent>;
+  let scenarioBuilder: ScenarioFormBuilder;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,7 +58,10 @@ describe('ScenarioEditorComponent', () => {
         GetVerbStringPipe,
         KvpEditRuleComponent,
         KvpListItemRuleTypeComponent,
-        GetRuleTypeStringPipe
+        GetRuleTypeStringPipe,
+        UrlAddRuleComponent,
+        UrlEditRuleComponent,
+        UrlListItemRuleTypeComponent
       ],
       imports: [
         LoggerTestingModule,
@@ -77,6 +82,9 @@ describe('ScenarioEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
+    scenarioBuilder = new ScenarioFormBuilder(new FormBuilder());
+    component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
+    component.selectedScenario = defaultScenario;
     fixture.detectChanges();
   });
 
@@ -97,8 +105,7 @@ describe('ScenarioEditorComponent', () => {
 
   describe('ScenarioEditorComponent.handleRequestMatchRuleOutput', () => {
     it('should set the request match rule to the one that the component emitted', () => {
-      const fakeRequestMatchRule =
-        validMockDefinition.scenarios[0].requestMatchRules;
+      const fakeRequestMatchRule = validMockDefinition.scenarios[0].requestMatchRules;
       component.handleRequestMatchRuleOutput(fakeRequestMatchRule);
       expect(component.requestMatchRule).toEqual(fakeRequestMatchRule);
     });
@@ -107,8 +114,7 @@ describe('ScenarioEditorComponent', () => {
   describe('ScenarioEditorComponent.handleResponseOutput', () => {
     it('should set the response to the response when the component outputs the response', () => {
       component.selectedScenario = validMockDefinition.scenarios[0];
-      const fakeResponse = (validMockDefinition.scenarios[0]
-        .response as unknown) as Response;
+      const fakeResponse = (validMockDefinition.scenarios[0].response as unknown) as Response;
       component.handleResponseOutput(fakeResponse);
       expect(component.response).toEqual(fakeResponse);
     });
@@ -135,11 +141,14 @@ describe('ScenarioEditorComponent', () => {
       component.metadataMatchRuleValid = true;
       component.requestMatchRuleValid = true;
       component.responseMatchRuleValid = true;
+      ((component.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
+        .urlMatchRules as FormArray).controls = input.scenario.requestMatchRules.urlRules.map(ur =>
+        scenarioBuilder.getUrlItemFormGroup(ur)
+      );
+
       component.saveScenario();
 
-      const actual = store.state.mockDefinition.scenarios.find(
-        s => s.id === input.scenario.id
-      );
+      const actual = store.state.mockDefinition.scenarios.find(s => s.id === input.scenario.id);
       expect(actual).toBeTruthy();
       expect(actual.metadata.title).toEqual(input.metadata.title);
     });

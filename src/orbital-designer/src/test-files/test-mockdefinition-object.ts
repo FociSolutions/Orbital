@@ -1,7 +1,7 @@
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
-export default ({
+export default {
   scenarios: [
     {
       id: '72dded1d-3755-4749-9aad-f7b4d769ea57',
@@ -19,7 +19,15 @@ export default ({
       requestMatchRules: {
         bodyRules: [],
         headerRules: [],
-        queryRules: []
+        queryRules: [],
+        urlRules: [
+          {
+            type: 5,
+            rule: {
+              urlPath: '/pets/12'
+            }
+          }
+        ]
       }
     } as Scenario
   ],
@@ -67,4 +75,4 @@ export default ({
     title: 'Test Mock',
     description: 'A Test Mock'
   }
-}) as MockDefinition;
+} as MockDefinition;

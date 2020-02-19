@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
@@ -10,6 +10,7 @@ import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/ke
   styleUrls: ['./kvp-add-rule.component.scss']
 })
 export class KvpAddRuleComponent implements OnInit {
+  @Input() kvpAddedError: EventEmitter<boolean>;
   // The kvp to be outputted to parent
   @Output() kvp = new EventEmitter<KeyValuePairRule>();
 
@@ -18,6 +19,7 @@ export class KvpAddRuleComponent implements OnInit {
   value: string;
   isValid: boolean;
   errorMessage: string;
+  ruleIsDuplicated: boolean;
 
   ruleType: RuleType;
   readonly rules = [
@@ -35,6 +37,17 @@ export class KvpAddRuleComponent implements OnInit {
     this.value = '';
     this.isValid = true;
     this.errorMessage = '';
+    this.ruleIsDuplicated = false;
+
+    if (!!this.kvpAddedError) {
+      this.kvpAddedError.subscribe((e: boolean) => {
+        this.ruleIsDuplicated = e;
+        if (!e) {
+          this.key = '';
+          this.value = '';
+        }
+      });
+    }
   }
 
   /**
@@ -50,10 +63,8 @@ export class KvpAddRuleComponent implements OnInit {
       } as KeyValuePairRule;
 
       this.kvp.emit(kvpAdd);
-      this.isValid = true;
-      this.key = '';
-      this.value = '';
       this.logger.debug('KvpAddComponent:onAdd: KVP emitted to parent', kvpAdd);
+      this.isValid = true;
     } else {
       this.isValid = false;
     }

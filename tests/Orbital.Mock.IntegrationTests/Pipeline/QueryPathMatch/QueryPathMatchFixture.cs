@@ -10,9 +10,10 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.QueryPathMatch
     public partial class QueryPathMatchFixture_Fixture : FeatureFixture
     {
         private readonly HttpClient Client;
-        private HttpContent Content;
+        private Scenario scenario;
         private HttpResponseMessage PostResult;
         private string queryStringMatch = "{\r\n  \"animal-type\": \"cat\"\r\n}";
+        private JToken mockDefinitionQueryJson;
 
         public QueryPathMatchFixture_Fixture()
         {
@@ -21,27 +22,27 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.QueryPathMatch
 
         private void When_setup_query_content_starts()
         {
-            Content = new StringContent(CommonData.GetMockDefinitionText(CommonData.MockDefinition.QueryMock),
+            this.mockDefinitionQueryJson = JToken.Parse(CommonData.GetMockDefinitionText(CommonData.MockDefinition.QueryMock));
+            var mockDefinition = this.mockDefinitionQueryJson.ToObject<MockDefinition>();
+            this.scenario = mockDefinition.Scenarios[0];
+            var content = new StringContent(this.mockDefinitionQueryJson.ToString(),
                 Encoding.UTF8, "application/json");
-            PostResult = Client.PostAsync(CommonData.AdminUri, Content).Result;
+            PostResult = Client.PostAsync(CommonData.AdminUri, content).Result;
         }
 
         private void When_client_returns_all_queries()
         {
             var mockDefinitionQueryJson = JObject.Parse(CommonData.GetMockDefinitionText(CommonData.MockDefinition.QueryMock));
             var scenarios = mockDefinitionQueryJson["scenarios"];
-            var scenario = scenarios[1];
-            var request = new HttpRequestMessage(new HttpMethod(scenario["verb"].ToString()), CommonData.AdminUri + scenario["path"]);
+            var request = new HttpRequestMessage(new HttpMethod(this.scenario.Verb.ToString()), $"{CommonData.ServerBaseUri}{this.scenario.Path}");
             var response = Client.SendAsync(request).Result;
-            var scenarioResponse = scenario["response"].ToObject<MockResponse>();
-            var scenarioBody = JObject.Parse(scenarioResponse.Body);
-            var responseBody = JObject.Parse(response.Content.ReadAsStringAsync().Result);
-            var responseQuery = JObject.Parse(responseBody["scenarios"][1]["requestMatchRules"]["queryRules"].ToString());
+            var ExpectedResponse = this.scenario.Response;
+            var scenarioBody = JToken.Parse(ExpectedResponse.Body);
+            var responseBody = JToken.Parse(response.Content.ReadAsStringAsync().Result);
 
-            Assert.Equal(scenarioResponse.Status, (int)response.StatusCode);
-            Assert.Equal(queryStringMatch, responseQuery.ToString());
-            var responseBodySelected = JObject.Parse(responseBody["scenarios"][1]["response"]["body"].ToString());
-            Assert.True(JToken.DeepEquals(scenarioBody, responseBodySelected));
+            Assert.Equal(ExpectedResponse.Status, (int)response.StatusCode);
+
+            Assert.True(JToken.DeepEquals(JToken.Parse(ExpectedResponse.Body), responseBody));
         }
     }
 }

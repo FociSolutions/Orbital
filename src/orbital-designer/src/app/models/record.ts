@@ -3,11 +3,7 @@ import { cloneDeep } from 'lodash';
 /**
  * Adds a record
  */
-export function recordAdd<K extends string | number | symbol, T>(
-  record: Record<K, T>,
-  key: K,
-  value: T
-): Record<K, T> {
+export function recordAdd<K extends string | number | symbol, T>(record: Record<K, T>, key: K, value: T): Record<K, T> {
   record[key] = value;
   return record;
 }
@@ -15,10 +11,7 @@ export function recordAdd<K extends string | number | symbol, T>(
 /**
  * Deletes a record
  */
-export function recordDelete<K extends string | number | symbol, T>(
-  record: Record<K, T>,
-  key: K
-): Record<K, T> {
+export function recordDelete<K extends string | number | symbol, T>(record: Record<K, T>, key: K): Record<K, T> {
   delete record[key];
   return record;
 }
@@ -32,11 +25,7 @@ export function recordUpdateKeyName<K extends string | number | symbol, T>(
   newKey: K
 ): Record<K, T> {
   if (oldKey !== newKey) {
-    Object.defineProperty(
-      o,
-      newKey,
-      Object.getOwnPropertyDescriptor(o, oldKey)
-    );
+    Object.defineProperty(o, newKey, Object.getOwnPropertyDescriptor(o, oldKey));
     delete o[oldKey];
   }
 
@@ -46,10 +35,7 @@ export function recordUpdateKeyName<K extends string | number | symbol, T>(
 /**
  * Returns the first record, or a default value
  */
-export function recordFirstOrDefault<K extends string | number | symbol, T>(
-  record: Record<K, T>,
-  fallback: T
-): T {
+export function recordFirstOrDefault<K extends string | number | symbol, T>(record: Record<K, T>, fallback: T): T {
   const keys = Object.keys(record);
 
   if (keys.length <= 0) {
@@ -90,9 +76,7 @@ export function recordMap<K extends string | number | symbol, T, TResult>(
  * Gets the length of the records
  * @param record The record to get the total length
  */
-export function recordSize<K extends string | number | symbol, T>(
-  record: Record<K, T>
-): number {
+export function recordSize<K extends string | number | symbol, T>(record: Record<K, T>): number {
   const keys = Object.keys(record);
   return keys.length;
 }

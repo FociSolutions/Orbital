@@ -2,7 +2,7 @@
 
 <div class="kvp-edit-rule">
   <mat-divider class="divider-padding"></mat-divider>
-  <app-kvp-add-rule class="add-rule" (kvp)="addKvp($event)"></app-kvp-add-rule>
+  <app-kvp-add-rule class="add-rule" (kvp)="addKvp($event)" [kvpAddedError]="this.kvpIsDuplicated"></app-kvp-add-rule>
 </div>
 <ng-template
   [ngIf]="!!this.savedKvpType && this.savedKvpType.length"

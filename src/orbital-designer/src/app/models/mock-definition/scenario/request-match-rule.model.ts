@@ -8,4 +8,12 @@ export interface RequestMatchRule {
   headerRules: KeyValuePairRule[];
   queryRules: KeyValuePairRule[];
   bodyRules: BodyRule[];
+  urlRules: KeyValuePairRule[];
 }
+
+export const defaultRquestMatchRule: RequestMatchRule = {
+  headerRules: [],
+  queryRules: [],
+  bodyRules: [],
+  urlRules: []
+};

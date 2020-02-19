@@ -51,15 +51,11 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
         this.scenarioList = state.mockDefinition.scenarios.filter(
           s => s.path === this.endpointPath && s.verb === this.endpointVerb
         );
-        this.logger.log(
-          'ScenarioViewComponent:ngOnInit: Resulting ScenarioList: ',
-          this.scenarioList
-        );
+        this.logger.log('ScenarioViewComponent:ngOnInit: Resulting ScenarioList: ', this.scenarioList);
       }
     });
 
-    this.errorMessage =
-      'No scenarios exist. Click the add button to create a new scenario.';
+    this.errorMessage = 'No scenarios exist. Click the add button to create a new scenario.';
   }
 
   ngOnDestroy(): void {
@@ -101,14 +97,15 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    */
   cloneScenario(scenario: Scenario) {
     this.logger.debug(scenario);
-    const observable = this.mockDefinitionService.cloneScenario(this.store.state.mockDefinition.metadata.title, scenario).pipe(map(
-      value => value));
+    const observable = this.mockDefinitionService
+      .cloneScenario(this.store.state.mockDefinition.metadata.title, scenario)
+      .pipe(map(value => value));
 
     observable.subscribe(result => {
       if (result) {
         this.logger.log('Scenario successfully cloned');
-      }}
-      );
+      }
+    });
   }
 
   /**
@@ -141,9 +138,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   onDialogAction(confirmed: boolean, scenario: Scenario) {
     if (confirmed) {
       this.deleteScenario(scenario);
-      this.logger.debug(
-        `Scenario ${scenario.metadata.title} deleted successfully`
-      );
+      this.logger.debug(`Scenario ${scenario.metadata.title} deleted successfully`);
     }
 
     this.triggerOpen = null;
