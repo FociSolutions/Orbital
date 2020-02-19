@@ -48,6 +48,11 @@ export class ScenarioFormBuilder {
     });
   }
 
+  /**
+   * Returns a form group with values from the RequestMatchRule provided.
+   *
+   * @param requestMatchRules RequestMatchRules to be turned to form groups
+   */
   public requestMatchRulesFormGroup(requestMatchRules: RequestMatchRule): FormGroup {
     return this.formBuilder.group({
       headerMatchRules: this.formBuilder.array,
@@ -57,6 +62,11 @@ export class ScenarioFormBuilder {
     });
   }
 
+  /**
+   * This method will return you the metadata provided as a form group.
+   *
+   * @param metadata The metadata information to be turned to a form group.
+   */
   public metadataFormGroup(metadata: Metadata): FormGroup {
     return this.formBuilder.group({
       title: [metadata.title, [Validators.maxLength(50)]],
@@ -64,6 +74,11 @@ export class ScenarioFormBuilder {
     });
   }
 
+  /**
+   * This method will return you the keyvaluepairrule provided as a form group.
+   *
+   * @param urlRule KeyValuePairRule to be turned to a form group.
+   */
   public getUrlItemFormGroup(urlRule: KeyValuePairRule) {
     return new FormGroup({
       path: new FormControl(recordFirstOrDefault(urlRule.rule, ''), [Validators.required, Validators.maxLength(3000)]),
