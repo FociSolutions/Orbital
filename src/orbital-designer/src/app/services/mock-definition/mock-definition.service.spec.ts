@@ -311,5 +311,7 @@ describe('MockDefinitionService', () => {
     const content = yaml.safeLoad(validOpenApiTest) as OpenAPIV2.Document;
     const scenarios = service.getDefaultScenarios(content.paths);
     expect(scenarios.length).toBe(2);
+    expect(scenarios[0].verb).toBe(VerbType.GET);
+    expect(scenarios[1].verb).toBe(VerbType.GET);
   });
 });
