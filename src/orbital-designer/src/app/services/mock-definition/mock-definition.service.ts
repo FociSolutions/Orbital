@@ -170,9 +170,13 @@ export class MockDefinitionService {
    *
    */
   private generateNewScenario(path: string, verb: VerbType): Scenario {
+    const id = uuid.v4();
     return {
-      id: uuid.v4(),
-      metadata: defaultMetadata,
+      id,
+      metadata: {
+        title: ('default title for ' + id) as string,
+        description: ('default title for ' + id) as string
+      },
       verb,
       path,
       response: defaultResponse,
