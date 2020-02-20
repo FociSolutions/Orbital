@@ -19,10 +19,10 @@ app-overview-header {
 }
 
 div#scenario-list {
-  max-width: 70%;
+  max-width: 96%;
   display: flex;
   flex-direction: column;
-  margin-left: 15%;
+  margin-left: 2%;
 }
 
 div.scenarios {
@@ -42,6 +42,7 @@ button#add {
   font-weight: 300;
   float: right;
   margin-right: 10%;
+  margin-top: 1%;
 }
 
 button#back-to-endpoints {
