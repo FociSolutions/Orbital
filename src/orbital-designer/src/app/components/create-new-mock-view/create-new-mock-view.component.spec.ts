@@ -17,6 +17,7 @@ import { EMPTY } from 'rxjs';
 import * as yaml from 'js-yaml';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 import { FormControl } from '@angular/forms';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
@@ -31,7 +32,7 @@ describe('CreateNewMockViewComponent', () => {
         LoggerTestingModule,
         RouterTestingModule.withRoutes([])
       ],
-      providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService]
+      providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService]
     }).compileComponents();
   }));
 
