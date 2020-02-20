@@ -2,18 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { defaultScenario, Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
 import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { VerbType } from 'src/app/models/verb.type';
-import * as uuid from 'uuid';
-import { defaultMetadata } from 'src/app/models/mock-definition/metadata.model';
-import { defaultResponse } from 'src/app/models/mock-definition/scenario/response.model';
-import { defaultRquestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 @Component({
