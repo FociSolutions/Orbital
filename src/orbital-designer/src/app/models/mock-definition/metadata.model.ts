@@ -7,6 +7,6 @@ export interface Metadata {
 }
 
 export const defaultMetadata: Metadata = {
-  title: '',
-  description: ''
+  title: 'defaultTitele',
+  description: 'defaultDescription'
 };
