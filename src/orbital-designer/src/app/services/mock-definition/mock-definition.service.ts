@@ -180,7 +180,7 @@ export class MockDefinitionService {
       path,
       response: {
         headers: {},
-        body: 'default response for ' + path,
+        body: '"default response for ' + path + '"',
         status: 200
       },
       requestMatchRules: {
