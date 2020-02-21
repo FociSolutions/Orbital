@@ -178,8 +178,17 @@ export class MockDefinitionService {
       },
       verb,
       path,
-      response: defaultResponse,
-      requestMatchRules: defaultRquestMatchRule
+      response: {
+        headers: {},
+        body: 'default response for ' + path,
+        status: 200
+      },
+      requestMatchRules: {
+        headerRules: [],
+        queryRules: [],
+        bodyRules: [],
+        urlRules: []
+      }
     } as Scenario;
   }
 }
