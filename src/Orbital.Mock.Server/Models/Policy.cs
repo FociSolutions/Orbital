@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Orbital.Mock.Server.Models.Converters;
 using Orbital.Mock.Server.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,9 +11,8 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("type")]
         public PolicyType Type { get; set; }
 
-        [JsonConverter(typeof(KeyValueConverter))]
         [JsonProperty("attributes")]
-        public KeyValuePair<string, string> Attributes { get; set; }
+        public Dictionary<string, string> Attributes { get; set; }
 
         public bool Equals(Policy other)
         {
