@@ -9,6 +9,11 @@ import * as _ from 'lodash';
 import { recordAdd } from 'src/app/models/record';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { defaultMetadata } from 'src/app/models/mock-definition/metadata.model';
+import { VerbType } from 'src/app/models/verb.type';
+import { defaultResponse } from 'src/app/models/mock-definition/scenario/response.model';
+import { defaultRquestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
+import { OpenAPIV2 } from 'openapi-types';
 
 @Injectable({
   providedIn: 'root'
@@ -33,13 +38,10 @@ export class MockDefinitionService {
               headers: s.response.headers
             },
             requestMatchRules: {
-              headerRules:
-                s.requestMatchRules.headerRules || ([] as KeyValuePairRule[]),
-              queryRules:
-                s.requestMatchRules.queryRules || ([] as KeyValuePairRule[]),
+              headerRules: s.requestMatchRules.headerRules || ([] as KeyValuePairRule[]),
+              queryRules: s.requestMatchRules.queryRules || ([] as KeyValuePairRule[]),
               bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[]),
-              urlRules:
-                s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
+              urlRules: s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
             }
           }))
         };
@@ -92,21 +94,11 @@ export class MockDefinitionService {
    * @param mockId  string representation of mock definition's id
    * @param scenario Object representation of the scenario to be cloned
    */
-  public cloneScenario(
-    mockId: string,
-    scenario: Scenario
-  ): Observable<boolean> {
+  public cloneScenario(mockId: string, scenario: Scenario): Observable<boolean> {
     return new Observable(observer => {
       try {
-        if (
-          !scenario ||
-          !scenario.id ||
-          !scenario.metadata ||
-          !scenario.metadata.title
-        ) {
-          this.logger.warn(
-            'Scenario not cloned because it contains undefined attributes'
-          );
+        if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {
+          this.logger.warn('Scenario not cloned because it contains undefined attributes');
           observer.next(false);
           return;
         }
@@ -117,35 +109,22 @@ export class MockDefinitionService {
         clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
         const scenariomockdefinition = this.store.state.mockDefinitions[mockId];
         this.store.state.mockDefinition = scenariomockdefinition;
-        const originalScenarioIndex = scenariomockdefinition.scenarios.indexOf(
-          scenario
-        );
+        const originalScenarioIndex = scenariomockdefinition.scenarios.indexOf(scenario);
 
         // ensure that there are no naming conflicts; if there are, repeat until a name is found
-        if (
-          !scenariomockdefinition.scenarios.find(
-            x => x.metadata.title === clonedScenario.metadata.title
-          )
-        ) {
+        if (!scenariomockdefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
           let copyCounter = 2;
           while (
             scenariomockdefinition.scenarios.find(
-              x =>
-                x.metadata.title ===
-                clonedScenario.metadata.title + ' ' + copyCounter
+              x => x.metadata.title === clonedScenario.metadata.title + ' ' + copyCounter
             )
           ) {
             copyCounter++;
           }
 
-          clonedScenario.metadata.title =
-            clonedScenario.metadata.title + ' ' + copyCounter;
+          clonedScenario.metadata.title = clonedScenario.metadata.title + ' ' + copyCounter;
         }
-        scenariomockdefinition.scenarios.splice(
-          originalScenarioIndex + 1,
-          0,
-          clonedScenario
-        );
+        scenariomockdefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
         this.store.updateScenarios([...scenariomockdefinition.scenarios]);
         this.logger.warn('Scenario successfully cloned: ', clonedScenario);
         observer.next(true);
@@ -154,5 +133,62 @@ export class MockDefinitionService {
       }
       observer.complete();
     });
+  }
+
+  /**
+   * Generate default Scenarios based on the endpoints provided.
+   *
+   * @param endpoints list of endpoints from the imported openapi document
+   */
+  public getDefaultScenarios(endpoints: OpenAPIV2.PathsObject): Scenario[] {
+    const defaultScenariosPerEndpoint = [];
+    const keyArrayofEndpoints = Object.keys(endpoints);
+    keyArrayofEndpoints.forEach(pathName => {
+      const endpoint = endpoints[pathName];
+      if (endpoint.get) {
+        const newScenarioGet = this.generateNewScenario(pathName, VerbType.GET);
+        defaultScenariosPerEndpoint.push(newScenarioGet);
+      }
+      if (endpoint.put) {
+        const newScenarioPut = this.generateNewScenario(pathName, VerbType.PUT);
+        defaultScenariosPerEndpoint.push(newScenarioPut);
+      }
+      if (endpoint.post) {
+        const newScenarioPost = this.generateNewScenario(pathName, VerbType.POST);
+        defaultScenariosPerEndpoint.push(newScenarioPost);
+      }
+      if (endpoint.delete) {
+        const newScenarioDelete = this.generateNewScenario(pathName, VerbType.DELETE);
+        defaultScenariosPerEndpoint.push(newScenarioDelete);
+      }
+    });
+    return defaultScenariosPerEndpoint;
+  }
+
+  /**
+   * Generates a new Scenario based on the path and verb.
+   *
+   */
+  private generateNewScenario(path: string, verb: VerbType): Scenario {
+    return {
+      id: uuid.v4(),
+      metadata: {
+        title: 'default title for ' + path,
+        description: 'default description for ' + path
+      },
+      verb,
+      path,
+      response: {
+        headers: {},
+        body: '"default response for ' + path + '"',
+        status: 200
+      },
+      requestMatchRules: {
+        headerRules: [],
+        queryRules: [],
+        bodyRules: [],
+        urlRules: []
+      }
+    } as Scenario;
   }
 }
