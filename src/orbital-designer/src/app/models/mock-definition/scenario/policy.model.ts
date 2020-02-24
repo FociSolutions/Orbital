@@ -2,10 +2,10 @@ import { PolicyType } from './policy.type';
 
 export interface Policy {
   type: PolicyType;
-  attributes: Record<string, number | string>;
+  attributes: Record<string, string>;
 }
 
-export const defaultDelayPolicy: Policy = {
+export const defaultPolicy: Policy = {
   type: PolicyType.NONE,
-  attributes: { delay: 0 }
+  attributes: { '': '' }
 };

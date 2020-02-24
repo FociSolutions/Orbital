@@ -8,12 +8,13 @@ namespace Orbital.Mock.Server.Models
 {
     public class Policy : IEquatable<Policy>, IPolicy
     {
+      
+        [JsonProperty("type")]
+        public PolicyType Type { get; set; }
+
         [JsonConverter(typeof(KeyValueConverter))]
         [JsonProperty("attributes")]
         public KeyValuePair<string, string> Attributes { get; set; }
-
-        [JsonProperty("type")]
-        public PolicyType Type { get; set; }
 
         public bool Equals(Policy other)
         {
