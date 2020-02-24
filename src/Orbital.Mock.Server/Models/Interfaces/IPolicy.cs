@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Orbital.Mock.Server.Models.Interfaces
+﻿namespace Orbital.Mock.Server.Models.Interfaces
 {
+    /// <summary>
+    /// Interface to be implemented by all the policies
+    /// </summary>
     interface IPolicy
     {
         PolicyType Type { get; set; }
