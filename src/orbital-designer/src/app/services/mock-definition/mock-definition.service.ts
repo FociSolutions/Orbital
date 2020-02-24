@@ -174,7 +174,7 @@ export class MockDefinitionService {
       id: uuid.v4(),
       metadata: {
         title: 'default title for ' + path,
-        description: 'default title for ' + path
+        description: 'default description for ' + path
       },
       verb,
       path,
