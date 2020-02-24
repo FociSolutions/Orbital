@@ -1,45 +1,47 @@
 ﻿{
     "scenarios": [
-        {
-            "id": "a4f8e431-5f53-4edb-b9b4-c1a791a7f017",
-            "metadata": {
-                "title": "New Scenario",
-                "description": ""
-            },
-            "verb": 0,
-            "path": "/pets/{petId}",
-            "response": {
-                "headers": {},
-                "status": "200",
-                "body": "{\"success\": \"true\"}"
-            },
-          "requestMatchRules": {
-            "urlRules": [],
-            "bodyRules": [],
-            "headerRules": [],
-            "queryRules": []
-          }
+      {
+        "id": "a4f8e431-5f53-4edb-b9b4-c1a791a7f017",
+        "metadata": {
+          "title": "New Scenario",
+          "description": ""
         },
-        {
-            "id": "8e4d3d59-7435-4f76-8757-88bd743c15aa",
-            "metadata": {
-                "title": "New Scenario 2",
-                "description": ""
-            },
-            "verb": 0,
-            "path": "/pets",
-            "response": {
-                "headers": {},
-                "status": "200",
-                "body": "{\"no_param\": \"true\"}"
-            },
-          "requestMatchRules": {
-            "urlRules": [],
-            "bodyRules": [],
-            "headerRules": [],
-            "queryRules": []
-          }
-        }
+        "verb": 0,
+        "path": "/pets/{petId}",
+        "response": {
+          "headers": {},
+          "status": "200",
+          "body": "{\"success\": \"true\"}"
+        },
+        "requestMatchRules": {
+          "urlRules": [],
+          "bodyRules": [],
+          "headerRules": [],
+          "queryRules": []
+        },
+        "policies": []
+      },
+      {
+        "id": "8e4d3d59-7435-4f76-8757-88bd743c15aa",
+        "metadata": {
+          "title": "New Scenario 2",
+          "description": ""
+        },
+        "verb": 0,
+        "path": "/pets",
+        "response": {
+          "headers": {},
+          "status": "200",
+          "body": "{\"no_param\": \"true\"}"
+        },
+        "requestMatchRules": {
+          "urlRules": [],
+          "bodyRules": [],
+          "headerRules": [],
+          "queryRules": []
+        },
+        "policies": []
+      }
     ],
     "host": "petstore.swagger.io",
     "basePath": "/v1",

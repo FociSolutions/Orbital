@@ -61,7 +61,8 @@
         "urlRules": [],
         "headerRules": [],
         "queryRules": []
-      }
+      },
+      "policies": []
     },
     {
       "id": "0adac4b9-c984-4b47-9de0-943e3723c5e7",

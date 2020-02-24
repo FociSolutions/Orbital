@@ -1,32 +1,33 @@
 {
     "scenarios": [
-        {
-            "id": "98fdbd41-14e5-401d-833f-59292018557f",
-            "metadata": {
-                "title": "Get Header List Filtered",
-                "description": "Gets the list of pets but filters out based on animal type"
-            },
-            "verb": 3,
-            "path": "/petHeaders",
-            "response": {
-                "headers": {},
-                "status": "200",
-                "body": "{\n  \"animal-type\": \"cat\"\n}"
-            },
-            "requestMatchRules": {
-                "urlRules": [],
-                "headerRules": [],
-                "queryRules": [
-                    {
-                        "type": 9,
-                        "rule": {
-                            "id": "1"
-                        }
-                    }
-                ],
-                "bodyRules": []
+      {
+        "id": "98fdbd41-14e5-401d-833f-59292018557f",
+        "metadata": {
+          "title": "Get Header List Filtered",
+          "description": "Gets the list of pets but filters out based on animal type"
+        },
+        "verb": 3,
+        "path": "/petHeaders",
+        "response": {
+          "headers": {},
+          "status": "200",
+          "body": "{\n  \"animal-type\": \"cat\"\n}"
+        },
+        "requestMatchRules": {
+          "urlRules": [],
+          "headerRules": [],
+          "queryRules": [
+            {
+              "type": 9,
+              "rule": {
+                "id": "1"
+              }
             }
-        }
+          ],
+          "bodyRules": []
+        },
+        "policies": []
+      }
     ],
     "host": "petstore.swagger.io",
     "basePath": "/v1",
