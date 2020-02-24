@@ -10,6 +10,9 @@ import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MockDefinition, defaultMockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import validOpenApiTest from '../../../test-files/valid-openapi-spec';
+import * as yaml from 'js-yaml';
+import { OpenAPIV2 } from 'openapi-types';
 
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
@@ -301,5 +304,12 @@ describe('MockDefinitionService', () => {
         done();
       }
     });
+  });
+
+  it('should generate default scenarios for imported open api endpoints', () => {
+    const service: MockDefinitionService = TestBed.get(MockDefinitionService);
+    const content = yaml.safeLoad(validOpenApiTest) as OpenAPIV2.Document;
+    const scenarios = service.getDefaultScenarios(content.paths);
+    expect(scenarios.length).toBe(2);
   });
 });

@@ -1,7 +1,4 @@
-import {
-  RequestMatchRule,
-  defaultRquestMatchRule
-} from './request-match-rule.model';
+import { RequestMatchRule, defaultRquestMatchRule } from './request-match-rule.model';
 import { Metadata, defaultMetadata } from '../metadata.model';
 import { VerbType } from '../../verb.type';
 import { Response, defaultResponse } from './response.model';

@@ -17,6 +17,7 @@ import { EMPTY } from 'rxjs';
 import * as yaml from 'js-yaml';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 import { FormControl } from '@angular/forms';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
@@ -31,7 +32,7 @@ describe('CreateNewMockViewComponent', () => {
         LoggerTestingModule,
         RouterTestingModule.withRoutes([])
       ],
-      providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService]
+      providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService]
     }).compileComponents();
   }));
 
@@ -79,7 +80,13 @@ describe('CreateNewMockViewComponent', () => {
     it('should return a mockdefinition if form is valid', () => {
       const fakeMockDefinition = generateMockDefinitionAndSetForm();
       component.formToMockDefinition().subscribe(value => {
-        expect(value).toEqual(fakeMockDefinition);
+        expect(value.openApi).toEqual(fakeMockDefinition.openApi);
+        expect(value.metadata).toEqual(fakeMockDefinition.metadata);
+        expect(value.host).toEqual(fakeMockDefinition.host);
+        expect(value.basePath).toEqual(fakeMockDefinition.basePath);
+        expect(value.scenarios[0].metadata).toEqual(fakeMockDefinition.scenarios[0].metadata);
+        expect(value.scenarios[0].requestMatchRules).toEqual(fakeMockDefinition.scenarios[0].requestMatchRules);
+        expect(value.scenarios[0].response).toEqual(fakeMockDefinition.scenarios[0].response);
       });
     });
     it('should return EMPTY if form is invalid', () => {
@@ -113,7 +120,7 @@ describe('CreateNewMockViewComponent', () => {
     title = faker.random.word(),
     description = faker.random.words()
   ): MockDefinition {
-    const service = new OpenApiSpecService();
+    const service = TestBed.get(MockDefinitionService);
     let openApi: OpenAPIV2.Document;
     component.formGroup.setValue({
       ...component.formGroup.value,
@@ -128,7 +135,7 @@ describe('CreateNewMockViewComponent', () => {
         description
       },
       openApi,
-      scenarios: []
+      scenarios: service.getDefaultScenarios(openApi.paths)
     } as MockDefinition;
   }
 });
