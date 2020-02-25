@@ -14,44 +14,44 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
 
   readonly policies = [{ value: PolicyType.DELAYRESPONSE, viewValue: 'Delay Response' }];
 
-  @Input() policyEditRuleFormGroup: FormGroup;
+  @Input() policyEditFormGroup: FormGroup;
   /**
    * The policy to be deleted by the parent
    */
   @Output() policyRemovedEventEmitter = new EventEmitter<Policy>();
 
   ngOnInit() {
-    const policyTypeSubscription = this.policyEditRuleFormGroup.get('policyType').valueChanges.subscribe(type => {
-      this.policyEditRuleFormGroup.updateValueAndValidity();
+    const policyTypeSubscription = this.policyEditFormGroup.get('policyType').valueChanges.subscribe(type => {
+      this.policyEditFormGroup.updateValueAndValidity();
     });
 
     this.subscriptions.push(policyTypeSubscription);
   }
 
   /**
-   * Gets the form control for the 'path'
+   * Gets the form control for the 'delayTime'
    */
   get delayTime(): AbstractControl {
-    return this.policyEditRuleFormGroup.get('delayTime');
+    return this.policyEditFormGroup.get('delayTime');
   }
 
   /**
-   * Gets the value from the current url rule type
+   * Gets the value from the current policy type
    */
 
   get policyType(): AbstractControl {
-    return this.policyEditRuleFormGroup.get('policyType');
+    return this.policyEditFormGroup.get('policyType');
   }
 
   /**
-   * Emits a removes event with the KeyValue for the parent to remove
+   * Emits a removes event with the policy for the parent to remove
    */
   onRemove() {
-    const removeRule = {
+    const removePolicy = {
       attributes: { delay: this.delayTime.value.toString() },
       type: this.policyType.value
     } as Policy;
-    this.policyRemovedEventEmitter.emit(removeRule);
+    this.policyRemovedEventEmitter.emit(removePolicy);
   }
 
   /**

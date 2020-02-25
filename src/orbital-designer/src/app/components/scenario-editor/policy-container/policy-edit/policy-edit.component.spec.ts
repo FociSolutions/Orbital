@@ -28,7 +28,7 @@ describe('PolicyEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PolicyEditComponent);
     component = fixture.componentInstance;
-    component.policyEditRuleFormGroup = new FormGroup({
+    component.policyEditFormGroup = new FormGroup({
       delayTime: new FormControl('', [Validators.required, Validators.min(1)]),
       policyType: new FormControl(PolicyType.NONE, [Validators.required])
     });
@@ -64,8 +64,8 @@ describe('PolicyEditComponent', () => {
 
       describe('And the remove button is pushed', () => {
         it('Should emitt the policyRemovedEventEmitter', done => {
-          component.policyRemovedEventEmitter.subscribe((url: Policy) => {
-            expect(url.attributes).toEqual({ delay: '2' });
+          component.policyRemovedEventEmitter.subscribe((policy: Policy) => {
+            expect(policy.attributes).toEqual({ delay: '2' });
             done();
           });
 
