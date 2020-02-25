@@ -72,7 +72,7 @@ describe('PolicyAddComponent', () => {
       });
 
       describe('And the add button is pushed', () => {
-        it('Should emitt the policyAddedEventEmitter', done => {
+        it('Should emit the policyAddedEventEmitter', done => {
           component.policyAddedEventEmitter.subscribe((policy: Policy) => {
             expect(policy.attributes).toEqual({ delay: '2' });
             done();
