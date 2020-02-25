@@ -4,7 +4,7 @@
       <div class="row">
         <mat-form-field class="policy-value">
           <input matInput id="addPolicyTime" formControlName="delayTime" />
-          <mat-hint> miliseconds to delay respond</mat-hint>
+          <mat-hint> milliseconds to delay respond</mat-hint>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Select Policy</mat-label>
@@ -22,7 +22,7 @@
 
     <div *ngIf="delayTime.invalid && (delayTime.dirty || delayTime.touched)">
       <mat-error *ngIf="delayTime.errors.required">
-        Number of miliseconds is needed
+        Number of milliseconds is needed
       </mat-error>
       <mat-error *ngIf="delayTime.errors.min">
         Must be above 0

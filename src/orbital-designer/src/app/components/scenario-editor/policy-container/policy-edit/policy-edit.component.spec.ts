@@ -63,7 +63,7 @@ describe('PolicyEditComponent', () => {
       });
 
       describe('And the remove button is pushed', () => {
-        it('Should emitt the policyRemovedEventEmitter', done => {
+        it('Should emit the policyRemovedEventEmitter', done => {
           component.policyRemovedEventEmitter.subscribe((policy: Policy) => {
             expect(policy.attributes).toEqual({ delay: '2' });
             done();
