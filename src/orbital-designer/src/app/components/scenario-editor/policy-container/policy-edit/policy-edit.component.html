@@ -1,0 +1,47 @@
+<mat-card class="policy-add-card">
+  <mat-card-content>
+    <form [formGroup]="policyEditRuleFormGroup">
+      <div class="row">
+        <mat-form-field class="policy-value">
+          <input matInput id="addPolicyTime" formControlName="delayTime" />
+          <mat-hint> miliseconds to delay respond</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Select Policy</mat-label>
+          <mat-select formControlName="policyType" name="policies">
+            <mat-option *ngFor="let p of policies" [value]="p.value">
+              {{ p.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="delete-button-container">
+          <button class="delete-button" (click)="onRemove()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div *ngIf="policyType.invalid && policyType.dirty">
+      <mat-error *ngIf="policyType.errors.required">
+        Policy type is required
+      </mat-error>
+    </div>
+
+    <div *ngIf="delayTime.invalid && delayTime.dirty">
+      <mat-error *ngIf="delayTime.errors.required">
+        Number of miliseconds is needed
+      </mat-error>
+      <mat-error *ngIf="delayTime.errors.min">
+        Must be above 0
+      </mat-error>
+    </div>
+    <div *ngIf="delayTime.touched && policyType.touched">
+      <mat-error>
+        Policy is duplicated
+      </mat-error>
+    </div>
+  </mat-card-content>
+</mat-card>
