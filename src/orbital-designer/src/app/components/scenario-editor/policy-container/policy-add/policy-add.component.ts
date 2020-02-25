@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angu
 import { Subscription } from 'rxjs';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, FormArray } from '@angular/forms';
+import { PolicyFormBuilder } from '../policy-form-builder/policy-form.builder';
 
 @Component({
   selector: 'app-policy-add',
@@ -15,7 +16,7 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
    */
   private subscriptions: Subscription[] = [];
   private policyToAdd = {
-    attributes: { delay: '' } as Record<string, string>,
+    attributes: {} as Record<string, string>,
     type: PolicyType.NONE
   } as Policy;
   private policyIsDuplicated = false;
@@ -26,26 +27,34 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
   readonly policies = [{ value: PolicyType.DELAYRESPONSE, viewValue: 'Delay Response' }];
 
   policyAddFormGroup: FormGroup;
+  constructor(private formBuilder: PolicyFormBuilder) {}
   ngOnInit() {
     const policyDuplicatedSubscription = this.policyAddedIsDuplicated.subscribe(
       isDuplicated => (this.policyIsDuplicated = isDuplicated)
     );
     this.policyAddFormGroup = new FormGroup({
-      delayTime: new FormControl(this.policyToAdd.attributes['delay'], [Validators.required, Validators.min(1)]),
+      attributes: this.formBuilder.generateEmptyPolicyFormArray(),
       policyType: new FormControl(this.policyToAdd.type, [Validators.required])
     });
 
-    const delayTimeSubscription = this.policyAddFormGroup.get('delayTime').valueChanges.subscribe(delayTime => {
-      this.policyIsDuplicated = false;
-      this.policyToAdd.attributes['delay'] = delayTime.toString();
-    });
+    // const delayTimeSubscription = this.policyAddFormGroup.get('delayTime').valueChanges.subscribe(delayTime => {
+    //   this.policyIsDuplicated = false;
+    //   this.policyToAdd.attributes['delay'] = delayTime.toString();
+    // });
 
     const policyTypeSubscription = this.policyAddFormGroup.get('policyType').valueChanges.subscribe(type => {
       this.policyIsDuplicated = false;
       this.policyToAdd.type = type;
+      if (type === PolicyType.DELAYRESPONSE) {
+        const lengthOfArray = (this.policyAddFormGroup.controls.attributes as FormArray).length;
+        (this.policyAddFormGroup.controls.attributes as FormArray).insert(
+          lengthOfArray,
+          this.formBuilder.generateDelayPolicyFormGroup()
+        );
+      }
     });
 
-    this.subscriptions.push(delayTimeSubscription, policyTypeSubscription, policyDuplicatedSubscription);
+    this.subscriptions.push(policyTypeSubscription, policyDuplicatedSubscription);
   }
 
   /**
@@ -76,6 +85,10 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
     if (this.policyAddFormGroup.valid) {
       this.policyAddedEventEmitter.emit(this.policyToAdd);
     }
+  }
+
+  isDelayPolicy(policyChosen: PolicyType): boolean {
+    return policyChosen === PolicyType.DELAYRESPONSE;
   }
 
   /**

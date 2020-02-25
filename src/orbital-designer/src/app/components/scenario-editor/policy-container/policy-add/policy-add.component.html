@@ -2,10 +2,22 @@
   <mat-card-content>
     <form class="policy-add" [formGroup]="policyAddFormGroup">
       <div class="row">
-        <mat-form-field class="policy-value">
-          <input matInput id="addPolicyTime" formControlName="delayTime" />
-          <mat-hint> milliseconds to delay response</mat-hint>
-        </mat-form-field>
+        <div formArrayName="attributes">
+          <div *ngFor="let policy of policyAddFormGroup.get('attributes').value; let i = index" [formGroupName]="i">
+            <mat-form-field class="policy-value" *ngIf="isDelayPolicy(policyType.value)">
+              <input matInput formControlName="delayTime" />
+              <mat-hint> milliseconds to delay response</mat-hint>
+              <div *ngIf="policy.delayTime.invalid && (policy.delayTime.dirty || policy.delayTime.touched)">
+                <mat-error *ngIf="policy.delayTime.errors.required">
+                  Number of milliseconds is needed
+                </mat-error>
+                <mat-error *ngIf="policy.delayTime.errors.min">
+                  Must be above 0
+                </mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
         <mat-form-field>
           <mat-label>Select Policy</mat-label>
           <mat-select formControlName="policyType" name="policies">
@@ -19,15 +31,6 @@
         </button>
       </div>
     </form>
-
-    <div *ngIf="delayTime.invalid && (delayTime.dirty || delayTime.touched)">
-      <mat-error *ngIf="delayTime.errors.required">
-        Number of milliseconds is needed
-      </mat-error>
-      <mat-error *ngIf="delayTime.errors.min">
-        Must be above 0
-      </mat-error>
-    </div>
 
     <div *ngIf="policyType.invalid && (policyType.dirty || policyType.touched)">
       <mat-error *ngIf="policyType.errors.required">

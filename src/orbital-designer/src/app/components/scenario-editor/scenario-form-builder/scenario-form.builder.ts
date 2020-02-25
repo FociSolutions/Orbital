@@ -6,6 +6,9 @@ import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-va
 import { recordFirstOrDefault } from 'src/app/models/record';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
+import { ɵangular_packages_platform_browser_dynamic_testing_testing_b } from '@angular/platform-browser-dynamic/testing';
+import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
+import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +34,8 @@ export class ScenarioFormBuilder {
     this.scenarioForm = this.formBuilder.group({
       metadata: this.metadataFormGroup(scenario.metadata),
       requestMatchRules: this.requestMatchRulesFormGroup(scenario.requestMatchRules),
-      response: this.responseFormGroup(scenario.response)
+      response: this.responseFormGroup(scenario.response),
+      policies: this.policiesFormArray(scenario.policies)
     });
     return this.scenarioForm;
   }
@@ -72,6 +76,24 @@ export class ScenarioFormBuilder {
       title: [metadata.title, [Validators.maxLength(50)]],
       description: [metadata.description, [Validators.maxLength(500)]]
     });
+  }
+
+  public policiesFormArray(policies: Policy[]): FormArray {
+    return this.formBuilder.array(policies.map(p => this.getPolicyFormGroup(p)));
+  }
+
+  public getPolicyFormGroup(policy: Policy): FormGroup {
+    switch (policy.type) {
+      case PolicyType.DELAYRESPONSE: {
+        return new FormGroup({
+          delayTime: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
+            Validators.required,
+            Validators.min(1)
+          ]),
+          ruleType: new FormControl(policy.type, [Validators.required])
+        });
+      }
+    }
   }
 
   /**
