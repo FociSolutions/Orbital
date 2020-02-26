@@ -90,7 +90,7 @@ export class ScenarioFormBuilder {
             Validators.required,
             Validators.min(1)
           ]),
-          ruleType: new FormControl(policy.type, [Validators.required])
+          policyType: new FormControl(policy.type, [Validators.required])
         });
       }
     }
@@ -132,5 +132,43 @@ export class ScenarioFormMapper {
         } as KeyValuePairRule;
       });
     return urlRules;
+  }
+
+  /**
+   * Transforms FormArray data into policies to be saved in the scenario
+   *
+   * @param policies raw policies to be transformed
+   */
+  public GetPolicyRulesFromForm(policies: FormArray) {
+    let newPolicies: Policy[];
+
+    newPolicies = policies.controls.map(group => {
+      const policytype = (group as FormGroup).get('policyType').value;
+      const rawValue = (group as FormGroup).getRawValue();
+      return this.getPolicy(policytype, rawValue);
+    });
+    return newPolicies;
+  }
+
+  /**
+   * Transforms FormGroup into the appropiate policy
+   * @param policytype The type of policy
+   * @param rawValue The raw FormGroup value to be transformed
+   */
+  private getPolicy(policytype: PolicyType, rawValue: any) {
+    switch (policytype) {
+      case PolicyType.DELAYRESPONSE: {
+        interface PolicyDelayFormGroup {
+          delayTime: string;
+          policyType: number;
+        }
+        const rawPolicy = rawValue as PolicyDelayFormGroup;
+        const policyToReturn = {
+          type: rawPolicy.policyType,
+          attributes: { delayTime: rawPolicy.delayTime } as Record<string, string>
+        };
+        return policyToReturn;
+      }
+    }
   }
 }

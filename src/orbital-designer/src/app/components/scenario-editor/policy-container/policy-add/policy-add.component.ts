@@ -42,7 +42,6 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
       .attributes as FormArray).valueChanges.subscribe(changedAttributes => {
       if (changedAttributes.length > 0) {
         const attributePolicies = changedAttributes.map(att => {
-          console.log(att);
           return att as Record<string, string>;
         });
         attributePolicies.forEach(attributeToAdd => {
