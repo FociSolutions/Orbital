@@ -5,7 +5,7 @@ using System;
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class PolicyFilter<T> : FaultableBaseFilter<T>
-        where T : IFaultablePort
+        where T : IFaultablePort, IPolicyPort
     {
         public override T Process(T port)
         {
