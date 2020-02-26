@@ -93,11 +93,11 @@ export class PolicyComponent implements OnInit, OnDestroy {
     const urlRules = this.policyFormArray.controls.map(group => {
       return (group as FormGroup).getRawValue() as IPolicyFormGroup;
     });
-    urlRules.forEach((urlToCheck, indexToCheck) => {
-      urlRules.forEach((urlToCheckAgainst, indexToCheckAgainst) => {
+    urlRules.forEach((policyToCheck, indexToCheck) => {
+      urlRules.forEach((policyToCheckAgainst, indexToCheckAgainst) => {
         const foundDuplicate =
-          urlToCheck.attributes === urlToCheckAgainst.attributes &&
-          urlToCheck.policyType === urlToCheckAgainst.policyType &&
+          policyToCheck.attributes === policyToCheckAgainst.attributes &&
+          policyToCheck.policyType === policyToCheckAgainst.policyType &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
           (this.policyFormArray.at(indexToCheck) as FormGroup).get('attributes').markAsTouched();

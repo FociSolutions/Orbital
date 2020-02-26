@@ -1,6 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import * as faker from 'faker';
 import { PolicyComponent } from './policy.component';
+import { OrbitalCommonModule } from 'src/app/components/orbital-common/orbital-common.module';
+import { LoggerTestingModule } from 'ngx-logger/testing/public_api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material';
+import { PolicyEditComponent } from '../policy-edit/policy-edit.component';
+import { PolicyAddComponent } from '../policy-add/policy-add.component';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
+import { FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
+import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
+import { recordFirstOrDefault } from 'src/app/models/record';
 
 describe('PolicyComponent', () => {
   let component: PolicyComponent;
@@ -8,18 +21,129 @@ describe('PolicyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PolicyComponent ]
-    })
-    .compileComponents();
+      imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
+      declarations: [PolicyEditComponent, PolicyAddComponent, PolicyComponent],
+      providers: [DesignerStore]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PolicyComponent);
     component = fixture.componentInstance;
+    const designerStore = TestBed.get(DesignerStore) as DesignerStore;
+    designerStore.selectedScenario = defaultScenario;
+    const scenarioFormGroup = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    component.policyFormArray = scenarioFormGroup.get('policies') as FormArray;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('PolicyComponent.deletePolicyHandler', () => {
+    it('should delete the policy if its defined', () => {
+      const policy = {
+        type: PolicyType.DELAYRESPONSE,
+        attributes: { test: faker.random.word() } as Record<string, string>
+      } as Policy;
+      component.policyFormArray.push(
+        new FormGroup({
+          attributes: new FormControl(recordFirstOrDefault(policy.attributes, 'delayTime'), [
+            Validators.required,
+            Validators.min(1)
+          ]),
+          policyType: new FormControl(policy.type, [Validators.required])
+        })
+      );
+      component.deletePolicyHandler(0);
+      expect(component.policyFormArray.length).toBe(0);
+    });
+
+    it('should delete the policy by key if there are multiple similar policies', () => {
+      const randomWord = faker.random.word();
+      // this has to have the same value for all the values to make sure that it is not deleting by value
+      const policies = [
+        {
+          type: PolicyType.DELAYRESPONSE,
+          attributes: { test: randomWord } as Record<string, string>
+        },
+        {
+          type: PolicyType.DELAYRESPONSE,
+          attributes: { testtwo: randomWord } as Record<string, string>
+        },
+        {
+          type: PolicyType.DELAYRESPONSE,
+          attributes: { testthree: randomWord } as Record<string, string>
+        }
+      ] as Policy[];
+
+      component.policyFormArray.push(
+        new FormGroup({
+          path: new FormControl(recordFirstOrDefault(policies[0].attributes, 'delayTime'), [
+            Validators.required,
+            Validators.min(1)
+          ]),
+          ruleType: new FormControl(policies[0].type, [Validators.required])
+        })
+      );
+      component.policyFormArray.push(
+        new FormGroup({
+          path: new FormControl(recordFirstOrDefault(policies[1].attributes, 'delayTime'), [
+            Validators.required,
+            Validators.min(1)
+          ]),
+          ruleType: new FormControl(policies[1].type, [Validators.required])
+        })
+      );
+      component.policyFormArray.push(
+        new FormGroup({
+          path: new FormControl(recordFirstOrDefault(policies[2].attributes, 'delayTime'), [
+            Validators.required,
+            Validators.min(1)
+          ]),
+          ruleType: new FormControl(policies[2].type, [Validators.required])
+        })
+      );
+      component.deletePolicyHandler(0);
+      expect(component.policyFormArray.length).toBe(2);
+    });
+  });
+
+  describe('PolicyComponent.addUrlEditRuleHandler', () => {
+    it('should save valid policy', () => {
+      const policy = {
+        type: PolicyType.DELAYRESPONSE,
+        attributes: { test: faker.random.word() } as Record<string, string>
+      } as Policy;
+      const policyFormGroup = new FormGroup({
+        attributes: new FormControl(recordFirstOrDefault(policy.attributes, 'delayTime'), [
+          Validators.required,
+          Validators.min(1)
+        ]),
+        policyType: new FormControl(policy.type, [Validators.required])
+      });
+      component.addPolicyHandler(policy);
+      expect(component.policyFormArray.length).toBe(1);
+      expect(component.policyFormArray.at(0)).toEqual(policyFormGroup);
+    });
+  });
+
+  it('should not save repeated policy', () => {
+    const policy = {
+      type: PolicyType.DELAYRESPONSE,
+      attributes: { test: faker.random.word() } as Record<string, string>
+    } as Policy;
+    const policyFormGroup = new FormGroup({
+      attributes: new FormControl(recordFirstOrDefault(policy.attributes, 'delayTime'), [
+        Validators.required,
+        Validators.min(1)
+      ]),
+      policyType: new FormControl(policy.type, [Validators.required])
+    });
+    component.policyFormArray.push(policyFormGroup);
+    component.addPolicyHandler(policy);
+    expect(component.policyFormArray.length).toBe(1);
+    expect(component.policyFormArray.at(0)).toEqual(policyFormGroup);
   });
 });
