@@ -15,6 +15,9 @@
               <mat-error *ngIf="delayTime.errors.min">
                 Must be above 0
               </mat-error>
+              <mat-error *ngIf="delayTime.errors.pattern">
+                Must be a number
+              </mat-error>
             </div>
           </div>
         </div>

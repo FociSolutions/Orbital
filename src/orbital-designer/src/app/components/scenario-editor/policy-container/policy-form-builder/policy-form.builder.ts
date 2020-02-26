@@ -17,25 +17,11 @@ export class PolicyFormBuilder {
    */
   public generateDelayPolicyFormGroup(): FormGroup {
     return this.formBuilder.group({
-      delayTime: new FormControl('', [Validators.required, Validators.min(1)])
+      delayTime: new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]*$')])
     });
   }
 
   public generateEmptyPolicyFormArray(): FormArray {
     return this.formBuilder.array([]);
-  }
-
-  public getPolicyItemFormGroup(policy: Policy): FormGroup {
-    switch (policy.type) {
-      case PolicyType.DELAYRESPONSE: {
-        return new FormGroup({
-          delayTime: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
-            Validators.required,
-            Validators.min(1)
-          ]),
-          ruleType: new FormControl(PolicyType.DELAYRESPONSE, [Validators.required])
-        });
-      }
-    }
   }
 }

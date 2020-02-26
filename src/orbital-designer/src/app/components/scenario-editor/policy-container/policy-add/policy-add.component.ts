@@ -4,6 +4,7 @@ import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type'
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { FormGroup, FormControl, Validators, AbstractControl, FormArray } from '@angular/forms';
 import { PolicyFormBuilder } from '../policy-form-builder/policy-form.builder';
+import { recordAdd, recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
 
 @Component({
   selector: 'app-policy-add',
@@ -37,6 +38,23 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
       policyType: new FormControl(this.policyToAdd.type, [Validators.required])
     });
 
+    const policyAttributeSubscription = (this.policyAddFormGroup.controls
+      .attributes as FormArray).valueChanges.subscribe(changedAttributes => {
+      if (changedAttributes.length > 0) {
+        const attributePolicies = changedAttributes.map(att => {
+          console.log(att);
+          return att as Record<string, string>;
+        });
+        attributePolicies.forEach(attributeToAdd => {
+          recordAdd(
+            this.policyToAdd.attributes,
+            recordFirstOrDefaultKey(attributeToAdd, ''),
+            recordFirstOrDefault(attributeToAdd, '')
+          );
+        });
+      }
+    });
+
     const policyTypeSubscription = this.policyAddFormGroup.get('policyType').valueChanges.subscribe(type => {
       this.policyIsDuplicated = false;
       this.policyToAdd.type = type;
@@ -49,7 +67,7 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptions.push(policyTypeSubscription, policyDuplicatedSubscription);
+    this.subscriptions.push(policyTypeSubscription, policyDuplicatedSubscription, policyAttributeSubscription);
   }
 
   /**
