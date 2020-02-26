@@ -41,7 +41,7 @@ export class MockDefinitionService {
               bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[]),
               urlRules: s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
             },
-            policies: s.policies || ([] as Policy[])
+            policies: { ...(s.policies || ([] as Policy[])) }
           }))
         };
         const titlemockdef = (content as MockDefinition).metadata.title;
@@ -77,6 +77,9 @@ export class MockDefinitionService {
               queryRules: s.requestMatchRules.queryRules,
               bodyRules: s.requestMatchRules.bodyRules,
               urlRules: s.requestMatchRules.urlRules
+            },
+            policies: {
+              ...s.policies
             }
           }))
         };
