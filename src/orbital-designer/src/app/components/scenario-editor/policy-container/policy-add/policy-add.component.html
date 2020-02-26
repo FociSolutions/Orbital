@@ -3,18 +3,20 @@
     <div class="row">
       <form class="policy-add" [formGroup]="policyAddFormGroup">
         <div *ngFor="let policy of attributes.controls; let i = index" [formGroup]="policy">
-          <mat-form-field class="policy-value" *ngIf="isDelayPolicy(policyType.value)">
-            <input matInput #inputDelay formControlName="delayTime" />
-            <mat-hint> milliseconds to delay response</mat-hint>
-            <div *ngIf="inputDelay.invalid && (inputDelay.dirty || inputDelay.touched)">
-              <mat-error *ngIf="inputDelay.errors.required">
+          <div *ngIf="isDelayPolicy(policyType.value)">
+            <mat-form-field class="policy-value">
+              <input matInput #inputDelay formControlName="delayTime" />
+              <mat-hint> milliseconds to delay response</mat-hint>
+            </mat-form-field>
+            <div *ngIf="delayTime.invalid && (delayTime.dirty || delayTime.touched)">
+              <mat-error *ngIf="delayTime.errors.required">
                 Number of milliseconds is needed
               </mat-error>
-              <mat-error *ngIf="inputDelay.errors.min">
+              <mat-error *ngIf="delayTime.errors.min">
                 Must be above 0
               </mat-error>
             </div>
-          </mat-form-field>
+          </div>
         </div>
         <mat-form-field>
           <mat-label>Select Policy</mat-label>

@@ -37,11 +37,6 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
       policyType: new FormControl(this.policyToAdd.type, [Validators.required])
     });
 
-    // const delayTimeSubscription = this.policyAddFormGroup.get('delayTime').valueChanges.subscribe(delayTime => {
-    //   this.policyIsDuplicated = false;
-    //   this.policyToAdd.attributes['delay'] = delayTime.toString();
-    // });
-
     const policyTypeSubscription = this.policyAddFormGroup.get('policyType').valueChanges.subscribe(type => {
       this.policyIsDuplicated = false;
       this.policyToAdd.type = type;
@@ -68,7 +63,10 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
    * Gets the form control for the 'delayTime'
    */
   get delayTime(): AbstractControl {
-    return this.policyAddFormGroup.get('delayTime');
+    const arrayAttributes = this.policyAddFormGroup.get('attributes') as FormArray;
+    const delayFormGroup = arrayAttributes.at(0) as FormGroup;
+    const delaytoReturn = delayFormGroup.get('delayTime');
+    return delaytoReturn;
   }
 
   /**
