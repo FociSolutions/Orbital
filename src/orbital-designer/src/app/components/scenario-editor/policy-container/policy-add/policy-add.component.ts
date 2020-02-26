@@ -77,6 +77,9 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
   get policyType(): AbstractControl {
     return this.policyAddFormGroup.get('policyType');
   }
+  get attributes(): FormArray {
+    return this.policyAddFormGroup.get('attributes') as FormArray;
+  }
 
   /**
    * Controls the logic for emmiting a new addPolicy event

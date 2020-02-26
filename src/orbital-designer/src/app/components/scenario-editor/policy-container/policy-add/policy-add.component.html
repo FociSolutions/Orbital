@@ -1,22 +1,20 @@
 <mat-card>
   <mat-card-content>
-    <form class="policy-add" [formGroup]="policyAddFormGroup">
-      <div class="row">
-        <div formArrayName="attributes">
-          <div *ngFor="let policy of policyAddFormGroup.get('attributes').value; let i = index" [formGroupName]="i">
-            <mat-form-field class="policy-value" *ngIf="isDelayPolicy(policyType.value)">
-              <input matInput formControlName="delayTime" />
-              <mat-hint> milliseconds to delay response</mat-hint>
-              <div *ngIf="policy.delayTime.invalid && (policy.delayTime.dirty || policy.delayTime.touched)">
-                <mat-error *ngIf="policy.delayTime.errors.required">
-                  Number of milliseconds is needed
-                </mat-error>
-                <mat-error *ngIf="policy.delayTime.errors.min">
-                  Must be above 0
-                </mat-error>
-              </div>
-            </mat-form-field>
-          </div>
+    <div class="row">
+      <form class="policy-add" [formGroup]="policyAddFormGroup">
+        <div *ngFor="let policy of attributes.controls; let i = index" [formGroup]="policy">
+          <mat-form-field class="policy-value" *ngIf="isDelayPolicy(policyType.value)">
+            <input matInput #inputDelay formControlName="delayTime" />
+            <mat-hint> milliseconds to delay response</mat-hint>
+            <div *ngIf="inputDelay.invalid && (inputDelay.dirty || inputDelay.touched)">
+              <mat-error *ngIf="inputDelay.errors.required">
+                Number of milliseconds is needed
+              </mat-error>
+              <mat-error *ngIf="inputDelay.errors.min">
+                Must be above 0
+              </mat-error>
+            </div>
+          </mat-form-field>
         </div>
         <mat-form-field>
           <mat-label>Select Policy</mat-label>
@@ -29,8 +27,8 @@
         <button mat-mini-fab class="add-button" color="primary" (click)="addPolicy()">
           <mat-icon>add</mat-icon>
         </button>
-      </div>
-    </form>
+      </form>
+    </div>
 
     <div *ngIf="policyType.invalid && (policyType.dirty || policyType.touched)">
       <mat-error *ngIf="policyType.errors.required">
