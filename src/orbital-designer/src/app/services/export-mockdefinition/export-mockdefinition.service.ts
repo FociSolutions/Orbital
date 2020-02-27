@@ -15,27 +15,7 @@ export class ExportMockdefinitionService {
 
   constructor(private httpClient: HttpClient, private logger: NGXLogger) { }
 
-  /**
-   * Sends a GET request to get a mock definition; the URL should not have a trailing slash
-   * @param url The url to send the GET request to
-   * @param id The mock definition id to get
-   */
-  get(url: string, id: string): Observable<MockDefinition> {
-    this.logger.debug('Sent GET request to ' + url + '/' + id);
-    return this.httpClient
-      .get<MockDefinition>(url + '/' + id)
-      .pipe(timeout(3000));
-  }
-
-  /**
-   * Sends a GET all request to a specified server
-   * @param url The url to send the GET request to
-   */
-  getAll(url: string): Observable<MockDefinition[]> {
-    this.logger.debug('Sent GET request to ' + url);
-
-    return this.httpClient.get<MockDefinition[]>(url).pipe(timeout(3000));
-  }
+  private urlCache: string;
 
   /**
    * Access to Url for Quick Export
@@ -60,7 +40,7 @@ export class ExportMockdefinitionService {
       'Mockdefinition in JSON format: ',
       mockDefinitionToExport
     );
-
+    this.urlCache = url;
     return this.httpClient
       .post<boolean>(url, mockDefinitionToExport, {
         headers: new HttpHeaders({
