@@ -38,7 +38,7 @@
         Must be above 0
       </mat-error>
     </div>
-    <div *ngIf="delayTime.touched && policyType.touched">
+    <div *ngIf="this.policyEditFormGroup.touched">
       <mat-error>
         Policy is duplicated
       </mat-error>
