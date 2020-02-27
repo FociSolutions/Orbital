@@ -17,6 +17,7 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -30,6 +31,7 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
         private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
+        private readonly PolicyFilter<ProcessMessagePort> policyFilter;
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
         private readonly UrlMatchFilter<ProcessMessagePort> urlMatchFilter;
@@ -42,6 +44,7 @@ namespace Orbital.Mock.Server.Pipelines
                   new BodyMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
+                  new PolicyFilter<ProcessMessagePort>(),
                   new ResponseSelectorFilter<ProcessMessagePort>())
         {
         }
@@ -53,6 +56,7 @@ namespace Orbital.Mock.Server.Pipelines
             BodyMatchFilter<ProcessMessagePort> bodyMatchFilter,
             HeaderMatchFilter<ProcessMessagePort> headerMatchFilter,
             UrlMatchFilter<ProcessMessagePort> urlMatchFilter,
+            PolicyFilter<ProcessMessagePort> policyFilter,
             ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter
 
         )
@@ -64,6 +68,7 @@ namespace Orbital.Mock.Server.Pipelines
             this.blockFactory = new SyncBlockFactory(this.cancellationTokenSource);
             this.headerMatchFilter = headerMatchFilter;
             this.urlMatchFilter = urlMatchFilter;
+            this.policyFilter = policyFilter;
             this.responseSelectorFilter = responseSelectorFilter;
         }
 
@@ -81,9 +86,11 @@ namespace Orbital.Mock.Server.Pipelines
             var headerFilterBlock = this.blockFactory.CreateTransformBlock(this.headerMatchFilter.Process, cancellationTokenSource);
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process, cancellationTokenSource);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process, cancellationTokenSource);
+            var policyFilterBlock = this.blockFactory.CreateTransformBlock(this.policyFilter.Process, cancellationTokenSource);
             var joinUrlAndOtherBlock = this.blockFactory.CreateJoinTwoBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
+            var policyMergeBlock = this.blockFactory.CreateJoinTwoBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var finalmergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
             var responseSelectorBlock = this.blockFactory.CreateTransformBlock(this.responseSelectorFilter.Process, cancellationTokenSource);
             this.endBlock = this.blockFactory.CreateFinalBlock(cancellationTokenSource);
@@ -98,6 +105,7 @@ namespace Orbital.Mock.Server.Pipelines
             broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
             broadCastBlock.LinkTo(headerFilterBlock, linkOptions);
             broadCastBlock.LinkTo(urlFilterBlock, linkOptions);
+            broadCastBlock.LinkTo(policyFilterBlock, linkOptions);
 
 
             bodyMatchFilterBlock.LinkTo(joinRequestPartsBlock.Target1, linkOptions);
@@ -108,6 +116,7 @@ namespace Orbital.Mock.Server.Pipelines
             joinRequestPartsBlock.LinkTo(mergeBlock, linkOptions);
 
             mergeBlock.LinkTo(joinUrlAndOtherBlock.Target1, linkOptions);
+            mergeBlock.LinkTo(policyMergeBlock.Target1, linkOptions);
 
             joinUrlAndOtherBlock.LinkTo(finalmergeBlock, linkOptions);
 
