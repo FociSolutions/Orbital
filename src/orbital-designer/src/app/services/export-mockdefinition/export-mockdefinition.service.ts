@@ -17,6 +17,13 @@ export class ExportMockdefinitionService {
   private urlCache: string;
 
   /**
+   * Access to Url for Quick Export
+   */
+  getUrl(): string {
+    return this.urlCache;
+  }
+
+  /**
    * POSTs a Mockdefinition to the server
    * @param url The url to post the mockdefinition to
    * @param mockdefinition The mockdefinition to be posted
