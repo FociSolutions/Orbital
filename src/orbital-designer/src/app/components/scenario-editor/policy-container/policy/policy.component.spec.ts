@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { PolicyComponent } from './policy.component';
 import { OrbitalCommonModule } from 'src/app/components/orbital-common/orbital-common.module';
-import { LoggerTestingModule } from 'ngx-logger/testing/public_api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material';
 import { PolicyEditComponent } from '../policy-edit/policy-edit.component';
@@ -14,6 +13,7 @@ import { FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@ang
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { recordFirstOrDefault } from 'src/app/models/record';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('PolicyComponent', () => {
   let component: PolicyComponent;
