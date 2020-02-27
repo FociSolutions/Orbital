@@ -89,7 +89,7 @@ export function compareRecords<K extends string | number | symbol, T>(
   const keys = Object.keys(record);
   const keysToCompare = Object.keys(recordToCompare);
   if (keys.length === keysToCompare.length) {
-    for (var key in keys) {
+    for (const key in keys) {
       if (record[key] === recordToCompare[key]) {
         equal = true;
       }
