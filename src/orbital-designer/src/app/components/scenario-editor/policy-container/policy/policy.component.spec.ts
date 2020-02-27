@@ -15,7 +15,7 @@ import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { recordFirstOrDefault } from 'src/app/models/record';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
-describe('PolicyComponent', () => {
+fdescribe('PolicyComponent', () => {
   let component: PolicyComponent;
   let fixture: ComponentFixture<PolicyComponent>;
 
@@ -45,11 +45,11 @@ describe('PolicyComponent', () => {
     it('should delete the policy if its defined', () => {
       const policy = {
         type: PolicyType.DELAYRESPONSE,
-        attributes: { test: faker.random.word() } as Record<string, string>
+        attributes: { delayTime: faker.random.number().toString() } as Record<string, string>
       } as Policy;
       component.policyFormArray.push(
         new FormGroup({
-          attributes: new FormControl(recordFirstOrDefault(policy.attributes, 'delayTime'), [
+          delayTime: new FormControl(recordFirstOrDefault(policy.attributes, '0'), [
             Validators.required,
             Validators.min(1)
           ]),
@@ -61,39 +61,39 @@ describe('PolicyComponent', () => {
     });
 
     it('should delete the policy by key if there are multiple similar policies', () => {
-      const randomWord = faker.random.word();
+      const randomNumber = faker.random.number().toString();
       // this has to have the same value for all the values to make sure that it is not deleting by value
       const policies = [
         {
           type: PolicyType.DELAYRESPONSE,
-          attributes: { test: randomWord } as Record<string, string>
+          attributes: { test: randomNumber } as Record<string, string>
         },
         {
           type: PolicyType.DELAYRESPONSE,
-          attributes: { testtwo: randomWord } as Record<string, string>
+          attributes: { testtwo: randomNumber } as Record<string, string>
         },
         {
           type: PolicyType.DELAYRESPONSE,
-          attributes: { testthree: randomWord } as Record<string, string>
+          attributes: { testthree: randomNumber } as Record<string, string>
         }
       ] as Policy[];
 
       component.policyFormArray.push(
         new FormGroup({
-          path: new FormControl(recordFirstOrDefault(policies[0].attributes, 'delayTime'), [
+          delayTime: new FormControl(recordFirstOrDefault(policies[0].attributes, 'delayTime'), [
             Validators.required,
             Validators.min(1)
           ]),
-          ruleType: new FormControl(policies[0].type, [Validators.required])
+          policyType: new FormControl(policies[0].type, [Validators.required])
         })
       );
       component.policyFormArray.push(
         new FormGroup({
-          path: new FormControl(recordFirstOrDefault(policies[1].attributes, 'delayTime'), [
+          delayTime: new FormControl(recordFirstOrDefault(policies[1].attributes, 'delayTime'), [
             Validators.required,
             Validators.min(1)
           ]),
-          ruleType: new FormControl(policies[1].type, [Validators.required])
+          policyType: new FormControl(policies[1].type, [Validators.required])
         })
       );
       component.policyFormArray.push(
@@ -110,14 +110,14 @@ describe('PolicyComponent', () => {
     });
   });
 
-  describe('PolicyComponent.addUrlEditRuleHandler', () => {
+  describe('PolicyComponent.addPolicyHandler', () => {
     it('should save valid policy', () => {
       const policy = {
         type: PolicyType.DELAYRESPONSE,
-        attributes: { test: faker.random.word() } as Record<string, string>
+        attributes: { delayTime: faker.random.number().toString() } as Record<string, string>
       } as Policy;
       const policyFormGroup = new FormGroup({
-        attributes: new FormControl(recordFirstOrDefault(policy.attributes, 'delayTime'), [
+        delayTime: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
           Validators.required,
           Validators.min(1)
         ]),
@@ -132,13 +132,11 @@ describe('PolicyComponent', () => {
   it('should not save repeated policy', () => {
     const policy = {
       type: PolicyType.DELAYRESPONSE,
-      attributes: { test: faker.random.word() } as Record<string, string>
+      attributes: { delayTime: faker.random.number().toString() } as Record<string, string>
     } as Policy;
+    const delayTimeValue = recordFirstOrDefault(policy.attributes, '');
     const policyFormGroup = new FormGroup({
-      attributes: new FormControl(recordFirstOrDefault(policy.attributes, 'delayTime'), [
-        Validators.required,
-        Validators.min(1)
-      ]),
+      delayTime: new FormControl(delayTimeValue, [Validators.required, Validators.min(1)]),
       policyType: new FormControl(policy.type, [Validators.required])
     });
     component.policyFormArray.push(policyFormGroup);

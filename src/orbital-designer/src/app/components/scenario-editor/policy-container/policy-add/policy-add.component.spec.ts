@@ -36,8 +36,8 @@ describe('PolicyAddComponent', () => {
   });
 
   describe('When form group is made', () => {
-    it('should have a delayTime from control', () => {
-      expect(component.delayTime).toBeTruthy();
+    it('should have a attributes from control', () => {
+      expect(component.attributes).toBeTruthy();
     });
 
     it('should have a policyType from control', () => {
@@ -65,7 +65,10 @@ describe('PolicyAddComponent', () => {
 
     describe('And delayTime has been set to a value', () => {
       beforeEach(() => {
-        component.delayTime.setValue(2);
+        component.attributes
+          .at(0)
+          .get('delayTime')
+          .setValue(2);
       });
       it('should have delayTime set to VALID status', () => {
         expect(component.delayTime.status).toBe('VALID');

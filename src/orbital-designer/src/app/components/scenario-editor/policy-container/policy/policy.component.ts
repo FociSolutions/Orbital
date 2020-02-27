@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angu
 import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
-import { recordFirstOrDefault } from 'src/app/models/record';
+import { recordFirstOrDefault, recordAdd } from 'src/app/models/record';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 
@@ -69,13 +69,20 @@ export class PolicyComponent implements OnInit, OnDestroy {
 
     return this.policyFormArray.controls
       .map(group => {
-        return (group as FormGroup).getRawValue() as IPolicyFormGroup;
+        const attributes = {} as Record<string, string>;
+        Object.keys((group as FormGroup).controls).forEach(key => {
+          if (key !== 'policyType') {
+            recordAdd(attributes, key, (group as FormGroup).controls[key].value);
+          }
+        });
+        const policyformgroup = {
+          policyType: (group as FormGroup).get['policyType'],
+          attributes
+        } as IPolicyFormGroup;
+        return policyformgroup;
       })
       .some(policyFormGroup => {
-        return (
-          recordFirstOrDefault(policyFormGroup.attributes, '') === recordFirstOrDefault(policyToAdd.attributes, '') &&
-          policyFormGroup.policyType === policyToAdd.type
-        );
+        return policyFormGroup.attributes === policyToAdd.attributes && policyFormGroup.policyType === policyToAdd.type;
       });
   }
 
