@@ -40,6 +40,7 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
 
     const policyAttributeSubscription = (this.policyAddFormGroup.controls
       .attributes as FormArray).valueChanges.subscribe(changedAttributes => {
+      this.policyIsDuplicated = false;
       if (changedAttributes.length > 0) {
         const attributePolicies = changedAttributes.map(att => {
           return att as Record<string, string>;

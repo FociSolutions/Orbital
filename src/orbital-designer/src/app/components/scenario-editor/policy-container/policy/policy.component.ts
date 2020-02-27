@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angu
 import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
-import { recordFirstOrDefault, recordAdd } from 'src/app/models/record';
+import { recordAdd, compareRecords } from 'src/app/models/record';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 
@@ -62,27 +62,16 @@ export class PolicyComponent implements OnInit, OnDestroy {
    * @param policyToAdd The policy to be added to form array
    */
   private isPolicyDuplicate(policyToAdd: Policy): boolean {
-    interface IPolicyFormGroup {
-      attributes: Record<string, string>;
-      policyType: number;
-    }
-
     return this.policyFormArray.controls
       .map(group => {
-        const attributes = {} as Record<string, string>;
-        Object.keys((group as FormGroup).controls).forEach(key => {
-          if (key !== 'policyType') {
-            recordAdd(attributes, key, (group as FormGroup).controls[key].value);
-          }
-        });
-        const policyformgroup = {
-          policyType: (group as FormGroup).get['policyType'],
-          attributes
-        } as IPolicyFormGroup;
-        return policyformgroup;
+        const policyFormGroup = this.generatePoliciesAttributes(group as FormGroup);
+        return policyFormGroup;
       })
       .some(policyFormGroup => {
-        return policyFormGroup.attributes === policyToAdd.attributes && policyFormGroup.policyType === policyToAdd.type;
+        return (
+          compareRecords(policyFormGroup.attributes, policyToAdd.attributes) &&
+          policyFormGroup.policyType === policyToAdd.type
+        );
       });
   }
 
@@ -97,24 +86,43 @@ export class PolicyComponent implements OnInit, OnDestroy {
       attributes: Record<string, string>;
       policyType: number;
     }
-    const urlRules = this.policyFormArray.controls.map(group => {
-      return (group as FormGroup).getRawValue() as IPolicyFormGroup;
+    const policies = this.policyFormArray.controls.map(group => {
+      const policyFormGroup = this.generatePoliciesAttributes(group as FormGroup);
+      return policyFormGroup;
     });
-    urlRules.forEach((policyToCheck, indexToCheck) => {
-      urlRules.forEach((policyToCheckAgainst, indexToCheckAgainst) => {
+    policies.forEach((policyToCheck, indexToCheck) => {
+      policies.forEach((policyToCheckAgainst, indexToCheckAgainst) => {
         const foundDuplicate =
-          policyToCheck.attributes === policyToCheckAgainst.attributes &&
+          compareRecords(policyToCheck.attributes, policyToCheckAgainst.attributes) &&
           policyToCheck.policyType === policyToCheckAgainst.policyType &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
-          (this.policyFormArray.at(indexToCheck) as FormGroup).get('attributes').markAsTouched();
-          (this.policyFormArray.at(indexToCheck) as FormGroup).get('policyType').markAsTouched();
-          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).get('attributes').markAsTouched();
-          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).get('policyType').markAsTouched();
+          (this.policyFormArray.at(indexToCheck) as FormGroup).markAsTouched();
+          //(this.policyFormArray.at(indexToCheck) as FormGroup).get('policyType').markAsTouched();
+          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).markAsTouched();
+          //(this.policyFormArray.at(indexToCheckAgainst) as FormGroup).get('policyType').markAsTouched();
           this.policyFormArray.setErrors({ duplicated: true });
         }
       });
     });
+  }
+
+  private generatePoliciesAttributes(group: FormGroup) {
+    interface IPolicyFormGroup {
+      attributes: Record<string, string>;
+      policyType: number;
+    }
+    const attributes = {} as Record<string, string>;
+    Object.keys((group as FormGroup).controls).forEach(key => {
+      if (key !== 'policyType') {
+        recordAdd(attributes, key, (group as FormGroup).controls[key].value);
+      }
+    });
+    const policyformgroup = {
+      policyType: (group as FormGroup).controls['policyType'].value,
+      attributes
+    } as IPolicyFormGroup;
+    return policyformgroup;
   }
   /**
    * Implementation for NG On Destroy
