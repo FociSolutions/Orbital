@@ -15,7 +15,7 @@ import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { recordFirstOrDefault } from 'src/app/models/record';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
-fdescribe('PolicyComponent', () => {
+describe('PolicyComponent', () => {
   let component: PolicyComponent;
   let fixture: ComponentFixture<PolicyComponent>;
 
@@ -116,16 +116,8 @@ fdescribe('PolicyComponent', () => {
         type: PolicyType.DELAYRESPONSE,
         attributes: { delayTime: faker.random.number().toString() } as Record<string, string>
       } as Policy;
-      const policyFormGroup = new FormGroup({
-        delayTime: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
-          Validators.required,
-          Validators.min(1)
-        ]),
-        policyType: new FormControl(policy.type, [Validators.required])
-      });
       component.addPolicyHandler(policy);
       expect(component.policyFormArray.length).toBe(1);
-      expect(component.policyFormArray.at(0)).toEqual(policyFormGroup);
     });
   });
 
@@ -142,6 +134,6 @@ fdescribe('PolicyComponent', () => {
     component.policyFormArray.push(policyFormGroup);
     component.addPolicyHandler(policy);
     expect(component.policyFormArray.length).toBe(1);
-    expect(component.policyFormArray.at(0)).toEqual(policyFormGroup);
+    expect(component.policyFormArray.at(0) as FormGroup).toEqual(policyFormGroup);
   });
 });

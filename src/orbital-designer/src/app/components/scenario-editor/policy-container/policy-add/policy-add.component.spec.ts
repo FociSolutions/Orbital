@@ -68,7 +68,7 @@ describe('PolicyAddComponent', () => {
         component.attributes
           .at(0)
           .get('delayTime')
-          .setValue(2);
+          .setValue('2');
       });
       it('should have delayTime set to VALID status', () => {
         expect(component.delayTime.status).toBe('VALID');
@@ -77,7 +77,7 @@ describe('PolicyAddComponent', () => {
       describe('And the add button is pushed', () => {
         it('Should emit the policyAddedEventEmitter', done => {
           component.policyAddedEventEmitter.subscribe((policy: Policy) => {
-            expect(policy.attributes).toEqual({ delay: '2' });
+            expect(policy.attributes).toEqual({ delayTime: '2' });
             done();
           });
 
