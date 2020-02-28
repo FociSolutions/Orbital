@@ -104,14 +104,12 @@ namespace Orbital.Mock.Server.Pipelines
             broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
             broadCastBlock.LinkTo(headerFilterBlock, linkOptions);
             broadCastBlock.LinkTo(urlFilterBlock, linkOptions);
-            broadCastBlock.LinkTo(policyFilterBlock, linkOptions);
 
 
             bodyMatchFilterBlock.LinkTo(joinRequestPartsBlock.Target1, linkOptions);
             queryFilterBlock.LinkTo(joinRequestPartsBlock.Target2, linkOptions);
             headerFilterBlock.LinkTo(joinRequestPartsBlock.Target3, linkOptions);
             urlFilterBlock.LinkTo(joinUrlAndOtherBlock.Target2, linkOptions);
-            policyFilterBlock.LinkTo(joinUrlAndOtherBlock.Target3, linkOptions);
             joinRequestPartsBlock.LinkTo(mergeBlock, linkOptions);
 
             mergeBlock.LinkTo(joinUrlAndOtherBlock.Target1, linkOptions);
@@ -119,8 +117,9 @@ namespace Orbital.Mock.Server.Pipelines
             joinUrlAndOtherBlock.LinkTo(finalmergeBlock, linkOptions);
 
             finalmergeBlock.LinkTo(responseSelectorBlock, linkOptions);
-
             responseSelectorBlock.LinkTo(this.endBlock, linkOptions);
+            /*responseSelectorBlock.LinkTo(policyFilterBlock, linkOptions);
+            policyFilterBlock.LinkTo(this.endBlock, linkOptions);*/
 
         }
 

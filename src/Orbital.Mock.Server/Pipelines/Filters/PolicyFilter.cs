@@ -12,7 +12,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         {
             if (!IsPipelineValid(ref port, GetType())) return port;
 
-            foreach (var policy in port.Policies)
+            foreach (var policy in port.SelectedPolicies)
             {
                 PolicyExecuter.ExecutePolicy(policy);
             }

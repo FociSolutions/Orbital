@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Orbital.Mock.Server.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
@@ -16,6 +17,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
         /// True if the collection of faults is not empty
         /// </summary>
         bool IsFaulted { get; }
+        List<Policy> SelectedPolicies { get; set; }
 
         /// <summary>
         /// Add the given exception to the given port as a fault
