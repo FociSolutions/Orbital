@@ -17,7 +17,6 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -31,11 +30,11 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
         private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
-        private readonly PolicyFilter<ProcessMessagePort> policyFilter;
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
         private readonly UrlMatchFilter<ProcessMessagePort> urlMatchFilter;
-        public bool PipelineIsRunning { get; private set;  }
+        private readonly PolicyFilter<ProcessMessagePort> policyFilter;
+        public bool PipelineIsRunning { get; private set; }
 
         public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
             : this(new PathValidationFilter<ProcessMessagePort>(),
@@ -44,8 +43,8 @@ namespace Orbital.Mock.Server.Pipelines
                   new BodyMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
-                  new PolicyFilter<ProcessMessagePort>(),
-                  new ResponseSelectorFilter<ProcessMessagePort>())
+                  new ResponseSelectorFilter<ProcessMessagePort>(),
+                  new PolicyFilter<ProcessMessagePort>())
         {
         }
 
@@ -56,9 +55,8 @@ namespace Orbital.Mock.Server.Pipelines
             BodyMatchFilter<ProcessMessagePort> bodyMatchFilter,
             HeaderMatchFilter<ProcessMessagePort> headerMatchFilter,
             UrlMatchFilter<ProcessMessagePort> urlMatchFilter,
-            PolicyFilter<ProcessMessagePort> policyFilter,
-            ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter
-
+            ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter,
+            PolicyFilter<ProcessMessagePort> policyFilter
         )
         {
             this.pathValidationFilter = pathValidationFilter;
@@ -68,8 +66,8 @@ namespace Orbital.Mock.Server.Pipelines
             this.blockFactory = new SyncBlockFactory(this.cancellationTokenSource);
             this.headerMatchFilter = headerMatchFilter;
             this.urlMatchFilter = urlMatchFilter;
-            this.policyFilter = policyFilter;
             this.responseSelectorFilter = responseSelectorFilter;
+            this.policyFilter = policyFilter;
         }
 
         /// <inheritdoc />
@@ -87,10 +85,10 @@ namespace Orbital.Mock.Server.Pipelines
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process, cancellationTokenSource);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process, cancellationTokenSource);
             var policyFilterBlock = this.blockFactory.CreateTransformBlock(this.policyFilter.Process, cancellationTokenSource);
-            var joinUrlAndOtherBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
+            var joinUrlAndOtherBlock = this.blockFactory.CreateJoinTwoBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
-            var finalmergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
+            var finalmergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
             var responseSelectorBlock = this.blockFactory.CreateTransformBlock(this.responseSelectorFilter.Process, cancellationTokenSource);
             this.endBlock = this.blockFactory.CreateFinalBlock(cancellationTokenSource);
 
@@ -110,6 +108,7 @@ namespace Orbital.Mock.Server.Pipelines
             queryFilterBlock.LinkTo(joinRequestPartsBlock.Target2, linkOptions);
             headerFilterBlock.LinkTo(joinRequestPartsBlock.Target3, linkOptions);
             urlFilterBlock.LinkTo(joinUrlAndOtherBlock.Target2, linkOptions);
+
             joinRequestPartsBlock.LinkTo(mergeBlock, linkOptions);
 
             mergeBlock.LinkTo(joinUrlAndOtherBlock.Target1, linkOptions);
@@ -117,9 +116,9 @@ namespace Orbital.Mock.Server.Pipelines
             joinUrlAndOtherBlock.LinkTo(finalmergeBlock, linkOptions);
 
             finalmergeBlock.LinkTo(responseSelectorBlock, linkOptions);
-            responseSelectorBlock.LinkTo(this.endBlock, linkOptions);
-            /*responseSelectorBlock.LinkTo(policyFilterBlock, linkOptions);
-            policyFilterBlock.LinkTo(this.endBlock, linkOptions);*/
+
+            responseSelectorBlock.LinkTo(policyFilterBlock, linkOptions);
+            policyFilterBlock.LinkTo(this.endBlock, linkOptions);
 
         }
 
@@ -151,7 +150,7 @@ namespace Orbital.Mock.Server.Pipelines
 
 
             Enum.TryParse(input.ServerHttpRequest.Method, true, out HttpMethod verb);
-            
+
 
             var port = new ProcessMessagePort()
             {
@@ -163,7 +162,7 @@ namespace Orbital.Mock.Server.Pipelines
                 Body = body
             };
 
-            
+
             var envelope = new SyncEnvelope(completionSource, port, token);
 
             this.startBlock.Post(envelope);

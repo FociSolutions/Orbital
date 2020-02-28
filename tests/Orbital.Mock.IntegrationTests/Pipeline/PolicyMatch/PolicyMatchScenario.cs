@@ -8,7 +8,8 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.PolicyMatch
     [FeatureDescription(
 @"When I hit a mocked service
 As a client
-I want to receive the correct response based on my request url")]
+I want to receive the correct response based on my request url
+And the response should be delayed due to the policy")]
     public partial class PolicyMatchFixture_Feature
     {
         [Scenario]
