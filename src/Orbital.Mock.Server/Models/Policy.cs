@@ -8,17 +8,11 @@ namespace Orbital.Mock.Server.Models
 {
     public class Policy : IEquatable<Policy>, IPolicy
     {
-        public Policy(PolicyType policyType, Dictionary<string, string> attributes)
-        {
-            this.Type = policyType;
-            this.Attributes = attributes ?? new Dictionary<string, string>();
-        }
-
         [JsonProperty("type")]
         public PolicyType Type { get; set; }
 
         [JsonProperty("attributes")]
-        public Dictionary<string, string> Attributes { get; set; }
+        public IDictionary<string, string> Attributes { get; set; }
 
         public bool Equals(Policy other)
         {

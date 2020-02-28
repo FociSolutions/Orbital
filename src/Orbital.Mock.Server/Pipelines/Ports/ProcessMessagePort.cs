@@ -23,6 +23,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             this.URLMatchResults = new List<MatchResult>();
             this.Query = new List<KeyValuePair<string, string>>();
             this.Headers = new List<KeyValuePair<string, string>>();
+            this.Policies = new List<Policy>();
         }
 
         public ICollection<string> Faults { get; set; }
