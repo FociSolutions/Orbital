@@ -5,7 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { recordAdd, compareRecords } from 'src/app/models/record';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
-
+import { cloneDeep } from 'lodash';
 @Component({
   selector: 'app-policy',
   templateUrl: './policy.component.html',
@@ -64,7 +64,8 @@ export class PolicyComponent implements OnInit, OnDestroy {
   private isPolicyDuplicate(policyToAdd: Policy): boolean {
     return this.policyFormArray.controls
       .map(group => {
-        const policyFormGroup = this.generatePoliciesAttributes(group as FormGroup);
+        const formGroupsToCheck = cloneDeep(group);
+        const policyFormGroup = this.generatePoliciesAttributes(formGroupsToCheck as FormGroup);
         return policyFormGroup;
       })
       .some(policyFormGroup => {
@@ -82,12 +83,9 @@ export class PolicyComponent implements OnInit, OnDestroy {
   private checkForDuplicates(): void {
     this.policyFormArray.setErrors(null);
     this.policyFormArray.markAsUntouched();
-    interface IPolicyFormGroup {
-      attributes: Record<string, string>;
-      policyType: number;
-    }
     const policies = this.policyFormArray.controls.map(group => {
-      const policyFormGroup = this.generatePoliciesAttributes(group as FormGroup);
+      const formGroupsToCheck = cloneDeep(group);
+      const policyFormGroup = this.generatePoliciesAttributes(formGroupsToCheck as FormGroup);
       return policyFormGroup;
     });
     policies.forEach((policyToCheck, indexToCheck) => {
@@ -97,9 +95,11 @@ export class PolicyComponent implements OnInit, OnDestroy {
           policyToCheck.policyType === policyToCheckAgainst.policyType &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
-          (this.policyFormArray.at(indexToCheck) as FormGroup).markAsTouched();
-          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).markAsTouched();
-          this.policyFormArray.setErrors({ duplicated: true });
+          console.log('found duplicated');
+          (this.policyFormArray.at(indexToCheck) as FormGroup).get('policyType').markAsTouched();
+          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).get('policyType').markAsTouched();
+          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
+          (this.policyFormArray.at(indexToCheck) as FormGroup).setErrors({ duplicated: true });
         }
       });
     });

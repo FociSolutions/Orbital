@@ -55,6 +55,23 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
   }
 
   /**
+   *
+   * Returns true if the policy chosen is delay response policy type
+   * @param policyChosen policy type chosen
+   */
+  isDelayPolicy(policyChosen: PolicyType): boolean {
+    return policyChosen === PolicyType.DELAYRESPONSE;
+  }
+
+  isPolicyDuplicated() {
+    if (this.policyEditFormGroup.hasError('duplicated')) {
+      return this.policyEditFormGroup.errors.duplicated;
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
