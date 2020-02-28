@@ -87,11 +87,10 @@ namespace Orbital.Mock.Server.Pipelines
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process, cancellationTokenSource);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process, cancellationTokenSource);
             var policyFilterBlock = this.blockFactory.CreateTransformBlock(this.policyFilter.Process, cancellationTokenSource);
-            var joinUrlAndOtherBlock = this.blockFactory.CreateJoinTwoBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
+            var joinUrlAndOtherBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
-            var policyMergeBlock = this.blockFactory.CreateJoinTwoBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
-            var finalmergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
+            var finalmergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
             var responseSelectorBlock = this.blockFactory.CreateTransformBlock(this.responseSelectorFilter.Process, cancellationTokenSource);
             this.endBlock = this.blockFactory.CreateFinalBlock(cancellationTokenSource);
 
@@ -112,11 +111,10 @@ namespace Orbital.Mock.Server.Pipelines
             queryFilterBlock.LinkTo(joinRequestPartsBlock.Target2, linkOptions);
             headerFilterBlock.LinkTo(joinRequestPartsBlock.Target3, linkOptions);
             urlFilterBlock.LinkTo(joinUrlAndOtherBlock.Target2, linkOptions);
-
+            policyFilterBlock.LinkTo(joinUrlAndOtherBlock.Target3, linkOptions);
             joinRequestPartsBlock.LinkTo(mergeBlock, linkOptions);
 
             mergeBlock.LinkTo(joinUrlAndOtherBlock.Target1, linkOptions);
-            mergeBlock.LinkTo(policyMergeBlock.Target1, linkOptions);
 
             joinUrlAndOtherBlock.LinkTo(finalmergeBlock, linkOptions);
 
