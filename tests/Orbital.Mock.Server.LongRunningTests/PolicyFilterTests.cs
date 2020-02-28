@@ -1,0 +1,54 @@
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Interfaces;
+using Orbital.Mock.Server.Pipelines.Policies;
+using Xunit;
+using Assert = Xunit.Assert;
+
+namespace Orbital.Mock.Server.LongRunningTests
+{
+    public class PolicyFilterTests
+    {
+
+        /// <summary>
+        /// A policy with a delay of five seconds should delay the request by five seconds
+        /// </summary>
+        [Fact]
+        public void PolicyFilterDelaysRequestByFiveSecondsTestSuccess()
+        {
+            PolicyExecuter policyExecuter = new PolicyExecuter();
+            Policy policy = new Policy
+            {
+                Type = PolicyType.DELAYRESPONSE,
+                Attributes = new Dictionary<string, string>
+                {
+                    ["delay"] = "5000"
+                }
+            };
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            policyExecuter.ExecutePolicy(policy);
+            stopwatch.Stop();
+            Assert.True(stopwatch.ElapsedMilliseconds >= 5000);
+        }
+
+        /// <summary>
+        /// If no policies are specified, then the app should not crash and should complete the request
+        /// </summary>
+        [Fact]
+        public void PolicyFilterNoPolicySuccessTest()
+        {
+            PolicyExecuter policyExecuter = new PolicyExecuter();
+            Policy policy = new Policy
+            {
+                Type = PolicyType.NONE,
+                Attributes = new Dictionary<string, string>{}
+            };
+
+            var Actual = policyExecuter.ExecutePolicy(policy);
+            Assert.True(Actual);
+        }
+    }
+}

@@ -9,7 +9,7 @@ namespace Orbital.Mock.Server.Pipelines.Policies
 {
     public class PolicyExecuter
     {
-        private bool ExecutePolicy(Policy policy)
+        public bool ExecutePolicy(Policy policy)
         {
             switch (policy.Type) {
                 case PolicyType.DELAYRESPONSE:
