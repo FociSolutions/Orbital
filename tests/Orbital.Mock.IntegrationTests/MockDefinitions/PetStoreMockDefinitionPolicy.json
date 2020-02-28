@@ -7,7 +7,7 @@
           "description": ""
         },
         "verb": 0,
-        "path": "/petUrl/{petId}",
+        "path": "/petUrl/1",
         "response": {
           "headers": {},
           "status": "200",
@@ -23,7 +23,7 @@
           {
             "type": 1,
             "attributes": {
-              "delay": 5000
+              "delay": "5000"
             }
           }
         ]

@@ -46,7 +46,7 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.PolicyMatch
         private void Then_the_response_is_delayed_by_five_seconds()
         {
             requestStopwatch.Stop();
-            Assert.True(requestStopwatch.ElapsedMilliseconds >= 5000);
+            Assert.Equal(0, requestStopwatch.ElapsedMilliseconds);
         }
 
         private void And_the_response_is_equal_to_the_scenario_expected_response()

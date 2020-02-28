@@ -78,7 +78,8 @@
             "type": 3
           }
         ]
-      }
+      },
+      "policies": []
     },
     {
       "id": "aaca1a31-8667-43a7-8cfa-7925dd3b5074",
@@ -108,7 +109,8 @@
         ],
         "queryRules": [],
         "bodyRules": []
-      }
+      },
+      "policies": []
     },
     {
       "id": "4879c798-2a1a-4aaf-a611-329dd1c03fe1",
@@ -138,7 +140,8 @@
         ],
         "queryRules": [],
         "bodyRules": []
-      }
+      },
+      "policies": []
     },
     {
       "id": "61da27a9-4c08-4840-bf91-6deff741b0d2",
@@ -166,7 +169,8 @@
             "type": 3
           }
         ]
-      }
+      },
+      "policies": []
     },
     {
       "id": "29107275-436c-4fc2-99ea-5a4dfba33a1e",
@@ -194,7 +198,8 @@
             "type": 3
           }
         ]
-      }
+      },
+      "policies": []
     },
     {
       "id": "f0923993-5ed8-4049-a8cd-3d535b0c570d",
@@ -222,7 +227,8 @@
             "type": 4
           }
         ]
-      }
+      },
+      "policies": []
     },
     {
       "id": "7f50ebc5-8d84-467a-ad84-ed7556dbf528",
@@ -248,7 +254,8 @@
             "type": 4
           }
         ]
-      }
+      },
+      "policies": []
     },
     {
       "id": "acf9fb68-b597-44e2-a995-c9550b231f5f",
@@ -274,7 +281,8 @@
             "type": 3
           }
         ]
-      }
+      },
+      "policies": []
     }
   ],
   "host": null,
