@@ -19,6 +19,6 @@ export class PolicyFormBuilder {
   }
 
   public generateEmptyPolicyFormArray(): FormArray {
-    return this.formBuilder.array([]);
+    return this.formBuilder.array([], Validators.required);
   }
 }

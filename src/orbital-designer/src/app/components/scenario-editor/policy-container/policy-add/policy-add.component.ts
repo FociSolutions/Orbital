@@ -104,6 +104,11 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
     if (this.policyAddFormGroup.valid) {
       this.policyAddedEventEmitter.emit(this.policyToAdd);
     }
+
+    if (this.policyToAdd.type === PolicyType.NONE) {
+      this.policyType.setErrors({ required: true });
+      this.policyType.markAsTouched();
+    }
   }
 
   isDelayPolicy(policyChosen: PolicyType): boolean {
