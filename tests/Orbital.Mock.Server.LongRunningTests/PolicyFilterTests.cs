@@ -17,7 +17,6 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public void PolicyFilterDelaysRequestByFiveSecondsTestSuccess()
         {
-            PolicyExecuter policyExecuter = new PolicyExecuter();
             Policy policy = new Policy
             {
                 Type = PolicyType.DELAYRESPONSE,
@@ -29,7 +28,7 @@ namespace Orbital.Mock.Server.LongRunningTests
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            policyExecuter.ExecutePolicy(policy);
+            PolicyExecuter.ExecutePolicy(policy);
             stopwatch.Stop();
             Assert.True(stopwatch.ElapsedMilliseconds >= 5000);
         }
@@ -40,14 +39,13 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public void PolicyFilterNoPolicySuccessTest()
         {
-            PolicyExecuter policyExecuter = new PolicyExecuter();
             Policy policy = new Policy
             {
                 Type = PolicyType.NONE,
                 Attributes = new Dictionary<string, string>{}
             };
 
-            var Actual = policyExecuter.ExecutePolicy(policy);
+            var Actual = PolicyExecuter.ExecutePolicy(policy);
             Assert.True(Actual);
         }
     }
