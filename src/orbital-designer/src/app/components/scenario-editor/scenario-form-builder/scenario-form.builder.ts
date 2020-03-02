@@ -88,7 +88,8 @@ export class ScenarioFormBuilder {
         return new FormGroup({
           delayTime: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
             Validators.required,
-            Validators.min(1)
+            Validators.min(1),
+            Validators.pattern('^[0-9]*$')
           ]),
           policyType: new FormControl(policy.type, [Validators.required])
         });

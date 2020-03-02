@@ -15,7 +15,7 @@
               Should be more than 0 milliseconds
             </mat-error>
             <mat-error *ngIf="delayTime.errors.pattern">
-              Must be a number
+              Cannot contain spaces or be a negative number
             </mat-error>
           </div>
         </div>
@@ -40,15 +40,6 @@
     <div *ngIf="policyType.invalid && policyType.dirty">
       <mat-error *ngIf="policyType.errors.required">
         Policy type is required
-      </mat-error>
-    </div>
-
-    <div *ngIf="delayTime.invalid && delayTime.dirty">
-      <mat-error *ngIf="delayTime.errors.required">
-        Number of milliseconds is needed
-      </mat-error>
-      <mat-error *ngIf="delayTime.errors.min">
-        Must be above 0
       </mat-error>
     </div>
     <div>
