@@ -87,7 +87,7 @@ export class SideBarComponent implements OnInit {
    * opens dialog to dismiss current scenario to review
    *
    */
-  openCancelDialog(url: string) {
+  openCancelDialogOrNavigateToUrl(url: string) {
     if (this.router.url.includes('scenario-editor')) {
       this.urlToNavigatTo = url;
       this.triggerOpenCancelBox = true;
