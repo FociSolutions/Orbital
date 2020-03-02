@@ -64,8 +64,8 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
   }
 
   isPolicyDuplicated() {
-    if (this.policyEditFormGroup.hasError('duplicated')) {
-      return this.policyEditFormGroup.errors.duplicated;
+    if (this.policyEditFormGroup.parent.hasError('duplicated')) {
+      return this.policyEditFormGroup.parent.errors.duplicated;
     } else {
       return false;
     }

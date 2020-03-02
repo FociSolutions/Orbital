@@ -98,8 +98,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
           this.logger.error('PolicyComponent: found duplicate', policyToCheck);
           (this.policyFormArray.at(indexToCheck) as FormGroup).get('policyType').markAsTouched();
           (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).get('policyType').markAsTouched();
-          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
-          (this.policyFormArray.at(indexToCheck) as FormGroup).setErrors({ duplicated: true });
+          this.policyFormArray.setErrors({ duplicated: true });
         }
       });
     });
