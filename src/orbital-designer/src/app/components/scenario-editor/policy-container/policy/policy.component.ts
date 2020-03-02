@@ -95,7 +95,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
           policyToCheck.policyType === policyToCheckAgainst.policyType &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
-          this.logger.error('PolicyComponent: found duplicated', policyToCheck);
+          this.logger.error('PolicyComponent: found duplicate', policyToCheck);
           (this.policyFormArray.at(indexToCheck) as FormGroup).get('policyType').markAsTouched();
           (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).get('policyType').markAsTouched();
           (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
