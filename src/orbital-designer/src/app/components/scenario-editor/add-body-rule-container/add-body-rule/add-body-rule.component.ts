@@ -65,6 +65,10 @@ export class AddBodyRuleComponent implements OnInit {
       this.logger.debug('The rule already exists ', this.bodyValue);
       this.errorMessage = 'The rule already exists';
       return false;
+    } else if (!this.jsonService.validateSchema(this.bodyValue) && this.bodyType === RuleType.JSONSCHEMA) {
+      this.logger.debug('The JSON schema does not comply with Schema Draft v4');
+      this.errorMessage = 'The JSON schema does not comply with Schema Draft v4';
+      return false;
     }
 
     return true;
