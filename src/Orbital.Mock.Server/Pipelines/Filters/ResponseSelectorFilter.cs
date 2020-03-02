@@ -33,8 +33,13 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             })
                 .OrderByDescending(match => match.Score).FirstOrDefault();
 
-            port.Policies = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Policies
-                : port.Scenarios.Count() > 0 ? port.Scenarios.First().Policies : new List<Policy>();
+            if (port.Scenarios.Any())
+            {
+                port.Policies = (bestScenario == null
+                    ? port.Scenarios.First().Policies
+                    : port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Policies) ?? new List<Policy>();
+            }
+
             port.SelectedResponse = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Response
                 : port.Scenarios.Count() > 0 ? port.Scenarios.First().Response : new MockResponse();
 
