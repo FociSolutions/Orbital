@@ -51,7 +51,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public MockResponse SelectedResponse { get; set; }
         public ComparerType Type { get; set; }
         public ICollection<Policy> Policies { get; set; }
-        PolicyType IPolicyPort.Type { get; set; }
+        public PolicyType PolicyType { get; set; }
 
         public IFaultablePort AppendFault(Exception e)
         {

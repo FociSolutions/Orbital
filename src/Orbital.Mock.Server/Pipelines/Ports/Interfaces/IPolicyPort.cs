@@ -9,7 +9,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
         /**
          * The type of the policy
          */
-        PolicyType Type { get; set; }
+        PolicyType PolicyType { get; set; }
 
         /**
          * The list of policies to be used
