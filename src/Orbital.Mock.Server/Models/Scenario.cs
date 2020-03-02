@@ -20,7 +20,7 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("requestMatchRules")]
         public RequestMatchRules RequestMatchRules { get; set; }
         [JsonProperty("policies")]
-        public List<Policy> Policies { get; set; }
+        public ICollection<Policy> Policies { get; set; }
 
         public override bool Equals(object obj)
         {

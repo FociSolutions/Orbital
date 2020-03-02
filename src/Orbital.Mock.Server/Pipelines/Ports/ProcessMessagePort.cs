@@ -24,7 +24,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             this.Query = new List<KeyValuePair<string, string>>();
             this.Headers = new List<KeyValuePair<string, string>>();
             this.Policies = new List<Policy>();
-            this.SelectedPolicies = new List<Policy>();
         }
 
         public ICollection<string> Faults { get; set; }
@@ -51,8 +50,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
 
         public MockResponse SelectedResponse { get; set; }
         public ComparerType Type { get; set; }
-        public IEnumerable<Policy> Policies { get; set; }
-        public List<Policy> SelectedPolicies { get; set; }
+        public ICollection<Policy> Policies { get; set; }
         PolicyType IPolicyPort.Type { get; set; }
 
         public IFaultablePort AppendFault(Exception e)

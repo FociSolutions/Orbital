@@ -6,13 +6,11 @@ using System;
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class PolicyFilter<T> : FaultableBaseFilter<T>
-        where T : IFaultablePort, IScenariosPort, IPolicyPort
+        where T : IFaultablePort, IPolicyPort
     {
         public override T Process(T port)
         {
-            if (!IsPipelineValid(ref port, GetType())) return port;
-
-            foreach (var policy in port.SelectedPolicies)
+            foreach (var policy in port.Policies)
             {
                 PolicyExecuter.ExecutePolicy(policy);
             }

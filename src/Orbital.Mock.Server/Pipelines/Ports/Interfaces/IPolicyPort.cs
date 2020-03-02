@@ -14,6 +14,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
         /**
          * The list of policies to be used
          */
-        IEnumerable<Policy> Policies { get; set; }
+        ICollection<Policy> Policies { get; set; }
     }
 }

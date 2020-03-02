@@ -7,7 +7,7 @@ using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class ResponseSelectorFilter<T> : FaultableBaseFilter<T>
-        where T : IFaultablePort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort, IPathValidationPort, IUrlMatchPort
+        where T : IFaultablePort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort, IPathValidationPort, IUrlMatchPort, IPolicyPort
     {
         /// <summary>
         /// Selects the response to use based on the match results from the previous filters. Ties are broken randomly.
@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             })
                 .OrderByDescending(match => match.Score).FirstOrDefault();
 
-            port.SelectedPolicies = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Policies
+            port.Policies = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Policies
                 : port.Scenarios.Count() > 0 ? port.Scenarios.First().Policies : new List<Policy>();
             port.SelectedResponse = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Response
                 : port.Scenarios.Count() > 0 ? port.Scenarios.First().Response : new MockResponse();
