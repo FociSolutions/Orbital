@@ -12,14 +12,14 @@ export class NotificationService {
   ) {}
 
   /**
-   * 
+   *
    * @param message The message to display
    * @param action The name of the button which dismisses the snackbar
    * @param duration How long in milliseconds to show the snackbar for
    */
   public open(message: string,  action = null, duration = 3000) {
       this.zone.run(() => {
-          this.snackBar.open(message, action, {duration: duration});
+          this.snackBar.open(message, action, {duration});
       });
   }
 }
