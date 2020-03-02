@@ -113,7 +113,7 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
 
   /**
    * Determines if the policy is of type delay response.
-   * @param policyChosen policy selected
+   * @param policyChosen selected policy
    */
   isDelayPolicy(policyChosen: PolicyType): boolean {
     return policyChosen === PolicyType.DELAYRESPONSE;
