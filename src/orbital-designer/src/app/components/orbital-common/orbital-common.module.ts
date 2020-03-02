@@ -26,6 +26,7 @@ import { KvpAddRuleComponent } from '../scenario-editor/kvp-edit-rule/kvp-add-ru
 import { UrlAddRuleComponent } from '../scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
 import { UrlEditRuleComponent } from '../scenario-editor/url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
+import { QuickExportComponent } from './side-bar/quick-export/quick-export.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/u
     KvpEditComponent,
     KvpAddComponent,
     KvpListItemComponent,
-    KvpAddRuleComponent
+    KvpAddRuleComponent,
+    QuickExportComponent
   ],
   imports: [
     CommonModule,
