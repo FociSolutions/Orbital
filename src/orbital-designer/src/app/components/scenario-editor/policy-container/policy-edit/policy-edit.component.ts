@@ -29,10 +29,10 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Gets the form control for the 'delayTime'
+   * Gets the form control for the 'delay'
    */
-  get delayTime(): AbstractControl {
-    return this.policyEditFormGroup.get('delayTime');
+  get delay(): AbstractControl {
+    return this.policyEditFormGroup.get('delay');
   }
 
   /**
@@ -48,7 +48,7 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
    */
   onRemove() {
     const removePolicy = {
-      attributes: { delay: this.delayTime.value.toString() },
+      attributes: { delay: this.delay.value.toString() },
       type: this.policyType.value
     } as Policy;
     this.policyRemovedEventEmitter.emit(removePolicy);

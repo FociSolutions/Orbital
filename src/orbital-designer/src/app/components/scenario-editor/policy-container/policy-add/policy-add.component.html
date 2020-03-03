@@ -5,17 +5,17 @@
         <div *ngFor="let policy of attributes.controls; let i = index" [formGroup]="policy">
           <div *ngIf="isDelayPolicy(policyType.value)">
             <mat-form-field class="policy-value">
-              <input matInput #inputDelay formControlName="delayTime" />
+              <input matInput #inputDelay formControlName="delay" />
               <mat-hint> milliseconds to delay response</mat-hint>
             </mat-form-field>
-            <div *ngIf="delayTime.invalid && (delayTime.dirty || delayTime.touched)">
-              <mat-error *ngIf="delayTime.errors.required">
+            <div *ngIf="delay.invalid && (delay.dirty || delay.touched)">
+              <mat-error *ngIf="delay.errors.required">
                 Number of milliseconds is needed
               </mat-error>
-              <mat-error *ngIf="delayTime.errors.min">
+              <mat-error *ngIf="delay.errors.min">
                 Should be more than 0 milliseconds
               </mat-error>
-              <mat-error *ngIf="delayTime.errors.pattern">
+              <mat-error *ngIf="delay.errors.pattern">
                 Cannot contain spaces or be a negative number
               </mat-error>
             </div>

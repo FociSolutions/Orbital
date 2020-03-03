@@ -14,7 +14,7 @@ export class PolicyFormBuilder {
    */
   public generateDelayPolicyFormGroup(): FormGroup {
     return this.formBuilder.group({
-      delayTime: new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]*$')])
+      delay: new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]*$')])
     });
   }
 

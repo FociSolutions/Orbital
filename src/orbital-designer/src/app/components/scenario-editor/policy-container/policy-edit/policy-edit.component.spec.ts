@@ -29,7 +29,7 @@ describe('PolicyEditComponent', () => {
     fixture = TestBed.createComponent(PolicyEditComponent);
     component = fixture.componentInstance;
     component.policyEditFormGroup = new FormGroup({
-      delayTime: new FormControl('', [Validators.required, Validators.min(1)]),
+      delay: new FormControl('', [Validators.required, Validators.min(1)]),
       policyType: new FormControl(PolicyType.NONE, [Validators.required])
     });
     fixture.detectChanges();
@@ -40,8 +40,8 @@ describe('PolicyEditComponent', () => {
   });
 
   describe('When form group is made', () => {
-    it('should have a delayTime from control', () => {
-      expect(component.delayTime).toBeTruthy();
+    it('should have a delay from control', () => {
+      expect(component.delay).toBeTruthy();
     });
 
     it('should have a policyType from control', () => {
@@ -54,12 +54,12 @@ describe('PolicyEditComponent', () => {
       component.policyType.setValue(PolicyType.DELAYRESPONSE);
     });
 
-    describe('And delayTime has been set to a valid value', () => {
+    describe('And delay has been set to a valid value', () => {
       beforeEach(() => {
-        component.delayTime.setValue(2);
+        component.delay.setValue(2);
       });
-      it('should have delayTime set to VALID status', () => {
-        expect(component.delayTime.status).toBe('VALID');
+      it('should have delay set to VALID status', () => {
+        expect(component.delay.status).toBe('VALID');
       });
 
       describe('And the remove button is pushed', () => {

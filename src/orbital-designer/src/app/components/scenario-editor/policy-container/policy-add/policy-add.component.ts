@@ -78,12 +78,12 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
     return this.policyIsDuplicated;
   }
   /**
-   * Gets the form control for the 'delayTime'
+   * Gets the form control for the 'delay'
    */
-  get delayTime(): AbstractControl {
+  get delay(): AbstractControl {
     const arrayAttributes = this.policyAddFormGroup.get('attributes') as FormArray;
     const delayFormGroup = arrayAttributes.at(0) as FormGroup;
-    const delaytoReturn = delayFormGroup.get('delayTime');
+    const delaytoReturn = delayFormGroup.get('delay');
     return delaytoReturn;
   }
 

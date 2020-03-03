@@ -45,11 +45,11 @@ describe('PolicyComponent', () => {
     it('should delete the policy if its defined', () => {
       const policy = {
         type: PolicyType.DELAYRESPONSE,
-        attributes: { delayTime: faker.random.number().toString() } as Record<string, string>
+        attributes: { delay: faker.random.number().toString() } as Record<string, string>
       } as Policy;
       component.policyFormArray.push(
         new FormGroup({
-          delayTime: new FormControl(recordFirstOrDefault(policy.attributes, '0'), [
+          delay: new FormControl(recordFirstOrDefault(policy.attributes, '0'), [
             Validators.required,
             Validators.min(1)
           ]),
@@ -80,7 +80,7 @@ describe('PolicyComponent', () => {
 
       component.policyFormArray.push(
         new FormGroup({
-          delayTime: new FormControl(recordFirstOrDefault(policies[0].attributes, 'delayTime'), [
+          delay: new FormControl(recordFirstOrDefault(policies[0].attributes, 'delay'), [
             Validators.required,
             Validators.min(1)
           ]),
@@ -89,7 +89,7 @@ describe('PolicyComponent', () => {
       );
       component.policyFormArray.push(
         new FormGroup({
-          delayTime: new FormControl(recordFirstOrDefault(policies[1].attributes, 'delayTime'), [
+          delay: new FormControl(recordFirstOrDefault(policies[1].attributes, 'delay'), [
             Validators.required,
             Validators.min(1)
           ]),
@@ -98,7 +98,7 @@ describe('PolicyComponent', () => {
       );
       component.policyFormArray.push(
         new FormGroup({
-          path: new FormControl(recordFirstOrDefault(policies[2].attributes, 'delayTime'), [
+          path: new FormControl(recordFirstOrDefault(policies[2].attributes, 'delay'), [
             Validators.required,
             Validators.min(1)
           ]),
@@ -114,7 +114,7 @@ describe('PolicyComponent', () => {
     it('should save valid policy', () => {
       const policy = {
         type: PolicyType.DELAYRESPONSE,
-        attributes: { delayTime: faker.random.number().toString() } as Record<string, string>
+        attributes: { delay: faker.random.number().toString() } as Record<string, string>
       } as Policy;
       component.addPolicyHandler(policy);
       expect(component.policyFormArray.length).toBe(1);
@@ -124,11 +124,11 @@ describe('PolicyComponent', () => {
   it('should not save repeated policy', () => {
     const policy = {
       type: PolicyType.DELAYRESPONSE,
-      attributes: { delayTime: faker.random.number().toString() } as Record<string, string>
+      attributes: { delay: faker.random.number().toString() } as Record<string, string>
     } as Policy;
-    const delayTimeValue = recordFirstOrDefault(policy.attributes, '');
+    const delayValue = recordFirstOrDefault(policy.attributes, '');
     const policyFormGroup = new FormGroup({
-      delayTime: new FormControl(delayTimeValue, [Validators.required, Validators.min(1)]),
+      delay: new FormControl(delayValue, [Validators.required, Validators.min(1)]),
       policyType: new FormControl(policy.type, [Validators.required])
     });
     component.policyFormArray.push(policyFormGroup);
