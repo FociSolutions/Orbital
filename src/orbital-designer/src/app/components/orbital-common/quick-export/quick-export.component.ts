@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class QuickExportComponent implements OnInit {
   triggerOpenCancelBox: boolean;
-  urlToNavigatTo: string;
+  urlToNavigateTo: string;
 
   constructor(private router: Router) {}
 
@@ -18,7 +18,7 @@ export class QuickExportComponent implements OnInit {
    */
   openCancelDialogOrNavigateToUrl(url: string) {
     if (this.router.url.includes('scenario-editor')) {
-      this.urlToNavigatTo = url;
+      this.urlToNavigateTo = url;
       this.triggerOpenCancelBox = true;
     } else {
       this.router.navigate([url]);
