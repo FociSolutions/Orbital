@@ -86,7 +86,7 @@ export class ScenarioFormBuilder {
     switch (policy.type) {
       case PolicyType.DELAYRESPONSE: {
         return new FormGroup({
-          delayTime: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
+          delay: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
             Validators.required,
             Validators.min(1),
             Validators.pattern('^[0-9]*$')
@@ -160,13 +160,13 @@ export class ScenarioFormMapper {
     switch (policytype) {
       case PolicyType.DELAYRESPONSE: {
         interface PolicyDelayFormGroup {
-          delayTime: string;
+          delay: string;
           policyType: number;
         }
         const rawPolicy = rawValue as PolicyDelayFormGroup;
         const policyToReturn = {
           type: rawPolicy.policyType,
-          attributes: { delayTime: rawPolicy.delayTime } as Record<string, string>
+          attributes: { delay: rawPolicy.delay } as Record<string, string>
         };
         return policyToReturn;
       }
