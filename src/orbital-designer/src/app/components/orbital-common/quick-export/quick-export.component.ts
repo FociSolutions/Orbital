@@ -25,9 +25,5 @@ export class QuickExportComponent implements OnInit {
     }
   }
 
-  selected() {
-    this.router.navigateByUrl('export-to-server');
-  }
-
   ngOnInit() {}
 }
