@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { QuickExportComponent } from './quick-export.component';
+import { MatIconModule } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('QuickExportComponent', () => {
   let component: QuickExportComponent;
@@ -8,9 +9,9 @@ describe('QuickExportComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuickExportComponent ]
-    })
-    .compileComponents();
+      declarations: [QuickExportComponent],
+      imports: [MatIconModule, RouterTestingModule.withRoutes([])]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
