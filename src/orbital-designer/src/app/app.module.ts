@@ -50,7 +50,6 @@ import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/
 // tslint:disable-next-line: max-line-length
 import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { NotificationService } from './services/notification-service/notification.service';
-import { QuickExportComponent } from './components/orbital-common/side-bar/quick-export/quick-export.component';
 
 @NgModule({
   declarations: [
@@ -84,8 +83,7 @@ import { QuickExportComponent } from './components/orbital-common/side-bar/quick
     GetRuleTypeStringPipe,
     UrlEditRuleComponent,
     UrlAddRuleComponent,
-    UrlListItemRuleTypeComponent,
-    QuickExportComponent
+    UrlListItemRuleTypeComponent
   ],
   imports: [
     BrowserModule,
