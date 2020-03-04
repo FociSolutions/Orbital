@@ -1,0 +1,19 @@
+::ng-deep mat-expansion-panel {
+  padding: 16px;
+}
+
+::ng-deep mat-panel-description {
+  font-size: 0.85em;
+}
+.divider-padding {
+  margin-top: 1em;
+}
+
+.policy-edit {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-policy {
+  padding-bottom: 1em;
+}

@@ -28,7 +28,8 @@ export default {
             }
           }
         ]
-      }
+      },
+      policies: []
     } as Scenario
   ],
   openApi: {

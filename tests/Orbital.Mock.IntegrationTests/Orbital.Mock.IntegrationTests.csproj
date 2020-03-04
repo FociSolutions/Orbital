@@ -44,6 +44,9 @@
     <None Update="MockDefinitions\PetStoreMockDefinitionQuery.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="MockDefinitions\PetStoreMockDefinitionPolicy.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="MockDefinitions\PetStoreMockDefinitionUrl.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

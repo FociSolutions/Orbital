@@ -33,7 +33,8 @@ namespace Orbital.Mock.Server.Pipelines
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
         private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
         private readonly UrlMatchFilter<ProcessMessagePort> urlMatchFilter;
-        public bool PipelineIsRunning { get; private set;  }
+        private readonly PolicyFilter<ProcessMessagePort> policyFilter;
+        public bool PipelineIsRunning { get; private set; }
 
         public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
             : this(new PathValidationFilter<ProcessMessagePort>(),
@@ -42,7 +43,8 @@ namespace Orbital.Mock.Server.Pipelines
                   new BodyMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
-                  new ResponseSelectorFilter<ProcessMessagePort>())
+                  new ResponseSelectorFilter<ProcessMessagePort>(),
+                  new PolicyFilter<ProcessMessagePort>())
         {
         }
 
@@ -53,8 +55,8 @@ namespace Orbital.Mock.Server.Pipelines
             BodyMatchFilter<ProcessMessagePort> bodyMatchFilter,
             HeaderMatchFilter<ProcessMessagePort> headerMatchFilter,
             UrlMatchFilter<ProcessMessagePort> urlMatchFilter,
-            ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter
-
+            ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter,
+            PolicyFilter<ProcessMessagePort> policyFilter
         )
         {
             this.pathValidationFilter = pathValidationFilter;
@@ -65,6 +67,7 @@ namespace Orbital.Mock.Server.Pipelines
             this.headerMatchFilter = headerMatchFilter;
             this.urlMatchFilter = urlMatchFilter;
             this.responseSelectorFilter = responseSelectorFilter;
+            this.policyFilter = policyFilter;
         }
 
         /// <inheritdoc />
@@ -81,6 +84,7 @@ namespace Orbital.Mock.Server.Pipelines
             var headerFilterBlock = this.blockFactory.CreateTransformBlock(this.headerMatchFilter.Process, cancellationTokenSource);
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process, cancellationTokenSource);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process, cancellationTokenSource);
+            var policyFilterBlock = this.blockFactory.CreateTransformBlock(this.policyFilter.Process, cancellationTokenSource);
             var joinUrlAndOtherBlock = this.blockFactory.CreateJoinTwoBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
@@ -113,7 +117,8 @@ namespace Orbital.Mock.Server.Pipelines
 
             finalmergeBlock.LinkTo(responseSelectorBlock, linkOptions);
 
-            responseSelectorBlock.LinkTo(this.endBlock, linkOptions);
+            responseSelectorBlock.LinkTo(policyFilterBlock, linkOptions);
+            policyFilterBlock.LinkTo(this.endBlock, linkOptions);
 
         }
 
@@ -145,7 +150,7 @@ namespace Orbital.Mock.Server.Pipelines
 
 
             Enum.TryParse(input.ServerHttpRequest.Method, true, out HttpMethod verb);
-            
+
 
             var port = new ProcessMessagePort()
             {
@@ -157,7 +162,7 @@ namespace Orbital.Mock.Server.Pipelines
                 Body = body
             };
 
-            
+
             var envelope = new SyncEnvelope(completionSource, port, token);
 
             this.startBlock.Post(envelope);

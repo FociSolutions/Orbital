@@ -190,7 +190,8 @@ export default `{
                 ],
                 "queryRules": [],
                 "bodyRules": []
-            }
+            },
+            "policies": []
         }
     ]
 }`;

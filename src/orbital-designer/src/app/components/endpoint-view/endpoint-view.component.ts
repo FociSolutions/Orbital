@@ -17,8 +17,7 @@ export class EndpointViewComponent implements OnInit {
   serverUri: string;
   isExportedMessage: string;
 
-  constructor(
-    private store: DesignerStore  ) {
+  constructor(private store: DesignerStore) {
     this.store.state$.subscribe(state => {
       this.mockDefinition = state.mockDefinition;
       this.endpointList = [...state.endpoints];

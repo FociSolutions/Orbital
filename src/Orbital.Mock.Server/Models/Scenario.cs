@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models
 {
@@ -23,6 +19,8 @@ namespace Orbital.Mock.Server.Models
         public MockResponse Response { get; set; }
         [JsonProperty("requestMatchRules")]
         public RequestMatchRules RequestMatchRules { get; set; }
+        [JsonProperty("policies")]
+        public ICollection<Policy> Policies { get; set; }
 
         public override bool Equals(object obj)
         {

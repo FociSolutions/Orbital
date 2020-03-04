@@ -3,6 +3,7 @@ import { Metadata, defaultMetadata } from '../metadata.model';
 import { VerbType } from '../../verb.type';
 import { Response, defaultResponse } from './response.model';
 import * as uuid from 'uuid';
+import { Policy } from './policy.model';
 
 /**
  * Model representation of a scenario
@@ -14,6 +15,7 @@ export interface Scenario {
   path: string;
   response: Response;
   requestMatchRules: RequestMatchRule;
+  policies: Policy[];
 }
 
 export const defaultScenario: Scenario = {
@@ -22,5 +24,6 @@ export const defaultScenario: Scenario = {
   verb: VerbType.GET,
   path: '',
   response: defaultResponse,
-  requestMatchRules: defaultRquestMatchRule
+  requestMatchRules: defaultRquestMatchRule,
+  policies: []
 };

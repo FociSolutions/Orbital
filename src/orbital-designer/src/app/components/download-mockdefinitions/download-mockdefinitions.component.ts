@@ -26,11 +26,12 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.list = recordMap(this.store.state.mockDefinitions, md => new FormControl(md));
+    this.store.state$.subscribe(state => {
+      this.list = recordMap(state.mockDefinitions, md => new FormControl(md));
+    });
   }
 
-  itemToStringFn = (control: AbstractControl) =>
-    (control.value as MockDefinition).metadata.title
+  itemToStringFn = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
 
   /**
    * Completes event emitter
@@ -45,7 +46,7 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
    */
   onSelect(items: any[]): void {
     this.selected = [...items];
-    this.isMockSelected = (this.selected.length !== 0);
+    this.isMockSelected = this.selected.length !== 0;
   }
 
   /**
@@ -60,10 +61,7 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
    */
   downloadMocks() {
     this.selected.forEach(mockDefinition => {
-      const blob = new Blob(
-        [JSON.stringify(mockDefinition.value)],
-        { type: 'text/plain;charset=utf-8' }
-      );
+      const blob = new Blob([JSON.stringify(mockDefinition.value)], { type: 'text/plain;charset=utf-8' });
       saveAs(blob, mockDefinition.value.metadata.title + '.json');
     });
   }

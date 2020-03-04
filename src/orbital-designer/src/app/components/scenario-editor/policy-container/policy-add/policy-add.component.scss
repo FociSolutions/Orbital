@@ -1,0 +1,30 @@
+.policy-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.policy-type {
+  margin-left: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: right;
+}
+
+.add-button {
+  margin-right: 1.3em;
+  margin-left: 50px;
+}
+
+.policy-value {
+  width: 25em;
+}
+
+.error-message {
+  padding-left: 1.6em;
+}
+
+.row {
+  align-items: center;
+  width: 90%;
+  justify-content: space-between;
+}

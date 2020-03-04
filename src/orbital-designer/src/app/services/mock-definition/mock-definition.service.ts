@@ -3,17 +3,15 @@ import { Injectable } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable, EMPTY } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as uuid from 'uuid';
 import * as _ from 'lodash';
 import { recordAdd } from 'src/app/models/record';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { defaultMetadata } from 'src/app/models/mock-definition/metadata.model';
 import { VerbType } from 'src/app/models/verb.type';
-import { defaultResponse } from 'src/app/models/mock-definition/scenario/response.model';
-import { defaultRquestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { OpenAPIV2 } from 'openapi-types';
+import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +40,8 @@ export class MockDefinitionService {
               queryRules: s.requestMatchRules.queryRules || ([] as KeyValuePairRule[]),
               bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[]),
               urlRules: s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
-            }
+            },
+            policies: s.policies || ([] as Policy[])
           }))
         };
         const titlemockdef = (content as MockDefinition).metadata.title;
@@ -78,6 +77,9 @@ export class MockDefinitionService {
               queryRules: s.requestMatchRules.queryRules,
               bodyRules: s.requestMatchRules.bodyRules,
               urlRules: s.requestMatchRules.urlRules
+            },
+            policies: {
+              ...s.policies
             }
           }))
         };
@@ -188,7 +190,8 @@ export class MockDefinitionService {
         queryRules: [],
         bodyRules: [],
         urlRules: []
-      }
+      },
+      policies: []
     } as Scenario;
   }
 }

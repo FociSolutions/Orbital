@@ -32,6 +32,8 @@
             [saveStatus]="this.shouldSave"
           >
           </app-add-response>
+
+          <app-policy [policyFormArray]="this.scenarioFormGroup.controls.policies"></app-policy>
           <div class="row" style="justify-content: space-between">
             <div id="scenario-back-button-div">
               <button id="go-to-scenarios" color="primary" mat-raised-button (click)="cancel()">
