@@ -6,6 +6,7 @@ import * as deepEqual from 'deep-equal';
 import { EventEmitter } from '@angular/core';
 import { AddBodyRuleBuilder } from './add-body-rule-builder/add-body-rule.builder';
 import { FormGroup } from '@angular/forms';
+import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 
 @Component({
   selector: 'app-add-body-rule',
@@ -19,7 +20,11 @@ export class AddBodyRuleComponent implements OnInit {
   @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
   addBodyRuleFormGroup: FormGroup;
 
-  constructor(private logger: NGXLogger, private formBuilder: AddBodyRuleBuilder) {}
+  constructor(
+    private logger: NGXLogger,
+    private formBuilder: AddBodyRuleBuilder,
+    private validJsonService: ValidJsonService
+  ) {}
 
   ngOnInit() {
     this.addBodyRuleFormGroup = this.formBuilder.createNewBodyRuleForm();
@@ -62,14 +67,18 @@ export class AddBodyRuleComponent implements OnInit {
    * Determines if the current body rule and value are object equivalent to the ones already added
    */
   private bodyRuleDeepEquals(): BodyRule {
-    return this.bodyRules.find(
-      ({ rule, type }) =>
-        deepEqual(
-          rule,
-          this.addBodyRuleFormGroup.controls.type.value === RuleType.JSONPATH
-            ? this.addBodyRuleFormGroup.controls.rule.value
-            : JSON.parse(this.addBodyRuleFormGroup.controls.rule.value)
-        ) && deepEqual(type, this.addBodyRuleFormGroup.controls.type.value)
-    );
+    return this.bodyRules.find(({ rule, type }) => {
+      let ruleParsed: object | string;
+      if (this.addBodyRuleFormGroup.controls.type.value === RuleType.JSONPATH) {
+        ruleParsed = this.addBodyRuleFormGroup.controls.rule.value;
+      } else {
+        ruleParsed = this.validJsonService.parseJSONOrDefault(this.addBodyRuleFormGroup.controls.rule.value, null);
+      }
+      return (
+        ruleParsed !== null &&
+        deepEqual(rule, ruleParsed) &&
+        deepEqual(type, this.addBodyRuleFormGroup.controls.type.value)
+      );
+    });
   }
 }
