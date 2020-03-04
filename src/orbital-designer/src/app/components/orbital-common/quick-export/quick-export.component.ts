@@ -36,9 +36,13 @@ export class QuickExportComponent implements OnInit {
       this.urlToNavigateTo = url;
       this.triggerOpenCancelBox = true;
     } else if (this.urlInService) {
-      this.mockdefinitionService.exportMockDefinition(this.urlInService, this.mockInService);
-      this.logger.debug('Mockdefinition has been exported: ', this.mockInService);
-      this.exportStatusMessage = 'File successfully exported';
+      this.mockdefinitionService.exportMockDefinition(this.urlInService, this.mockInService).subscribe(gotExported => {
+        if (gotExported) {
+          this.logger.debug('Mockdefinition has been exported: ', this.mockInService);
+          this.logger.debug('To Url: ', this.urlInService);
+          this.exportStatusMessage = 'File successfully exported';
+        }
+      });
     } else {
       this.router.navigate([url]);
     }
