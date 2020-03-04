@@ -1,14 +1,12 @@
 <mat-card>
   <mat-card-content>
-    <form>
+    <form [formGroup]="this.addBodyRuleFormGroup">
       <div class="row">
         <div>
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select
-              [value]="this.bodyType"
-              (valueChange)="this.bodyType = $event"
+            <mat-select formControlName="bodyType"
             >
               <mat-option [value]="bodyRuleTypeValues.JSONCONTAINS">{{
                 bodyRuleTypeValues.JSONCONTAINS | getRuleTypeString
@@ -33,14 +31,13 @@
         </div>
         <div class="full-width" id="spacer-left">
           <mat-form-field class="full-width">
-            <h3 class="subtitle" id="value">Value</h3>
+            <h3 class="subtitle" id="value">Rule</h3>
             <textarea
               matInput
               rows="10"
-              [(ngModel)]="this.bodyValue"
-              [ngModelOptions]="{ standalone: true }"
+              formControlName="bodyRule"
             ></textarea>
-            <div class="error-message" *ngIf="isBodyRuleValid()">
+            <div class="error-message">
               {{ this.errorMessage }}
             </div>
           </mat-form-field>
