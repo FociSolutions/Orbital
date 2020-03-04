@@ -88,6 +88,17 @@ export class DesignerStore extends Store<State> {
   }
 
   /**
+   * Updates a mock definition by title
+   */
+  private updateMockDefinitionsState(mockDefinition: MockDefinition) {
+    this.logger.debug('Updating mock ', mockDefinition.metadata.title);
+    this.setState({
+      ...this.state,
+      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition)
+    });
+  }
+
+  /**
    * Appends a mock definition to the store; if one with the same name already exists
    * it will be overwritten
    */
@@ -226,6 +237,7 @@ export class DesignerStore extends Store<State> {
         current = scenario;
         currentMock.scenarios.push(current);
       }
+      this.updateMockDefinitionsState(currentMock);
     }
   }
 
