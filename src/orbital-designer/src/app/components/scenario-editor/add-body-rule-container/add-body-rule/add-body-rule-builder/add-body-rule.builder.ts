@@ -39,9 +39,9 @@ export class AddBodyRuleBuilder {
     const jp = require('jsonpath');
     try {
       jp.parse(c.value);
-      return true;
+      return null;
     } catch {
-      return false;
+      return { invalidJsonPath: true };
     }
   }
 }
