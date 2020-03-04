@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { BodyRule, defaultBodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import * as deepEqual from 'deep-equal';
 import { EventEmitter } from '@angular/core';
-import { ValidJsonService } from '../../../../services/valid-json/valid-json.service';
 import { AddBodyRuleBuilder } from './add-body-rule-builder/add-body-rule.builder';
 import { FormGroup } from '@angular/forms';
 
@@ -20,7 +19,7 @@ export class AddBodyRuleComponent implements OnInit {
   @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
   addBodyRuleFormGroup: FormGroup;
 
-  constructor(private logger: NGXLogger, private formBuilder: AddBodyRuleBuilder, private cdRef: ChangeDetectorRef) {}
+  constructor(private logger: NGXLogger, private formBuilder: AddBodyRuleBuilder) {}
 
   ngOnInit() {
     this.addBodyRuleFormGroup = this.formBuilder.createNewBodyRuleForm();
