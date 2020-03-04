@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ExportMockdefinitionService } from '../../../services/export-mockdefinition/export-mockdefinition.service';
+import { MockDefinition } from '../../../models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-quick-export',
@@ -9,17 +11,28 @@ import { Router } from '@angular/router';
 export class QuickExportComponent implements OnInit {
   triggerOpenCancelBox: boolean;
   urlToNavigateTo: string;
+  urlInService: string;
+  mockInService: MockDefinition;
+  exportStatusMessage: string;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private mockdefinitionService: ExportMockdefinitionService) {}
 
   /**
    * opens dialog to dismiss current scenario to review
+   * Redirects to Export to Server page unless server url
+   * and mockdefinition are cached in service, then do
+   * a quick export.
    *
    */
   openCancelDialogOrNavigateToUrl(url: string) {
+    this.urlInService = this.mockdefinitionService.getUrl();
+    this.mockInService = this.mockdefinitionService.getMockdefinition();
     if (this.router.url.includes('scenario-editor')) {
       this.urlToNavigateTo = url;
       this.triggerOpenCancelBox = true;
+    } else if (this.urlInService) {
+      this.mockdefinitionService.exportMockDefinition(this.urlInService, this.mockInService);
+      this.exportStatusMessage = 'File(s) successfully exported';
     } else {
       this.router.navigate([url]);
     }

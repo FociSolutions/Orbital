@@ -19,11 +19,7 @@ export class SideBarComponent implements OnInit {
 
   mockDefinitionToBeDismissed: MockDefinition;
 
-  constructor(
-    private store: DesignerStore,
-    private router: Router,
-    private logger: NGXLogger
-  ) {
+  constructor(private store: DesignerStore, private router: Router, private logger: NGXLogger) {
     this.store.state$.subscribe(state => {
       if (!!state.mockDefinition) {
         this.mockDefinitions = recordMap(state.mockDefinitions, md => md);
