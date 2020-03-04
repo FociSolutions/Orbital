@@ -3,14 +3,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AddBodyRuleContainerComponent } from './add-body-rule-container.component';
 import { AddBodyRuleComponent } from './add-body-rule/add-body-rule.component';
 import { BodyRuleListItemComponent } from './body-rule-list-item/body-rule-list-item.component';
-import {
-  MatFormFieldModule,
-  MatInputModule,
-  MatCardModule,
-  MatIconModule
-} from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatCardModule, MatIconModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatDividerModule } from '@angular/material/divider';
@@ -19,6 +14,7 @@ import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
+import { BrowserModule } from '@angular/platform-browser';
 
 describe('AddBodyRuleContainerComponent', () => {
   let component: AddBodyRuleContainerComponent;
@@ -44,7 +40,11 @@ describe('AddBodyRuleContainerComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule,
         MatDividerModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        FormsModule,
+        BrowserModule,
+        ReactiveFormsModule,
+        MatFormFieldModule
       ]
     }).compileComponents();
   }));
@@ -102,9 +102,7 @@ describe('AddBodyRuleContainerComponent', () => {
       const fakeBodyContents = getFakeBodyContents();
       component.bodyRulesProp = [] as BodyRule[];
 
-      const componentBodyRule = [
-        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
-      ] as BodyRule[];
+      const componentBodyRule = [{ type: RuleType.JSONEQUALITY, rule: fakeBodyContents }] as BodyRule[];
       component.bodyRulesProp.push(componentBodyRule[0]);
 
       component.handleDeleteBodyRule(componentBodyRule[0]);
@@ -133,9 +131,7 @@ describe('AddBodyRuleContainerComponent', () => {
     });
 
     it('should save list', () => {
-      const input = [
-        { type: RuleType.JSONEQUALITY, rule: getFakeBodyContents() }
-      ] as BodyRule[];
+      const input = [{ type: RuleType.JSONEQUALITY, rule: getFakeBodyContents() }] as BodyRule[];
 
       component.bodyRules = input;
       expect(component.bodyRulesProp.length).toEqual(1);
@@ -145,32 +141,24 @@ describe('AddBodyRuleContainerComponent', () => {
   describe('saveBodyRules', () => {
     it('should emit the body rules when the save state is true', () => {
       const fakeBodyContents = getFakeBodyContents();
-      const componentBodyRule = [
-        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
-      ] as BodyRule[];
+      const componentBodyRule = [{ type: RuleType.JSONEQUALITY, rule: fakeBodyContents }] as BodyRule[];
       component.addBodyRule(componentBodyRule[0]);
 
       spyOn(component.bodyRulesOutput, 'emit');
       component.saveBodyRules = true;
 
-      expect(component.bodyRulesOutput.emit).toHaveBeenCalledWith(
-        componentBodyRule
-      );
+      expect(component.bodyRulesOutput.emit).toHaveBeenCalledWith(componentBodyRule);
     });
 
     it('should not emit the body rules when the save state is false', () => {
       const fakeBodyContents = getFakeBodyContents();
-      const componentBodyRule = [
-        { type: RuleType.JSONEQUALITY, rule: fakeBodyContents }
-      ] as BodyRule[];
+      const componentBodyRule = [{ type: RuleType.JSONEQUALITY, rule: fakeBodyContents }] as BodyRule[];
       component.addBodyRule(componentBodyRule[0]);
 
       spyOn(component.bodyRulesOutput, 'emit');
       component.saveBodyRules = false;
 
-      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalledWith(
-        componentBodyRule
-      );
+      expect(component.bodyRulesOutput.emit).not.toHaveBeenCalledWith(componentBodyRule);
     });
   });
 

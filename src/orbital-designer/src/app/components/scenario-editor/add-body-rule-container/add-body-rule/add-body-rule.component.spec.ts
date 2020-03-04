@@ -62,41 +62,11 @@ describe('AddBodyRuleComponent', () => {
           const Actual = component.bodyRules;
           expect(Expected).toEqual(Actual);
         });
-
-        it('should emit the body rule when it is added', () => {
-          const fakeRule = { a: faker.random.word() };
-          const Expected = {
-            type: RuleType.JSONCONTAINS,
-            rule: fakeRule
-          } as BodyRule;
-          const bodyRuleOutputSpy = spyOn(component.bodyRuleOutput, 'emit');
-          component.bodyType = RuleType.JSONCONTAINS;
-          component.bodyValue = JSON.stringify(fakeRule);
-          component.addBodyRule();
-
-          expect(bodyRuleOutputSpy).toHaveBeenCalledWith(Expected);
-          expect(component.bodyType).toBe(null);
-        });
       });
     });
 
     describe('add invalid rule(s)', () => {
-      describe('invalid json', () => {
-        it('should not add a rule when an invalid rule is added to an empty list of rules', () => {
-          component.bodyValue = 'invalid';
-          component.bodyType = RuleType.JSONEQUALITY;
-          expect(component.bodyRules).toEqual([]);
-        });
-
-        it('should show the invalid JSON error when invalid JSON is set', () => {
-          component.bodyValue = 'invalid';
-          component.bodyType = RuleType.JSONEQUALITY;
-          component.addBodyRule();
-          expect(component.errorMessage).toEqual(
-            'The body value must be valid JSON'
-          );
-        });
-      });
+      describe('invalid json', () => {});
     });
   });
 });

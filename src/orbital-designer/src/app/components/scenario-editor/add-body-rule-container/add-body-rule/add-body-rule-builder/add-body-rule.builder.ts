@@ -34,4 +34,14 @@ export class AddBodyRuleBuilder {
   validateJson(c: FormControl) {
     return this.validateJsonService.isValidJSON(c.value) ? null : { invalidJson: true };
   }
+
+  validateJsonPath(c: FormControl) {
+    const jp = require('jsonpath');
+    try {
+      jp.parse(c.value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }
