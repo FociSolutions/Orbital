@@ -50,6 +50,9 @@ import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/
 // tslint:disable-next-line: max-line-length
 import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { NotificationService } from './services/notification-service/notification.service';
+import { PolicyAddComponent } from './components/scenario-editor/policy-container/policy-add/policy-add.component';
+import { PolicyEditComponent } from './components/scenario-editor/policy-container/policy-edit/policy-edit.component';
+import { PolicyComponent } from './components/scenario-editor/policy-container/policy/policy.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +86,10 @@ import { NotificationService } from './services/notification-service/notificatio
     GetRuleTypeStringPipe,
     UrlEditRuleComponent,
     UrlAddRuleComponent,
-    UrlListItemRuleTypeComponent
+    UrlListItemRuleTypeComponent,
+    PolicyAddComponent,
+    PolicyEditComponent,
+    PolicyComponent
   ],
   imports: [
     BrowserModule,

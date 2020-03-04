@@ -16,6 +16,8 @@ export class SideBarComponent implements OnInit {
   title = 'MOCKDEFINITIONS';
 
   triggerOpenConfirmBox: boolean;
+  triggerOpenCancelBox: boolean;
+  urlToNavigatTo: string;
 
   mockDefinitionToBeDismissed: MockDefinition;
 
@@ -79,5 +81,31 @@ export class SideBarComponent implements OnInit {
   openDialogBox(mockDefinition: MockDefinition) {
     this.mockDefinitionToBeDismissed = mockDefinition;
     this.triggerOpenConfirmBox = true;
+  }
+
+  /**
+   * opens dialog to dismiss current scenario to review
+   *
+   */
+  openCancelDialogOrNavigateToUrl(url: string) {
+    if (this.router.url.includes('scenario-editor')) {
+      this.urlToNavigatTo = url;
+      this.triggerOpenCancelBox = true;
+    } else {
+      this.router.navigate([url]);
+    }
+  }
+
+  /**
+   * Handles the response from the cancel box
+   * @param shouldCancel The button pressed for the cancel box
+   */
+  onCancelDialogAction(shouldCancel: boolean) {
+    this.logger.debug('User answer for scenario-editor cancel box', shouldCancel);
+    this.triggerOpenCancelBox = false;
+    if (shouldCancel) {
+      this.logger.debug('The user has cancelled; navigating to', this.urlToNavigatTo);
+      this.router.navigate([this.urlToNavigatTo]);
+    }
   }
 }

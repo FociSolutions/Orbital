@@ -8,11 +8,7 @@ import { VerbType } from '../models/verb.type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
-import {
-  recordDelete,
-  recordAdd,
-  recordFirstOrDefault
-} from '../models/record';
+import { recordDelete, recordAdd, recordFirstOrDefault } from '../models/record';
 
 export interface State {
   selectedEndpoint: Endpoint;
@@ -24,58 +20,29 @@ export interface State {
 
 Injectable();
 export class DesignerStore extends Store<State> {
-  private static readonly mockDefinitionStoreKey =
-    'orbital_state_mockDefinition';
-  private static readonly mockDefinitionsStoreKey =
-    'orbital_state_mockDefinitions';
+  private static readonly mockDefinitionStoreKey = 'orbital_state_mockDefinition';
+  private static readonly mockDefinitionsStoreKey = 'orbital_state_mockDefinitions';
   private static readonly endpointsStoreKey = 'orbital_state_endpoints';
-  private static readonly selectedEndpointStoreKey =
-    'orbital_state_selectedEndpoint';
-  private static readonly selectedScenarioStoreKey =
-    'orbital_state_selectedScenario';
+  private static readonly selectedEndpointStoreKey = 'orbital_state_selectedEndpoint';
+  private static readonly selectedScenarioStoreKey = 'orbital_state_selectedScenario';
 
   constructor(private logger: NGXLogger) {
     super({
-      selectedEndpoint: JSON.parse(
-        localStorage.getItem(DesignerStore.selectedEndpointStoreKey)
-      ),
-      selectedScenario: JSON.parse(
-        localStorage.getItem(DesignerStore.selectedScenarioStoreKey)
-      ),
-      mockDefinition: JSON.parse(
-        localStorage.getItem(DesignerStore.mockDefinitionStoreKey)
-      ),
-      mockDefinitions:
-        JSON.parse(
-          localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)
-        ) || {},
-      endpoints:
-        JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
+      selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey)),
+      selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey)),
+      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
+      mockDefinitions: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)) || {},
+      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
     });
 
     this.state$.subscribe(state => {
       const clonedDefinition = cloneDeep(state.mockDefinition);
       const clonedDefinitions = cloneDeep(state.mockDefinitions);
-      localStorage.setItem(
-        DesignerStore.mockDefinitionStoreKey,
-        JSON.stringify(clonedDefinition)
-      );
-      localStorage.setItem(
-        DesignerStore.mockDefinitionsStoreKey,
-        JSON.stringify(clonedDefinitions)
-      );
-      localStorage.setItem(
-        DesignerStore.endpointsStoreKey,
-        JSON.stringify(state.endpoints)
-      );
-      localStorage.setItem(
-        DesignerStore.selectedEndpointStoreKey,
-        JSON.stringify(state.selectedEndpoint)
-      );
-      localStorage.setItem(
-        DesignerStore.selectedScenarioStoreKey,
-        JSON.stringify(state.selectedScenario)
-      );
+      localStorage.setItem(DesignerStore.mockDefinitionStoreKey, JSON.stringify(clonedDefinition));
+      localStorage.setItem(DesignerStore.mockDefinitionsStoreKey, JSON.stringify(clonedDefinitions));
+      localStorage.setItem(DesignerStore.endpointsStoreKey, JSON.stringify(state.endpoints));
+      localStorage.setItem(DesignerStore.selectedEndpointStoreKey, JSON.stringify(state.selectedEndpoint));
+      localStorage.setItem(DesignerStore.selectedScenarioStoreKey, JSON.stringify(state.selectedScenario));
     });
   }
 
@@ -121,6 +88,17 @@ export class DesignerStore extends Store<State> {
   }
 
   /**
+   * Updates a mock definition by title
+   */
+  private updateMockDefinitionsState(mockDefinition: MockDefinition) {
+    this.logger.debug('Updating mock ', mockDefinition.metadata.title);
+    this.setState({
+      ...this.state,
+      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition)
+    });
+  }
+
+  /**
    * Appends a mock definition to the store; if one with the same name already exists
    * it will be overwritten
    */
@@ -128,17 +106,10 @@ export class DesignerStore extends Store<State> {
     this.logger.debug('Appending mock definition', mockDefinition);
     this.setState({
       ...this.state,
-      mockDefinitions: recordAdd(
-        this.state.mockDefinitions,
-        mockDefinition.metadata.title,
-        mockDefinition
-      )
+      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition)
     });
     this.logger.debug('New state after appending', this.state);
-    this.mockDefinition = recordFirstOrDefault(
-      this.state.mockDefinitions,
-      null
-    );
+    this.mockDefinition = recordFirstOrDefault(this.state.mockDefinitions, null);
 
     if (this.state.mockDefinition) {
       this.selectedEndpoint = null;
@@ -185,20 +156,14 @@ export class DesignerStore extends Store<State> {
       const pathObject: OpenAPIV2.PathItemObject = doc.paths[path];
       const newEndpoints = Object.keys(VerbType)
         .map(verb => ({ verb: VerbType[verb], lowerVerb: verb.toLowerCase() }))
-        .map(({ verb, lowerVerb }) =>
-          !!pathObject[lowerVerb]
-            ? { path, verb, spec: pathObject[lowerVerb] }
-            : null
-        )
+        .map(({ verb, lowerVerb }) => (!!pathObject[lowerVerb] ? { path, verb, spec: pathObject[lowerVerb] } : null))
         .filter(endpoint => !!endpoint);
       endpoints = [...endpoints, ...newEndpoints];
     }
     this.logger.debug('Endpoints from openApi document ', endpoints);
     this.setState({
       ...this.state,
-      endpoints: clearStore
-        ? [...endpoints]
-        : [...this.state.endpoints, ...endpoints]
+      endpoints: clearStore ? [...endpoints] : [...this.state.endpoints, ...endpoints]
     });
   }
 
@@ -208,11 +173,7 @@ export class DesignerStore extends Store<State> {
    */
   set mockDefinition(mockDefinition: MockDefinition) {
     const mockDefinitionCopy = { ...mockDefinition };
-    const mockDefinitions = recordAdd(
-      this.state.mockDefinitions,
-      mockDefinition.metadata.title,
-      mockDefinitionCopy
-    );
+    const mockDefinitions = recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinitionCopy);
     this.logger.debug('Setting mockDefinition to ', mockDefinition);
     this.setState({
       ...this.state,
@@ -258,14 +219,12 @@ export class DesignerStore extends Store<State> {
         current.metadata.title = scenario.metadata.title;
         current.metadata.description = scenario.metadata.description;
 
-        current.requestMatchRules.bodyRules =
-          scenario.requestMatchRules.bodyRules;
-        current.requestMatchRules.headerRules =
-          scenario.requestMatchRules.headerRules;
-        current.requestMatchRules.queryRules =
-          scenario.requestMatchRules.queryRules;
-        current.requestMatchRules.urlRules =
-          scenario.requestMatchRules.urlRules;
+        current.requestMatchRules.bodyRules = scenario.requestMatchRules.bodyRules;
+        current.requestMatchRules.headerRules = scenario.requestMatchRules.headerRules;
+        current.requestMatchRules.queryRules = scenario.requestMatchRules.queryRules;
+        current.requestMatchRules.urlRules = scenario.requestMatchRules.urlRules;
+
+        current.policies = scenario.policies;
 
         current.response.body = scenario.response.body;
         current.response.headers = scenario.response.headers;
@@ -278,6 +237,7 @@ export class DesignerStore extends Store<State> {
         current = scenario;
         currentMock.scenarios.push(current);
       }
+      this.updateMockDefinitionsState(currentMock);
     }
   }
 
@@ -287,11 +247,7 @@ export class DesignerStore extends Store<State> {
    * @param basePath The string representing endpoint path
    * @param openApi The string representing openSpecAPI file contents
    */
-  updateApiInformation(
-    host: string,
-    basePath: string,
-    openApi: OpenAPIV2.Document
-  ): void {
+  updateApiInformation(host: string, basePath: string, openApi: OpenAPIV2.Document): void {
     this.logger.debug('Setting host to ', host);
     this.logger.debug('Setting basePath to ', basePath);
     this.logger.debug('Setting openApi to ', openApi);
@@ -321,9 +277,7 @@ export class DesignerStore extends Store<State> {
   deleteScenario(scenarioId: string) {
     this.mockDefinition = {
       ...this.state.mockDefinition,
-      scenarios: this.state.mockDefinition.scenarios.filter(
-        s => s.id !== scenarioId
-      )
+      scenarios: this.state.mockDefinition.scenarios.filter(s => s.id !== scenarioId)
     };
   }
 }
