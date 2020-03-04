@@ -4,7 +4,7 @@ import { FormControl, FormArray, AbstractControl } from '@angular/forms';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
-import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
+import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinition/export-mockdefinition.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { finalize } from 'rxjs/operators';
 import { every } from 'lodash';
@@ -29,7 +29,7 @@ export class ExportToServerViewComponent implements OnInit {
     private location: Location,
     private store: DesignerStore,
     private logger: NGXLogger,
-    private service: OrbitalAdminService
+    private service: ExportMockdefinitionService
   ) {}
 
   ngOnInit() {

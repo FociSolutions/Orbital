@@ -80,3 +80,23 @@ export function recordSize<K extends string | number | symbol, T>(record: Record
   const keys = Object.keys(record);
   return keys.length;
 }
+
+export function compareRecords<K extends string | number | symbol, T>(
+  record: Record<K, T>,
+  recordToCompare: Record<K, T>
+): boolean {
+  let equal = false;
+  const keys = Object.keys(record);
+  const keysToCompare = Object.keys(recordToCompare);
+  if (keys.length === keysToCompare.length) {
+    for (const keyIndex in keys) {
+      if (record[keys[keyIndex]] === recordToCompare[keysToCompare[keyIndex]]) {
+        equal = true;
+      }
+    }
+  } else {
+    return equal;
+  }
+
+  return equal;
+}

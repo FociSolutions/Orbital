@@ -1,0 +1,49 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mat-card {
+  padding: 0.75em;
+  min-width: 35vw;
+  margin-bottom: 1em;
+}
+
+.policy-added-key {
+  border-bottom: 1px solid #9b9b9b;
+  margin-left: 1.3em;
+  width: 12%;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.policy-added-value {
+  border-bottom: 1px solid #9b9b9b;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.policy-value {
+  flex: 1;
+  padding-right: 3vw;
+}
+
+.delete-button {
+  background: none;
+  border: 0;
+}
+
+.delete-button-container {
+  display: flex;
+  padding-right: 1em;
+}
+
+.policy-type {
+  margin-right: 3.25em;
+}
+
+.error-message {
+  padding-left: 1.5em;
+  padding-top: 1em;
+}

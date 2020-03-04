@@ -35,6 +35,9 @@ import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule
 import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { PolicyComponent } from './policy-container/policy/policy.component';
+import { PolicyAddComponent } from './policy-container/policy-add/policy-add.component';
+import { PolicyEditComponent } from './policy-container/policy-edit/policy-edit.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -61,7 +64,10 @@ describe('ScenarioEditorComponent', () => {
         GetRuleTypeStringPipe,
         UrlAddRuleComponent,
         UrlEditRuleComponent,
-        UrlListItemRuleTypeComponent
+        UrlListItemRuleTypeComponent,
+        PolicyComponent,
+        PolicyAddComponent,
+        PolicyEditComponent
       ],
       imports: [
         LoggerTestingModule,

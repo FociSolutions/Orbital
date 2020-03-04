@@ -25,7 +25,8 @@
         ],
         "queryRules": [],
         "bodyRules": []
-      }
+      },
+      "policies": []
     }
   ],
   "host": "petstore.swagger.io",
