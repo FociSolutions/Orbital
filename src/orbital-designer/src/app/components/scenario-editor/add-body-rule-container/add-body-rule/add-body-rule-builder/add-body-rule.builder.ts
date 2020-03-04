@@ -20,10 +20,10 @@ export class AddBodyRuleBuilder {
    * Creates a default body rule form group
    * @param defaultBodyRule The default body rule to use
    */
-  createBodyRuleForm(defaultBodyRule: BodyRule): FormGroup {
+  createBodyRuleForm(bodyRule: BodyRule): FormGroup {
     return this.formBuilder.group({
-      bodyType: new FormControl(defaultBodyRule.type),
-      bodyRule: new FormControl(defaultBodyRule.rule, [Validators.required, this.validateJson.bind(this)])
+      type: new FormControl(bodyRule.type, [Validators.required]),
+      rule: new FormControl(JSON.stringify(bodyRule.rule), [this.validateJson.bind(this)])
     });
   }
 
@@ -32,6 +32,6 @@ export class AddBodyRuleBuilder {
    * @param c The form control to validate against
    */
   validateJson(c: FormControl) {
-    return { validateJson: { valid: this.validateJsonService.isValidJSON(c.value) } };
+    return this.validateJsonService.isValidJSON(c.value);
   }
 }

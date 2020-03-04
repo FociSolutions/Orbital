@@ -6,7 +6,7 @@
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select formControlName="bodyType"
+            <mat-select formControlName="type"
             >
               <mat-option [value]="bodyRuleTypeValues.JSONCONTAINS">{{
                 bodyRuleTypeValues.JSONCONTAINS | getRuleTypeString
@@ -35,7 +35,7 @@
             <textarea
               matInput
               rows="10"
-              formControlName="bodyRule"
+              formControlName="rule"
             ></textarea>
             <div class="error-message">
               {{ this.errorMessage }}

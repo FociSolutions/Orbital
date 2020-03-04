@@ -18,15 +18,10 @@ export class AddBodyRuleComponent implements OnInit {
   errorMessage = '';
   bodyRuleTypeValues = RuleType;
   @Input() bodyRules: BodyRule[] = [];
-  @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<
-    BodyRule
-  >();
+  @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
   addBodyRuleFormGroup: FormGroup;
 
-  constructor(
-    private logger: NGXLogger,
-    private formBuilder: AddBodyRuleBuilder
-  ) {}
+  constructor(private logger: NGXLogger, private formBuilder: AddBodyRuleBuilder) {}
 
   ngOnInit() {
     this.addBodyRuleFormGroup = this.formBuilder.createNewBodyRuleForm();
@@ -37,7 +32,10 @@ export class AddBodyRuleComponent implements OnInit {
    */
   addBodyRule() {
     if (this.addBodyRuleFormGroup.valid && !this.bodyRuleDeepEquals()) {
-      const bodyRule = this.addBodyRuleFormGroup.value as BodyRule;
+      const bodyRule = {
+        rule: JSON.parse(this.addBodyRuleFormGroup.controls.rule.value),
+        type: this.addBodyRuleFormGroup.controls.type.value
+      };
 
       this.logger.debug('AddBodyRule: emitted body rule ', bodyRule);
       this.isValid = true;
@@ -53,10 +51,8 @@ export class AddBodyRuleComponent implements OnInit {
   private bodyRuleDeepEquals(): BodyRule {
     return this.bodyRules.find(
       ({ rule, type }) =>
-        deepEqual(rule, JSON.parse(this.addBodyRuleFormGroup.controls.bodyValue.value)) &&
-        deepEqual(type, this.addBodyRuleFormGroup.controls.bodyType.value)
+        deepEqual(rule, JSON.parse(this.addBodyRuleFormGroup.controls.rule.value)) &&
+        deepEqual(type, this.addBodyRuleFormGroup.controls.type.value)
     );
   }
-
-
 }
