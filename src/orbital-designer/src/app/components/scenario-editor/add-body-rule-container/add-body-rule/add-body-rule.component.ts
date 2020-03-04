@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, ChangeDetectorRef } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule, defaultBodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
@@ -14,14 +14,13 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./add-body-rule.component.scss']
 })
 export class AddBodyRuleComponent implements OnInit {
-  isValid = true;
   errorMessage = '';
   bodyRuleTypeValues = RuleType;
   @Input() bodyRules: BodyRule[] = [];
   @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
   addBodyRuleFormGroup: FormGroup;
 
-  constructor(private logger: NGXLogger, private formBuilder: AddBodyRuleBuilder) {}
+  constructor(private logger: NGXLogger, private formBuilder: AddBodyRuleBuilder, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.addBodyRuleFormGroup = this.formBuilder.createNewBodyRuleForm();
@@ -31,6 +30,7 @@ export class AddBodyRuleComponent implements OnInit {
    * Adds the body rule from the form field into the internal array
    */
   addBodyRule() {
+    this.errorMessage = '';
     if (this.addBodyRuleFormGroup.valid && !this.bodyRuleDeepEquals()) {
       const bodyRule = {
         rule: JSON.parse(this.addBodyRuleFormGroup.controls.rule.value),
@@ -38,10 +38,11 @@ export class AddBodyRuleComponent implements OnInit {
       };
 
       this.logger.debug('AddBodyRule: emitted body rule ', bodyRule);
-      this.isValid = true;
       this.bodyRuleOutput.emit(bodyRule);
-    } else {
-      this.isValid = false;
+    } else if (!this.addBodyRuleFormGroup.valid) {
+      this.errorMessage = 'The body rule must be valid JSON or a string literal';
+    } else if (this.bodyRuleDeepEquals()) {
+      this.errorMessage = 'The body rule already exists';
     }
   }
 

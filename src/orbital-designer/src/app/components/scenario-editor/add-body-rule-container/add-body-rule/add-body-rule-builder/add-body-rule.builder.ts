@@ -22,8 +22,8 @@ export class AddBodyRuleBuilder {
    */
   createBodyRuleForm(bodyRule: BodyRule): FormGroup {
     return this.formBuilder.group({
-      type: new FormControl(bodyRule.type, [Validators.required]),
-      rule: new FormControl(JSON.stringify(bodyRule.rule), [this.validateJson.bind(this)])
+      type: new FormControl(bodyRule.type, Validators.required),
+      rule: new FormControl(bodyRule.rule, this.validateJson.bind(this))
     });
   }
 
@@ -32,6 +32,6 @@ export class AddBodyRuleBuilder {
    * @param c The form control to validate against
    */
   validateJson(c: FormControl) {
-    return this.validateJsonService.isValidJSON(c.value);
+    return this.validateJsonService.isValidJSON(c.value) ? null : { invalidJson: true };
   }
 }
