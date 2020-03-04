@@ -8,7 +8,7 @@ import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinit
 import { Observable } from 'rxjs/internal/Observable';
 import { finalize } from 'rxjs/operators';
 import { every } from 'lodash';
-import { ExportMockdefinitionService } from '../../services/export-mockdefinition/export-mockdefinition.service';
+import { OrbitalAdminService } from '../../services/orbital-admin/orbital-admin.service';
 
 @Component({
   selector: 'app-export-to-server-view',
@@ -29,8 +29,8 @@ export class ExportToServerViewComponent implements OnInit {
     private location: Location,
     private store: DesignerStore,
     private logger: NGXLogger,
-    private mockService: ExportMockdefinitionService
-    private service: OrbitalAdminService,
+    private mockService: ExportMockdefinitionService,
+    private service: OrbitalAdminService
   ) {}
 
   ngOnInit() {

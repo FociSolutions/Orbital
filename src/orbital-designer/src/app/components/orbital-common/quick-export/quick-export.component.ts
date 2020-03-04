@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExportMockdefinitionService } from '../../../services/export-mockdefinition/export-mockdefinition.service';
 import { MockDefinition } from '../../../models/mock-definition/mock-definition.model';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-quick-export',
@@ -15,7 +16,11 @@ export class QuickExportComponent implements OnInit {
   mockInService: MockDefinition;
   exportStatusMessage: string;
 
-  constructor(private router: Router, private mockdefinitionService: ExportMockdefinitionService) {}
+  constructor(
+    private router: Router,
+    private mockdefinitionService: ExportMockdefinitionService,
+    private logger: NGXLogger
+  ) {}
 
   /**
    * opens dialog to dismiss current scenario to review
@@ -32,7 +37,8 @@ export class QuickExportComponent implements OnInit {
       this.triggerOpenCancelBox = true;
     } else if (this.urlInService) {
       this.mockdefinitionService.exportMockDefinition(this.urlInService, this.mockInService);
-      this.exportStatusMessage = 'File(s) successfully exported';
+      this.logger.debug('Mockdefinition has been exported: ', this.mockInService);
+      this.exportStatusMessage = 'File successfully exported';
     } else {
       this.router.navigate([url]);
     }
