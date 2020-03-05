@@ -32,7 +32,7 @@ export class AddBodyRuleBuilder {
    * @param formControl The form control to validate against
    */
   validateJson(formControl: FormControl) {
-    return this.validJsonService.isValidJSON(formControl.value) ? null : { invalidJson: true, message: "The JSON is invalid" };
+    return this.validJsonService.isValidJSON(formControl.value) ? null : { invalidJson: true, message: 'The JSON is invalid' };
   }
 
   /**
@@ -45,7 +45,7 @@ export class AddBodyRuleBuilder {
       jp.parse(formControl.value);
       return null;
     } catch {
-      return { invalidJsonPath: true, message: "The JSON path is invalid" };
+      return { invalidJsonPath: true, message: 'The JSON path is invalid' };
     }
   }
 }
