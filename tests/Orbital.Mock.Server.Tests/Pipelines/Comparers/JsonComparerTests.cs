@@ -83,6 +83,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             }";
             var valueToEvaluate = "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"hobbies\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}";
             var actual = JsonComparer.MatchesSchema(rule, valueToEvaluate);
+        }
+        
+        public void SuccessPathExistsJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "$..x";
+            var actual = JsonComparer.PathEqual(path, rule);
 
             Assert.True(actual);
         }
@@ -157,6 +164,23 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             }";
             var valueToEvaluate = "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"hobbies\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}";
             var actual = JsonComparer.MatchesSchema(rule, valueToEvaluate);
+        }
+        
+        public void FailurePathIsInvalidJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "$...";
+            var actual = JsonComparer.PathEqual(path, rule);
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void FailurePathDoesNotExistJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "$..y";
+            var actual = JsonComparer.PathEqual(path, rule);
 
             Assert.False(actual);
         }
