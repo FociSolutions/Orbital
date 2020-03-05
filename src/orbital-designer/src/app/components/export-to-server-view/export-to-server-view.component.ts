@@ -55,7 +55,7 @@ export class ExportToServerViewComponent implements OnInit {
   async onSubmit() {
     this.isUploadingMocks = true;
     this.logger.debug('URL contents before uploading', this.inputControl.value);
-    this.mockService.urlCache = this.inputControl.value;
+
     return this.exportMocksFromForm()
       .pipe(
         finalize(() => {
@@ -68,6 +68,7 @@ export class ExportToServerViewComponent implements OnInit {
           if (every(uploadMockStatus)) {
             this.logger.debug('Received response from export to server promise resolution');
             this.exportStatusMessage = 'File(s) successfully exported';
+            this.mockService.urlCache = this.inputControl.value;
           } else {
             this.exportStatusMessage = 'File(s) could not be exported because of an error';
           }
