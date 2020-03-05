@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Pipelines.Comparers;
 using Xunit;
 
@@ -61,6 +62,36 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             var rule = "{\"fruit\": \"Apple\",\"size\": 1,\"color\": \"Red\"}";
             var valueToEvaluate = "1";
             var actual = JsonComparer.DeepContains(valueToEvaluate, rule);
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void SuccessPathExistsJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "$..x";
+            var actual = JsonComparer.PathEqual(path, rule);
+
+            Assert.True(actual);
+        }
+
+        [Fact]
+        public void FailurePathIsInvalidJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "$...";
+            var actual = JsonComparer.PathEqual(path, rule);
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void FailurePathDoesNotExistJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "$..y";
+            var actual = JsonComparer.PathEqual(path, rule);
 
             Assert.False(actual);
         }

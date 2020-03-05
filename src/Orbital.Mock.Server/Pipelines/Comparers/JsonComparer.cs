@@ -65,5 +65,25 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
             }
             return false;
         }
+
+        /// <summary>
+        /// Checks if a JSON path exists in a JSON snippet. It does not find the value associated with the path,
+        /// just whether it exists.
+        /// </summary>
+        /// <param name="path">The JSON path</param>
+        /// <param name="items">The JSON snippet to search</param>
+        /// <returns></returns>
+        public static bool PathEqual(string path, JToken items)
+        {
+            try
+            {
+                var selectedItems = items.SelectToken(path, errorWhenNoMatch: true);
+                return selectedItems != null;
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+        }
     }
 }
