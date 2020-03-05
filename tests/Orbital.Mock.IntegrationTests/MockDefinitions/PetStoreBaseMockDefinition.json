@@ -28,7 +28,8 @@
           }
         ],
         "bodyRules": []
-      }
+      },
+      "policies": []
     },
     {
       "id": "0ecfe4ec-3830-4885-bf0e-6b784dc7d2af",
@@ -52,7 +53,8 @@
           "animal-type": "cat"
         },
         "bodyRules": []
-      }
+      },
+      "policies": []
     }
   ],
   "host": "petstore.swagger.io",

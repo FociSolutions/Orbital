@@ -6,6 +6,9 @@ import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-va
 import { recordFirstOrDefault } from 'src/app/models/record';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
+import { ɵangular_packages_platform_browser_dynamic_testing_testing_b } from '@angular/platform-browser-dynamic/testing';
+import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
+import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +34,8 @@ export class ScenarioFormBuilder {
     this.scenarioForm = this.formBuilder.group({
       metadata: this.metadataFormGroup(scenario.metadata),
       requestMatchRules: this.requestMatchRulesFormGroup(scenario.requestMatchRules),
-      response: this.responseFormGroup(scenario.response)
+      response: this.responseFormGroup(scenario.response),
+      policies: this.policiesFormArray(scenario.policies)
     });
     return this.scenarioForm;
   }
@@ -74,6 +78,25 @@ export class ScenarioFormBuilder {
     });
   }
 
+  public policiesFormArray(policies: Policy[]): FormArray {
+    return this.formBuilder.array(policies.map(p => this.getPolicyFormGroup(p)));
+  }
+
+  public getPolicyFormGroup(policy: Policy): FormGroup {
+    switch (policy.type) {
+      case PolicyType.DELAYRESPONSE: {
+        return new FormGroup({
+          delay: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
+            Validators.required,
+            Validators.min(1),
+            Validators.pattern('^[0-9]*$')
+          ]),
+          policyType: new FormControl(policy.type, [Validators.required])
+        });
+      }
+    }
+  }
+
   /**
    * This method will return you the keyvaluepairrule provided as a form group.
    *
@@ -110,5 +133,43 @@ export class ScenarioFormMapper {
         } as KeyValuePairRule;
       });
     return urlRules;
+  }
+
+  /**
+   * Transforms FormArray data into policies to be saved in the scenario
+   *
+   * @param policies raw policies to be transformed
+   */
+  public GetPolicyRulesFromForm(policies: FormArray) {
+    let newPolicies: Policy[];
+
+    newPolicies = policies.controls.map(group => {
+      const policytype = (group as FormGroup).get('policyType').value;
+      const rawValue = (group as FormGroup).getRawValue();
+      return this.getPolicy(policytype, rawValue);
+    });
+    return newPolicies;
+  }
+
+  /**
+   * Transforms FormGroup into the appropiate policy
+   * @param policytype The type of policy
+   * @param rawValue The raw FormGroup value to be transformed
+   */
+  private getPolicy(policytype: PolicyType, rawValue: any) {
+    switch (policytype) {
+      case PolicyType.DELAYRESPONSE: {
+        interface PolicyDelayFormGroup {
+          delay: string;
+          policyType: number;
+        }
+        const rawPolicy = rawValue as PolicyDelayFormGroup;
+        const policyToReturn = {
+          type: rawPolicy.policyType,
+          attributes: { delay: rawPolicy.delay } as Record<string, string>
+        };
+        return policyToReturn;
+      }
+    }
   }
 }

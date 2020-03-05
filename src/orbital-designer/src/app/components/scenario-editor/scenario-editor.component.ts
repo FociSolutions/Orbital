@@ -22,6 +22,7 @@ import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/re
 import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
 import { FormGroup, FormArray, Form } from '@angular/forms';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
@@ -142,6 +143,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       const newUrlRules = this.scenarioFormMapper.GetUrlRulesFromForm(
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.urlMatchRules as FormArray
       );
+      const newPolicyRules = this.scenarioFormMapper.GetPolicyRulesFromForm(
+        this.scenarioFormGroup.controls.policies as FormArray
+      );
 
       this.selectedScenario.metadata.title = this.metadata.title;
       this.selectedScenario.metadata.description = this.metadata.description;
@@ -149,6 +153,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       this.selectedScenario.requestMatchRules.headerRules = this.requestMatchRule.headerRules;
       this.selectedScenario.requestMatchRules.queryRules = this.requestMatchRule.queryRules;
       this.selectedScenario.requestMatchRules.urlRules = newUrlRules;
+      this.selectedScenario.policies = newPolicyRules;
 
       this.selectedScenario.response.body = this.response.body;
       this.selectedScenario.response.headers = this.response.headers;
@@ -258,7 +263,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         queryRules: [],
         bodyRules: [],
         urlRules: []
-      } as RequestMatchRule
+      } as RequestMatchRule,
+      policies: [] as Policy[]
     } as Scenario;
   }
 

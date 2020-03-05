@@ -1,0 +1,30 @@
+<mat-accordion>
+  <mat-expansion-panel [disabled]="this.isCardDisabled" [expanded]="this.panelExpanded">
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title>
+        Policies
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="policy-edit">
+      <mat-divider class="divider-padding"></mat-divider>
+      <app-policy-add
+        class="add-policy"
+        (policyAddedEventEmitter)="addPolicyHandler($event)"
+        [policyAddedIsDuplicated]="this.policyIsDuplicated"
+      ></app-policy-add>
+    </div>
+
+    <ng-template [ngIf]="this.policyFormArray.controls.length" [ngIfElse]="noPoliciesAdded">
+      <div *ngFor="let policy of policyFormArray.controls; let i = index">
+        <app-policy-edit
+          [policyEditFormGroup]="policy"
+          (policyRemovedEventEmitter)="deletePolicyHandler(i)"
+        ></app-policy-edit>
+      </div>
+    </ng-template>
+
+    <ng-template #noPoliciesAdded>
+      No policies added
+    </ng-template>
+  </mat-expansion-panel>
+</mat-accordion>
