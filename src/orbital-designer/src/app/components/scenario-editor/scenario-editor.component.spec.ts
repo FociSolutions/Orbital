@@ -38,6 +38,7 @@ import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenari
 import { PolicyComponent } from './policy-container/policy/policy.component';
 import { PolicyAddComponent } from './policy-container/policy-add/policy-add.component';
 import { PolicyEditComponent } from './policy-container/policy-edit/policy-edit.component';
+import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinition/export-mockdefinition.service';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -81,7 +82,7 @@ describe('ScenarioEditorComponent', () => {
         MatIconModule,
         MatChipsModule
       ],
-      providers: [DesignerStore]
+      providers: [DesignerStore, ExportMockdefinitionService]
     }).compileComponents();
   }));
 

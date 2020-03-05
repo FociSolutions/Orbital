@@ -13,6 +13,7 @@ import validMockDefinition from '../../../../test-files/test-mockdefinition-obje
 import { DesignerStore } from '../../../store/designer-store';
 import { MockDefinition } from '../../../models/mock-definition/mock-definition.model';
 import { QuickExportComponent } from '../quick-export/quick-export.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
@@ -29,7 +30,8 @@ describe('SideBarComponent', () => {
         MatCardModule,
         MatIconModule,
         LoggerTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
