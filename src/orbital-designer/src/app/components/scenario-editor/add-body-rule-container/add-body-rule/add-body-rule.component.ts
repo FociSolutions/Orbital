@@ -57,7 +57,7 @@ export class AddBodyRuleComponent implements OnInit {
       this.logger.debug('AddBodyRule: emitted body rule ', bodyRule);
       this.bodyRuleOutput.emit(bodyRule);
     } else if (!this.addBodyRuleFormGroup.valid) {
-      this.errorMessage = 'The body rule must be valid JSON or a string literal';
+      this.errorMessage = 'The JSON rule or path is invalid';
     } else if (this.bodyRuleDeepEquals()) {
       this.errorMessage = 'The body rule already exists';
     }
