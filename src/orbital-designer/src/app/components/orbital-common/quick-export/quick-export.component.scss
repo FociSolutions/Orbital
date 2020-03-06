@@ -1,0 +1,23 @@
+button mat-icon {
+  opacity: 0.54;
+}
+
+a mat-icon {
+  opacity: 0.54;
+}
+
+button h4 {
+  font-size: 0.9em !important;
+}
+
+button:hover {
+  background: #f0f0f0;
+  cursor: pointer;
+  button {
+    background: #f0f0f0;
+  }
+}
+.error-message {
+  color: grey;
+  padding-left: 20px;
+}

@@ -8,6 +8,7 @@ import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinit
 import { Observable } from 'rxjs/internal/Observable';
 import { finalize } from 'rxjs/operators';
 import { every } from 'lodash';
+import { OrbitalAdminService } from '../../services/orbital-admin/orbital-admin.service';
 
 @Component({
   selector: 'app-export-to-server-view',
@@ -22,14 +23,14 @@ export class ExportToServerViewComponent implements OnInit {
   exportStatusMessage: string;
   isUploadingMocks: boolean;
 
-  controlsMockDefinitionToString = (control: AbstractControl) =>
-    (control.value as MockDefinition).metadata.title
+  controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
 
   constructor(
     private location: Location,
     private store: DesignerStore,
     private logger: NGXLogger,
-    private service: ExportMockdefinitionService
+    private mockService: ExportMockdefinitionService,
+    private service: OrbitalAdminService
   ) {}
 
   ngOnInit() {
@@ -54,6 +55,7 @@ export class ExportToServerViewComponent implements OnInit {
   async onSubmit() {
     this.isUploadingMocks = true;
     this.logger.debug('URL contents before uploading', this.inputControl.value);
+
     return this.exportMocksFromForm()
       .pipe(
         finalize(() => {
@@ -64,18 +66,15 @@ export class ExportToServerViewComponent implements OnInit {
       .subscribe(
         uploadMockStatus => {
           if (every(uploadMockStatus)) {
-            this.logger.debug(
-              'Received response from export to server promise resolution'
-            );
+            this.logger.debug('Received response from export to server promise resolution');
             this.exportStatusMessage = 'File(s) successfully exported';
+            this.mockService.urlCache = this.inputControl.value;
           } else {
-            this.exportStatusMessage =
-              'File(s) could not be exported because of an error';
+            this.exportStatusMessage = 'File(s) could not be exported because of an error';
           }
         },
         () => {
-          this.exportStatusMessage =
-            'File(s) could not be exported because of an error';
+          this.exportStatusMessage = 'File(s) could not be exported because of an error';
         }
       );
   }
