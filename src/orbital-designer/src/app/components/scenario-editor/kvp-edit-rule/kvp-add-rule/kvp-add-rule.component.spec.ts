@@ -12,11 +12,7 @@ describe('KvpAddComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OrbitalCommonModule,
-        BrowserAnimationsModule,
-        LoggerTestingModule
-      ]
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule]
     }).compileComponents();
   }));
 
@@ -32,37 +28,27 @@ describe('KvpAddComponent', () => {
 
   describe('KvpAddRuleComponent.isEmpty', () => {
     it('Should return true if the key is empty', () => {
-      component.key = '';
-      component.value = faker.lorem.sentence();
+      component.ruleKey.setValue('');
+      component.ruleValue.setValue(faker.lorem.sentence());
       expect(component.isKeyEmpty()).toBe(true);
     });
 
     it('Should return false if the value is empty', () => {
-      component.value = '';
-      component.key = faker.lorem.sentence();
+      component.ruleValue.setValue('');
+      component.ruleKey.setValue(faker.lorem.sentence());
       expect(component.isKeyEmpty()).toBe(false);
     });
 
     it('Should return false if both value and key are not empty', () => {
-      component.value = faker.lorem.sentence();
-      component.key = faker.lorem.sentence();
+      component.ruleValue.setValue(faker.lorem.sentence());
+      component.ruleKey.setValue(faker.lorem.sentence());
       expect(component.isKeyEmpty()).toBe(false);
     });
 
     it('Should return false if key is whitespace and value is non-empty', () => {
-      component.value = faker.lorem.sentence();
-      component.key = ' ';
+      component.ruleValue.setValue(faker.lorem.sentence());
+      component.ruleKey.setValue('');
       expect(component.isKeyEmpty()).toBe(true);
-    });
-
-    it('Should return true if the value is empty', () => {
-      component.ruleType = undefined;
-      expect(component.isRuleTypeEmpty()).toBe(true);
-    });
-
-    it('Should return false if the value is valid', () => {
-      component.ruleType = RuleType.TEXTENDSWITH;
-      expect(component.isRuleTypeEmpty()).toBe(false);
     });
   });
 
@@ -72,9 +58,9 @@ describe('KvpAddComponent', () => {
         key: faker.lorem.sentence(),
         value: faker.lorem.sentence()
       };
-      component.key = input.key;
-      component.value = input.value;
-      component.ruleType = RuleType.TEXTSTARTSWITH;
+      component.ruleKey.setValue(input.key);
+      component.ruleValue.setValue(input.value);
+      component.ruleType.setValue(RuleType.TEXTSTARTSWITH);
       spyOn(component.kvp, 'emit');
       component.onAdd();
       expect(component.kvp.emit).toHaveBeenCalled();
@@ -82,46 +68,25 @@ describe('KvpAddComponent', () => {
     });
 
     it('Should set isValid to false if isEmpty is true', () => {
-      component.key = '';
-      component.value = '';
-      component.ruleType = null;
+      component.ruleKey.setValue('');
+      component.ruleValue.setValue('');
+      component.ruleType.setValue(undefined);
       component.onAdd();
       expect(component.isValid).toBe(false);
     });
 
     it('Should set isValid to false if isRegexEmpty is true', () => {
-      component.key = faker.lorem.sentence();
-      component.ruleType = RuleType.REGEX;
+      component.ruleKey.setValue(faker.lorem.sentence());
+      component.ruleType.setValue(RuleType.REGEX);
       component.onAdd();
       expect(component.isValid).toBe(false);
     });
     it('Should set isValid to true if isRegexEmpty is false', () => {
-      component.key = faker.lorem.sentence();
-      component.value = faker.lorem.sentence();
-      component.ruleType = RuleType.REGEX;
+      component.ruleKey.setValue(faker.lorem.sentence());
+      component.ruleValue.setValue(faker.lorem.sentence());
+      component.ruleType.setValue(RuleType.REGEX);
       component.onAdd();
       expect(component.isValid).toBe(true);
-    });
-  });
-  describe('KvpAddComponent.isRegexEmpty', () => {
-    it('Should return true if rule type is regex and value is undefined', () => {
-      const input = {
-        key: faker.lorem.sentence()
-      };
-      component.key = input.key;
-      component.ruleType = RuleType.REGEX;
-      expect(component.isRegexEmpty()).toBe(true);
-    });
-
-    it('Should return false if rule type is REGEX and value is defined', () => {
-      const input = {
-        key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
-      };
-      component.key = input.key;
-      component.value = input.value;
-      component.ruleType = RuleType.REGEX;
-      expect(component.isRegexEmpty()).toBe(false);
     });
   });
 });

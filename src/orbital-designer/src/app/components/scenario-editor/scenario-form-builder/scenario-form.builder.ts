@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Scenario, defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefault } from 'src/app/models/record';
+import { recordFirstOrDefault, recordAdd, recordFirstOrDefaultKey } from 'src/app/models/record';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { ɵangular_packages_platform_browser_dynamic_testing_testing_b } from '@angular/platform-browser-dynamic/testing';
@@ -59,8 +59,12 @@ export class ScenarioFormBuilder {
    */
   public requestMatchRulesFormGroup(requestMatchRules: RequestMatchRule): FormGroup {
     return this.formBuilder.group({
-      headerMatchRules: this.formBuilder.array,
-      queryMatchRules: this.formBuilder.array,
+      headerMatchRules: this.formBuilder.array(
+        requestMatchRules.headerRules.map(h => this.getHeaderOrQueryItemFormGroup(h))
+      ),
+      queryMatchRules: this.formBuilder.array(
+        requestMatchRules.queryRules.map(q => this.getHeaderOrQueryItemFormGroup(q))
+      ),
       urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map(u => this.getUrlItemFormGroup(u))),
       bodyMatchRules: this.formBuilder.array
     });
@@ -106,6 +110,25 @@ export class ScenarioFormBuilder {
     return new FormGroup({
       path: new FormControl(recordFirstOrDefault(urlRule.rule, ''), [Validators.required, Validators.maxLength(3000)]),
       ruleType: new FormControl(urlRule.type, [Validators.required])
+    });
+  }
+
+  /**
+   * This method will return you the keyvaluepairrule provided as a form group.
+   *
+   * @param headerOrQueryRule KeyValuePairRule to be turned to a form group.
+   */
+  public getHeaderOrQueryItemFormGroup(headerOrQueryRule: KeyValuePairRule) {
+    return new FormGroup({
+      key: new FormControl(recordFirstOrDefaultKey(headerOrQueryRule.rule, ''), [
+        Validators.required,
+        Validators.maxLength(200)
+      ]),
+      value: new FormControl(recordFirstOrDefault(headerOrQueryRule.rule, ''), [
+        Validators.required,
+        Validators.maxLength(3000)
+      ]),
+      type: new FormControl(headerOrQueryRule.type, [Validators.required])
     });
   }
 }
@@ -171,5 +194,31 @@ export class ScenarioFormMapper {
         return policyToReturn;
       }
     }
+  }
+
+  /**
+   * Transforms FormGroup into the appropriate query or header rule
+   * @param keyValueRuleMatchRules raw rules to be transformed
+   */
+  public GetHeaderOrQueryRulesFromForm(headerOrQuerRules: FormArray) {
+    interface HeaderQueryRuleFormGroup {
+      key: string;
+      value: string;
+      type: number;
+    }
+
+    let kvpRules: KeyValuePairRule[];
+
+    kvpRules = headerOrQuerRules.controls
+      .map(group => {
+        return (group as FormGroup).getRawValue() as HeaderQueryRuleFormGroup;
+      })
+      .map(kvpRuleFormGroup => {
+        return {
+          type: kvpRuleFormGroup.type,
+          rule: { [kvpRuleFormGroup.key]: kvpRuleFormGroup.value }
+        } as KeyValuePairRule;
+      });
+    return kvpRules;
   }
 }

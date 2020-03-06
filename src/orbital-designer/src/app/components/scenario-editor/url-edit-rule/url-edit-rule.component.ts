@@ -79,7 +79,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
    * Double check to confirm there are no duplicates in the list of existing url rules
    */
   private checkForDuplicates(): void {
-    this.urlMatchRuleFormArray.setErrors(null);
+    this.urlMatchRuleFormArray.controls.forEach(c => c.setErrors(null));
     this.urlMatchRuleFormArray.markAsUntouched();
     interface UrlRuleFormGroup {
       path?: string;
@@ -99,7 +99,8 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
           (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('ruleType').markAsTouched();
           (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('path').markAsTouched();
           (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('ruleType').markAsTouched();
-          this.urlMatchRuleFormArray.setErrors({ duplicated: true });
+          (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
+          (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).setErrors({ duplicated: true });
         }
       });
     });

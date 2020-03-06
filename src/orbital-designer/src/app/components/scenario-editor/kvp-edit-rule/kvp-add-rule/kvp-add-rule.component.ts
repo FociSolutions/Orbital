@@ -3,6 +3,10 @@ import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { recordUpdateKeyName } from 'src/app/models/record';
+import { pairwise } from 'rxjs/operators';
 
 @Component({
   selector: 'app-kvp-add-rule',
@@ -10,18 +14,20 @@ import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/ke
   styleUrls: ['./kvp-add-rule.component.scss']
 })
 export class KvpAddRuleComponent implements OnInit {
-  @Input() kvpAddedError: EventEmitter<boolean>;
+  private subscriptions: Subscription[] = [];
+  @Input() kvpAddedError = new EventEmitter<boolean>();
   // The kvp to be outputted to parent
   @Output() kvp = new EventEmitter<KeyValuePairRule>();
 
-  // The key and value properties that were bound to the template
-  key: string;
-  value: string;
+  private kvpRuleInEdit = {
+    rule: {} as Record<string, string>,
+    type: RuleType.NONE
+  } as KeyValuePairRule;
   isValid: boolean;
   errorMessage: string;
   ruleIsDuplicated: boolean;
 
-  ruleType: RuleType;
+  kvpAddRuleFormGroup: FormGroup;
   readonly rules = [
     { value: RuleType.REGEX, viewValue: 'Matches Regex' },
     { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
@@ -33,37 +39,47 @@ export class KvpAddRuleComponent implements OnInit {
   constructor(private logger: NGXLogger) {}
 
   ngOnInit() {
-    this.key = '';
-    this.value = '';
-    this.isValid = true;
-    this.errorMessage = '';
-    this.ruleIsDuplicated = false;
-
-    if (!!this.kvpAddedError) {
-      this.kvpAddedError.subscribe((e: boolean) => {
-        this.ruleIsDuplicated = e;
-        if (!e) {
-          this.key = '';
-          this.value = '';
-        }
-      });
-    }
+    this.kvpAddRuleFormGroup = new FormGroup({
+      ruleKey: new FormControl('', [Validators.required, Validators.maxLength(200)]),
+      ruleValue: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
+      type: new FormControl(RuleType.NONE, [Validators.required])
+    });
+    const ruleDuplicatedSubscription = this.kvpAddedError.subscribe(
+      isDuplicated => (this.ruleIsDuplicated = isDuplicated)
+    );
+    const keySubscription = this.kvpAddRuleFormGroup.get('ruleKey').valueChanges.subscribe(newKey => {
+      this.ruleIsDuplicated = false;
+      const oldKey = this.kvpAddRuleFormGroup.value['ruleKey'];
+      if (oldKey) {
+        recordUpdateKeyName(this.kvpRuleInEdit.rule, oldKey, newKey);
+      } else {
+        this.kvpRuleInEdit.rule[newKey] = this.kvpAddRuleFormGroup.get('ruleValue').value;
+      }
+    });
+    const valueSubscription = this.kvpAddRuleFormGroup.get('ruleValue').valueChanges.subscribe(value => {
+      this.ruleIsDuplicated = false;
+      this.kvpRuleInEdit.rule[this.ruleKey.value] = value;
+    });
+    const ruleSubscription = this.kvpAddRuleFormGroup.get('type').valueChanges.subscribe(type => {
+      this.ruleIsDuplicated = false;
+      if (!this.ruleValue && this.ruleType.value === RuleType.REGEX) {
+        this.errorMessage = 'A Regex Value Must be Entered';
+      } else if (this.ruleType.value === undefined || this.ruleType.value === RuleType.NONE) {
+        this.errorMessage = 'Empty Compare Type: Please Select a valid compare type';
+        this.logger.debug('Empty Compare Type: Please Select a valid compare type');
+      }
+      this.kvpRuleInEdit.type = type;
+    });
+    this.subscriptions.push(keySubscription, valueSubscription, ruleSubscription, ruleDuplicatedSubscription);
   }
 
   /**
    * Checks to see if the kvp key is not empty and adds it if it is not empty
    */
   onAdd() {
-    if (!this.isKeyEmpty() && !this.isRegexEmpty() && !this.isRuleTypeEmpty()) {
-      const kvpAdd = {
-        type: this.ruleType,
-        rule: {
-          [this.key]: this.value
-        }
-      } as KeyValuePairRule;
-
-      this.kvp.emit(kvpAdd);
-      this.logger.debug('KvpAddComponent:onAdd: KVP emitted to parent', kvpAdd);
+    if (!this.isKeyEmpty() && this.kvpAddRuleFormGroup.valid) {
+      this.kvp.emit(this.kvpRuleInEdit);
+      this.logger.debug('KvpAddComponent:onAdd: KVP emitted to parent', this.kvpRuleInEdit);
       this.isValid = true;
     } else {
       this.isValid = false;
@@ -71,37 +87,27 @@ export class KvpAddRuleComponent implements OnInit {
   }
 
   /**
-   * Returns true if the key field is empty and false otherwise
+   * Gets the form control for the 'key'
    */
-  isKeyEmpty(): boolean {
-    if (this.key.trim().length === 0) {
-      this.errorMessage = 'Empty Key Field Found: Please Enter Value';
-      this.logger.debug('Empty Key Field Found: Please Enter Value');
-      return true;
-    }
+  get ruleKey(): AbstractControl {
+    return this.kvpAddRuleFormGroup.get('ruleKey');
+  }
 
-    return false;
+  get ruleValue(): AbstractControl {
+    return this.kvpAddRuleFormGroup.get('ruleValue');
+  }
+
+  get ruleType(): AbstractControl {
+    return this.kvpAddRuleFormGroup.get('type');
   }
 
   /**
-   * Returns true if the value for the Regex rule type is empty and false otherwise
+   * Returns true if the key field is empty and false otherwise
    */
-  isRegexEmpty(): boolean {
-    if (!this.value && this.ruleType === RuleType.REGEX) {
-      this.errorMessage = 'A Regex Value Must be Entered';
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /*
-   * Returns true if the compareType is empty
-   */
-  isRuleTypeEmpty(): boolean {
-    if (this.ruleType === undefined) {
-      this.errorMessage = 'Empty Compare Type: Please Select a valid compare type';
-      this.logger.debug('Empty Compare Type: Please Select a valid compare type');
+  isKeyEmpty(): boolean {
+    if (this.ruleKey.value.trim().length === 0) {
+      this.errorMessage = 'Empty Key Field Found: Please Enter Value';
+      this.logger.debug('Empty Key Field Found: Please Enter Value');
       return true;
     }
 

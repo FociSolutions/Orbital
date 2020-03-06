@@ -15,22 +15,16 @@ export class AddRequestMatchRuleComponent implements OnInit {
   @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
   @Input() requestMatchRuleFormGroup: FormGroup;
 
-  headerMatchRules: KeyValuePairRule[];
-  queryMatchRules: KeyValuePairRule[];
   bodyMatchRules: BodyRule[];
 
   shouldSave: boolean;
   panelExpanded: boolean;
   isCardDisabled: boolean;
 
-  headerEmitted: boolean;
-  queryEmitted: boolean;
   bodyEmitted: boolean;
 
   constructor(private logger: NGXLogger) {
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
-    this.headerMatchRules = [];
-    this.queryMatchRules = [];
     this.bodyMatchRules = [];
   }
 
@@ -48,41 +42,15 @@ export class AddRequestMatchRuleComponent implements OnInit {
    * Emits the request match rule if the header, query, and body fields have already emitted
    */
   _save() {
-    if (this.headerEmitted && this.queryEmitted && this.bodyEmitted) {
+    if (this.bodyEmitted) {
       // validate request match rules
       const requestToEmit = {
-        headerRules: this.headerMatchRules,
-        queryRules: this.queryMatchRules,
         bodyRules: this.bodyMatchRules
       } as RequestMatchRule;
       this.requestMatchRuleOutput.emit(requestToEmit);
       this.logger.debug('The request match rules have been emitted', requestToEmit);
-      this.headerEmitted = false;
-      this.queryEmitted = false;
       this.bodyEmitted = false;
     }
-  }
-
-  /**
-   * Handles saving the header match rules kvp values
-   * @param headerMatchRules The incoming request match rules
-   */
-  handleHeaderKvpOutput(headerMatchRules: KeyValuePairRule[]) {
-    this.headerEmitted = true;
-    this.logger.debug('Set the header match rules to', headerMatchRules);
-    this.headerMatchRules = headerMatchRules;
-    this._save();
-  }
-
-  /**
-   * Handles the query kvp pair output
-   * @param queryMatchRules The query match rules to use
-   */
-  handleQueryKvpOutput(queryMatchRules: KeyValuePairRule[]) {
-    this.queryEmitted = true;
-    this.logger.debug('Set the query match rules to', queryMatchRules);
-    this.queryMatchRules = queryMatchRules;
-    this._save();
   }
 
   /**
