@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="MockDefinitions\PetStoreBaseMockDefinitionBodyJsonPath.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="MockDefinitions\PetStoreMockDefinitionBody.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

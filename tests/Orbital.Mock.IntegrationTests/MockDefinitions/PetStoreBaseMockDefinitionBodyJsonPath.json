@@ -1,0 +1,217 @@
+﻿{
+  "metadata": {
+    "title": "Test",
+    "description": ""
+  },
+  "openApi": {
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Swagger Petstore",
+      "license": { "name": "MIT" }
+    },
+    "host": "petstore.swagger.io",
+    "basePath": "/v1",
+    "schemes": [ "http" ],
+    "consumes": [ "application/json" ],
+    "produces": [ "application/json" ],
+    "paths": {
+      "/pets": {
+        "get": {
+          "summary": "List all pets",
+          "operationId": "listPets",
+          "tags": [ "pets" ],
+          "parameters": [
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "How many items to return at one time (max 100)",
+              "required": false,
+              "type": "integer",
+              "format": "int32"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A paged array of pets",
+              "headers": {
+                "x-next": {
+                  "type": "string",
+                  "description": "A link to the next page of responses"
+                }
+              },
+              "schema": { "$ref": "#/definitions/Pets" }
+            },
+            "default": {
+              "description": "unexpected error",
+              "schema": { "$ref": "#/definitions/Error" }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a pet",
+          "operationId": "createPets",
+          "tags": [ "pets" ],
+          "responses": {
+            "201": { "description": "Null response" },
+            "default": {
+              "description": "unexpected error",
+              "schema": { "$ref": "#/definitions/Error" }
+            }
+          }
+        }
+      },
+      "/pets/{petId}": {
+        "get": {
+          "summary": "Info for a specific pet",
+          "operationId": "showPetById",
+          "tags": [ "pets" ],
+          "parameters": [
+            {
+              "name": "petId",
+              "in": "path",
+              "required": true,
+              "description": "The id of the pet to retrieve",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Expected response to a valid request",
+              "schema": { "$ref": "#/definitions/Pets" }
+            },
+            "default": {
+              "description": "unexpected error",
+              "schema": { "$ref": "#/definitions/Error" }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Pet": {
+        "type": "object",
+        "required": [ "id", "name" ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": { "type": "string" },
+          "tag": { "type": "string" }
+        }
+      },
+      "Pets": {
+        "type": "array",
+        "items": { "$ref": "#/definitions/Pet" }
+      },
+      "Error": {
+        "type": "object",
+        "required": [ "code", "message" ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "aa8230ee-97d1-4667-9290-831b48969261",
+      "metadata": {
+        "title": "default title for /pets",
+        "description": "default description for /pets"
+      },
+      "verb": 0,
+      "path": "/pets",
+      "response": {
+        "headers": {},
+        "body": "\"default response for /pets\"",
+        "status": 200
+      },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": [
+          {
+            "type": 10,
+            "rule": { "urlPath": "" }
+          }
+        ]
+      },
+      "policies": []
+    },
+    {
+      "id": "5d587c83-f9c2-4942-8f87-afd496d53e4c",
+      "metadata": {
+        "title": "default title for /pets matches path",
+        "description": "default description for /pets"
+      },
+      "verb": 0,
+      "path": "/pets",
+      "response": {
+        "headers": {},
+        "body": "\"matched path\"",
+        "status": 200
+      },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [
+          {
+            "rule": "$..x",
+            "type": 6
+          }
+        ],
+        "urlRules": []
+      },
+      "policies": []
+    },
+    {
+      "id": "589728e3-6bd1-49f7-97dc-51678dd3bba6",
+      "metadata": {
+        "title": "default title for /pets",
+        "description": "default description for /pets"
+      },
+      "verb": 3,
+      "path": "/pets",
+      "response": {
+        "headers": {},
+        "body": "\"default response for /pets\"",
+        "status": 200
+      },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": []
+      },
+      "policies": []
+    },
+    {
+      "id": "4e30175e-a2f3-4ebf-953c-fc7e4cd7cf90",
+      "metadata": {
+        "title": "default title for /pets/{petId}",
+        "description": "default description for /pets/{petId}"
+      },
+      "verb": 0,
+      "path": "/pets/{petId}",
+      "response": {
+        "headers": {},
+        "body": "\"default response for /pets/{petId}\"",
+        "status": 200
+      },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": []
+      },
+      "policies": []
+    }
+  ]
+}
