@@ -66,7 +66,7 @@ export class ScenarioFormBuilder {
         requestMatchRules.queryRules.map(q => this.getHeaderOrQueryItemFormGroup(q))
       ),
       urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map(u => this.getUrlItemFormGroup(u))),
-      bodyMatchRules: this.formBuilder.array(requestMatchRules.bodyRules.map(u => this.getBodyItemFormGroup(u)))
+      bodyMatchRules: this.formBuilder.array
     });
   }
 
