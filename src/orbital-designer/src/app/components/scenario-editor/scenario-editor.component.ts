@@ -11,7 +11,6 @@ import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
 import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
 import { FormGroup, FormArray, Form } from '@angular/forms';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 @Component({
   selector: 'app-scenario-editor',

@@ -81,7 +81,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
    * Double check to confirm there are no duplicates in the list of existing policies
    */
   private checkForDuplicates(): void {
-    this.policyFormArray.setErrors(null);
+    this.policyFormArray.controls.forEach(c => c.setErrors(null));
     this.policyFormArray.markAsUntouched();
     const policies = this.policyFormArray.controls.map(group => {
       const formGroupsToCheck = cloneDeep(group);
