@@ -10,6 +10,8 @@ import { ɵangular_packages_platform_browser_dynamic_testing_testing_b } from '@
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 import { AddBodyRuleBuilder } from '../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 @Injectable({
   providedIn: 'root'
@@ -184,6 +186,16 @@ export class ScenarioFormMapper {
     return newPolicies;
   }
 
+  public GetBodyRulesFromForm(bodyRules: FormArray) {
+    let newBodyRules: BodyRule[];
+
+    newBodyRules = bodyRules.controls.map(group => {
+      const rawValue = (group as FormGroup).getRawValue();
+      return this.getBodyRule(rawValue);
+    });
+    return newBodyRules;
+  }
+
   /**
    * Transforms FormGroup into the appropiate policy
    * @param policytype The type of policy
@@ -230,5 +242,14 @@ export class ScenarioFormMapper {
         } as KeyValuePairRule;
       });
     return kvpRules;
+  }
+
+  /*
+   * Transforms FormGroup into the appropiate policy
+   * @param policytype The type of policy
+   * @param rawValue The raw FormGroup value to be transformed
+   */
+  private getBodyRule(rawValue: any): BodyRule {
+    return { rule: rawValue.rule, type: rawValue.type } as BodyRule;
   }
 }

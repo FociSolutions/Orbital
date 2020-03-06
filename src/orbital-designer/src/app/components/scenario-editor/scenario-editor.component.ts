@@ -138,12 +138,15 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       const newQueryRules = this.scenarioFormMapper.GetHeaderOrQueryRulesFromForm(
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.queryMatchRules as FormArray
       );
+      const newBodyRules = this.scenarioFormMapper.GetBodyRulesFromForm(
+        this.scenarioFormGroup.controls.requestMatchRules.value.bodyMatchRules as FormArray
+      );
 
       this.selectedScenario.metadata.title = this.metadata.title;
       this.selectedScenario.metadata.description = this.metadata.description;
-      this.selectedScenario.requestMatchRules.bodyRules = this.requestMatchRule.bodyRules;
       this.selectedScenario.requestMatchRules.headerRules = newHeaderRules;
       this.selectedScenario.requestMatchRules.queryRules = newQueryRules;
+      this.selectedScenario.requestMatchRules.bodyRules = newBodyRules;
       this.selectedScenario.requestMatchRules.urlRules = newUrlRules;
       this.selectedScenario.policies = newPolicyRules;
 
