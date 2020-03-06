@@ -21,18 +21,7 @@ export class AddBodyRuleComponent implements OnInit {
   >();
 
   bodyType: RuleType;
-  bodyValueProp = '';
-
-  set bodyValue(newBodyValue: string) {
-    this.bodyValueProp = newBodyValue;
-    if (this.bodyType === RuleType.JSONSCHEMA && !this.jsonService.validateSchema(newBodyValue)) {
-      this.errorMessage = 'The body value is not a valid JSON schema';
-    }
-  }
-
-  get bodyValue() {
-    return this.bodyValueProp;
-  }
+  bodyValue = '';
 
   constructor(
     private logger: NGXLogger,
@@ -75,10 +64,6 @@ export class AddBodyRuleComponent implements OnInit {
     } else if (!!this.bodyRules && this.bodyRuleDeepEquals()) {
       this.logger.debug('The rule already exists ', this.bodyValue);
       this.errorMessage = 'The rule already exists';
-      return false;
-    } else if (!this.jsonService.validateSchema(this.bodyValue) && this.bodyType === RuleType.JSONSCHEMA) {
-      this.logger.debug('The JSON schema does not comply with Schema Draft v4');
-      this.errorMessage = 'The JSON schema does not comply with Schema Draft v4';
       return false;
     }
 
