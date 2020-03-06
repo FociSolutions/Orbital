@@ -66,7 +66,7 @@ export class ScenarioFormBuilder {
         requestMatchRules.queryRules.map(q => this.getHeaderOrQueryItemFormGroup(q))
       ),
       urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map(u => this.getUrlItemFormGroup(u))),
-      bodyMatchRules: this.formBuilder.array
+      bodyMatchRules: this.formBuilder.array(requestMatchRules.bodyRules.map(u => this.getBodyItemFormGroup(u)))
     });
   }
 
@@ -129,6 +129,13 @@ export class ScenarioFormBuilder {
         Validators.maxLength(3000)
       ]),
       type: new FormControl(headerOrQueryRule.type, [Validators.required])
+    });
+  }
+
+  public getBodyItemFormGroup(urlRule: any) {
+    return new FormGroup({
+      rule: new FormControl(recordFirstOrDefault(urlRule.rule, ''), [Validators.required, Validators.maxLength(3000)]),
+      type: new FormControl(urlRule.type, [Validators.required])
     });
   }
 }

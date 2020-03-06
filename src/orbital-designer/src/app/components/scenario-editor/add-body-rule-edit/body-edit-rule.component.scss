@@ -1,0 +1,35 @@
+mat-expansion-panel {
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+p.description {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1em;
+  color: rgba(0, 0, 0, 0.539261);
+}
+
+.divider-padding {
+  margin-top: 1em;
+}
+
+.kvp-edit-rule {
+  display: flex;
+  flex-direction: column;
+}
+
+.kvp-edit-rule-key {
+  padding-left: 1.3em;
+  padding-right: 5em;
+  width: 12%;
+}
+
+.kvp-edit-rule-value {
+  padding-right: 5em;
+}
+
+.add-rule {
+  padding-bottom: 1em;
+}
