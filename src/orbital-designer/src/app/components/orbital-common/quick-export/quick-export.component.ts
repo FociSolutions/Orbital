@@ -39,7 +39,7 @@ export class QuickExportComponent implements OnInit {
         if (gotExported) {
           this.logger.debug('Mockdefinition has been exported: ', this.mockInService);
           this.logger.debug('To Url: ', this.urlInService);
-          this.exportStatusMessage = 'File successfully exported';
+          this.exportStatusMessage = 'File successfully exported to ' + this.urlInService;
           this.urlToNavigateTo = url;
         } else {
           this.exportStatusMessage = 'File could not be exported because of an error';
