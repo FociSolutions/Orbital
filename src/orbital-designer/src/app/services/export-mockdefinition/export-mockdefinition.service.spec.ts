@@ -8,12 +8,11 @@ describe('ExportMockdefinitionService', () => {
   let service: ExportMockdefinitionService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ExportMockdefinitionService],
+      providers: [ExportMockdefinitionService, DesignerStore],
       imports: [HttpClientTestingModule, LoggerTestingModule]
     });
     service = TestBed.get(ExportMockdefinitionService);
-  }
-  );
+  });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
