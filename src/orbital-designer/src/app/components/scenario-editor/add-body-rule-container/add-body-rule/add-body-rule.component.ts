@@ -28,16 +28,6 @@ export class AddBodyRuleComponent implements OnInit {
 
   ngOnInit() {
     this.addBodyRuleFormGroup = this.formBuilder.createNewBodyRuleForm();
-
-    // change validators depending on if the JSON path or any JSON match is selected
-    this.addBodyRuleFormGroup.controls.type.valueChanges.subscribe(newType => {
-      this.addBodyRuleFormGroup.controls.rule.clearValidators();
-      if (newType === RuleType.JSONPATH) {
-        this.addBodyRuleFormGroup.controls.rule.setValidators([this.formBuilder.validateJsonPath.bind(this)]);
-      } else {
-        this.addBodyRuleFormGroup.controls.rule.setValidators([this.formBuilder.validateJson.bind(this)]);
-      }
-    });
   }
 
   /**
@@ -47,10 +37,7 @@ export class AddBodyRuleComponent implements OnInit {
     this.errorMessage = '';
     if (this.addBodyRuleFormGroup.valid && !this.bodyRuleDeepEquals()) {
       const bodyRule = {
-        rule:
-          this.addBodyRuleFormGroup.controls.type.value === RuleType.JSONPATH
-            ? this.addBodyRuleFormGroup.controls.rule.value
-            : JSON.parse(this.addBodyRuleFormGroup.controls.rule.value),
+        rule: JSON.parse(this.addBodyRuleFormGroup.controls.rule.value),
         type: this.addBodyRuleFormGroup.controls.type.value
       };
 
@@ -68,12 +55,7 @@ export class AddBodyRuleComponent implements OnInit {
    */
   private bodyRuleDeepEquals(): BodyRule {
     return this.bodyRules.find(({ rule, type }) => {
-      let ruleParsed: object | string;
-      if (this.addBodyRuleFormGroup.controls.type.value === RuleType.JSONPATH) {
-        ruleParsed = this.addBodyRuleFormGroup.controls.rule.value;
-      } else {
-        ruleParsed = this.validJsonService.parseJSONOrDefault(this.addBodyRuleFormGroup.controls.rule.value, null);
-      }
+      const ruleParsed = this.validJsonService.parseJSONOrDefault(this.addBodyRuleFormGroup.controls.rule.value, null);
       return (
         ruleParsed !== null &&
         deepEqual(rule, ruleParsed) &&

@@ -17,17 +17,4 @@ describe('AddBodyRuleBuilderService', () => {
     const service: AddBodyRuleBuilder = TestBed.get(AddBodyRuleBuilder);
     expect(service).toBeTruthy();
   });
-
-  it('should return false for a valid JSON path', () => {
-    const service: AddBodyRuleBuilder = TestBed.get(AddBodyRuleBuilder);
-    expect(service.validateJsonPath(new FormControl('$....'))).toEqual({
-      invalidJsonPath: true,
-      message: 'The JSON path is invalid'
-    });
-  });
-
-  it('should return true for a valid JSON path', () => {
-    const service: AddBodyRuleBuilder = TestBed.get(AddBodyRuleBuilder);
-    expect(service.validateJsonPath(new FormControl('$..z'))).toBe(null);
-  });
 });
