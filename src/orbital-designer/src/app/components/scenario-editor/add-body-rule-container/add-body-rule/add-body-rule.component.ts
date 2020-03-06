@@ -21,7 +21,18 @@ export class AddBodyRuleComponent implements OnInit {
   >();
 
   bodyType: RuleType;
-  bodyValue = '';
+  bodyValueProp = '';
+
+  set bodyValue(newBodyValue: string) {
+    this.bodyValueProp = newBodyValue;
+    if (this.bodyType === RuleType.JSONSCHEMA && !this.jsonService.validateSchema(newBodyValue)) {
+      this.errorMessage = 'The body value is not a valid JSON schema';
+    }
+  }
+
+  get bodyValue() {
+    return this.bodyValueProp;
+  }
 
   constructor(
     private logger: NGXLogger,
