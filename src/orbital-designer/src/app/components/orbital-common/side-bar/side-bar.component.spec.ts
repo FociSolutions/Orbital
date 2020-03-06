@@ -12,6 +12,8 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
 import { DesignerStore } from '../../../store/designer-store';
 import { MockDefinition } from '../../../models/mock-definition/mock-definition.model';
+import { QuickExportComponent } from '../quick-export/quick-export.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SideBarComponent', () => {
   let component: SideBarComponent;
@@ -20,7 +22,7 @@ describe('SideBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SideBarComponent, DialogBoxComponent],
+      declarations: [SideBarComponent, DialogBoxComponent, QuickExportComponent],
       imports: [
         MatSidenavModule,
         MatDividerModule,
@@ -28,7 +30,8 @@ describe('SideBarComponent', () => {
         MatCardModule,
         MatIconModule,
         LoggerTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
@@ -52,9 +55,7 @@ describe('SideBarComponent', () => {
     const fixture = TestBed.createComponent(SideBarComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain(
-      'MOCKDEFINITIONS'
-    );
+    expect(compiled.querySelector('h1').textContent).toContain('MOCKDEFINITIONS');
   }));
 
   // Check if a valid mockdefinition is passed to the isSelected method.

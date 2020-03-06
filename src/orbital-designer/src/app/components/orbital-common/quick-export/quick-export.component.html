@@ -1,0 +1,9 @@
+<div class="side-bar-container" mode="side" opened>
+  <div class="side-bar-bottom">
+    <button mat-list-item (click)="openCancelDialogOrNavigateToUrl('/export-to-server')">
+      <mat-icon mat-list-icon>new_releases</mat-icon>
+      <h4 mat-line>Quick Export</h4>
+    </button>
+    <div class="error-message">{{ exportStatusMessage }}</div>
+  </div>
+</div>

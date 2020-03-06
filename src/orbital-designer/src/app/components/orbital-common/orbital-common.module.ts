@@ -23,9 +23,8 @@ import { KvpAddComponent } from './kvp-edit/kvp-add/kvp-add.component';
 import { KvpListItemComponent } from './kvp-edit/kvp-list-item/kvp-list-item.component';
 import { MatExpansionModule } from '@angular/material';
 import { KvpAddRuleComponent } from '../scenario-editor/kvp-edit-rule/kvp-add-rule/kvp-add-rule.component';
-import { UrlAddRuleComponent } from '../scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
-import { UrlEditRuleComponent } from '../scenario-editor/url-edit-rule/url-edit-rule.component';
-import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
+import { QuickExportComponent } from './quick-export/quick-export.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -39,7 +38,8 @@ import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/u
     KvpEditComponent,
     KvpAddComponent,
     KvpListItemComponent,
-    KvpAddRuleComponent
+    KvpAddRuleComponent,
+    QuickExportComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +55,8 @@ import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/u
     MatProgressSpinnerModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatExpansionModule
+    MatExpansionModule,
+    HttpClientModule
   ],
   exports: [
     TextInputComponent,
@@ -79,7 +80,8 @@ import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/u
     KvpAddComponent,
     KvpListItemComponent,
     MatExpansionModule,
-    KvpAddRuleComponent
+    KvpAddRuleComponent,
+    QuickExportComponent
   ]
 })
 export class OrbitalCommonModule {}
