@@ -1,13 +1,12 @@
 <mat-card>
   <mat-card-content>
-    <form [formGroup]="this.addBodyRuleFormGroup">
+    <form [formGroup]="this.addBodyRuleFormGroup" #addBodyRuleFormDirective="ngForm">
       <div class="row">
         <div>
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select formControlName="type"
-            >
+            <mat-select formControlName="type">
               <mat-option [value]="bodyRuleTypeValues.JSONCONTAINS">{{
                 bodyRuleTypeValues.JSONCONTAINS | getRuleTypeString
               }}</mat-option>
@@ -35,11 +34,7 @@
         <div class="full-width" id="spacer-left">
           <mat-form-field class="full-width">
             <h3 class="subtitle" id="value">Rule</h3>
-            <textarea
-              matInput
-              rows="10"
-              formControlName="rule"
-            ></textarea>
+            <textarea matInput rows="10" formControlName="rule"></textarea>
             <div class="error-message">
               {{ this.errorMessage }}
             </div>

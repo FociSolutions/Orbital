@@ -11,6 +11,7 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as faker from 'faker';
 import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 describe('AddBodyRuleComponent', () => {
   let component: AddBodyRuleComponent;
@@ -54,6 +55,10 @@ describe('AddBodyRuleComponent', () => {
   });
 
   describe('add-body-rule.addBodyRule', () => {
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+
     describe('add valid rule(s)', () => {
       describe('non-empty and empty lists', () => {
         it('should disallow entering in an empty rule when the component is initialized', () => {
@@ -62,11 +67,39 @@ describe('AddBodyRuleComponent', () => {
           const Actual = component.bodyRules;
           expect(Expected).toEqual(Actual);
         });
+
+        it('should emit the body rule when it is added', fakeAsync(() => {
+          const fakeRule = { a: faker.random.word() };
+          const Expected = {
+            type: RuleType.JSONCONTAINS,
+            rule: fakeRule
+          } as BodyRule;
+          const bodyRuleOutputSpy = spyOn(component.bodyRuleOutput, 'emit');
+          component.addBodyRuleFormGroup.controls.type.setValue(RuleType.JSONCONTAINS);
+          component.addBodyRuleFormGroup.controls.rule.setValue(JSON.stringify(fakeRule));
+          component.addBodyRule();
+          tick();
+          expect(bodyRuleOutputSpy).toHaveBeenCalledWith(Expected);
+          expect(component.addBodyRuleFormGroup.controls.type.value).toBe(null);
+        }));
       });
     });
 
     describe('add invalid rule(s)', () => {
-      describe('invalid json', () => {});
+      describe('invalid json', () => {
+        it('should not add a rule when an invalid rule is added to an empty list of rules', () => {
+          component.addBodyRuleFormGroup.controls.rule.setValue('invalid');
+          component.addBodyRuleFormGroup.controls.type.setValue(RuleType.JSONEQUALITY);
+          expect(component.bodyRules).toEqual([]);
+        });
+
+        it('should show the invalid JSON error when invalid JSON is set', () => {
+          component.addBodyRuleFormGroup.controls.rule.setValue('invalid');
+          component.addBodyRuleFormGroup.controls.type.setValue(RuleType.JSONEQUALITY);
+          component.addBodyRule();
+          expect(component.errorMessage).toEqual('The JSON rule or path is invalid');
+        });
+      });
     });
   });
 });

@@ -23,7 +23,7 @@ export class AddBodyRuleBuilder {
   createBodyRuleForm(bodyRule: BodyRule): FormGroup {
     return this.formBuilder.group({
       type: new FormControl(bodyRule.type, Validators.required),
-      rule: new FormControl(JSON.stringify(bodyRule.rule), this.validateJson.bind(this))
+      rule: new FormControl('', this.validateJson.bind(this))
     });
   }
 

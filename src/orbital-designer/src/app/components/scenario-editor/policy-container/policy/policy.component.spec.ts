@@ -42,6 +42,10 @@ describe('PolicyComponent', () => {
   });
 
   describe('PolicyComponent.deletePolicyHandler', () => {
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+
     it('should delete the policy if its defined', () => {
       const policy = {
         type: PolicyType.DELAYRESPONSE,

@@ -3,9 +3,9 @@ import { NGXLogger } from 'ngx-logger';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import * as deepEqual from 'deep-equal';
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, ViewChild } from '@angular/core';
 import { AddBodyRuleBuilder } from './add-body-rule-builder/add-body-rule.builder';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 
 @Component({
@@ -19,6 +19,8 @@ export class AddBodyRuleComponent implements OnInit {
   @Input() bodyRules: BodyRule[] = [];
   @Output() bodyRuleOutput: EventEmitter<BodyRule> = new EventEmitter<BodyRule>();
   addBodyRuleFormGroup: FormGroup;
+  @ViewChild('addBodyRuleFormDirective', { static: false })
+  public addBodyRuleFormDirective: NgForm;
 
   constructor(
     private logger: NGXLogger,
@@ -43,6 +45,13 @@ export class AddBodyRuleComponent implements OnInit {
 
       this.logger.debug('AddBodyRule: emitted body rule ', bodyRule);
       this.bodyRuleOutput.emit(bodyRule);
+
+      // clear the form and validators state (so it does not show invalid after adding a rule)
+      // setTimeout is required as it has to run async
+      setTimeout(() => {
+        this.addBodyRuleFormDirective.resetForm();
+        this.addBodyRuleFormGroup.reset();
+      });
     } else if (!this.addBodyRuleFormGroup.valid) {
       this.errorMessage = 'The JSON rule or path is invalid';
     } else if (this.bodyRuleDeepEquals()) {
