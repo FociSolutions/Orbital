@@ -53,6 +53,9 @@ import { NotificationService } from './services/notification-service/notificatio
 import { PolicyAddComponent } from './components/scenario-editor/policy-container/policy-add/policy-add.component';
 import { PolicyEditComponent } from './components/scenario-editor/policy-container/policy-edit/policy-edit.component';
 import { PolicyComponent } from './components/scenario-editor/policy-container/policy/policy.component';
+import { BodyAddRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
+import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
+import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +92,10 @@ import { PolicyComponent } from './components/scenario-editor/policy-container/p
     UrlListItemRuleTypeComponent,
     PolicyAddComponent,
     PolicyEditComponent,
-    PolicyComponent
+    PolicyComponent,
+    BodyAddRuleComponent,
+    BodyListItemRuleTypeComponent,
+    BodyEditRuleComponent
   ],
   imports: [
     BrowserModule,

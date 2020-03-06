@@ -9,6 +9,7 @@ import { Response } from 'src/app/models/mock-definition/scenario/response.model
 import { ɵangular_packages_platform_browser_dynamic_testing_testing_b } from '@angular/platform-browser-dynamic/testing';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
+import { AddBodyRuleBuilder } from '../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type'
 export class ScenarioFormBuilder {
   private scenarioForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private bodyRuleFormBuilder: AddBodyRuleBuilder) {}
 
   /**
    * Generates a form group for a scenario with default values
@@ -66,7 +67,9 @@ export class ScenarioFormBuilder {
         requestMatchRules.queryRules.map(q => this.getHeaderOrQueryItemFormGroup(q))
       ),
       urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map(u => this.getUrlItemFormGroup(u))),
-      bodyMatchRules: this.formBuilder.array
+      bodyMatchRules: this.formBuilder.array(
+        requestMatchRules.bodyRules.map(u => this.bodyRuleFormBuilder.createBodyRuleForm(u))
+      )
     });
   }
 
