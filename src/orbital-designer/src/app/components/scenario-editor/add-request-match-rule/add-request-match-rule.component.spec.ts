@@ -94,39 +94,6 @@ describe('AddRequestMatchRuleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('add-request-match-rule.handleHeaderKvpOutput', () => {
-    it('should set the header match rules if it is truthy', () => {
-      const headerMatchRules: KeyValuePairRule[] = [
-        {
-          type: faker.random.number({ min: 0, max: 8 }),
-          rule: {
-            key: faker.lorem.sentence().toUpperCase(),
-            value: faker.lorem.sentence()
-          }
-        }
-      ];
-
-      component.handleHeaderKvpOutput(headerMatchRules);
-      expect(component.headerMatchRules).toEqual(headerMatchRules);
-    });
-  });
-
-  describe('add-request-match-rule.handleQueryKvpOutput', () => {
-    it('should set the query match rules if it is truthy', () => {
-      const queryMatchRules: KeyValuePairRule[] = [
-        {
-          type: faker.random.number({ min: 0, max: 8 }),
-          rule: {
-            key: faker.lorem.sentence().toUpperCase(),
-            value: faker.lorem.sentence()
-          }
-        }
-      ];
-      component.handleQueryKvpOutput(queryMatchRules);
-      expect(component.queryMatchRules).toEqual(queryMatchRules);
-    });
-  });
-
   describe('add-request-match-rule.handleBodyOutput', () => {
     it('should set the body match rules if it is truthy', () => {
       const bodyMatchRules = [{ type: RuleType.JSONEQUALITY, rule: { a: faker.random.word() } }] as BodyRule[];
@@ -136,73 +103,7 @@ describe('AddRequestMatchRuleComponent', () => {
   });
 
   describe('AddRequestMatchRule.Save', () => {
-    it('should not emit the request match rules if the header match rules are invalid', () => {
-      const testHeaderMatchRules = null;
-      const testBodyMatchRules: BodyRule[] = [{}] as BodyRule[];
-
-      component.requestMatchRule.headerRules = testHeaderMatchRules;
-      testBodyMatchRules[0].rule = { a: faker.random.word() };
-      testBodyMatchRules[0].type = RuleType.JSONEQUALITY;
-
-      spyOn(component.requestMatchRuleOutput, 'emit');
-      component.saveStatus = true;
-
-      expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
-    });
-
-    it('should not emit the request match rules if the query match rules are invalid', () => {
-      const testHeaderMatchRules: KeyValuePairRule[] = [
-        {
-          type: faker.random.number({ min: 0, max: 8 }),
-          rule: {
-            key: faker.lorem.sentence().toUpperCase(),
-            value: faker.lorem.sentence()
-          }
-        }
-      ];
-      const testBodyMatchRules: KeyValuePairRule[] = [
-        {
-          type: null,
-          rule: {
-            key: faker.lorem.sentence().toUpperCase(),
-            value: faker.lorem.sentence()
-          }
-        }
-      ];
-
-      spyOn(component.requestMatchRuleOutput, 'emit');
-
-      const requestMatchRule = {
-        headerRules: testHeaderMatchRules,
-        queryRules: undefined,
-        bodyRules: testBodyMatchRules
-      } as RequestMatchRule;
-      component.requestMatchRule = requestMatchRule;
-      component.saveStatus = true;
-
-      expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
-    });
-
     it('should not emit the request match rules if the body match rules are invalid', () => {
-      const testHeaderMatchRules: KeyValuePairRule[] = [
-        {
-          type: faker.random.number({ min: 0, max: 8 }),
-          rule: {
-            key: faker.lorem.sentence().toUpperCase(),
-            value: faker.lorem.sentence()
-          }
-        }
-      ];
-      const testQueryMatchRules: KeyValuePairRule[] = [
-        {
-          type: faker.random.number({ min: 0, max: 8 }),
-          rule: {
-            key: faker.lorem.sentence().toUpperCase(),
-            value: faker.lorem.sentence()
-          }
-        }
-      ];
-
       spyOn(component.requestMatchRuleOutput, 'emit');
 
       const inputInvalidBodyMatchRule: BodyRule[] = [
@@ -214,11 +115,7 @@ describe('AddRequestMatchRuleComponent', () => {
           }
         }
       ];
-      component.headerMatchRules = testHeaderMatchRules;
-      component.queryMatchRules = testQueryMatchRules;
       const requestMatchRule = {
-        headerRules: testHeaderMatchRules,
-        queryRules: testQueryMatchRules,
         bodyRules: inputInvalidBodyMatchRule
       } as RequestMatchRule;
       component.requestMatchRule = requestMatchRule;

@@ -17,10 +17,8 @@
           <mat-divider></mat-divider>
         </mat-expansion-panel-header>
         <app-kvp-edit-rule
-          [savedKvpType]="this.requestMatchRule?.headerRules"
           [addKvpTitle]="'Add New Header Match Rule'"
-          [Save]="this.shouldSave"
-          (savedKvpEmitter)="handleHeaderKvpOutput($event)"
+          [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.headerMatchRules"
         >
         </app-kvp-edit-rule>
       </mat-expansion-panel>
@@ -34,10 +32,8 @@
           <mat-divider></mat-divider>
         </mat-expansion-panel-header>
         <app-kvp-edit-rule
-          [savedKvpType]="this.requestMatchRule?.queryRules"
           [addKvpTitle]="'Add New Query Match Rule'"
-          [Save]="this.shouldSave"
-          (savedKvpEmitter)="handleQueryKvpOutput($event)"
+          [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.queryMatchRules"
         >
         </app-kvp-edit-rule>
       </mat-expansion-panel>

@@ -81,7 +81,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
    * Double check to confirm there are no duplicates in the list of existing policies
    */
   private checkForDuplicates(): void {
-    this.policyFormArray.setErrors(null);
+    this.policyFormArray.controls.forEach(c => c.setErrors(null));
     this.policyFormArray.markAsUntouched();
     const policies = this.policyFormArray.controls.map(group => {
       const formGroupsToCheck = cloneDeep(group);
@@ -98,7 +98,8 @@ export class PolicyComponent implements OnInit, OnDestroy {
           this.logger.error('PolicyComponent: found duplicate', policyToCheck);
           (this.policyFormArray.at(indexToCheck) as FormGroup).get('policyType').markAsTouched();
           (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).get('policyType').markAsTouched();
-          this.policyFormArray.setErrors({ duplicated: true });
+          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
+          (this.policyFormArray.at(indexToCheck) as FormGroup).setErrors({ duplicated: true });
         }
       });
     });

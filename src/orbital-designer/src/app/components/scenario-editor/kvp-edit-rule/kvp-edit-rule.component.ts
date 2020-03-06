@@ -1,72 +1,47 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefaultKey } from 'src/app/models/record';
+import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
+import { FormArray, FormGroup } from '@angular/forms';
+import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-kvp-edit-rule',
   templateUrl: './kvp-edit-rule.component.html',
   styleUrls: ['./kvp-edit-rule.component.scss']
 })
-export class KvpEditRuleComponent implements OnInit {
+export class KvpEditRuleComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   /**
    * The add and list tiles to be added in the template
    */
   @Input() addKvpTitle: string;
 
-  /**
-   * The new kvp list with the new kvp added in
-   */
-  @Input() savedKvpType: KeyValuePairRule[];
-
-  /**
-   * The event emitter for the savedKvpType
-   */
-  @Output() savedKvpEmitter: EventEmitter<KeyValuePairRule[]>;
+  @Input() matchRuleFormArray: FormArray;
 
   @Output() kvpIsDuplicated: EventEmitter<boolean>;
 
-  constructor(private logger: NGXLogger) {
-    this.savedKvpEmitter = new EventEmitter<KeyValuePairRule[]>();
-    this.savedKvpType = [];
-  }
-
-  ngOnInit() {
+  constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
     this.kvpIsDuplicated = new EventEmitter<boolean>();
+    this.kvpIsDuplicated.emit(false);
   }
 
-  /**
-   * This setter calls the emitter for the saved kvp list if shouldSave is true
-   */
-  @Input()
-  set Save(shouldSave: boolean) {
-    if (shouldSave) {
-      this.savedKvpEmitter.emit(this.savedKvpType);
-      this.logger.debug('KVP list has been saved', this.savedKvpType);
-    }
-  }
-
-  /**
-   * The existing KVP list
-   */
-  @Input()
-  set kvpType(savedKvpType: KeyValuePairRule[]) {
-    if (savedKvpType) {
-      this.savedKvpType = savedKvpType;
-    }
+  ngOnInit(): void {
+    const matchRuleFormArraySubscription = this.matchRuleFormArray.valueChanges.subscribe(rules => {
+      this.logger.debug('KvpEditRuleComponent checking for duplicate rules : ', this.matchRuleFormArray);
+      this.checkForDuplicates();
+    });
+    this.subscriptions.push(matchRuleFormArraySubscription);
   }
 
   /**
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
-   * @param kvp The KeyValue pair rule being taken in from the child component to be deleted
+   * @param indexPosition The KeyValue pair rule being taken in from the child component to be deleted
    */
-  deleteKvpFromRule(kvpToDelete: KeyValuePairRule) {
-    if (!!kvpToDelete && !!kvpToDelete.rule) {
-      this.savedKvpType = this.savedKvpType.filter(
-        element => element.rule !== kvpToDelete.rule
-      );
-      this.logger.debug('Delete Header Rule from KVP', kvpToDelete);
-    }
+  deleteKvpFromRule(indexPosition: number) {
+    this.matchRuleFormArray.removeAt(indexPosition);
+    this.logger.debug('Delete Rule from list at index ', indexPosition);
   }
 
   /**
@@ -74,17 +49,81 @@ export class KvpEditRuleComponent implements OnInit {
    * @param kvp The KeyValue pair rule being taken in from the child component to be added
    */
   addKvp(kvpToAdd: KeyValuePairRule) {
-    const rulefound = this.savedKvpType.find(
-      r =>
-        recordFirstOrDefaultKey(r.rule, '') ===
-        recordFirstOrDefaultKey(kvpToAdd.rule, '')
-    );
+    const rulefound = this.isRuleDuplicate(kvpToAdd);
     if (!rulefound) {
-      this.savedKvpType.push(kvpToAdd);
-      this.logger.debug('KvpEditRuleComponent: ', this.savedKvpType);
       this.kvpIsDuplicated.emit(false);
+      const index = this.matchRuleFormArray.length;
+      const newRuleControl = this.formbuilder.getHeaderOrQueryItemFormGroup(kvpToAdd);
+      this.matchRuleFormArray.insert(index, newRuleControl);
+      this.logger.debug('KvpEditRuleComponent: new rule added ', kvpToAdd);
     } else {
       this.kvpIsDuplicated.emit(true);
     }
+  }
+
+  /**
+   * checks if the keyvaluepairrule is inside the current form array
+   *
+   */
+  private isRuleDuplicate(kvpToAdd: KeyValuePairRule): boolean {
+    interface HeaderQueryRuleFormGroup {
+      key: string;
+      value: string;
+      type: number;
+    }
+
+    return this.matchRuleFormArray.controls
+      .map(group => {
+        return (group as FormGroup).getRawValue() as HeaderQueryRuleFormGroup;
+      })
+      .some(kvFormGroup => {
+        return (
+          kvFormGroup.value === recordFirstOrDefault(kvpToAdd.rule, '') &&
+          kvFormGroup.key === recordFirstOrDefaultKey(kvpToAdd.rule, '') &&
+          kvFormGroup.type === kvpToAdd.type
+        );
+      });
+  }
+
+  /**
+   *
+   * Double check to confirm there are no duplicates in the list of existing rules
+   */
+  private checkForDuplicates(): void {
+    this.matchRuleFormArray.controls.forEach(c => c.setErrors(null));
+    this.matchRuleFormArray.markAsUntouched();
+    interface HeaderQueryRuleFormGroup {
+      key: string;
+      value: string;
+      type: number;
+    }
+    const rules = this.matchRuleFormArray.controls.map(group => {
+      return (group as FormGroup).getRawValue() as HeaderQueryRuleFormGroup;
+    });
+    rules.forEach((ruleToCheck, indexToCheck) => {
+      rules.forEach((ruleToCheckAgainst, indexToCheckAgainst) => {
+        const foundDuplicate =
+          ruleToCheck.value === ruleToCheckAgainst.value &&
+          ruleToCheck.key === ruleToCheckAgainst.key &&
+          ruleToCheck.type === ruleToCheckAgainst.type &&
+          indexToCheck !== indexToCheckAgainst;
+        if (foundDuplicate) {
+          this.logger.error('KvpEditRuleComponent: found duplicate', ruleToCheck);
+          (this.matchRuleFormArray.at(indexToCheck) as FormGroup).get('type').markAsTouched();
+          (this.matchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('type').markAsTouched();
+          (this.matchRuleFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
+          (this.matchRuleFormArray.at(indexToCheck) as FormGroup).setErrors({ duplicated: true });
+        }
+      });
+    });
+  }
+
+  /**
+   * Implementation for NG On Destroy
+   */
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 }
