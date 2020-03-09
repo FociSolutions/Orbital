@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { recordFirstOrDefault } from '../../../models/record';
 import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { AddBodyRuleBuilder } from './add-body-rule-builder/add-body-rule.builder';

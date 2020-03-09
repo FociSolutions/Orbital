@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { defaultBodyRule, BodyRule } from '../../../../models/mock-definition/scenario/body-rule.model';
+import { BodyRule } from '../../../../models/mock-definition/scenario/body-rule.model';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
@@ -8,7 +8,7 @@ import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
   providedIn: 'root'
 })
 export class AddBodyRuleBuilder {
-  constructor(private formBuilder: FormBuilder, private validJsonService: ValidJsonService) {}
+  constructor(private formBuilder: FormBuilder, private validJsonService: ValidJsonService) { }
 
   /**
    * Generates a form group for a body rule with default values
@@ -16,7 +16,7 @@ export class AddBodyRuleBuilder {
   createNewBodyRuleForm(): FormGroup {
     // the default body rule's rule is none, but the designer mockup does not have an option for none
     // specify a different default with the "ACCEPT ALL" type instead
-    return this.createBodyRuleForm({rule: {}, type: RuleType.ACCEPTALL} as BodyRule);
+    return this.createBodyRuleForm({ rule: {}, type: RuleType.ACCEPTALL } as BodyRule);
   }
 
   /**

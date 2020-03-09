@@ -1,11 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, OnDestroy, Input } from '@angular/core';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BodyRule, defaultBodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { AddBodyRuleBuilder } from '../add-body-rule-builder/add-body-rule.builder';
-import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 
 @Component({
   selector: 'app-body-add-rule',
@@ -38,7 +36,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
 
   bodyAddRuleFormGroup: FormGroup;
 
-  constructor(private addBodyRuleBuilder: AddBodyRuleBuilder) {}
+  constructor(private addBodyRuleBuilder: AddBodyRuleBuilder) { }
   ngOnInit() {
     const bodyDuplicatedSubscription = this.bodyRuleAddedIsDuplicated.subscribe(
       isDuplicated => (this.ruleIsDuplicated = isDuplicated)

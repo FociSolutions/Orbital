@@ -9,7 +9,6 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { BodyAddRuleComponent } from './body-add-rule.component';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
