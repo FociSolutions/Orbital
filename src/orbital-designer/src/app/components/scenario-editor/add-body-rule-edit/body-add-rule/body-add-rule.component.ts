@@ -45,6 +45,9 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
     );
 
     this.bodyAddRuleFormGroup = this.addBodyRuleBuilder.createNewBodyRuleForm();
+    this.bodyAddRuleFormGroup.controls.rule.setValue('');
+    this.bodyRuleInEdit.rule = this.bodyAddRuleFormGroup.controls.rule.value;
+    this.bodyRuleInEdit.type = this.bodyAddRuleFormGroup.controls.type.value;
 
     // the default rule is accept all, so the text field should be initially disabled
     this.rule.disable();

@@ -33,9 +33,6 @@
       <mat-error *ngIf="rule.errors.required">
         Body rule is required
       </mat-error>
-      <mat-error *ngIf="rule.errors.maxlength">
-        Body rule cannot exceed 3000 characters
-      </mat-error>
       <mat-error *ngIf="rule.errors.invalidJson">
         Body rule must be valid JSON
       </mat-error>
