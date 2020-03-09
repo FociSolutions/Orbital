@@ -13,8 +13,15 @@ export class BodyListItemRuleTypeComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   readonly rules = [
-    { value: RuleType.REGEX, viewValue: 'Matches Regex' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
+    { value: RuleType.REGEX, viewValue: 'Regex' },
+    { value: RuleType.TEXTSTARTSWITH, viewValue: 'Text: Starts With' },
+    { value: RuleType.TEXTENDSWITH, viewValue: 'Text: Ends With' },
+    { value: RuleType.TEXTCONTAINS, viewValue: 'Text: Contains' },
+    { value: RuleType.TEXTEQUALS, viewValue: 'Text: Equals' },
+    { value: RuleType.JSONPATH, viewValue: 'JSON: Path' },
+    { value: RuleType.JSONEQUALITY, viewValue: 'JSON: Equality' },
+    { value: RuleType.JSONCONTAINS, viewValue: 'JSON: Contains' },
+    { value: RuleType.JSONSCHEMA, viewValue: 'JSON: Schema' },
     { value: RuleType.ACCEPTALL, viewValue: 'Accept All' }
   ];
 
