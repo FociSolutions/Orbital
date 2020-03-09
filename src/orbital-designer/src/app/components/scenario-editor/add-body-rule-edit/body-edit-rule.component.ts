@@ -4,6 +4,7 @@ import { recordFirstOrDefault } from '../../../models/record';
 import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { AddBodyRuleBuilder } from '../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 @Component({
   selector: 'app-body-edit-rule',
@@ -22,11 +23,11 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // TODO
-    /*const bodyMatchRuleFormArraySubscription = this.bodyMatchRuleFormArray.valueChanges.subscribe(() => {
+    const bodyMatchRuleFormArraySubscription = this.bodyMatchRuleFormArray.valueChanges.subscribe(() => {
       this.logger.debug('BodyEditRuleComponent checking for duplicate rules : ', this.bodyMatchRuleFormArray);
       this.checkForDuplicates();
-    });*/
-    //this.subscriptions.push(bodyMatchRuleFormArraySubscription);
+    });
+    this.subscriptions.push(bodyMatchRuleFormArraySubscription);
   }
 
   /**
@@ -82,8 +83,8 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
     this.bodyMatchRuleFormArray.setErrors(null);
     this.bodyMatchRuleFormArray.markAsUntouched();
     interface BodyRuleFormGroup {
-      rule?: string;
-      type: number;
+      rule: string;
+      type: RuleType;
     }
     const bodyRules = this.bodyMatchRuleFormArray.controls.map(group => {
       return (group as FormGroup).getRawValue() as BodyRuleFormGroup;
