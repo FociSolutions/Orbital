@@ -29,25 +29,25 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
-   * @param kvp The KeyValue pair rule being taken in from the child component to be added
+   * This method listens to the event emitter from the child component and adds the body rule into the list
+   * @param bodyRule The body rule being taken in from the child component to be added
    */
-  addBodyEditRuleHandler(kvpToAdd: any) {
-    const ruleFound = this.isBodyRuleDuplicate(kvpToAdd);
+  addBodyEditRuleHandler(bodyRule: any) {
+    const ruleFound = this.isBodyRuleDuplicate(bodyRule);
     if (!ruleFound) {
       this.bodyRuleIsDuplicated.emit(false);
       const index = this.bodyMatchRuleFormArray.length;
-      const newBodyRuleControl = this.formbuilder.createBodyRuleForm(kvpToAdd);
+      const newBodyRuleControl = this.formbuilder.createBodyRuleForm(bodyRule);
       this.bodyMatchRuleFormArray.insert(index, newBodyRuleControl);
-      this.logger.debug('BodyEditRuleComponent new rule added : ', kvpToAdd);
+      this.logger.debug('BodyEditRuleComponent new rule added : ', bodyRule);
     } else {
       this.bodyRuleIsDuplicated.emit(true);
     }
   }
 
   /**
-   * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
-   * @param kvp The KeyValue pair rule being taken in from the child component to be deleted
+   * This method listens to the event emitter from the child component and deletes the body rule from the list
+   * @param indexPosition The body rule being taken in from the child component to be deleted
    */
   deleteBodyEditRuleHandler(indexPosition: number) {
     this.bodyMatchRuleFormArray.removeAt(indexPosition);
@@ -55,10 +55,10 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * checks if the keyvaluepairrule is inside the current form array
-   *
+   * Checks if the body rule is inside the current form array
+   * @param bodyRuleToAdd the body rule to check against the existing list
    */
-  private isBodyRuleDuplicate(kvpToAdd: any): boolean {
+  private isBodyRuleDuplicate(bodyRuleToAdd: any): boolean {
     interface BodyRuleFormGroup {
       rule: string;
       type: number;
@@ -69,7 +69,7 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
         return (group as FormGroup).getRawValue() as BodyRuleFormGroup;
       })
       .some(bodyFormGroup => {
-        return bodyFormGroup.rule === kvpToAdd.rule && bodyFormGroup.type === kvpToAdd.type;
+        return bodyFormGroup.rule === bodyRuleToAdd.rule && bodyFormGroup.type === bodyRuleToAdd.type;
       });
   }
 

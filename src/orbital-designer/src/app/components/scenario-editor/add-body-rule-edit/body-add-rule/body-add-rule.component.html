@@ -1,8 +1,8 @@
-<mat-card class="kvp-add-card">
+<mat-card class="body-add-card">
   <mat-card-content>
-    <form class="kvp-add" [formGroup]="bodyAddRuleFormGroup">
+    <form class="body-add" [formGroup]="bodyAddRuleFormGroup">
       <div class="row">
-        <mat-form-field class="kvp-type">
+        <mat-form-field class="body-type">
           <mat-label>Select Rule</mat-label>
           <mat-select formControlName="type" name="rules">
             <mat-option *ngFor="let r of rules" [value]="r.value">
@@ -10,9 +10,9 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="kvp-value">
+        <mat-form-field class="body-value">
           <mat-label>Value</mat-label>
-          <textarea matInput id="kvpaddrule" formControlName="rule"></textarea>
+          <textarea matInput id="bodyaddrule" formControlName="rule"></textarea>
         </mat-form-field>
         <button mat-mini-fab class="add-button" color="primary" (click)="addBodyRule()">
           <mat-icon>add</mat-icon>

@@ -49,6 +49,7 @@ import { PolicyAddComponent } from './components/scenario-editor/policy-containe
 import { PolicyEditComponent } from './components/scenario-editor/policy-container/policy-edit/policy-edit.component';
 import { PolicyComponent } from './components/scenario-editor/policy-container/policy/policy.component';
 import { BodyAddRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
+// tslint:disable-next-line: max-line-length
 import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
 

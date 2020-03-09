@@ -1,4 +1,4 @@
-.kvp-add {
+.body-add {
   display: flex;
   justify-content: space-between;
   align-items: top;
@@ -8,11 +8,11 @@
   margin-right: 1.3em;
 }
 
-.kvp-value {
+.body-value {
   width: 25em;
 }
 
-.kvp-key {
+.body-key {
   padding-left: 1.3em;
   width: 12%;
 }
@@ -27,6 +27,6 @@
   justify-content: space-between;
 }
 
-#kvpaddrule {
+#bodyaddrule {
   height: 12em;
 }

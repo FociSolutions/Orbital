@@ -1,12 +1,12 @@
-<mat-card class="kvp-add-card">
+<mat-card class="body-add-card">
   <mat-card-content>
-    <form class="kvp-added-item" [formGroup]="bodyEditRuleFormGroup">
+    <form class="body-added-item" [formGroup]="bodyEditRuleFormGroup">
       <div class="row">
-        <mat-form-field class="kvp-value">
-          <input matInput id="kvpaddrule" formControlName="rule" />
+        <mat-form-field class="body-value">
+          <input matInput id="bodyaddrule" formControlName="rule" />
         </mat-form-field>
 
-        <mat-form-field class="kvp-type">
+        <mat-form-field class="body-type">
           <mat-label>Select Rule</mat-label>
           <mat-select formControlName="type">
             <mat-option *ngFor="let rule of rules" [value]="rule.value">

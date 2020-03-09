@@ -27,7 +27,7 @@ export class BodyListItemRuleTypeComponent implements OnInit, OnDestroy {
 
   @Input() bodyEditRuleFormGroup: FormGroup;
   /**
-   * The kvp to be deleted by the parent
+   * The body rule to be deleted by the parent
    */
   @Output() bodyRuleRemovedEventEmitter = new EventEmitter<BodyRule>();
 
@@ -64,7 +64,7 @@ export class BodyListItemRuleTypeComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Emits a removes event with the KeyValue for the parent to remove
+   * Emits a removes event with the body rule for the parent to remove
    */
   onRemove() {
     const removeRule = {
