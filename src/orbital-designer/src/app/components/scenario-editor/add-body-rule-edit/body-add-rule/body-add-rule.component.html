@@ -4,7 +4,6 @@
       <div class="row">
         <mat-form-field class="kvp-value">
           <input matInput id="kvpaddrule" formControlName="rule" />
-          <mat-hint> {{ rule.value?.length || 0 }}/3000</mat-hint>
         </mat-form-field>
         <mat-form-field class="kvp-type">
           <mat-label>Select Rule</mat-label>
@@ -24,8 +23,8 @@
       <mat-error *ngIf="rule.errors.required">
         Body rule is required
       </mat-error>
-      <mat-error *ngIf="rule.errors.maxlength">
-        Body rule cannot exceed 3000 characters
+      <mat-error *ngIf="rule.errors.invalidJson">
+        Body rule must be valid JSON
       </mat-error>
     </div>
 

@@ -3,7 +3,9 @@ import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-va
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRule, defaultBodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { AddBodyRuleBuilder } from '../../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
+import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 
 @Component({
   selector: 'app-body-add-rule',
@@ -15,10 +17,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
    * Stores the subscriptions that will be destroyed during OnDestroy
    */
   private subscriptions: Subscription[] = [];
-  private bodyRuleInEdit = {
-    rule: {},
-    type: RuleType.ACCEPTALL
-  } as BodyRule;
+  private bodyRuleInEdit = defaultBodyRule;
   private ruleIsDuplicated = false;
 
   @Input() bodyRuleAddedIsDuplicated = new EventEmitter<boolean>();
@@ -38,14 +37,17 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   ];
 
   bodyAddRuleFormGroup: FormGroup;
+
+  constructor(private addBodyRuleBuilder: AddBodyRuleBuilder) {}
   ngOnInit() {
     const bodyDuplicatedSubscription = this.bodyRuleAddedIsDuplicated.subscribe(
       isDuplicated => (this.ruleIsDuplicated = isDuplicated)
     );
-    this.bodyAddRuleFormGroup = new FormGroup({
-      rule: new FormControl(this.bodyRuleInEdit.rule, [Validators.required]),
-      type: new FormControl(this.bodyRuleInEdit.type, [Validators.required])
-    });
+
+    this.bodyAddRuleFormGroup = this.addBodyRuleBuilder.createNewBodyRuleForm();
+
+    // the default rule is accept all, so the text field should be initially disabled
+    this.rule.disable();
 
     const ruleSubscription = this.bodyAddRuleFormGroup.get('rule').valueChanges.subscribe(rule => {
       this.ruleIsDuplicated = false;

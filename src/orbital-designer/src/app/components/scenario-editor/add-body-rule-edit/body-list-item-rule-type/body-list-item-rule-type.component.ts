@@ -41,6 +41,11 @@ export class BodyListItemRuleTypeComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions.push(typeSubscription);
+
+    // disable text field when an accept all rule is added
+    if (this.bodyEditRuleFormGroup.get('type').value === RuleType.ACCEPTALL) {
+      this.rule.disable();
+    }
   }
 
   /**
