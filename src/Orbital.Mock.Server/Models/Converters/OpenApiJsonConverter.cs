@@ -1,10 +1,12 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 using Microsoft.OpenApi.Writers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Orbital.Mock.Server.Models.Converters
 {
@@ -33,6 +35,7 @@ namespace Orbital.Mock.Server.Models.Converters
             var openApiStringReader = new OpenApiStringReader();
             var openApiString = JObject.Load(reader).ToString();
             var openApiDocument = openApiStringReader.Read(openApiString, out var diagnostic);
+            openApiDocument.Tags.Add(new OpenApiTag() { Name = "openapi", Description = diagnostic.SpecificationVersion.ToString() }) ;
             return openApiDocument;
         }
 
@@ -64,7 +67,17 @@ namespace Orbital.Mock.Server.Models.Converters
             {
                 writer.Flush();
                 var openApiWriter = new OpenApiJsonWriter(memory);
-                openApi.SerializeAsV2(openApiWriter);
+
+                var tagfound = openApi.Tags.Where(t =>  t.Name.Equals("openapi"));
+                if (tagfound.FirstOrDefault().Description.Equals(OpenApiSpecVersion.OpenApi3_0.ToString()))
+                {
+                    openApi.SerializeAsV3(openApiWriter);
+                }
+                else
+                {
+                    openApi.SerializeAsV2(openApiWriter);
+                }
+                
                 var json = JObject.Parse(memory.ToString());
                 json.WriteTo(writer);
             }
