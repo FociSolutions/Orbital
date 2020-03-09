@@ -6,7 +6,7 @@ import { RuleType } from '../../../../models/mock-definition/scenario/rule.type'
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { BodyListItemRuleTypeComponent } from './body-list-item-rule-type.component';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { AddBodyRuleBuilder } from '../../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
+import { AddBodyRuleBuilder } from '../add-body-rule-builder/add-body-rule.builder';
 import { BodyAddRuleComponent } from '../body-add-rule/body-add-rule.component';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { NGXLogger } from 'ngx-logger';

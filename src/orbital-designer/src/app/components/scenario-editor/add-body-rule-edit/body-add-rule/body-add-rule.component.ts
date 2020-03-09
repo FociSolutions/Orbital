@@ -4,7 +4,7 @@ import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BodyRule, defaultBodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { AddBodyRuleBuilder } from '../../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
+import { AddBodyRuleBuilder } from '../add-body-rule-builder/add-body-rule.builder';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 
 @Component({

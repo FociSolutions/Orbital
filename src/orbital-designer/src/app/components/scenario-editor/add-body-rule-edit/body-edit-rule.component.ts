@@ -3,7 +3,7 @@ import { NGXLogger } from 'ngx-logger';
 import { recordFirstOrDefault } from '../../../models/record';
 import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
-import { AddBodyRuleBuilder } from '../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
+import { AddBodyRuleBuilder } from './add-body-rule-builder/add-body-rule.builder';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 @Component({

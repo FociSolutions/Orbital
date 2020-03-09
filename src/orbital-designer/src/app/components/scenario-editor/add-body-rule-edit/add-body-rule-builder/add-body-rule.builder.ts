@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { defaultBodyRule, BodyRule } from '../../../../../../app/models/mock-definition/scenario/body-rule.model';
+import { defaultBodyRule, BodyRule } from '../../../../models/mock-definition/scenario/body-rule.model';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 

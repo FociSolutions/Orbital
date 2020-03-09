@@ -4,7 +4,7 @@ import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import * as deepEqual from 'deep-equal';
 import { EventEmitter, ViewChild } from '@angular/core';
-import { AddBodyRuleBuilder } from './add-body-rule-builder/add-body-rule.builder';
+import { AddBodyRuleBuilder } from '../../add-body-rule-edit/add-body-rule-builder/add-body-rule.builder';
 import { FormGroup, NgForm } from '@angular/forms';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 

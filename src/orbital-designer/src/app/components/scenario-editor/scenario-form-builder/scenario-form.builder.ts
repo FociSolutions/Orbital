@@ -8,7 +8,7 @@ import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/reques
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
-import { AddBodyRuleBuilder } from '../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
+import { AddBodyRuleBuilder } from '../add-body-rule-edit/add-body-rule-builder/add-body-rule.builder';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 @Injectable({
