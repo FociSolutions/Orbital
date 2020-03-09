@@ -20,9 +20,6 @@ import { KvpListItemComponent } from '../../orbital-common/kvp-edit/kvp-list-ite
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { AddBodyRuleContainerComponent } from '../add-body-rule-container/add-body-rule-container.component';
-import { AddBodyRuleComponent } from '../add-body-rule-container/add-body-rule/add-body-rule.component';
-import { BodyRuleListItemComponent } from '../add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { KvpEditRuleComponent } from '../kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from '../kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
@@ -48,9 +45,6 @@ describe('AddRequestMatchRuleComponent', () => {
         KvpAddComponent,
         KvpEditComponent,
         KvpListItemComponent,
-        AddBodyRuleContainerComponent,
-        AddBodyRuleComponent,
-        BodyRuleListItemComponent,
         KvpEditRuleComponent,
         KvpListItemRuleTypeComponent,
         GetRuleTypeStringPipe,

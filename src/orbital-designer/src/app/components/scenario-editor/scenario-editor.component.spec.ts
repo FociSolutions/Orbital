@@ -11,9 +11,6 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
-import { AddBodyRuleContainerComponent } from './add-body-rule-container/add-body-rule-container.component';
-import { AddBodyRuleComponent } from './add-body-rule-container/add-body-rule/add-body-rule.component';
-import { BodyRuleListItemComponent } from './add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 import { AddMetadataComponent } from './add-metadata/add-metadata.component';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
@@ -55,9 +52,6 @@ describe('ScenarioEditorComponent', () => {
         SideBarComponent,
         GetEndpointScenariosPipe,
         OverviewHeaderComponent,
-        AddBodyRuleContainerComponent,
-        AddBodyRuleComponent,
-        BodyRuleListItemComponent,
         AddMetadataComponent,
         AddRequestMatchRuleComponent,
         AddResponseComponent,
