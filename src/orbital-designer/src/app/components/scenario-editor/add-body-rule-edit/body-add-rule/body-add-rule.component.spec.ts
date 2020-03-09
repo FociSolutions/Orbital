@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
-import { UrlAddRuleComponent } from './url-add-rule.component';
 import {
   MatCardModule,
   MatInputModule,
@@ -11,14 +10,16 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { BodyAddRuleComponent } from './body-add-rule.component';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
-describe('UrlAddRuleComponent', () => {
-  let component: UrlAddRuleComponent;
-  let fixture: ComponentFixture<UrlAddRuleComponent>;
+describe('BodyAddRuleComponent', () => {
+  let component: BodyAddRuleComponent;
+  let fixture: ComponentFixture<BodyAddRuleComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UrlAddRuleComponent],
+      declarations: [BodyAddRuleComponent],
       imports: [
         BrowserAnimationsModule,
         LoggerTestingModule,
@@ -33,7 +34,7 @@ describe('UrlAddRuleComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UrlAddRuleComponent);
+    fixture = TestBed.createComponent(BodyAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -43,54 +44,54 @@ describe('UrlAddRuleComponent', () => {
   });
 
   describe('When form group is made', () => {
-    it('should have a path from control', () => {
-      expect(component.path).toBeTruthy();
+    it('should have a rule from control', () => {
+      expect(component.rule).toBeTruthy();
     });
 
-    it('should have a ruleType from control', () => {
-      expect(component.ruleType).toBeTruthy();
-    });
-  });
-
-  describe('When the ruleType is ACEEPTALL', () => {
-    beforeEach(() => {
-      component.ruleType.setValue(RuleType.ACCEPTALL);
-    });
-
-    it('should have the path be disabled', () => {
-      expect(component.path.status).toBe('DISABLED');
+    it('should have a type from control', () => {
+      expect(component.type).toBeTruthy();
     });
   });
 
-  describe('When the ruleType is REGEX', () => {
+  describe('When the type is ACCEPTALL', () => {
     beforeEach(() => {
-      component.ruleType.setValue(RuleType.REGEX);
+      component.type.setValue(RuleType.ACCEPTALL);
     });
 
-    describe('And path has not been set to a value', () => {
-      it('should have path set to INVALID status', () => {
-        expect(component.path.status).toBe('INVALID');
+    it('should have the rule be disabled', () => {
+      expect(component.rule.status).toBe('DISABLED');
+    });
+  });
+
+  describe('When the type is REGEX', () => {
+    beforeEach(() => {
+      component.type.setValue(RuleType.REGEX);
+    });
+
+    describe('And rule has not been set to a value', () => {
+      it('should have rule set to INVALID status', () => {
+        expect(component.rule.status).toBe('INVALID');
       });
     });
 
-    describe('And path has been set to a value', () => {
+    describe('And rule has been set to a value', () => {
       beforeEach(() => {
-        component.path.setValue('cool/path');
+        component.rule.setValue('{"x":"y"}');
       });
-      it('should have path set to VALID status', () => {
-        expect(component.path.status).toBe('VALID');
+      it('should have rule set to VALID status', () => {
+        expect(component.rule.status).toBe('VALID');
       });
 
       describe('And the add button is pushed', () => {
-        it('Should emitt the urlRuleAddedEventEmitter', done => {
-          component.urlRuleAddedEventEmitter.subscribe(
-            (url: KeyValuePairRule) => {
-              expect(url.rule).toEqual({ urlPath: 'cool/path' });
+        it('Should emit the bodyRuleAddedEventEmitter', done => {
+          component.bodyRuleAddedEventEmitter.subscribe(
+            (bodyRule: BodyRule) => {
+              expect(bodyRule).toEqual({ rule: '{"x":"y"}', type: RuleType.REGEX } as unknown as BodyRule);
               done();
             }
           );
 
-          component.addUrlRule();
+          component.addBodyRule();
         });
       });
     });

@@ -6,20 +6,19 @@ import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-va
 import { recordFirstOrDefault, recordAdd, recordFirstOrDefaultKey } from 'src/app/models/record';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
-import { ɵangular_packages_platform_browser_dynamic_testing_testing_b } from '@angular/platform-browser-dynamic/testing';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 import { AddBodyRuleBuilder } from '../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScenarioFormBuilder {
   private scenarioForm: FormGroup;
+  private bodyRuleFormBuilder: AddBodyRuleBuilder;
 
-  constructor(private formBuilder: FormBuilder, private bodyRuleFormBuilder: AddBodyRuleBuilder) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   /**
    * Generates a form group for a scenario with default values

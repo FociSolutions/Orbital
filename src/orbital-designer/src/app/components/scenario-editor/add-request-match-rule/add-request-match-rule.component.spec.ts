@@ -33,6 +33,9 @@ import { UrlEditRuleComponent } from '../url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from '../url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
+import { BodyEditRuleComponent } from '../add-body-rule-edit/body-edit-rule.component';
+import { BodyListItemRuleTypeComponent } from '../add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
+import { BodyAddRuleComponent } from '../add-body-rule-edit/body-add-rule/body-add-rule.component';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -54,7 +57,10 @@ describe('AddRequestMatchRuleComponent', () => {
         KvpAddRuleComponent,
         UrlAddRuleComponent,
         UrlEditRuleComponent,
-        UrlListItemRuleTypeComponent
+        UrlListItemRuleTypeComponent,
+        BodyEditRuleComponent,
+        BodyListItemRuleTypeComponent,
+        BodyAddRuleComponent
       ],
       imports: [
         LoggerTestingModule,

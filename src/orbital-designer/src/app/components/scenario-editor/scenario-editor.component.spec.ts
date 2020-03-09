@@ -39,6 +39,9 @@ import { PolicyComponent } from './policy-container/policy/policy.component';
 import { PolicyAddComponent } from './policy-container/policy-add/policy-add.component';
 import { PolicyEditComponent } from './policy-container/policy-edit/policy-edit.component';
 import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinition/export-mockdefinition.service';
+import { BodyListItemRuleTypeComponent } from './add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
+import { BodyAddRuleComponent } from './add-body-rule-edit/body-add-rule/body-add-rule.component';
+import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -68,7 +71,10 @@ describe('ScenarioEditorComponent', () => {
         UrlListItemRuleTypeComponent,
         PolicyComponent,
         PolicyAddComponent,
-        PolicyEditComponent
+        PolicyEditComponent,
+        BodyEditRuleComponent,
+        BodyListItemRuleTypeComponent,
+        BodyAddRuleComponent
       ],
       imports: [
         LoggerTestingModule,

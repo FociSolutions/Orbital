@@ -22,7 +22,6 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // TODO
     const bodyMatchRuleFormArraySubscription = this.bodyMatchRuleFormArray.valueChanges.subscribe(() => {
       this.logger.debug('BodyEditRuleComponent checking for duplicate rules : ', this.bodyMatchRuleFormArray);
       this.checkForDuplicates();

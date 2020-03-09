@@ -1,16 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule, MatInputModule, MatIconModule, MatSelectModule } from '@angular/material';
-import { UrlListItemRuleTypeComponent } from './url-list-item-rule-type.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { BodyListItemRuleTypeComponent } from './body-list-item-rule-type.component';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { AddBodyRuleBuilder } from '../../add-body-rule-container/add-body-rule/add-body-rule-builder/add-body-rule.builder';
+import { BodyAddRuleComponent } from '../body-add-rule/body-add-rule.component';
+import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
+import { NGXLogger } from 'ngx-logger';
 
-describe('UrlListItemRuleTypeComponent', () => {
-  let component: UrlListItemRuleTypeComponent;
-  let fixture: ComponentFixture<UrlListItemRuleTypeComponent>;
+describe('BodyListItemRuleTypeComponent', () => {
+  let component: BodyListItemRuleTypeComponent;
+  let fixture: ComponentFixture<BodyListItemRuleTypeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,16 +27,16 @@ describe('UrlListItemRuleTypeComponent', () => {
         FormsModule,
         ReactiveFormsModule
       ],
-      declarations: [UrlListItemRuleTypeComponent]
+      declarations: [BodyListItemRuleTypeComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UrlListItemRuleTypeComponent);
+    fixture = TestBed.createComponent(BodyListItemRuleTypeComponent);
     component = fixture.componentInstance;
-    component.urlEditRuleFormGroup = new FormGroup({
-      path: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
-      ruleType: new FormControl(RuleType.NONE, [Validators.required])
+    component.bodyEditRuleFormGroup = new FormGroup({
+      rule: new FormControl('', [Validators.required]),
+      type: new FormControl(RuleType.NONE, [Validators.required])
     });
     fixture.detectChanges();
   });
@@ -43,42 +46,42 @@ describe('UrlListItemRuleTypeComponent', () => {
   });
 
   describe('When form group is made', () => {
-    it('should have a path from control', () => {
-      expect(component.path).toBeTruthy();
+    it('should have a rule from control', () => {
+      expect(component.rule).toBeTruthy();
     });
 
-    it('should have a ruleType from control', () => {
-      expect(component.ruleType).toBeTruthy();
-    });
-  });
-
-  describe('When the ruleType is ACEEPTALL', () => {
-    beforeEach(() => {
-      component.ruleType.setValue(RuleType.ACCEPTALL);
-    });
-
-    it('should have the path be disabled', () => {
-      expect(component.path.status).toBe('DISABLED');
+    it('should have a type from control', () => {
+      expect(component.type).toBeTruthy();
     });
   });
 
-  describe('When the ruleType is REGEX', () => {
+  describe('When the type is ACCEPTALL', () => {
     beforeEach(() => {
-      component.ruleType.setValue(RuleType.REGEX);
+      component.type.setValue(RuleType.ACCEPTALL);
     });
 
-    describe('And path has been set to a value', () => {
+    it('should have the rule be disabled', () => {
+      expect(component.rule.status).toBe('DISABLED');
+    });
+  });
+
+  describe('When the type is REGEX', () => {
+    beforeEach(() => {
+      component.type.setValue(RuleType.REGEX);
+    });
+
+    describe('And rule has been set to a value', () => {
       beforeEach(() => {
-        component.path.setValue('cool/path');
+        component.rule.setValue('{"x":"y"}');
       });
-      it('should have path set to VALID status', () => {
-        expect(component.path.status).toBe('VALID');
+      it('should have rule set to VALID status', () => {
+        expect(component.rule.status).toBe('VALID');
       });
 
       describe('And the remove button is pushed', () => {
-        it('Should emitt the urlRuleRemovedEventEmitter', done => {
-          component.urlRuleRemovedEventEmitter.subscribe((url: KeyValuePairRule) => {
-            expect(url.rule).toEqual({ urlPath: 'cool/path' });
+        it('Should emit the bodyRuleRemovedEventEmitter', done => {
+          component.bodyRuleRemovedEventEmitter.subscribe((body: BodyRule) => {
+            expect(body.rule).toEqual({ bodyrule: '{"x":"y"}' });
             done();
           });
 
