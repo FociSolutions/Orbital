@@ -71,7 +71,7 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
         return (group as FormGroup).getRawValue() as BodyRuleFormGroup;
       })
       .some(bodyFormGroup => {
-        return bodyFormGroup.rule === recordFirstOrDefault(kvpToAdd.rule, '') && bodyFormGroup.type === kvpToAdd.type;
+        return bodyFormGroup.rule === kvpToAdd.rule && bodyFormGroup.type === kvpToAdd.type;
       });
   }
 

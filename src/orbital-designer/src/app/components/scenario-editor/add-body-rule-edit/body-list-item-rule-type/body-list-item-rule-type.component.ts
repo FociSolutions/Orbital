@@ -25,11 +25,14 @@ export class BodyListItemRuleTypeComponent implements OnInit, OnDestroy {
   @Output() bodyRuleRemovedEventEmitter = new EventEmitter<BodyRule>();
 
   ngOnInit() {
-    const typeSubscription = this.bodyEditRuleFormGroup.get('rule').valueChanges.subscribe(() => {
-      this.rule.enable();
-      this.bodyEditRuleFormGroup.updateValueAndValidity();
+    const typeSubscription = this.bodyEditRuleFormGroup.get('type').valueChanges.subscribe(type => {
+      if (type === RuleType.ACCEPTALL) {
+        this.rule.disable();
+        this.rule.setValue('');
+      } else {
+        this.rule.enable();
+      }
     });
-
     this.subscriptions.push(typeSubscription);
   }
 

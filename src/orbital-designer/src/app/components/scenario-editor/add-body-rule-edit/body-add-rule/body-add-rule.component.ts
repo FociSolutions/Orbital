@@ -36,7 +36,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
       isDuplicated => (this.ruleIsDuplicated = isDuplicated)
     );
     this.bodyAddRuleFormGroup = new FormGroup({
-      rule: new FormControl(this.bodyRuleInEdit.rule, [Validators.required, Validators.maxLength(3000)]),
+      rule: new FormControl(this.bodyRuleInEdit.rule, [Validators.required]),
       type: new FormControl(this.bodyRuleInEdit.type, [Validators.required])
     });
 
