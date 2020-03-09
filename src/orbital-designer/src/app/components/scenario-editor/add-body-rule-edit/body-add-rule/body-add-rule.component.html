@@ -2,9 +2,6 @@
   <mat-card-content>
     <form class="kvp-add" [formGroup]="bodyAddRuleFormGroup">
       <div class="row">
-        <mat-form-field class="kvp-value">
-          <input matInput id="kvpaddrule" formControlName="rule" />
-        </mat-form-field>
         <mat-form-field class="kvp-type">
           <mat-label>Select Rule</mat-label>
           <mat-select formControlName="type" name="rules">
@@ -12,6 +9,10 @@
               {{ r.viewValue }}
             </mat-option>
           </mat-select>
+        </mat-form-field>
+        <mat-form-field class="kvp-value">
+          <mat-label>Value</mat-label>
+          <textarea matInput id="kvpaddrule" formControlName="rule"></textarea>
         </mat-form-field>
         <button mat-mini-fab class="add-button" color="primary" (click)="addBodyRule()">
           <mat-icon>add</mat-icon>

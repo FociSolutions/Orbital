@@ -1,7 +1,7 @@
 .kvp-add {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: top;
 }
 
 .add-button {
@@ -22,7 +22,11 @@
 }
 
 .row {
-  align-items: center;
+  align-items: top;
   width: 100%;
   justify-content: space-between;
+}
+
+#kvpaddrule {
+  height: 12em;
 }
