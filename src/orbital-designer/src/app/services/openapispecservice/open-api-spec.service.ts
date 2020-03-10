@@ -8,7 +8,12 @@ import * as yaml from 'js-yaml';
   providedIn: 'root'
 })
 export class OpenApiSpecService {
-  constructor() {}
+  validatorV2: OpenAPISchemaValidator;
+  validatorV3: OpenAPISchemaValidator;
+  constructor() {
+    this.validatorV2 = new OpenAPISchemaValidator({ version: 2 });
+    this.validatorV3 = new OpenAPISchemaValidator({ version: 3 });
+  }
 
   /**
    * Takes a string as input and returns an observable of type OpenAPIV2.Document
@@ -16,24 +21,25 @@ export class OpenApiSpecService {
    * @returns observable object of type Open Api Document
    */
   readOpenApiSpec(openApiString: string): Observable<OpenAPIV2.Document> {
-    return new Observable((observer) => {
-        try {
-          const validator = new OpenAPISchemaValidator({ version: 2 });
-          const content = yaml.safeLoad(openApiString);
-          const result = validator.validate(content);
-          if (!result.errors || result.errors.length === 0) {
+    return new Observable(observer => {
+      try {
+        const content = yaml.safeLoad(openApiString);
+        let result;
+        if (content.swagger === '2.0') {
+          result = this.validatorV2.validate(content);
+        } else {
+          result = this.validatorV3.validate(content);
+        }
+
+        if (!result.errors || result.errors.length === 0) {
           observer.next(content);
         } else {
-          observer.error(
-            result.errors.map(err => `${err.dataPath} ${err.message}`.trim())
-          );
+          observer.error(result.errors.map(err => `${err.dataPath} ${err.message}`.trim()));
         }
       } catch (error) {
         observer.error(['file content is invalid yaml']);
       }
-        observer.complete();
+      observer.complete();
     });
   }
-
-
 }

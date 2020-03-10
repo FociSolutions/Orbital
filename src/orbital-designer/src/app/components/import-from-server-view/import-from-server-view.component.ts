@@ -8,7 +8,6 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 import { DesignerStore } from 'src/app/store/designer-store';
 
-
 @Component({
   selector: 'app-import-from-server-view',
   templateUrl: './import-from-server-view.component.html',
@@ -17,8 +16,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
 export class ImportFromServerViewComponent implements OnInit {
   static readonly urlMaxLength = 2048;
   readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
-  readonly invalidMockDefinitionsFoundErrorMessage =
-    'One or more invalid Mockdefinition(s) found';
+  readonly invalidMockDefinitionsFoundErrorMessage = 'One or more invalid Mockdefinition(s) found';
 
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
@@ -34,8 +32,7 @@ export class ImportFromServerViewComponent implements OnInit {
   buttonName = 'Submit';
   errors: string;
 
-  controlsMockDefinitionToString = (control: AbstractControl) =>
-    (control.value as MockDefinition).metadata.title
+  controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
 
   @Input() set errorsRestRequest(errors: object) {
     if (!!this.inputControl) {
@@ -68,9 +65,7 @@ export class ImportFromServerViewComponent implements OnInit {
   ngOnInit() {
     this.inputControl = new FormControl(
       '',
-      Validators.compose([
-        Validators.maxLength(ImportFromServerViewComponent.urlMaxLength)
-      ])
+      Validators.compose([Validators.maxLength(ImportFromServerViewComponent.urlMaxLength)])
     );
   }
 
@@ -88,11 +83,7 @@ export class ImportFromServerViewComponent implements OnInit {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
 
-      this.orbitalService
-        .getAll(
-          `${this.inputControl.value}${this.concatToURI}`
-        )
-        .subscribe(this.requestObserver);
+      this.orbitalService.getAll(`${this.inputControl.value}${this.concatToURI}`).subscribe(this.requestObserver);
     }
   }
 
@@ -130,17 +121,10 @@ export class ImportFromServerViewComponent implements OnInit {
     this.logger.debug('Received http response', response);
 
     if (!!response) {
-      this.formArray = new FormArray(
-        response.map(
-          mockDef =>
-            new FormControl(mockDef, null)
-        )
-      );
+      response.forEach(m => (m.openApi.tags = m.openApi.tags.filter(t => t.name !== 'openapi')));
+      this.formArray = new FormArray(response.map(mockDef => new FormControl(mockDef, null)));
 
-      this.logger.debug(
-        'ImportFormServerViewComponent FormArray value:',
-        this.formArray
-      );
+      this.logger.debug('ImportFormServerViewComponent FormArray value:', this.formArray);
     }
   }
 
