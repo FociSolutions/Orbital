@@ -16,9 +16,8 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 })
 export class ScenarioFormBuilder {
   private scenarioForm: FormGroup;
-  private bodyRuleFormBuilder: AddBodyRuleBuilder;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private bodyRuleFormBuilder: AddBodyRuleBuilder) {}
 
   /**
    * Generates a form group for a scenario with default values

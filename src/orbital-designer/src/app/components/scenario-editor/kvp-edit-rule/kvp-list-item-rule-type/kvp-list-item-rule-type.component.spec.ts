@@ -22,7 +22,7 @@ describe('KvpListItemRuleComponent', () => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
       declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent],
-      providers: [DesignerStore]
+      providers: [DesignerStore, ScenarioFormBuilder]
     }).compileComponents();
   }));
 
@@ -30,8 +30,9 @@ describe('KvpListItemRuleComponent', () => {
     fixture = TestBed.createComponent(KvpListItemRuleTypeComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
+    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
     designerStore.selectedScenario = defaultScenario;
-    const scenarioFormGroup = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     ((scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.queryMatchRules as FormArray).push(
       new FormGroup({
         key: new FormControl('', [Validators.required, Validators.maxLength(200)]),

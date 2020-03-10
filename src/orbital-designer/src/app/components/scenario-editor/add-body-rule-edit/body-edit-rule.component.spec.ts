@@ -30,8 +30,9 @@ describe('BodyEditRuleComponent', () => {
     fixture = TestBed.createComponent(BodyEditRuleComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
+    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
     designerStore.selectedScenario = defaultScenario;
-    const scenarioFormGroup = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.bodyMatchRuleFormArray = scenarioFormGroup.get('requestMatchRules.bodyMatchRules') as FormArray;
     fixture.detectChanges();
   });
@@ -136,7 +137,7 @@ describe('BodyEditRuleComponent', () => {
         min: 0,
         max: Object.keys(RuleType).length - 1
       }) as RuleType,
-      rule: "{'x': 'y'}"
+      rule: '{\'x\': \'y\'}'
     } as unknown) as BodyRule;
     const bodyRuleasFormGroup = new FormGroup({
       rule: new FormControl(bodyRule.rule, [Validators.required]),

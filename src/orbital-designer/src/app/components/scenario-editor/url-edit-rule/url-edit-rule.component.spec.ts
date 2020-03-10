@@ -23,7 +23,7 @@ describe('UrlEditRuleComponent', () => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [UrlEditRuleComponent, UrlAddRuleComponent, UrlListItemRuleTypeComponent],
-      providers: [DesignerStore]
+      providers: [DesignerStore, ScenarioFormBuilder]
     }).compileComponents();
   }));
 
@@ -31,8 +31,9 @@ describe('UrlEditRuleComponent', () => {
     fixture = TestBed.createComponent(UrlEditRuleComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
+    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
     designerStore.selectedScenario = defaultScenario;
-    const scenarioFormGroup = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.urlMatchRuleFormArray = scenarioFormGroup.get('requestMatchRules.urlMatchRules') as FormArray;
     fixture.detectChanges();
   });

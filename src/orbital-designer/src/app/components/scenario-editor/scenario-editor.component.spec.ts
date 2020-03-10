@@ -82,14 +82,14 @@ describe('ScenarioEditorComponent', () => {
         MatIconModule,
         MatChipsModule
       ],
-      providers: [DesignerStore, ExportMockdefinitionService]
+      providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
-    scenarioBuilder = new ScenarioFormBuilder(new FormBuilder());
+    scenarioBuilder = TestBed.get(ScenarioFormBuilder);
     component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
     component.selectedScenario = defaultScenario;
     fixture.detectChanges();

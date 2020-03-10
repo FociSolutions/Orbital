@@ -71,7 +71,7 @@ describe('AddRequestMatchRuleComponent', () => {
         MatCheckboxModule,
         ReactiveFormsModule
       ],
-      providers: [DesignerStore]
+      providers: [DesignerStore, ScenarioFormBuilder]
     }).compileComponents();
   }));
 
@@ -79,7 +79,8 @@ describe('AddRequestMatchRuleComponent', () => {
     fixture = TestBed.createComponent(AddRequestMatchRuleComponent);
     component = fixture.componentInstance;
 
-    const scenarioForm = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
+    const scenarioForm = scenarioFormBuilder.createNewScenarioForm();
     component.requestMatchRuleFormGroup = scenarioForm.controls.requestMatchRules as FormGroup;
 
     component.requestMatchRule = ({
