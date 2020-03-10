@@ -61,12 +61,4 @@ export class ExportMockdefinitionService {
       );
   }
 
-  /**
-   * @param mockdefinition The Mockdefinitions to be posted
-   * @param url The url to post the Mockdefinitions to
-   * POSTs a list of Mockdefinitions to the server
-   */
-  exportMockDefinitions(url: string, mockdefinitions: MockDefinition[]): Observable<boolean[]> {
-    return forkJoin(mockdefinitions.map(mockdefinition => this.exportMockDefinition(url, mockdefinition)));
-  }
 }
