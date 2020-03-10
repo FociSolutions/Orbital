@@ -1,10 +1,6 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.Models.Validators
 {
@@ -13,7 +9,7 @@ namespace Orbital.Mock.Server.Models.Validators
     /// </summary>
     public class ScenarioValidator : AbstractValidator<Scenario>
     {
-        private List<HttpMethod> validMethod = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete };
+        private List<HttpMethod> validMethod = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete, HttpMethod.Head, HttpMethod.Options, HttpMethod.Patch};
         public ScenarioValidator()
         {
             RuleFor(x => x.Id).NotEmpty();

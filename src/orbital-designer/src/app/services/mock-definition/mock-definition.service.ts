@@ -163,6 +163,18 @@ export class MockDefinitionService {
         const newScenarioDelete = this.generateNewScenario(pathName, VerbType.DELETE);
         defaultScenariosPerEndpoint.push(newScenarioDelete);
       }
+      if (endpoint.head) {
+        const newScenarioHead = this.generateNewScenario(pathName, VerbType.HEAD);
+        defaultScenariosPerEndpoint.push(newScenarioHead);
+      }
+      if (endpoint.patch) {
+        const newScenarioPatch = this.generateNewScenario(pathName, VerbType.PATCH);
+        defaultScenariosPerEndpoint.push(newScenarioPatch);
+      }
+      if (endpoint.options) {
+        const newScenarioOptions = this.generateNewScenario(pathName, VerbType.OPTIONS);
+        defaultScenariosPerEndpoint.push(newScenarioOptions);
+      }
     });
     return defaultScenariosPerEndpoint;
   }
