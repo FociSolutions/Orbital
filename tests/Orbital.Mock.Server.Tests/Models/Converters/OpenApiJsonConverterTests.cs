@@ -58,7 +58,7 @@ namespace Orbital.Mock.Server.Tests.Models.Converters
             Target.WriteJson(input.jsonWriter, input.openApiDocument, null);
             var Actual = stringWriter.ToString();
 
-            var Expected = "{\"swagger\":\"2.0\",\"info\":{},\"paths\":{},\"tags\":[{\"openapi\":\"OpenApi2_0\"}]}";
+            var Expected = "{\"swagger\":\"2.0\",\"info\":{},\"paths\":{},\"tags\":[{{\"name\":\"openapi\",\"description\":\"OpenApi2_0\"}]}";
 
             Assert.Equal(Expected, Actual);
         }
