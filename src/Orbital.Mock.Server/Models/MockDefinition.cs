@@ -1,9 +1,8 @@
 ﻿
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Microsoft.OpenApi.Models;
 
 namespace Orbital.Mock.Server.Models
 {

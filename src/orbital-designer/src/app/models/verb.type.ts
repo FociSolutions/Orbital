@@ -6,7 +6,11 @@ export enum VerbType {
   PUT = 1,
   DELETE = 2,
   POST = 3,
-  PATCH = 4,
-  HEAD = 5,
-  OPTIONS = 6
+  HEAD = 4,
+  TRACE = 5,
+  PATCH = 6,
+  CONNECT = 7,
+  OPTIONS = 8,
+  CUSTOM = 9,
+  NONE = 255
 }

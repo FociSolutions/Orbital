@@ -31,7 +31,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return (T)port.AppendFault(new ArgumentNullException(error));
             }
 
-            IReadOnlyList<HttpMethod> validHttpMethods = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete };
+            IReadOnlyList<HttpMethod> validHttpMethods = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete, HttpMethod.Head, HttpMethod.Options, HttpMethod.Patch };
 
             if (!validHttpMethods.Contains(verb))
             {
