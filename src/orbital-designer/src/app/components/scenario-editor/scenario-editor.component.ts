@@ -116,7 +116,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   }
 
   saveScenario() {
-    if (this.metadataMatchRuleValid && this.scenarioFormGroup.valid) {
+    if (this.metadataMatchRuleValid && this.scenarioFormGroup.valid && this.responseMatchRuleValid) {
       this.logger.debug(
         'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
         this.selectedScenario
