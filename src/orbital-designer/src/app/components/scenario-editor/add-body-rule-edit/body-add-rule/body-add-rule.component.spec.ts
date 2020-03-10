@@ -47,19 +47,9 @@ describe('BodyAddRuleComponent', () => {
     });
   });
 
-  describe('When the type is ACCEPTALL', () => {
+  describe('When the type is JSONEQUALITY', () => {
     beforeEach(() => {
-      component.type.setValue(RuleType.ACCEPTALL);
-    });
-
-    it('should have the rule be disabled', () => {
-      expect(component.rule.status).toBe('DISABLED');
-    });
-  });
-
-  describe('When the type is REGEX', () => {
-    beforeEach(() => {
-      component.type.setValue(RuleType.REGEX);
+      component.type.setValue(RuleType.JSONEQUALITY);
     });
 
     describe('And rule has not been set to a value', () => {
@@ -79,7 +69,7 @@ describe('BodyAddRuleComponent', () => {
       describe('And the add button is pushed', () => {
         it('Should emit the bodyRuleAddedEventEmitter', done => {
           component.bodyRuleAddedEventEmitter.subscribe((bodyRule: BodyRule) => {
-            expect(bodyRule).toEqual(({ rule: '{"x":"y"}', type: RuleType.REGEX } as unknown) as BodyRule);
+            expect(bodyRule).toEqual(({ rule: '{"x":"y"}', type: RuleType.JSONEQUALITY } as unknown) as BodyRule);
             done();
           });
 

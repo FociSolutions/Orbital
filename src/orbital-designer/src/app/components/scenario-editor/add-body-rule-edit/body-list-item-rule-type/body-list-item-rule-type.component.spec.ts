@@ -51,19 +51,9 @@ describe('BodyListItemRuleTypeComponent', () => {
     });
   });
 
-  describe('When the type is ACCEPTALL', () => {
+  describe('When the type is JSONEQUALITY', () => {
     beforeEach(() => {
-      component.type.setValue(RuleType.ACCEPTALL);
-    });
-
-    it('should have the rule be disabled', () => {
-      expect(component.rule.status).toBe('DISABLED');
-    });
-  });
-
-  describe('When the type is REGEX', () => {
-    beforeEach(() => {
-      component.type.setValue(RuleType.REGEX);
+      component.type.setValue(RuleType.JSONEQUALITY);
     });
 
     describe('And rule has been set to a value', () => {

@@ -44,9 +44,6 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
     this.bodyRuleInEdit.rule = this.bodyAddRuleFormGroup.controls.rule.value;
     this.bodyRuleInEdit.type = this.bodyAddRuleFormGroup.controls.type.value;
 
-    // the default rule is accept all, so the text field should be initially disabled
-    this.rule.disable();
-
     const ruleSubscription = this.bodyAddRuleFormGroup.get('rule').valueChanges.subscribe(rule => {
       this.ruleIsDuplicated = false;
       this.bodyRuleInEdit.rule = rule;
@@ -55,17 +52,9 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
     const typeSubscription = this.bodyAddRuleFormGroup.get('type').valueChanges.subscribe(type => {
       this.ruleIsDuplicated = false;
       this.bodyRuleInEdit.type = type;
-
-      if (type === RuleType.ACCEPTALL) {
-        this.rule.disable();
-        this.rule.setValue('');
-      } else {
-        this.rule.enable();
-      }
     });
 
     this.subscriptions.push(ruleSubscription, typeSubscription, bodyDuplicatedSubscription);
-    this.rule.disable();
   }
 
   /**
