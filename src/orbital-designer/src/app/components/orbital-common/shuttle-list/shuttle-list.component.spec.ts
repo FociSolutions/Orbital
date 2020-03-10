@@ -10,7 +10,6 @@ import { MatListModule } from '@angular/material/list';
 import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import testMockDefinitionString from '../../../../test-files/test-mockdefinition-file.mock';
 import testMockDefinitionObject from '../../../../test-files/test-mockdefinition-object';
 
 describe('ShuttleListComponent', () => {

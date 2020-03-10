@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import validOpenApiTest from '../../../test-files/valid-openapi-spec';
 import { OpenApiSpecService } from './open-api-spec.service';
-import { doesNotThrow } from 'assert';
 
 describe('OpenApiSpecService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

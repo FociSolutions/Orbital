@@ -8,7 +8,7 @@ import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
-import { FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BodyEditRuleComponent } from './body-edit-rule.component';
 import { BodyAddRuleComponent } from './body-add-rule/body-add-rule.component';
 import { BodyListItemRuleTypeComponent } from './body-list-item-rule-type/body-list-item-rule-type.component';

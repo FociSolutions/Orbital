@@ -10,7 +10,7 @@ import { Response } from 'src/app/models/mock-definition/scenario/response.model
 import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
 import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
-import { FormGroup, FormArray, Form } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 @Component({
   selector: 'app-scenario-editor',

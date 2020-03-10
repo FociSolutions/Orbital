@@ -30,7 +30,7 @@ import { UrlAddRuleComponent } from './url-edit-rule/url-add-rule/url-add-rule.c
 import { UrlEditRuleComponent } from './url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { PolicyComponent } from './policy-container/policy/policy.component';
 import { PolicyAddComponent } from './policy-container/policy-add/policy-add.component';

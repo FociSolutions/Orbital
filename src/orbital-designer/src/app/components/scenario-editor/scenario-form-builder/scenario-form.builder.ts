@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Scenario, defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefault, recordAdd, recordFirstOrDefaultKey } from 'src/app/models/record';
+import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';

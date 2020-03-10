@@ -11,7 +11,6 @@ import { MatCardModule } from '@angular/material';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
 import { DesignerStore } from '../../../store/designer-store';
-import { MockDefinition } from '../../../models/mock-definition/mock-definition.model';
 import { QuickExportComponent } from '../quick-export/quick-export.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 

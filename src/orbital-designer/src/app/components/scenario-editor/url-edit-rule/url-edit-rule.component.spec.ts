@@ -12,7 +12,7 @@ import { UrlListItemRuleTypeComponent } from './url-list-item-rule-type/url-list
 import { DesignerStore } from 'src/app/store/designer-store';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
-import { FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { recordFirstOrDefault } from 'src/app/models/record';
 
 describe('UrlEditRuleComponent', () => {

@@ -11,7 +11,7 @@ import * as faker from 'faker';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators, Form } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
 describe('KvpEditRuleComponent', () => {
   let component: KvpEditRuleComponent;

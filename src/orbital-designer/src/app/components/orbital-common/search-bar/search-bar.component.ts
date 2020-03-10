@@ -6,8 +6,7 @@ import {
   EventEmitter,
   SimpleChanges,
   ViewChild,
-  OnChanges,
-  ElementRef
+  OnChanges
 } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 

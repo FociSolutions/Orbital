@@ -9,7 +9,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
