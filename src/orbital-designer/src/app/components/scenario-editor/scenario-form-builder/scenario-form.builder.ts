@@ -135,12 +135,6 @@ export class ScenarioFormBuilder {
     });
   }
 
-  public getBodyItemFormGroup(urlRule: any) {
-    return new FormGroup({
-      rule: new FormControl(recordFirstOrDefault(urlRule.rule, ''), [Validators.required, Validators.maxLength(3000)]),
-      type: new FormControl(urlRule.type, [Validators.required])
-    });
-  }
 }
 
 @Injectable({

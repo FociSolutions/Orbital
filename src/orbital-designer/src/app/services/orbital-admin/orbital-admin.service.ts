@@ -8,7 +8,6 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Observable, throwError, forkJoin, from } from 'rxjs';
 import { catchError, mergeMap, every } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
-import * as _ from 'lodash';
 import { cloneDeep } from 'lodash';
 
 @Injectable({
@@ -84,21 +83,6 @@ export class OrbitalAdminService {
   }
 
   /**
-   * A temporary function which removes the type-shim and formats the headers into a key:value pair format.
-   * This method is temporary and will be removed in a future issue.
-   * It is required to export mocks to the server.
-   * @param headers The headers to convert
-   */
-  convertHeaders(headers: any) {
-    const result = {};
-    headers.forEach(header => {
-      const key = Object.keys(header.rule)[0];
-      const value = header.rule[key];
-      result[key] = value;
-    });
-    return result;
-  }
-  /**
    * Removes the specified mock definition from the orbital server
    *
    * @param url the orbital server url
@@ -116,14 +100,4 @@ export class OrbitalAdminService {
     );
   }
 
-  /**
-   * Remove multiple MockDefinitions by title
-   * @param url string representation of the orbital server url
-   * @param mockDefIds string arrays containing the mock definition titles to be deleted
-   * @returns flag to indicate if the deletion of all mock definitions was successful
-   */
-  deleteMultipleMockDefinitions(url: string, mockDefIds: string[]): Observable<boolean> {
-    return from(mockDefIds).pipe(mergeMap(id => this.deleteMockDefinition(url, id)),
-    every(result => result));
-  }
 }

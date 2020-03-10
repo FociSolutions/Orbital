@@ -13,8 +13,8 @@ export class EndpointViewComponent implements OnInit {
   mockDefinition: MockDefinition;
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
-  httpRequest: HttpRequest<MockDefinition>;
-  serverUri: string;
+
+
   isExportedMessage: string;
 
   constructor(private store: DesignerStore) {

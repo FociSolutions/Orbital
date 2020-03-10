@@ -5,7 +5,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { MatCardModule } from '@angular/material';
-import { RuleType } from '../../../../../src/app/models/mock-definition/scenario/rule.type';
+import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import * as faker from 'faker';
 import { DesignerStore } from 'src/app/store/designer-store';

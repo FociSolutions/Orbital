@@ -3,7 +3,6 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Observable, throwError, forkJoin } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
-import * as _ from 'lodash';
 import { cloneDeep } from 'lodash';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { DesignerStore } from '../../store/designer-store';
@@ -62,12 +61,4 @@ export class ExportMockdefinitionService {
       );
   }
 
-  /**
-   * @param mockdefinition The Mockdefinitions to be posted
-   * @param url The url to post the Mockdefinitions to
-   * POSTs a list of Mockdefinitions to the server
-   */
-  exportMockDefinitions(url: string, mockdefinitions: MockDefinition[]): Observable<boolean[]> {
-    return forkJoin(mockdefinitions.map(mockdefinition => this.exportMockDefinition(url, mockdefinition)));
-  }
 }

@@ -52,14 +52,4 @@ export class AddRequestMatchRuleComponent implements OnInit {
     }
   }
 
-  /**
-   * Handles the body output
-   * @param bodyMatchRules The body match rules to use
-   */
-  handleBodyOutput(bodyMatchRules: BodyRule[]) {
-    this.bodyEmitted = true;
-    this.logger.debug('Set the body match rules to', bodyMatchRules);
-    this.bodyMatchRules = bodyMatchRules;
-    this._save();
-  }
 }

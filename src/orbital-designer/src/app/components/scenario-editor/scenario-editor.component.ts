@@ -18,11 +18,11 @@ import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
   styleUrls: ['./scenario-editor.component.scss']
 })
 export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentChecked {
-  readonly headerMatchRuleTitle = 'Header Match Rule';
-  readonly headerMatchRuleListTitle = 'Header Rules';
 
-  readonly queryMatchRuleTitle = 'Query Match Rule';
-  readonly queryMatchRuleListTitle = 'Query Rules';
+
+
+
+
 
   scenarioId: string;
   selectedScenario: Scenario;
@@ -84,13 +84,6 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
     this.storeSubscription.unsubscribe();
-  }
-
-  /**
-   * Goes back to the scenarios view
-   */
-  goToScenarios() {
-    this.router.navigateByUrl('scenario-view');
   }
 
   /*

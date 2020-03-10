@@ -4,7 +4,7 @@ import * as uuid from 'uuid';
 import { MockDefinitionService } from './mock-definition.service';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import validMockDefinitionFile from '../../../test-files/test-mockdefinition-file.mock';
-import { DesignerStore } from './../../store/designer-store';
+import { DesignerStore } from '../../store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
