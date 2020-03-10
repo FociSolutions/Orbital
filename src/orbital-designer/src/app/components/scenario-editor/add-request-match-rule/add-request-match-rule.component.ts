@@ -16,8 +16,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
   @Input() requestMatchRuleFormGroup: FormGroup;
 
   bodyMatchRules: BodyRule[];
-  headerMatchRules: KeyValuePairRule[];
-  queryMatchRules: KeyValuePairRule[];
 
   shouldSave: boolean;
   panelExpanded: boolean;
@@ -28,8 +26,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
   constructor(private logger: NGXLogger) {
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
     this.bodyMatchRules = [];
-    this.headerMatchRules = [];
-    this.queryMatchRules = [];
   }
 
   ngOnInit() {}
@@ -65,5 +61,6 @@ export class AddRequestMatchRuleComponent implements OnInit {
     this.bodyEmitted = true;
     this.logger.debug('Set the body match rules to', bodyMatchRules);
     this.bodyMatchRules = bodyMatchRules;
+    this._save();
   }
 }

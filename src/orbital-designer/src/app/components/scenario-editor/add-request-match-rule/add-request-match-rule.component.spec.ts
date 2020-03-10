@@ -95,14 +95,6 @@ describe('AddRequestMatchRuleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('add-request-match-rule.handleBodyOutput', () => {
-    it('should set the body match rules if it is truthy', () => {
-      const bodyMatchRules = [{ type: RuleType.JSONEQUALITY, rule: { a: faker.random.word() } }] as BodyRule[];
-      component.handleBodyOutput(bodyMatchRules);
-      expect(component.bodyMatchRules).toEqual(bodyMatchRules);
-    });
-  });
-
   describe('AddRequestMatchRule.Save', () => {
     it('should not emit the request match rules if the body match rules are invalid', () => {
       spyOn(component.requestMatchRuleOutput, 'emit');
