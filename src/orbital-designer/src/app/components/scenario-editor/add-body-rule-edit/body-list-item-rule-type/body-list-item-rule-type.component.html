@@ -2,10 +2,6 @@
   <mat-card-content>
     <form class="body-added-item" [formGroup]="bodyEditRuleFormGroup">
       <div class="row">
-        <mat-form-field class="body-value">
-          <input matInput id="bodyaddrule" formControlName="rule" />
-        </mat-form-field>
-
         <mat-form-field class="body-type">
           <mat-label>Select Rule</mat-label>
           <mat-select formControlName="type">
@@ -13,6 +9,10 @@
               {{ rule.viewValue }}
             </mat-option>
           </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="body-value">
+          <input matInput id="bodyaddrule" formControlName="rule" />
         </mat-form-field>
 
         <div class="delete-button-container">

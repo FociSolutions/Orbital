@@ -9,7 +9,9 @@
 }
 
 .body-value {
-  width: 25em;
+  width: 100%;
+  padding-left: 3em;
+  padding-right: 3em;
 }
 
 .body-key {
@@ -22,11 +24,13 @@
 }
 
 .row {
-  align-items: top;
-  width: 100%;
+  display: flex;
   justify-content: space-between;
+  width: 100%;
+  align-items: top;
 }
 
 #bodyaddrule {
   height: 12em;
+  width: 100%;
 }

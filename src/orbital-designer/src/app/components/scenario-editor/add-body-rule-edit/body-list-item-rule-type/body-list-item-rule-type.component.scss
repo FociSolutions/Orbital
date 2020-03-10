@@ -27,6 +27,8 @@
 .body-value {
   flex: 1;
   padding-right: 3vw;
+  padding-left: 3vw;
+  margin-top: -5em;
 }
 
 .delete-button {
@@ -52,4 +54,8 @@
 .error-message {
   padding-left: 1.5em;
   padding-top: 1em;
+}
+
+#bodyaddrule {
+  height: 12em;
 }
