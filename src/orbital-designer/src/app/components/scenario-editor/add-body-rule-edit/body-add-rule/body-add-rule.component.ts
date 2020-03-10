@@ -90,7 +90,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Controls the logic for emmiting a new addBodyRule event
+   * Controls the logic for emitting a new addBodyRule event
    */
   addBodyRule(): void {
     if (this.bodyAddRuleFormGroup.valid) {
