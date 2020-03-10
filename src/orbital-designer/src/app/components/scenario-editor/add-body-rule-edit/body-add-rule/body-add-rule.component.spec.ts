@@ -1,12 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
-import {
-  MatCardModule,
-  MatInputModule,
-  MatSelectModule,
-  MatIconModule
-} from '@angular/material';
+import { MatCardModule, MatInputModule, MatSelectModule, MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyAddRuleComponent } from './body-add-rule.component';
@@ -83,12 +78,10 @@ describe('BodyAddRuleComponent', () => {
 
       describe('And the add button is pushed', () => {
         it('Should emit the bodyRuleAddedEventEmitter', done => {
-          component.bodyRuleAddedEventEmitter.subscribe(
-            (bodyRule: BodyRule) => {
-              expect(bodyRule).toEqual({ rule: '{"x":"y"}', type: RuleType.REGEX } as unknown as BodyRule);
-              done();
-            }
-          );
+          component.bodyRuleAddedEventEmitter.subscribe((bodyRule: BodyRule) => {
+            expect(bodyRule).toEqual(({ rule: '{"x":"y"}', type: RuleType.REGEX } as unknown) as BodyRule);
+            done();
+          });
 
           component.addBodyRule();
         });
