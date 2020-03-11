@@ -21,7 +21,7 @@ export class AddBodyRuleBuilder {
 
   /**
    * Creates a default body rule form group
-   * @param defaultBodyRule The default body rule to use
+   * @param bodyRule
    */
   createBodyRuleForm(bodyRule: BodyRule): FormGroup {
     return this.formBuilder.group({

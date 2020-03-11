@@ -134,6 +134,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * This method delete the scenario in the store when the user clicks on the confirm box and does nothing if the user cancels
    * the scenario deletion
    * @param confirmed boolean is true when the user clicks on confirm scenario deletion
+   * @param scenario
    */
   onDialogAction(confirmed: boolean, scenario: Scenario) {
     if (confirmed) {

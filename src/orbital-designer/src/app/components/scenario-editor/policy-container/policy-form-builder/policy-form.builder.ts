@@ -10,7 +10,6 @@ export class PolicyFormBuilder {
   /**
    * This method will return you the metadata provided as a form group.
    *
-   * @param metadata The metadata information to be turned to a form group.
    */
   public generateDelayPolicyFormGroup(): FormGroup {
     return this.formBuilder.group({
