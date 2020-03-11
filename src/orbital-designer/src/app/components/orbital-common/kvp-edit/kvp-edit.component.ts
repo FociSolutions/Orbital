@@ -56,7 +56,7 @@ export class KvpEditComponent implements OnInit {
 
   /**
    * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
-   * @param kvpToAdd
+   * @param kvpToAdd The key-value pair to add
    */
   addKvp(kvpToAdd: KeyValue<string, string>) {
     if (!!kvpToAdd && !!kvpToAdd.key && !!kvpToAdd.value) {
@@ -71,7 +71,7 @@ export class KvpEditComponent implements OnInit {
   }
   /**
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
-   * @param kvpToDelete
+   * @param kvpToDelete The key-value pair to delete
    */
   deleteKvp(kvpToDelete: KeyValue<string, string>) {
     if (!!kvpToDelete && !!kvpToDelete.key) {

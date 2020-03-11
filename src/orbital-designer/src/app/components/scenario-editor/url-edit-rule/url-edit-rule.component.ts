@@ -31,7 +31,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
 
   /**
    * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
-   * @param kvpToAdd
+   * @param kvpToAdd The key-value pair to add
    */
   addUrlEditRuleHandler(kvpToAdd: KeyValuePairRule) {
     const ruleFound = this.isUrlRuleDuplicate(kvpToAdd);
@@ -48,7 +48,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
 
   /**
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
-   * @param indexPosition
+   * @param indexPosition The zero-based index position of the item to remove from the list
    */
   deleteUrlEditRuleHandler(indexPosition: number) {
     this.urlMatchRuleFormArray.removeAt(indexPosition);

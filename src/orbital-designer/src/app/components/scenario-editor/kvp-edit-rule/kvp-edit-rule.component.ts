@@ -46,7 +46,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
 
   /**
    * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
-   * @param kvpToAdd
+   * @param kvpToAdd The key-value pair to add to the list
    */
   addKvp(kvpToAdd: KeyValuePairRule) {
     const rulefound = this.isRuleDuplicate(kvpToAdd);

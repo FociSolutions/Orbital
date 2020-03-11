@@ -212,7 +212,7 @@ export class ScenarioFormMapper {
 
   /**
    * Transforms FormGroup into the appropriate query or header rule
-   * @param headerOrQuerRules
+   * @param headerOrQuerRules The header or query rules form array to extract from
    */
   public GetHeaderOrQueryRulesFromForm(headerOrQuerRules: FormArray) {
     interface HeaderQueryRuleFormGroup {
