@@ -24,7 +24,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const policyFormArraySubscription = this.policyFormArray.valueChanges.subscribe(policies => {
+    const policyFormArraySubscription = this.policyFormArray.valueChanges.subscribe(() => {
       this.logger.debug('PolicyComponent checking for duplicate policies : ', this.policyFormArray);
       this.checkForDuplicates();
     });

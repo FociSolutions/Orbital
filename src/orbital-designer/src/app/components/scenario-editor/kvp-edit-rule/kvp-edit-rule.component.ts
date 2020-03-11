@@ -28,7 +28,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const matchRuleFormArraySubscription = this.matchRuleFormArray.valueChanges.subscribe(rules => {
+    const matchRuleFormArraySubscription = this.matchRuleFormArray.valueChanges.subscribe(() => {
       this.logger.debug('KvpEditRuleComponent checking for duplicate rules : ', this.matchRuleFormArray);
       this.checkForDuplicates();
     });

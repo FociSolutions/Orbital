@@ -22,7 +22,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const urlMatchRuleFormArraySubscription = this.urlMatchRuleFormArray.valueChanges.subscribe(rules => {
+    const urlMatchRuleFormArraySubscription = this.urlMatchRuleFormArray.valueChanges.subscribe(() => {
       this.logger.debug('UrlEditRuleComponent checking for duplicate rules : ', this.urlMatchRuleFormArray);
       this.checkForDuplicates();
     });
