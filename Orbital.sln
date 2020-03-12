@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orbital.Mock.IntegrationTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orbital.Mock.Server.LongRunningTests", "tests\Orbital.Mock.Server.LongRunningTests\Orbital.Mock.Server.LongRunningTests.csproj", "{1A692533-CBC5-4CE5-AAF6-C8AA6EAF48AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orbital.Mock.LoadTesting", "tests\Orbital.Mock.LoadTesting\Orbital.Mock.LoadTesting.csproj", "{DD299832-87C8-43D0-84B6-CDF8F0041FFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1A692533-CBC5-4CE5-AAF6-C8AA6EAF48AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A692533-CBC5-4CE5-AAF6-C8AA6EAF48AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A692533-CBC5-4CE5-AAF6-C8AA6EAF48AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD299832-87C8-43D0-84B6-CDF8F0041FFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD299832-87C8-43D0-84B6-CDF8F0041FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD299832-87C8-43D0-84B6-CDF8F0041FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD299832-87C8-43D0-84B6-CDF8F0041FFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
