@@ -21,7 +21,7 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
   @Output() policyRemovedEventEmitter = new EventEmitter<Policy>();
 
   ngOnInit() {
-    const policyTypeSubscription = this.policyEditFormGroup.get('policyType').valueChanges.subscribe(() => {
+    const policyTypeSubscription = this.policyEditFormGroup.get('policyType').valueChanges.subscribe(type => {
       this.policyEditFormGroup.updateValueAndValidity();
     });
 

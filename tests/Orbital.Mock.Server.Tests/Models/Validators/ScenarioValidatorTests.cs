@@ -87,20 +87,5 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
             Assert.False(Actual.IsValid);
         }
 
-        [Fact]
-        public void ScenarioValidatorVerbNotSupportedTest()
-        {
-            #region TestSetup
-            var scenario = scenarioFaker.Generate();
-            scenario.Verb = HttpMethod.Options;
-            var input = new
-            {
-                scenario = scenario
-            };
-            #endregion
-            var Target = new ScenarioValidator();
-            var Actual = Target.Validate(input.scenario);
-            Assert.False(Actual.IsValid);
-        }
     }
 }

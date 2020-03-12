@@ -49,14 +49,16 @@ namespace Orbital.Mock.Server.Tests.Models.Converters
             var input = new
             {
                 jsonWriter = new JsonTextWriter(stringWriter),
-                openApiDocument = new OpenApiDocument()
+                openApiDocument = new OpenApiDocument(),
+                openApiTag = new OpenApiTag() { Name = "openapi", Description= "OpenApi2_0" }
             };
+            input.openApiDocument.Tags.Add(input.openApiTag);
             #endregion
             var Target = new OpenApiJsonConverter();
             Target.WriteJson(input.jsonWriter, input.openApiDocument, null);
             var Actual = stringWriter.ToString();
 
-            var Expected = "{\"swagger\":\"2.0\",\"info\":{},\"paths\":{}}";
+            var Expected = "{\"swagger\":\"2.0\",\"info\":{},\"paths\":{},\"tags\":[{\"name\":\"openapi\",\"description\":\"OpenApi2_0\"}]}";
 
             Assert.Equal(Expected, Actual);
         }

@@ -66,23 +66,5 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             Assert.True(Actual);
         }
 
-        [Fact]
-        public void PathValidationFilterInvalidVerbTest()
-        {
-            #region TestSetup
-            var faker = new Faker();
-            var input = new
-            {
-                Path = faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength()),
-                Verb = HttpMethod.Options
-            };
-
-            #endregion
-
-            var Target = new PathValidationFilter<ProcessMessagePort>();
-            var Actual = Target.Process(new ProcessMessagePort { Path = input.Path, Verb = input.Verb }).IsFaulted;
-
-            Assert.True(Actual);
-        }
     }
 }
