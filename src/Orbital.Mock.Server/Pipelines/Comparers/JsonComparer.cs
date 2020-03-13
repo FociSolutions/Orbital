@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -26,6 +28,17 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Checks if the request JSON matches the provided schema
+        /// </summary>
+        /// <param name="schema">The JSON schema to validate against</param>
+        /// <param name="request">The JSON to validate against the schema</param>
+        /// <returns>Whether the provided JSON matches the schema</returns>
+        public static bool MatchesSchema(string request, string schema)
+        {
+            return JObject.Parse(request).IsValid(JSchema.Parse(schema));
         }
 
         /// <summary>

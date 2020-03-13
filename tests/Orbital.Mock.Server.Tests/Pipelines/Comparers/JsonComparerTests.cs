@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 using Orbital.Mock.Server.Pipelines.Comparers;
 using Xunit;
 
@@ -72,6 +73,16 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
             var path = "\"$..x\"";
             var actual = JsonComparer.PathEqual(path, rule);
+        }
+
+        public void SuccessSchemaMatchValidSchemaMatches()
+        {
+            var rule = @"{
+              'name': 'James',
+              'hobbies': ['A', 'B', 'C', 'D', 'E']
+            }";
+            var valueToEvaluate = "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"hobbies\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}";
+            var actual = JsonComparer.MatchesSchema(rule, valueToEvaluate);
 
             Assert.True(actual);
         }
@@ -135,6 +146,19 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             var actual = JsonComparer.PathEqual(path, rule);
 
             Assert.True(actual);
+        }
+
+        [Fact]
+        public void FailSchemaMatchValidSchemaDoesNotMatch()
+        {
+            var rule = @"{
+              'name': 'James',
+              'hobbies': {}
+            }";
+            var valueToEvaluate = "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"hobbies\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}";
+            var actual = JsonComparer.MatchesSchema(rule, valueToEvaluate);
+
+            Assert.False(actual);
         }
     }
 }
