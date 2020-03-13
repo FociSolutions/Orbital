@@ -16,7 +16,7 @@ export class AddBodyRuleBuilder {
   createNewBodyRuleForm(): FormGroup {
     // the default body rule's rule is none, but the designer mockup does not have an option for none
     // specify a different default with the "ACCEPT ALL" type instead
-    return this.createBodyRuleForm({ rule: {}, type: RuleType.ACCEPTALL } as BodyRule);
+    return this.createBodyRuleForm({ rule: {}, type: RuleType.JSONCONTAINS } as BodyRule);
   }
 
   /**

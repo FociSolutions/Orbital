@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { AddBodyRuleBuilder } from './add-body-rule-builder/add-body-rule.builder';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 
 @Component({
   selector: 'app-body-edit-rule',
@@ -15,7 +17,7 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
 
   @Output() bodyRuleIsDuplicated: EventEmitter<boolean>;
   @Input() bodyMatchRuleFormArray: FormArray;
-  constructor(private logger: NGXLogger, private formbuilder: AddBodyRuleBuilder) {
+  constructor(private logger: NGXLogger, private formbuilder: AddBodyRuleBuilder, private validJsonService: ValidJsonService) {
     this.bodyRuleIsDuplicated = new EventEmitter<boolean>();
     this.bodyRuleIsDuplicated.emit(false);
   }
@@ -32,9 +34,9 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
    * This method listens to the event emitter from the child component and adds the body rule into the list
    * @param bodyRule The body rule being taken in from the child component to be added
    */
-  addBodyEditRuleHandler(bodyRule: any) {
+  addBodyEditRuleHandler(bodyRule: BodyRule) {
     const ruleFound = this.isBodyRuleDuplicate(bodyRule);
-    if (!ruleFound) {
+    if (!ruleFound && this.bodyMatchRuleFormArray.valid) {
       this.bodyRuleIsDuplicated.emit(false);
       const index = this.bodyMatchRuleFormArray.length;
       const newBodyRuleControl = this.formbuilder.createBodyRuleForm(bodyRule);
@@ -58,7 +60,7 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
    * Checks if the body rule is inside the current form array
    * @param bodyRuleToAdd the body rule to check against the existing list
    */
-  private isBodyRuleDuplicate(bodyRuleToAdd: any): boolean {
+  private isBodyRuleDuplicate(bodyRuleToAdd: BodyRule): boolean {
     interface BodyRuleFormGroup {
       rule: string;
       type: number;
@@ -69,7 +71,8 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
         return (group as FormGroup).getRawValue() as BodyRuleFormGroup;
       })
       .some(bodyFormGroup => {
-        return bodyFormGroup.rule === bodyRuleToAdd.rule && bodyFormGroup.type === bodyRuleToAdd.type;
+        return bodyFormGroup.rule === (typeof(bodyRuleToAdd.rule) === 'object' ? JSON.stringify(bodyRuleToAdd.rule) : bodyRuleToAdd.rule)
+            && bodyFormGroup.type === bodyRuleToAdd.type;
       });
   }
 
