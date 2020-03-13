@@ -6,15 +6,15 @@
           <h3 class="subtitle">Rule Type</h3>
           <mat-form-field>
             <mat-label>Body Rule Type</mat-label>
-            <mat-select
-              [value]="this.bodyType"
-              (valueChange)="this.bodyType = $event"
-            >
+            <mat-select [value]="this.bodyType" (valueChange)="this.bodyType = $event">
               <mat-option [value]="bodyRuleTypeValues.JSONCONTAINS">{{
                 bodyRuleTypeValues.JSONCONTAINS | getRuleTypeString
               }}</mat-option>
               <mat-option [value]="bodyRuleTypeValues.JSONEQUALITY">{{
                 bodyRuleTypeValues.JSONEQUALITY | getRuleTypeString
+              }}</mat-option>
+              <mat-option [value]="bodyRuleTypeValues.JSONSCHEMA">{{
+                bodyRuleTypeValues.JSONSCHEMA | getRuleTypeString
               }}</mat-option>
               <mat-option [value]="bodyRuleTypeValues.TEXTCONTAINS">{{
                 bodyRuleTypeValues.TEXTCONTAINS | getRuleTypeString
