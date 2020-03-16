@@ -93,7 +93,7 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
         /// </summary>
         /// <param name="path">The JSON path</param>
         /// <param name="items">The JSON snippet to search</param>
-        /// <returns></returns>
+        /// <returns>Whether the path matches the json string</returns>
         public static bool PathEqual(string path, string items)
         {
             return PathEqual(path, JObject.Parse(items));
