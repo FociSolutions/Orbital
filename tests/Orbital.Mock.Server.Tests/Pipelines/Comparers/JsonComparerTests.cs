@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
+﻿using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Pipelines.Comparers;
 using Xunit;
 
@@ -83,6 +81,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             }";
             var valueToEvaluate = "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"hobbies\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}";
             var actual = JsonComparer.MatchesSchema(rule, valueToEvaluate);
+            Assert.True(actual);
         }
         
         public void SuccessPathExistsJsonComparison()
@@ -165,7 +164,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             var valueToEvaluate = "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"hobbies\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}";
             var actual = JsonComparer.MatchesSchema(rule, valueToEvaluate);
         }
-        
+
+        [Fact]
         public void FailurePathExistsButIsNotInDoubleQuotesJsonComparison()
         {
             var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
