@@ -78,8 +78,8 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
         {
             try
             {
-                var selectedItems = items.SelectToken(JsonConvert.DeserializeObject<string>(path), errorWhenNoMatch: true);
-                return selectedItems != null;
+                var selectedItems = items.SelectTokens(JsonConvert.DeserializeObject<string>(path), errorWhenNoMatch: true);
+                return selectedItems.Any();
             }
             catch (JsonException)
             {
