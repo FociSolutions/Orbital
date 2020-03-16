@@ -136,12 +136,7 @@
         "headerRules": [],
         "queryRules": [],
         "bodyRules": [],
-        "urlRules": [
-          {
-            "type": 10,
-            "rule": { "urlPath": "" }
-          }
-        ]
+        "urlRules": []
       },
       "policies": []
     },
@@ -163,7 +158,7 @@
         "queryRules": [],
         "bodyRules": [
           {
-            "rule": "$..x",
+            "rule": "\"$..x\"",
             "type": 6
           }
         ],

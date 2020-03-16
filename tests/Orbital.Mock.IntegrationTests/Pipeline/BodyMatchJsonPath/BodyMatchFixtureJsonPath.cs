@@ -18,7 +18,7 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.BodyMatchJsonPath
                 Given_a_mock_definition_with_a_body_response,
                 Given_the_mock_definition_has_been_successfully_added,
                 When_the_client_sends_a_get_request_with_a_json_path,
-                Then_the_response_should_contain_the_default_scenario_body);
+                Then_the_response_should_not_contain_the_default_scenario_body);
         }
     }
 }

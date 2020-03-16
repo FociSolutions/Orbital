@@ -17,12 +17,10 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.BodyMatchJsonPath
 
         private HttpResponseMessage httpMessage;
 
-        private readonly string bodyMock =
-            JToken.Parse(CommonData.GetMockDefinitionText(CommonData.MockDefinition.BodyJsonPathMock))["scenarios"][1]
-                ["requestMatchRules"]["bodyRules"][0]["rule"].ToString();
+        private readonly string bodyMock = @"{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}";
 
         private readonly JToken expected = JToken.Parse(
-            JToken.Parse(CommonData.GetMockDefinitionText(CommonData.MockDefinition.BodyJsonPathMock))["scenarios"][0]
+            JToken.Parse(CommonData.GetMockDefinitionText(CommonData.MockDefinition.BodyJsonPathMock))["scenarios"][1]
             ["response"]["body"].ToString());
 
         public BodyMatchFixtureJsonPath_Feature()
@@ -51,7 +49,7 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.BodyMatchJsonPath
             httpMessage = this.client.SendAsync(request).Result;
         }
 
-        private void Then_the_response_should_contain_the_default_scenario_body()
+        private void Then_the_response_should_not_contain_the_default_scenario_body()
         {
             Assert.True(JToken.DeepEquals(
                     JToken.Parse(httpMessage.Content.ReadAsStringAsync().Result),
