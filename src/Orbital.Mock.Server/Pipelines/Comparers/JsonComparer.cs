@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Orbital.Mock.Server.Pipelines.Comparers
 {
@@ -77,7 +78,7 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
         {
             try
             {
-                var selectedItems = items.SelectToken(path.Replace("\"", ""), errorWhenNoMatch: true);
+                var selectedItems = items.SelectToken(JsonConvert.DeserializeObject<string>(path), errorWhenNoMatch: true);
                 return selectedItems != null;
             }
             catch (JsonException)
