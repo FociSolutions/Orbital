@@ -5,7 +5,7 @@
         <div *ngFor="let policy of attributes.controls; let i = index" [formGroup]="policy">
           <div *ngIf="isDelayPolicy(policyType.value)">
             <mat-form-field class="policy-value">
-              <input matInput #inputDelay formControlName="delay" />
+              <input matInput formControlName="delay" />
               <mat-hint> milliseconds to delay response</mat-hint>
             </mat-form-field>
             <div *ngIf="delay.invalid && (delay.dirty || delay.touched)">
