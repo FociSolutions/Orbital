@@ -18,7 +18,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         {
             if (!IsPipelineValid(ref port, GetType())) return port;
 
-            var bestScenario = port.HeaderMatchResults
+            var bestScenarios = port.HeaderMatchResults
                 .Concat(port.BodyMatchResults)
                 .Concat(port.QueryMatchResults)
                 .Concat(port.URLMatchResults)
@@ -27,11 +27,17 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                     !scenarioGrouping.Select(scenarioGroup => scenarioGroup.Match)
                         .Contains(MatchResultType.Fail))
                 .Select(match => new
-            {
-                ScenarioId = match.Key,
-                Score = match.Where(x => x.Match.Equals(MatchResultType.Success)).Sum(x => (int)x.Match)
-            })
-                .OrderByDescending(match => match.Score).FirstOrDefault();
+                {
+                    ScenarioId = match.Key,
+                    Score = match.Where(x => x.Match.Equals(MatchResultType.Success)).Sum(x => (int)x.Match),
+                    DefaultScenario = match.Select(x => x.DefaultScenario).First()
+                })
+                .OrderByDescending(match => match.Score)
+                .ToList();
+
+            // if there are no default scenarios, then choose the first scenario as the best
+            var bestScenario = bestScenarios.Where(scenario => scenario.DefaultScenario == true)
+                .FirstOrDefault() ?? bestScenarios.FirstOrDefault();
 
             port.SelectedResponse = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Response
                 : port.Scenarios.Count() > 0 ? port.Scenarios.First().Response : new MockResponse();
