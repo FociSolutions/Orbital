@@ -91,7 +91,7 @@ export class ImportFromServerViewComponent implements OnInit {
    * The function called on submit. Sets the Mockdefinitions in the DesignerStore
    */
   onSubmit() {
-    for (let mock of this.mockDefinitions){
+    for (const mock of this.mockDefinitions) {
       this.designerStore.appendMockDefinition(mock);
     }
     this.router.navigateByUrl('endpoint-view');

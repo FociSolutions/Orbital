@@ -62,7 +62,7 @@ export class DesignerStore extends Store<State> {
     });
     this.mockDefinition = mockDefinitions[0];
   }
-  
+
   /**
    * Deletes a mock definition by title
    */
