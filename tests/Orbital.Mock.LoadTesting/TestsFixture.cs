@@ -49,20 +49,26 @@ namespace Orbital.Mock.LoadTesting
             }
             finally
             {
-                // wait maximum five seconds for TCP ports to be closed so that other tests
-                // are not interrupted; if this is not used then other tests can fail sometimes
-                // with the error "port is in use"
-                for (int i = 0; i < 10; i++)
-                { 
-                    Task.Delay(TimeSpan.FromSeconds(0.5)).Wait();
-                    try
-                    {
-                        IsServerPortAvailable();
-                        break;
-                    } catch (SocketException)
-                    {
-                        // continue waiting
-                    }
+                WaitForPortToBeAvailable();
+            }
+        }
+
+        private static void WaitForPortToBeAvailable()
+        {
+            // wait maximum five seconds for TCP ports to be closed so that other tests
+            // are not interrupted; if this is not used then other tests can fail sometimes
+            // with the error "port is in use"
+            for (int i = 0; i < 10; i++)
+            {
+                Task.Delay(500).Wait();
+                try
+                {
+                    IsServerPortAvailable();
+                    break;
+                }
+                catch (SocketException)
+                {
+                    // continue waiting
                 }
             }
         }
@@ -81,6 +87,7 @@ namespace Orbital.Mock.LoadTesting
         /// <returns>Returns the process instance of this server.</returns>
         public static void StartServer()
         {
+            WaitForPortToBeAvailable();
             IsServerPortAvailable();
             string workingDirectory = Environment.CurrentDirectory;
             var projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.Parent;
