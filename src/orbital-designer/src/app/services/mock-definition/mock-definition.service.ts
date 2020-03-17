@@ -79,7 +79,8 @@ export class MockDefinitionService {
               queryRules: s.requestMatchRules.queryRules,
               bodyRules: s.requestMatchRules.bodyRules,
               urlRules: s.requestMatchRules.urlRules
-            }
+            },
+            defaultScenario: s.defaultScenario
           }))
         };
         observer.next(true);
@@ -189,7 +190,8 @@ export class MockDefinitionService {
         queryRules: [],
         bodyRules: [],
         urlRules: []
-      }
+      },
+      defaultScenario: false
     } as Scenario;
   }
 }
