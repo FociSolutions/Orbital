@@ -109,7 +109,15 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
         /// <returns>Whether the path matches the json string</returns>
         public static bool PathEqual(string path, string items)
         {
-            return PathEqual(path, JObject.Parse(items));
+            try
+            {
+                return PathEqual(path, JObject.Parse(items));
+            }
+            catch(JsonReaderException)
+            {
+                return false;
+            }
+            
         }
     }
 }
