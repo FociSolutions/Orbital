@@ -16,8 +16,9 @@ namespace Orbital.Mock.LoadTesting
     public sealed class TestsFixture : IDisposable
     {
         public static readonly int ORBITAL_PORT = 5001;
+        public static readonly string LOCALHOST_URL = $"https://localhost:{ORBITAL_PORT}";
         public static readonly string ENDPOINT_PATH = "/api/v1/OrbitalAdmin";
-        public static readonly string ORBITAL_URL = $"https://localhost:{ORBITAL_PORT}{ENDPOINT_PATH}";
+        public static readonly string ORBITAL_URL = $"{LOCALHOST_URL}{ENDPOINT_PATH}";
         public static Process OrbitalServerProcess;
         public TestsFixture()
         {
@@ -169,6 +170,35 @@ namespace Orbital.Mock.LoadTesting
                     Content = new StringContent(File.ReadAllText("./PetStoreBaseMockDefinition.json"), Encoding.UTF8, "application/json")
                 };
 
+                responses.Add(client.SendAsync(requestMessage));
+            }
+
+            // ensure that every response was successful
+            responses.ForEach(response => response.Result.EnsureSuccessStatusCode());
+
+            TestsFixture.TryStopServer();
+        }
+
+        /// <summary>
+        /// Uploads a single mockdefinition to the server, and hits an endpoint multiple times
+        /// </summary>
+        [Fact]
+        public void HitEndpointMultipleTimesTest()
+        {
+            TestsFixture.StartServer();
+
+            // upload mockdefinition
+            client.SendAsync(new HttpRequestMessage(HttpMethod.Post, TestsFixture.ORBITAL_URL)
+            {
+                Content = new StringContent(File.ReadAllText("./PetStoreBaseMockDefinition.json"), Encoding.UTF8, "application/json")
+            }).Wait();
+
+            // hit endpoint
+            var responses = new List<Task<HttpResponseMessage>>();
+
+            for (var i = 0; i < 10; i++)
+            {
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{TestsFixture.LOCALHOST_URL}/pets");
                 responses.Add(client.SendAsync(requestMessage));
             }
 
