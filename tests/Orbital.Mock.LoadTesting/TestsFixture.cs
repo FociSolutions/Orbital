@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Orbital.Mock.LoadTesting
 {
@@ -46,8 +47,29 @@ namespace Orbital.Mock.LoadTesting
             {
                 // do nothing because the process has already quit or does not exist
             }
+            finally
+            {
+                // wait maximum five seconds for TCP ports to be closed so that other tests
+                // are not interrupted; if this is not used then other tests can fail sometimes
+                // with the error "port is in use"
+                for (int i = 0; i < 10; i++)
+                { 
+                    Task.Delay(TimeSpan.FromSeconds(0.5)).Wait();
+                    try
+                    {
+                        IsServerPortAvailable();
+                        break;
+                    } catch (SocketException)
+                    {
+                        // continue waiting
+                    }
+                }
+            }
         }
 
+        /// <summary>
+        /// Stops the Orbital server instance
+        /// </summary>
         public static void TryStopServer()
         {
             TryStopProcess(OrbitalServerProcess);
