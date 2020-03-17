@@ -23,6 +23,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
 
   readonly rules = [
     { value: RuleType.JSONPATH, viewValue: 'JSON: Path' },
+    { value: RuleType.JSONSCHEMA, viewValue: 'JSON: Schema' },
     { value: RuleType.JSONCONTAINS, viewValue: 'JSON: Contains' },
     { value: RuleType.JSONEQUALITY, viewValue: 'JSON: Equality' },
     { value: RuleType.TEXTCONTAINS, viewValue: 'Text: Contains' },
