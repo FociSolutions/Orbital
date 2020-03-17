@@ -24,6 +24,9 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("requestMatchRules")]
         public RequestMatchRules RequestMatchRules { get; set; }
 
+        [JsonProperty("defaultScenario")]
+        public bool defaultScenario { get; set; }
+
         public override bool Equals(object obj)
         {
             return this.Equals(obj as Scenario);
