@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Orbital.Mock.LoadTesting
 {
@@ -16,6 +18,15 @@ namespace Orbital.Mock.LoadTesting
         /// </summary>
 
         private static readonly HttpClient client = new HttpClient();
+
+        private readonly ILogger<LoadTestingTests> _logger;
+
+        public LoadTestingTests(ITestOutputHelper testOutputHelper)
+        {
+            var loggerFactory = new LoggerFactory();
+            loggerFactory.AddProvider(new XunitLoggerProvider(testOutputHelper));
+            _logger = loggerFactory.CreateLogger<LoadTestingTests>();
+        }
 
         [Fact]
         public void SendParallelRequestsTest()
@@ -30,7 +41,10 @@ namespace Orbital.Mock.LoadTesting
             }
 
             // ensure that every response was successful
-            responses.ForEach(response => response.Result.EnsureSuccessStatusCode());
+            responses.ForEach(response => {
+                _logger.LogError("Received response");
+                response.Result.EnsureSuccessStatusCode();
+            });
 
             TestsFixture.TryStopServer();
         }
@@ -56,7 +70,11 @@ namespace Orbital.Mock.LoadTesting
             }
 
             // ensure that every response was successful
-            responses.ForEach(response => response.Result.EnsureSuccessStatusCode());
+            responses.ForEach(response =>
+            {
+                _logger.LogError("Received response");
+                response.Result.EnsureSuccessStatusCode();
+            });
 
             TestsFixture.TryStopServer();
         }
@@ -85,7 +103,11 @@ namespace Orbital.Mock.LoadTesting
             }
 
             // ensure that every response was successful
-            responses.ForEach(response => response.Result.EnsureSuccessStatusCode());
+            responses.ForEach(response =>
+            {
+                _logger.LogError("Received response");
+                response.Result.EnsureSuccessStatusCode();
+            });
 
             TestsFixture.TryStopServer();
         }
@@ -115,7 +137,11 @@ namespace Orbital.Mock.LoadTesting
             var responses = requests.Select(request => client.SendAsync(request)).ToList();
 
             // ensure that every response was successful
-            responses.ForEach(response => response.Result.EnsureSuccessStatusCode());
+            responses.ForEach(response =>
+            {
+                _logger.LogError("Received response");
+                response.Result.EnsureSuccessStatusCode();
+            });
 
             TestsFixture.TryStopServer();
         }
