@@ -1,7 +1,4 @@
-﻿﻿using Newtonsoft.Json.Linq;
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
+﻿using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Pipelines.Comparers;
 using Xunit;
 
