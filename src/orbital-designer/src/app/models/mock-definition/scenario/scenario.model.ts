@@ -14,6 +14,7 @@ export interface Scenario {
   path: string;
   response: Response;
   requestMatchRules: RequestMatchRule;
+  defaultScenario: boolean;
 }
 
 export const defaultScenario: Scenario = {
@@ -22,5 +23,6 @@ export const defaultScenario: Scenario = {
   verb: VerbType.GET,
   path: '',
   response: defaultResponse,
-  requestMatchRules: defaultRquestMatchRule
+  requestMatchRules: defaultRquestMatchRule,
+  defaultScenario: false
 };

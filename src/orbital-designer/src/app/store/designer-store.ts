@@ -266,6 +266,7 @@ export class DesignerStore extends Store<State> {
           scenario.requestMatchRules.queryRules;
         current.requestMatchRules.urlRules =
           scenario.requestMatchRules.urlRules;
+        current.defaultScenario = scenario.defaultScenario;
 
         current.response.body = scenario.response.body;
         current.response.headers = scenario.response.headers;

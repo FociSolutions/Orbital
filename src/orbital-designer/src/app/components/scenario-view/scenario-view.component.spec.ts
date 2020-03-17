@@ -136,7 +136,8 @@ describe('ScenarioViewComponent', () => {
                 rule: {}
               }
             ] as Array<BodyRule>
-          }
+          },
+          defaultScenario: false
         } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -180,7 +181,8 @@ describe('ScenarioViewComponent', () => {
                 rule: {}
               }
             ] as Array<BodyRule>
-          }
+          },
+          defaultScenario: false
         } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -231,7 +233,8 @@ describe('ScenarioViewComponent', () => {
                 rule: {}
               }
             ] as Array<BodyRule>
-          }
+          },
+          defaultScenario: false
         } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -277,7 +280,8 @@ describe('ScenarioViewComponent', () => {
                 rule: {}
               }
             ] as Array<BodyRule>
-          }
+          },
+          defaultScenario: false
         } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -321,7 +325,8 @@ describe('ScenarioViewComponent', () => {
                 rule: {}
               }
             ] as Array<BodyRule>
-          }
+          },
+          defaultScenario: false
         } as Scenario;
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -392,7 +397,8 @@ describe('ScenarioViewComponent', () => {
               rule: {}
             }
           ] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
 
       component.confirmDeleteDialog(scenario);
@@ -426,7 +432,8 @@ describe('ScenarioViewComponent', () => {
               rule: {}
             }
           ] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
 
       component.showDialog(scenario);
@@ -460,7 +467,8 @@ describe('ScenarioViewComponent', () => {
             rule: {}
           }
         ] as Array<BodyRule>
-      }
+      },
+      defaultScenario: false
     } as Scenario;
     scenario.response.status = 404;
     expect(component.getScenarioResponseStatusString(scenario)).toBe(
@@ -493,7 +501,8 @@ describe('ScenarioViewComponent', () => {
             rule: {}
           }
         ] as Array<BodyRule>
-      }
+      },
+      defaultScenario: false
     } as Scenario;
     scenario.response.status = 202;
     expect(component.getScenarioResponseStatusString(scenario)).toBe(
@@ -527,7 +536,8 @@ describe('ScenarioViewComponent', () => {
               rule: {}
             }
           ] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
       store.updateScenarios([scenario]);
       component.deleteScenario(scenario);

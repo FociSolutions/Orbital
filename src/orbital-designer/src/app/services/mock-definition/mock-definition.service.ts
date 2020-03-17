@@ -42,7 +42,8 @@ export class MockDefinitionService {
               queryRules: s.requestMatchRules.queryRules || ([] as KeyValuePairRule[]),
               bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[]),
               urlRules: s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
-            }
+            },
+            defaultScenario: s.defaultScenario || false
           }))
         };
         const titlemockdef = (content as MockDefinition).metadata.title;

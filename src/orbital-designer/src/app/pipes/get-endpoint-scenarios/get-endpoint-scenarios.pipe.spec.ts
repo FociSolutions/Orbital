@@ -43,7 +43,8 @@ describe('GetEndpointScenariosPipe', () => {
             rule: {}
           }
         ] as Array<BodyRule>
-      }
+      },
+      defaultScenario: false
     } as Scenario;
     const mockpaths = mockPath + faker.random.words;
     const mockVerbs = faker.random.arrayElement([
@@ -74,7 +75,8 @@ describe('GetEndpointScenariosPipe', () => {
             rule: {}
           }
         ] as Array<BodyRule>
-      }
+      },
+      defaultScenario: false
     } as Scenario;
     const mockEndpoint = {
       path: mockPath,
@@ -121,7 +123,8 @@ describe('GetEndpointScenariosPipe', () => {
             rule: {}
           }
         ] as Array<BodyRule>
-      }
+      },
+      defaultScenario: false
     } as Scenario;
     const mockpaths = (mockPath + faker.random.words()) as string;
     const mockVerbs = faker.random.number({min: 0, max: 3});
@@ -147,7 +150,8 @@ describe('GetEndpointScenariosPipe', () => {
             rule: {}
           }
         ] as Array<BodyRule>
-      }
+      },
+      defaultScenario: false
     } as Scenario;
     const mockEndpoint = {
       path: mockPath,
@@ -194,7 +198,8 @@ describe('GetEndpointScenariosPipe', () => {
             rule: {}
           }
         ] as Array<BodyRule>
-      }
+      },
+      defaultScenario: false
     } as Scenario;
     const mockpaths = mockPath + faker.random.words();
     const mockVerbs = faker.random.arrayElement([
@@ -225,7 +230,8 @@ describe('GetEndpointScenariosPipe', () => {
             rule: {}
           }
         ] as Array<BodyRule>
-      }
+      },
+      defaultScenario: false
     } as Scenario;
 
     const results = pipe.transform(

@@ -55,7 +55,8 @@ describe('MockDefinitionService', () => {
           headerRules: [],
           queryRules: [],
           bodyRules: [{}] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
 
       scenario.metadata.title = faker.random.words();
@@ -94,7 +95,8 @@ describe('MockDefinitionService', () => {
           headerRules: [],
           queryRules: [],
           bodyRules: [{}] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -141,7 +143,8 @@ describe('MockDefinitionService', () => {
           headerRules: [],
           queryRules: [],
           bodyRules: [{}] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -182,7 +185,8 @@ describe('MockDefinitionService', () => {
           headerRules: [],
           queryRules: [],
           bodyRules: [{}] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
@@ -224,7 +228,8 @@ describe('MockDefinitionService', () => {
           headerRules: [],
           queryRules: [],
           bodyRules: [{}] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
       scenario.metadata.title = faker.random.words();
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
