@@ -102,16 +102,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
         }
 
         [Fact]
-        public void SuccessPathExistsJsonComparison()
-        {
-            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
-            var path = "\"$..x\"";
-            var actual = JsonComparer.PathEqual(path, rule);
-
-            Assert.True(actual);
-        }
-
-        [Fact]
         public void FailurePathExistsButIsNotInDoubleQuotesJsonComparison()
         {
             var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
