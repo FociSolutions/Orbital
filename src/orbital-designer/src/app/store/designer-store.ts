@@ -224,6 +224,7 @@ export class DesignerStore extends Store<State> {
         current.requestMatchRules.headerRules = scenario.requestMatchRules.headerRules;
         current.requestMatchRules.queryRules = scenario.requestMatchRules.queryRules;
         current.requestMatchRules.urlRules = scenario.requestMatchRules.urlRules;
+        current.defaultScenario = scenario.defaultScenario;
 
         current.policies = scenario.policies;
 
