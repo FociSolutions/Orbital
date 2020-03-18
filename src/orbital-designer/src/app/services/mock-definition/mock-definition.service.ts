@@ -41,7 +41,8 @@ export class MockDefinitionService {
               bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[]),
               urlRules: s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
             },
-            policies: s.policies || ([] as Policy[])
+            policies: s.policies || ([] as Policy[]),
+            defaultScenario: s.defaultScenario || false
           }))
         };
         const titlemockdef = (content as MockDefinition).metadata.title;
@@ -80,7 +81,8 @@ export class MockDefinitionService {
             },
             policies: {
               ...s.policies
-            }
+            },
+            defaultScenario: s.defaultScenario
           }))
         };
         observer.next(true);
@@ -204,7 +206,8 @@ export class MockDefinitionService {
         bodyRules: [],
         urlRules: []
       },
-      policies: []
+      policies: [],
+      defaultScenario: false
     } as Scenario;
   }
 }

@@ -142,6 +142,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       this.selectedScenario.response.headers = this.response.headers;
       this.selectedScenario.response.status = this.response.status;
 
+      this.selectedScenario.defaultScenario = false;
+
       this.store.addOrUpdateScenario(this.selectedScenario);
 
       this.logger.debug('ScenarioEditorComponent:saveScenario: Updated the provided scenario', this.selectedScenario);
@@ -247,7 +249,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         bodyRules: [],
         urlRules: []
       } as RequestMatchRule,
-      policies: [] as Policy[]
+      policies: [] as Policy[],
+      defaultScenario: false
     } as Scenario;
   }
 }
