@@ -1,41 +1,35 @@
 {
-  "scenarios": [
-    {
-      "id": "98fdbd41-14e5-401d-833f-59292018557f",
-      "metadata": {
-        "title": "Get Header List Filtered",
-        "description": "Gets the list of pets but filters out based on animal type"
-      },
-      "verb": 0,
-      "path": "/petUrl/{petId}",
-      "response": {
-        "headers": {},
-        "status": 200,
-        "body": "{\n  \"petUrl\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
-      },
-      "requestMatchRules": {
-        "headerRules": [],
-        "queryRules": [],
-        "bodyRules": [],
-        "urlRules": [
-          {
-            "type": 10,
-            "rule": { "urlPath": "" }
-          }
-        ]
-      },
-      "policies": []
-    }
-  ],
-  "host": "petstore.swagger.io",
-  "basePath": "/v1",
-  "openApi": {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "Swagger Petstore",
-      "license": { "name": "MIT" }
-    },
+    "scenarios": [
+      {
+        "id": "98fdbd41-14e5-401d-833f-59292018557f",
+        "metadata": {
+          "title": "Get Header List Filtered",
+          "description": "Gets the list of pets but filters out based on animal type"
+        },
+        "verb": 0,
+        "path": "/petUrl/{petId}",
+        "response": {
+          "headers": {},
+          "status": "200",
+          "body": "{\n  \"petUrl\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
+        },
+        "requestMatchRules": {
+          "urlRules": [
+            {
+              "type": 10,
+              "rule": {
+                "url": ""
+              }
+            }
+          ],
+          "headerRules": [],
+          "queryRules": [],
+          "bodyRules": []
+        },
+        "defaultScenario": false,
+        "policies": []
+      }
+    ],
     "host": "petstore.swagger.io",
     "basePath": "/v1",
     "schemes": [ "http" ],
