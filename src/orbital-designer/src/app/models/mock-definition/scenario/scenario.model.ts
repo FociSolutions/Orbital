@@ -18,7 +18,7 @@ export interface Scenario {
   policies: Policy[];
 }
 
-export const defaultScenario: Scenario = {
+export const emptyScenario: Scenario = {
   id: uuid.v4(),
   metadata: defaultMetadata,
   verb: VerbType.GET,
