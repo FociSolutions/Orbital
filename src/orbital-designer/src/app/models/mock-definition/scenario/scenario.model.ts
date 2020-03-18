@@ -16,7 +16,7 @@ export interface Scenario {
   response: Response;
   requestMatchRules: RequestMatchRule;
   policies: Policy[];
-  defaultScenario: false;
+  defaultScenario: boolean;
 }
 
 export const emptyScenario: Scenario = {
