@@ -170,6 +170,6 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   toggleDefaultScenario(scenario: Scenario) {
     this.scenarioList.forEach(aScenario => aScenario.defaultScenario = false);
     scenario.defaultScenario = true;
-    this.logger.debug("Set default scenario to ", scenario);
+    this.logger.debug('Set default scenario to ', scenario);
   }
 }
