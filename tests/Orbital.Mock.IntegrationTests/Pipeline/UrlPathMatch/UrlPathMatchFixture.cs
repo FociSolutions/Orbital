@@ -22,7 +22,7 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.UrlPathMatch
             this.mockDefinitionUrlJson = JToken.Parse(CommonData.GetMockDefinitionText(CommonData.MockDefinition.UrlMock));
             var mockDefinition = this.mockDefinitionUrlJson.ToObject<MockDefinition>();
             this.scenario = mockDefinition.Scenarios[0];
-            this.request = new HttpRequestMessage(new HttpMethod(this.scenario.Verb.ToString()), $"{CommonData.ServerBaseUri}{this.scenario.Path}");
+            this.request = new HttpRequestMessage(new HttpMethod(this.scenario.Verb.ToString()), $"{CommonData.ServerBaseUri}/petUrl/1");
         }
 
         private void Given_the_server_has_a_mock_definition_with_scenarios_with_url_rules_to_match_against()

@@ -30,11 +30,7 @@ import { EndpointListItemComponent } from './components/endpoint-view/endpoint-l
 import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
-import { MatExpansionModule, MatChipsModule, MatSnackBar, MatSnackBarModule } from '@angular/material';
-import { AddBodyRuleComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule/add-body-rule.component';
-import { AddBodyRuleContainerComponent } from './components/scenario-editor/add-body-rule-container/add-body-rule-container.component';
-// tslint:disable-next-line: max-line-length
-import { BodyRuleListItemComponent } from './components/scenario-editor/add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
+import { MatExpansionModule, MatChipsModule, MatSnackBarModule } from '@angular/material';
 import { AddMetadataComponent } from './components/scenario-editor/add-metadata/add-metadata.component';
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
@@ -49,10 +45,13 @@ import { UrlEditRuleComponent } from './components/scenario-editor/url-edit-rule
 import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
 // tslint:disable-next-line: max-line-length
 import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
-import { NotificationService } from './services/notification-service/notification.service';
 import { PolicyAddComponent } from './components/scenario-editor/policy-container/policy-add/policy-add.component';
 import { PolicyEditComponent } from './components/scenario-editor/policy-container/policy-edit/policy-edit.component';
 import { PolicyComponent } from './components/scenario-editor/policy-container/policy/policy.component';
+import { BodyAddRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
+// tslint:disable-next-line: max-line-length
+import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
+import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
 
 @NgModule({
   declarations: [
@@ -72,9 +71,6 @@ import { PolicyComponent } from './components/scenario-editor/policy-container/p
     EndpointListItemComponent,
     ScenarioViewComponent,
     ScenarioEditorComponent,
-    AddBodyRuleComponent,
-    AddBodyRuleContainerComponent,
-    BodyRuleListItemComponent,
     AddRequestMatchRuleComponent,
     AddMetadataComponent,
     GetVerbStringPipe,
@@ -89,7 +85,10 @@ import { PolicyComponent } from './components/scenario-editor/policy-container/p
     UrlListItemRuleTypeComponent,
     PolicyAddComponent,
     PolicyEditComponent,
-    PolicyComponent
+    PolicyComponent,
+    BodyAddRuleComponent,
+    BodyListItemRuleTypeComponent,
+    BodyEditRuleComponent
   ],
   imports: [
     BrowserModule,

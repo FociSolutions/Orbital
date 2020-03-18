@@ -18,11 +18,11 @@ import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
   styleUrls: ['./scenario-editor.component.scss']
 })
 export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentChecked {
-  readonly headerMatchRuleTitle = 'Header Match Rule';
-  readonly headerMatchRuleListTitle = 'Header Rules';
 
-  readonly queryMatchRuleTitle = 'Query Match Rule';
-  readonly queryMatchRuleListTitle = 'Query Rules';
+
+
+
+
 
   scenarioId: string;
   selectedScenario: Scenario;
@@ -86,13 +86,6 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
     this.storeSubscription.unsubscribe();
   }
 
-  /**
-   * Goes back to the scenarios view
-   */
-  goToScenarios() {
-    this.router.navigateByUrl('scenario-view');
-  }
-
   /*
    * Saves the metadata to the scenario editor
    * @param metadata The metadata input from the component
@@ -116,12 +109,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   }
 
   saveScenario() {
-    if (
-      this.metadataMatchRuleValid &&
-      this.requestMatchRuleValid &&
-      this.responseMatchRuleValid &&
-      this.scenarioFormGroup.valid
-    ) {
+    if (this.metadataMatchRuleValid && this.scenarioFormGroup.valid && this.responseMatchRuleValid) {
       this.logger.debug(
         'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
         this.selectedScenario
@@ -138,12 +126,15 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       const newQueryRules = this.scenarioFormMapper.GetHeaderOrQueryRulesFromForm(
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.queryMatchRules as FormArray
       );
+      const newBodyRules = this.scenarioFormMapper.GetBodyRulesFromForm(
+        (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.bodyMatchRules as FormArray
+      );
 
       this.selectedScenario.metadata.title = this.metadata.title;
       this.selectedScenario.metadata.description = this.metadata.description;
-      this.selectedScenario.requestMatchRules.bodyRules = this.requestMatchRule.bodyRules;
       this.selectedScenario.requestMatchRules.headerRules = newHeaderRules;
       this.selectedScenario.requestMatchRules.queryRules = newQueryRules;
+      this.selectedScenario.requestMatchRules.bodyRules = newBodyRules;
       this.selectedScenario.requestMatchRules.urlRules = newUrlRules;
       this.selectedScenario.policies = newPolicyRules;
 

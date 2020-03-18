@@ -11,9 +11,6 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
-import { AddBodyRuleContainerComponent } from './add-body-rule-container/add-body-rule-container.component';
-import { AddBodyRuleComponent } from './add-body-rule-container/add-body-rule/add-body-rule.component';
-import { BodyRuleListItemComponent } from './add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 import { AddMetadataComponent } from './add-metadata/add-metadata.component';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
@@ -33,12 +30,15 @@ import { UrlAddRuleComponent } from './url-edit-rule/url-add-rule/url-add-rule.c
 import { UrlEditRuleComponent } from './url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { PolicyComponent } from './policy-container/policy/policy.component';
 import { PolicyAddComponent } from './policy-container/policy-add/policy-add.component';
 import { PolicyEditComponent } from './policy-container/policy-edit/policy-edit.component';
 import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinition/export-mockdefinition.service';
+import { BodyListItemRuleTypeComponent } from './add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
+import { BodyAddRuleComponent } from './add-body-rule-edit/body-add-rule/body-add-rule.component';
+import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -52,9 +52,6 @@ describe('ScenarioEditorComponent', () => {
         SideBarComponent,
         GetEndpointScenariosPipe,
         OverviewHeaderComponent,
-        AddBodyRuleContainerComponent,
-        AddBodyRuleComponent,
-        BodyRuleListItemComponent,
         AddMetadataComponent,
         AddRequestMatchRuleComponent,
         AddResponseComponent,
@@ -68,7 +65,10 @@ describe('ScenarioEditorComponent', () => {
         UrlListItemRuleTypeComponent,
         PolicyComponent,
         PolicyAddComponent,
-        PolicyEditComponent
+        PolicyEditComponent,
+        BodyEditRuleComponent,
+        BodyListItemRuleTypeComponent,
+        BodyAddRuleComponent
       ],
       imports: [
         LoggerTestingModule,
@@ -82,14 +82,14 @@ describe('ScenarioEditorComponent', () => {
         MatIconModule,
         MatChipsModule
       ],
-      providers: [DesignerStore, ExportMockdefinitionService]
+      providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
-    scenarioBuilder = new ScenarioFormBuilder(new FormBuilder());
+    scenarioBuilder = TestBed.get(ScenarioFormBuilder);
     component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
     component.selectedScenario = defaultScenario;
     fixture.detectChanges();

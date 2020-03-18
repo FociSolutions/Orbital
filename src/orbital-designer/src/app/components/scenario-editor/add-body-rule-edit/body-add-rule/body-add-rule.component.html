@@ -1,0 +1,43 @@
+<mat-card class="body-add-card">
+  <mat-card-content>
+    <form class="body-add" [formGroup]="bodyAddRuleFormGroup">
+      <div class="row">
+        <mat-form-field class="body-type">
+          <mat-label>Select Rule</mat-label>
+          <mat-select formControlName="type" name="rules">
+            <mat-option *ngFor="let r of rules" [value]="r.value">
+              {{ r.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="body-value">
+          <mat-label>Value</mat-label>
+          <textarea matInput id="bodyaddrule" formControlName="rule"></textarea>
+        </mat-form-field>
+        <button mat-mini-fab class="add-button" color="primary" (click)="addBodyRule()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="rule.invalid && (rule.dirty || rule.touched)">
+      <mat-error *ngIf="rule.errors.required">
+        Body rule is required
+      </mat-error>
+      <mat-error *ngIf="rule.errors.invalidJson">
+        Body rule must be valid JSON
+      </mat-error>
+    </div>
+
+    <div *ngIf="type.invalid && (type.dirty || type.touched)">
+      <mat-error *ngIf="type.errors.required">
+        Body rule type is required
+      </mat-error>
+    </div>
+    <div *ngIf="this.isRuleDuplicated">
+      <mat-error>
+        Rule already exists
+      </mat-error>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -74,7 +74,6 @@ export class ShuttleSubListComponent implements OnInit {
 
   /**
    * Outputs the selected items through the itemSelected emitter
-   * @param event The MatSelectionListChange emitted from the material selection list component
    */
   optionSelected() {
     this.emitSearchResultsSelected();

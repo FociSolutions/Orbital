@@ -6,8 +6,7 @@ import {
   EventEmitter,
   SimpleChanges,
   ViewChild,
-  OnChanges,
-  ElementRef
+  OnChanges
 } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 
@@ -29,7 +28,6 @@ export class SearchBarComponent implements OnInit, OnChanges {
    * Function that takes a string and a list as input and filters out the matlist
    * based on the input text
    * @param value The string to be searched
-   * @param list the list to filter out of
    */
 
   onSearchInput(value: string) {

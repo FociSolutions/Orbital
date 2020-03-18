@@ -1,0 +1,23 @@
+<p class="description">Add New Body Match Rule</p>
+
+<div class="body-edit-rule">
+  <mat-divider class="divider-padding"></mat-divider>
+  <app-body-add-rule
+    class="add-rule"
+    (bodyRuleAddedEventEmitter)="addBodyEditRuleHandler($event)"
+    [bodyRuleAddedIsDuplicated]="this.bodyRuleIsDuplicated"
+  ></app-body-add-rule>
+</div>
+
+<ng-template [ngIf]="this.bodyMatchRuleFormArray.controls.length" [ngIfElse]="noRulesAdded">
+  <div *ngFor="let bodyruleform of bodyMatchRuleFormArray.controls; let i = index">
+    <app-body-list-item-rule-type
+      [bodyEditRuleFormGroup]="bodyruleform"
+      (bodyRuleRemovedEventEmitter)="deleteBodyEditRuleHandler(i)"
+    ></app-body-list-item-rule-type>
+  </div>
+</ng-template>
+
+<ng-template #noRulesAdded>
+  No body rules added
+</ng-template>

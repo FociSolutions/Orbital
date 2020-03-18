@@ -16,20 +16,20 @@ import { DesignerStore } from 'src/app/store/designer-store';
 export class ImportFromServerViewComponent implements OnInit {
   static readonly urlMaxLength = 2048;
   readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
-  readonly invalidMockDefinitionsFoundErrorMessage = 'One or more invalid Mockdefinition(s) found';
+
 
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
   options: object = {};
   body?: string = null;
-  httpMethod = 'GET';
+
   concatToURI = '';
 
   inputControl: FormControl;
   requestInProgress = false;
   title = 'Server URI';
-  buttonName = 'Submit';
+
   errors: string;
 
   controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;

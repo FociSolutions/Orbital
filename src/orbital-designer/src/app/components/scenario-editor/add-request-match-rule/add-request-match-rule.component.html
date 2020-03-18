@@ -58,12 +58,8 @@
           </mat-panel-title>
           <mat-divider></mat-divider>
         </mat-expansion-panel-header>
-        <app-add-body-rule-container
-          [bodyRules]="this.requestMatchRule?.bodyRules"
-          [saveBodyRules]="this.shouldSave"
-          (bodyRulesOutput)="handleBodyOutput($event)"
-        >
-        </app-add-body-rule-container>
+        <app-body-edit-rule [bodyMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.bodyMatchRules">
+        </app-body-edit-rule>
       </mat-expansion-panel>
     </mat-accordion>
   </mat-expansion-panel>

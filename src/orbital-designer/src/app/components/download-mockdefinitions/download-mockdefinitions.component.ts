@@ -31,7 +31,7 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  itemToStringFn = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
+
 
   /**
    * Completes event emitter

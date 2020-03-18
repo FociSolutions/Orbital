@@ -74,14 +74,6 @@ app-add-response {
   margin-bottom: 1em;
 }
 
-.header-key {
-  width: 45px;
-}
-
-.header-value {
-  width: 156px;
-}
-
 .key-value-item div button {
   width: 20px;
   height: 20px;
@@ -91,16 +83,6 @@ app-add-response {
 div.flex-space-between {
   display: flex;
   justify-content: space-between;
-}
-
-div.flex-space-between-large {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.status-code-text {
-  width: 100px;
 }
 
 .overlay {

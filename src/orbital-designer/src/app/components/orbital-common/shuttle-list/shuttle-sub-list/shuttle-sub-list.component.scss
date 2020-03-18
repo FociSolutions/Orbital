@@ -50,11 +50,6 @@
   }
 }
 
-mat-checkbox,
-::ng-deep mat-list-option > .mat-list-item-content {
-  padding-left: 1em;
-}
-
 mat-selection-list::-webkit-scrollbar {
   width: 5px;
 }

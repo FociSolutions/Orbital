@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
+﻿using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Pipelines.Comparers;
 using Xunit;
 
@@ -76,6 +74,15 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             }";
             var valueToEvaluate = "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"hobbies\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}";
             var actual = JsonComparer.MatchesSchema(rule, valueToEvaluate);
+            Assert.True(actual);
+        }
+        
+        [Fact]
+        public void SuccessPathExistsJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "\"$..x\"";
+            var actual = JsonComparer.PathEqual(path, rule);
 
             Assert.True(actual);
         }
@@ -89,8 +96,67 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Comparers
             }";
             var valueToEvaluate = "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"hobbies\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}}}";
             var actual = JsonComparer.MatchesSchema(rule, valueToEvaluate);
+        }
+
+        [Fact]
+        public void FailurePathExistsButIsNotInDoubleQuotesJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "$..x";
+            var actual = JsonComparer.PathEqual(path, rule);
 
             Assert.False(actual);
+        }
+
+        [Fact]
+        public void FailurePathIsInvalidJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "\"$...\"";
+            var actual = JsonComparer.PathEqual(path, rule);
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void FailurePathDoesNotExistJsonComparison()
+        {
+            var rule = JObject.Parse("{'x': {'a': 'c'}, 'xy': {'a': 'd', 'b': {'a': 'b'}}}");
+            var path = "\"$..y\"";
+            var actual = JsonComparer.PathEqual(path, rule);
+
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void SuccessPathWithSingleQuotes()
+        {
+            string json = "{\n" +
+            "  \"firstName\": \"John\",\n" +
+            "  \"lastName\" : \"doe\",\n" +
+            "  \"age\"      : 26,\n" +
+            "  \"address\"  : {\n" +
+            "    \"streetAddress\": \"naist street\",\n" +
+            "    \"city\"         : \"Nara\",\n" +
+            "    \"postalCode\"   : \"630-0192\"\n" +
+            "  },\n" +
+            "  \"phoneNumbers\": [\n" +
+            "    {\n" +
+            "      \"type\"  : \"iPhone\",\n" +
+            "      \"number\": \"0123-4567-8888\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"type\"  : \"home\",\n" +
+            "      \"number\": \"0123-4567-8910\"\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}";
+
+            var rule = JObject.Parse(json);
+            var path = "\"$.phoneNumbers[?(@.type=='iPhone')].type\"";
+            var actual = JsonComparer.PathEqual(path, rule);
+
+            Assert.True(actual);
         }
     }
 }

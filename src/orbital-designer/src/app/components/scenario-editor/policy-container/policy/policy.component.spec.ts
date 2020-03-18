@@ -31,8 +31,9 @@ describe('PolicyComponent', () => {
     fixture = TestBed.createComponent(PolicyComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
+    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
     designerStore.selectedScenario = defaultScenario;
-    const scenarioFormGroup = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.policyFormArray = scenarioFormGroup.get('policies') as FormArray;
     fixture.detectChanges();
   });

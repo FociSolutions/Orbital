@@ -16,12 +16,4 @@ mat-form-field {
     }
   }
 
-  ::ng-deep .mat-form-field-underline {
-    position: relative;
-    bottom: auto;
-  }
-
-  ::ng-deep .mat-form-field-subscript-wrapper {
-    position: static !important;
-  }
 }

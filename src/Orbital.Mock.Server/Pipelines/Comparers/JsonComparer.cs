@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Orbital.Mock.Server.Pipelines.Comparers
 {
@@ -77,6 +78,46 @@ namespace Orbital.Mock.Server.Pipelines.Comparers
                 }                
             }
             return false;
+        }
+
+        /// <summary>
+        /// Checks if a JSON path exists in a JSON snippet. It does not find the value associated with the path,
+        /// just whether it exists.
+        /// </summary>
+        /// <param name="path">The JSON path</param>
+        /// <param name="items">The JSON snippet to search</param>
+        /// <returns></returns>
+        public static bool PathEqual(string path, JToken items)
+        {
+            try
+            {
+                var selectedItems = items.SelectTokens(JsonConvert.DeserializeObject<string>(path), errorWhenNoMatch: true);
+                return selectedItems.Any();
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks if a JSON path exists in a JSON snippet. It does not find the value associated with the path,
+        /// just whether it exists.
+        /// </summary>
+        /// <param name="path">The JSON path</param>
+        /// <param name="items">The JSON snippet to search</param>
+        /// <returns>Whether the path matches the json string</returns>
+        public static bool PathEqual(string path, string items)
+        {
+            try
+            {
+                return PathEqual(path, JObject.Parse(items));
+            }
+            catch(JsonReaderException)
+            {
+                return false;
+            }
+            
         }
     }
 }

@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Scenario, defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefault, recordAdd, recordFirstOrDefaultKey } from 'src/app/models/record';
+import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
-import { ɵangular_packages_platform_browser_dynamic_testing_testing_b } from '@angular/platform-browser-dynamic/testing';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
+import { AddBodyRuleBuilder } from '../add-body-rule-edit/add-body-rule-builder/add-body-rule.builder';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type'
 export class ScenarioFormBuilder {
   private scenarioForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private bodyRuleFormBuilder: AddBodyRuleBuilder) {}
 
   /**
    * Generates a form group for a scenario with default values
@@ -66,7 +67,9 @@ export class ScenarioFormBuilder {
         requestMatchRules.queryRules.map(q => this.getHeaderOrQueryItemFormGroup(q))
       ),
       urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map(u => this.getUrlItemFormGroup(u))),
-      bodyMatchRules: this.formBuilder.array
+      bodyMatchRules: this.formBuilder.array(
+        requestMatchRules.bodyRules.map(u => this.bodyRuleFormBuilder.createBodyRuleForm(u))
+      )
     });
   }
 
@@ -131,6 +134,7 @@ export class ScenarioFormBuilder {
       type: new FormControl(headerOrQueryRule.type, [Validators.required])
     });
   }
+
 }
 
 @Injectable({
@@ -174,6 +178,16 @@ export class ScenarioFormMapper {
     return newPolicies;
   }
 
+  public GetBodyRulesFromForm(bodyRules: FormArray) {
+    let newBodyRules: BodyRule[];
+
+    newBodyRules = bodyRules.controls.map(group => {
+      const rawValue = (group as FormGroup).getRawValue();
+      return this.getBodyRule(rawValue);
+    });
+    return newBodyRules;
+  }
+
   /**
    * Transforms FormGroup into the appropiate policy
    * @param policytype The type of policy
@@ -198,7 +212,7 @@ export class ScenarioFormMapper {
 
   /**
    * Transforms FormGroup into the appropriate query or header rule
-   * @param keyValueRuleMatchRules raw rules to be transformed
+   * @param headerOrQuerRules The header or query rules form array to extract from
    */
   public GetHeaderOrQueryRulesFromForm(headerOrQuerRules: FormArray) {
     interface HeaderQueryRuleFormGroup {
@@ -220,5 +234,14 @@ export class ScenarioFormMapper {
         } as KeyValuePairRule;
       });
     return kvpRules;
+  }
+
+  /*
+   * Transforms FormGroup into the appropiate policy
+   * @param policytype The type of policy
+   * @param rawValue The raw FormGroup value to be transformed
+   */
+  private getBodyRule(rawValue: any): BodyRule {
+    return { rule: rawValue.rule, type: rawValue.type } as BodyRule;
   }
 }

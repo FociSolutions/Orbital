@@ -27,6 +27,7 @@
     "file-saver": "^2.0.2",
     "http-status-codes": "^1.4.0",
     "js-yaml": "^3.13.1",
+    "jsonpath": "^1.0.2",
     "lodash.clonedeep": "^4.5.0",
     "ngx-logger": "^4.0.3",
     "openapi-schema-validator": "^3.0.3",

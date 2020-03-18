@@ -28,7 +28,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const matchRuleFormArraySubscription = this.matchRuleFormArray.valueChanges.subscribe(rules => {
+    const matchRuleFormArraySubscription = this.matchRuleFormArray.valueChanges.subscribe(() => {
       this.logger.debug('KvpEditRuleComponent checking for duplicate rules : ', this.matchRuleFormArray);
       this.checkForDuplicates();
     });
@@ -46,7 +46,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
 
   /**
    * This method listens to the event emitter from the child component and adds the KeyValue pair into the list
-   * @param kvp The KeyValue pair rule being taken in from the child component to be added
+   * @param kvpToAdd The key-value pair to add to the list
    */
   addKvp(kvpToAdd: KeyValuePairRule) {
     const rulefound = this.isRuleDuplicate(kvpToAdd);

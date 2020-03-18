@@ -11,7 +11,7 @@ import {
   MatIconModule,
   MatCheckboxModule
 } from '@angular/material';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
 import { KvpAddComponent } from '../../orbital-common/kvp-edit/kvp-add/kvp-add.component';
@@ -20,9 +20,6 @@ import { KvpListItemComponent } from '../../orbital-common/kvp-edit/kvp-list-ite
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { AddBodyRuleContainerComponent } from '../add-body-rule-container/add-body-rule-container.component';
-import { AddBodyRuleComponent } from '../add-body-rule-container/add-body-rule/add-body-rule.component';
-import { BodyRuleListItemComponent } from '../add-body-rule-container/body-rule-list-item/body-rule-list-item.component';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { KvpEditRuleComponent } from '../kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from '../kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
@@ -33,6 +30,9 @@ import { UrlEditRuleComponent } from '../url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from '../url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
+import { BodyEditRuleComponent } from '../add-body-rule-edit/body-edit-rule.component';
+import { BodyListItemRuleTypeComponent } from '../add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
+import { BodyAddRuleComponent } from '../add-body-rule-edit/body-add-rule/body-add-rule.component';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -45,16 +45,16 @@ describe('AddRequestMatchRuleComponent', () => {
         KvpAddComponent,
         KvpEditComponent,
         KvpListItemComponent,
-        AddBodyRuleContainerComponent,
-        AddBodyRuleComponent,
-        BodyRuleListItemComponent,
         KvpEditRuleComponent,
         KvpListItemRuleTypeComponent,
         GetRuleTypeStringPipe,
         KvpAddRuleComponent,
         UrlAddRuleComponent,
         UrlEditRuleComponent,
-        UrlListItemRuleTypeComponent
+        UrlListItemRuleTypeComponent,
+        BodyEditRuleComponent,
+        BodyListItemRuleTypeComponent,
+        BodyAddRuleComponent
       ],
       imports: [
         LoggerTestingModule,
@@ -71,7 +71,7 @@ describe('AddRequestMatchRuleComponent', () => {
         MatCheckboxModule,
         ReactiveFormsModule
       ],
-      providers: [DesignerStore]
+      providers: [DesignerStore, ScenarioFormBuilder]
     }).compileComponents();
   }));
 
@@ -79,7 +79,8 @@ describe('AddRequestMatchRuleComponent', () => {
     fixture = TestBed.createComponent(AddRequestMatchRuleComponent);
     component = fixture.componentInstance;
 
-    const scenarioForm = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
+    const scenarioForm = scenarioFormBuilder.createNewScenarioForm();
     component.requestMatchRuleFormGroup = scenarioForm.controls.requestMatchRules as FormGroup;
 
     component.requestMatchRule = ({
@@ -92,14 +93,6 @@ describe('AddRequestMatchRuleComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('add-request-match-rule.handleBodyOutput', () => {
-    it('should set the body match rules if it is truthy', () => {
-      const bodyMatchRules = [{ type: RuleType.JSONEQUALITY, rule: { a: faker.random.word() } }] as BodyRule[];
-      component.handleBodyOutput(bodyMatchRules);
-      expect(component.bodyMatchRules).toEqual(bodyMatchRules);
-    });
   });
 
   describe('AddRequestMatchRule.Save', () => {

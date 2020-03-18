@@ -40,6 +40,7 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
                 case ComparerType.JSONSCHEMA:
                     return JsonComparer.MatchesSchema(assert.Actual, assert.Expect);
                 case ComparerType.JSONPATH:
+                    return JsonComparer.PathEqual(assert.Expect, assert.Actual);
                 default:
                     return false;
             }

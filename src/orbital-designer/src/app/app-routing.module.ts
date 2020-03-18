@@ -1,4 +1,4 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OverviewRedirectService } from './services/overview-redirect/overview-redirect.service';
 import { HomeViewComponent } from './components/home-view/home-view.component';

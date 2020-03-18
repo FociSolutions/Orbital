@@ -4,7 +4,7 @@ import * as uuid from 'uuid';
 import { MockDefinitionService } from './mock-definition.service';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import validMockDefinitionFile from '../../../test-files/test-mockdefinition-file.mock';
-import { DesignerStore } from './../../store/designer-store';
+import { DesignerStore } from '../../store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -65,7 +65,7 @@ describe('MockDefinitionService', () => {
 
     const scenarioToClone = JSON.parse(JSON.stringify(scenarios[0]));
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
+      next: () => {
         expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy') !== -1)).toBeTruthy();
       }
     });
@@ -107,12 +107,12 @@ describe('MockDefinitionService', () => {
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe();
 
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
+      next: () => {
         expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 2') !== -1)).toBeTruthy();
       }
     });
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
+      next: () => {
         expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 3') !== -1)).toBeTruthy();
       }
     });
@@ -152,7 +152,7 @@ describe('MockDefinitionService', () => {
     const scenarioLengthComponentExpected = store.state.mockDefinition.scenarios.length;
     const scenarioToClone = null;
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      error: r => {
+      error: () => {
         const scenarioLengthComponentActual = store.state.mockDefinition.scenarios.length;
         expect(scenarioLengthComponentActual).toEqual(scenarioLengthComponentExpected);
       }
@@ -191,7 +191,7 @@ describe('MockDefinitionService', () => {
     store.state.mockDefinition.scenarios = scenarios;
     const scenarioToClone = scenarios[0];
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
-      next: r => {
+      next: () => {
         expect(store.state.mockDefinition.scenarios[0].id).not.toEqual(store.mockDefinition.scenarios[1].id);
         expect(store.state.mockDefinition.scenarios[0].metadata.title).not.toEqual(
           store.mockDefinition.scenarios[1].metadata.title

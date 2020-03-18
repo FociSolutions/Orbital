@@ -5,13 +5,13 @@ import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { MatCardModule } from '@angular/material';
-import { RuleType } from '../../../../../src/app/models/mock-definition/scenario/rule.type';
+import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import * as faker from 'faker';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators, Form } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
 describe('KvpEditRuleComponent', () => {
   let component: KvpEditRuleComponent;
@@ -21,7 +21,7 @@ describe('KvpEditRuleComponent', () => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent],
-      providers: [DesignerStore]
+      providers: [DesignerStore, ScenarioFormBuilder]
     }).compileComponents();
   }));
 
@@ -29,8 +29,9 @@ describe('KvpEditRuleComponent', () => {
     fixture = TestBed.createComponent(KvpEditRuleComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
+    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
     designerStore.selectedScenario = defaultScenario;
-    const scenarioFormGroup = new ScenarioFormBuilder(new FormBuilder()).createNewScenarioForm();
+    const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.matchRuleFormArray = (scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
       .queryMatchRules as FormArray;
     fixture.detectChanges();

@@ -147,6 +147,7 @@ export class DesignerStore extends Store<State> {
    * setEndpoints reads the details of the endpoints specified in the Open Api document
    * and updates the state of the designer store.
    * @param doc The parsed Open Api document to extrapolate the endpoints from
+   * @param clearStore Whether to clear the store before clearing the endpoints
    */
   setEndpoints(doc: OpenAPIV2.Document, clearStore = true): void {
     this.logger.debug('Clearing current endpoints: ', clearStore);
@@ -185,8 +186,8 @@ export class DesignerStore extends Store<State> {
 
   /**
    * This method updates Metadata for the MockDefinition in the designer store
-   * @param m The metadata used to update the MockDefinition in the designer store
    *
+   * @param metadata The metdata to update
    */
   updateMetadata(metadata: Metadata): void {
     this.logger.debug('Setting metadata to ', metadata);
@@ -264,7 +265,7 @@ export class DesignerStore extends Store<State> {
 
   /**
    * This method updates scenario array for the MockDefinition in the designer store
-   * @param s The scenario array representing the MockDefinition scenarios
+   * @param scenarios The list of scenarios to update
    */
   updateScenarios(scenarios: Scenario[]) {
     this.logger.debug('Setting scenarios to ', scenarios);

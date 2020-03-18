@@ -1,0 +1,31 @@
+.body-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+}
+
+.add-button {
+  margin-right: 1.3em;
+}
+
+.body-value {
+  width: 100%;
+  padding-left: 3em;
+  padding-right: 3em;
+}
+
+.error-message {
+  padding-left: 1.6em;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: top;
+}
+
+#bodyaddrule {
+  height: 12em;
+  width: 100%;
+}
