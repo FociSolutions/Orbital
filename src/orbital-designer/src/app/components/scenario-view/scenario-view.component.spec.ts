@@ -364,6 +364,49 @@ describe('ScenarioViewComponent', () => {
 
       expect(expectedResults).toEqual(1);
     });
+
+    it('should clone a scenario from the store and the defaultScenario property should be false', () => {
+      const scenarios = [];
+      for (let i = 0; i < 10; i++) {
+        const mockverb = VerbType.GET;
+        const path = '/test';
+        const scenario = {
+          id: uuid.v4(),
+          metadata: {
+            title: 'New Scenario',
+            description: ''
+          },
+          verb: mockverb,
+          path,
+          response: {
+            headers: {},
+            status: 0,
+            body: ''
+          },
+          requestMatchRules: {
+            headerRules: [],
+            queryRules: [],
+            bodyRules: [
+              {
+                type: RuleType.JSONEQUALITY,
+                rule: {}
+              }
+            ] as Array<BodyRule>
+          },
+          defaultScenario: true
+        } as Scenario;
+        scenario.metadata.title = faker.random.words();
+        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      }
+
+      store.state.mockDefinition.scenarios = scenarios;
+
+      component.cloneScenario(scenarios[0]);
+
+      expect(
+        store.state.mockDefinition.scenarios[1].defaultScenario
+      ).toBe(false);
+    });
   });
 
   describe('ScenarioViewComponent.deleteScenario', () => {
