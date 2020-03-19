@@ -9,10 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpResponse } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
-import { DesignerStore } from '../../store/designer-store';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 
@@ -31,7 +29,7 @@ describe('DeleteFromServerViewComponent', () => {
         BrowserAnimationsModule,
         LoggerTestingModule
       ],
-      providers: [Location, DesignerStore, OrbitalAdminService]
+      providers: [Location, OrbitalAdminService]
     }).compileComponents();
   }));
 
@@ -50,21 +48,6 @@ describe('DeleteFromServerViewComponent', () => {
       const locationSpy = spyOn(TestBed.get(Location), 'back');
       component.onBack();
       expect(locationSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('DeleteFromServerViewComponent.onSubmit', () => {
-    it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', async () => {
-      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      const store = TestBed.get(DesignerStore);
-      const expectedMockDefinition: MockDefinition = validMockDefinition;
-      const expectedMockDefinitions = {};
-      expectedMockDefinitions[validMockDefinition.metadata.title] = expectedMockDefinition;
-      component.mockDefinitions = [validMockDefinition];
-      component.onSubmit();
-
-      expect(store.state.mockDefinitions).toEqual(expectedMockDefinitions);
-      expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
     });
   });
 
