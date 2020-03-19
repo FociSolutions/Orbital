@@ -16,7 +16,10 @@
             maxLength="200"
             [control]="inputControl"
           ></app-text-input>
-          <mat-hint class="error-message-delete error-message">{{errors}}</mat-hint>
+          <mat-hint class="error-message-delete error-message">
+            {{errors}}
+            {{deleteStatusMessage}}
+          </mat-hint>
         </div>
 
         <div id="submit-buttons">

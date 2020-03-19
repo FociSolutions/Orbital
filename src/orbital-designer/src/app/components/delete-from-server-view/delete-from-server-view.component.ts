@@ -5,6 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Observer } from 'rxjs';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-delete-from-server-view',
@@ -19,6 +20,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
+  deleteObserver: Observer<boolean[]>;
   options: object = {};
   body?: string = null;
 
@@ -31,6 +33,8 @@ export class DeleteFromServerViewComponent implements OnInit {
   errors: string;
 
   controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
+  deleteStatusMessage: string;
+  deleteInProgress: boolean;
 
   @Input() set errorsRestRequest(errors: object) {
     if (!!this.inputControl) {
@@ -51,7 +55,7 @@ export class DeleteFromServerViewComponent implements OnInit {
         this.errors = '';
       },
       error: () => {
-        this.errors = 'File(s) could not be deleted because of an error';
+        this.errors = 'Mock(s) could not be viewed because of an error';
         this.requestInProgress = false;
       },
       complete: () => (this.requestInProgress = false)
@@ -66,7 +70,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   }
 
   sendRequestDisabled() {
-    return this.inputControl.value.length === 0 || this.requestInProgress;
+    return this.inputControl.value.length === 0 || this.requestInProgress || this.deleteInProgress;
   }
 
   getSpinnerId() {
@@ -87,7 +91,27 @@ export class DeleteFromServerViewComponent implements OnInit {
    * The function called on submit; deletes the Mockdefinitions when pressed.
    */
   onSubmit() {
-    // delete Mockdefinitions here
+    this.deleteInProgress = true;
+    this.orbitalService.deleteMockDefinitions(`${this.inputControl.value}${this.concatToURI}`,
+      this.mockDefinitions.map(mockDefinition => mockDefinition.metadata.title))
+      .pipe(
+        finalize(() => {
+          this.deleteInProgress = false;
+        })
+      )
+      .subscribe(
+        deleteMockStatus => {
+          if (deleteMockStatus.every(mockDeletedSuccessfully => mockDeletedSuccessfully)) {
+            this.logger.debug('Received response from export to server promise resolution');
+            this.deleteStatusMessage = 'Mock(s) successfully deleted';
+            this.mockDefinitions = [];
+            this.resetForm();
+          } else {
+            this.deleteStatusMessage = 'Mock(s) could not be deleted because of an error';
+            this.logger.debug("Mock deletion statuses", deleteMockStatus);
+          }
+        }
+      );
   }
 
   /**
@@ -104,7 +128,7 @@ export class DeleteFromServerViewComponent implements OnInit {
    * Getter function that returns true if no Mock Definitions have been selected for
    */
   get disabled(): boolean {
-    return this.mockDefinitions.length === 0;
+    return this.mockDefinitions.length === 0 || this.requestInProgress || this.deleteInProgress;
   }
 
   /**
@@ -124,9 +148,30 @@ export class DeleteFromServerViewComponent implements OnInit {
   }
 
   /**
+ * If the response returned is not an error or domexceptions it sets the controls
+ * values to the response body. The control is then responsible for validation.
+ * @param response HttpResponse received by the input
+ */
+  onDeleteResponse(response: boolean[]) {
+    this.logger.debug('Received http response', response);
+  }
+
+  /**
    * Returns to the previous location
    */
   onBack() {
     this.location.back();
+  }
+
+  /**
+   * Moves all Mockdefinitions to the left-hand side of the form; clears right-hand side
+   */
+  private resetForm() {
+    let chosenMocks = this.formArray.controls
+      .filter(mock => !this.mockDefinitions.map(mock => mock.metadata.title)
+      .includes((mock.value as MockDefinition).metadata.title))
+      .map(aMock => aMock.value);
+    this.formArray = new FormArray(chosenMocks.map(mockDef => new FormControl(mockDef, null)));
+    this.mockDefinitions = [];
   }
 }
