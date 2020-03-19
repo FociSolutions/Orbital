@@ -1,9 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.MockDefinitions.Commands
 {
@@ -18,14 +14,20 @@ namespace Orbital.Mock.Server.MockDefinitions.Commands
         /// Constructor
         /// </summary>
         /// <param name="mockDefinitionTitle">Title of mock definition to delete</param>
-        public DeleteMockDefinitionByTitleCommand(string mockDefinitionTitle)
+        public DeleteMockDefinitionByTitleCommand(string mockDefinitionTitle, ref object databaseLock)
         {
             MockDefinitionTitle = mockDefinitionTitle;
+            this.databaseLock = databaseLock;
         }
 
         /// <summary>
         /// Mock Definition title property
         /// </summary>
         public string MockDefinitionTitle { get; }
+
+        /// <summary>
+        /// The database lock
+        /// </summary>
+        public object databaseLock;
     }
 }

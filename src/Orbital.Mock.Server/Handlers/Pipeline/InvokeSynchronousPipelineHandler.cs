@@ -1,12 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Commands;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -38,11 +35,14 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
         /// <inheritdoc />
         public Task<MockResponse> Handle(InvokeSynchronousPipelineCommand command, CancellationToken cancellationToken)
         {
-            var idList = this.cache.GetOrCreate(mockIds, c => new List<string>());
-            var mockDefinitions = idList.Select(id => this.cache.Get<MockDefinition>(id));
-            var scenarios = mockDefinitions.SelectMany(mockDefinition => mockDefinition.Scenarios);
-            var response = this.mockServerProcessor.Push(new MessageProcessorInput(command.Request, scenarios.ToList()), cancellationToken).Result;
-            return Task.FromResult(response);
+            lock (command.databaseLock)
+            {
+                var idList = this.cache.GetOrCreate(mockIds, c => new List<string>());
+                var mockDefinitions = idList.Select(id => this.cache.Get<MockDefinition>(id));
+                var scenarios = mockDefinitions.SelectMany(mockDefinition => mockDefinition.Scenarios);
+                var response = this.mockServerProcessor.Push(new MessageProcessorInput(command.Request, scenarios.ToList()), cancellationToken).Result;
+                return Task.FromResult(response);
+            }
         }
     }
 }

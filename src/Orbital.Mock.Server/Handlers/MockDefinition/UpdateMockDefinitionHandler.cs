@@ -2,9 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,16 +35,19 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         /// <returns></returns>
         public Task<MockDefinition> Handle(UpdateMockDefinitionByTitleCommand request, CancellationToken cancellationToken)
         {
-            var mockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
-            cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-            var KeyList = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
-            if (!KeyList.Contains(request.MockDefinition.Metadata.Title))
+            lock (request.databaseLock)
             {
-                KeyList.Add(request.MockDefinition.Metadata.Title);
-                this.cache.Set(mockIds, KeyList);
+                var mockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
+                cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
+                var KeyList = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
+                if (!KeyList.Contains(request.MockDefinition.Metadata.Title))
+                {
+                    KeyList.Add(request.MockDefinition.Metadata.Title);
+                    this.cache.Set(mockIds, KeyList);
 
+                }
+                return Task.FromResult(mockDefinition);
             }
-            return Task.FromResult(mockDefinition);
         }
 
     }

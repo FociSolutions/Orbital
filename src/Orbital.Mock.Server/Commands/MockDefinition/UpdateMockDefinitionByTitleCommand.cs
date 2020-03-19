@@ -1,10 +1,6 @@
 ﻿using MediatR;
 using Orbital.Mock.Server.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Orbital.Mock.Server.MockDefinitions.Commands
 {
@@ -19,14 +15,21 @@ namespace Orbital.Mock.Server.MockDefinitions.Commands
         /// Constructor
         /// </summary>
         /// <param name="mockDefinition">Mock definition to store in cache</param>
-        public UpdateMockDefinitionByTitleCommand(MockDefinition mockDefinition)
+        /// <param name="databaseLock">The database lock</param>
+        public UpdateMockDefinitionByTitleCommand(MockDefinition mockDefinition, ref object databaseLock)
         {
             this.MockDefinition = mockDefinition;
+            this.databaseLock = databaseLock;
         }
 
         /// <summary>
         /// Mockdefinition property
         /// </summary>
         public MockDefinition MockDefinition { get; }
+
+        /// <summary>
+        /// The database lock
+        /// </summary>
+        public object databaseLock;
     }
 }

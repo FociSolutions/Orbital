@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,8 +32,11 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         /// <returns>Task containing the retrieved mock definition</returns>
         public Task<MockDefinition> Handle(GetMockDefinitionByTitleCommand request, CancellationToken cancellationToken)
         {
-            var mockDefinition = this.Handle(request.MockDefinitionTitle);
-            return Task.FromResult(mockDefinition);
+            lock (request.databaseLock)
+            {
+                var mockDefinition = this.Handle(request.MockDefinitionTitle);
+                return Task.FromResult(mockDefinition);
+            }
         }
 
         /// <summary>

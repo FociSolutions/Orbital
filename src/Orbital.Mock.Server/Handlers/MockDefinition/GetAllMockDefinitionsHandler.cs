@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -30,14 +29,17 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
 
         public Task<IEnumerable<MockDefinition>> Handle(GetAllMockDefinitionsCommand request, CancellationToken cancellationToken)
         {
-            cache.TryGetValue(mockIds, out List<string> KeyList);
-
-            if (KeyList == null)
+            lock (request.databaseLock)
             {
-                return Task.FromResult(new List<MockDefinition>() as IEnumerable<MockDefinition>);
-            }
+                cache.TryGetValue(mockIds, out List<string> KeyList);
 
-            return Task.FromResult(KeyList.Select(id => cache.Get<MockDefinition>(id)));
+                if (KeyList == null)
+                {
+                    return Task.FromResult(new List<MockDefinition>() as IEnumerable<MockDefinition>);
+                }
+
+                return Task.FromResult(KeyList.Select(id => cache.Get<MockDefinition>(id)));
+            }
         }
     }
 }

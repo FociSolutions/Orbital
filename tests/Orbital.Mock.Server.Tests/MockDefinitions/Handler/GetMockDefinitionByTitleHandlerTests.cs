@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var cache = new MemoryCache(options);
 
             cache.Set(input.mockDefinition.Metadata.Title, input.mockDefinition);
-            var getMockDefinitionCommand = new GetMockDefinitionByTitleCommand(input.mockDefinition.Metadata.Title);
+            var getMockDefinitionCommand = new GetMockDefinitionByTitleCommand(input.mockDefinition.Metadata.Title, ref TestUtils.databaseLock);
             #endregion
 
             var Target = new GetMockDefinitionByTitleHandler(cache);
@@ -56,7 +56,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
                 title = faker.Random.AlphaNumeric(40)
             };
 
-            var getMockDefinitionCommand = new GetMockDefinitionByTitleCommand(input.title);
+            var getMockDefinitionCommand = new GetMockDefinitionByTitleCommand(input.title, ref TestUtils.databaseLock);
             #endregion
 
             var Target = new GetMockDefinitionByTitleHandler(cache);

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json.Converters;
 using Orbital.Mock.Server.Filters;
 using Orbital.Mock.Server.MockDefinitions.Commands;
@@ -12,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Orbital.Mock.Server.Pipelines.Ports;
 
 namespace Orbital.Mock.Server.Controllers
 {
@@ -25,6 +25,12 @@ namespace Orbital.Mock.Server.Controllers
     public class OrbitalAdminController : ControllerBase
     {
         private readonly IMediator mediator;
+
+        /// <summary>
+        /// This is only required when using IMemoryCache; when the database is ACID compliant then
+        /// this lock should be removed
+        /// </summary>
+        public object databaseLock = ProcessMessagePort.databaseLock;
 
         /// <summary>
         /// Default Constructor
@@ -44,7 +50,7 @@ namespace Orbital.Mock.Server.Controllers
         [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
         public ActionResult<MockDefinition> Get(string id)
         {
-            var command = new GetMockDefinitionByTitleCommand(id);
+            var command = new GetMockDefinitionByTitleCommand(id, ref databaseLock);
             var result = this.mediator.Send(command).Result;
             Log.Information("OrbitalAdminController: Sent HTTPGet Command for MockDefinition on id: {Id}", id);
             return result;
@@ -59,7 +65,7 @@ namespace Orbital.Mock.Server.Controllers
         [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
         public ActionResult<IEnumerable<MockDefinition>> GetAll()
         {
-            var command = new GetAllMockDefinitionsCommand();
+            var command = new GetAllMockDefinitionsCommand(ref databaseLock);
             var result = this.mediator.Send(command).Result;
             Log.Information("OrbitalAdminController: Sent HTTPGet Command for all MockDefinitions");
             return result.ToList();
@@ -75,7 +81,7 @@ namespace Orbital.Mock.Server.Controllers
         [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
-            var command = new SaveMockDefinitionCommand(mockDefinition);
+            var command = new SaveMockDefinitionCommand(mockDefinition, ref databaseLock);
             this.mediator.Send(command).Wait();
             Log.Information("OrbitalAdminController: Sent HTTPPost Command to save Mockdefinition, {MockDefinition}", mockDefinition.Metadata.Title);
             return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
@@ -89,7 +95,7 @@ namespace Orbital.Mock.Server.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            var command = new DeleteMockDefinitionByTitleCommand(id);
+            var command = new DeleteMockDefinitionByTitleCommand(id, ref databaseLock);
             this.mediator.Send(command).Wait();
             Log.Information("OrbitalAdminController: Sent HTTPDelete Command to delete Mockdefinition on id: {Id}", id);
             return Ok();
@@ -104,7 +110,7 @@ namespace Orbital.Mock.Server.Controllers
         [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
         public IActionResult Put([FromBody]MockDefinition mockDefinition)
         {
-            var command = new UpdateMockDefinitionByTitleCommand(mockDefinition);
+            var command = new UpdateMockDefinitionByTitleCommand(mockDefinition, ref databaseLock);
             var result = mediator.Send(command).Result;
             if (result == null)
             {

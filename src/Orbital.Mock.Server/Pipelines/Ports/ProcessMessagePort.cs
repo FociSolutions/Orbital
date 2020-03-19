@@ -14,6 +14,11 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     [ExcludeFromCodeCoverage]
     public class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort, IUrlMatchPort, IPolicyPort
     {
+        /// <summary>
+        /// A lock used to stop the database from corruption when multiple writers are using it. This is temporary
+        /// and will be removed when the database is changed.
+        /// </summary>
+        public static object databaseLock = new object();
         public ProcessMessagePort()
         {
             this.Scenarios = new List<Scenario>();

@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Pipelines.Commands;
-using System;
+using Orbital.Mock.Server.Pipelines.Ports;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -47,7 +46,7 @@ namespace Orbital.Mock.Server.Middleware
             }
             else
             {
-                var command = new InvokeSynchronousPipelineCommand(context.Request);
+                var command = new InvokeSynchronousPipelineCommand(context.Request, ref ProcessMessagePort.databaseLock);
 
                 var response = await this.mediator.Send(command);
                 context.Response.StatusCode = response.Status;
