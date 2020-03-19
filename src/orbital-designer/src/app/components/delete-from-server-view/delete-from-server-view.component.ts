@@ -35,6 +35,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
   deleteStatusMessage: string;
   deleteInProgress: boolean;
+  triggerOpenConfirmBox: boolean;
 
   @Input() set errorsRestRequest(errors: object) {
     if (!!this.inputControl) {
@@ -104,7 +105,6 @@ export class DeleteFromServerViewComponent implements OnInit {
           if (deleteMockStatus.every(mockDeletedSuccessfully => mockDeletedSuccessfully)) {
             this.logger.debug('Received response from export to server promise resolution');
             this.deleteStatusMessage = 'Mock(s) successfully deleted';
-            this.mockDefinitions = [];
             this.resetForm();
           } else {
             this.deleteStatusMessage = 'Mock(s) could not be deleted because of an error';
@@ -173,5 +173,16 @@ export class DeleteFromServerViewComponent implements OnInit {
       .map(aMock => aMock.value);
     this.formArray = new FormArray(chosenMocks.map(mockDef => new FormControl(mockDef, null)));
     this.mockDefinitions = [];
+  }
+
+  public triggerOpenConfirmationBox() {
+    this.triggerOpenConfirmBox = true;
+  }
+
+  public onConfirmDialogAction(choice: boolean) {
+    this.triggerOpenConfirmBox = false;
+    if (choice) {
+      this.onSubmit();
+    }
   }
 }

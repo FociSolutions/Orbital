@@ -16,7 +16,7 @@
             maxLength="200"
             [control]="inputControl"
           ></app-text-input>
-          <mat-hint class="error-message-delete error-message">
+          <mat-hint class="status-message">
             {{errors}}
             {{deleteStatusMessage}}
           </mat-hint>
@@ -56,9 +56,22 @@
       mat-raised-button
       color="primary"
       [disabled]="disabled"
-      (click)="onSubmit()"
+      (click)="triggerOpenConfirmationBox()"
     >
       Delete
     </button>
+  </div>
+  <div class="overlay" *ngIf="triggerOpenConfirmBox">
+    <div>
+      <mat-card>
+        <app-dialog-box
+          titleText="Confirm Mockdefinition Deletion"
+          confirmButtonText="Confirm"
+          cancelButtonText="Cancel"
+          bodyText="Are you sure you want to delete these Mockdefinitions from the server?"
+          (choiceBoolean)="onConfirmDialogAction($event)"
+        ></app-dialog-box>
+      </mat-card>
+    </div>
   </div>
 </mat-card>
