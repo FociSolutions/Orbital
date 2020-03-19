@@ -56,7 +56,7 @@ export class DesignerStore extends Store<State> {
     this.setState({
       ...this.state,
       mockDefinitions: mockDefinitions.reduce(
-        (next, current) => recordAdd(next, current.metadata.title, current),
+        (previous, current) => recordAdd(previous, current.metadata.title, current),
         {} as Record<string, MockDefinition>
       )
     });

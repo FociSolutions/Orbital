@@ -45,8 +45,7 @@ export class MockDefinitionService {
           }))
         };
         const titlemockdef = (content as MockDefinition).metadata.title;
-        this.store.mockDefinitions = [content];
-        recordAdd(this.store.state.mockDefinitions, titlemockdef, content);
+        this.store.appendMockDefinition(content);
         this.store.state.mockDefinition = content as MockDefinition;
         observer.next(true);
       } catch (error) {
