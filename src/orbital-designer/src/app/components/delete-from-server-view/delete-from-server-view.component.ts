@@ -13,29 +13,6 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./delete-from-server-view.component.scss']
 })
 export class DeleteFromServerViewComponent implements OnInit {
-  static readonly urlMaxLength = 2048;
-  readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
-
-
-  mockDefinitions: MockDefinition[] = [];
-  formArray: FormArray;
-  requestObserver: Observer<MockDefinition[]>;
-  deleteObserver: Observer<boolean[]>;
-  options: object = {};
-  body?: string = null;
-
-  concatToURI = '';
-
-  inputControl: FormControl;
-  requestInProgress = false;
-  title = 'Server URI';
-
-  errors: string;
-
-  controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
-  deleteStatusMessage: string;
-  deleteInProgress: boolean;
-  triggerOpenConfirmBox: boolean;
 
   @Input() set errorsRestRequest(errors: object) {
     if (!!this.inputControl) {
@@ -62,6 +39,35 @@ export class DeleteFromServerViewComponent implements OnInit {
       complete: () => (this.requestInProgress = false)
     };
   }
+
+  /**
+   * Getter function that returns true if no Mock Definitions have been selected for
+   */
+  get disabled(): boolean {
+    return this.mockDefinitions.length === 0 || this.requestInProgress || this.deleteInProgress;
+  }
+  static readonly urlMaxLength = 2048;
+  readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
+
+
+  mockDefinitions: MockDefinition[] = [];
+  formArray: FormArray;
+  requestObserver: Observer<MockDefinition[]>;
+  options: object = {};
+  body?: string = null;
+
+  concatToURI = '';
+
+  inputControl: FormControl;
+  requestInProgress = false;
+  title = 'Server URI';
+
+  errors: string;
+  deleteStatusMessage: string;
+  deleteInProgress: boolean;
+  triggerOpenConfirmBox: boolean;
+
+  controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
 
   ngOnInit() {
     this.inputControl = new FormControl(
@@ -108,7 +114,7 @@ export class DeleteFromServerViewComponent implements OnInit {
             this.resetForm();
           } else {
             this.deleteStatusMessage = 'Mock(s) could not be deleted because of an error';
-            this.logger.debug("Mock deletion statuses", deleteMockStatus);
+            this.logger.debug('Mock deletion statuses', deleteMockStatus);
           }
         }
       );
@@ -122,13 +128,6 @@ export class DeleteFromServerViewComponent implements OnInit {
    */
   onListOutput(list: FormControl[]) {
     this.mockDefinitions = list.map(control => control.value);
-  }
-
-  /**
-   * Getter function that returns true if no Mock Definitions have been selected for
-   */
-  get disabled(): boolean {
-    return this.mockDefinitions.length === 0 || this.requestInProgress || this.deleteInProgress;
   }
 
   /**
@@ -147,7 +146,7 @@ export class DeleteFromServerViewComponent implements OnInit {
     }
   }
 
-  /**
+/**
  * If the response returned is not an error or domexceptions it sets the controls
  * values to the response body. The control is then responsible for validation.
  * @param response HttpResponse received by the input
@@ -167,8 +166,8 @@ export class DeleteFromServerViewComponent implements OnInit {
    * Moves all Mockdefinitions to the left-hand side of the form; clears right-hand side
    */
   private resetForm() {
-    let chosenMocks = this.formArray.controls
-      .filter(mock => !this.mockDefinitions.map(mock => mock.metadata.title)
+    const chosenMocks = this.formArray.controls
+      .filter(mock => !this.mockDefinitions.map(rightHandMock => rightHandMock.metadata.title)
       .includes((mock.value as MockDefinition).metadata.title))
       .map(aMock => aMock.value);
     this.formArray = new FormArray(chosenMocks.map(mockDef => new FormControl(mockDef, null)));

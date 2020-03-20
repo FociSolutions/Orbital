@@ -93,17 +93,17 @@ export class OrbitalAdminService {
     const fullURL = url + '/' + mockDefId;
 
     return this.httpClient.delete<boolean>(
-      fullURL, {headers: new HttpHeaders({}), observe: "response", responseType: "json"})
+      fullURL, {headers: new HttpHeaders({}), observe: 'response', responseType: 'json'})
       .pipe(
       catchError(error => {
         this.logger.error(error);
         return throwError(error);
       }),
-      map(x => x.status == 200)
+      map(x => x.status === 200)
     );
   }
 
-    /**
+  /**
    * @param url The url to delete the Mockdefinitions from
    * Deletes a list of Mockdefinitions to the server
    * @param mockdefinitions The mockdefinitions to delete
