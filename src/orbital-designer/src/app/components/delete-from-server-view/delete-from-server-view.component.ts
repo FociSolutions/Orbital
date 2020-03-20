@@ -35,6 +35,7 @@ export class DeleteFromServerViewComponent implements OnInit {
       error: () => {
         this.errors = 'Mock(s) could not be viewed because of an error';
         this.requestInProgress = false;
+        this.clearForm();
       },
       complete: () => (this.requestInProgress = false)
     };
@@ -111,7 +112,7 @@ export class DeleteFromServerViewComponent implements OnInit {
           if (deleteMockStatus.every(mockDeletedSuccessfully => mockDeletedSuccessfully)) {
             this.logger.debug('Received response from export to server promise resolution');
             this.deleteStatusMessage = 'Mock(s) successfully deleted';
-            this.resetForm();
+            this.clearRightHandSide();
           } else {
             this.deleteStatusMessage = 'Mock(s) could not be deleted because of an error';
             this.logger.debug('Mock deletion statuses', deleteMockStatus);
@@ -156,12 +157,20 @@ export class DeleteFromServerViewComponent implements OnInit {
   /**
    * Moves all Mockdefinitions to the left-hand side of the form; clears right-hand side
    */
-  private resetForm() {
+  private clearRightHandSide() {
     const chosenMocks = this.formArray.controls
       .filter(mock => !this.mockDefinitions.map(rightHandMock => rightHandMock.metadata.title)
       .includes((mock.value as MockDefinition).metadata.title))
       .map(aMock => aMock.value);
     this.formArray = new FormArray(chosenMocks.map(mockDef => new FormControl(mockDef, null)));
+    this.mockDefinitions = [];
+  }
+
+  /**
+   * Clears all Mockdefinitions from the form
+   */
+  private clearForm() {
+    this.formArray = new FormArray([]);
     this.mockDefinitions = [];
   }
 
