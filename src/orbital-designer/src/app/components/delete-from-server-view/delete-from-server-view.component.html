@@ -1,4 +1,4 @@
-<mat-card class="column">
+<mat-card class="column" id="container">
   <mat-card-title class="capitalize">Delete from Server</mat-card-title>
   <mat-card-subtitle
     >Delete existing Mockdefinition(s) below</mat-card-subtitle
@@ -34,7 +34,19 @@
           ><mat-spinner diameter="25" [id]="getSpinnerId()"></mat-spinner>
 
         </div>
-
+        <div class="overlay" *ngIf="triggerOpenConfirmBox">
+          <div>
+            <mat-card>
+              <app-dialog-box
+                titleText="Confirm Mockdefinition Deletion"
+                confirmButtonText="Confirm"
+                cancelButtonText="Cancel"
+                bodyText="Are you sure you want to delete these Mockdefinitions from the server?"
+                (choiceBoolean)="onConfirmDialogAction($event)"
+              ></app-dialog-box>
+            </mat-card>
+          </div>
+        </div>
       </div>
     </form>
     </app-tool-tip>
@@ -60,18 +72,5 @@
     >
       Delete
     </button>
-  </div>
-  <div class="overlay" *ngIf="triggerOpenConfirmBox">
-    <div>
-      <mat-card>
-        <app-dialog-box
-          titleText="Confirm Mockdefinition Deletion"
-          confirmButtonText="Confirm"
-          cancelButtonText="Cancel"
-          bodyText="Are you sure you want to delete these Mockdefinitions from the server?"
-          (choiceBoolean)="onConfirmDialogAction($event)"
-        ></app-dialog-box>
-      </mat-card>
-    </div>
   </div>
 </mat-card>
