@@ -30,10 +30,10 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.requestObserver = {
       next: event => {
         this.onResponse(event);
-        this.errors = '';
+        this.statusMessage = '';
       },
       error: () => {
-        this.errors = 'Mock(s) could not be viewed because of an error';
+        this.statusMessage = 'Mock(s) could not be viewed because of an error';
         this.requestInProgress = false;
         this.clearForm();
       },
@@ -63,8 +63,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   requestInProgress = false;
   title = 'Server URI';
 
-  errors: string;
-  deleteStatusMessage: string;
+  statusMessage: string;
   deleteInProgress: boolean;
   triggerOpenConfirmBox: boolean;
 
@@ -111,10 +110,10 @@ export class DeleteFromServerViewComponent implements OnInit {
         deleteMockStatus => {
           if (deleteMockStatus.every(mockDeletedSuccessfully => mockDeletedSuccessfully)) {
             this.logger.debug('Received response from export to server promise resolution');
-            this.deleteStatusMessage = 'Mock(s) successfully deleted';
+            this.statusMessage = 'Mock(s) successfully deleted';
             this.clearRightHandSide();
           } else {
-            this.deleteStatusMessage = 'Mock(s) could not be deleted because of an error';
+            this.statusMessage = 'Mock(s) could not be deleted because of an error';
             this.logger.debug('Mock deletion statuses', deleteMockStatus);
           }
         }
