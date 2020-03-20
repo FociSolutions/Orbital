@@ -146,15 +146,6 @@ export class DeleteFromServerViewComponent implements OnInit {
     }
   }
 
-/**
- * If the response returned is not an error or domexceptions it sets the controls
- * values to the response body. The control is then responsible for validation.
- * @param response HttpResponse received by the input
- */
-  onDeleteResponse(response: boolean[]) {
-    this.logger.debug('Received http response', response);
-  }
-
   /**
    * Returns to the previous location
    */
