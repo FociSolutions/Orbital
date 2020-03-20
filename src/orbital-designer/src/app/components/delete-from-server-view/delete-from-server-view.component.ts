@@ -174,10 +174,17 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.mockDefinitions = [];
   }
 
+  /**
+   * Opens the confirmation box when attempting to delete Mockdefinitions from the server
+   */
   public triggerOpenConfirmationBox() {
     this.triggerOpenConfirmBox = true;
   }
 
+  /**
+   * Performs the server Mockdefinition deletion if the user confirms
+   * @param choice The boolean value of the user's choice for the popup
+   */
   public onConfirmDialogAction(choice: boolean) {
     this.triggerOpenConfirmBox = false;
     if (choice) {
