@@ -99,7 +99,7 @@ export class OrbitalAdminService {
         this.logger.error(error);
         return throwError(error);
       }),
-      map(x => x.status === 200)
+      map(deleteMockResult => deleteMockResult.status === 200)
     );
   }
 
