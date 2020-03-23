@@ -65,7 +65,7 @@ describe('EndpointListItemComponent', () => {
 
     it('Should select endpoint and navigate to scenario view page', done => {
       spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
-        expect(route).toEqual('scenario-view');
+        expect(route).toEqual('/scenario-view');
         done();
       });
       component.selectEndpoint();
