@@ -97,11 +97,11 @@ describe('PolicyComponent', () => {
       );
       component.policyFormArray.push(
         new FormGroup({
-          path: new FormControl(recordFirstOrDefault(policies[2].attributes, 'delay'), [
+          delay: new FormControl(recordFirstOrDefault(policies[2].attributes, 'delay'), [
             Validators.required,
             Validators.min(1)
           ]),
-          ruleType: new FormControl(policies[2].type, [Validators.required])
+          policyType: new FormControl(policies[2].type, [Validators.required])
         })
       );
       component.deletePolicyHandler(0);
