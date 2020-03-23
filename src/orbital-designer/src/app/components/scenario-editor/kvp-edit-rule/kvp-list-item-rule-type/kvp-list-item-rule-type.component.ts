@@ -57,7 +57,7 @@ export class KvpListItemRuleTypeComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Emits a removes event with the KeyValue for the parent to remove
+   * Emits a removes event with no value
    */
   onRemove() {
     this.removeKvp.emit();
