@@ -95,7 +95,7 @@ describe('CreateNewMockViewComponent', () => {
     });
   });
 
-  describe('CreateNewMockViewComponent.createMock', () => {
+  describe('CreateNewMockViewComponent.createMock', async() => {
     it('should set the mockDefinition store and route to mock editor', done => {
       spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
         expect(route).toEqual('/endpoint-view');
@@ -105,7 +105,7 @@ describe('CreateNewMockViewComponent', () => {
       component.createMock();
     });
 
-    it('should not navigate or change designer store state if the formGroup is invalid', () => {
+    it('should not navigate or change designer store state if the formGroup is invalid', async() => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       generateMockDefinitionAndSetForm();
       component.formGroup.setErrors({ incorrect: true });

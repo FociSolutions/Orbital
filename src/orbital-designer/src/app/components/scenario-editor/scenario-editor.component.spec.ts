@@ -125,7 +125,7 @@ describe('ScenarioEditorComponent', () => {
     });
   });
 
-  describe('ScenarioEditorComponent.saveScenario', () => {
+  describe('ScenarioEditorComponent.saveScenario', async() => {
     it('should save the scenario if all the fields are valid', () => {
       const store: DesignerStore = TestBed.get(DesignerStore);
       store.state.mockDefinition = validMockDefinition;
@@ -172,12 +172,12 @@ describe('ScenarioEditorComponent', () => {
       expect(component.triggerOpenCancelBox).toBe(true);
     });
 
-    it('should set triggerOpenCancelBox to false when onCancelDialogAction is true', () => {
+    it('should set triggerOpenCancelBox to false when onCancelDialogAction is true', async() => {
       component.onCancelDialogAction(true);
       expect(component.triggerOpenCancelBox).toBe(false);
     });
 
-    it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', () => {
+    it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', async() => {
       component.onCancelDialogAction(false);
       expect(component.triggerOpenCancelBox).toBe(false);
     });
