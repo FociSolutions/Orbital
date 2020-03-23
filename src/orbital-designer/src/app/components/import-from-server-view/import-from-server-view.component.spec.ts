@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { Location } from '@angular/common';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
@@ -52,7 +52,7 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.onSubmit', () => {
-    it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', fakeAsync(() => {
+    it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const store = TestBed.get(DesignerStore);
       const expectedMockDefinition: MockDefinition = validMockDefinition;
@@ -62,9 +62,8 @@ describe('ImportFromServerViewComponent', () => {
       component.onSubmit();
 
       expect(store.state.mockDefinitions).toEqual(expectedMockDefinitions);
-      flush();
       expect(routerSpy).toHaveBeenCalledWith('/endpoint-view');
-    }));
+    });
   });
 
   describe('ImportFromServerViewComponent.onListOutput', () => {

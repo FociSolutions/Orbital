@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, flush, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
@@ -105,14 +105,13 @@ describe('CreateNewMockViewComponent', () => {
       component.createMock();
     });
 
-    it('should not navigate or change designer store state if the formGroup is invalid', fakeAsync(() => {
+    it('should not navigate or change designer store state if the formGroup is invalid', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       generateMockDefinitionAndSetForm();
       component.formGroup.setErrors({ incorrect: true });
       component.createMock();
-      flush();
       expect(routerSpy).not.toHaveBeenCalled();
-    }));
+    });
   });
 
   function generateMockDefinitionAndSetForm(
