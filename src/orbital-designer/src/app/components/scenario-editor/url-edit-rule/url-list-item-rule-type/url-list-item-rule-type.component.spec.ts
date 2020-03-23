@@ -11,7 +11,7 @@ describe('UrlListItemRuleTypeComponent', () => {
   let component: UrlListItemRuleTypeComponent;
   let fixture: ComponentFixture<UrlListItemRuleTypeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -25,9 +25,7 @@ describe('UrlListItemRuleTypeComponent', () => {
       ],
       declarations: [UrlListItemRuleTypeComponent]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(UrlListItemRuleTypeComponent);
     component = fixture.componentInstance;
     component.urlEditRuleFormGroup = new FormGroup({
@@ -35,7 +33,7 @@ describe('UrlListItemRuleTypeComponent', () => {
       ruleType: new FormControl(RuleType.NONE, [Validators.required])
     });
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

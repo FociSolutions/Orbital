@@ -22,7 +22,7 @@ describe('AddMetadataComponent', () => {
   let component: AddMetadataComponent;
   let fixture: ComponentFixture<AddMetadataComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [AddMetadataComponent],
       imports: [
@@ -40,13 +40,11 @@ describe('AddMetadataComponent', () => {
         LoggerTestingModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AddMetadataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

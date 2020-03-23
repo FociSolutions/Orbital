@@ -10,7 +10,7 @@ describe('PolicyAddComponent', () => {
   let component: PolicyAddComponent;
   let fixture: ComponentFixture<PolicyAddComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [PolicyAddComponent],
       imports: [
@@ -23,13 +23,11 @@ describe('PolicyAddComponent', () => {
         ReactiveFormsModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PolicyAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

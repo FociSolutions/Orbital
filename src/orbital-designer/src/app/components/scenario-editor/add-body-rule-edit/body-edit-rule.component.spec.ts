@@ -18,15 +18,13 @@ describe('BodyEditRuleComponent', () => {
   let component: BodyEditRuleComponent;
   let fixture: ComponentFixture<BodyEditRuleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [BodyEditRuleComponent, BodyAddRuleComponent, BodyListItemRuleTypeComponent],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(BodyEditRuleComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
@@ -35,7 +33,7 @@ describe('BodyEditRuleComponent', () => {
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.bodyMatchRuleFormArray = scenarioFormGroup.get('requestMatchRules.bodyMatchRules') as FormArray;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

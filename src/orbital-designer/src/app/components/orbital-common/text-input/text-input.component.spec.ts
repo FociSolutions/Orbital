@@ -10,7 +10,7 @@ describe('TextInputComponent', () => {
   let component: TextInputComponent;
   let fixture: ComponentFixture<TextInputComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [TextInputComponent],
       imports: [
@@ -21,15 +21,13 @@ describe('TextInputComponent', () => {
         BrowserAnimationsModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(TextInputComponent);
     component = fixture.componentInstance;
     control = new FormControl('', []);
     component.control = control;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

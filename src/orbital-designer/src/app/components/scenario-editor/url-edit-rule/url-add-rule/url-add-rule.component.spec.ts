@@ -16,7 +16,7 @@ describe('UrlAddRuleComponent', () => {
   let component: UrlAddRuleComponent;
   let fixture: ComponentFixture<UrlAddRuleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [UrlAddRuleComponent],
       imports: [
@@ -30,13 +30,11 @@ describe('UrlAddRuleComponent', () => {
         ReactiveFormsModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(UrlAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

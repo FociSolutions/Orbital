@@ -22,7 +22,7 @@ import { MockDefinitionService } from 'src/app/services/mock-definition/mock-def
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
   let fixture: ComponentFixture<CreateNewMockViewComponent>;
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [CreateNewMockViewComponent],
       imports: [
@@ -34,16 +34,14 @@ describe('CreateNewMockViewComponent', () => {
       ],
       providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     try {
       fixture = TestBed.createComponent(CreateNewMockViewComponent);
     } catch (error) {
       fail(`Component was not created correctly. Error is: ${error}`);
     }
     component = fixture.componentInstance;
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

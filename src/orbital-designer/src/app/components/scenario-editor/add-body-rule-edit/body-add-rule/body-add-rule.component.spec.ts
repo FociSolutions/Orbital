@@ -11,7 +11,7 @@ describe('BodyAddRuleComponent', () => {
   let component: BodyAddRuleComponent;
   let fixture: ComponentFixture<BodyAddRuleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [BodyAddRuleComponent],
       imports: [
@@ -25,13 +25,11 @@ describe('BodyAddRuleComponent', () => {
         ReactiveFormsModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(BodyAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

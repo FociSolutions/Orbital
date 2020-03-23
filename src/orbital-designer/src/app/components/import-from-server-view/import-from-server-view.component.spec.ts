@@ -20,7 +20,7 @@ describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
   let fixture: ComponentFixture<ImportFromServerViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [ImportFromServerViewComponent],
       imports: [
@@ -33,13 +33,11 @@ describe('ImportFromServerViewComponent', () => {
       ],
       providers: [Location, DesignerStore, OrbitalAdminService]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ImportFromServerViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

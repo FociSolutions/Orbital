@@ -38,7 +38,7 @@ describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
   let fixture: ComponentFixture<AddRequestMatchRuleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         AddRequestMatchRuleComponent,
@@ -73,9 +73,7 @@ describe('AddRequestMatchRuleComponent', () => {
       ],
       providers: [DesignerStore, ScenarioFormBuilder]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AddRequestMatchRuleComponent);
     component = fixture.componentInstance;
 
@@ -89,7 +87,7 @@ describe('AddRequestMatchRuleComponent', () => {
       bodyRules: [{}] as BodyRule[]
     } as unknown) as RequestMatchRule;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

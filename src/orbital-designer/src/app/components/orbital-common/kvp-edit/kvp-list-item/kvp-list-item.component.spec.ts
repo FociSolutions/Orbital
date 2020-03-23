@@ -8,17 +8,15 @@ describe('KvpListItemComponent', () => {
   let component: KvpListItemComponent;
   let fixture: ComponentFixture<KvpListItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(KvpListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

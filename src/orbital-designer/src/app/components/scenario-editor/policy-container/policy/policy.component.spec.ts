@@ -19,15 +19,13 @@ describe('PolicyComponent', () => {
   let component: PolicyComponent;
   let fixture: ComponentFixture<PolicyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [PolicyEditComponent, PolicyAddComponent, PolicyComponent],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PolicyComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
@@ -36,7 +34,7 @@ describe('PolicyComponent', () => {
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.policyFormArray = scenarioFormGroup.get('policies') as FormArray;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

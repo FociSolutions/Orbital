@@ -14,13 +14,11 @@ describe('KvpAddComponent', () => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(KvpAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

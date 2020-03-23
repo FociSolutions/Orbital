@@ -16,7 +16,7 @@ describe('EndpointListItemComponent', () => {
   let component: EndpointListItemComponent;
   let fixture: ComponentFixture<EndpointListItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         EndpointListItemComponent,
@@ -30,13 +30,11 @@ describe('EndpointListItemComponent', () => {
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(EndpointListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

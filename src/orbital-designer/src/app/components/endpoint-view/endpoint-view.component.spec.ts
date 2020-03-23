@@ -21,7 +21,7 @@ describe('EndpointViewComponent', () => {
   let fixture: ComponentFixture<EndpointViewComponent>;
   let store: DesignerStore;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         EndpointViewComponent,
@@ -43,14 +43,12 @@ describe('EndpointViewComponent', () => {
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(EndpointViewComponent);
     component = fixture.componentInstance;
     store = TestBed.get(DesignerStore);
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
