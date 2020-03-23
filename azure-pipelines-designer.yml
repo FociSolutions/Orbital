@@ -113,7 +113,7 @@ stages:
         testResultsFormat: JUnit
         testResultsFiles: "**/junit*.xml"
 
-- stage: test
+- stage: test2
   dependsOn: [] 
   jobs:
   - job: test_and_publish
