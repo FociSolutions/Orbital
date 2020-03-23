@@ -18,13 +18,11 @@ describe('KvpEditComponent', () => {
         BrowserAnimationsModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(KvpEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

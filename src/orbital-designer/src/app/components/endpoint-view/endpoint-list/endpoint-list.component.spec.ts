@@ -15,7 +15,7 @@ describe('EndpointListComponent', () => {
   let fixture: ComponentFixture<EndpointListComponent>;
   let store: DesignerStore;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         EndpointListComponent,
@@ -27,14 +27,12 @@ describe('EndpointListComponent', () => {
       imports: [MatListModule, MatCardModule, LoggerTestingModule],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(EndpointListComponent);
     component = fixture.componentInstance;
     store = TestBed.get(DesignerStore);
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

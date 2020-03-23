@@ -45,7 +45,7 @@ describe('ScenarioEditorComponent', () => {
   let fixture: ComponentFixture<ScenarioEditorComponent>;
   let scenarioBuilder: ScenarioFormBuilder;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         ScenarioEditorComponent,
@@ -84,16 +84,14 @@ describe('ScenarioEditorComponent', () => {
       ],
       providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
     scenarioBuilder = TestBed.get(ScenarioFormBuilder);
     component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
     component.selectedScenario = emptyScenario;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

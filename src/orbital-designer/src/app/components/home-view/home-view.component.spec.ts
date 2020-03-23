@@ -12,7 +12,7 @@ describe('HomeViewComponent', () => {
   let fixture: ComponentFixture<HomeViewComponent>;
   let router: Router;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [HomeViewComponent],
       imports: [
@@ -23,13 +23,11 @@ describe('HomeViewComponent', () => {
       ]
     }).compileComponents();
     router = TestBed.get(Router);
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HomeViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

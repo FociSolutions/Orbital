@@ -13,7 +13,7 @@ describe('ImportFromFileComponent', () => {
   let component: ImportFromFileViewComponent;
   let fixture: ComponentFixture<ImportFromFileViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [ImportFromFileViewComponent],
       imports: [
@@ -27,13 +27,11 @@ describe('ImportFromFileComponent', () => {
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ImportFromFileViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

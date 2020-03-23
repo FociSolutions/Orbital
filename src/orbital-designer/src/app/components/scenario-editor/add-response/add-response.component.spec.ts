@@ -10,7 +10,7 @@ describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
   let fixture: ComponentFixture<AddResponseComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
       imports: [
@@ -19,14 +19,12 @@ describe('AddResponseComponent', () => {
         LoggerTestingModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
     component.response = { headers: {} } as Response;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

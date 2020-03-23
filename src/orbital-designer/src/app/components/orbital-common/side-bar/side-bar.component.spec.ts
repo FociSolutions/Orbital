@@ -19,7 +19,7 @@ describe('SideBarComponent', () => {
   let fixture: ComponentFixture<SideBarComponent>;
   let store: DesignerStore;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [SideBarComponent, DialogBoxComponent, QuickExportComponent],
       imports: [
@@ -34,15 +34,13 @@ describe('SideBarComponent', () => {
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     store = TestBed.get(DesignerStore);
     store.mockDefinition = validMockDefinition;
     fixture = TestBed.createComponent(SideBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

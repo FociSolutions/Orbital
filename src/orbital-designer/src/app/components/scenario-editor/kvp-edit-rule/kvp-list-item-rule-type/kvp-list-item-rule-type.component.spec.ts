@@ -18,15 +18,13 @@ describe('KvpListItemRuleComponent', () => {
   let component: KvpListItemRuleTypeComponent;
   let fixture: ComponentFixture<KvpListItemRuleTypeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
       declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent],
       providers: [DesignerStore, ScenarioFormBuilder]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(KvpListItemRuleTypeComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
@@ -43,7 +41,7 @@ describe('KvpListItemRuleComponent', () => {
     component.editRuleFormGroup = ((scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
       .queryMatchRules as FormArray).at(0) as FormGroup;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
