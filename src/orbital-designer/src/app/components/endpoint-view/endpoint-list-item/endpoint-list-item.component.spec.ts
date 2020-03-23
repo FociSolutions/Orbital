@@ -40,7 +40,7 @@ describe('EndpointListItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('EndpointListItemComponent.selectEndpoint()', async() => {
+  describe('EndpointListItemComponent.selectEndpoint()', () => {
     beforeEach(() => {
       const path = '/' + faker.random.words();
       const verb = faker.random.arrayElement([

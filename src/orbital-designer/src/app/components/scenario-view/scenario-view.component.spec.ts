@@ -64,7 +64,7 @@ describe('ScenarioViewComponent', () => {
   });
 
   describe('ScenarioViewComponent.addScenario', () => {
-    it('should navigate to scenario editor', async() => {
+    it('should navigate to scenario editor', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       component.addScenario();
       expect(routerSpy.calls.mostRecent().args[0]).toMatch(
