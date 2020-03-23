@@ -72,15 +72,8 @@ describe('KvpListItemRuleComponent', () => {
 
   describe('onRemove', () => {
     it('should emit a remove event', done => {
-      const kvp = {};
-      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
-      const input: KeyValuePairRule = {
-        type: RuleType.TEXTEQUALS,
-        rule: kvp
-      };
-
-      component.key.setValue(recordFirstOrDefaultKey(input.rule, ''));
-      component.value.setValue(recordFirstOrDefault(input.rule, ''));
+      component.key.setValue(recordFirstOrDefaultKey(faker.lorem.sentence(), ''));
+      component.value.setValue(recordFirstOrDefault(faker.lorem.sentence(), ''));
       component.removeKvp.subscribe(() => {
         // just check if it was called; event emitter doesn't emit anything
         done();
