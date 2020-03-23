@@ -10,7 +10,7 @@ describe('KvpAddComponent', () => {
   let component: KvpAddRuleComponent;
   let fixture: ComponentFixture<KvpAddRuleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule]
     }).compileComponents();

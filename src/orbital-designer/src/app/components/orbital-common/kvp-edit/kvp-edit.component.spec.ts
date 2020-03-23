@@ -10,7 +10,7 @@ describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
   let fixture: ComponentFixture<KvpEditComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [
         OrbitalCommonModule,
