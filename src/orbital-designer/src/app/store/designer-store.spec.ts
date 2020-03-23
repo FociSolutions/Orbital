@@ -8,7 +8,7 @@ import { Metadata } from '../models/mock-definition/metadata.model';
 import { OpenAPIV2 } from 'openapi-types';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { Scenario } from '../models/mock-definition/scenario/scenario.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
@@ -294,7 +294,7 @@ describe('DesignerStore', () => {
       expect(recordSize(store.state.mockDefinitions)).toBe(0);
     });
 
-    it('should delete a single mock definition when multiple exist', () => {
+    it('should delete a single mock definition when multiple exist', fakeAsync(() => {
       const mockDef1 = _.cloneDeep(validMockDefinition);
       const mockDef2 = _.cloneDeep(validMockDefinition);
       const mockDef3 = _.cloneDeep(validMockDefinition);
@@ -312,8 +312,9 @@ describe('DesignerStore', () => {
       const expected = {} as Record<string, MockDefinition>;
       recordAdd(expected, mockDef2.metadata.title, mockDef2);
       recordAdd(expected, mockDef3.metadata.title, mockDef3);
+      flush();
       expect(store.state.mockDefinitions).toEqual(expected);
-    });
+    }));
   });
 
   describe('DesignerStore.appendMockDefinition()', () => {
