@@ -29,7 +29,7 @@ describe('ScenarioViewComponent', () => {
   let fixture: ComponentFixture<ScenarioViewComponent>;
   let store: DesignerStore;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         ScenarioViewComponent,
@@ -51,15 +51,13 @@ describe('ScenarioViewComponent', () => {
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(async () => {
     fixture = TestBed.createComponent(ScenarioViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     store = TestBed.get(DesignerStore);
     store.mockDefinition = validMockDefinition;
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

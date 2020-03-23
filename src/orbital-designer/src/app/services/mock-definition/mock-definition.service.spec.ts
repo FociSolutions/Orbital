@@ -19,17 +19,16 @@ describe('MockDefinitionService', () => {
   let store: DesignerStore;
   let service: MockDefinitionService;
   let _validMockDefinition = _.cloneDeep(validMockDefinition);
-  beforeEach(() =>
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerTestingModule],
       providers: [DesignerStore, MockDefinitionService]
-    }).compileComponents()
-  );
-  beforeEach(() => {
+    }).compileComponents();
     store = TestBed.get(DesignerStore);
     service = TestBed.get(MockDefinitionService);
     store.mockDefinition = _validMockDefinition;
-  });
+   }
+  );
 
   it('should be created', () => {
     expect(service).toBeTruthy();
