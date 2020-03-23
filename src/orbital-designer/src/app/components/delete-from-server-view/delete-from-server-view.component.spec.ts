@@ -13,6 +13,8 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { FormControl } from '@angular/forms';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
+import { NotificationService } from 'src/app/services/notification-service/notification.service';
+import { MatSnackBarModule } from '@angular/material';
 
 describe('DeleteFromServerViewComponent', () => {
   let component: DeleteFromServerViewComponent;
@@ -27,9 +29,10 @@ describe('DeleteFromServerViewComponent', () => {
         OrbitalCommonModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
-        LoggerTestingModule
+        LoggerTestingModule,
+        MatSnackBarModule
       ],
-      providers: [Location, OrbitalAdminService]
+      providers: [Location, OrbitalAdminService, NotificationService]
     }).compileComponents();
   }));
 

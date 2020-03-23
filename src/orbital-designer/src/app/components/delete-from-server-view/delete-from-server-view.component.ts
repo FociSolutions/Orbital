@@ -6,6 +6,7 @@ import { Observer } from 'rxjs';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 import { finalize } from 'rxjs/operators';
+import { NotificationService } from 'src/app/services/notification-service/notification.service';
 
 @Component({
   selector: 'app-delete-from-server-view',
@@ -23,7 +24,8 @@ export class DeleteFromServerViewComponent implements OnInit {
   constructor(
     private location: Location,
     private logger: NGXLogger,
-    private orbitalService: OrbitalAdminService
+    private orbitalService: OrbitalAdminService,
+    private notificationService: NotificationService
   ) {
     this.formArray = new FormArray([]);
 
@@ -34,6 +36,7 @@ export class DeleteFromServerViewComponent implements OnInit {
       },
       error: () => {
         this.statusMessage = 'Mock(s) could not be viewed because of an error';
+        this.notificationService.open('Mock(s) could not be viewed because of an error');
         this.requestInProgress = false;
         this.clearForm();
       },
@@ -106,8 +109,8 @@ export class DeleteFromServerViewComponent implements OnInit {
           this.deleteInProgress = false;
         })
       )
-      .subscribe(
-        deleteMockStatus => {
+      .subscribe({
+        next: deleteMockStatus => {
           if (deleteMockStatus.every(mockDeletedSuccessfully => mockDeletedSuccessfully)) {
             this.logger.debug('Received response from export to server promise resolution');
             this.statusMessage = 'Mock(s) successfully deleted';
@@ -116,8 +119,13 @@ export class DeleteFromServerViewComponent implements OnInit {
             this.statusMessage = 'Mock(s) could not be deleted because of an error';
             this.logger.debug('Mock deletion statuses', deleteMockStatus);
           }
+        },
+        error: error => {
+          this.logger.error('Mock(s) could not be deleted because of an error', error);
+          this.notificationService.open('Mock(s) could not be deleted because of an error');
         }
-      );
+      }
+    );
   }
 
   /**
