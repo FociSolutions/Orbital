@@ -116,7 +116,7 @@ export class MockDefinitionService {
         const originalScenarioIndex = scenariomockdefinition.scenarios.indexOf(scenario);
 
         // ensure that there are no naming conflicts; if there are, repeat until a name is found
-        if (!scenariomockdefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
+        if (scenariomockdefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
           let copyCounter = 2;
           while (
             scenariomockdefinition.scenarios.find(
