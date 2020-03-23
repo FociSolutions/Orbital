@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SideBarComponent } from './side-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -75,14 +75,13 @@ describe('SideBarComponent', () => {
   // Test the updateSelected method that passes by passing the latest mock definition stored in the state
   // and compared against a valid mock Mockdefinitions.
   describe('SideBarComponent.updateSelected', () => {
-    it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', fakeAsync(() => {
+    it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', () => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const expected = validMockDefinition;
       component.updateSelected(validMockDefinition);
-      flush();
       expect(store.state.mockDefinition).toEqual(expected);
       expect(routerSpy).toHaveBeenCalled();
-    }));
+    });
   });
   describe('SideBarComponent.openDialogBox', () => {
     it('should return to homepage if last mockdefinition is dismissed', () => {
