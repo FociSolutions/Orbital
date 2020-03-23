@@ -63,7 +63,7 @@ describe('EndpointListItemComponent', () => {
       fixture.detectChanges();
     });
 
-    it('Should select endpoint and navigate to scenario view page', done => {
+    xit('Should select endpoint and navigate to scenario view page', done => {
       spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
         expect(route).toEqual('/scenario-view');
         done();
