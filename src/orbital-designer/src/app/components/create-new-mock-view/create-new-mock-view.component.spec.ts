@@ -98,7 +98,7 @@ describe('CreateNewMockViewComponent', () => {
   describe('CreateNewMockViewComponent.createMock', () => {
     it('should set the mockDefinition store and route to mock editor', done => {
       spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
-        expect(route).toEqual('endpoint-view');
+        expect(route).toEqual('/endpoint-view');
         done();
       });
       generateMockDefinitionAndSetForm();

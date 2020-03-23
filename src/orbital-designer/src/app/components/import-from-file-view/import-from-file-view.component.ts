@@ -80,7 +80,7 @@ export class ImportFromFileViewComponent implements OnInit {
         value => {
           if (value) {
             this.logger.log('mock definition was saved to the store');
-            this.router.navigateByUrl('endpoint-view');
+            this.router.navigateByUrl('/endpoint-view');
           }
         },
         error => {

@@ -69,7 +69,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * Goes back to the endpoint page
    */
   goToEndpoints() {
-    this.router.navigateByUrl('endpoint-view');
+    this.router.navigateByUrl('/endpoint-view');
   }
   /**
    * This function takes an scenario object and return its path as a string
