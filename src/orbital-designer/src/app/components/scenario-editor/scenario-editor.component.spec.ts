@@ -31,7 +31,7 @@ import { UrlEditRuleComponent } from './url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
 import { FormGroup, FormArray } from '@angular/forms';
-import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { PolicyComponent } from './policy-container/policy/policy.component';
 import { PolicyAddComponent } from './policy-container/policy-add/policy-add.component';
 import { PolicyEditComponent } from './policy-container/policy-edit/policy-edit.component';
@@ -91,7 +91,7 @@ describe('ScenarioEditorComponent', () => {
     component = fixture.componentInstance;
     scenarioBuilder = TestBed.get(ScenarioFormBuilder);
     component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
-    component.selectedScenario = defaultScenario;
+    component.selectedScenario = emptyScenario;
     fixture.detectChanges();
   });
 

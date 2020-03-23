@@ -3,9 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.MockDefinitions.Handlers;
 using Orbital.Mock.Server.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using Xunit;
 using Assert = Xunit.Assert;
@@ -39,7 +37,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var mockDefinition = mockDefinitionFake.Generate();
             cache.Set(mockDefinition.Metadata.Title, mockDefinition);
 
-            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(mockDefinition.Metadata.Title);
+            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(mockDefinition.Metadata.Title, ref TestUtils.databaseLock);
             #endregion
 
             var Target = new DeleteMockDefinitionHandler(cache, data);
@@ -57,7 +55,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
             var faker = new Faker();
-            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(faker.Random.AlphaNumeric(40));
+            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(faker.Random.AlphaNumeric(40), ref TestUtils.databaseLock);
             #endregion
             var Target = new DeleteMockDefinitionHandler(cache, data);
             var exception = Record.Exception(() => Target.Handle(deleteMockDefinitionCommand, CancellationToken.None).Result);
@@ -86,7 +84,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var expected = mockDefinition.Metadata.Title;
             cache.Set(data.mockIds, new List<string>() { mockDefinition.Metadata.Title });
 
-            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(mockDefinition.Metadata.Title);
+            var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(mockDefinition.Metadata.Title, ref TestUtils.databaseLock);
             #endregion
             var Target = new DeleteMockDefinitionHandler(cache, data);
             Target.Handle(deleteMockDefinitionCommand, CancellationToken.None);

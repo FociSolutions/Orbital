@@ -2,9 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,16 +34,19 @@ namespace Orbital.Mock.Server.Handlers
         /// <returns></returns>
         public Task<Unit> Handle(SaveMockDefinitionCommand request, CancellationToken cancellationToken)
         {
-            this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-            var keysCollection = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
-
-            if (!keysCollection.Contains(request.MockDefinition.Metadata.Title))
+            lock (request.databaseLock)
             {
-                keysCollection.Add(request.MockDefinition.Metadata.Title);
-                this.cache.Set(mockIds, keysCollection);
-            }
+                this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
+                var keysCollection = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
 
-            return Unit.Task;
+                if (!keysCollection.Contains(request.MockDefinition.Metadata.Title))
+                {
+                    keysCollection.Add(request.MockDefinition.Metadata.Title);
+                    this.cache.Set(mockIds, keysCollection);
+                }
+
+                return Unit.Task;
+            }
         }
 
     }

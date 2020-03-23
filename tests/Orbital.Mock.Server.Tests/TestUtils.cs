@@ -9,6 +9,8 @@ namespace Orbital.Mock.Server.Tests
     {
         private static readonly Random Rand = new Random();
 
+        public static object databaseLock = new object();
+
         /// <summary>
         /// By default, generates a random string length from four characters to 128. The minimum string length
         /// is three characters, and has no maximum length.

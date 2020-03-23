@@ -72,7 +72,8 @@ describe('DesignerStore', () => {
               rule: {}
             }
           ] as Array<BodyRule>
-        }
+        },
+        defaultScenario: false
       } as Scenario;
       store.selectedScenario = Expected;
       expect(store.state.selectedScenario).toEqual(Expected);
@@ -245,7 +246,8 @@ describe('DesignerStore', () => {
                 rule: {}
               }
             ] as Array<BodyRule>
-          }
+          },
+          defaultScenario: false
         } as Scenario);
       }
       store.updateScenarios(scenarios);
@@ -442,7 +444,8 @@ describe('DesignerStore', () => {
                 rule: {}
               }
             ] as Array<BodyRule>
-          }
+          },
+          defaultScenario: false
         } as Scenario
       };
       const expected = input.mock.scenarios.length + 1;
