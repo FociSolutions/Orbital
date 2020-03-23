@@ -34,7 +34,7 @@ describe('HomeViewComponent', () => {
   });
 
   describe('HomeViewComponent.navigateTo', () => {
-    it('should call the navigateUrl function passing in the given url', () => {
+    it('should call the navigateUrl function passing in the given url', async() => {
       const navigationSpy = spyOn(router, 'navigateByUrl');
       const path = faker.random.word();
       component.navigateTo(path);

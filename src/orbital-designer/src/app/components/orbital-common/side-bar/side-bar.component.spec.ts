@@ -75,7 +75,7 @@ describe('SideBarComponent', () => {
   // Test the updateSelected method that passes by passing the latest mock definition stored in the state
   // and compared against a valid mock Mockdefinitions.
   describe('SideBarComponent.updateSelected', () => {
-    it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', () => {
+    it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', async() => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
       const expected = validMockDefinition;
       component.updateSelected(validMockDefinition);
@@ -84,7 +84,7 @@ describe('SideBarComponent', () => {
     });
   });
   describe('SideBarComponent.openDialogBox', () => {
-    it('should return to homepage if last mockdefinition is dismissed', () => {
+    it('should return to homepage if last mockdefinition is dismissed', async() => {
       const routerSpy = spyOn(TestBed.get(Router), 'navigate');
       component.mockDefinitions = [validMockDefinition];
 
