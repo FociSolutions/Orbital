@@ -18,7 +18,7 @@ import * as _ from 'lodash';
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
   let service: MockDefinitionService;
-  let _validMockDefinition = _.cloneDeep(validMockDefinition);
+  const ValidMockDefinitionInst = _.cloneDeep(validMockDefinition);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerTestingModule],
@@ -26,7 +26,7 @@ describe('MockDefinitionService', () => {
     }).compileComponents();
     store = TestBed.get(DesignerStore);
     service = TestBed.get(MockDefinitionService);
-    store.mockDefinition = _validMockDefinition;
+    store.mockDefinition = ValidMockDefinitionInst;
    }
   );
 
@@ -122,7 +122,7 @@ describe('MockDefinitionService', () => {
           }
         });
       }
-    });  
+    });
   });
 
   it('should not clone a scenario from the store if the cloned scenario is invalid', done => {
@@ -265,7 +265,7 @@ describe('MockDefinitionService', () => {
             JSON.stringify(aScenario.verb) === JSON.stringify(componentScenarioClonee.verb) &&
             aScenario.metadata.description === componentScenarioClonee.metadata.description
         ).length;
-    
+
         expect(expectedResults).toEqual(1);
         done();
       }
