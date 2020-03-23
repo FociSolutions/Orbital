@@ -191,7 +191,8 @@ export default `{
                 "queryRules": [],
                 "bodyRules": []
             },
-            "policies": []
+            "policies": [],
+            "defaultScenario": false
         }
     ]
 }`;

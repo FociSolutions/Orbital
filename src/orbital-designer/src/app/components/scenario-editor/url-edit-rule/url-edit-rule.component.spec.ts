@@ -10,7 +10,7 @@ import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { UrlAddRuleComponent } from './url-add-rule/url-add-rule.component';
 import { UrlListItemRuleTypeComponent } from './url-list-item-rule-type/url-list-item-rule-type.component';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { recordFirstOrDefault } from 'src/app/models/record';
@@ -32,7 +32,7 @@ describe('UrlEditRuleComponent', () => {
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
     const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
-    designerStore.selectedScenario = defaultScenario;
+    designerStore.selectedScenario = emptyScenario;
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.urlMatchRuleFormArray = scenarioFormGroup.get('requestMatchRules.urlMatchRules') as FormArray;
     fixture.detectChanges();

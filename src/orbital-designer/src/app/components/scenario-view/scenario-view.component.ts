@@ -162,4 +162,14 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   getBodyText(scenario: Scenario): string {
     return `Are you sure you want to delete '${scenario.metadata.title.bold()}' ?`;
   }
+
+  /**
+   * Sets the default scenario to the provided scenario
+   * @param scenario The scenario to make default
+   */
+  toggleDefaultScenario(scenario: Scenario) {
+    this.scenarioList.forEach(aScenario => aScenario.defaultScenario = false);
+    scenario.defaultScenario = true;
+    this.logger.debug('Set default scenario to ', scenario);
+  }
 }

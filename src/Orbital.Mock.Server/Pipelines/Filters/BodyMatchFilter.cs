@@ -46,8 +46,8 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                     {
                         var assertsList = assertFactory.CreateAssert(rule, port.Body);
                         port.BodyMatchResults.Add(ruleMatcher.Match(assertsList.ToArray())
-                                   ? new MatchResult(MatchResultType.Success, scenario.Id)
-                                     : new MatchResult(MatchResultType.Fail, scenario.Id));
+                                   ? new MatchResult(MatchResultType.Success, scenario.Id, scenario.defaultScenario)
+                                     : new MatchResult(MatchResultType.Fail, scenario.Id, scenario.defaultScenario));
                         
                         
                     }
@@ -64,8 +64,8 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         private static void GenerateJsonBodyErrorResults(IEnumerable<Scenario> scenarios)
         {
             scenarios.Select(scenario => scenario.RequestMatchRules.BodyRules.Any()
-                ? new MatchResult(MatchResultType.Fail, scenario.Id)
-                : new MatchResult(MatchResultType.Ignore, scenario.Id));
+                ? new MatchResult(MatchResultType.Fail, scenario.Id, scenario.defaultScenario)
+                : new MatchResult(MatchResultType.Ignore, scenario.Id, scenario.defaultScenario));
         }
 
         /// <summary>

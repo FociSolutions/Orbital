@@ -76,6 +76,11 @@
                           </div>
                         </div>
                       </mat-card-subtitle>
+                      <mat-checkbox
+                      (mouseout)="this.isHoveringOverMenu = false"
+                      (mouseover)="this.isHoveringOverMenu = true"
+                      (change)="toggleDefaultScenario(scenario)"
+                      [checked]="scenario.defaultScenario">Default Scenario</mat-checkbox>
                     </mat-card-content>
                   </mat-card>
 

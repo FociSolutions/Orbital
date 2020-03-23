@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import { Scenario, defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { Scenario, emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
@@ -23,7 +23,7 @@ export class ScenarioFormBuilder {
    * Generates a form group for a scenario with default values
    */
   createNewScenarioForm(): FormGroup {
-    return this.createScenarioForm(defaultScenario);
+    return this.createScenarioForm(emptyScenario);
   }
 
   /**

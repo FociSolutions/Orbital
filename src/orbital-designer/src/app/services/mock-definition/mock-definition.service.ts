@@ -41,7 +41,8 @@ export class MockDefinitionService {
               bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[]),
               urlRules: s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
             },
-            policies: s.policies || ([] as Policy[])
+            policies: s.policies || ([] as Policy[]),
+            defaultScenario: s.defaultScenario || false
           }))
         };
         const titlemockdef = (content as MockDefinition).metadata.title;
@@ -79,7 +80,8 @@ export class MockDefinitionService {
             },
             policies: {
               ...s.policies
-            }
+            },
+            defaultScenario: s.defaultScenario
           }))
         };
         observer.next(true);
@@ -106,6 +108,7 @@ export class MockDefinitionService {
 
         // copy scenario using deep copy
         const clonedScenario = _.cloneDeep(scenario);
+        clonedScenario.defaultScenario = false;
         clonedScenario.id = uuid.v4();
         clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
         const scenariomockdefinition = this.store.state.mockDefinitions[mockId];
@@ -202,7 +205,8 @@ export class MockDefinitionService {
         bodyRules: [],
         urlRules: []
       },
-      policies: []
+      policies: [],
+      defaultScenario: false
     } as Scenario;
   }
 }

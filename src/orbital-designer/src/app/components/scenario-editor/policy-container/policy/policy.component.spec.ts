@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material';
 import { PolicyEditComponent } from '../policy-edit/policy-edit.component';
 import { PolicyAddComponent } from '../policy-add/policy-add.component';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 import { FormBuilder, FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
@@ -32,7 +32,7 @@ describe('PolicyComponent', () => {
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
     const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
-    designerStore.selectedScenario = defaultScenario;
+    designerStore.selectedScenario = emptyScenario;
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.policyFormArray = scenarioFormGroup.get('policies') as FormArray;
     fixture.detectChanges();

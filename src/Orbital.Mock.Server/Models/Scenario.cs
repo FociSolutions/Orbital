@@ -22,6 +22,9 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("policies")]
         public ICollection<Policy> Policies { get; set; }
 
+        [JsonProperty("defaultScenario")]
+        public bool defaultScenario { get; set; } = false;
+
         public override bool Equals(object obj)
         {
             return this.Equals(obj as Scenario);

@@ -12,7 +12,7 @@ import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/re
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('KvpListItemRuleComponent', () => {
   let component: KvpListItemRuleTypeComponent;
@@ -31,7 +31,7 @@ describe('KvpListItemRuleComponent', () => {
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
     const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
-    designerStore.selectedScenario = defaultScenario;
+    designerStore.selectedScenario = emptyScenario;
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     ((scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.queryMatchRules as FormArray).push(
       new FormGroup({

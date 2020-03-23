@@ -5,29 +5,29 @@ using System.Net.Http;
 using System.Text;
 using Assert = Xunit.Assert;
 
-namespace Orbital.Mock.Server.IntegrationTests.Pipeline.UrlPathMatch
+namespace Orbital.Mock.Server.IntegrationTests.Pipeline.DefaultScenarioMatch
 {
-    public partial class UrlPathMatchFixture_Feature : FeatureFixture
+    public partial class DefaultScenarioMatchFixture_Feature : FeatureFixture
     {
         private readonly HttpClient client;
         private Scenario scenario;
         private HttpRequestMessage request;
         private HttpResponseMessage response;
         private JToken responseBody;
-        private JToken mockDefinitionUrlJson;
+        private JToken mockDefinitionDefaultScenarioJson;
 
-        public UrlPathMatchFixture_Feature()
+        public DefaultScenarioMatchFixture_Feature()
         {
             this.client = new HttpClient();
-            this.mockDefinitionUrlJson = JToken.Parse(CommonData.GetMockDefinitionText(CommonData.MockDefinition.UrlMock));
-            var mockDefinition = this.mockDefinitionUrlJson.ToObject<MockDefinition>();
-            this.scenario = mockDefinition.Scenarios[0];
-            this.request = new HttpRequestMessage(new HttpMethod(this.scenario.Verb.ToString()), $"{CommonData.ServerBaseUri}/pets/1");
+            this.mockDefinitionDefaultScenarioJson = JToken.Parse(CommonData.GetMockDefinitionText(CommonData.MockDefinition.DefaultScenarioMock));
+            var mockDefinition = this.mockDefinitionDefaultScenarioJson.ToObject<MockDefinition>();
+            this.scenario = mockDefinition.Scenarios[1];
+            this.request = new HttpRequestMessage(new HttpMethod(this.scenario.Verb.ToString()), $"{CommonData.ServerBaseUri}{this.scenario.Path}");
         }
 
-        private void Given_the_server_has_a_mock_definition_with_scenarios_with_url_rules_to_match_against()
+        private void Given_the_server_has_a_mock_definition_with_scenarios_with_a_default_scenario_to_match_against()
         {
-            var content = new StringContent(this.mockDefinitionUrlJson.ToString(),
+            var content = new StringContent(this.mockDefinitionDefaultScenarioJson.ToString(),
                 Encoding.UTF8, "application/json");
             _ = this.client.PostAsync(CommonData.AdminUri, content).Result;
         }

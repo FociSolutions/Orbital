@@ -40,14 +40,14 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             #endregion
 
             List<MatchResult> rules = new List<MatchResult>();
-            rules.AddRange(ScenarioIds.Select(scenario => new MatchResult(MatchResultType.Success, scenario)));
+            rules.AddRange(ScenarioIds.Select(scenario => new MatchResult(MatchResultType.Success, scenario, false)));
 
             var port = new ProcessMessagePort()
             {
                 Scenarios = Scenarios,
                 HeaderMatchResults = rules,
-                QueryMatchResults = ScenarioIds.Take(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario)).ToList(),
-                BodyMatchResults = ScenarioIds.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario)).ToList(),
+                QueryMatchResults = ScenarioIds.Take(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario, false)).ToList(),
+                BodyMatchResults = ScenarioIds.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario, false)).ToList(),
             };
 
             var Target = new ResponseSelectorFilter<ProcessMessagePort>();
@@ -76,9 +76,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var port = new ProcessMessagePort()
             {
                 Scenarios = Scenarios,
-                HeaderMatchResults = Scenarios.Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id)).ToList(),
-                QueryMatchResults = Scenarios.Skip(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id)).ToList(),
-                BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id)).ToList(),
+                HeaderMatchResults = Scenarios.Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
+                QueryMatchResults = Scenarios.Skip(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
+                BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
             };
 
             var Target = new ResponseSelectorFilter<ProcessMessagePort>();

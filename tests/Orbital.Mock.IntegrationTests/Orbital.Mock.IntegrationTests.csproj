@@ -38,6 +38,9 @@
     <None Update="MockDefinitions\PetStoreMockDefinitionBodyJsonContains.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="MockDefinitions\PetStoreMockDefinitionDefaultScenario.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="MockDefinitions\PetStoreMockDefinitionEndpoint.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

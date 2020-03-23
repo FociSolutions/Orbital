@@ -9,7 +9,7 @@ import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import * as faker from 'faker';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
@@ -30,7 +30,7 @@ describe('KvpEditRuleComponent', () => {
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
     const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
-    designerStore.selectedScenario = defaultScenario;
+    designerStore.selectedScenario = emptyScenario;
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.matchRuleFormArray = (scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
       .queryMatchRules as FormArray;

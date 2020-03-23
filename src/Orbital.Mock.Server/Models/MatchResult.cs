@@ -10,7 +10,7 @@ namespace Orbital.Mock.Server.Models
     /// </summary>
     public class MatchResult
     {
-        public MatchResult(MatchResultType match, string scenarioId)
+        public MatchResult(MatchResultType match, string scenarioId, bool defaultScenario)
         {
             if (String.IsNullOrWhiteSpace(scenarioId))
             {
@@ -19,6 +19,7 @@ namespace Orbital.Mock.Server.Models
 
             Match = match;
             ScenarioId = scenarioId;
+            DefaultScenario = defaultScenario;
         }
 
         /// <summary>
@@ -30,6 +31,11 @@ namespace Orbital.Mock.Server.Models
         /// The strength of the match
         /// </summary>
         public MatchResultType Match { get; }
+
+        /// <summary>
+        /// Whether this scenario is a default scenario
+        /// </summary>
+        public bool DefaultScenario { get;  }
 
         protected bool Equals(MatchResult other)
         {
