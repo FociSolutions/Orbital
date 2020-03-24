@@ -35,11 +35,7 @@ describe('CreateNewMockViewComponent', () => {
       providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService]
     }).compileComponents();
 
-    try {
-      fixture = TestBed.createComponent(CreateNewMockViewComponent);
-    } catch (error) {
-      fail(`Component was not created correctly. Error is: ${error}`);
-    }
+    fixture = TestBed.createComponent(CreateNewMockViewComponent);
     component = fixture.componentInstance;
   }));
 
