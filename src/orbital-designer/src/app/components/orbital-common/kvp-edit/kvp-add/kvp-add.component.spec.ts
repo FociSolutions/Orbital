@@ -77,7 +77,7 @@ describe('KvpAddComponent', () => {
       component.onAdd();
     });
 
-    it('Should set isValid to false if isEmpty is true', async() => {
+    it('Should set isValid to false if isEmpty is true', async () => {
       component.key = '';
       component.value = '';
       component.onAdd();

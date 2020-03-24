@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SideBarComponent } from './side-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -75,21 +75,29 @@ describe('SideBarComponent', () => {
   // Test the updateSelected method that passes by passing the latest mock definition stored in the state
   // and compared against a valid mock Mockdefinitions.
   describe('SideBarComponent.updateSelected', () => {
-    it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', () => {
-      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      const expected = validMockDefinition;
-      component.updateSelected(validMockDefinition);
-      expect(store.state.mockDefinition).toEqual(expected);
-      expect(routerSpy).toHaveBeenCalled();
-    });
+    it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+        const expected = validMockDefinition;
+        component.updateSelected(validMockDefinition);
+        fixture.detectChanges();
+        tick();
+        expect(store.state.mockDefinition).toEqual(expected);
+        expect(routerSpy).toHaveBeenCalled();
+      });
+    }));
   });
   describe('SideBarComponent.openDialogBox', () => {
-    it('should return to homepage if last mockdefinition is dismissed', () => {
-      const routerSpy = spyOn(TestBed.get(Router), 'navigate');
-      component.mockDefinitions = [validMockDefinition];
+    it('should return to homepage if last mockdefinition is dismissed', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const routerSpy = spyOn(TestBed.get(Router), 'navigate');
+        component.mockDefinitions = [validMockDefinition];
 
-      component.onDismiss(validMockDefinition);
-      expect(routerSpy).toHaveBeenCalledWith(['/']);
-    });
+        component.onDismiss(validMockDefinition);
+        tick();
+        fixture.detectChanges();
+        expect(routerSpy).toHaveBeenCalledWith(['/']);
+      });
+    }));
   });
 });
