@@ -3,7 +3,7 @@ using Scriban.Runtime;
 
 namespace Orbital.Mock.Server.Functions
 {
-    public class NameFunctions: ScriptObject
+    public class NameFunctions : ScriptObject
     {
         public static Faker faker;
         public NameFunctions()
