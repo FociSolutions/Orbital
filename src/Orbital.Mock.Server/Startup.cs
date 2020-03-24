@@ -111,7 +111,7 @@ namespace Orbital.Mock.Server
 
         /// <summary>
         /// This method creates the template context with buildin functions needed for templaded responses to work.
-        /// This method also add the template context to the services for the app to access the template context via DI.
+        /// This method also adds the template context to the services for the app to access the template context via DI.
         /// </summary>
         /// <param name="services">the collection of services registered for the app.</param>
         private void ConfigureTemplateContext(IServiceCollection services)
