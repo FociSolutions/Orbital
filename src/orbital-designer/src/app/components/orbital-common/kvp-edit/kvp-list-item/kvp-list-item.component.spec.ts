@@ -40,19 +40,22 @@ describe('KvpListItemComponent', () => {
   });
 
   describe('onRemove', () => {
-    it('Should emit a remove event', () => {
+    it('Should emit a remove event', done => {
       const input: KeyValue<string, string> = {
         key: faker.lorem.sentence(),
         value: faker.lorem.sentence()
       };
 
       component.kvp = input;
-      component.onRemove();
 
       component.removeKvp.subscribe(
-        actual => expect(actual).toEqual(input),
-        err => fail(`Unexpected error: ${err.message}`)
+        actual => {
+          expect(actual).toEqual(input);
+          done();
+        }
       );
+
+      component.onRemove();
     });
   });
 });

@@ -76,6 +76,11 @@ describe('KvpListItemRuleComponent', () => {
       component.value.setValue(recordFirstOrDefault(faker.lorem.sentence(), ''));
       component.removeKvp.subscribe(() => {
         // just check if it was called; event emitter doesn't emit anything
+
+        // The noop expect is required because Jasmine will complain that "there are no specs found".
+        // This is ok because the done() method only fires if we go into this method; if the done
+        // method is not fired within 5000ms then the test will fail.
+        expect(true).toBe(true);
         done();
       });
       component.onRemove();
