@@ -31,7 +31,7 @@ export const emptyScenario: Scenario = {
 };
 
 export function createEmptyScenario() {
-  let scenario = emptyScenario;
+  const scenario = emptyScenario;
   scenario.id = uuid.v4();
   return scenario;
 }
