@@ -304,13 +304,10 @@ describe('DesignerStore', () => {
       mockDef3.metadata.title = faker.random.word();
 
       store.appendMockDefinition(mockDef1);
-      flush();
       store.appendMockDefinition(mockDef2);
-      flush();
       store.appendMockDefinition(mockDef3);
-      flush();
+
       store.deleteMockDefinitionByTitle(mockDef1.metadata.title);
-      flush();
 
       const expected = {} as Record<string, MockDefinition>;
       recordAdd(expected, mockDef2.metadata.title, mockDef2);
