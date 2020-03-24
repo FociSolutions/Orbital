@@ -29,3 +29,9 @@ export const emptyScenario: Scenario = {
   policies: [],
   defaultScenario: false
 };
+
+export function createEmptyScenario() {
+  let scenario = emptyScenario;
+  scenario.id = uuid.v4();
+  return scenario;
+}
