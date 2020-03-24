@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
 
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -162,6 +162,7 @@ describe('ScenarioEditorComponent', () => {
   describe('ScenarioEditorComponent.save', () => {
     it('should set the shouldSave variable to true', async () => {
       await component.save();
+      fixture.detectChanges();
       expect(component.shouldSave).toBe(true);
     });
   });
@@ -172,14 +173,13 @@ describe('ScenarioEditorComponent', () => {
       expect(component.triggerOpenCancelBox).toBe(true);
     });
 
-    it('should set triggerOpenCancelBox to false when onCancelDialogAction is true', () => {
-      component.onCancelDialogAction(true);
-      expect(component.triggerOpenCancelBox).toBe(false);
-    });
-
-    it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', () => {
-      component.onCancelDialogAction(false);
-      expect(component.triggerOpenCancelBox).toBe(false);
-    });
+    it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        component.onCancelDialogAction(false);
+        tick();
+        fixture.detectChanges();
+        expect(component.triggerOpenCancelBox).toBe(false);
+      });
+    }));
   });
 });

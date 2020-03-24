@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as faker from 'faker';
 import { HomeViewComponent } from './home-view.component';
@@ -34,11 +34,15 @@ describe('HomeViewComponent', () => {
   });
 
   describe('HomeViewComponent.navigateTo', () => {
-    it('should call the navigateUrl function passing in the given url', () => {
-      const navigationSpy = spyOn(router, 'navigateByUrl');
-      const path = faker.random.word();
-      component.navigateTo(path);
-      expect(navigationSpy).toHaveBeenCalledWith(path);
-    });
+    it('should call the navigateUrl function passing in the given url', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const navigationSpy = spyOn(router, 'navigateByUrl');
+        const path = faker.random.word();
+        component.navigateTo(path);
+        tick();
+        fixture.detectChanges();
+        expect(navigationSpy).toHaveBeenCalledWith(path);
+      });
+    }));
   });
 });

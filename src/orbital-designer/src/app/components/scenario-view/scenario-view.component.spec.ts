@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ScenarioViewComponent } from './scenario-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -64,13 +64,17 @@ describe('ScenarioViewComponent', () => {
   });
 
   describe('ScenarioViewComponent.addScenario', () => {
-    it('should navigate to scenario editor', () => {
-      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      component.addScenario();
-      expect(routerSpy.calls.mostRecent().args[0]).toMatch(
-        /\/scenario-editor\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-      );
-    });
+    it('should navigate to scenario editor', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+        component.addScenario();
+        fixture.detectChanges();
+        tick();
+        expect(routerSpy.calls.mostRecent().args[0]).toMatch(
+          /\/scenario-editor\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+        );
+      });
+    }));
   });
   describe('ScenarioViewComponent.SearchBar', () => {
     describe('ScenarioViewComponent.scenarioToString', () => {
