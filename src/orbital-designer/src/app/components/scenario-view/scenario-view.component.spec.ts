@@ -23,6 +23,22 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
+import { ScenarioEditorComponent } from '../scenario-editor/scenario-editor.component';
+import { AddMetadataComponent } from '../scenario-editor/add-metadata/add-metadata.component';
+import { AddRequestMatchRuleComponent } from '../scenario-editor/add-request-match-rule/add-request-match-rule.component';
+import { AddResponseComponent } from '../scenario-editor/add-response/add-response.component';
+import { PolicyAddComponent } from '../scenario-editor/policy-container/policy-add/policy-add.component';
+import { PolicyComponent } from '../scenario-editor/policy-container/policy/policy.component';
+import { KvpEditRuleComponent } from '../scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
+import { KvpListItemRuleTypeComponent } from '../scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
+import { UrlAddRuleComponent } from '../scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
+import { UrlEditRuleComponent } from '../scenario-editor/url-edit-rule/url-edit-rule.component';
+import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
+import { PolicyEditComponent } from '../scenario-editor/policy-container/policy-edit/policy-edit.component';
+import { BodyEditRuleComponent } from '../scenario-editor/add-body-rule-edit/body-edit-rule.component';
+import { BodyListItemRuleTypeComponent } from '../scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
+import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -32,18 +48,35 @@ describe('ScenarioViewComponent', () => {
   beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
-        ScenarioViewComponent,
-        SideBarComponent,
+        AddMetadataComponent,
+        AddRequestMatchRuleComponent,
+        AddResponseComponent,
+        BodyAddRuleComponent,
+        BodyEditRuleComponent,
+        BodyListItemRuleTypeComponent,
         GetEndpointScenariosPipe,
+        GetRuleTypeStringPipe,
         GetVerbColorPipe,
         GetVerbStringPipe,
-        OverviewHeaderComponent
+        KvpEditRuleComponent,
+        KvpListItemRuleTypeComponent,
+        OverviewHeaderComponent,
+        PolicyAddComponent,
+        PolicyComponent,
+        PolicyEditComponent,
+        ScenarioEditorComponent,
+        ScenarioViewComponent,
+        SideBarComponent,
+        UrlAddRuleComponent,
+        UrlEditRuleComponent,
+        UrlListItemRuleTypeComponent
       ],
       imports: [
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([    
+          { path: 'scenario-editor/:scenarioId', component: ScenarioEditorComponent }]),
         MatMenuModule,
         MatButtonModule,
         FormsModule,
