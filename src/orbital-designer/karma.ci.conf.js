@@ -35,6 +35,12 @@ module.exports = function (config) {
       logLevel: config.LOG_INFO,
       autoWatch: false,
       browsers: ['ChromeHeadless'],
-      singleRun: true
+      singleRun: true,
+      files: [
+        {pattern: 'src/assets/**/*.*', included: false, served: true},
+      ],
+      proxies: {
+        '/assets/': '/base/src/assets/'
+      }
     });
   };
