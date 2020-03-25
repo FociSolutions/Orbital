@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import * as faker from 'faker';
 import * as uuid from 'uuid';
 import { MockDefinitionService } from './mock-definition.service';
@@ -19,7 +19,7 @@ describe('MockDefinitionService', () => {
   let store: DesignerStore;
   let service: MockDefinitionService;
   const ValidMockDefinitionInst = _.cloneDeep(validMockDefinition);
-  beforeEach(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [LoggerTestingModule],
       providers: [DesignerStore, MockDefinitionService]
@@ -27,8 +27,9 @@ describe('MockDefinitionService', () => {
     store = TestBed.get(DesignerStore);
     service = TestBed.get(MockDefinitionService);
     store.mockDefinition = ValidMockDefinitionInst;
+    tick();
    }
-  );
+  ));
 
   it('should be created', () => {
     expect(service).toBeTruthy();

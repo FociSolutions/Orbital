@@ -46,7 +46,7 @@ describe('ScenarioViewComponent', () => {
   let fixture: ComponentFixture<ScenarioViewComponent>;
   let store: DesignerStore;
 
-  beforeEach((() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AddMetadataComponent,
@@ -91,6 +91,8 @@ describe('ScenarioViewComponent', () => {
     fixture.detectChanges();
     store = TestBed.get(DesignerStore);
     store.mockDefinition = validMockDefinition;
+    tick();
+    fixture.detectChanges();
   }));
 
   it('should create', () => {

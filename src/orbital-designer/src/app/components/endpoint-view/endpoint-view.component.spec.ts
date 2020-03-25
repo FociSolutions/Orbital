@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -55,10 +55,11 @@ describe('EndpointViewComponent', () => {
   });
 
   describe('EndpointViewComponent.showNotFound()', () => {
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       store.mockDefinition = SampleMockDefinition;
+      tick();
       fixture.detectChanges();
-    });
+    }));
     it('Should return false if endpoints list is not empty', () => {
       expect(component.showNotFound()).toBeFalsy();
     });

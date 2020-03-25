@@ -19,7 +19,7 @@ describe('SideBarComponent', () => {
   let fixture: ComponentFixture<SideBarComponent>;
   let store: DesignerStore;
 
-  beforeEach((() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SideBarComponent, DialogBoxComponent, QuickExportComponent],
       imports: [
@@ -37,6 +37,7 @@ describe('SideBarComponent', () => {
 
     store = TestBed.get(DesignerStore);
     store.mockDefinition = validMockDefinition;
+    tick();
     fixture = TestBed.createComponent(SideBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
