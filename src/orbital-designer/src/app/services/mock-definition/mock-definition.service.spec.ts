@@ -60,7 +60,7 @@ describe('MockDefinitionService', () => {
         defaultScenario: false
       } as Scenario;
 
-      scenario.metadata.title = faker.random.words();
+      scenario.metadata.title = faker.random.words(3);
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
     store.state.mockDefinition.scenarios = scenarios;
@@ -99,7 +99,7 @@ describe('MockDefinitionService', () => {
         },
         defaultScenario: false
       } as Scenario;
-      scenario.metadata.title = faker.random.words();
+      scenario.metadata.title = faker.random.words(3);
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
 
@@ -150,7 +150,7 @@ describe('MockDefinitionService', () => {
         },
         defaultScenario: false
       } as Scenario;
-      scenario.metadata.title = faker.random.words();
+      scenario.metadata.title = faker.random.words(3);
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
     store.state.mockDefinition = defaultMockDefinition;
@@ -193,7 +193,7 @@ describe('MockDefinitionService', () => {
         },
         defaultScenario: false
       } as Scenario;
-      scenario.metadata.title = faker.random.words();
+      scenario.metadata.title = faker.random.words(3);
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
 

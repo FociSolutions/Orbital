@@ -372,9 +372,9 @@ describe('DesignerStore', () => {
       const mockDef2 = _.cloneDeep(validMockDefinition);
       const mockDef3 = _.cloneDeep(validMockDefinition);
 
-      mockDef1.metadata.title = faker.random.word();
-      mockDef2.metadata.title = faker.random.word();
-      mockDef3.metadata.title = faker.random.word();
+      mockDef1.metadata.title = faker.random.words(3);
+      mockDef2.metadata.title = faker.random.words(3);
+      mockDef3.metadata.title = faker.random.words(3);
 
       store.state$.subscribe(state => {
         if (!!state.mockDefinition) {

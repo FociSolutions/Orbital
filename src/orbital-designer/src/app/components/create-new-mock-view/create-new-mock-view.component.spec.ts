@@ -118,8 +118,8 @@ describe('CreateNewMockViewComponent', () => {
   });
 
   function generateMockDefinitionAndSetForm(
-    title = faker.random.word(),
-    description = faker.random.words()
+    title = faker.random.words(3),
+    description = faker.random.words(5)
   ): MockDefinition {
     const service = TestBed.get(MockDefinitionService);
     let openApi: OpenAPIV2.Document;
