@@ -3,7 +3,7 @@
     <form class="kvp-added-item" [formGroup]="urlEditRuleFormGroup">
       <div class="row">
         <mat-form-field class="kvp-value">
-          <input matInput id="kvpaddpath" formControlName="path" />
+          <input matInput formControlName="path" />
           <mat-hint> {{ path.value?.length || 0 }}/3000</mat-hint>
         </mat-form-field>
 
