@@ -23,7 +23,7 @@ describe('ImportFromFileComponent', () => {
         OrbitalCommonModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();

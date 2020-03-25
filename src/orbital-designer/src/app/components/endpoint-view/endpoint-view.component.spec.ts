@@ -37,7 +37,7 @@ describe('EndpointViewComponent', () => {
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
         BrowserAnimationsModule,
         HttpClientTestingModule
       ],

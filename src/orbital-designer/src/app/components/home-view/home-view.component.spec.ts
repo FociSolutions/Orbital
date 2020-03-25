@@ -16,7 +16,7 @@ describe('HomeViewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HomeViewComponent],
       imports: [
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
         MatGridListModule,
         MatCardModule,
         MatButtonModule
