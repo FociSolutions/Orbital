@@ -14,7 +14,8 @@ module.exports = function (config) {
         require('@angular-devkit/build-angular/plugins/karma'),
         require('karma-junit-reporter'),
         require('karma-spec-reporter'),
-        require('karma-skipped-tests-reporter')
+        require('karma-skipped-tests-reporter'),
+        require('./karma-no-spec-no-pass')
       ],
       client: {
         clearContext: false, // leave Jasmine Spec Runner output visible in browser
@@ -25,7 +26,7 @@ module.exports = function (config) {
         reports: ['html', 'lcovonly', 'text-summary', 'cobertura'],
         fixWebpackSourcePaths: true
       },
-      reporters: ['progress', 'kjhtml', 'junit', 'spec', 'skipped-tests'],
+      reporters: ['progress', 'kjhtml', 'junit', 'spec', 'skipped-tests', 'no-spec-no-pass'],
       junitReporter: {
         outputDir: '../junit'
       },
