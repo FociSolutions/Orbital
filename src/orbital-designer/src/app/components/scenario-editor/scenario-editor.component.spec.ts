@@ -76,7 +76,7 @@ describe('ScenarioEditorComponent', () => {
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule.withRoutes([    
+        RouterTestingModule.withRoutes([
           { path: 'scenario-view', component: ScenarioViewComponent }]),
         MatButtonModule,
         MatExpansionModule,
