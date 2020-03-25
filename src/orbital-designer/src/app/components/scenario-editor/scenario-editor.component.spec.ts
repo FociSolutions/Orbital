@@ -120,12 +120,14 @@ describe('ScenarioEditorComponent', () => {
   });
 
   describe('ScenarioEditorComponent.handleResponseOutput', () => {
-    it('should set the response to the response when the component outputs the response', () => {
+    it('should set the response to the response when the component outputs the response', fakeAsync(() => {
       component.selectedScenario = validMockDefinition.scenarios[0];
       const fakeResponse = (validMockDefinition.scenarios[0].response as unknown) as Response;
       component.handleResponseOutput(fakeResponse);
+      tick();
+      fixture.detectChanges();
       expect(component.response).toEqual(fakeResponse);
-    });
+    }));
   });
 
   describe('ScenarioEditorComponent.saveScenario', () => {
