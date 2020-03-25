@@ -33,6 +33,12 @@ module.exports = function(config) {
     jasmineDiffReporter: {
       multiline: true,
       pretty: true
+    },
+    files: [
+      {pattern: 'src/assets/**/*.*', included: false, served: true},
+    ],
+    proxies: {
+      '/assets/': '/base/src/assets/'
     }
   });
 };
