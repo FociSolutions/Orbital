@@ -8,7 +8,7 @@ import { Metadata } from '../models/mock-definition/metadata.model';
 import { OpenAPIV2 } from 'openapi-types';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
-import { TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { Scenario } from '../models/mock-definition/scenario/scenario.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
@@ -35,19 +35,20 @@ describe('DesignerStore', () => {
   });
 
   describe('DesignerStore.selectedEndpoint', () => {
-    it('should set the selectedEndpoint', () => {
+    it('should set the selectedEndpoint', fakeAsync(() => {
       const Expected = {
         path: faker.random.words(),
         verb: VerbType.GET,
         spec: null
       };
       store.selectedEndpoint = Expected;
+      tick();
       expect(store.state.selectedEndpoint).toEqual(Expected);
-    });
+    }));
   });
 
   describe('DesignerStore.selectedScenario', () => {
-    it('should set the selectedScenario', () => {
+    it('should set the selectedScenario', fakeAsync(() => {
       const mockverb = VerbType.GET;
       const path = faker.random.words();
       const Expected = {
@@ -76,8 +77,9 @@ describe('DesignerStore', () => {
         defaultScenario: false
       } as Scenario;
       store.selectedScenario = Expected;
+      tick();
       expect(store.state.selectedScenario).toEqual(Expected);
-    });
+    }));
   });
 
   describe('DesignerStore.setEndpoints()', () => {
@@ -188,18 +190,19 @@ describe('DesignerStore', () => {
   });
 
   describe('DesignerStore.updateMetadata()', () => {
-    it('should update MetaData', () => {
+    it('should update MetaData', fakeAsync(() => {
       const newMetaData: Metadata = {
         title: faker.random.word(),
         description: faker.random.words()
       };
       store.updateMetadata(newMetaData);
+      tick();
       expect(store.state.mockDefinition.metadata).toEqual(newMetaData);
-    });
+    }));
   });
 
   describe('DesignerStore.updateApiInformation()', () => {
-    it('should update openApi, host, and basepath', () => {
+    it('should update openApi, host, and basepath', fakeAsync(() => {
       const fakeDocument = { basePath: '', host: '' } as OpenAPIV2.Document;
       const apiInfo = {
         host: faker.internet.domainName(),
@@ -211,10 +214,11 @@ describe('DesignerStore', () => {
         apiInfo.basepath,
         apiInfo.openApi
       );
+      tick();
       expect(store.state.mockDefinition.host).toEqual(apiInfo.host);
       expect(store.state.mockDefinition.basePath).toEqual(apiInfo.basepath);
       expect(store.state.mockDefinition.openApi).toEqual(apiInfo.openApi);
-    });
+    }));
   });
 
   describe('DesignerStore.updateScenarios()', () => {
@@ -256,43 +260,48 @@ describe('DesignerStore', () => {
   });
 
   describe('DesignerStore.deleteMockDefinitionByTitle()', () => {
-    it('should delete a mock definition by title if it exists in the store', () => {
+    it('should delete a mock definition by title if it exists in the store', fakeAsync(() => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
       store.deleteMockDefinitionByTitle(mockDef.metadata.title);
+      tick();
       expect(recordSize(store.state.mockDefinitions)).toBe(0);
-    });
+    }));
 
-    it('should delete only a single mock definition by title if only one matches in the store', () => {
+    it('should delete only a single mock definition by title if only one matches in the store', fakeAsync(() => {
       const mockDef1 = validMockDefinition;
       const mockDef2 = _.cloneDeep(validMockDefinition);
       mockDef2.metadata.title = faker.random.word();
       store.mockDefinitions = [mockDef1, mockDef2];
       store.deleteMockDefinitionByTitle(mockDef2.metadata.title);
+      tick();
       expect(recordSize(store.state.mockDefinitions)).toBe(1);
-    });
+    }));
 
-    it('should not delete a mock definition by title if there are none in the store', () => {
+    it('should not delete a mock definition by title if there are none in the store', fakeAsync(() => {
       store.state.mockDefinitions = {} as Record<string, MockDefinition>;
       store.deleteMockDefinitionByTitle('Invalid');
+      tick();
       expect(recordSize(store.state.mockDefinitions)).toBe(0);
       expect(store.state.mockDefinition).toEqual(null);
-    });
+    }));
 
-    it('should not delete a mock definition by title if it does not exist in the store', () => {
+    it('should not delete a mock definition by title if it does not exist in the store', fakeAsync(() => {
       const mockDef = validMockDefinition;
       store.mockDefinitions = [mockDef];
       store.deleteMockDefinitionByTitle('Invalid');
+      tick();
       expect(recordSize(store.state.mockDefinitions)).toBe(1);
       expect(store.state.mockDefinition).toEqual(mockDef);
-    });
+    }));
 
-    it('should delete the state when the state is changed by deleting a single mock definition', () => {
+    it('should delete the state when the state is changed by deleting a single mock definition', fakeAsync(() => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
       store.deleteMockDefinitionByTitle(mockDef.metadata.title);
+      tick();
       expect(recordSize(store.state.mockDefinitions)).toBe(0);
-    });
+    }));
 
     it('should delete a single mock definition when multiple exist', fakeAsync(() => {
       const mockDef1 = _.cloneDeep(validMockDefinition);
@@ -312,35 +321,38 @@ describe('DesignerStore', () => {
       const expected = {} as Record<string, MockDefinition>;
       recordAdd(expected, mockDef2.metadata.title, mockDef2);
       recordAdd(expected, mockDef3.metadata.title, mockDef3);
-      flush();
+      tick();
       expect(store.state.mockDefinitions).toEqual(expected);
     }));
   });
 
   describe('DesignerStore.appendMockDefinition()', () => {
-    it('should append a mock definition to the store if the store is empty', () => {
+    it('should append a mock definition to the store if the store is empty', fakeAsync(() => {
       store.state.mockDefinitions = {} as Record<string, MockDefinition>;
       store.appendMockDefinition(validMockDefinition);
+      tick();
       expect(recordSize(store.state.mockDefinitions)).toBe(1);
       expect(store.state.mockDefinition).toEqual(validMockDefinition);
-    });
+    }));
 
-    it('should append a mock definition to the store if the store contains other mock definitions', () => {
+    it('should append a mock definition to the store if the store contains other mock definitions', fakeAsync(() => {
       const mockDef1 = validMockDefinition;
       const mockDef2 = _.cloneDeep(validMockDefinition);
       mockDef2.metadata.title = faker.random.word();
       store.mockDefinitions = [mockDef1];
       store.appendMockDefinition(mockDef2);
+      tick();
       expect(recordSize(store.state.mockDefinitions)).toBe(2);
-    });
+    }));
 
-    it('should overwrite a mock definition to the store if the store contains other mock definitions when appending', () => {
+    it('should overwrite a mock definition to the store if the store contains other mock definitions when appending', fakeAsync(() => {
       const mockDef1 = validMockDefinition;
       const mockDef2 = _.cloneDeep(validMockDefinition);
       store.mockDefinitions = [mockDef1];
       store.appendMockDefinition(mockDef2);
+      tick();
       expect(recordSize(store.state.mockDefinitions)).toBe(1);
-    });
+    }));
 
     it('should set the endpoints when appending a single mock definition to a list of none', done => {
       const mockDef = _.cloneDeep(validMockDefinition);
@@ -418,7 +430,7 @@ describe('DesignerStore', () => {
   });
 
   describe('addOrUpdateScenario', () => {
-    it('should add new scenario', () => {
+    it('should add new scenario', fakeAsync(() => {
       const mockverb = VerbType.GET;
       const path = faker.random.words();
       const input = {
@@ -453,10 +465,11 @@ describe('DesignerStore', () => {
 
       store.state.mockDefinition = input.mock;
       store.addOrUpdateScenario(input.scenario);
+      tick();
       expect(store.state.mockDefinition.scenarios.length).toEqual(expected);
-    });
+    }));
 
-    it('should update existing scenario', () => {
+    it('should update existing scenario', fakeAsync(() => {
       const input = {
         mock: validMockDefinition
       };
@@ -465,7 +478,8 @@ describe('DesignerStore', () => {
 
       store.state.mockDefinition = input.mock;
       store.addOrUpdateScenario(inputScenario);
+      tick();
       expect(store.state.mockDefinition.scenarios.length).toEqual(expected);
-    });
+    }));
   });
 });
