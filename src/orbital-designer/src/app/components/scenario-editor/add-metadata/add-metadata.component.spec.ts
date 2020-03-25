@@ -79,7 +79,7 @@ describe('AddMetadataComponent', () => {
       } as MockDefinition;
       testMockDef.metadata = ({
         title: '',
-        description: faker.random.word().substring(0, 49)
+        description: faker.random.words(10).substring(0, 49)
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
       component.validate();
@@ -94,7 +94,7 @@ describe('AddMetadataComponent', () => {
         }
       } as MockDefinition;
       testMockDef.metadata = ({
-        title: faker.random.word().substring(0, 49),
+        title: faker.random.words(5).substring(0, 49),
         description: faker.random.word().substring(0, 49)
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
@@ -126,7 +126,7 @@ describe('AddMetadataComponent', () => {
         }
       } as MockDefinition;
       testMockDef.metadata = ({
-        title: faker.random.word().substring(0, 49),
+        title: faker.random.words(10).substring(0, 49),
         description: 'Z'.repeat(501)
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
@@ -142,7 +142,7 @@ describe('AddMetadataComponent', () => {
         }
       } as MockDefinition;
       testMockDef.metadata = ({
-        title: faker.random.word().substring(0, 49),
+        title: faker.random.words(10).substring(0, 49),
         description: ''
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
@@ -158,7 +158,7 @@ describe('AddMetadataComponent', () => {
         }
       } as MockDefinition;
       testMockDef.metadata = ({
-        title: faker.random.word().substring(0, 49),
+        title: faker.random.words(10).substring(0, 49),
         description: undefined
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
@@ -176,8 +176,8 @@ describe('AddMetadataComponent', () => {
         }
       } as MockDefinition;
       testMockDef.metadata = ({
-        title: faker.random.word().substring(0, 49),
-        description: faker.random.word().substring(0, 49)
+        title: faker.random.words(10).substring(0, 49),
+        description: faker.random.words(10).substring(0, 49)
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
 
@@ -196,8 +196,8 @@ describe('AddMetadataComponent', () => {
         }
       } as MockDefinition;
       testMockDef.metadata = ({
-        title: faker.random.word().substring(0, 49),
-        description: faker.random.word().substring(0, 49)
+        title: faker.random.words(10).substring(0, 49),
+        description: faker.random.words(10).substring(0, 49)
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
 
