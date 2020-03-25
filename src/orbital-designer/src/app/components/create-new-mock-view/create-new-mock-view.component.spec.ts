@@ -30,7 +30,7 @@ describe('CreateNewMockViewComponent', () => {
         MatCardModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule
       ],
       providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService]
     }).compileComponents();

@@ -13,7 +13,7 @@ describe('QuickExportComponent', () => {
   beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [QuickExportComponent],
-      imports: [MatIconModule, RouterTestingModule.withRoutes([]), LoggerTestingModule, HttpClientModule],
+      imports: [MatIconModule, RouterTestingModule, LoggerTestingModule, HttpClientModule],
       providers: [DesignerStore]
     }).compileComponents();
 

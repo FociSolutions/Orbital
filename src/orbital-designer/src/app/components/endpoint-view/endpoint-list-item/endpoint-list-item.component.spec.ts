@@ -25,7 +25,7 @@ describe('EndpointListItemComponent', () => {
       ],
       imports: [
         MatCardModule,
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
         LoggerTestingModule
       ],
       providers: [DesignerStore]

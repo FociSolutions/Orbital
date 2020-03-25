@@ -32,7 +32,7 @@ describe('DownloadMockdefinitionsComponent', () => {
         MatDividerModule,
         MatListModule,
         LoggerTestingModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();

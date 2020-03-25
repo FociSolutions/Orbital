@@ -8,7 +8,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 describe('OverviewRedirectService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), LoggerTestingModule],
+      imports: [RouterTestingModule, LoggerTestingModule],
       providers: [DesignerStore]
     });
   });
