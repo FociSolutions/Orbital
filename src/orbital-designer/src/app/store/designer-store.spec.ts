@@ -148,11 +148,12 @@ describe('DesignerStore', () => {
   });
 
   describe('DesignerStore.mockDefinition', () => {
-    it('should update the state with the new MockDefinition and endpoints', () => {
+    it('should update the state with the new MockDefinition and endpoints', fakeAsync(() => {
       const Expected: MockDefinition = {
         ...validMockDefinition
       };
       store.mockDefinition = { ...Expected };
+      tick();
       expect(store.state.mockDefinition).toEqual(Expected);
       for (const path of Object.keys(Expected.openApi.paths)) {
         for (const verb of acceptedVerbs) {
@@ -168,7 +169,7 @@ describe('DesignerStore', () => {
           }
         }
       }
-    });
+    }));
   });
 
   describe('DesignerStore.mockDefinitions', () => {
@@ -222,7 +223,7 @@ describe('DesignerStore', () => {
   });
 
   describe('DesignerStore.updateScenarios()', () => {
-    it('should update scenarios', () => {
+    it('should update scenarios', fakeAsync(() => {
       store.mockDefinition = validMockDefinition;
       const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
@@ -254,9 +255,11 @@ describe('DesignerStore', () => {
           defaultScenario: false
         } as Scenario);
       }
+      tick();
       store.updateScenarios(scenarios);
+      tick();
       expect(store.state.mockDefinition.scenarios).toEqual(scenarios);
-    });
+    }));
   });
 
   describe('DesignerStore.deleteMockDefinitionByTitle()', () => {
