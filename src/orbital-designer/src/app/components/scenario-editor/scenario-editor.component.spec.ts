@@ -39,6 +39,7 @@ import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinit
 import { BodyListItemRuleTypeComponent } from './add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyAddRuleComponent } from './add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.component';
+import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -68,13 +69,15 @@ describe('ScenarioEditorComponent', () => {
         PolicyEditComponent,
         BodyEditRuleComponent,
         BodyListItemRuleTypeComponent,
-        BodyAddRuleComponent
+        BodyAddRuleComponent,
+        ScenarioViewComponent
       ],
       imports: [
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([    
+          { path: 'scenario-view', component: ScenarioViewComponent }]),
         MatButtonModule,
         MatExpansionModule,
         BrowserAnimationsModule,
