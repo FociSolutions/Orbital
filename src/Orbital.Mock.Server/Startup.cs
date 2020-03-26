@@ -20,6 +20,10 @@ using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+using Scriban;
+using Bogus;
+using Orbital.Mock.Server.Functions;
+using Scriban.Runtime;
 
 namespace Orbital.Mock.Server
 {
@@ -65,6 +69,9 @@ namespace Orbital.Mock.Server
 
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
+            
+            //Configures the tempate and builtin functions for templated responses
+            ConfigureTemplateContext(services);
         }
 
         /// <summary>
@@ -100,6 +107,25 @@ namespace Orbital.Mock.Server
             app.UseMiddleware<LoggingRequestResponseMiddleware>();
             app.UseMiddleware<ServerRequestMiddleware>();
             app.UseMvc();
+        }
+
+        /// <summary>
+        /// This method creates the template context with buildin functions needed for templaded responses to work.
+        /// This method also adds the template context to the services for the app to access the template context via DI.
+        /// </summary>
+        /// <param name="services">the collection of services registered for the app.</param>
+        private void ConfigureTemplateContext(IServiceCollection services)
+        {
+            var globalContext = new TemplateContext();
+
+            var scriptObjectOrbital = new BuiltinOrbitalFunctions();
+            var scriptObjectFaker = new ScriptObject();
+            scriptObjectFaker.Import(new Faker());
+
+            globalContext.PushGlobal(scriptObjectOrbital);
+            globalContext.PushGlobal(scriptObjectFaker);
+
+            services.AddSingleton(globalContext);
         }
     }
 }
