@@ -23,6 +23,7 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -125,7 +126,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -147,11 +149,7 @@ describe('ScenarioViewComponent', () => {
 
       component.cloneScenario(scenarios[0]);
 
-      expect(
-        store.state.mockDefinition.scenarios.find(
-          x => x.metadata.title.indexOf('-copy') !== -1
-        )
-      ).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy') !== -1)).toBeTruthy();
     });
 
     it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', () => {
@@ -170,7 +168,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -194,16 +193,8 @@ describe('ScenarioViewComponent', () => {
       component.cloneScenario(scenarios[0]);
       component.cloneScenario(scenarios[0]);
 
-      expect(
-        store.state.mockDefinition.scenarios.find(
-          x => x.metadata.title.indexOf('-copy 2') !== -1
-        )
-      ).toBeTruthy();
-      expect(
-        store.state.mockDefinition.scenarios.find(
-          x => x.metadata.title.indexOf('-copy 3') !== -1
-        )
-      ).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 2') !== -1)).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 3') !== -1)).toBeTruthy();
     });
 
     it('should not clone a scenario from the store if the cloned scenario is invalid', () => {
@@ -222,7 +213,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -242,15 +234,11 @@ describe('ScenarioViewComponent', () => {
 
       store.state.mockDefinition.scenarios = scenarios;
 
-      const scenarioLengthComponentExpected =
-        store.state.mockDefinition.scenarios.length;
+      const scenarioLengthComponentExpected = store.state.mockDefinition.scenarios.length;
       component.cloneScenario(null);
 
-      const scenarioLengthComponentActual =
-        store.state.mockDefinition.scenarios.length;
-      expect(scenarioLengthComponentActual).toEqual(
-        scenarioLengthComponentExpected
-      );
+      const scenarioLengthComponentActual = store.state.mockDefinition.scenarios.length;
+      expect(scenarioLengthComponentActual).toEqual(scenarioLengthComponentExpected);
     });
 
     it('should clone a scenario and ensure that the title and id are different', () => {
@@ -269,7 +257,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -290,12 +279,10 @@ describe('ScenarioViewComponent', () => {
       store.state.mockDefinition.scenarios = scenarios;
       component.cloneScenario(scenarios[0]);
 
-      expect(store.state.mockDefinition.scenarios[0].id).not.toEqual(
-        store.state.mockDefinition.scenarios[1].id
+      expect(store.state.mockDefinition.scenarios[0].id).not.toEqual(store.state.mockDefinition.scenarios[1].id);
+      expect(store.state.mockDefinition.scenarios[0].metadata.title).not.toEqual(
+        store.state.mockDefinition.scenarios[1].metadata.title
       );
-      expect(
-        store.state.mockDefinition.scenarios[0].metadata.title
-      ).not.toEqual(store.state.mockDefinition.scenarios[1].metadata.title);
     });
 
     it('should clone a scenario and ensure that there exists another scenario with the same contents, except for title and id', () => {
@@ -314,7 +301,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -345,26 +333,16 @@ describe('ScenarioViewComponent', () => {
           aScenario.metadata.title !== componentScenarioClonee.metadata.title &&
           aScenario.path === componentScenarioClonee.path &&
           JSON.stringify(aScenario.requestMatchRules.bodyRules) ===
-            JSON.stringify(
-              componentScenarioClonee.requestMatchRules.bodyRules
-            ) &&
+            JSON.stringify(componentScenarioClonee.requestMatchRules.bodyRules) &&
           JSON.stringify(aScenario.requestMatchRules.headerRules) ===
-            JSON.stringify(
-              componentScenarioClonee.requestMatchRules.headerRules
-            ) &&
+            JSON.stringify(componentScenarioClonee.requestMatchRules.headerRules) &&
           JSON.stringify(aScenario.requestMatchRules.queryRules) ===
-            JSON.stringify(
-              componentScenarioClonee.requestMatchRules.queryRules
-            ) &&
+            JSON.stringify(componentScenarioClonee.requestMatchRules.queryRules) &&
           aScenario.response.body === componentScenarioClonee.response.body &&
-          JSON.stringify(aScenario.response.headers) ===
-            JSON.stringify(componentScenarioClonee.response.headers) &&
-          aScenario.response.status ===
-            componentScenarioClonee.response.status &&
-          JSON.stringify(aScenario.verb) ===
-            JSON.stringify(componentScenarioClonee.verb) &&
-          aScenario.metadata.description ===
-            componentScenarioClonee.metadata.description
+          JSON.stringify(aScenario.response.headers) === JSON.stringify(componentScenarioClonee.response.headers) &&
+          aScenario.response.status === componentScenarioClonee.response.status &&
+          JSON.stringify(aScenario.verb) === JSON.stringify(componentScenarioClonee.verb) &&
+          aScenario.metadata.description === componentScenarioClonee.metadata.description
       ).length;
 
       expect(expectedResults).toEqual(1);
@@ -386,7 +364,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -408,9 +387,7 @@ describe('ScenarioViewComponent', () => {
 
       component.cloneScenario(scenarios[0]);
 
-      expect(
-        store.state.mockDefinition.scenarios[1].defaultScenario
-      ).toBe(false);
+      expect(store.state.mockDefinition.scenarios[1].defaultScenario).toBe(false);
     });
   });
 
@@ -429,7 +406,8 @@ describe('ScenarioViewComponent', () => {
         response: {
           headers: {},
           status: 0,
-          body: ''
+          body: '',
+          type: ResponseType.CUSTOM
         },
         requestMatchRules: {
           headerRules: [],
@@ -464,7 +442,8 @@ describe('ScenarioViewComponent', () => {
         response: {
           headers: {},
           status: 0,
-          body: ''
+          body: '',
+          type: ResponseType.CUSTOM
         },
         requestMatchRules: {
           headerRules: [],
@@ -499,7 +478,8 @@ describe('ScenarioViewComponent', () => {
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
+        type: ResponseType.CUSTOM
       },
       requestMatchRules: {
         headerRules: [],
@@ -514,9 +494,7 @@ describe('ScenarioViewComponent', () => {
       defaultScenario: false
     } as Scenario;
     scenario.response.status = 404;
-    expect(component.getScenarioResponseStatusString(scenario)).toBe(
-      'Not Found'
-    );
+    expect(component.getScenarioResponseStatusString(scenario)).toBe('Not Found');
   });
 
   it('should return Accepted for a 202 status', () => {
@@ -533,7 +511,8 @@ describe('ScenarioViewComponent', () => {
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
+        type: ResponseType.CUSTOM
       },
       requestMatchRules: {
         headerRules: [],
@@ -548,9 +527,7 @@ describe('ScenarioViewComponent', () => {
       defaultScenario: false
     } as Scenario;
     scenario.response.status = 202;
-    expect(component.getScenarioResponseStatusString(scenario)).toBe(
-      'Accepted'
-    );
+    expect(component.getScenarioResponseStatusString(scenario)).toBe('Accepted');
   });
 
   describe('ScenarioListItemComponent.deleteScenario', () => {
@@ -568,7 +545,8 @@ describe('ScenarioViewComponent', () => {
         response: {
           headers: {},
           status: 0,
-          body: ''
+          body: '',
+          type: ResponseType.CUSTOM
         },
         requestMatchRules: {
           headerRules: [],

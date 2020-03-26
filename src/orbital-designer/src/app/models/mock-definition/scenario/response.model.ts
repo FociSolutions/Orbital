@@ -7,12 +7,12 @@ export interface Response {
   headers: Record<string, string>;
   body: string;
   status: number;
-  responseType: ResponseType;
+  type: ResponseType;
 }
 
 export const defaultResponse: Response = {
   headers: {},
   body: '',
   status: 200,
-  responseType: ResponseType.NONE
+  type: ResponseType.NONE
 };
