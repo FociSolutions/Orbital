@@ -36,7 +36,7 @@ namespace Orbital.Mock.Server.Models
             this.Body = Body;
             this.Headers = Headers;
             this.Queries = Queries;
-            this.ResponseType = ResponseType;
+            this.Type = ResponseType;
         }
 
         [JsonProperty("status")]
@@ -47,8 +47,8 @@ namespace Orbital.Mock.Server.Models
         public IDictionary<string, string> Headers { get; set; }
         [JsonProperty("query")]
         public IDictionary<string, string> Queries { get; set; }
-        [JsonProperty("responseType")]
-        public ResponseType ResponseType { get; set; }
+        [JsonProperty("type")]
+        public ResponseType Type { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -62,12 +62,12 @@ namespace Orbital.Mock.Server.Models
                    Body.Equals(other.Body) &&
                    this.Headers.Count == other.Headers.Count && !Headers.Except(other.Headers).Any() &&
                    this.Queries.Count == other.Queries.Count && !Queries.Except(other.Queries).Any() &&
-                   this.ResponseType == other.ResponseType;
+                   this.Type == other.Type;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Status, Body, Headers, Queries, ResponseType);
+            return HashCode.Combine(Status, Body, Headers, Queries, Type);
         }
     }
 
