@@ -17,6 +17,7 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+using Scriban;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -36,14 +37,14 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly PolicyFilter<ProcessMessagePort> policyFilter;
         public bool PipelineIsRunning { get; private set; }
 
-        public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
+        public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher, TemplateContext templateContext)
             : this(new PathValidationFilter<ProcessMessagePort>(),
                   new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new EndpointMatchFilter<ProcessMessagePort>(),
                   new BodyMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
-                  new ResponseSelectorFilter<ProcessMessagePort>(),
+                  new ResponseSelectorFilter<ProcessMessagePort>(templateContext),
                   new PolicyFilter<ProcessMessagePort>())
         {
         }

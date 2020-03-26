@@ -61,7 +61,7 @@ namespace Orbital.Mock.Server
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
-                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
+                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), ConfigureTemplateContext());
                 processor.Start();
                 return processor;
             });
@@ -70,8 +70,6 @@ namespace Orbital.Mock.Server
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
             
-            //Configures the tempate and builtin functions for templated responses
-            ConfigureTemplateContext(services);
         }
 
         /// <summary>
@@ -110,11 +108,9 @@ namespace Orbital.Mock.Server
         }
 
         /// <summary>
-        /// This method creates the template context with buildin functions needed for templaded responses to work.
-        /// This method also adds the template context to the services for the app to access the template context via DI.
+        /// This method creates the template context with buildin functions needed for templaded responses to work..
         /// </summary>
-        /// <param name="services">the collection of services registered for the app.</param>
-        private void ConfigureTemplateContext(IServiceCollection services)
+        private TemplateContext ConfigureTemplateContext()
         {
             var globalContext = new TemplateContext();
 
@@ -125,7 +121,7 @@ namespace Orbital.Mock.Server
             globalContext.PushGlobal(scriptObjectOrbital);
             globalContext.PushGlobal(scriptObjectFaker);
 
-            services.AddSingleton(globalContext);
+            return globalContext;
         }
     }
 }
