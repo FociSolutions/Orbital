@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using Scriban;
+using Scriban.Runtime;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
@@ -55,6 +57,19 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             port.SelectedResponse = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Response
                 : port.Scenarios.Count() > 0 ? port.Scenarios.First().Response : new MockResponse();
+
+            if(port.SelectedResponse.Type == ResponseType.TEMPLATED)
+            {
+                var request = new ScriptObject();
+                var requestObject = new JObject(port.Body);
+
+                request.Add("request", requestObject);
+                templateContext.PushGlobal(request);
+
+                var template = Template.Parse(port.SelectedResponse.Body);
+
+                port.SelectedResponse.Body = template.Render(templateContext);
+            }
 
             return port;
         }
