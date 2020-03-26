@@ -11,7 +11,8 @@
         "response": {
           "headers": {},
           "status": "200",
-          "body": "{\n  \"animal-type\": \"cat\"\n}"
+          "body": "{\n  \"animal-type\": \"cat\"\n}",
+          "type": 1
         },
         "requestMatchRules": {
           "urlRules": [],

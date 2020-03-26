@@ -14,7 +14,8 @@
         "headers": {
           "Content-Type": "text/plain"
         },
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -56,7 +57,8 @@
         "headers": {
           "Content-Type": "text/plain"
         },
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -97,7 +99,8 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -129,7 +132,8 @@
         "headers": {
           "Content-Type": "text/plain"
         },
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -159,7 +163,8 @@
         "status": 200,
         "body": "{\"default\":\"response\"}",
         "headers": {},
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -189,7 +194,8 @@
         "status": 200,
         "body": "{\"equality-match\":\"success\"}",
         "headers": {},
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -219,7 +225,8 @@
         "status": 200,
         "body": "{\"pet-matched\":\"true\"}",
         "headers": {},
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -249,7 +256,8 @@
         "status": 200,
         "body": "{\"test-contains-fired\":\"true\"}",
         "headers": {},
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -277,7 +285,8 @@
         "status": 200,
         "body": "{\"equality-literal-fired\":\"true\"}",
         "headers": {},
-        "query": {}
+        "query": {},
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],

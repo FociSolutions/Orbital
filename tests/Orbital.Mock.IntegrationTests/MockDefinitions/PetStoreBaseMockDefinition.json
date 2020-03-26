@@ -11,7 +11,8 @@
       "response": {
         "headers": {},
         "status": "200",
-        "body": "{\n  \"petHeaders\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
+        "body": "{\n  \"petHeaders\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}",
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -45,7 +46,8 @@
           "testheader": "application/json"
         },
         "status": "200",
-        "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    },\n    {\n      \"id\": \"2\",\n      \"name\": \"Hamtaro\",\n      \"type\": \"hamster\",\n      \"description\": \"Likes trail mix\"\n    },\n    {\n      \"id\": \"3\",\n      \"name\": \"Whisker\",\n      \"type\": \"cat\",\n      \"descriptions\": \"Likes hamtaro\"\n    }\n  ]\n}"
+        "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    },\n    {\n      \"id\": \"2\",\n      \"name\": \"Hamtaro\",\n      \"type\": \"hamster\",\n      \"description\": \"Likes trail mix\"\n    },\n    {\n      \"id\": \"3\",\n      \"name\": \"Whisker\",\n      \"type\": \"cat\",\n      \"descriptions\": \"Likes hamtaro\"\n    }\n  ]\n}",
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": {
