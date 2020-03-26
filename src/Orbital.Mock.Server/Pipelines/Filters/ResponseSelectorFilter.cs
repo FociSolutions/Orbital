@@ -61,7 +61,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             if(port.SelectedResponse.Type == ResponseType.TEMPLATED)
             {
                 var request = new ScriptObject();
-                var requestObject = new JObject(port.Body);
+                var requestObject = JObject.Parse(port.Body);
 
                 request.Add("request", requestObject);
                 templateContext.PushGlobal(request);

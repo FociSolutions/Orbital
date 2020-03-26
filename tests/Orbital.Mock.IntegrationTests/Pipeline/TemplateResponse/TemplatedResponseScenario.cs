@@ -13,10 +13,11 @@ I want to receive the correct response with the templated data provided in my re
     {
         [Scenario]
         [ClearServerScenarioDecorator]
-        public void Successful_url_match()
+        public void Successful_teplated_response()
         {
             Runner.RunScenario(
                     Given_the_server_has_a_mock_definition_with_scenarios_with_templated_response,
+                    Given_the_request_contains_the_templated_data,
                     When_the_client_sends_the_request,
                     Then_the_response_is_contains_data_from_the_request_body
             );

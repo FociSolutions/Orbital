@@ -13,7 +13,7 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.TemplateResponse
         private Scenario scenario;
         private HttpRequestMessage request;
         private HttpResponseMessage response;
-        private JToken responseBody;
+        private string responseBody;
         private JToken mockDefinitionTRJson;
 
         public TemplatedResponseFixture_Feature()
