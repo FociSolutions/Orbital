@@ -9,7 +9,7 @@ namespace Orbital.Mock.Server.Functions
         /// </summary>
         internal static readonly ScriptObject Default = new DefaultBuiltins();
 
-        public BuiltinOrbitalFunctions() : base(9)
+        public BuiltinOrbitalFunctions() : base(10)
         {
             ((ScriptObject)Default.Clone(true)).CopyTo(this);
         }
@@ -19,7 +19,7 @@ namespace Orbital.Mock.Server.Functions
         /// </summary>
         private class DefaultBuiltins : ScriptObject
         {
-            public DefaultBuiltins() : base(9, false)
+            public DefaultBuiltins() : base(10, false)
             {
                 SetValue("name", new NameFunctions(), true);
                 SetValue("address", new AddressFunctions(), true);
@@ -31,6 +31,7 @@ namespace Orbital.Mock.Server.Functions
                 SetValue("image", new ImageFunctions(), true);
                 SetValue("internet", new InternetFunctions(), true);
                 SetValue("lorem", new LoremFunctions(), true);
+                SetValue("vehicle", new VehicleFunctions(), true);
             }
         }
     }
