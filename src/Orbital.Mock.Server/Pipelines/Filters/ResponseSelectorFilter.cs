@@ -3,12 +3,18 @@ using System.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
+using Scriban;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class ResponseSelectorFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort, IPathValidationPort, IUrlMatchPort, IPolicyPort
     {
+        private readonly TemplateContext templateContext;
+        public ResponseSelectorFilter(TemplateContext templateContext)
+        {
+            this.templateContext = templateContext;
+        }
         /// <summary>
         /// Selects the response to use based on the match results from the previous filters. Ties are broken randomly.
         /// </summary>
