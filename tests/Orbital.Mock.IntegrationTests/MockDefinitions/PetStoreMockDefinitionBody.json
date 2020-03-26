@@ -11,7 +11,8 @@
       "response": {
         "headers": {},
         "status": "200",
-        "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Doggy\",\n      \"type\": \"dog\",\n      \"description\": \"Is sometimes good boy\"\n    },\n    {\n      \"id\": \"2\",\n      \"name\": \"Hamtaro\",\n      \"type\": \"hampster\",\n      \"description\": \"Likes trail mix when he has not eaten it for a while\"\n    },\n    {\n      \"id\": \"3\",\n      \"name\": \"Whisker\",\n      \"type\": \"cat\",\n      \"descriptions\": \"Likes hamtaro\"\n    }\n  ]\n}"
+        "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Doggy\",\n      \"type\": \"dog\",\n      \"description\": \"Is sometimes good boy\"\n    },\n    {\n      \"id\": \"2\",\n      \"name\": \"Hamtaro\",\n      \"type\": \"hampster\",\n      \"description\": \"Likes trail mix when he has not eaten it for a while\"\n    },\n    {\n      \"id\": \"3\",\n      \"name\": \"Whisker\",\n      \"type\": \"cat\",\n      \"descriptions\": \"Likes hamtaro\"\n    }\n  ]\n}",
+        "type": 1
       },
       "requestMatchRules": {
         "bodyRules": [
@@ -78,7 +79,8 @@
           "Content-Type": "application/json"
         },
         "status": "200",
-        "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}"
+        "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}",
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -116,7 +118,8 @@
           "Content-Type": "text/plain"
         },
         "status": "201",
-        "body": "Resource Successfully Created"
+        "body": "Resource Successfully Created",
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -157,7 +160,8 @@
           "Content-Type": "text/plain"
         },
         "status": "400",
-        "body": "Error: Could not create resource. Missing property \"type\" of pet"
+        "body": "Error: Could not create resource. Missing property \"type\" of pet",
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -197,7 +201,8 @@
           "Content-Type": "application/json"
         },
         "status": "200",
-        "body": "{\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n}"
+        "body": "{\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n}",
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],
@@ -228,7 +233,8 @@
           "Content-Type": "text/plain"
         },
         "status": "404",
-        "body": "Pet not found. Check that id is correct."
+        "body": "Pet not found. Check that id is correct.",
+        "type": 1
       },
       "requestMatchRules": {
         "urlRules": [],

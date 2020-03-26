@@ -13,11 +13,7 @@ describe('AddResponseComponent', () => {
   beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
-      imports: [
-        OrbitalCommonModule,
-        BrowserAnimationsModule,
-        LoggerTestingModule
-      ]
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddResponseComponent);
@@ -65,9 +61,7 @@ describe('AddResponseComponent', () => {
       component.response = testResponse;
       component.saveStatus = true;
 
-      expect(component.responseOutput.emit).not.toHaveBeenCalledWith(
-        testResponse
-      );
+      expect(component.responseOutput.emit).not.toHaveBeenCalledWith(testResponse);
     });
   });
 
