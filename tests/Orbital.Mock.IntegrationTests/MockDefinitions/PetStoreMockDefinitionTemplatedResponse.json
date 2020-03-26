@@ -7,11 +7,11 @@
         "description": "Gets the list of pets but filters out based on animal type"
       },
       "verb": 0,
-      "path": "/petHeaders",
+      "path": "/petTResponse",
       "response": {
         "headers": {},
         "status": "200",
-        "body": "{\n  \"petHeaders\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"{{request.dogname}}\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}",
+        "body": "{\n  \"petTResponse\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"{{request.dogname}}\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}",
         "type": 2
       },
       "requestMatchRules": {
@@ -54,12 +54,12 @@
       "application/json"
     ],
     "paths": {
-      "/petHeaders": {
+      "/petTResponse": {
         "get": {
           "summary": "List all pets",
           "operationId": "listPets",
           "tags": [
-            "petHeaders"
+            "petTResponse"
           ],
           "parameters": [
             {
@@ -96,7 +96,7 @@
           "summary": "Create a pet",
           "operationId": "createPets",
           "tags": [
-            "petHeaders"
+            "petTResponse"
           ],
           "responses": {
             "201": {
@@ -114,7 +114,7 @@
           "summary": "Update a pet",
           "operationId": "updatePets",
           "tags": [
-            "petHeaders"
+            "petTResponse"
           ],
           "responses": {
             "201": {
@@ -129,12 +129,12 @@
           }
         }
       },
-      "/petHeaders/{petId}": {
+      "/petTResponse/{petId}": {
         "get": {
           "summary": "Info for a specific pet",
           "operationId": "showPetById",
           "tags": [
-            "petHeaders"
+            "petTResponse"
           ],
           "parameters": [
             {
@@ -207,7 +207,7 @@
     }
   },
   "metadata": {
-    "title": "petHeaders",
+    "title": "petTResponse",
     "description": "Description Test"
   }
 }
