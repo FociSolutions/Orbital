@@ -17,86 +17,137 @@ namespace Orbital.Mock.Server.Functions
         /// <summary>
         /// Gets a random picsum url
         /// </summary>
-        public static string PicsumUrl() { return faker.Image.PicsumUrl(); }
+        public static string PicsumUrl()
+        {
+            return faker.Image.PicsumUrl();
+        }
 
         /// <summary>
         /// Gets a random lorem flickr url
         /// </summary>
-        public static string LoremFlickrUrl() { return faker.Image.LoremFlickrUrl(); }
+        public static string LoremFlickrUrl()
+        {
+            return faker.Image.LoremFlickrUrl();
+        }
 
         /// <summary>
         /// Gets a random lorem pixel url
         /// </summary>
-        public static string LoremPixelUrl() { return faker.Image.LoremPixelUrl(); }
+        public static string LoremPixelUrl()
+        {
+            return faker.Image.LoremPixelUrl();
+        }
 
         /// <summary>
         /// Gets a random image
         /// </summary>
-        public static string Image() { return faker.Image.Image(); }
+        public static string Image()
+        {
+            return faker.Image.Image();
+        }
 
         /// <summary>
         /// Gets a random abstract
         /// </summary>
-        public static string Abstract() { return faker.Image.Abstract(); }
+        public static string Abstract()
+        {
+            return faker.Image.Abstract();
+        }
 
         /// <summary>
         /// Gets a random animals
         /// </summary>
-        public static string Animals() { return faker.Image.Animals(); }
+        public static string Animals()
+        {
+            return faker.Image.Animals();
+        }
 
         /// <summary>
         /// Gets a random business
         /// </summary>
-        public static string Business() { return faker.Image.Business(); }
+        public static string Business()
+        {
+            return faker.Image.Business();
+        }
 
         /// <summary>
         /// Gets a random cats
         /// </summary>
-        public static string Cats() { return faker.Image.Cats(); }
+        public static string Cats()
+        {
+            return faker.Image.Cats();
+        }
 
         /// <summary>
         /// Gets a random city
         /// </summary>
-        public static string City() { return faker.Image.City(); }
+        public static string City()
+        {
+            return faker.Image.City();
+        }
 
         /// <summary>
         /// Gets a random food
         /// </summary>
-        public static string Food() { return faker.Image.Food(); }
+        public static string Food()
+        {
+            return faker.Image.Food();
+        }
 
         /// <summary>
         /// Gets a random nightlife
         /// </summary>
-        public static string Nightlife() { return faker.Image.Nightlife(); }
+        public static string Nightlife()
+        {
+            return faker.Image.Nightlife();
+        }
 
         /// <summary>
         /// Gets a random fashion
         /// </summary>
-        public static string Fashion() { return faker.Image.Fashion(); }
+        public static string Fashion()
+        {
+            return faker.Image.Fashion();
+        }
 
         /// <summary>
         /// Gets a random people
         /// </summary>
-        public static string People() { return faker.Image.People(); }
+        public static string People()
+        {
+            return faker.Image.People();
+        }
 
         /// <summary>
         /// Gets a random nature
         /// </summary>
-        public static string Nature() { return faker.Image.Nature(); }
+        public static string Nature()
+        {
+            return faker.Image.Nature();
+        }
 
         /// <summary>
         /// Gets a random sports
         /// </summary>
-        public static string Sports() { return faker.Image.Sports(); }
+        public static string Sports()
+        {
+            return faker.Image.Sports();
+        }
 
         /// <summary>
         /// Gets a random technics
         /// </summary>
-        public static string Technics() { return faker.Image.Technics(); }
+        public static string Technics()
+        {
+            return faker.Image.Technics();
+        }
 
         /// <summary>
         /// Gets a random transport
         /// </summary>
-        public static string Transport() { return faker.Image.Transport(); }
+        public static string Transport()
+        {
+            return faker.Image.Transport();
+        }
     }
 }
