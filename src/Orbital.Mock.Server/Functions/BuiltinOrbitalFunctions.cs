@@ -19,12 +19,13 @@ namespace Orbital.Mock.Server.Functions
         /// </summary>
         private class DefaultBuiltins : ScriptObject
         {
-            public DefaultBuiltins() : base(4, false)
+            public DefaultBuiltins() : base(5, false)
             {
                 SetValue("name", new NameFunctions(), true);
                 SetValue("address", new AddressFunctions(), true);
                 SetValue("database", new DatabaseFunctions(), true);
                 SetValue("finance", new FinanceFunctions(), true);
+                SetValue("commerce", new CommerceFunctions(), true);
             }
         }
     }
