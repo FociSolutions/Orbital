@@ -1,4 +1,4 @@
-﻿{
+{
   "scenarios": [
     {
       "id": "98fdbd41-14e5-401d-833f-59292018557f",
@@ -7,54 +7,24 @@
         "description": "Gets the list of pets but filters out based on animal type"
       },
       "verb": 0,
-      "path": "/petHeaders",
+      "path": "/petTResponse",
       "response": {
         "headers": {},
         "status": "200",
-        "body": "{\n  \"petHeaders\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}",
-        "type": 1
+        "body": "{\n  \"petTResponse\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"{{request.dogname}}\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    }\n  ]\n}",
+        "type": 2
       },
       "requestMatchRules": {
         "urlRules": [],
         "headerRules": [
           {
             "type": 3,
-            "animal-type": "dog"
+            "rule": {
+              "animal-type": "dog"
+            }
           }
         ],
-        "queryRules": [
-          {
-            "type": 3,
-            "animal-type": "horse"
-          }
-        ],
-        "bodyRules": []
-      },
-      "policies": [],
-      "defaultScenario":  false
-    },
-    {
-      "id": "0ecfe4ec-3830-4885-bf0e-6b784dc7d2af",
-      "metadata": {
-        "title": "Get List Success",
-        "description": "Retrieves a list of pets"
-      },
-      "verb": 0,
-      "path": "/petHeaders",
-      "response": {
-        "headers": {
-          "testheader": "application/json"
-        },
-        "status": "200",
-        "body": "{\n  \"pets\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Spot\",\n      \"type\": \"dog\",\n      \"description\": \"Is a good boy\"\n    },\n    {\n      \"id\": \"2\",\n      \"name\": \"Hamtaro\",\n      \"type\": \"hamster\",\n      \"description\": \"Likes trail mix\"\n    },\n    {\n      \"id\": \"3\",\n      \"name\": \"Whisker\",\n      \"type\": \"cat\",\n      \"descriptions\": \"Likes hamtaro\"\n    }\n  ]\n}",
-        "type": 1
-      },
-      "requestMatchRules": {
-        "headerRules": {
-        },
-        "queryRules": {
-          "animal-type": "cat"
-        },
+        "queryRules": [],
         "bodyRules": []
       },
       "policies": [],
@@ -84,12 +54,12 @@
       "application/json"
     ],
     "paths": {
-      "/petHeaders": {
+      "/petTResponse": {
         "get": {
           "summary": "List all pets",
           "operationId": "listPets",
           "tags": [
-            "petHeaders"
+            "petTResponse"
           ],
           "parameters": [
             {
@@ -126,7 +96,7 @@
           "summary": "Create a pet",
           "operationId": "createPets",
           "tags": [
-            "petHeaders"
+            "petTResponse"
           ],
           "responses": {
             "201": {
@@ -144,7 +114,7 @@
           "summary": "Update a pet",
           "operationId": "updatePets",
           "tags": [
-            "petHeaders"
+            "petTResponse"
           ],
           "responses": {
             "201": {
@@ -159,12 +129,12 @@
           }
         }
       },
-      "/petHeaders/{petId}": {
+      "/petTResponse/{petId}": {
         "get": {
           "summary": "Info for a specific pet",
           "operationId": "showPetById",
           "tags": [
-            "petHeaders"
+            "petTResponse"
           ],
           "parameters": [
             {
@@ -237,7 +207,7 @@
     }
   },
   "metadata": {
-    "title": "petHeaders",
+    "title": "petTResponse",
     "description": "Description Test"
   }
 }
