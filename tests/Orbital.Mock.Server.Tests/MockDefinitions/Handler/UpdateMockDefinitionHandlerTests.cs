@@ -40,7 +40,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             cache.Set(mockDefinition.Metadata.Title, mockDefinition);
 
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected);
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected, ref TestUtils.databaseLock);
             #endregion
 
             var Target = new UpdateMockDefinitionHandler(cache, data);
@@ -69,7 +69,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #endregion
 
             var Expected = mockDefinitionFake.Generate();
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected);
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected, ref TestUtils.databaseLock);
 
             var Target = new UpdateMockDefinitionHandler(cache, data);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
@@ -100,7 +100,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             cache.Set(Expected.Metadata.Title, Expected);
 
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate);
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate, ref TestUtils.databaseLock);
             #endregion
 
             var Target = new UpdateMockDefinitionHandler(cache, data);
@@ -128,7 +128,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             var mockDefinitionUpdate = mockDefinitionFake.Generate();
 
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate);
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate, ref TestUtils.databaseLock);
             #endregion
 
             var Target = new UpdateMockDefinitionHandler(cache, data);
@@ -157,7 +157,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             var input = new { mockDefinition = mockDefinitionFake.Generate() };
 
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition);
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition, ref TestUtils.databaseLock);
             #endregion
 
             var Target = new UpdateMockDefinitionHandler(cache, data);
@@ -186,7 +186,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 
             var input = new { mockDefinition = mockDefinitionFake.Generate() };
 
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition);
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition, ref TestUtils.databaseLock);
             #endregion
 
             cache.Set(input.mockDefinition.Metadata.Title, input.mockDefinition);

@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material';
 import * as faker from 'faker';
 import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { defaultScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BodyEditRuleComponent } from './body-edit-rule.component';
@@ -31,7 +31,7 @@ describe('BodyEditRuleComponent', () => {
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
     const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
-    designerStore.selectedScenario = defaultScenario;
+    designerStore.selectedScenario = emptyScenario;
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.bodyMatchRuleFormArray = scenarioFormGroup.get('requestMatchRules.bodyMatchRules') as FormArray;
     fixture.detectChanges();

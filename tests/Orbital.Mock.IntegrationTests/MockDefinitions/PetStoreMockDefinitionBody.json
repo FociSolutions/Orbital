@@ -62,7 +62,8 @@
         "headerRules": [],
         "queryRules": []
       },
-      "policies": []
+      "policies": [],
+      "defaultScenario": false
     },
     {
       "id": "0adac4b9-c984-4b47-9de0-943e3723c5e7",
@@ -99,7 +100,8 @@
         ],
         "bodyRules": []
       },
-      "policies": []
+      "policies": [],
+      "defaultScenario": false
     },
     {
       "id": "e66ae572-b333-4b2f-a7af-34605ca90f1a",
@@ -139,7 +141,8 @@
           }
         ]
       },
-      "policies": []
+      "policies": [],
+      "defaultScenario": false
     },
     {
       "id": "aeebc415-5464-42ba-922c-5b1433ebb8a2",
@@ -178,7 +181,8 @@
           }
         ]
       },
-      "policies": []
+      "policies": [],
+      "defaultScenario": false
     },
     {
       "id": "aaca1a31-8667-43a7-8cfa-7925dd3b5074",
@@ -208,7 +212,8 @@
         "queryRules": [],
         "bodyRules": []
       },
-      "policies": []
+      "policies": [],
+      "defaultScenario": false
     },
     {
       "id": "4879c798-2a1a-4aaf-a611-329dd1c03fe1",
@@ -238,7 +243,8 @@
         "queryRules": [],
         "bodyRules": []
       },
-      "policies": []
+      "policies": [],
+      "defaultScenario": false
     }
   ],
   "host": "petstore.swagger.io",

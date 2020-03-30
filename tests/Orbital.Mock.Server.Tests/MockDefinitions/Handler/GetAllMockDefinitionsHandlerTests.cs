@@ -27,7 +27,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
 
-            var getAllMockDefinitionsCommand = new GetAllMockDefinitionsCommand();
+            var getAllMockDefinitionsCommand = new GetAllMockDefinitionsCommand(ref TestUtils.databaseLock);
             #endregion
 
             var Target = new GetAllMockDefinitionsHandler(cache, data);
@@ -59,7 +59,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             cache.Set(mockdeffake1.Metadata.Title, mockdeffake1);
             cache.Set(mockdeffake2.Metadata.Title, mockdeffake2);
 
-            var getAllMockDefinitionsCommand = new GetAllMockDefinitionsCommand();
+            var getAllMockDefinitionsCommand = new GetAllMockDefinitionsCommand(ref TestUtils.databaseLock);
 
             var Target = new GetAllMockDefinitionsHandler(cache, data);
             var Actual = Target.Handle(getAllMockDefinitionsCommand, CancellationToken.None).Result.ToList();

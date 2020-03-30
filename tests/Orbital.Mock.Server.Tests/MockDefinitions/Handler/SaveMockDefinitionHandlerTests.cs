@@ -35,7 +35,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #endregion
 
             var mockDefinition = mockDefinitionFake.Generate();
-            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
+            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition, ref TestUtils.databaseLock);
 
             var Target = new SaveMockDefinitionHandler(cache, data);
             Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
@@ -60,7 +60,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             };
             #endregion
 
-            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(input.mockDefinition);
+            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(input.mockDefinition, ref TestUtils.databaseLock);
 
 
             var Target = new SaveMockDefinitionHandler(cache, data);
@@ -75,7 +75,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var cache = new MemoryCache(options);
             #endregion
             var mockDefinition = mockDefinitionFake.Generate();
-            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
+            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition, ref TestUtils.databaseLock);
             var Target = new SaveMockDefinitionHandler(cache, data);
             Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
 
@@ -91,7 +91,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var cache = new MemoryCache(options);
             #endregion
             var mockDefinition = mockDefinitionFake.Generate();
-            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition);
+            var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition, ref TestUtils.databaseLock);
             cache.Set(data.mockIds, new List<string> { mockDefinition.Metadata.Title });
             cache.Set(mockDefinition.Metadata.Title, mockDefinition);
 

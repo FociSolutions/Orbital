@@ -19,7 +19,8 @@
           "headerRules": [],
           "queryRules": []
         },
-        "policies": []
+        "policies": [],
+        "defaultScenario": false
       },
       {
         "id": "8e4d3d59-7435-4f76-8757-88bd743c15aa",
@@ -40,7 +41,8 @@
           "headerRules": [],
           "queryRules": []
         },
-        "policies": []
+        "policies": [],
+        "defaultScenario": false
       }
     ],
     "host": "petstore.swagger.io",

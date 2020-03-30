@@ -16,14 +16,16 @@ export interface Scenario {
   response: Response;
   requestMatchRules: RequestMatchRule;
   policies: Policy[];
+  defaultScenario: boolean;
 }
 
-export const defaultScenario: Scenario = {
+export const emptyScenario: Scenario = {
   id: uuid.v4(),
   metadata: defaultMetadata,
   verb: VerbType.GET,
   path: '',
   response: defaultResponse,
   requestMatchRules: defaultRquestMatchRule,
-  policies: []
+  policies: [],
+  defaultScenario: false
 };

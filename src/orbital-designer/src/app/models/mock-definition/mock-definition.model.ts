@@ -1,5 +1,5 @@
 import { Metadata, defaultMetadata } from './metadata.model';
-import { Scenario, defaultScenario } from './scenario/scenario.model';
+import { Scenario, emptyScenario } from './scenario/scenario.model';
 import { OpenAPIV2 } from 'openapi-types';
 
 /**
@@ -17,6 +17,6 @@ export const defaultMockDefinition: MockDefinition = {
   metadata: defaultMetadata,
   host: '',
   basePath: '',
-  scenarios: [defaultScenario],
+  scenarios: [emptyScenario],
   openApi: {} as OpenAPIV2.Document
 };

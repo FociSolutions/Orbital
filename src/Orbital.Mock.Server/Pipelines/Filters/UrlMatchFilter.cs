@@ -35,13 +35,13 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                     var assertsList = assertFactory.CreateAssert(rule, port.Path);
                     if (!assertsList.Any())
                     {
-                        port.URLMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id));
+                        port.URLMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id, scenario.defaultScenario));
                     }
                     else
                     {
                         port.URLMatchResults.Add(ruleMatcher.Match(assertsList.ToArray())
-                                     ? new MatchResult(MatchResultType.Success, scenario.Id)
-                                     : new MatchResult(MatchResultType.Fail, scenario.Id));
+                                     ? new MatchResult(MatchResultType.Success, scenario.Id, scenario.defaultScenario)
+                                     : new MatchResult(MatchResultType.Fail, scenario.Id, scenario.defaultScenario));
                     }
 
                 }
