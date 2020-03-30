@@ -11,6 +11,7 @@ import * as HttpStatus from 'http-status-codes';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { NGXLogger } from 'ngx-logger';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 @Component({
   selector: 'app-add-response',
@@ -18,6 +19,12 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./add-response.component.scss']
 })
 export class AddResponseComponent implements OnInit, AfterContentChecked {
+  readonly responseTypes = [
+    { value: ResponseType.CUSTOM, viewValue: 'Custom' },
+    { value: ResponseType.NONE, viewValue: 'None' },
+    { value: ResponseType.TEMPLATED, viewValue: 'Templated' }
+  ];
+
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
 
