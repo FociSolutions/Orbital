@@ -48,11 +48,6 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   bodyErrorMessage: string;
 
   /**
-   * The locally store status code
-   */
-  statusCodeEntered: number;
-
-  /**
    *  The status message for the corresponding code
    */
   statusMessage: string;
@@ -66,7 +61,6 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   isCardDisabled: boolean;
   panelExpanded: boolean;
   shouldSave: boolean;
-  isStatusCodeValid: boolean;
 
   constructor(
     private jsonService: ValidJsonService,
@@ -80,10 +74,22 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
     this.statusMessage = 'Enter a Status Code';
     this.isBodyValid = true;
-    this.isStatusCodeValid = true;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.responseFormGroup.controls.status.valueChanges.subscribe(() => {
+      const newStatus = this.responseFormGroup.controls.status.value;
+      if (newStatus) {
+        try {
+          this.statusMessage = HttpStatus.getStatusText(Number(newStatus));
+          this.responseFormGroup.controls.status.setErrors(null);
+        } catch (Error) {
+          this.statusMessage = 'Enter a Status Code';
+          this.responseFormGroup.controls.status.setErrors({'invalidStatusCode': 'Status code not valid'});
+        }
+      }
+    });
+  }
 
   ngAfterContentChecked(): void {
     this.checkStatus();
@@ -101,35 +107,9 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Input()
   set response(newResponse: Response) {
     if (newResponse) {
-      this.statusCode = newResponse.status;
       this.bodyResponse = newResponse.body;
       this.headers = newResponse.headers;
     }
-  }
-
-  /**
-   * This setter checks to see if the status code field is empty and valid,
-   * if it is valid, if parses the string to a number and retrieves the corresponding
-   * status code
-   */
-  set statusCode(statusCode: number) {
-    if (statusCode) {
-      try {
-        this.statusMessage = HttpStatus.getStatusText(Number(statusCode));
-        this.statusCodeEntered = statusCode;
-        this.isStatusCodeValid = true;
-      } catch (Error) {
-        this.statusMessage = 'Enter a Status Code';
-        this.isStatusCodeValid = false;
-      }
-    }
-  }
-
-  /**
-   * Gets the status code from the form field
-   */
-  get statusCode(): number {
-    return this.statusCodeEntered;
   }
 
   /**
@@ -152,29 +132,37 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   }
 
   /**
+   * Gets the status code
+   */
+  get statusCode(): number {
+    return this.responseFormGroup.controls.status.value;
+  }
+
+  /**
+   * Sets the status code
+   */
+  set statusCode(newStatus: number) {
+    this.responseFormGroup.controls.status.setValue(newStatus);
+  }
+
+  /**
    * Wait for header KVP , then trigger emitter if current response is valid
    * @param map Response KVP
    */
   saveHeaders(map: Record<string, string>) {
-    if (this.isStatusCodeValid && this.isBodyValid) {
-      if (this.statusCodeEntered) {
+    if (this.responseFormGroup.controls.status.valid && this.isBodyValid) {
         const responseToEmit = {
           headers: map,
           body: this.bodyResponse,
-          status: +this.statusCode
+          status: +this.responseFormGroup.controls.status.value
         } as Response;
         this.logger.debug(
           'AddResponseComponent:saveHeaders: Response has been emitted',
           responseToEmit
         );
         this.responseOutput.emit(responseToEmit);
-      } else {
-        this.logger.debug(
-          'AddResponseComponent:saveHeaders: Status code should not be empty'
-        );
-        this.isStatusCodeValid = false;
-        this.disableCard();
-      }
+    } else {
+      this.disableCard();
     }
   }
 
@@ -183,7 +171,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * If not valid, call disable card; otherwise, enable expansion
    */
   private checkStatus() {
-    if (this.isStatusCodeValid && this.isBodyValid) {
+    if (this.responseFormGroup.controls.status.valid && this.isBodyValid) {
       this.isCardDisabled = false;
     } else {
       this.disableCard();

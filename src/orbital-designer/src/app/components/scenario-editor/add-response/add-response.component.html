@@ -19,25 +19,25 @@
             {{ responseType.viewValue }}
           </mat-option>
         </div>
-      </mat-select>
-    </form>
-    <div class="response-code">
-      <div class="status-code">
-        Status Code
-        <mat-form-field class="status-code-field">
-          <input matInput class="status-code-input" [(ngModel)]="statusCode" />
-        </mat-form-field>
-      </div>
-      <div class="status-message">
-        Status Message
-        <div class="status-message-output">
-          {{ statusMessage }}
+        </mat-select>
+      <div class="response-code">
+        <div class="status-code">
+          Status Code
+          <mat-form-field class="status-code-field">
+            <input matInput class="status-code-input" formControlName="status" />
+          </mat-form-field>
+        </div>
+        <div class="status-message">
+          Status Message
+          <div class="status-message-output">
+            {{ statusMessage }}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="error-message" *ngIf="!this.isStatusCodeValid">
-      Invalid Status Code
-    </div>
+      <div class="error-message" *ngIf="!!this.responseFormGroup.controls.status.errors">
+        Invalid Status Code
+      </div>
+    </form>
     <app-kvp-edit
       [addKvpTitle]="titleForKvp"
       [listKvpTitle]="titleForKvpAdded"

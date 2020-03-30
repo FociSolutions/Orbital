@@ -34,12 +34,12 @@ describe('AddResponseComponent', () => {
   describe('addResponse.setStatusCode', () => {
     it('should expect the corresponding status code message in the status field if the status code is valid ', () => {
       component.statusCode = 200;
-      expect(component.isStatusCodeValid).toBeTruthy();
+      expect(component.responseFormGroup.controls.status.valid).toBeTruthy();
     });
 
     it('should expect the corresponding status code message in the status field if the status code is invalid', () => {
       component.statusCode = -1;
-      expect(component.isStatusCodeValid).toBeFalsy();
+      expect(component.responseFormGroup.controls.status.valid).toBeFalsy();
     });
   });
 
