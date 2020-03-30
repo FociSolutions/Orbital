@@ -130,6 +130,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.bodyMatchRules as FormArray
       );
 
+      const newResponseType = this.scenarioFormMapper.GetResponseTypeFromForm(
+        (this.scenarioFormGroup.controls.response as FormGroup)
+      );
+
       this.selectedScenario.metadata.title = this.metadata.title;
       this.selectedScenario.metadata.description = this.metadata.description;
       this.selectedScenario.requestMatchRules.headerRules = newHeaderRules;
@@ -141,6 +145,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       this.selectedScenario.response.body = this.response.body;
       this.selectedScenario.response.headers = this.response.headers;
       this.selectedScenario.response.status = this.response.status;
+      this.selectedScenario.response.type = newResponseType;
 
       this.store.addOrUpdateScenario(this.selectedScenario);
 

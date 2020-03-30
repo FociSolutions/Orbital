@@ -12,6 +12,7 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
 import { VerbType } from 'src/app/models/verb.type';
 import { OpenAPIV2 } from 'openapi-types';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,8 @@ export class MockDefinitionService {
             ...s,
             response: {
               ...s.response,
-              headers: s.response.headers
+              headers: s.response.headers,
+              type: s.response.type || ResponseType.NONE
             },
             requestMatchRules: {
               headerRules: s.requestMatchRules.headerRules || ([] as KeyValuePairRule[]),
@@ -71,7 +73,8 @@ export class MockDefinitionService {
             ...s,
             response: {
               ...s.response,
-              headers: s.response.headers
+              headers: s.response.headers,
+              type: s.response.type || ResponseType.NONE
             },
             requestMatchRules: {
               headerRules: s.requestMatchRules.headerRules,
@@ -198,7 +201,8 @@ export class MockDefinitionService {
       response: {
         headers: {},
         body: '"default response for ' + path + '"',
-        status: 200
+        status: 200,
+        type: ResponseType.NONE
       },
       requestMatchRules: {
         headerRules: [],

@@ -1,10 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddResponseComponent } from './add-response.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
+import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
+import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
@@ -13,12 +15,15 @@ describe('AddResponseComponent', () => {
   beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
-      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule]
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule],
+      providers: [ScenarioFormBuilder]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
     component.response = { headers: {} } as Response;
+    let scenarioBuilder = TestBed.get(ScenarioFormBuilder);
+    component.responseFormGroup = scenarioBuilder.responseFormGroup(emptyScenario.response);
     fixture.detectChanges();
   }));
 

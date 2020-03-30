@@ -12,6 +12,7 @@ import { Response } from '../../../models/mock-definition/scenario/response.mode
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { NGXLogger } from 'ngx-logger';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-add-response',
@@ -27,6 +28,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
 
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
+  @Input() responseFormGroup: FormGroup;
 
   headers: Record<string, string> = {};
 

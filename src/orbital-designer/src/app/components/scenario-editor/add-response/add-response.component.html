@@ -12,7 +12,7 @@
         >Response Header, Response Body, and Status Code</mat-panel-description
       >
     </mat-expansion-panel-header>
-    <form [formGroup]="this.responseGroup">
+    <form [formGroup]="this.responseFormGroup">
       <mat-select formControlName="type" id="responseType" required>
         <div *ngFor="let responseType of responseTypes">
           <mat-option [value]="responseType.value">
