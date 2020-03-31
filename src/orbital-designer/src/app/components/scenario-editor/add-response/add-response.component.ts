@@ -66,17 +66,10 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
+    this.updateStatusCodeDescription();
+
     this.responseFormGroup.controls.status.valueChanges.subscribe(() => {
-      const newStatus = this.responseFormGroup.controls.status.value;
-      if (newStatus) {
-        try {
-          this.statusMessage = HttpStatus.getStatusText(Number(newStatus));
-          this.responseFormGroup.controls.status.setErrors(null);
-        } catch (Error) {
-          this.statusMessage = 'Enter a Status Code';
-          this.responseFormGroup.controls.status.setErrors({'invalidStatusCode': 'Status code not valid'});
-        }
-      }
+      this.updateStatusCodeDescription();
     });
 
     this.responseFormGroup.controls.body.valueChanges.subscribe(() => {
@@ -87,6 +80,23 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
         this.responseFormGroup.controls.body.setErrors({'invalidJson': 'Body is not valid JSON'});
       }
     });
+  }
+
+  /**
+   * Updates the status code's description (e.g. "OK" for 200)
+   */
+  private updateStatusCodeDescription() {
+    const newStatus = this.responseFormGroup.controls.status.value;
+    if (newStatus) {
+      try {
+        this.statusMessage = HttpStatus.getStatusText(Number(newStatus));
+        this.responseFormGroup.controls.status.setErrors(null);
+      }
+      catch (Error) {
+        this.statusMessage = 'Enter a Status Code';
+        this.responseFormGroup.controls.status.setErrors({ 'invalidStatusCode': 'Status code not valid' });
+      }
+    }
   }
 
   ngAfterContentChecked(): void {
