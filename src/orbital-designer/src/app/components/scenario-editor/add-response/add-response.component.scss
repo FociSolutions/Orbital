@@ -43,6 +43,16 @@
   padding-bottom: 1em;
 }
 
+.response-type {
+  @extend %subtitle-text;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+#responseType {
+  padding-bottom: 1em;
+}
+
 ::ng-deep mat-expansion-panel {
   padding: 16px;
 }
