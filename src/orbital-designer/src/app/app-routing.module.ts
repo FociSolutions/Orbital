@@ -10,6 +10,7 @@ import { ScenarioViewComponent } from './components/scenario-view/scenario-view.
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
 import { ExportToServerViewComponent } from './components/export-to-server-view/export-to-server-view.component';
+import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 
 const routes: Routes = [
   { path: '', component: HomeViewComponent },
@@ -40,6 +41,7 @@ const routes: Routes = [
     component: ExportToServerViewComponent,
     canActivate: [OverviewRedirectService]
   },
+  { path: 'delete-from-server', component: DeleteFromServerViewComponent },
   { path: '**', component: HomeViewComponent }
 ];
 
