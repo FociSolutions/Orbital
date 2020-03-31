@@ -33,16 +33,6 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   headers: Record<string, string> = {};
 
   /**
-   *  The validBodyResponse after it has been validated
-   */
-  validBodyResponse: string;
-
-  /**
-   * Boolean indicating if the body is in valid JSON format
-   */
-  isBodyValid: boolean;
-
-  /**
    * The error message for the body response
    */
   bodyErrorMessage: string;
@@ -73,7 +63,6 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     this.titleForKvpAdded = 'Added Header Rules';
     this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
     this.statusMessage = 'Enter a Status Code';
-    this.isBodyValid = true;
   }
 
   ngOnInit() {
@@ -87,6 +76,15 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
           this.statusMessage = 'Enter a Status Code';
           this.responseFormGroup.controls.status.setErrors({'invalidStatusCode': 'Status code not valid'});
         }
+      }
+    });
+
+    this.responseFormGroup.controls.body.valueChanges.subscribe(() => {
+      const newBody = this.responseFormGroup.controls.body.value;
+      if (newBody.length > 0 && this.jsonService.isValidJSON(newBody)) {
+        this.responseFormGroup.controls.body.setErrors(null);
+      } else {
+        this.responseFormGroup.controls.body.setErrors({'invalidJson': 'Body is not valid JSON'});
       }
     });
   }
@@ -107,28 +105,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Input()
   set response(newResponse: Response) {
     if (newResponse) {
-      this.bodyResponse = newResponse.body;
       this.headers = newResponse.headers;
     }
-  }
-
-  /**
-   * Checks to see if the body is valid and sets it to the validBodyResponse if valid
-   */
-  set bodyResponse(bodyContent: string) {
-    if (!bodyContent || this.jsonService.isValidJSON(bodyContent)) {
-      this.validBodyResponse = bodyContent;
-      this.isBodyValid = true;
-    } else {
-      this.isBodyValid = false;
-    }
-  }
-
-  /**
-   * Gets the valid response body
-   */
-  get bodyResponse(): string {
-    return this.validBodyResponse;
   }
 
   /**
@@ -150,10 +128,10 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * @param map Response KVP
    */
   saveHeaders(map: Record<string, string>) {
-    if (this.responseFormGroup.controls.status.valid && this.isBodyValid) {
+    if (this.responseFormGroup.valid) {
         const responseToEmit = {
           headers: map,
-          body: this.bodyResponse,
+          body: this.responseFormGroup.controls.body.value,
           status: +this.responseFormGroup.controls.status.value
         } as Response;
         this.logger.debug(
@@ -171,7 +149,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * If not valid, call disable card; otherwise, enable expansion
    */
   private checkStatus() {
-    if (this.responseFormGroup.controls.status.valid && this.isBodyValid) {
+    if (this.responseFormGroup.valid) {
       this.isCardDisabled = false;
     } else {
       this.disableCard();
