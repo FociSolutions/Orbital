@@ -51,7 +51,7 @@ export class ScenarioFormBuilder {
       status: response.status,
       headers: this.formBuilder.array,
       body: response.body,
-      type: response.type || ResponseType.NONE
+      type: response.type
     });
   }
 
@@ -143,9 +143,14 @@ export class ScenarioFormBuilder {
   providedIn: 'root'
 })
 export class ScenarioFormMapper {
-  GetResponseTypeFromForm(arg0: FormGroup): ResponseType {
-    return arg0.controls.type.value;
+  /**
+   * Extracts the type of the response (e.g. NONE) from the response form
+   * @param responseForm The response form group to extract the type from
+   */
+  GetResponseTypeFromForm(responseForm: FormGroup): ResponseType {
+    return responseForm.controls.type.value;
   }
+
   public GetUrlRulesFromForm(urlMatchRules: FormArray) {
     interface UrlRuleFormGroup {
       path: string;

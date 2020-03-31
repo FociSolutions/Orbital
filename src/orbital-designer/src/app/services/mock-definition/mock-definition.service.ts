@@ -6,7 +6,6 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Observable } from 'rxjs';
 import * as uuid from 'uuid';
 import * as _ from 'lodash';
-import { recordAdd } from 'src/app/models/record';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { VerbType } from 'src/app/models/verb.type';
@@ -35,7 +34,7 @@ export class MockDefinitionService {
             response: {
               ...s.response,
               headers: s.response.headers,
-              type: s.response.type || ResponseType.NONE
+              type: s.response.type
             },
             requestMatchRules: {
               headerRules: s.requestMatchRules.headerRules || ([] as KeyValuePairRule[]),
@@ -47,7 +46,6 @@ export class MockDefinitionService {
             defaultScenario: s.defaultScenario || false
           }))
         };
-        const titlemockdef = (content as MockDefinition).metadata.title;
         this.store.appendMockDefinition(content);
         this.store.mockDefinition = content;
         this.store.state.mockDefinition = content as MockDefinition;
@@ -74,7 +72,7 @@ export class MockDefinitionService {
             response: {
               ...s.response,
               headers: s.response.headers,
-              type: s.response.type || ResponseType.NONE
+              type: s.response.type
             },
             requestMatchRules: {
               headerRules: s.requestMatchRules.headerRules,

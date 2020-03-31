@@ -18,12 +18,6 @@ import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
   styleUrls: ['./scenario-editor.component.scss']
 })
 export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentChecked {
-
-
-
-
-
-
   scenarioId: string;
   selectedScenario: Scenario;
   paramsSubscription: Subscription;
