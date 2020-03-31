@@ -49,9 +49,7 @@ export class ScenarioFormBuilder {
   public responseFormGroup(response: Response): FormGroup {
     return this.formBuilder.group({
       status: response.status,
-      headers: this.formBuilder.array(
-        Object.entries(response.headers).map(k => this.getResponseHeaderItemFormGroup(k as unknown as Record<string, string>)),
-      ),
+      headers: this.formBuilder.array,
       body: response.body,
       type: response.type || ResponseType.NONE
     });
@@ -139,31 +137,14 @@ export class ScenarioFormBuilder {
     });
   }
 
-    /**
-   * This method will return you the record provided as a form group.
-   *
-   * @param responseHeader Record to be turned to a form group.
-   */
-  public getResponseHeaderItemFormGroup(responseHeader: Record<string, string>) {
-    return new FormGroup({
-      key: new FormControl(responseHeader[0], null),
-      value: new FormControl(responseHeader[1], null)
-    });
-  }
-
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScenarioFormMapper {
-  GetResponseFromForm(arg0: FormGroup): Response {
-    return {
-      headers: Object.assign({}, ...arg0.controls.headers.value as any[]) as Record<string, string>,
-      body: arg0.controls.body.value,
-      status: arg0.controls.status.value,
-      type: arg0.controls.type.value
-    } as unknown as Response;
+  GetResponseTypeFromForm(arg0: FormGroup): ResponseType {
+    return arg0.controls.type.value;
   }
   public GetUrlRulesFromForm(urlMatchRules: FormArray) {
     interface UrlRuleFormGroup {

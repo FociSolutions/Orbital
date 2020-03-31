@@ -109,7 +109,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   }
 
   saveScenario() {
-    if (this.metadataMatchRuleValid && this.scenarioFormGroup.valid) {
+    if (this.metadataMatchRuleValid && this.scenarioFormGroup.valid && this.responseMatchRuleValid) {
       this.logger.debug(
         'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
         this.selectedScenario
@@ -130,7 +130,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.bodyMatchRules as FormArray
       );
 
-      const newResponse = this.scenarioFormMapper.GetResponseFromForm(
+      const newResponseType = this.scenarioFormMapper.GetResponseTypeFromForm(
         (this.scenarioFormGroup.controls.response as FormGroup)
       );
 
@@ -142,7 +142,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       this.selectedScenario.requestMatchRules.urlRules = newUrlRules;
       this.selectedScenario.policies = newPolicyRules;
 
-      this.selectedScenario.response = newResponse;
+      this.selectedScenario.response.body = this.response.body;
+      this.selectedScenario.response.headers = this.response.headers;
+      this.selectedScenario.response.status = this.response.status;
+      this.selectedScenario.response.type = newResponseType;
 
       this.store.addOrUpdateScenario(this.selectedScenario);
 
@@ -151,6 +154,17 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       this.requestMatchRuleValid = false;
       this.router.navigateByUrl('/scenario-view');
     }
+  }
+
+  /*
+   * Saves the response to the scenario editor
+   * @param response The response input from the component
+   */
+  handleResponseOutput(response: Response) {
+    this.logger.debug('handleResponseOutput:', response);
+    this.responseMatchRuleValid = !!response.status;
+    this.response = response;
+    this.saveScenario();
   }
 
   /**

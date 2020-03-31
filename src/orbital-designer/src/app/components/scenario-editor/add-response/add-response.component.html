@@ -42,7 +42,8 @@
       [listKvpTitle]="titleForKvpAdded"
       [isCaseSensitive]="false"
       [Save]="this.shouldSave"
-      [kvp]="this.responseFormGroup.controls.headers"
+      [kvp]="this.headers"
+      (savedKvpEmitter)="saveHeaders($event)"
     ></app-kvp-edit>
     <div class="response-body">
       <mat-form-field>
