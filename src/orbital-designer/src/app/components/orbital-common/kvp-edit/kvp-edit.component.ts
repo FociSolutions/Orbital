@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { recordDelete, recordAdd } from 'src/app/models/record';
+import { FormArray, FormBuilder } from '@angular/forms';
+import { ScenarioFormBuilder } from '../../scenario-editor/scenario-form-builder/scenario-form.builder';
 
 @Component({
   selector: 'app-kvp-edit',
@@ -21,37 +23,31 @@ export class KvpEditComponent implements OnInit {
    */
   savedKvp: Record<string, string>;
 
-  /**
-   * The event emitter for the savedKvp
-   */
-  @Output() savedKvpEmitter;
-
-  constructor(private logger: NGXLogger) {
+  constructor(private logger: NGXLogger, private formBuilder: FormBuilder, private scenarioFormBuilder: ScenarioFormBuilder) {
     this.savedKvp = {};
-    this.savedKvpEmitter = new EventEmitter<Record<string, string>>();
   }
 
   ngOnInit() { }
 
   /**
-   * This setter calls the emitter for the savedkvp if shouldSave is true
-   */
-  @Input()
-  set Save(shouldSave: boolean) {
-    if (shouldSave) {
-      this.savedKvpEmitter.emit(this.savedKvp);
-      this.logger.debug('KVP has been saved', this.savedKvp);
-    }
-  }
-
-  /**
    * The existing KVP record
    */
   @Input()
-  set kvp(savedKvp: Record<string, string>) {
+  set kvp(savedKvp: FormArray) {
     if (savedKvp) {
-      this.savedKvp = savedKvp;
+      this.savedKvp = Object.assign({}, ...savedKvp.value.map(k => {
+        let tmp = {};
+        tmp[k['key']] = k['value'];
+        return tmp;
+      }));
     }
+  }
+
+  get kvp() {
+    return this.formBuilder.array(
+      Object.entries(this.savedKvp)
+            .map(k => this.scenarioFormBuilder.getResponseHeaderItemFormGroup(k as unknown as Record<string, string>)),
+    );
   }
 
   /**

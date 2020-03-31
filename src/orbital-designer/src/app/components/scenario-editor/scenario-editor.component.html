@@ -28,7 +28,6 @@
 
           <app-add-response
             [response]="this.selectedScenario?.response"
-            (responseOutput)="handleResponseOutput($event)"
             [responseFormGroup]="this.scenarioFormGroup.controls.response"
             [saveStatus]="this.shouldSave"
           >

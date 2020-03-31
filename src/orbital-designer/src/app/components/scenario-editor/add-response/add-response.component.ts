@@ -12,7 +12,8 @@ import { Response } from '../../../models/mock-definition/scenario/response.mode
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { NGXLogger } from 'ngx-logger';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 
 @Component({
   selector: 'app-add-response',
@@ -55,7 +56,9 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   constructor(
     private jsonService: ValidJsonService,
     private logger: NGXLogger,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private formBuilder: FormBuilder,
+    private scenarioBuilder: ScenarioFormBuilder
   ) {
     this.responseOutput = new EventEmitter<Response>();
     this.isValid = new EventEmitter<boolean>();
@@ -137,10 +140,18 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * Wait for header KVP , then trigger emitter if current response is valid
    * @param map Response KVP
    */
-  saveHeaders(map: Record<string, string>) {
+  saveHeaders(headers: Record<string, string>) {
+    this.responseFormGroup.controls.headers = this.formBuilder.array(
+      Object.entries(headers)
+            .map(k => this.scenarioBuilder.getResponseHeaderItemFormGroup(k as unknown as Record<string, string>)),
+    );
     if (this.responseFormGroup.valid) {
         const responseToEmit = {
-          headers: map,
+          headers: Object.assign({}, ...this.responseFormGroup.controls.headers.value.map(k => {
+            let tmp = {};
+            tmp[k['key']] = k['value'];
+            return tmp;
+          })),
           body: this.responseFormGroup.controls.body.value,
           status: +this.responseFormGroup.controls.status.value
         } as Response;
