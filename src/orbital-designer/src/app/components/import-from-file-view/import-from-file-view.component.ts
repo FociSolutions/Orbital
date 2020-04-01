@@ -15,6 +15,7 @@ export class ImportFromFileViewComponent implements OnInit {
   mockDefinitionNameString: string;
   validFileFlag = false;
   errorMessageToEmitFromCreate: string[];
+  buttonDisabled = true;
 
   constructor(
     private router: Router,
@@ -38,11 +39,13 @@ export class ImportFromFileViewComponent implements OnInit {
         value => {
           if (value) {
             this.validFileFlag = true;
+            this.buttonDisabled = false;
           }
         },
         () => {
           this.logger.log('mock definition file selected is not valid');
           this.validFileFlag = false;
+          this.buttonDisabled = true;
         }
       );
   }
