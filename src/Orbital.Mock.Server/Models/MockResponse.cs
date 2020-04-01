@@ -15,7 +15,7 @@ namespace Orbital.Mock.Server.Models
         /// Constructor, defaults to a 404 response
         /// </summary>
         public MockResponse(int Status = StatusCodes.Status400BadRequest, string Body = null, IDictionary<string, string> Headers = null,
-                            IDictionary<string, string> Queries = null, ResponseType ResponseType = ResponseType.NONE)
+                            IDictionary<string, string> Queries = null, ResponseType? responseType = ResponseType.CUSTOM)
         {
             if (Body == null)
             {
@@ -36,7 +36,7 @@ namespace Orbital.Mock.Server.Models
             this.Body = Body;
             this.Headers = Headers;
             this.Queries = Queries;
-            this.Type = ResponseType;
+            this.Type = responseType ?? ResponseType.CUSTOM;
         }
 
         [JsonProperty("status")]
@@ -47,8 +47,8 @@ namespace Orbital.Mock.Server.Models
         public IDictionary<string, string> Headers { get; set; }
         [JsonProperty("query")]
         public IDictionary<string, string> Queries { get; set; }
-        [JsonProperty("type")]
-        public ResponseType Type { get; set; }
+        [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public ResponseType? Type { get; set; }
 
         public override bool Equals(object obj)
         {

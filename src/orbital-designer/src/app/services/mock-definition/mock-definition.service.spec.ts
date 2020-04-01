@@ -8,12 +8,13 @@ import { DesignerStore } from '../../store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { defaultMockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { defaultMockDefinition, MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import validOpenApiTest from '../../../test-files/valid-openapi-spec';
 import * as yaml from 'js-yaml';
 import { OpenAPIV2 } from 'openapi-types';
 import * as _ from 'lodash';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
@@ -252,5 +253,44 @@ describe('MockDefinitionService', () => {
     const content = yaml.safeLoad(validOpenApiTest) as OpenAPIV2.Document;
     const scenarios = service.getDefaultScenarios(content.paths);
     expect(scenarios.length).toBe(2);
+  });
+
+  describe('backwards compatibility tests', () => {
+    let mockDefinitionWithoutResponseType: object;
+    let mockDefinitionWithoutResponseTypeJSON: string;
+
+    beforeEach(() => {
+      mockDefinitionWithoutResponseType = JSON.parse(_.cloneDeep(validMockDefinitionFile));
+      delete mockDefinitionWithoutResponseType['scenarios'][0]['response']['type'];
+      mockDefinitionWithoutResponseTypeJSON = JSON.stringify(mockDefinitionWithoutResponseType);
+    });
+
+    it('should add a mockdefinition to the store if it does not contain the response type', done => {
+      service.AddMockDefinitionToStore(mockDefinitionWithoutResponseTypeJSON).subscribe({
+        next: t => {
+          expect(t).toBeTruthy();
+          done();
+        }
+      });
+    });
+
+    it('should pass validation if it does not contain a response type', done => {
+      service.validateMockDefinition(mockDefinitionWithoutResponseTypeJSON).subscribe({
+        next: t => {
+          expect(t).toBeTruthy();
+          done();
+        }
+      });
+    });
+
+    it('should automatically add ResponseType.CUSTOM if the response type is not specified', done => {
+      service.AddMockDefinitionToStore(mockDefinitionWithoutResponseTypeJSON).subscribe({
+        next: () => {
+          expect(store.state.mockDefinition.scenarios
+            .every(scenario => scenario.response.type === ResponseType.CUSTOM)).toBe(true);
+          done();
+        }
+      });
+    });
   });
 });

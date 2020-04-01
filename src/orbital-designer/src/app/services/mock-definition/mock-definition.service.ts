@@ -34,7 +34,7 @@ export class MockDefinitionService {
             response: {
               ...s.response,
               headers: s.response.headers,
-              type: s.response.type
+              type: s.response.type || ResponseType.CUSTOM
             },
             requestMatchRules: {
               headerRules: s.requestMatchRules.headerRules || ([] as KeyValuePairRule[]),
@@ -72,7 +72,7 @@ export class MockDefinitionService {
             response: {
               ...s.response,
               headers: s.response.headers,
-              type: s.response.type
+              type: s.response.type || ResponseType.CUSTOM
             },
             requestMatchRules: {
               headerRules: s.requestMatchRules.headerRules,
