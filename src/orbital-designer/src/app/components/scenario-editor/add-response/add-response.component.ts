@@ -77,7 +77,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
       if (newBody.length > 0 && this.jsonService.isValidJSON(newBody)) {
         this.responseFormGroup.controls.body.setErrors(null);
       } else {
-        this.responseFormGroup.controls.body.setErrors({'invalidJson': 'Body is not valid JSON'});
+        this.responseFormGroup.controls.body.setErrors({invalidJson: 'Body is not valid JSON'});
       }
     });
   }
@@ -91,10 +91,9 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
       try {
         this.statusMessage = HttpStatus.getStatusText(Number(newStatus));
         this.responseFormGroup.controls.status.setErrors(null);
-      }
-      catch (Error) {
+      } catch (Error) {
         this.statusMessage = 'Enter a Status Code';
-        this.responseFormGroup.controls.status.setErrors({ 'invalidStatusCode': 'Status code not valid' });
+        this.responseFormGroup.controls.status.setErrors({ invalidStatusCode: 'Status code not valid' });
       }
     }
   }

@@ -22,7 +22,7 @@ describe('AddResponseComponent', () => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
     component.response = { headers: {} } as Response;
-    let scenarioBuilder = TestBed.get(ScenarioFormBuilder);
+    const scenarioBuilder = TestBed.get(ScenarioFormBuilder);
     component.responseFormGroup = scenarioBuilder.responseFormGroup(emptyScenario.response);
     fixture.detectChanges();
   }));
