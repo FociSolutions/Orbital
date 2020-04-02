@@ -200,7 +200,7 @@ export class MockDefinitionService {
         headers: {},
         body: '"default response for ' + path + '"',
         status: 200,
-        type: ResponseType.NONE
+        type: ResponseType.CUSTOM
       },
       requestMatchRules: {
         headerRules: [],
