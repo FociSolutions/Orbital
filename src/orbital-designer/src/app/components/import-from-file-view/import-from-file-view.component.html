@@ -5,9 +5,9 @@
   >
   <app-file-input
     class="capitalize"
-    (fileContent)="setMockDefinition($event)"
+    (fileContentEmit)="setMockDefinition($event)"
     (fileNameEmit)="setMockDefinitionName($event)"
-    label="Select File - Required"
+    label="Select Files - Required"
     accept=".json"
     [errorMessage]="errorMessageToEmitFromCreate"
   >
@@ -17,7 +17,11 @@
     <mat-list>
       <mat-list-item>
         <h3 matLine>
-          {{ mockDefinitionNameString }}
+          <ul>
+            <li *ngFor="let mocks of mockDefinitionNameString">
+              {{ mocks }}
+            </li>
+          </ul>
         </h3>
         <p *ngIf="!isValid()" matLine>Valid File Required</p>
         <mat-icon matListIcon *ngIf="!isValid()" color="warn">cancel</mat-icon>

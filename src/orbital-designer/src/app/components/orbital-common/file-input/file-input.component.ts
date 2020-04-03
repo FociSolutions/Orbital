@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-file-input',
@@ -12,27 +13,35 @@ export class FileInputComponent implements OnInit {
     private logger: NGXLogger,
     private readfileparser: ReadFileService
   ) {}
-  fileName = '';
+  fileName: string[] = [];
+  currentFileName: string;
+  fileContent: string;
   @Input() label = '';
   @Input() accept = '';
   errormessages: string[];
-  @Output() fileContent = new EventEmitter<string>();
+  @Output() fileContentEmit = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
 
   /**
-   * Emits the content of the file as a string
+   * Emits the contents of the files as strings
    */
-  emitFileContent(file: File) {
-    this.errormessages = [];
-    this.readfileparser.read(file).subscribe(
-      fileReadresult => {
-        this.fileName = file.name;
-        this.fileNameEmit.emit(this.fileName);
-        this.fileContent.emit(fileReadresult);
-        this.logger.log('File Contents emitted');
-      },
-      err => this.errormessages = err
-    );
+  emitFileContent(files: File[]) {
+    for (let file of files) {
+      this.errormessages = [];
+      this.readfileparser.read(file)
+      .pipe(map(fileReadresult => fileReadresult))
+      .subscribe(
+        fileReadresult => {
+           this.fileName.push(file.name);
+           this.currentFileName = file.name;
+           this.fileContent = fileReadresult;
+           this.fileNameEmit.emit(this.currentFileName);
+           this.fileContentEmit.emit(this.fileContent);
+         },
+         err => this.errormessages = err
+       );
+    }
+    this.logger.log('File Contents emitted');
   }
 
 @Input()

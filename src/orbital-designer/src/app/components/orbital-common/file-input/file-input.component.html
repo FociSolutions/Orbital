@@ -1,7 +1,13 @@
 <mat-form-field floatLabel="always">
   <mat-label>{{ label }}</mat-label>
   <div>
-    <div class="div-file-name">{{ fileName }}</div>
+    <div class="div-file-name">
+      <ul>
+        <li *ngFor="let names of fileName">
+          {{ names }}
+        </li>
+      </ul>
+    </div>
     <button
       mat-raised-button
       color="primary"
@@ -13,10 +19,12 @@
   </div>
   <input
     #fileInput
+    multiple
     type="file"
-    (change)="emitFileContent($event.target.files[0])"
+    (change)="emitFileContent($event.target.files)"
     style="display:none;"
     [accept]="accept"
+    
   />
   <input
     matInput

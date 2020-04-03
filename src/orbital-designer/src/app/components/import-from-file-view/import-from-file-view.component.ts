@@ -11,8 +11,8 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./import-from-file-view.component.scss']
 })
 export class ImportFromFileViewComponent implements OnInit {
-  private mockDefinitionString: string;
-  mockDefinitionNameString: string;
+  private mockDefinitionString: string[] = [];
+  mockDefinitionNameString: string[] = [];
   validFileFlag = false;
   errorMessageToEmitFromCreate: string[];
   buttonDisabled = true;
@@ -32,12 +32,14 @@ export class ImportFromFileViewComponent implements OnInit {
    * Validates the Mockdefinition and returns a boolean validation status
    */
   async validateMock(mockDefinitionString: string) {
+    this.logger.log('validateMock ' + mockDefinitionString);
     this.mockDefinitionService
       .validateMockDefinition(mockDefinitionString)
       .pipe(map(value => value))
       .subscribe(
         value => {
           if (value) {
+            this.logger.log('mock definition file selected is valid');
             this.validFileFlag = true;
             this.buttonDisabled = false;
           }
@@ -56,8 +58,7 @@ export class ImportFromFileViewComponent implements OnInit {
    * @param fileStringFromFileInput string representation of the file's content
    */
   setMockDefinition(fileStringFromFileInput: string) {
-    this.mockDefinitionString = fileStringFromFileInput;
-
+    this.mockDefinitionString.push(fileStringFromFileInput);
     this.validateMock(fileStringFromFileInput);
   }
 
@@ -67,7 +68,7 @@ export class ImportFromFileViewComponent implements OnInit {
    * @param fileStringName string representation of the file's name
    */
   setMockDefinitionName(fileStringName: string) {
-    this.mockDefinitionNameString = fileStringName;
+    this.mockDefinitionNameString.push(fileStringName);
   }
 
   /**
@@ -76,8 +77,9 @@ export class ImportFromFileViewComponent implements OnInit {
    * the form is invalid the function does nothing.
    */
   createMock() {
+    for (const mock of this.mockDefinitionString) {
     this.mockDefinitionService
-      .AddMockDefinitionToStore(this.mockDefinitionString)
+      .AddMockDefinitionToStore(mock)
       .pipe(map(value => value))
       .subscribe(
         value => {
@@ -93,6 +95,7 @@ export class ImportFromFileViewComponent implements OnInit {
           this.errorMessageToEmitFromCreate = error;
         }
       );
+    }
   }
 
   /**
