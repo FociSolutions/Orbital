@@ -26,7 +26,7 @@ export class FileInputComponent implements OnInit {
    * Emits the contents of the files as strings
    */
   emitFileContent(files: File[]) {
-    for (let file of files) {
+    for (const file of files) {
       this.errormessages = [];
       this.readfileparser.read(file)
       .pipe(map(fileReadresult => fileReadresult))
