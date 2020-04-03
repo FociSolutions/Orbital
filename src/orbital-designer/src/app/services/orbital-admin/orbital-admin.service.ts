@@ -6,7 +6,7 @@ import {
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable, throwError, forkJoin, from } from 'rxjs';
-import { catchError, mergeMap, every } from 'rxjs/operators';
+import { catchError, mergeMap, every, finalize, map } from 'rxjs/operators';
 import { timeout } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
 
@@ -92,12 +92,29 @@ export class OrbitalAdminService {
   deleteMockDefinition(url: string, mockDefId: string): Observable<boolean> {
     const fullURL = url + '/' + mockDefId;
 
-    return this.httpClient.delete<boolean>(fullURL).pipe(
+    return this.httpClient.delete<boolean>(
+      fullURL, {headers: new HttpHeaders({}), observe: 'response', responseType: 'json'})
+      .pipe(
       catchError(error => {
         this.logger.error(error);
         return throwError(error);
-      })
+      }),
+      map(deleteMockResult => deleteMockResult.status === 200)
     );
+  }
+
+  /**
+   * @param url The url to delete the Mockdefinitions from
+   * Deletes a list of Mockdefinitions to the server
+   * @param mockdefinitions The mockdefinitions to delete
+   */
+  deleteMockDefinitions(
+    url: string,
+    mockdefinitions: string[]
+  ): Observable<boolean[]> {
+    return forkJoin(mockdefinitions.map(mockdefinition =>
+      this.deleteMockDefinition(url, mockdefinition)
+    ));
   }
 
 }
