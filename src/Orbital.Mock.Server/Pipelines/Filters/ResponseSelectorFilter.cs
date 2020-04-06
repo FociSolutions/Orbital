@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
@@ -61,7 +62,16 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             if(port.SelectedResponse.Type == ResponseType.TEMPLATED)
             {
                 var request = new ScriptObject();
-                var requestObject = JObject.Parse(port.Body);
+                JObject requestObject;
+                try
+                {
+                    requestObject = JObject.Parse(port.Body);
+                }
+                catch (JsonReaderException)
+                {
+                    port.SelectedResponse = new MockResponse();
+                    return port;
+                }
 
                 request.Add("request", requestObject);
                 templateContext.PushGlobal(request);
