@@ -17,8 +17,8 @@ import { OrbitalAdminService } from '../../services/orbital-admin/orbital-admin.
 })
 export class ExportToServerViewComponent implements OnInit {
   readonly emptyListMessageServerBox = 'No Mockdefinitions';
-  mockDefinitions: MockDefinition[] = [];
-  formArray: FormArray;
+  rightHandSideMocks: MockDefinition[] = [];
+  leftHandSideMocks: FormArray;
   inputControl: FormControl;
   exportStatusMessage: string;
   isUploadingMocks: boolean;
@@ -45,8 +45,8 @@ export class ExportToServerViewComponent implements OnInit {
   private resetForm() {
     const keys = Object.keys(this.store.state.mockDefinitions);
     const controls = keys.map(k => new FormControl(this.store.state.mockDefinitions[k]));
-    this.formArray = new FormArray(controls);
-    this.mockDefinitions = [];
+    this.leftHandSideMocks = new FormArray(controls);
+    this.rightHandSideMocks = [];
   }
 
   /**
@@ -84,12 +84,10 @@ export class ExportToServerViewComponent implements OnInit {
    * of the export
    */
   exportMocksFromForm(): Observable<boolean[]> {
+    this.logger.debug('Mockdefinitions to export', this.rightHandSideMocks);
     return this.service.exportMockDefinitions(
       this.inputControl.value,
-      this.formArray.controls.map(formControl => {
-        this.logger.debug('Mockdefinition to export', formControl.value);
-        return formControl.value as MockDefinition;
-      })
+      this.rightHandSideMocks
     );
   }
 
@@ -100,14 +98,14 @@ export class ExportToServerViewComponent implements OnInit {
    * one list to the other.
    */
   onListOutput(list: FormControl[]) {
-    this.mockDefinitions = list.map(control => control.value);
+    this.rightHandSideMocks = list.map(control => control.value);
   }
 
   /**
    * Getter function that returns true if no Mock Definitions have been selected for
    */
   get disabled(): boolean {
-    return this.mockDefinitions.length === 0 || this.isUploadingMocks;
+    return this.rightHandSideMocks.length === 0 || this.isUploadingMocks;
   }
 
   /**
