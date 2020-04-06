@@ -18,6 +18,7 @@
       message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
       ><app-file-input
         class="column"
+        [multiple]="false"
         type="file"
         (fileContentEmit)="setOpenApiFile($event)"
         label="Select OpenAPI File - Required"

@@ -19,7 +19,7 @@
   </div>
   <input
     #fileInput
-    multiple
+    [multiple]="this.multiple"
     type="file"
     (change)="emitFileContent($event.target.files)"
     style="display:none;"

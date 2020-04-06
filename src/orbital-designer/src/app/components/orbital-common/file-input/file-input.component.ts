@@ -18,6 +18,7 @@ export class FileInputComponent implements OnInit {
   fileContent: string;
   @Input() label = '';
   @Input() accept = '';
+  @Input() multiple = true;
   errormessages: string[];
   @Output() fileContentEmit = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
@@ -47,6 +48,9 @@ export class FileInputComponent implements OnInit {
 @Input()
   set errorMessage(errorMessage: string[]) {
     this.errormessages = errorMessage || [];
+    if (this.errormessages) {
+      this.fileName.pop();
+    }
   }
 
   ngOnInit() {}

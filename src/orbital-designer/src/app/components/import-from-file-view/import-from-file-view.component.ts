@@ -13,8 +13,8 @@ import { map } from 'rxjs/operators';
 export class ImportFromFileViewComponent implements OnInit {
   private mockDefinitionString: string[] = [];
   mockDefinitionNameString: string[] = [];
-  validFileFlag = false;
   errorMessageToEmitFromCreate: string[];
+  validFileFlag = false;
   buttonDisabled = true;
 
   constructor(
