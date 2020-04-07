@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -76,9 +77,18 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 request.Add("request", requestObject);
                 templateContext.PushGlobal(request);
 
-                var template = Template.Parse(port.SelectedResponse.Body);
+                try
+                {
+                    var template = Template.Parse(port.SelectedResponse.Body);
+                    port.SelectedResponse.Body = template.Render(templateContext);
 
-                port.SelectedResponse.Body = template.Render(templateContext);
+                } catch (InvalidOperationException)
+                {
+                    port.SelectedResponse = new MockResponse();
+                    return port;
+                }
+
+                
             }
 
             return port;
