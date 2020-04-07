@@ -118,8 +118,9 @@ namespace Orbital.Mock.Server
             var scriptObjectFaker = new ScriptObject();
             scriptObjectFaker.Import(new Faker());
 
-            globalContext.PushGlobal(scriptObjectOrbital);
             globalContext.PushGlobal(scriptObjectFaker);
+            globalContext.PushGlobal(scriptObjectOrbital);
+            
 
             return globalContext;
         }
