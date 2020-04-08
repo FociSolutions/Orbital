@@ -63,19 +63,18 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             if(port.SelectedResponse.Type == ResponseType.TEMPLATED)
             {
                 var request = new ScriptObject();
-                JObject requestObject;
                 try
                 {
-                    requestObject = JObject.Parse(port.Body);
+                    var requestObject = JObject.Parse(port.Body);
+                    request.Add("request", requestObject);
+                    templateContext.PushGlobal(request);
                 }
                 catch (JsonReaderException)
                 {
-                    port.SelectedResponse = new MockResponse();
-                    return port;
+                    // can ignore because response does not have to be valid JSON
+                    // request.* globals cannot be defined as they are bound to the JSON
+                    // incoming response
                 }
-
-                request.Add("request", requestObject);
-                templateContext.PushGlobal(request);
 
                 try
                 {
@@ -85,10 +84,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 } catch (InvalidOperationException)
                 {
                     port.SelectedResponse = new MockResponse();
-                    return port;
                 }
-
-                
             }
 
             return port;
