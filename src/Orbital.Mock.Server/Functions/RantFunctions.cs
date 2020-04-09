@@ -1,4 +1,6 @@
-﻿using Bogus;
+﻿using System;
+using Bogus;
+using Microsoft.EntityFrameworkCore.Internal;
 using Scriban.Runtime;
 
 namespace Orbital.Mock.Server.Functions
@@ -24,7 +26,7 @@ namespace Orbital.Mock.Server.Functions
         /// </summary>
         public static string Reviews()
         {
-            return faker.Rant.Reviews().ToString();
+            return faker.Rant.Reviews().Join(" ");
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace Orbital.Mock.Server.Functions
         /// </summary>
         public static string UInt()
         {
-            return faker.Rant.Random.UInt().ToString();
+            return Convert.ToString(faker.Rant.Random.UInt());
         }
 
         /// <summary>
