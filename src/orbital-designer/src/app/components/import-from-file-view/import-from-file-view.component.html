@@ -18,14 +18,17 @@
       <mat-list-item>
         <h3 matLine>
           <ul>
-            <li *ngFor="let mocks of mockDefinitionNameString">
+            <li *ngFor="let mocks of mockdefinitionValid">
               {{ mocks }}
+              <mat-icon matListIcon  color="primary">check_circle_outline</mat-icon>
+            </li>
+            <li *ngFor="let mocks of mockdefinitionInvalid">
+              {{ mocks }}
+              <mat-icon matListIcon  color="warn">cancel</mat-icon>
             </li>
           </ul>
         </h3>
         <p *ngIf="!isValid()" matLine>Valid File Required</p>
-        <mat-icon matListIcon *ngIf="!isValid()" color="warn">cancel</mat-icon>
-        <mat-icon matListIcon *ngIf="isValid()" color="primary">check_circle_outline</mat-icon>
       </mat-list-item>
       <mat-divider></mat-divider>
     </mat-list>

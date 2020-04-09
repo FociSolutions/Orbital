@@ -12,10 +12,13 @@ import { map } from 'rxjs/operators';
 })
 export class ImportFromFileViewComponent implements OnInit {
   private mockDefinitionString: string[] = [];
+  mockdefinitionValid: string [] = [];
+  mockdefinitionInvalid: string [] = [];
   mockDefinitionNameString: string[] = [];
   errorMessageToEmitFromCreate: string[];
   validFileFlag = false;
   buttonDisabled = true;
+  tempName = '';
 
   constructor(
     private router: Router,
@@ -42,12 +45,14 @@ export class ImportFromFileViewComponent implements OnInit {
             this.logger.log('mock definition file selected is valid');
             this.validFileFlag = true;
             this.buttonDisabled = false;
+            this.mockdefinitionValid.push(this.tempName);
           }
         },
         () => {
           this.logger.log('mock definition file selected is not valid');
           this.validFileFlag = false;
           this.buttonDisabled = true;
+          this.mockdefinitionInvalid.push(this.tempName);
         }
       );
   }
@@ -69,6 +74,7 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   setMockDefinitionName(fileStringName: string) {
     this.mockDefinitionNameString.push(fileStringName);
+    this.tempName = fileStringName;
   }
 
   /**
