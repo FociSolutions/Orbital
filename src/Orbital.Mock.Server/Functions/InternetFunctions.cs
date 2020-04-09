@@ -1,8 +1,9 @@
 ﻿using Bogus;
+using Scriban.Runtime;
 
 namespace Orbital.Mock.Server.Functions
 {
-    public class InternetFunctions
+    public class InternetFunctions : ScriptObject
     {
         public static Faker faker;
         public InternetFunctions()

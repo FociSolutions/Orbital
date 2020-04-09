@@ -1,8 +1,9 @@
 ﻿using Bogus;
+using Scriban.Runtime;
 
 namespace Orbital.Mock.Server.Functions
 {
-    public class LoremFunctions
+    public class LoremFunctions : ScriptObject
     {
         public static Faker faker;
         public LoremFunctions()

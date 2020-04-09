@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Scriban.Runtime;
 
 namespace Orbital.Mock.Server.Functions
 {
-    public class ImageFunctions
+    public class ImageFunctions : ScriptObject
     {
         public static Faker faker;
         public ImageFunctions()
