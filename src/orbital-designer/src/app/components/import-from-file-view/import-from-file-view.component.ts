@@ -14,7 +14,6 @@ import { recordAdd } from 'src/app/models/record';
 export class ImportFromFileViewComponent implements OnInit {
   private mockDefinitionString: string[] = [];
   mockDefinitionNameString: string[] = [];
-  @Output() errorMessageEmitter;
   errorMessageToEmitFromCreate = {} as Record<string, string>;
   validFileFlag = false;
   buttonDisabled = true;
@@ -24,9 +23,7 @@ export class ImportFromFileViewComponent implements OnInit {
     private location: Location,
     private mockDefinitionService: MockDefinitionService,
     private logger: NGXLogger
-  ) {
-    this.errorMessageEmitter = new EventEmitter<Record<string, string>>();
-  }
+  ) {}
 
   isValid() {
     return this.validFileFlag;
@@ -51,7 +48,6 @@ export class ImportFromFileViewComponent implements OnInit {
         error => {
           this.logger.log('mock definition file selected is not valid');
           recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], error.message);
-          this.errorMessageEmitter.emit(this.errorMessageToEmitFromCreate);
           this.validFileFlag = false;
           this.buttonDisabled = true;
         }
@@ -98,7 +94,6 @@ export class ImportFromFileViewComponent implements OnInit {
           error => {
             this.logger.log('mock definition is invalid and was not saved to the store');
             recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], error.message);
-            this.errorMessageEmitter.emit(this.errorMessageToEmitFromCreate);
           }
         );
     });

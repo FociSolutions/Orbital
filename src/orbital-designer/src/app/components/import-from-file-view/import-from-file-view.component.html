@@ -7,7 +7,7 @@
     (fileNameEmit)="setMockDefinitionName($event)"
     label="Select Files - Required"
     accept=".json"
-    (errorMessage)="(errorMessageToEmitFromCreate)"
+    [errorMessage]="errorMessageToEmitFromCreate"
   >
   </app-file-input>
   <mat-card-subtitle>Imported Mockdefinition</mat-card-subtitle>

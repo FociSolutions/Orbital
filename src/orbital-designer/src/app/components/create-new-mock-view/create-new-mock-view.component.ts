@@ -20,7 +20,6 @@ export class CreateNewMockViewComponent implements OnInit {
   formGroup: FormGroup;
   private openApiFile: string;
   errorMessageToEmitFromCreate = {} as Record<string, string>;
-  @Output() errorMessageEmitter;
   constructor(
     private router: Router,
     private location: Location,
@@ -33,7 +32,6 @@ export class CreateNewMockViewComponent implements OnInit {
       title: new FormControl('', this.validateTitle),
       description: new FormControl('')
     });
-    this.errorMessageEmitter = new EventEmitter<Record<string, string>>();
   }
 
   ngOnInit() {}
@@ -65,7 +63,6 @@ export class CreateNewMockViewComponent implements OnInit {
         this.logger.error('openapi file provided is invalid');
         this.logger.error(error);
         recordAdd(this.errorMessageToEmitFromCreate, 'OpenApi file provided has the following errors ', error);
-        //this.errorMessageEmitter.emit(this.errorMessageToEmitFromCreate);
       }
     );
   }

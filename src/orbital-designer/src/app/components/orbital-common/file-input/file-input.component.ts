@@ -43,8 +43,9 @@ export class FileInputComponent implements OnInit {
     this.logger.log('File Contents emitted');
   }
 
+  @Input()
   set errorMessage(errorMessage: Record<string, string>) {
-    recordAdd(this.errormessages, recordFirstOrDefaultKey(errorMessage, ''), recordFirstOrDefault(errorMessage, ''));
+    this.errormessages = errorMessage;
     if (this.errormessages) {
       this.fileName.pop();
     }
