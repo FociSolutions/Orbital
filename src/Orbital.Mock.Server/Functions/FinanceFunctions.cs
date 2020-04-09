@@ -47,9 +47,9 @@ namespace Orbital.Mock.Server.Functions
         /// <summary>
         /// Gets a random currency
         /// </summary>
-        public static Currency Currency()
+        public static string Currency()
         {
-            return faker.Finance.Currency();
+            return faker.Finance.Currency().Description;
         }
 
         /// <summary>
