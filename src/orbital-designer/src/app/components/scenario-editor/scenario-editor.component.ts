@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
 import { FormGroup, FormArray, Form } from '@angular/forms';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
@@ -238,7 +239,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       path: scenarioPath,
       response: {
         headers: {},
-        body: ''
+        body: '',
+        status: 200,
+        type: ResponseType.CUSTOM
       } as Response,
       requestMatchRules: {
         headerRules: [],
