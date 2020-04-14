@@ -17,13 +17,13 @@
     <mat-list>
       <mat-list-item>
         <h3 matLine>
-          <ul>
+          <ul class="noDots">
             <li *ngFor="let mocks of mockdefinitionValid">
-              {{ mocks }}
+              {{ mocks | titlecase }}
               <mat-icon matListIcon  color="primary">check_circle_outline</mat-icon>
             </li>
             <li *ngFor="let mocks of mockdefinitionInvalid">
-              {{ mocks }}
+              {{ mocks | titlecase }}
               <mat-icon matListIcon  color="warn">cancel</mat-icon>
             </li>
           </ul>
