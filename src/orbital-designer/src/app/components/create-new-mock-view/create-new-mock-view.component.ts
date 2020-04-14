@@ -93,7 +93,6 @@ export class CreateNewMockViewComponent implements OnInit {
    */
   formToMockDefinition(): Observable<MockDefinition> {
     if (this.formGroup.invalid) {
-      this.logger.debug('Form is invalid');
       this.logger.error('Form is invalid');
       return EMPTY;
     }
