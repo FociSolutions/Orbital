@@ -46,9 +46,8 @@ export class ImportFromFileViewComponent implements OnInit {
           }
         },
         error => {
-          this.logger.error('mock definition file selected is not valid');
-          this.logger.error(error.message);
-          recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], error.message);
+          this.logger.error('mock definition is invalid and was not saved to the store');
+          recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], [error.message]);
           this.validFileFlag = false;
           this.buttonDisabled = true;
         }
@@ -94,9 +93,7 @@ export class ImportFromFileViewComponent implements OnInit {
           },
           error => {
             this.logger.error('mock definition is invalid and was not saved to the store');
-            const errorarray = [error.message, 'mock definition is invalid and was not saved to the store'] as string[];
-            this.logger.error(errorarray);
-            recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], errorarray);
+            recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], [error.message]);
           }
         );
     });
