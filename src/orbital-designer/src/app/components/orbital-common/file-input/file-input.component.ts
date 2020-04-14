@@ -17,7 +17,7 @@ export class FileInputComponent implements OnInit {
   @Input() label = '';
   @Input() accept = '';
   @Input() multiple = true;
-  errormessages = {} as Record<string, string>;
+  errormessages = {} as Record<string, string[]>;
   @Output() fileContentEmit = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
 
@@ -44,8 +44,9 @@ export class FileInputComponent implements OnInit {
   }
 
   @Input()
-  set errorMessage(errorMessage: Record<string, string>) {
+  set errorMessage(errorMessage: Record<string, string[]>) {
     this.errormessages = errorMessage;
+    console.log(this.errormessages);
     if (this.errormessages) {
       this.fileName.pop();
     }

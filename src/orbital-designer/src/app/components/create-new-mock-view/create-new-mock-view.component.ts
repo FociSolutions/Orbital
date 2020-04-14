@@ -19,7 +19,7 @@ import { recordAdd } from 'src/app/models/record';
 export class CreateNewMockViewComponent implements OnInit {
   formGroup: FormGroup;
   private openApiFile: string;
-  errorMessageToEmitFromCreate = {} as Record<string, string>;
+  errorMessageToEmitFromCreate = {} as Record<string, string[]>;
   constructor(
     private router: Router,
     private location: Location,
