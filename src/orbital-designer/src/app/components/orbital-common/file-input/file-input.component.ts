@@ -46,7 +46,6 @@ export class FileInputComponent implements OnInit {
   @Input()
   set errorMessage(errorMessage: Record<string, string[]>) {
     this.errormessages = errorMessage;
-    console.log(this.errormessages);
     if (this.errormessages) {
       this.fileName.pop();
     }
