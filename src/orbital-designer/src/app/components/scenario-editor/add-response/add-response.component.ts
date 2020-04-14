@@ -137,7 +137,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   saveHeaders(map: Record<string, string>) {
     const type = this.shadowType.value ? ResponseType.TEMPLATED : ResponseType.CUSTOM;
     this.responseFormGroup.controls.type.setValue(type);
-    
+
     if (this.responseFormGroup.valid) {
         const responseToEmit = {
           headers: map,
