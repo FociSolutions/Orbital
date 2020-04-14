@@ -1,4 +1,4 @@
-<mat-card class="mat-elevation-z20 import-from-file-container">
+<mat-card class="mat-elevation-z20 import-from-file-container flexColumn">
   <mat-card-title>Import From File</mat-card-title>
   <mat-card-subtitle
     >Import an existing Mockdefinition file below</mat-card-subtitle
@@ -7,17 +7,20 @@
     class="capitalize"
     (fileContentEmit)="setMockDefinition($event)"
     (fileNameEmit)="setMockDefinitionName($event)"
-    (clearContentEmit)="checkEmit($event)"
+    (clearContentEmit)="checkEmit(true)"
     label="Select Files - Required"
     accept=".json"
     [errorMessage]="errorMessageToEmitFromCreate"
   >
   </app-file-input>
-  <mat-card-subtitle>Imported Mockdefinition</mat-card-subtitle>
-  <mat-card class="import-from-file">
-    <mat-list>
+  <h3>
+  <div class="expand">
+    <div>
+      <mat-card-subtitle>Imported Mockdefinition(s)</mat-card-subtitle>
+    </div>
+    <mat-list dense>
       <mat-list-item>
-        <h3 matLine>
+        
           <ul class="noDots">
             <li *ngFor="let mocks of mockdefinitionValid">
               {{ mocks | titlecase }}
@@ -27,15 +30,13 @@
               {{ mocks | titlecase }}
               <mat-icon matListIcon  color="warn">cancel</mat-icon>
             </li>
-          </ul>
-        </h3>
-        <p *ngIf="!isValid()" matLine>Valid File Required</p>
+          </ul>       
+        <p *ngIf="!isValid()">Valid File Required</p>
       </mat-list-item>
-      <mat-divider></mat-divider>
     </mat-list>
-  </mat-card>
-
-  <div class="row buttons-div">
+  </div>
+  </h3>
+<div class="row buttons-div">
     <button mat-raised-button color="primary" (click)="goBack()">
       Back
     </button>

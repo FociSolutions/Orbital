@@ -19,7 +19,6 @@ export class ImportFromFileViewComponent implements OnInit {
   validFileFlag = false;
   buttonDisabled = true;
   tempName = '';
-  shouldClear = false;
 
   constructor(
     private router: Router,
@@ -89,7 +88,7 @@ export class ImportFromFileViewComponent implements OnInit {
    *
    * @param x emitted value
    */
-  checkEmit(x: string) {
+  checkEmit(x: boolean) {
     if (this.mockDefinitionNameString.length > 0 && x) {
       this.clearArrays();
     }
