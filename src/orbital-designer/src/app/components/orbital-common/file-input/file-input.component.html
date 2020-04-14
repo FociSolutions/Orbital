@@ -18,6 +18,7 @@
       Choose File
     </button>
   </div>
+
   <input
     #fileInput
     [multiple]="this.multiple"
@@ -27,14 +28,12 @@
     style="display:none;"
     [accept]="accept"
   />
-  <input
-    matInput
-    style="display:none;"
-  />
+  <input matInput style="display:none;" />
 </mat-form-field>
-<div>
-  <p class="error-message" *ngFor="let message of errormessages">
-    {{ message }}
-  </p>
-</div>
 
+<div *ngFor="let message of errormessages | keyvalue">
+  <p class="error-message">{{ message.key }} :</p>
+  <li class="error-message" *ngFor="let v of message.value">
+    {{ v }}
+  </li>
+</div>

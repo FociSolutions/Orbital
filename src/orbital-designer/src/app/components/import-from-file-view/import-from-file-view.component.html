@@ -1,8 +1,6 @@
 <mat-card class="mat-elevation-z20 import-from-file-container flexColumn">
   <mat-card-title>Import From File</mat-card-title>
-  <mat-card-subtitle
-    >Import an existing Mockdefinition file below</mat-card-subtitle
-  >
+  <mat-card-subtitle>Import an existing Mockdefinition file below</mat-card-subtitle>
   <app-file-input
     class="capitalize"
     (fileContentEmit)="setMockDefinition($event)"
@@ -40,12 +38,7 @@
     <button mat-raised-button color="primary" (click)="goBack()">
       Back
     </button>
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="buttonDisabled"
-      (click)="createMock()"
-    >
+    <button mat-raised-button color="primary" [disabled]="buttonDisabled" (click)="createMock()">
       Next
     </button>
   </div>

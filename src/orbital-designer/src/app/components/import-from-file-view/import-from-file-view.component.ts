@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
+import { recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -15,7 +16,7 @@ export class ImportFromFileViewComponent implements OnInit {
   mockdefinitionValid: string [] = [];
   mockdefinitionInvalid: string [] = [];
   mockDefinitionNameString: string[] = [];
-  errorMessageToEmitFromCreate: string[];
+  errorMessageToEmitFromCreate = {} as Record<string, string[]>;
   validFileFlag = false;
   buttonDisabled = true;
   tempName = '';
@@ -34,7 +35,7 @@ export class ImportFromFileViewComponent implements OnInit {
   /**
    * Validates the Mockdefinition and returns a boolean validation status
    */
-  async validateMock(mockDefinitionString: string) {
+  async validateMock(mockDefinitionString: string, index: number) {
     this.logger.log('validateMock ' + mockDefinitionString);
     this.mockDefinitionService
       .validateMockDefinition(mockDefinitionString)
@@ -52,8 +53,9 @@ export class ImportFromFileViewComponent implements OnInit {
             }
           }
         },
-        () => {
-          this.logger.log('mock definition file selected is not valid');
+        error => {
+          this.logger.error('mock definition is invalid and was not saved to the store');
+          recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], [error.message]);
           this.validFileFlag = false;
           this.buttonDisabled = true;
           this.mockdefinitionInvalid.push(this.tempName);
@@ -68,7 +70,8 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   setMockDefinition(fileStringFromFileInput: string) {
     this.mockDefinitionString.push(fileStringFromFileInput);
-    this.validateMock(fileStringFromFileInput);
+    const index = this.mockDefinitionString.length - 1;
+    this.validateMock(fileStringFromFileInput, index);
   }
 
   /**
@@ -100,25 +103,23 @@ export class ImportFromFileViewComponent implements OnInit {
    * the form is invalid the function does nothing.
    */
   createMock() {
-    for (const mock of this.mockDefinitionString) {
-    this.mockDefinitionService
-      .AddMockDefinitionToStore(mock)
-      .pipe(map(value => value))
-      .subscribe(
-        value => {
-          if (value) {
-            this.logger.log('mock definition was saved to the store');
-            this.router.navigateByUrl('endpoint-view');
+    this.mockDefinitionString.forEach((mock, index) => {
+      this.mockDefinitionService
+        .AddMockDefinitionToStore(mock)
+        .pipe(map(value => value))
+        .subscribe(
+          value => {
+            if (value) {
+              this.logger.log('mock definition was saved to the store');
+              this.router.navigateByUrl('endpoint-view');
+            }
+          },
+          error => {
+            this.logger.error('mock definition is invalid and was not saved to the store');
+            recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], [error.message]);
           }
-        },
-        error => {
-          this.logger.log(
-            'mock definition is invalid and was not saved to the store'
-          );
-          this.errorMessageToEmitFromCreate = error;
-        }
-      );
-    }
+        );
+    });
   }
 
   /**
