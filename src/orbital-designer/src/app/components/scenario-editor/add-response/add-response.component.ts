@@ -12,7 +12,7 @@ import { Response } from '../../../models/mock-definition/scenario/response.mode
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { NGXLogger } from 'ngx-logger';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-response',
@@ -20,12 +20,6 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./add-response.component.scss']
 })
 export class AddResponseComponent implements OnInit, AfterContentChecked {
-  readonly responseTypes = [
-    { value: ResponseType.CUSTOM, viewValue: 'Custom' },
-    { value: ResponseType.NONE, viewValue: 'None' },
-    { value: ResponseType.TEMPLATED, viewValue: 'Templated' }
-  ];
-
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
   @Input() responseFormGroup: FormGroup;
@@ -52,6 +46,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   panelExpanded: boolean;
   shouldSave: boolean;
 
+  shadowType: FormControl = new FormControl();
+
   constructor(
     private jsonService: ValidJsonService,
     private logger: NGXLogger,
@@ -67,6 +63,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.updateStatusCodeDescription();
+
+    this.shadowType.setValue(this.responseFormGroup.controls.type.value === ResponseType.TEMPLATED);
 
     this.responseFormGroup.controls.status.valueChanges.subscribe(() => {
       this.updateStatusCodeDescription();
@@ -137,6 +135,9 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * @param map Response KVP
    */
   saveHeaders(map: Record<string, string>) {
+    const type = this.shadowType.value ? ResponseType.TEMPLATED : ResponseType.CUSTOM;
+    this.responseFormGroup.controls.type.setValue(type);
+    
     if (this.responseFormGroup.valid) {
         const responseToEmit = {
           headers: map,

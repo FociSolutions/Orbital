@@ -12,15 +12,11 @@
         >Response Header, Response Body, and Status Code</mat-panel-description
       >
     </mat-expansion-panel-header>
-    <form [formGroup]="this.responseFormGroup">
-      <div class="response-type">Response Type</div>
-      <mat-select formControlName="type" id="responseType" required>
-        <div *ngFor="let responseType of responseTypes">
-          <mat-option [value]="responseType.value">
-            {{ responseType.viewValue }}
-          </mat-option>
-        </div>
-      </mat-select>
+     <div class="response-type">Response Type</div>
+      <mat-checkbox [formControl]="shadowType" id="shadowType">
+        Templated
+      </mat-checkbox>
+      <form [formGroup]="this.responseFormGroup">
       <mat-divider class="divider-padding"></mat-divider>
       <div class="response-code">
         <div class="status-code">
