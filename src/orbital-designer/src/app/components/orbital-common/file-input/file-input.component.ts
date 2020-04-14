@@ -22,6 +22,7 @@ export class FileInputComponent implements OnInit {
   errormessages: string[];
   @Output() fileContentEmit = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
+  @Output() clearContentEmit = new EventEmitter<boolean>();
 
   /**
    * Emits the contents of the files as strings
@@ -43,6 +44,22 @@ export class FileInputComponent implements OnInit {
        );
     }
     this.logger.log('File Contents emitted');
+  }
+
+  /**
+   * Emits a value to Import From File to clear the form
+   *
+   * @param x emitted value
+   */
+  emitClearContent(x: boolean) {
+    this.clearContentEmit.emit(x);
+  }
+
+  /**
+   * Resets fileName collection when new files are selected
+   */
+  resetFileName() {
+    this.fileName = [];
   }
 
 @Input()

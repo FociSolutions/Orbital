@@ -19,6 +19,7 @@ export class ImportFromFileViewComponent implements OnInit {
   validFileFlag = false;
   buttonDisabled = true;
   tempName = '';
+  shouldClear = false;
 
   constructor(
     private router: Router,
@@ -44,8 +45,12 @@ export class ImportFromFileViewComponent implements OnInit {
           if (value) {
             this.logger.log('mock definition file selected is valid');
             this.validFileFlag = true;
-            this.buttonDisabled = false;
             this.mockdefinitionValid.push(this.tempName);
+            if (this.mockdefinitionInvalid.length > 0) {
+              this.buttonDisabled = true;
+            } else {
+              this.buttonDisabled = false;
+            }
           }
         },
         () => {
@@ -75,6 +80,19 @@ export class ImportFromFileViewComponent implements OnInit {
   setMockDefinitionName(fileStringName: string) {
     this.mockDefinitionNameString.push(fileStringName);
     this.tempName = fileStringName;
+  }
+
+  /**
+   * This function checks if the emitted value is valid and that
+   * elements in the mockDefinitionNameString exist, then clears
+   * the collections for the next use of the form.
+   *
+   * @param x emitted value
+   */
+  checkEmit(x: string) {
+    if (this.mockDefinitionNameString.length > 0 && x) {
+      this.clearArrays();
+    }
   }
 
   /**
@@ -109,6 +127,13 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   goBack() {
     this.location.back();
+  }
+
+  clearArrays() {
+    this.mockDefinitionNameString = [];
+    this.mockDefinitionString = [];
+    this.mockdefinitionInvalid = [];
+    this.mockdefinitionValid = [];
   }
 
   ngOnInit() {}

@@ -13,6 +13,7 @@
       color="primary"
       type="button"
       (click)="fileInput.click()"
+      (click)="emitClearContent()"
     >
       Choose File
     </button>
@@ -22,9 +23,9 @@
     [multiple]="this.multiple"
     type="file"
     (change)="emitFileContent($event.target.files)"
+    (change)="resetFileName()"
     style="display:none;"
     [accept]="accept"
-    
   />
   <input
     matInput
