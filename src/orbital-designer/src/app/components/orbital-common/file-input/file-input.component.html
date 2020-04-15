@@ -24,9 +24,9 @@
     [multiple]="this.multiple"
     type="file"
     (change)="emitFileContent($event.target.files)"
-    (change)="resetFileName()"
     style="display:none;"
     [accept]="accept"
+    onclick="this.value=null;"
   />
   <input matInput style="display:none;" />
 </mat-form-field>

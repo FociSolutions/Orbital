@@ -26,6 +26,7 @@ export class FileInputComponent implements OnInit {
    * Emits the contents of the files as strings
    */
   emitFileContent(files: File[]) {
+    this.fileName = [];
     for (const file of files) {
       this.readfileparser
         .read(file)
@@ -53,19 +54,9 @@ export class FileInputComponent implements OnInit {
     this.clearContentEmit.emit(x);
   }
 
-  /**
-   * Resets fileName collection and reset error messages when new files are selected  onclick
-   */
-  resetFileName() {
-    this.fileName = [];
-  }
-
   @Input()
   set errorMessage(errorMessage: Record<string, string[]>) {
     this.errormessages = errorMessage;
-    if (this.errormessages) {
-      this.fileName.pop();
-    }
   }
 
   get errorMessages() {
