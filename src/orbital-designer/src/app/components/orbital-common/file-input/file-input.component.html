@@ -31,10 +31,11 @@
   <input matInput style="display:none;" />
 </mat-form-field>
 <mat-card>
-<div *ngFor="let message of errormessages | keyvalue">
-    <p class="error-message">{{ message.key }} :</p>
-    <li class="error-message" *ngFor="let v of message.value">
-      {{ v }}
-    </li>
+
+<div *ngFor="let message of this.errorMessages | keyvalue">
+  <p class="error-message">{{ message.key }} :</p>
+  <li class="error-message" *ngFor="let v of message.value">
+    {{ v }}
+  </li>
 </div>
 </mat-card>

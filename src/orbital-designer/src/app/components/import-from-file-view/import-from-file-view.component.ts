@@ -13,8 +13,8 @@ import { recordAdd } from 'src/app/models/record';
 })
 export class ImportFromFileViewComponent implements OnInit {
   private mockDefinitionString: string[] = [];
-  mockdefinitionValid: string [] = [];
-  mockdefinitionInvalid: string [] = [];
+  mockdefinitionValid: string[] = [];
+  mockdefinitionInvalid: string[] = [];
   mockDefinitionNameString: string[] = [];
   errorMessageToEmitFromCreate = {} as Record<string, string[]>;
   validFileFlag = false;
@@ -37,30 +37,31 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   async validateMock(mockDefinitionString: string, index: number) {
     this.logger.log('validateMock ' + mockDefinitionString);
-    this.mockDefinitionService
-      .validateMockDefinition(mockDefinitionString)
-      .pipe(map(value => value))
-      .subscribe(
-        value => {
-          if (value) {
-            this.logger.log('mock definition file selected is valid');
-            this.validFileFlag = true;
-            this.mockdefinitionValid.push(this.tempName);
-            if (this.mockdefinitionInvalid.length > 0) {
-              this.buttonDisabled = true;
-            } else {
-              this.buttonDisabled = false;
-            }
+    this.mockDefinitionService.validateMockDefinition(mockDefinitionString).subscribe(
+      value => {
+        if (value) {
+          this.logger.log('mock definition file selected is valid');
+          this.validFileFlag = true;
+          this.mockdefinitionValid.push(this.tempName);
+          if (this.mockdefinitionInvalid.length > 0) {
+            this.buttonDisabled = true;
+          } else {
+            this.buttonDisabled = false;
           }
-        },
-        error => {
-          this.logger.error('mock definition is invalid and was not saved to the store');
-          recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], [error.message]);
-          this.validFileFlag = false;
-          this.buttonDisabled = true;
-          this.mockdefinitionInvalid.push(this.tempName);
         }
-      );
+      },
+      error => {
+        this.logger.error('mock definition is invalid and was not saved to the store');
+        this.errorMessageToEmitFromCreate = recordAdd(
+          this.errorMessageToEmitFromCreate,
+          this.mockDefinitionNameString[index],
+          [error.message]
+        );
+        this.validFileFlag = false;
+        this.buttonDisabled = true;
+        this.mockdefinitionInvalid.push(this.tempName);
+      }
+    );
   }
 
   /**
@@ -93,6 +94,7 @@ export class ImportFromFileViewComponent implements OnInit {
    */
   checkEmit(x: boolean) {
     if (this.mockDefinitionNameString.length > 0 && x) {
+      this.errorMessageToEmitFromCreate = {} as Record<string, string[]>;
       this.clearArrays();
     }
   }
