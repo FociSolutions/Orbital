@@ -17,6 +17,10 @@ namespace Orbital.Mock.Server.Models.Validators
             RuleFor(x => x.Metadata).InjectValidator();
             RuleFor(x => x.Verb).Must(verb => validMethod.Contains(verb));
             RuleFor(x => x.Path).NotNull();
+            When(x => x.Response != null, () =>
+            {
+                RuleFor(x => x.Response.Type).NotEqual(ResponseType.NONE);
+            });
         }
 
     }

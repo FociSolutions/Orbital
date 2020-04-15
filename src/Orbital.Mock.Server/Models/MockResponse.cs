@@ -50,14 +50,7 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("query")]
         public IDictionary<string, string> Queries { get; set; }
         [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public ResponseType? Type
-        {
-            get => _type;
-            set =>
-                _type = value != ResponseType.NONE
-                    ? value
-                    : throw new InvalidOperationException("Type cannot be NONE, it must be CUSTOM or TEMPLATED.");
-        }
+        public ResponseType? Type { get; set; }
 
         public override bool Equals(object obj)
         {
