@@ -17,7 +17,7 @@ export class FileInputComponent implements OnInit {
   @Input() label = '';
   @Input() accept = '';
   @Input() multiple = true;
-  errormessages = {} as Record<string, string[]>;
+  private errormessages = {} as Record<string, string[]>;
   @Output() fileContentEmit = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
   @Output() clearContentEmit = new EventEmitter<boolean>();
@@ -54,18 +54,22 @@ export class FileInputComponent implements OnInit {
   }
 
   /**
-   * Resets fileName collection when new files are selected
+   * Resets fileName collection and reset error messages when new files are selected  onclick
    */
   resetFileName() {
     this.fileName = [];
   }
 
-@Input()
+  @Input()
   set errorMessage(errorMessage: Record<string, string[]>) {
     this.errormessages = errorMessage;
     if (this.errormessages) {
       this.fileName.pop();
     }
+  }
+
+  get errorMessages() {
+    return this.errormessages;
   }
 
   ngOnInit() {}
