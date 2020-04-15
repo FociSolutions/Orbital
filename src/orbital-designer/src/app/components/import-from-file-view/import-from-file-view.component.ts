@@ -129,6 +129,9 @@ export class ImportFromFileViewComponent implements OnInit {
     this.location.back();
   }
 
+  /**
+   * Clears the local arrays
+   */
   clearArrays() {
     this.mockDefinitionNameString = [];
     this.mockDefinitionString = [];
