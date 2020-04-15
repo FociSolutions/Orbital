@@ -11,8 +11,6 @@ namespace Orbital.Mock.Server.Models
 {
     public class MockResponse : IEquatable<MockResponse>
     {
-        private ResponseType? _type;
-
         /// <summary>
         /// Constructor, defaults to a 404 response
         /// </summary>
