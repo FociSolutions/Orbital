@@ -35,7 +35,7 @@ export class DeleteFromServerViewComponent implements OnInit {
         this.statusMessage = '';
       },
       error: () => {
-        this.statusMessage = 'Mock(s) could not be viewed because of an error';
+        this.errorMessage = 'Mock(s) could not be viewed because of an error';
         this.notificationService.open('Mock(s) could not be viewed because of an error');
         this.requestInProgress = false;
         this.clearForm();
@@ -67,6 +67,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   title = 'Server URI';
 
   statusMessage: string;
+  errorMessage: string;
   deleteInProgress: boolean;
   triggerOpenConfirmBox: boolean;
 
@@ -88,6 +89,8 @@ export class DeleteFromServerViewComponent implements OnInit {
   }
 
   sendRequest() {
+    this.statusMessage = '';
+    this.errorMessage = '';
     this.inputControl.markAsDirty();
     if (this.sendRequestDisabled) {
       this.requestInProgress = true;
@@ -116,7 +119,7 @@ export class DeleteFromServerViewComponent implements OnInit {
             this.statusMessage = 'Mock(s) successfully deleted';
             this.clearRightHandSide();
           } else {
-            this.statusMessage = 'Mock(s) could not be deleted because of an error';
+            this.errorMessage = 'Mock(s) could not be deleted because of an error';
             this.logger.debug('Mock deletion statuses', deleteMockStatus);
           }
         },

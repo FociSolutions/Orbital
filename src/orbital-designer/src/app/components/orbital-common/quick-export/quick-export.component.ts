@@ -15,6 +15,7 @@ export class QuickExportComponent implements OnInit {
   urlInService: string;
   mockInService: MockDefinition;
   exportStatusMessage: string;
+  exportErrorMessage: string;
 
   constructor(
     private router: Router,
@@ -35,18 +36,26 @@ export class QuickExportComponent implements OnInit {
     if (this.router.url.includes('scenario-editor')) {
       this.triggerOpenCancelBox = true;
     } else if (!!this.urlInService) {
-      this.mockdefinitionService.exportMockDefinition(this.urlInService, this.mockInService).subscribe(gotExported => {
+      this.exportStatusMessage = '';
+      this.exportErrorMessage = '';
+      this.mockdefinitionService.exportMockDefinition(this.urlInService, this.mockInService).subscribe(
+        gotExported => {
         if (gotExported) {
           this.logger.debug('Mockdefinition has been exported: ', this.mockInService);
           this.logger.debug('To Url: ', this.urlInService);
           this.exportStatusMessage = 'File successfully exported to ' + this.urlInService;
           this.urlToNavigateTo = url;
         } else {
-          this.exportStatusMessage = 'File could not be exported because of an error';
+          this.exportErrorMessage = 'File could not be exported because of an error';
           this.router.navigate([url]);
         }
+      },
+      () => {
+        this.exportErrorMessage = 'File could not be exported because of an error';
+        this.router.navigate([url]);
       });
     } else {
+      this.exportErrorMessage = 'File could not be exported because of an error';
       this.router.navigate([url]);
     }
   }
