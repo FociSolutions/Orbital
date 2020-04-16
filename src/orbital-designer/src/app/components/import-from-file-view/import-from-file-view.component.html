@@ -1,6 +1,6 @@
 <mat-card class="mat-elevation-z20 import-from-file-container flexColumn">
-  <mat-card-title>Import From File</mat-card-title>
-  <mat-card-subtitle>Import an existing Mockdefinition file below</mat-card-subtitle>
+  <mat-card-title>Import From File(s)</mat-card-title>
+  <mat-card-subtitle>Import existing Mockdefinition file(s) below</mat-card-subtitle>
   <app-file-input 
   class="capitalize" 
   (fileContentEmit)="setMockDefinition($event)"
@@ -26,7 +26,7 @@
                   <mat-icon matListIcon color="warn">cancel</mat-icon>
                 </mat-list-item>
 
-              <p *ngIf="!isValid()">Valid File Required</p>
+              <p *ngIf="!isValid()">Valid File(s) Required</p>
             </mat-list>
             </mat-card-content>
    </mat-card>
