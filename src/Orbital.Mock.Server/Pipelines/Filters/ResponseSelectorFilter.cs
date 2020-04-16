@@ -81,9 +81,13 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                     var template = Template.Parse(port.SelectedResponse.Body);
                     port.SelectedResponse.Body = template.Render(templateContext);
 
-                } catch (InvalidOperationException)
+                } catch (Exception e)
                 {
-                    port.SelectedResponse = new MockResponse();
+                    // if the template rendering fails, the exception type is null but the error message is non-empty
+                    if (e is InvalidOperationException || e is ArgumentNullException || e.Source.Equals("Scriban"))
+                    {
+                        port.SelectedResponse = new MockResponse();
+                    }
                 }
             }
 
