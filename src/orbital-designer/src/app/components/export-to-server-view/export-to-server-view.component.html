@@ -18,10 +18,11 @@
           </div>
         </div>
       </app-tool-tip>
-      <div class="error-message">{{ exportStatusMessage }}</div>
+      <div *ngIf="!!exportStatusMessage?.length" class="status-message">{{ exportStatusMessage }}</div>
+      <div *ngIf="!!exportErrors?.length" class="error-message">{{ exportErrors }}</div>
       <app-shuttle-list
         class="column flex-grow"
-        [list]="formArray.controls"
+        [list]="leftHandSideMocks.controls"
         [itemToStringFn]="controlsMockDefinitionToString"
         [emptyListMessage]="emptyListMessageServerBox"
         leftTitle="Local Files"

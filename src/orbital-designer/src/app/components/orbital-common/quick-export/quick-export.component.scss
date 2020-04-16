@@ -17,7 +17,13 @@ button:hover {
     background: #f0f0f0;
   }
 }
-.error-message {
+
+.status-message {
   color: grey;
+  padding-left: 20px;
+}
+
+.error-message {
+  color: red;
   padding-left: 20px;
 }
