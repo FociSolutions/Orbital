@@ -27,7 +27,7 @@ export class EndpointListItemComponent implements OnInit {
 
   selectEndpoint() {
     this.store.selectedEndpoint = this.endpoint;
-    this.router.navigateByUrl('scenario-view');
+    this.router.navigateByUrl('/scenario-view');
     this.logger.debug('Endpoint selected: ', this.store.state.selectedEndpoint);
   }
 

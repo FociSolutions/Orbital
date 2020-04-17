@@ -20,6 +20,10 @@ using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+using Scriban;
+using Bogus;
+using Orbital.Mock.Server.Functions;
+using Scriban.Runtime;
 
 namespace Orbital.Mock.Server
 {
@@ -57,7 +61,7 @@ namespace Orbital.Mock.Server
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
-                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher());
+                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), ConfigureTemplateContext());
                 processor.Start();
                 return processor;
             });
@@ -65,6 +69,7 @@ namespace Orbital.Mock.Server
 
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
+            
         }
 
         /// <summary>
@@ -100,6 +105,24 @@ namespace Orbital.Mock.Server
             app.UseMiddleware<LoggingRequestResponseMiddleware>();
             app.UseMiddleware<ServerRequestMiddleware>();
             app.UseMvc();
+        }
+
+        /// <summary>
+        /// This method creates the template context with buildin functions needed for templaded responses to work..
+        /// </summary>
+        private TemplateContext ConfigureTemplateContext()
+        {
+            var globalContext = new TemplateContext();
+
+            var scriptObjectOrbital = new BuiltinOrbitalFunctions();
+            var scriptObjectFaker = new ScriptObject();
+            scriptObjectFaker.Import(new Faker());
+
+            globalContext.PushGlobal(scriptObjectFaker);
+            globalContext.PushGlobal(scriptObjectOrbital);
+            
+
+            return globalContext;
         }
     }
 }

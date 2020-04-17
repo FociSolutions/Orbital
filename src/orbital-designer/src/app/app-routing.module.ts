@@ -13,7 +13,6 @@ import { ExportToServerViewComponent } from './components/export-to-server-view/
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 
 const routes: Routes = [
-  { path: '', component: HomeViewComponent },
   { path: 'create-new-mock', component: CreateNewMockViewComponent },
   { path: 'import-from-file', component: ImportFromFileViewComponent },
   {

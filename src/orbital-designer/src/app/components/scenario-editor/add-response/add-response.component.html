@@ -12,23 +12,29 @@
         >Response Header, Response Body, and Status Code</mat-panel-description
       >
     </mat-expansion-panel-header>
-    <div class="response-code">
-      <div class="status-code">
-        Status Code
-        <mat-form-field class="status-code-field">
-          <input matInput class="status-code-input" [(ngModel)]="statusCode" />
-        </mat-form-field>
-      </div>
-      <div class="status-message">
-        Status Message
-        <div class="status-message-output">
-          {{ statusMessage }}
+     <div class="response-type">Response Type</div>
+      <mat-checkbox [formControl]="shadowType" id="shadowType">
+        Templated
+      </mat-checkbox>
+      <form [formGroup]="this.responseFormGroup">
+      <mat-divider class="divider-padding"></mat-divider>
+      <div class="response-code">
+        <div class="status-code">
+          Status Code
+          <mat-form-field class="status-code-field">
+            <input matInput class="status-code-input" formControlName="status" />
+          </mat-form-field>
+        </div>
+        <div class="status-message">
+          Status Message
+          <div class="status-message-output">
+            {{ statusMessage }}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="error-message" *ngIf="!this.isStatusCodeValid">
-      Invalid Status Code
-    </div>
+      <div class="error-message" *ngIf="!!this.responseFormGroup.controls.status.errors">
+        Invalid Status Code
+      </div>
     <app-kvp-edit
       [addKvpTitle]="titleForKvp"
       [listKvpTitle]="titleForKvpAdded"
@@ -40,11 +46,12 @@
     <div class="response-body">
       <mat-form-field>
         <div class="body-title">Body</div>
-        <textarea matInput rows="10" [(ngModel)]="this.bodyResponse"></textarea>
+        <textarea matInput rows="10" formControlName="body"></textarea>
       </mat-form-field>
-      <div class="error-message" *ngIf="!isBodyValid">
-        {{ this.bodyErrorMessage }}
+      <div class="error-message" *ngIf="!!this.responseFormGroup.controls.body.errors">
+        Body is not valid JSON
       </div>
     </div>
+  </form>
   </mat-expansion-panel>
 </mat-accordion>

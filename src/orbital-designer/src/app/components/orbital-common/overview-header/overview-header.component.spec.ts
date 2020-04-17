@@ -6,18 +6,16 @@ describe('OverviewHeaderComponent', () => {
   let component: OverviewHeaderComponent;
   let fixture: ComponentFixture<OverviewHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [OverviewHeaderComponent],
       imports: [MatCardModule]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(OverviewHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

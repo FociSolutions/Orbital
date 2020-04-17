@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
 
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -39,13 +39,14 @@ import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinit
 import { BodyListItemRuleTypeComponent } from './add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyAddRuleComponent } from './add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.component';
+import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
   let fixture: ComponentFixture<ScenarioEditorComponent>;
   let scenarioBuilder: ScenarioFormBuilder;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         ScenarioEditorComponent,
@@ -68,13 +69,15 @@ describe('ScenarioEditorComponent', () => {
         PolicyEditComponent,
         BodyEditRuleComponent,
         BodyListItemRuleTypeComponent,
-        BodyAddRuleComponent
+        BodyAddRuleComponent,
+        ScenarioViewComponent
       ],
       imports: [
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: 'scenario-view', component: ScenarioViewComponent }]),
         MatButtonModule,
         MatExpansionModule,
         BrowserAnimationsModule,
@@ -84,16 +87,14 @@ describe('ScenarioEditorComponent', () => {
       ],
       providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
     scenarioBuilder = TestBed.get(ScenarioFormBuilder);
     component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
     component.selectedScenario = emptyScenario;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -119,51 +120,57 @@ describe('ScenarioEditorComponent', () => {
   });
 
   describe('ScenarioEditorComponent.handleResponseOutput', () => {
-    it('should set the response to the response when the component outputs the response', () => {
+    it('should set the response to the response when the component outputs the response', fakeAsync(() => {
       component.selectedScenario = validMockDefinition.scenarios[0];
       const fakeResponse = (validMockDefinition.scenarios[0].response as unknown) as Response;
       component.handleResponseOutput(fakeResponse);
+      tick();
+      fixture.detectChanges();
       expect(component.response).toEqual(fakeResponse);
-    });
+    }));
   });
 
   describe('ScenarioEditorComponent.saveScenario', () => {
-    it('should save the scenario if all the fields are valid', () => {
-      const store: DesignerStore = TestBed.get(DesignerStore);
-      store.state.mockDefinition = validMockDefinition;
+    it('should save the scenario if all the fields are valid', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const store: DesignerStore = TestBed.get(DesignerStore);
+        store.state.mockDefinition = validMockDefinition;
 
-      const input = {
-        scenario: validMockDefinition.scenarios[0],
-        metadata: {
-          title: faker.random.word(),
-          description: faker.random.word()
-        } as Metadata
-      };
-      component.scenarioId = input.scenario.id;
-      component.metadata = input.metadata;
-      component.response = input.scenario.response;
-      component.requestMatchRule = input.scenario.requestMatchRules;
-      component.selectedScenario = input.scenario;
+        const input = {
+          scenario: validMockDefinition.scenarios[0],
+          metadata: {
+            title: faker.random.word(),
+            description: faker.random.word()
+          } as Metadata
+        };
+        component.scenarioId = input.scenario.id;
+        component.metadata = input.metadata;
+        component.response = input.scenario.response;
+        component.requestMatchRule = input.scenario.requestMatchRules;
+        component.selectedScenario = input.scenario;
 
-      component.metadataMatchRuleValid = true;
-      component.requestMatchRuleValid = true;
-      component.responseMatchRuleValid = true;
-      ((component.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
-        .urlMatchRules as FormArray).controls = input.scenario.requestMatchRules.urlRules.map(ur =>
-        scenarioBuilder.getUrlItemFormGroup(ur)
-      );
+        component.metadataMatchRuleValid = true;
+        component.requestMatchRuleValid = true;
+        component.responseMatchRuleValid = true;
+        ((component.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
+          .urlMatchRules as FormArray).controls = input.scenario.requestMatchRules.urlRules.map(ur =>
+          scenarioBuilder.getUrlItemFormGroup(ur)
+        );
 
-      component.saveScenario();
-
-      const actual = store.state.mockDefinition.scenarios.find(s => s.id === input.scenario.id);
-      expect(actual).toBeTruthy();
-      expect(actual.metadata.title).toEqual(input.metadata.title);
-    });
+        component.saveScenario();
+        tick();
+        fixture.detectChanges();
+        const actual = store.state.mockDefinition.scenarios.find(s => s.id === input.scenario.id);
+        expect(actual).toBeTruthy();
+        expect(actual.metadata.title).toEqual(input.metadata.title);
+      });
+    }));
   });
 
   describe('ScenarioEditorComponent.save', () => {
     it('should set the shouldSave variable to true', async () => {
       await component.save();
+      fixture.detectChanges();
       expect(component.shouldSave).toBe(true);
     });
   });
@@ -174,14 +181,13 @@ describe('ScenarioEditorComponent', () => {
       expect(component.triggerOpenCancelBox).toBe(true);
     });
 
-    it('should set triggerOpenCancelBox to false when onCancelDialogAction is true', () => {
-      component.onCancelDialogAction(true);
-      expect(component.triggerOpenCancelBox).toBe(false);
-    });
-
-    it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', () => {
-      component.onCancelDialogAction(false);
-      expect(component.triggerOpenCancelBox).toBe(false);
-    });
+    it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        component.onCancelDialogAction(false);
+        tick();
+        fixture.detectChanges();
+        expect(component.triggerOpenCancelBox).toBe(false);
+      });
+    }));
   });
 });

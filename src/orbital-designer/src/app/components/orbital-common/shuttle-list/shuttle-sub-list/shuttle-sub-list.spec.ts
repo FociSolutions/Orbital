@@ -16,7 +16,7 @@ describe('ShuttleSubListComponent', () => {
   let component: ShuttleSubListComponent;
   let fixture: ComponentFixture<ShuttleSubListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [ShuttleSubListComponent],
       imports: [
@@ -27,18 +27,16 @@ describe('ShuttleSubListComponent', () => {
         MatDividerModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ShuttleSubListComponent);
     component = fixture.componentInstance;
     const mock1 = _.cloneDeep(validMockDefinition);
     const mock2 = _.cloneDeep(validMockDefinition);
-    mock1.metadata.title = faker.random.word();
-    mock2.metadata.title = faker.random.word();
+    mock1.metadata.title = faker.random.words(3);
+    mock2.metadata.title = faker.random.words(3);
     component.list = [mock1, mock2].map(mock => new FormControl(mock, null));
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

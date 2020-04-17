@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ScenarioViewComponent } from './scenario-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -23,27 +23,62 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
+import { ScenarioEditorComponent } from '../scenario-editor/scenario-editor.component';
+import { AddMetadataComponent } from '../scenario-editor/add-metadata/add-metadata.component';
+import { AddRequestMatchRuleComponent } from '../scenario-editor/add-request-match-rule/add-request-match-rule.component';
+import { AddResponseComponent } from '../scenario-editor/add-response/add-response.component';
+import { PolicyAddComponent } from '../scenario-editor/policy-container/policy-add/policy-add.component';
+import { PolicyComponent } from '../scenario-editor/policy-container/policy/policy.component';
+import { KvpEditRuleComponent } from '../scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
+import { KvpListItemRuleTypeComponent } from '../scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
+import { UrlAddRuleComponent } from '../scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
+import { UrlEditRuleComponent } from '../scenario-editor/url-edit-rule/url-edit-rule.component';
+import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
+import { PolicyEditComponent } from '../scenario-editor/policy-container/policy-edit/policy-edit.component';
+import { BodyEditRuleComponent } from '../scenario-editor/add-body-rule-edit/body-edit-rule.component';
+// tslint:disable-next-line:max-line-length
+import { BodyListItemRuleTypeComponent } from '../scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
+import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
   let fixture: ComponentFixture<ScenarioViewComponent>;
   let store: DesignerStore;
 
-  beforeEach(async(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ScenarioViewComponent,
-        SideBarComponent,
+        AddMetadataComponent,
+        AddRequestMatchRuleComponent,
+        AddResponseComponent,
+        BodyAddRuleComponent,
+        BodyEditRuleComponent,
+        BodyListItemRuleTypeComponent,
         GetEndpointScenariosPipe,
+        GetRuleTypeStringPipe,
         GetVerbColorPipe,
         GetVerbStringPipe,
-        OverviewHeaderComponent
+        KvpEditRuleComponent,
+        KvpListItemRuleTypeComponent,
+        OverviewHeaderComponent,
+        PolicyAddComponent,
+        PolicyComponent,
+        PolicyEditComponent,
+        ScenarioEditorComponent,
+        ScenarioViewComponent,
+        SideBarComponent,
+        UrlAddRuleComponent,
+        UrlEditRuleComponent,
+        UrlListItemRuleTypeComponent
       ],
       imports: [
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: 'scenario-editor/:scenarioId', component: ScenarioEditorComponent }]),
         MatMenuModule,
         MatButtonModule,
         FormsModule,
@@ -51,28 +86,32 @@ describe('ScenarioViewComponent', () => {
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(async () => {
     fixture = TestBed.createComponent(ScenarioViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     store = TestBed.get(DesignerStore);
     store.mockDefinition = validMockDefinition;
-  });
+    tick();
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   describe('ScenarioViewComponent.addScenario', () => {
-    it('should navigate to scenario editor', () => {
-      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      component.addScenario();
-      expect(routerSpy.calls.mostRecent().args[0]).toMatch(
-        /\/scenario-editor\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-      );
-    });
+    it('should navigate to scenario editor', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+        component.addScenario();
+        fixture.detectChanges();
+        tick();
+        expect(routerSpy.calls.mostRecent().args[0]).toMatch(
+          /\/scenario-editor\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+        );
+      });
+    }));
   });
   describe('ScenarioViewComponent.SearchBar', () => {
     describe('ScenarioViewComponent.scenarioToString', () => {
@@ -125,7 +164,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -147,11 +187,7 @@ describe('ScenarioViewComponent', () => {
 
       component.cloneScenario(scenarios[0]);
 
-      expect(
-        store.state.mockDefinition.scenarios.find(
-          x => x.metadata.title.indexOf('-copy') !== -1
-        )
-      ).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy') !== -1)).toBeTruthy();
     });
 
     it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', () => {
@@ -170,7 +206,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -194,16 +231,8 @@ describe('ScenarioViewComponent', () => {
       component.cloneScenario(scenarios[0]);
       component.cloneScenario(scenarios[0]);
 
-      expect(
-        store.state.mockDefinition.scenarios.find(
-          x => x.metadata.title.indexOf('-copy 2') !== -1
-        )
-      ).toBeTruthy();
-      expect(
-        store.state.mockDefinition.scenarios.find(
-          x => x.metadata.title.indexOf('-copy 3') !== -1
-        )
-      ).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 2') !== -1)).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find(x => x.metadata.title.indexOf('-copy 3') !== -1)).toBeTruthy();
     });
 
     it('should not clone a scenario from the store if the cloned scenario is invalid', () => {
@@ -222,7 +251,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -242,15 +272,11 @@ describe('ScenarioViewComponent', () => {
 
       store.state.mockDefinition.scenarios = scenarios;
 
-      const scenarioLengthComponentExpected =
-        store.state.mockDefinition.scenarios.length;
+      const scenarioLengthComponentExpected = store.state.mockDefinition.scenarios.length;
       component.cloneScenario(null);
 
-      const scenarioLengthComponentActual =
-        store.state.mockDefinition.scenarios.length;
-      expect(scenarioLengthComponentActual).toEqual(
-        scenarioLengthComponentExpected
-      );
+      const scenarioLengthComponentActual = store.state.mockDefinition.scenarios.length;
+      expect(scenarioLengthComponentActual).toEqual(scenarioLengthComponentExpected);
     });
 
     it('should clone a scenario and ensure that the title and id are different', () => {
@@ -269,7 +295,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -290,12 +317,10 @@ describe('ScenarioViewComponent', () => {
       store.state.mockDefinition.scenarios = scenarios;
       component.cloneScenario(scenarios[0]);
 
-      expect(store.state.mockDefinition.scenarios[0].id).not.toEqual(
-        store.state.mockDefinition.scenarios[1].id
+      expect(store.state.mockDefinition.scenarios[0].id).not.toEqual(store.state.mockDefinition.scenarios[1].id);
+      expect(store.state.mockDefinition.scenarios[0].metadata.title).not.toEqual(
+        store.state.mockDefinition.scenarios[1].metadata.title
       );
-      expect(
-        store.state.mockDefinition.scenarios[0].metadata.title
-      ).not.toEqual(store.state.mockDefinition.scenarios[1].metadata.title);
     });
 
     it('should clone a scenario and ensure that there exists another scenario with the same contents, except for title and id', () => {
@@ -314,7 +339,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -345,26 +371,16 @@ describe('ScenarioViewComponent', () => {
           aScenario.metadata.title !== componentScenarioClonee.metadata.title &&
           aScenario.path === componentScenarioClonee.path &&
           JSON.stringify(aScenario.requestMatchRules.bodyRules) ===
-            JSON.stringify(
-              componentScenarioClonee.requestMatchRules.bodyRules
-            ) &&
+            JSON.stringify(componentScenarioClonee.requestMatchRules.bodyRules) &&
           JSON.stringify(aScenario.requestMatchRules.headerRules) ===
-            JSON.stringify(
-              componentScenarioClonee.requestMatchRules.headerRules
-            ) &&
+            JSON.stringify(componentScenarioClonee.requestMatchRules.headerRules) &&
           JSON.stringify(aScenario.requestMatchRules.queryRules) ===
-            JSON.stringify(
-              componentScenarioClonee.requestMatchRules.queryRules
-            ) &&
+            JSON.stringify(componentScenarioClonee.requestMatchRules.queryRules) &&
           aScenario.response.body === componentScenarioClonee.response.body &&
-          JSON.stringify(aScenario.response.headers) ===
-            JSON.stringify(componentScenarioClonee.response.headers) &&
-          aScenario.response.status ===
-            componentScenarioClonee.response.status &&
-          JSON.stringify(aScenario.verb) ===
-            JSON.stringify(componentScenarioClonee.verb) &&
-          aScenario.metadata.description ===
-            componentScenarioClonee.metadata.description
+          JSON.stringify(aScenario.response.headers) === JSON.stringify(componentScenarioClonee.response.headers) &&
+          aScenario.response.status === componentScenarioClonee.response.status &&
+          JSON.stringify(aScenario.verb) === JSON.stringify(componentScenarioClonee.verb) &&
+          aScenario.metadata.description === componentScenarioClonee.metadata.description
       ).length;
 
       expect(expectedResults).toEqual(1);
@@ -386,7 +402,8 @@ describe('ScenarioViewComponent', () => {
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
+            type: ResponseType.CUSTOM
           },
           requestMatchRules: {
             headerRules: [],
@@ -408,9 +425,7 @@ describe('ScenarioViewComponent', () => {
 
       component.cloneScenario(scenarios[0]);
 
-      expect(
-        store.state.mockDefinition.scenarios[1].defaultScenario
-      ).toBe(false);
+      expect(store.state.mockDefinition.scenarios[1].defaultScenario).toBe(false);
     });
   });
 
@@ -429,7 +444,8 @@ describe('ScenarioViewComponent', () => {
         response: {
           headers: {},
           status: 0,
-          body: ''
+          body: '',
+          type: ResponseType.CUSTOM
         },
         requestMatchRules: {
           headerRules: [],
@@ -464,7 +480,8 @@ describe('ScenarioViewComponent', () => {
         response: {
           headers: {},
           status: 0,
-          body: ''
+          body: '',
+          type: ResponseType.CUSTOM
         },
         requestMatchRules: {
           headerRules: [],
@@ -499,7 +516,8 @@ describe('ScenarioViewComponent', () => {
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
+        type: ResponseType.CUSTOM
       },
       requestMatchRules: {
         headerRules: [],
@@ -514,9 +532,7 @@ describe('ScenarioViewComponent', () => {
       defaultScenario: false
     } as Scenario;
     scenario.response.status = 404;
-    expect(component.getScenarioResponseStatusString(scenario)).toBe(
-      'Not Found'
-    );
+    expect(component.getScenarioResponseStatusString(scenario)).toBe('Not Found');
   });
 
   it('should return Accepted for a 202 status', () => {
@@ -533,7 +549,8 @@ describe('ScenarioViewComponent', () => {
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
+        type: ResponseType.CUSTOM
       },
       requestMatchRules: {
         headerRules: [],
@@ -548,9 +565,7 @@ describe('ScenarioViewComponent', () => {
       defaultScenario: false
     } as Scenario;
     scenario.response.status = 202;
-    expect(component.getScenarioResponseStatusString(scenario)).toBe(
-      'Accepted'
-    );
+    expect(component.getScenarioResponseStatusString(scenario)).toBe('Accepted');
   });
 
   describe('ScenarioListItemComponent.deleteScenario', () => {
@@ -568,7 +583,8 @@ describe('ScenarioViewComponent', () => {
         response: {
           headers: {},
           status: 0,
-          body: ''
+          body: '',
+          type: ResponseType.CUSTOM
         },
         requestMatchRules: {
           headerRules: [],

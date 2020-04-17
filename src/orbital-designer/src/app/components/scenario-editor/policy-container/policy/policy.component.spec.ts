@@ -19,15 +19,13 @@ describe('PolicyComponent', () => {
   let component: PolicyComponent;
   let fixture: ComponentFixture<PolicyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [PolicyEditComponent, PolicyAddComponent, PolicyComponent],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PolicyComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
@@ -36,7 +34,7 @@ describe('PolicyComponent', () => {
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.policyFormArray = scenarioFormGroup.get('policies') as FormArray;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -99,11 +97,11 @@ describe('PolicyComponent', () => {
       );
       component.policyFormArray.push(
         new FormGroup({
-          path: new FormControl(recordFirstOrDefault(policies[2].attributes, 'delay'), [
+          delay: new FormControl(recordFirstOrDefault(policies[2].attributes, 'delay'), [
             Validators.required,
             Validators.min(1)
           ]),
-          ruleType: new FormControl(policies[2].type, [Validators.required])
+          policyType: new FormControl(policies[2].type, [Validators.required])
         })
       );
       component.deletePolicyHandler(0);

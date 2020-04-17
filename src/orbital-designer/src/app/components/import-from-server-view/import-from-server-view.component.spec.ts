@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { Location } from '@angular/common';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
@@ -20,7 +20,7 @@ describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
   let fixture: ComponentFixture<ImportFromServerViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [ImportFromServerViewComponent],
       imports: [
@@ -33,13 +33,11 @@ describe('ImportFromServerViewComponent', () => {
       ],
       providers: [Location, DesignerStore, OrbitalAdminService]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ImportFromServerViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -54,18 +52,21 @@ describe('ImportFromServerViewComponent', () => {
   });
 
   describe('ImportFromServerViewComponent.onSubmit', () => {
-    it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', async () => {
-      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      const store = TestBed.get(DesignerStore);
-      const expectedMockDefinition: MockDefinition = validMockDefinition;
-      const expectedMockDefinitions = {};
-      expectedMockDefinitions[validMockDefinition.metadata.title] = expectedMockDefinition;
-      component.mockDefinitions = [validMockDefinition];
-      component.onSubmit();
-
-      expect(store.state.mockDefinitions).toEqual(expectedMockDefinitions);
-      expect(routerSpy).toHaveBeenCalledWith('endpoint-view');
-    });
+    it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+        const store = TestBed.get(DesignerStore);
+        const expectedMockDefinition: MockDefinition = validMockDefinition;
+        const expectedMockDefinitions = {};
+        expectedMockDefinitions[validMockDefinition.metadata.title] = expectedMockDefinition;
+        component.mockDefinitions = [validMockDefinition];
+        component.onSubmit();
+        fixture.detectChanges();
+        tick();
+        expect(store.state.mockDefinitions).toEqual(expectedMockDefinitions);
+        expect(routerSpy).toHaveBeenCalledWith('/endpoint-view');
+      });
+    }));
   });
 
   describe('ImportFromServerViewComponent.onListOutput', () => {

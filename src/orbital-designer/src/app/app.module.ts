@@ -52,6 +52,7 @@ import { BodyAddRuleComponent } from './components/scenario-editor/add-body-rule
 // tslint:disable-next-line: max-line-length
 import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
+import 'hammerjs';
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 
 @NgModule({

@@ -11,7 +11,8 @@
         "response": {
           "headers": {},
           "status": "200",
-          "body": "{\"success\": \"true\"}"
+          "body": "{\"success\": \"true\"}",
+          "type": 1
         },
         "requestMatchRules": {
           "urlRules": [],
@@ -33,7 +34,8 @@
         "response": {
           "headers": {},
           "status": "200",
-          "body": "{\"no_param\": \"true\"}"
+          "body": "{\"no_param\": \"true\"}",
+          "type": 1
         },
         "requestMatchRules": {
           "urlRules": [],

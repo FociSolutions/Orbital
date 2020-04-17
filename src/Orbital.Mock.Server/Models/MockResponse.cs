@@ -15,7 +15,7 @@ namespace Orbital.Mock.Server.Models
         /// Constructor, defaults to a 404 response
         /// </summary>
         public MockResponse(int Status = StatusCodes.Status400BadRequest, string Body = null, IDictionary<string, string> Headers = null,
-                            IDictionary<string, string> Queries = null)
+                            IDictionary<string, string> Queries = null, ResponseType? responseType = ResponseType.CUSTOM)
         {
             if (Body == null)
             {
@@ -36,6 +36,7 @@ namespace Orbital.Mock.Server.Models
             this.Body = Body;
             this.Headers = Headers;
             this.Queries = Queries;
+            this.Type = responseType ?? ResponseType.CUSTOM;
         }
 
         [JsonProperty("status")]
@@ -46,6 +47,8 @@ namespace Orbital.Mock.Server.Models
         public IDictionary<string, string> Headers { get; set; }
         [JsonProperty("query")]
         public IDictionary<string, string> Queries { get; set; }
+        [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public ResponseType? Type { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -58,12 +61,13 @@ namespace Orbital.Mock.Server.Models
                    Status == other.Status &&
                    Body.Equals(other.Body) &&
                    this.Headers.Count == other.Headers.Count && !Headers.Except(other.Headers).Any() &&
-                   this.Queries.Count == other.Queries.Count && !Queries.Except(other.Queries).Any();
+                   this.Queries.Count == other.Queries.Count && !Queries.Except(other.Queries).Any() &&
+                   this.Type == other.Type;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Status, Body, Headers, Queries);
+            return HashCode.Combine(Status, Body, Headers, Queries, Type);
         }
     }
 

@@ -43,6 +43,17 @@
   padding-bottom: 1em;
 }
 
+.response-type {
+  @extend %subtitle-text;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+#responseType {
+  padding-bottom: 1em;
+  width: 7em;
+}
+
 ::ng-deep mat-expansion-panel {
   padding: 16px;
 }
@@ -54,4 +65,8 @@
 ::ng-deep .right-aligned-header .mat-content {
   display: flex;
   flex-direction: column;
+}
+
+.divider-padding {
+  margin-bottom: 1em;
 }

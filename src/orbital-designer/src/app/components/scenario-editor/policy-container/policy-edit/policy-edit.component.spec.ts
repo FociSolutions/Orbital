@@ -10,7 +10,7 @@ describe('PolicyEditComponent', () => {
   let component: PolicyEditComponent;
   let fixture: ComponentFixture<PolicyEditComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -23,9 +23,7 @@ describe('PolicyEditComponent', () => {
       ],
       declarations: [PolicyEditComponent]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PolicyEditComponent);
     component = fixture.componentInstance;
     component.policyEditFormGroup = new FormGroup({
@@ -33,7 +31,7 @@ describe('PolicyEditComponent', () => {
       policyType: new FormControl(PolicyType.NONE, [Validators.required])
     });
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

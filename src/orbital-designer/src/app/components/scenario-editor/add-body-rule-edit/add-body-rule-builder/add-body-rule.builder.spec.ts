@@ -6,7 +6,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { BrowserModule } from '@angular/platform-browser';
 
 describe('AddBodyRuleBuilderService', () => {
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [BrowserModule, FormsModule, ReactiveFormsModule, LoggerTestingModule]

@@ -54,7 +54,7 @@ export class CreateNewMockViewComponent implements OnInit {
           this.logger.debug('MockDefinition created from form ', value);
           this.store.appendMockDefinition(value);
           this.store.mockDefinition = value;
-          this.router.navigateByUrl('endpoint-view');
+          this.router.navigateByUrl('/endpoint-view');
         } else {
           this.logger.log(value);
         }

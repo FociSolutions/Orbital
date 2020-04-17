@@ -84,7 +84,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Metadata = new MetadataInfo { Title = "Scenario 1", Description = "Test Scenario 1" },
                 Verb = 0,
                 Path = "/pets",
-                Response = new MockResponse { Status = 0, Body = "Scenario 1", Headers = headers[0] },
+                Response = new MockResponse { Status = 0, Body = "Scenario 1", Headers = headers[0], Type = ResponseType.CUSTOM },
                 RequestMatchRules = new RequestMatchRules { HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(headers[0].Keys.ToList().First(), headers[0].Values.ToList().First()) } },
                     QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(queryRules[0].Keys.ToList().First(), queryRules[0].Values.ToList().First())} }, 
                                                             BodyRules = bodyRules[0] }
@@ -95,7 +95,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Metadata = new MetadataInfo { Title = "Scenario 2", Description = "Test Scenario 2" },
                 Verb = 0,
                 Path = "/pets",
-                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Testing scenario 2", Headers = headers[1] },
+                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Testing scenario 2", Headers = headers[1], Type = ResponseType.CUSTOM },
                 RequestMatchRules = new RequestMatchRules {
                     UrlRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(headersRules[1].Keys.ToList().First(), headersRules[1].Values.ToList().First()) } },
                     HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(headersRules[1].Keys.ToList().First(), headersRules[1].Values.ToList().First()) } },
@@ -108,7 +108,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Metadata = new MetadataInfo { Title = "Scenario 3", Description = "Test Scenario 3" },
                 Verb = 0,
                 Path = "/pets",
-                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Scenario 3", Headers = headers[2] },
+                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Scenario 3", Headers = headers[2], Type = ResponseType.CUSTOM },
                 RequestMatchRules = new RequestMatchRules {
                     HeaderRules = new List<KeyValuePairRule>() { new KeyValuePairRule(){ Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(headersRules[2].Keys.ToList().First(), headersRules[2].Values.ToList().First()) } },
                     QueryRules = new List<KeyValuePairRule>() { new KeyValuePairRule() { Type = ComparerType.TEXTCONTAINS, RuleValue = new KeyValuePair<string, string>(queryRules[2].Keys.ToList().First(), queryRules[2].Values.ToList().First()) } },

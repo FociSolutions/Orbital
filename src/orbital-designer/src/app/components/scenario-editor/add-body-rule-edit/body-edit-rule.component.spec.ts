@@ -18,15 +18,13 @@ describe('BodyEditRuleComponent', () => {
   let component: BodyEditRuleComponent;
   let fixture: ComponentFixture<BodyEditRuleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [BodyEditRuleComponent, BodyAddRuleComponent, BodyListItemRuleTypeComponent],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(BodyEditRuleComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
@@ -35,7 +33,7 @@ describe('BodyEditRuleComponent', () => {
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.bodyMatchRuleFormArray = scenarioFormGroup.get('requestMatchRules.bodyMatchRules') as FormArray;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -52,8 +50,8 @@ describe('BodyEditRuleComponent', () => {
       } as BodyRule;
       component.bodyMatchRuleFormArray.push(
         new FormGroup({
-          path: new FormControl(bodyRule.rule, [Validators.required, Validators.maxLength(3000)]),
-          ruleType: new FormControl(bodyRule.type, [Validators.required])
+          rule: new FormControl(bodyRule.rule, [Validators.required, Validators.maxLength(3000)]),
+          type: new FormControl(bodyRule.type, [Validators.required])
         })
       );
       component.deleteBodyEditRuleHandler(0);
@@ -89,20 +87,20 @@ describe('BodyEditRuleComponent', () => {
 
       component.bodyMatchRuleFormArray.push(
         new FormGroup({
-          path: new FormControl(bodyRules[0].rule, [Validators.required, Validators.maxLength(3000)]),
-          ruleType: new FormControl(bodyRules[0].type, [Validators.required])
+          rule: new FormControl(bodyRules[0].rule, [Validators.required, Validators.maxLength(3000)]),
+          type: new FormControl(bodyRules[0].type, [Validators.required])
         })
       );
       component.bodyMatchRuleFormArray.push(
         new FormGroup({
-          path: new FormControl(bodyRules[1].rule, [Validators.required, Validators.maxLength(3000)]),
-          ruleType: new FormControl(bodyRules[1].type, [Validators.required])
+          rule: new FormControl(bodyRules[1].rule, [Validators.required, Validators.maxLength(3000)]),
+          type: new FormControl(bodyRules[1].type, [Validators.required])
         })
       );
       component.bodyMatchRuleFormArray.push(
         new FormGroup({
-          path: new FormControl(bodyRules[2].rule, [Validators.required, Validators.maxLength(3000)]),
-          ruleType: new FormControl(bodyRules[2].type, [Validators.required])
+          rule: new FormControl(bodyRules[2].rule, [Validators.required, Validators.maxLength(3000)]),
+          type: new FormControl(bodyRules[2].type, [Validators.required])
         })
       );
       component.deleteBodyEditRuleHandler(0);
@@ -122,8 +120,8 @@ describe('BodyEditRuleComponent', () => {
         }
       } as BodyRule;
       const bodyRuleasFormGroup = new FormGroup({
-        path: new FormControl(bodyRule.rule, [Validators.required, Validators.maxLength(3000)]),
-        ruleType: new FormControl(bodyRule.type, [Validators.required])
+        rule: new FormControl(bodyRule.rule, [Validators.required, Validators.maxLength(3000)]),
+        type: new FormControl(bodyRule.type, [Validators.required])
       });
       component.bodyMatchRuleFormArray.push(bodyRuleasFormGroup);
       expect(component.bodyMatchRuleFormArray.length).toBe(1);

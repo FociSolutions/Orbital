@@ -17,13 +17,11 @@ describe('KvpAddComponent', () => {
         LoggerTestingModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(KvpAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -59,7 +57,7 @@ describe('KvpAddComponent', () => {
   });
 
   describe('KvpAddComponent.onAdd', () => {
-    it('Should set key and value to kvpAdd and isValid to true', () => {
+    it('Should set key and value to kvpAdd and isValid to true', done => {
       const input = {
         key: faker.lorem.sentence(),
         value: faker.lorem.sentence()
@@ -72,18 +70,20 @@ describe('KvpAddComponent', () => {
           expect(component.isValid).toBeTruthy();
           expect(actual.key).toEqual(input.key);
           expect(actual.value).toEqual(input.value);
-        },
-        err => fail(`Unexpected error: ${err.message}`)
+          done();
+        }
       );
 
       component.onAdd();
     });
 
-    it('Should set isValid to false if isEmpty is true', () => {
+    it('Should set isValid to false if isEmpty is true', async () => {
       component.key = '';
       component.value = '';
       component.onAdd();
-      expect(component.isValid).toBeFalsy();
+      fixture.whenStable().then(() => {
+        expect(component.isValid).toBeFalsy();
+      });
     });
   });
 });

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
@@ -22,7 +22,7 @@ import { MockDefinitionService } from 'src/app/services/mock-definition/mock-def
 describe('CreateNewMockViewComponent', () => {
   let component: CreateNewMockViewComponent;
   let fixture: ComponentFixture<CreateNewMockViewComponent>;
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [CreateNewMockViewComponent],
       imports: [
@@ -30,20 +30,14 @@ describe('CreateNewMockViewComponent', () => {
         MatCardModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule
       ],
       providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
-    try {
-      fixture = TestBed.createComponent(CreateNewMockViewComponent);
-    } catch (error) {
-      fail(`Component was not created correctly. Error is: ${error}`);
-    }
+    fixture = TestBed.createComponent(CreateNewMockViewComponent);
     component = fixture.componentInstance;
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -98,27 +92,34 @@ describe('CreateNewMockViewComponent', () => {
   });
 
   describe('CreateNewMockViewComponent.createMock', () => {
-    it('should set the mockDefinition store and route to mock editor', done => {
-      spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
-        expect(route).toEqual('endpoint-view');
-        done();
+    it('should set the mockDefinition store and route to mock editor', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
+          expect(route).toEqual('/endpoint-view');
+        });
+        generateMockDefinitionAndSetForm();
+        component.createMock();
+        tick();
       });
-      generateMockDefinitionAndSetForm();
-      component.createMock();
-    });
+    }));
 
-    it('should not navigate or change designer store state if the formGroup is invalid', () => {
-      const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
-      generateMockDefinitionAndSetForm();
-      component.formGroup.setErrors({ incorrect: true });
-      component.createMock();
-      expect(routerSpy).not.toHaveBeenCalled();
-    });
+    it('should not navigate or change designer store state if the formGroup is invalid', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+        generateMockDefinitionAndSetForm();
+        fixture.detectChanges();
+        component.formGroup.setErrors({ incorrect: true });
+        component.createMock();
+        fixture.detectChanges();
+        tick();
+        expect(routerSpy).not.toHaveBeenCalled();
+      });
+    }));
   });
 
   function generateMockDefinitionAndSetForm(
-    title = faker.random.word(),
-    description = faker.random.words()
+    title = faker.random.words(3),
+    description = faker.random.words(5)
   ): MockDefinition {
     const service = TestBed.get(MockDefinitionService);
     let openApi: OpenAPIV2.Document;

@@ -4,13 +4,11 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
 
 describe('ValidJsonService', () => {
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [LoggerTestingModule]
     }).compileComponents();
   }));
-
-  beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
     const service: ValidJsonService = TestBed.get(ValidJsonService);

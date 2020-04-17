@@ -1,32 +1,31 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddResponseComponent } from './add-response.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
+import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
+import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
   let fixture: ComponentFixture<AddResponseComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
-      imports: [
-        OrbitalCommonModule,
-        BrowserAnimationsModule,
-        LoggerTestingModule
-      ]
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule],
+      providers: [ScenarioFormBuilder]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
     component.response = { headers: {} } as Response;
+    const scenarioBuilder = TestBed.get(ScenarioFormBuilder);
+    component.responseFormGroup = scenarioBuilder.responseFormGroup(emptyScenario.response);
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -35,12 +34,12 @@ describe('AddResponseComponent', () => {
   describe('addResponse.setStatusCode', () => {
     it('should expect the corresponding status code message in the status field if the status code is valid ', () => {
       component.statusCode = 200;
-      expect(component.isStatusCodeValid).toBeTruthy();
+      expect(component.responseFormGroup.controls.status.valid).toBeTruthy();
     });
 
     it('should expect the corresponding status code message in the status field if the status code is invalid', () => {
       component.statusCode = -1;
-      expect(component.isStatusCodeValid).toBeFalsy();
+      expect(component.responseFormGroup.controls.status.valid).toBeFalsy();
     });
   });
 
@@ -53,7 +52,7 @@ describe('AddResponseComponent', () => {
       testHeaderResponse[faker.random.word()] = faker.random.word();
 
       component.statusCode = testStatusCode;
-      component.bodyResponse = testBodyResponse;
+      component.responseFormGroup.controls.body.setValue(testBodyResponse);
 
       spyOn(component.isValid, 'emit');
       spyOn(component.responseOutput, 'emit');
@@ -67,17 +66,14 @@ describe('AddResponseComponent', () => {
       component.response = testResponse;
       component.saveStatus = true;
 
-      expect(component.responseOutput.emit).not.toHaveBeenCalledWith(
-        testResponse
-      );
+      expect(component.responseOutput.emit).not.toHaveBeenCalledWith(testResponse);
     });
   });
 
   describe('addResponse.saveHeaderRecord', () => {
     it('should emit the response if the status code and body is valid', () => {
       component.statusCode = 200;
-      component.isBodyValid = true;
-      component.bodyResponse = '{}';
+      component.responseFormGroup.controls.body.setValue('{}');
 
       const headerRecord = {};
       headerRecord[faker.random.word()] = faker.random.word();
@@ -86,7 +82,7 @@ describe('AddResponseComponent', () => {
 
       expect(saveHeaderRecordSpy).toHaveBeenCalledWith(({
         headers: headerRecord,
-        body: component.bodyResponse,
+        body: component.responseFormGroup.controls.body.value,
         status: +component.statusCode
       } as unknown) as Response);
     });

@@ -1,5 +1,6 @@
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 export default {
   scenarios: [
@@ -14,7 +15,8 @@ export default {
       response: {
         headers: {} as Record<string, string>,
         status: 404,
-        body: ''
+        body: '',
+        type: ResponseType.CUSTOM
       },
       requestMatchRules: {
         bodyRules: [],

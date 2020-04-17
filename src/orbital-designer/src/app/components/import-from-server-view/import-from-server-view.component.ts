@@ -96,7 +96,7 @@ export class ImportFromServerViewComponent implements OnInit {
       this.designerStore.appendMockDefinition(mock);
       this.designerStore.mockDefinition = mock;
     }
-    this.router.navigateByUrl('endpoint-view');
+    this.router.navigateByUrl('/endpoint-view');
   }
 
   /**

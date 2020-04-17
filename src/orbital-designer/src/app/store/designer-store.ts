@@ -231,6 +231,7 @@ export class DesignerStore extends Store<State> {
         current.response.body = scenario.response.body;
         current.response.headers = scenario.response.headers;
         current.response.status = scenario.response.status;
+        current.response.type = scenario.response.type;
       } else {
         this.logger.debug(
           'DesignerStore:AddOrUpdateScenario: Unable to find provided scenario in the mock definition, Append it to the end of the list',

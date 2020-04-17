@@ -10,7 +10,7 @@ describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
   let fixture: ComponentFixture<KvpEditComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [
         OrbitalCommonModule,
@@ -18,13 +18,11 @@ describe('KvpEditComponent', () => {
         BrowserAnimationsModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(KvpEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -121,13 +119,15 @@ describe('KvpEditComponent', () => {
       );
     });
 
-    it('Should not emit the savedkvp kvp is Save is set to false', () => {
+    it('Should not emit the savedkvp kvp is Save is set to false', done => {
       const newKvpkvp = {} as Record<string, string>;
       newKvpkvp[faker.lorem.sentence()] = faker.lorem.sentence();
       spyOn(component.savedKvpEmitter, 'emit');
       component.Save = false;
-
-      expect(component.savedKvpEmitter.emit).not.toHaveBeenCalled();
+      fixture.whenStable().then(() => {
+        expect(component.savedKvpEmitter.emit).not.toHaveBeenCalled();
+        done();
+      });
     });
   });
 });

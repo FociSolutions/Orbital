@@ -10,6 +10,7 @@ import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 import { AddBodyRuleBuilder } from '../add-body-rule-edit/add-body-rule-builder/add-body-rule.builder';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 @Injectable({
   providedIn: 'root'
@@ -47,9 +48,10 @@ export class ScenarioFormBuilder {
    */
   public responseFormGroup(response: Response): FormGroup {
     return this.formBuilder.group({
-      statusCode: [response.status],
-      headerRule: this.formBuilder.array,
-      body: [response.body]
+      status: response.status,
+      headers: this.formBuilder.array,
+      body: response.body,
+      type: response.type
     });
   }
 
@@ -141,6 +143,14 @@ export class ScenarioFormBuilder {
   providedIn: 'root'
 })
 export class ScenarioFormMapper {
+  /**
+   * Extracts the type of the response (e.g. NONE) from the response form
+   * @param responseForm The response form group to extract the type from
+   */
+  GetResponseTypeFromForm(responseForm: FormGroup): ResponseType {
+    return responseForm.controls.type.value;
+  }
+
   public GetUrlRulesFromForm(urlMatchRules: FormArray) {
     interface UrlRuleFormGroup {
       path: string;

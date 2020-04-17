@@ -14,7 +14,7 @@
   let component: ExportToServerViewComponent;
   let fixture: ComponentFixture<ExportToServerViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [ExportToServerViewComponent],
       imports: [
@@ -27,13 +27,11 @@
       ],
       providers: [Location, DesignerStore, OrbitalAdminService]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ExportToServerViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

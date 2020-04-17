@@ -16,7 +16,7 @@ describe('ShuttleListComponent', () => {
   let component: ShuttleListComponent;
   let fixture: ComponentFixture<ShuttleListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [ShuttleListComponent, ShuttleSubListComponent],
       imports: [
@@ -29,13 +29,11 @@ describe('ShuttleListComponent', () => {
         LoggerTestingModule
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ShuttleListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

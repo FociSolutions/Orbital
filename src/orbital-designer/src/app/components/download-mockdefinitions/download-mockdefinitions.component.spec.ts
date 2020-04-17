@@ -18,7 +18,7 @@ describe('DownloadMockdefinitionsComponent', () => {
   let component: DownloadMockdefinitionsComponent;
   let fixture: ComponentFixture<DownloadMockdefinitionsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         DownloadMockdefinitionsComponent,
@@ -32,17 +32,15 @@ describe('DownloadMockdefinitionsComponent', () => {
         MatDividerModule,
         MatListModule,
         LoggerTestingModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(DownloadMockdefinitionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

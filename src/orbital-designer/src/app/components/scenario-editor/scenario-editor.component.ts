@@ -12,18 +12,13 @@ import * as _ from 'lodash';
 import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
 import { FormGroup, FormArray, Form } from '@angular/forms';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
   styleUrls: ['./scenario-editor.component.scss']
 })
 export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentChecked {
-
-
-
-
-
-
   scenarioId: string;
   selectedScenario: Scenario;
   paramsSubscription: Subscription;
@@ -130,6 +125,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.bodyMatchRules as FormArray
       );
 
+      const newResponseType = this.scenarioFormMapper.GetResponseTypeFromForm(
+        (this.scenarioFormGroup.controls.response as FormGroup)
+      );
+
       this.selectedScenario.metadata.title = this.metadata.title;
       this.selectedScenario.metadata.description = this.metadata.description;
       this.selectedScenario.requestMatchRules.headerRules = newHeaderRules;
@@ -141,6 +140,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       this.selectedScenario.response.body = this.response.body;
       this.selectedScenario.response.headers = this.response.headers;
       this.selectedScenario.response.status = this.response.status;
+      this.selectedScenario.response.type = newResponseType;
 
       this.store.addOrUpdateScenario(this.selectedScenario);
 
@@ -239,7 +239,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       path: scenarioPath,
       response: {
         headers: {},
-        body: ''
+        body: '',
+        status: 200,
+        type: ResponseType.CUSTOM
       } as Response,
       requestMatchRules: {
         headerRules: [],

@@ -11,6 +11,8 @@ import * as HttpStatus from 'http-status-codes';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { NGXLogger } from 'ngx-logger';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-response',
@@ -20,28 +22,14 @@ import { NGXLogger } from 'ngx-logger';
 export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
+  @Input() responseFormGroup: FormGroup;
 
   headers: Record<string, string> = {};
-
-  /**
-   *  The validBodyResponse after it has been validated
-   */
-  validBodyResponse: string;
-
-  /**
-   * Boolean indicating if the body is in valid JSON format
-   */
-  isBodyValid: boolean;
 
   /**
    * The error message for the body response
    */
   bodyErrorMessage: string;
-
-  /**
-   * The locally store status code
-   */
-  statusCodeEntered: number;
 
   /**
    *  The status message for the corresponding code
@@ -57,7 +45,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   isCardDisabled: boolean;
   panelExpanded: boolean;
   shouldSave: boolean;
-  isStatusCodeValid: boolean;
+
+  shadowType: FormControl = new FormControl();
 
   constructor(
     private jsonService: ValidJsonService,
@@ -70,11 +59,42 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     this.titleForKvpAdded = 'Added Header Rules';
     this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
     this.statusMessage = 'Enter a Status Code';
-    this.isBodyValid = true;
-    this.isStatusCodeValid = true;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.updateStatusCodeDescription();
+
+    this.shadowType.setValue(this.responseFormGroup.controls.type.value === ResponseType.TEMPLATED);
+
+    this.responseFormGroup.controls.status.valueChanges.subscribe(() => {
+      this.updateStatusCodeDescription();
+    });
+
+    this.responseFormGroup.controls.body.valueChanges.subscribe(() => {
+      const newBody = this.responseFormGroup.controls.body.value;
+      if (newBody.length > 0 && this.jsonService.isValidJSON(newBody)) {
+        this.responseFormGroup.controls.body.setErrors(null);
+      } else {
+        this.responseFormGroup.controls.body.setErrors({invalidJson: 'Body is not valid JSON'});
+      }
+    });
+  }
+
+  /**
+   * Updates the status code's description (e.g. "OK" for 200)
+   */
+  private updateStatusCodeDescription() {
+    const newStatus = this.responseFormGroup.controls.status.value;
+    if (newStatus) {
+      try {
+        this.statusMessage = HttpStatus.getStatusText(Number(newStatus));
+        this.responseFormGroup.controls.status.setErrors(null);
+      } catch (Error) {
+        this.statusMessage = 'Enter a Status Code';
+        this.responseFormGroup.controls.status.setErrors({ invalidStatusCode: 'Status code not valid' });
+      }
+    }
+  }
 
   ngAfterContentChecked(): void {
     this.checkStatus();
@@ -92,54 +112,22 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Input()
   set response(newResponse: Response) {
     if (newResponse) {
-      this.statusCode = newResponse.status;
-      this.bodyResponse = newResponse.body;
       this.headers = newResponse.headers;
     }
   }
 
   /**
-   * This setter checks to see if the status code field is empty and valid,
-   * if it is valid, if parses the string to a number and retrieves the corresponding
-   * status code
-   */
-  set statusCode(statusCode: number) {
-    if (statusCode) {
-      try {
-        this.statusMessage = HttpStatus.getStatusText(Number(statusCode));
-        this.statusCodeEntered = statusCode;
-        this.isStatusCodeValid = true;
-      } catch (Error) {
-        this.statusMessage = 'Enter a Status Code';
-        this.isStatusCodeValid = false;
-      }
-    }
-  }
-
-  /**
-   * Gets the status code from the form field
+   * Gets the status code
    */
   get statusCode(): number {
-    return this.statusCodeEntered;
+    return this.responseFormGroup.controls.status.value;
   }
 
   /**
-   * Checks to see if the body is valid and sets it to the validBodyResponse if valid
+   * Sets the status code
    */
-  set bodyResponse(bodyContent: string) {
-    if (!bodyContent || this.jsonService.isValidJSON(bodyContent)) {
-      this.validBodyResponse = bodyContent;
-      this.isBodyValid = true;
-    } else {
-      this.isBodyValid = false;
-    }
-  }
-
-  /**
-   * Gets the valid response body
-   */
-  get bodyResponse(): string {
-    return this.validBodyResponse;
+  set statusCode(newStatus: number) {
+    this.responseFormGroup.controls.status.setValue(newStatus);
   }
 
   /**
@@ -147,25 +135,22 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * @param map Response KVP
    */
   saveHeaders(map: Record<string, string>) {
-    if (this.isStatusCodeValid && this.isBodyValid) {
-      if (this.statusCodeEntered) {
+    const type = this.shadowType.value ? ResponseType.TEMPLATED : ResponseType.CUSTOM;
+    this.responseFormGroup.controls.type.setValue(type);
+
+    if (this.responseFormGroup.valid) {
         const responseToEmit = {
           headers: map,
-          body: this.bodyResponse,
-          status: +this.statusCode
+          body: this.responseFormGroup.controls.body.value,
+          status: +this.responseFormGroup.controls.status.value
         } as Response;
         this.logger.debug(
           'AddResponseComponent:saveHeaders: Response has been emitted',
           responseToEmit
         );
         this.responseOutput.emit(responseToEmit);
-      } else {
-        this.logger.debug(
-          'AddResponseComponent:saveHeaders: Status code should not be empty'
-        );
-        this.isStatusCodeValid = false;
-        this.disableCard();
-      }
+    } else {
+      this.disableCard();
     }
   }
 
@@ -174,7 +159,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * If not valid, call disable card; otherwise, enable expansion
    */
   private checkStatus() {
-    if (this.isStatusCodeValid && this.isBodyValid) {
+    if (this.responseFormGroup.valid) {
       this.isCardDisabled = false;
     } else {
       this.disableCard();

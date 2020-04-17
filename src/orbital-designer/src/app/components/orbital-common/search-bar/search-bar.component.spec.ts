@@ -7,18 +7,16 @@ describe('SearchBarComponent', () => {
   let component: SearchBarComponent;
   let fixture: ComponentFixture<SearchBarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [SearchBarComponent],
       imports: [MatIconModule]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(SearchBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -26,7 +24,7 @@ describe('SearchBarComponent', () => {
 
   describe('SearchBarComponent.onSearch', () => {
     it('should remove any items that do not match the criteria', done => {
-      const unfilteredList: string[] = faker.random.words().split(' ');
+      const unfilteredList: string[] = faker.random.words(10).split(' ');
       component.list = unfilteredList;
       component.filteredList.subscribe(filteredList => {
         expect(filteredList.findIndex(item => item === unfilteredList[0])).toBe(

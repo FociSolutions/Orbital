@@ -254,7 +254,8 @@
       "response": {
         "headers": {},
         "body": "\"JSONpath scenario\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -280,7 +281,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -301,7 +303,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -322,7 +325,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -343,7 +347,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets/{petId}\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -364,7 +369,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets/{petId}\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -385,7 +391,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets/{petId}\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -406,7 +413,8 @@
       "response": {
         "headers": {},
         "body": "\"This is the correct scenerio\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],

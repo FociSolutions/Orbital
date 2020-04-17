@@ -10,19 +10,17 @@ describe('QuickExportComponent', () => {
   let component: QuickExportComponent;
   let fixture: ComponentFixture<QuickExportComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [QuickExportComponent],
-      imports: [MatIconModule, RouterTestingModule.withRoutes([]), LoggerTestingModule, HttpClientModule],
+      imports: [MatIconModule, RouterTestingModule, LoggerTestingModule, HttpClientModule],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(QuickExportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

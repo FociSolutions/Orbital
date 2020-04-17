@@ -42,7 +42,7 @@ export class SideBarComponent implements OnInit {
   // this.store.mockDefinition is set and then the state updated.
   updateSelected(mockDefinition: MockDefinition) {
     this.store.mockDefinition = mockDefinition;
-    this.router.navigateByUrl('endpoint-view');
+    this.router.navigateByUrl('/endpoint-view');
   }
 
   /**
@@ -55,7 +55,7 @@ export class SideBarComponent implements OnInit {
     if (this.mockDefinitions.length <= 0) {
       this.router.navigate(['/']);
     } else {
-      this.router.navigateByUrl('endpoint-view');
+      this.router.navigateByUrl('/endpoint-view');
     }
   }
 

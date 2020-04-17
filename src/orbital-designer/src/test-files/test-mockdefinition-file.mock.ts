@@ -171,7 +171,8 @@ export default `{
             "response": {
                 "headers": {},
                 "body": "",
-                "status": 200
+                "status": 200,
+                "type": 1
             },
             "requestMatchRules": {
                 "headerRules": [

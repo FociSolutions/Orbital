@@ -1,14 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
+using Scriban;
+using Scriban.Runtime;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class ResponseSelectorFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort, IPathValidationPort, IUrlMatchPort, IPolicyPort
     {
+        private readonly TemplateContext templateContext;
+        public ResponseSelectorFilter(TemplateContext templateContext)
+        {
+            this.templateContext = templateContext;
+        }
         /// <summary>
         /// Selects the response to use based on the match results from the previous filters. Ties are broken randomly.
         /// </summary>
@@ -49,6 +59,35 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             port.SelectedResponse = bestScenario != null ? port.Scenarios.First(scenario => scenario.Id.Equals(bestScenario.ScenarioId)).Response
                 : port.Scenarios.Count() > 0 ? port.Scenarios.First().Response : new MockResponse();
+
+            if(port.SelectedResponse.Type == ResponseType.TEMPLATED)
+            {
+                var request = new ScriptObject();
+                try
+                {
+                    var requestObject = JObject.Parse(port.Body);
+                    request.Add("request", requestObject);
+                    templateContext.PushGlobal(request);
+                }
+                catch (JsonReaderException)
+                {
+                    // can ignore because response does not have to be valid JSON
+                    // request.* globals cannot be defined as they are bound to the JSON
+                    // incoming response
+                }
+
+                try
+                {
+                    var template = Template.Parse(port.SelectedResponse.Body);
+                    port.SelectedResponse.Body = template.Render(templateContext);
+
+                }
+                // if the template rendering fails, the exception type is null but the error message is non-empty
+                catch (Exception e) when (e is InvalidOperationException || e is ArgumentNullException || e.Source.Equals("Scriban"))
+                {
+                    port.SelectedResponse = new MockResponse();
+                }
+            }
 
             return port;
         }

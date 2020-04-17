@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -21,7 +21,7 @@ describe('EndpointViewComponent', () => {
   let fixture: ComponentFixture<EndpointViewComponent>;
   let store: DesignerStore;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         EndpointViewComponent,
@@ -37,30 +37,29 @@ describe('EndpointViewComponent', () => {
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
         BrowserAnimationsModule,
         HttpClientTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(EndpointViewComponent);
     component = fixture.componentInstance;
     store = TestBed.get(DesignerStore);
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   describe('EndpointViewComponent.showNotFound()', () => {
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       store.mockDefinition = SampleMockDefinition;
+      tick();
       fixture.detectChanges();
-    });
+    }));
     it('Should return false if endpoints list is not empty', () => {
       expect(component.showNotFound()).toBeFalsy();
     });

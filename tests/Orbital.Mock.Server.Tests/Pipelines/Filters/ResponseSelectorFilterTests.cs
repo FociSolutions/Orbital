@@ -2,6 +2,7 @@
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
+using Scriban;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 BodyMatchResults = ScenarioIds.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario, false)).ToList(),
             };
 
-            var Target = new ResponseSelectorFilter<ProcessMessagePort>();
+            var Target = new ResponseSelectorFilter<ProcessMessagePort>(new TemplateContext());
 
             var Actual = Target.Process(port).SelectedResponse;
             var Expected = Scenarios[0].Response;
@@ -81,7 +82,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
             };
 
-            var Target = new ResponseSelectorFilter<ProcessMessagePort>();
+            var Target = new ResponseSelectorFilter<ProcessMessagePort>(new TemplateContext());
 
             var Actual = Target.Process(port).SelectedResponse;
             Assert.Contains(Actual, PossibleResponses);
@@ -99,7 +100,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Scenarios = Scenarios,
             };
 
-            var Target = new ResponseSelectorFilter<ProcessMessagePort>();
+            var Target = new ResponseSelectorFilter<ProcessMessagePort>(new TemplateContext());
 
             var Actual = Target.Process(port).SelectedResponse;
             var Expected = new MockResponse();
@@ -115,7 +116,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Faults = new List<string> { "fault" }
             };
 
-            var Target = new ResponseSelectorFilter<ProcessMessagePort>();
+            var Target = new ResponseSelectorFilter<ProcessMessagePort>(new TemplateContext());
 
             var Actual = Target.Process(port).SelectedResponse;
 

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EndpointListItemComponent } from './endpoint-list-item.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatCardModule } from '@angular/material/card';
@@ -16,7 +16,7 @@ describe('EndpointListItemComponent', () => {
   let component: EndpointListItemComponent;
   let fixture: ComponentFixture<EndpointListItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [
         EndpointListItemComponent,
@@ -25,18 +25,16 @@ describe('EndpointListItemComponent', () => {
       ],
       imports: [
         MatCardModule,
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
         LoggerTestingModule
       ],
       providers: [DesignerStore]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(EndpointListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -65,12 +63,14 @@ describe('EndpointListItemComponent', () => {
       fixture.detectChanges();
     });
 
-    it('Should select endpoint and navigate to scenario view page', done => {
-      spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
-        expect(route).toEqual('scenario-view');
-        done();
+    it('Should select endpoint and navigate to scenario view page', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
+          expect(route).toEqual('/scenario-view');
+        });
+        component.selectEndpoint();
+        tick();
       });
-      component.selectEndpoint();
-    });
+    }));
   });
 });

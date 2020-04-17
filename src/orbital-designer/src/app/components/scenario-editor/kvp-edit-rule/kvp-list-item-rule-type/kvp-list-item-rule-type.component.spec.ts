@@ -18,15 +18,13 @@ describe('KvpListItemRuleComponent', () => {
   let component: KvpListItemRuleTypeComponent;
   let fixture: ComponentFixture<KvpListItemRuleTypeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
       declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent],
       providers: [DesignerStore, ScenarioFormBuilder]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(KvpListItemRuleTypeComponent);
     component = fixture.componentInstance;
     const designerStore = TestBed.get(DesignerStore) as DesignerStore;
@@ -43,7 +41,7 @@ describe('KvpListItemRuleComponent', () => {
     component.editRuleFormGroup = ((scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
       .queryMatchRules as FormArray).at(0) as FormGroup;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -73,18 +71,17 @@ describe('KvpListItemRuleComponent', () => {
   });
 
   describe('onRemove', () => {
-    it('should emit a remove event', () => {
-      const kvp = {};
-      kvp[faker.lorem.sentence()] = faker.lorem.sentence();
-      const input: KeyValuePairRule = {
-        type: RuleType.TEXTEQUALS,
-        rule: kvp
-      };
+    it('should emit a remove event', done => {
+      component.key.setValue(recordFirstOrDefaultKey(faker.lorem.sentence(), ''));
+      component.value.setValue(recordFirstOrDefault(faker.lorem.sentence(), ''));
+      component.removeKvp.subscribe(() => {
+        // just check if it was called; event emitter doesn't emit anything
 
-      component.key.setValue(recordFirstOrDefaultKey(input.rule, ''));
-      component.value.setValue(recordFirstOrDefault(input.rule, ''));
-      component.removeKvp.subscribe((actual: KeyValuePairRule) => {
-        expect(actual.type).toEqual(input.type);
+        // The noop expect is required because Jasmine will complain that "there are no specs found".
+        // This is ok because the done() method only fires if we go into this method; if the done
+        // method is not fired within 5000ms then the test will fail.
+        expect(true).toBe(true);
+        done();
       });
       component.onRemove();
     });

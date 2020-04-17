@@ -170,7 +170,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -198,7 +199,8 @@
       "response": {
         "headers": {},
         "body": "\"default scenario for /pets\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -226,7 +228,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
@@ -247,7 +250,8 @@
       "response": {
         "headers": {},
         "body": "\"default response for /pets/{petId}\"",
-        "status": 200
+        "status": 200,
+        "type": 1
       },
       "requestMatchRules": {
         "headerRules": [],
