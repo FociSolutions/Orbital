@@ -10,6 +10,7 @@ import { MockDefinitionService } from 'src/app/services/mock-definition/mock-def
 import { map } from 'rxjs/operators';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import * as HttpStatus from 'http-status-codes';
+import { MatCheckboxChange } from '@angular/material';
 
 @Component({
   selector: 'app-scenario-view',
@@ -167,9 +168,11 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * Sets the default scenario to the provided scenario
    * @param scenario The scenario to make default
    */
-  toggleDefaultScenario(scenario: Scenario) {
+  toggleDefaultScenario(event: MatCheckboxChange, scenario: Scenario) {
     this.scenarioList.forEach(aScenario => aScenario.defaultScenario = false);
-    scenario.defaultScenario = true;
-    this.logger.debug('Set default scenario to ', scenario);
+    if (event.checked) {
+      scenario.defaultScenario = true;
+      this.logger.debug('Set default scenario to ', scenario);
+    }
   }
 }
