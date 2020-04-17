@@ -1,12 +1,10 @@
-.import-from-file {
-  width: 30.3vw;
-  height: auto;
-}
 .buttons-div {
   justify-content: space-between;
   justify-self: flex-end;
   align-items: flex-end;
   margin: 2em 0;
+  margin-top: 50px;
+  padding: 10px;
   button {
     width: 10.234vw;
     max-width: 131px;
@@ -28,4 +26,28 @@
 // hide the last divider in the list so it doesn't divide the end with no items
 mat-card div:last-child mat-divider {
   display: none;
+}
+
+.noDots {
+  list-style-type:none;
+  list-style-image:none;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.expand {
+  height: 100%;
+  width: 30.3vw;
+  margin-top: 20px;
+}
+
+.card {
+  height: 100%;
+}
+
+.errorStyle {
+  color: red;
 }

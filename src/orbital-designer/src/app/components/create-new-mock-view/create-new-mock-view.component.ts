@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api
 import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-create-new-mock-view',
@@ -18,7 +19,7 @@ import { MockDefinitionService } from 'src/app/services/mock-definition/mock-def
 export class CreateNewMockViewComponent implements OnInit {
   formGroup: FormGroup;
   private openApiFile: string;
-  errorMessageToEmitFromCreate: string[];
+  errorMessageToEmitFromCreate = {} as Record<string, string[]>;
   constructor(
     private router: Router,
     private location: Location,
@@ -61,7 +62,11 @@ export class CreateNewMockViewComponent implements OnInit {
       error => {
         this.logger.error('openapi file provided is invalid');
         this.logger.error(error);
-        this.errorMessageToEmitFromCreate = error;
+        this.errorMessageToEmitFromCreate = recordAdd(
+          this.errorMessageToEmitFromCreate,
+          'The provided OpenApi file has the following errors ',
+          error
+        );
       }
     );
   }
@@ -92,8 +97,7 @@ export class CreateNewMockViewComponent implements OnInit {
    */
   formToMockDefinition(): Observable<MockDefinition> {
     if (this.formGroup.invalid) {
-      this.logger.debug('Form is invalid');
-      this.errorMessageToEmitFromCreate = ['Form is invalid'];
+      this.logger.error('Form is invalid');
       return EMPTY;
     }
 
