@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
+import { map } from 'rxjs/operators';
+import { recordAdd, recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
 
 @Component({
   selector: 'app-file-input',
@@ -8,36 +10,57 @@ import { ReadFileService } from 'src/app/services/read-file/read-file.service';
   styleUrls: ['./file-input.component.scss']
 })
 export class FileInputComponent implements OnInit {
-  constructor(
-    private logger: NGXLogger,
-    private readfileparser: ReadFileService
-  ) {}
-  fileName = '';
+  constructor(private logger: NGXLogger, private readfileparser: ReadFileService) {}
+  fileName: string[] = [];
+  currentFileName: string;
+  fileContent: string;
   @Input() label = '';
   @Input() accept = '';
-  errormessages: string[];
-  @Output() fileContent = new EventEmitter<string>();
+  @Input() multiple = true;
+  private errormessages = {} as Record<string, string[]>;
+  @Output() fileContentEmit = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
+  @Output() clearContentEmit = new EventEmitter<boolean>();
 
   /**
-   * Emits the content of the file as a string
+   * Emits the contents of the files as strings
    */
-  emitFileContent(file: File) {
-    this.errormessages = [];
-    this.readfileparser.read(file).subscribe(
-      fileReadresult => {
-        this.fileName = file.name;
-        this.fileNameEmit.emit(this.fileName);
-        this.fileContent.emit(fileReadresult);
-        this.logger.log('File Contents emitted');
-      },
-      err => this.errormessages = err
-    );
+  emitFileContent(files: File[]) {
+    this.fileName = [];
+    for (const file of files) {
+      this.readfileparser
+        .read(file)
+        .pipe(map(fileReadresult => fileReadresult))
+        .subscribe(
+          fileReadresult => {
+            this.fileName.push(file.name);
+            this.currentFileName = file.name;
+            this.fileContent = fileReadresult;
+            this.fileNameEmit.emit(this.currentFileName);
+            this.fileContentEmit.emit(this.fileContent);
+          },
+          err => recordAdd(this.errormessages, file.name, err)
+        );
+    }
+    this.logger.log('File Contents emitted');
   }
 
-@Input()
-  set errorMessage(errorMessage: string[]) {
-    this.errormessages = errorMessage || [];
+  /**
+   * Emits a value to Import From File to clear the form
+   *
+   * @param x emitted value
+   */
+  emitClearContent(x: boolean) {
+    this.clearContentEmit.emit(x);
+  }
+
+  @Input()
+  set errorMessage(errorMessage: Record<string, string[]>) {
+    this.errormessages = errorMessage;
+  }
+
+  get errorMessages() {
+    return this.errormessages;
   }
 
   ngOnInit() {}

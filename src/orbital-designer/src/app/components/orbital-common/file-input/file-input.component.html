@@ -1,31 +1,40 @@
 <mat-form-field floatLabel="always">
   <mat-label>{{ label }}</mat-label>
   <div>
-    <div class="div-file-name">{{ fileName }}</div>
+    <div class="div-file-name">
+      <ul class="noDots">
+        <li *ngFor="let names of fileName">
+          {{ names }}
+        </li>
+      </ul>
+    </div>
     <button
       mat-raised-button
       color="primary"
       type="button"
       (click)="fileInput.click()"
+      (click)="emitClearContent(true)"
     >
-      Choose File
+      Choose File(s)
     </button>
   </div>
+
   <input
     #fileInput
+    [multiple]="this.multiple"
     type="file"
-    (change)="emitFileContent($event.target.files[0])"
+    (change)="emitFileContent($event.target.files)"
     style="display:none;"
     [accept]="accept"
+    onclick="this.value=null;"
   />
-  <input
-    matInput
-    style="display:none;"
-  />
+  <input matInput style="display:none;" />
 </mat-form-field>
-<div>
-  <p class="error-message" *ngFor="let message of errormessages">
-    {{ message }}
-  </p>
+
+<div *ngFor="let message of this.errorMessages | keyvalue">
+  <p class="error-message">{{ message.key }} :</p>
+  <li class="error-message" *ngFor="let v of message.value">
+    {{ v }}
+  </li>
 </div>
 
