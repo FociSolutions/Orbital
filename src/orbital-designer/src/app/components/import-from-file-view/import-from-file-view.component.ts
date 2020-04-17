@@ -17,7 +17,7 @@ export class ImportFromFileViewComponent implements OnInit {
   mockdefinitionInvalid: string[] = [];
   mockDefinitionNameString: string[] = [];
   errorMessageToEmitFromCreate = {} as Record<string, string[]>;
-  validFileFlag = false;
+  validFileFlag = true;
   buttonDisabled = true;
   tempName = '';
 
@@ -45,6 +45,7 @@ export class ImportFromFileViewComponent implements OnInit {
           this.mockdefinitionValid.push(this.tempName);
           if (this.mockdefinitionInvalid.length > 0) {
             this.buttonDisabled = true;
+            this.validFileFlag = false;
           } else {
             this.buttonDisabled = false;
           }
