@@ -57,6 +57,7 @@ export class ImportFromServerViewComponent implements OnInit {
       error: () => {
         this.errors = 'File(s) could not be imported because of an error';
         this.requestInProgress = false;
+        this.formArray = new FormArray([]);
       },
       complete: () => (this.requestInProgress = false)
     };

@@ -16,8 +16,11 @@
             maxLength="200"
             [control]="inputControl"
           ></app-text-input>
-          <mat-hint class="status-message">
+          <mat-hint class="status-message" *ngIf="!!statusMessage?.length">
             {{statusMessage}}
+          </mat-hint>
+          <mat-hint class="error-message" *ngIf="!!errorMessage?.length">
+            {{errorMessage}}
           </mat-hint>
         </div>
 

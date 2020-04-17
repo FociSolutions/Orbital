@@ -22,6 +22,7 @@ export class ExportToServerViewComponent implements OnInit {
   inputControl: FormControl;
   exportStatusMessage: string;
   isUploadingMocks: boolean;
+  exportErrors: string;
 
   controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
 
@@ -54,6 +55,8 @@ export class ExportToServerViewComponent implements OnInit {
    */
   async onSubmit() {
     this.isUploadingMocks = true;
+    this.exportErrors = '';
+    this.exportStatusMessage = '';
     this.logger.debug('URL contents before uploading', this.inputControl.value);
 
     return this.exportMocksFromForm()
@@ -70,11 +73,11 @@ export class ExportToServerViewComponent implements OnInit {
             this.exportStatusMessage = 'File(s) successfully exported';
             this.mockService.urlCache = this.inputControl.value;
           } else {
-            this.exportStatusMessage = 'File(s) could not be exported because of an error';
+            this.exportErrors = 'File(s) could not be exported because of an error';
           }
         },
         () => {
-          this.exportStatusMessage = 'File(s) could not be exported because of an error';
+          this.exportErrors = 'File(s) could not be exported because of an error';
         }
       );
   }
