@@ -47,8 +47,19 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             // if there are no default scenarios, then choose the first scenario as the best
             var bestScenario = bestScenarios.Where(scenario => scenario.Score == bestScenarios.FirstOrDefault().Score)
-                                            .Where(scenario => scenario.DefaultScenario)
-                                            .FirstOrDefault() ?? bestScenarios.FirstOrDefault();
+                                                     .Where(scenario => scenario.DefaultScenario)
+                                                     .FirstOrDefault() ?? bestScenarios.FirstOrDefault();
+
+            // if all scenarios do not match and there is a default scenario (which also doesn't match), use the default scenario
+            if (bestScenario == null && port.Scenarios.Any(scenario => scenario.defaultScenario))
+            {
+                bestScenario = port.Scenarios.Where(scenario => scenario.defaultScenario).Select(match => new
+                {
+                    ScenarioId = match.Id,
+                    Score = 0,
+                    DefaultScenario = match.defaultScenario
+                }).FirstOrDefault();
+            }
 
             if (port.Scenarios.Any())
             {
