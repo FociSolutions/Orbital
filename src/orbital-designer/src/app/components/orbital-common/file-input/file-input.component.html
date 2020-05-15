@@ -15,7 +15,7 @@
       (click)="fileInput.click()"
       (click)="emitClearContent(true)"
     >
-      Choose File(s)
+      Choose File{{ this.multiple ? "(s)" : "" }}
     </button>
   </div>
 
