@@ -1,16 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddMetadataComponent } from './add-metadata.component';
-import {
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
-  MatCardModule,
-  MatIconModule,
-  MatDividerModule,
-  MatCheckboxModule
-} from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';

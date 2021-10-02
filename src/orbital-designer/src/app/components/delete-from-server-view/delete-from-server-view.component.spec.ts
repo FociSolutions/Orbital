@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('DeleteFromServerViewComponent', () => {
   let component: DeleteFromServerViewComponent;

@@ -30,7 +30,9 @@ import { EndpointListItemComponent } from './components/endpoint-view/endpoint-l
 import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
-import { MatExpansionModule, MatChipsModule, MatSnackBarModule } from '@angular/material';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AddMetadataComponent } from './components/scenario-editor/add-metadata/add-metadata.component';
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
@@ -52,7 +54,6 @@ import { BodyAddRuleComponent } from './components/scenario-editor/add-body-rule
 // tslint:disable-next-line: max-line-length
 import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
-import 'hammerjs';
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 import { CoreModule } from './core/core.module';
 

@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import validMockDefinition from '../../../../test-files/test-mockdefinition-object';
 import { DesignerStore } from '../../../store/designer-store';

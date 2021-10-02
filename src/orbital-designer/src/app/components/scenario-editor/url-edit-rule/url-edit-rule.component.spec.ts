@@ -3,7 +3,7 @@ import { UrlEditRuleComponent } from './url-edit-rule.component';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 import * as faker from 'faker';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../models/mock-definition/scenario/rule.type';

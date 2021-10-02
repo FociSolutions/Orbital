@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 import * as faker from 'faker';
 import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { DesignerStore } from 'src/app/store/designer-store';

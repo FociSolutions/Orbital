@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type.component';
 import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 import { KvpEditRuleComponent } from '../kvp-edit-rule.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';

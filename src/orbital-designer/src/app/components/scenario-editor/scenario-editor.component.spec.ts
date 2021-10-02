@@ -2,7 +2,10 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angul
 
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { MatCardModule, MatButtonModule, MatExpansionModule, MatChipsModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';

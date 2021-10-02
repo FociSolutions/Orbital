@@ -3,7 +3,7 @@ import * as faker from 'faker';
 import { PolicyComponent } from './policy.component';
 import { OrbitalCommonModule } from 'src/app/components/orbital-common/orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 import { PolicyEditComponent } from '../policy-edit/policy-edit.component';
 import { PolicyAddComponent } from '../policy-add/policy-add.component';
 import { DesignerStore } from 'src/app/store/designer-store';

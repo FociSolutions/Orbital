@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';

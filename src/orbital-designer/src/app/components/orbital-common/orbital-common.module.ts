@@ -21,7 +21,7 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { KvpEditComponent } from './kvp-edit/kvp-edit.component';
 import { KvpAddComponent } from './kvp-edit/kvp-add/kvp-add.component';
 import { KvpListItemComponent } from './kvp-edit/kvp-list-item/kvp-list-item.component';
-import { MatExpansionModule } from '@angular/material';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { KvpAddRuleComponent } from '../scenario-editor/kvp-edit-rule/kvp-add-rule/kvp-add-rule.component';
 import { QuickExportComponent } from './quick-export/quick-export.component';
 import { HttpClientModule } from '@angular/common/http';
