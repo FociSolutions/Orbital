@@ -54,6 +54,7 @@ import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-
 import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
 import 'hammerjs';
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { DeleteFromServerViewComponent } from './components/delete-from-server-v
     DeleteFromServerViewComponent
   ],
   imports: [
+    CoreModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
