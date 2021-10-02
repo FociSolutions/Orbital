@@ -15,7 +15,7 @@ export class ShuttleSubListComponent implements OnInit {
 
   filteredOutOptions: MatListOption[] = [];
 
-  @ViewChild('matList', { static: false }) matList: MatSelectionList;
+  @ViewChild('matList') matList: MatSelectionList;
 
   @Output() itemSelected: EventEmitter<MockDefinition[]>;
 

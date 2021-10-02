@@ -19,6 +19,7 @@ export interface State {
 }
 
 Injectable();
+@Injectable()
 export class DesignerStore extends Store<State> {
   private static readonly mockDefinitionStoreKey = 'orbital_state_mockDefinition';
   private static readonly mockDefinitionsStoreKey = 'orbital_state_mockDefinitions';

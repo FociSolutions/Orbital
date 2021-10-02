@@ -17,7 +17,7 @@ import { MatInput } from '@angular/material/input';
 })
 export class SearchBarComponent implements OnInit, OnChanges {
   @Output() filteredList: EventEmitter<any[]>;
-  @ViewChild(MatInput, { static: false }) input: MatInput;
+  @ViewChild(MatInput) input: MatInput;
   @Input() list: any[] = [];
   @Input() itemToStringFn: (_: any) => string = x => x as string;
   constructor() {
