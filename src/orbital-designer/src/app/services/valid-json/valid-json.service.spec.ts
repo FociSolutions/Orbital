@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ValidJsonService } from './valid-json.service';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';

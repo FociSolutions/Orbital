@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ShuttleListComponent } from './shuttle-list.component';
 import { ShuttleSubListComponent } from './shuttle-sub-list/shuttle-sub-list.component';
 import { MatCardModule } from '@angular/material/card';

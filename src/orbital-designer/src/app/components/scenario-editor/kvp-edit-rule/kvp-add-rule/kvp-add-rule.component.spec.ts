@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpAddRuleComponent } from './kvp-add-rule.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SideBarComponent } from './side-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -48,7 +48,7 @@ describe('SideBarComponent', () => {
   });
 
   // Checks that the h1 rendered content is equals to "MOCKDEFINITIONS"
-  it('should render title in h1 tag', async(() => {
+  it('should render title in h1 tag', waitForAsync(() => {
     // tslint:disable-next-line: no-shadowed-variable
     const fixture = TestBed.createComponent(SideBarComponent);
     fixture.detectChanges();

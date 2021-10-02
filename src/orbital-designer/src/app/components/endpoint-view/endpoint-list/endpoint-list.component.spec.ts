@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { EndpointListComponent } from './endpoint-list.component';
 import { DesignerStore } from '../../../store/designer-store';
 import SampleMockDefinition from '../../../../test-files/test-mockdefinition-object';
