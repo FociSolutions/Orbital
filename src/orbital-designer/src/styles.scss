@@ -1,24 +1,24 @@
 // Custom Theming for Angular Material
+@use '~@angular/material' as mat;
 // For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$orbital-designer-primary: mat-palette($mat-teal, 500);
-$orbital-designer-accent: mat-palette($mat-light-blue, 500);
+$orbital-designer-primary: mat.define-palette(mat.$teal-palette, 500);
+$orbital-designer-accent: mat.define-palette(mat.$light-blue-palette, 500);
 
 // The warn palette is optional (defaults to red).
-$orbital-designer-warn: mat-palette($mat-red);
+$orbital-designer-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$orbital-designer-theme: mat-light-theme(
+$orbital-designer-theme: mat.define-light-theme(
   $orbital-designer-primary,
   $orbital-designer-accent,
   $orbital-designer-warn
@@ -27,7 +27,7 @@ $orbital-designer-theme: mat-light-theme(
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($orbital-designer-theme);
+@include mat.all-component-themes($orbital-designer-theme);
 
 /* You can add global styles to this file, and also import other style files */
 

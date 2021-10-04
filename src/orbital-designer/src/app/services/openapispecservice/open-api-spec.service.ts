@@ -23,7 +23,7 @@ export class OpenApiSpecService {
   readOpenApiSpec(openApiString: string): Observable<OpenAPIV2.Document> {
     return new Observable(observer => {
       try {
-        const content = yaml.safeLoad(openApiString);
+        const content = yaml.safeLoad(openApiString) as any;
         let result;
         if (content.swagger === '2.0') {
           result = this.validatorV2.validate(content);
