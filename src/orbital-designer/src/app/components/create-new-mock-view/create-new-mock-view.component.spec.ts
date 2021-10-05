@@ -129,7 +129,7 @@ describe('CreateNewMockViewComponent', () => {
       description
     });
     component.setOpenApiFile(validOpenApiText);
-    openApi = yaml.safeLoad(validOpenApiText);
+    openApi = yaml.safeLoad(validOpenApiText) as any;
     return {
       metadata: {
         title,
