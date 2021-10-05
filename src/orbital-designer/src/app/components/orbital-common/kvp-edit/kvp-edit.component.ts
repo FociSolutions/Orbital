@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { recordDelete, recordAdd } from 'src/app/models/record';
@@ -8,7 +8,7 @@ import { recordDelete, recordAdd } from 'src/app/models/record';
   templateUrl: './kvp-edit.component.html',
   styleUrls: ['./kvp-edit.component.scss']
 })
-export class KvpEditComponent implements OnInit {
+export class KvpEditComponent {
   /**
    * The add and list tiles to be added in the template
    */
@@ -30,8 +30,6 @@ export class KvpEditComponent implements OnInit {
     this.savedKvp = {};
     this.savedKvpEmitter = new EventEmitter<Record<string, string>>();
   }
-
-  ngOnInit() { }
 
   /**
    * This setter calls the emitter for the savedkvp if shouldSave is true

@@ -37,7 +37,7 @@ import { UrlEditRuleComponent } from '../scenario-editor/url-edit-rule/url-edit-
 import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { PolicyEditComponent } from '../scenario-editor/policy-container/policy-edit/policy-edit.component';
 import { BodyEditRuleComponent } from '../scenario-editor/add-body-rule-edit/body-edit-rule.component';
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 import { BodyListItemRuleTypeComponent } from '../scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';

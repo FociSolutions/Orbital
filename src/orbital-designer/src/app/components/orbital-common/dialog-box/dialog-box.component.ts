@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-dialog-box',
   templateUrl: './dialog-box.component.html',
   styleUrls: ['./dialog-box.component.scss']
 })
-export class DialogBoxComponent implements OnInit {
+export class DialogBoxComponent {
   @Input() titleText: string;
   @Input() bodyText: string;
   @Input() confirmButtonText = 'Confirm';
@@ -28,6 +28,4 @@ export class DialogBoxComponent implements OnInit {
   onCancel() {
     this.choiceBoolean.emit(false);
   }
-
-  ngOnInit() {}
 }

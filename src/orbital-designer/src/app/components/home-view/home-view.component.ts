@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,12 +6,9 @@ import { Router } from '@angular/router';
   templateUrl: './home-view.component.html',
   styleUrls: ['./home-view.component.scss']
 })
-export class HomeViewComponent implements OnInit {
+export class HomeViewComponent {
 
   constructor(private router: Router) { }
-
-  ngOnInit() {
-  }
 
   navigateTo(url: string) {
     this.router.navigateByUrl(url);

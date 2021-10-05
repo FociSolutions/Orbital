@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   Output,
   EventEmitter,
@@ -15,7 +14,7 @@ import { NGXLogger } from 'ngx-logger';
   templateUrl: './add-metadata.component.html',
   styleUrls: ['./add-metadata.component.scss']
 })
-export class AddMetadataComponent implements OnInit, AfterContentChecked {
+export class AddMetadataComponent implements AfterContentChecked {
   @Output() metadataOutput: EventEmitter<Metadata>;
 
   metadataTitleProp: string;
@@ -34,8 +33,6 @@ export class AddMetadataComponent implements OnInit, AfterContentChecked {
     this.titleErrorMessage = '';
     this.descriptionErrorMessage = '';
   }
-
-  ngOnInit() {}
 
   ngAfterContentChecked(): void {
     this.cdRef.detectChanges();

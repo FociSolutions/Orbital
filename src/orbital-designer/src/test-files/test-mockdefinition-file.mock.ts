@@ -1,4 +1,4 @@
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 export default `{
     "metadata": {
         "title": "fdsfdsfdsfds",

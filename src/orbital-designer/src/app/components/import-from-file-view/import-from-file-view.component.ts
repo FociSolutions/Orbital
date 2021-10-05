@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
@@ -11,7 +11,7 @@ import { recordAdd } from 'src/app/models/record';
   templateUrl: './import-from-file-view.component.html',
   styleUrls: ['./import-from-file-view.component.scss']
 })
-export class ImportFromFileViewComponent implements OnInit {
+export class ImportFromFileViewComponent {
   private mockDefinitionString: string[] = [];
   mockdefinitionValid: string[] = [];
   mockdefinitionInvalid: string[] = [];
@@ -141,6 +141,4 @@ export class ImportFromFileViewComponent implements OnInit {
     this.mockdefinitionInvalid = [];
     this.mockdefinitionValid = [];
   }
-
-  ngOnInit() {}
 }

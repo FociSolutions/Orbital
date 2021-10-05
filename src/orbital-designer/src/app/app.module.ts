@@ -39,19 +39,19 @@ import { AddResponseComponent } from './components/scenario-editor/add-response/
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
 import { ExportToServerViewComponent } from './components/export-to-server-view/export-to-server-view.component';
 import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 import { KvpListItemRuleTypeComponent } from './components/scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { KvpEditRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
 import { GetRuleTypeStringPipe } from './pipes/get-rule-type-string/get-rule-type-string.pipe';
 import { UrlEditRuleComponent } from './components/scenario-editor/url-edit-rule/url-edit-rule.component';
 import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { PolicyAddComponent } from './components/scenario-editor/policy-container/policy-add/policy-add.component';
 import { PolicyEditComponent } from './components/scenario-editor/policy-container/policy-edit/policy-edit.component';
 import { PolicyComponent } from './components/scenario-editor/policy-container/policy/policy.component';
 import { BodyAddRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';

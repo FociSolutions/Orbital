@@ -406,7 +406,7 @@ describe('DesignerStore', () => {
       store.state$.pipe(take(1));
     });
 
-    // tslint:disable-next-line: max-line-length
+    // eslint-disable-next-line max-len
     it('should update the state subscription when the state is changed when appending, and an item already exists with the same name', done => {
       const mockDef1 = _.cloneDeep(validMockDefinition);
       const mockDef2 = _.cloneDeep(validMockDefinition);

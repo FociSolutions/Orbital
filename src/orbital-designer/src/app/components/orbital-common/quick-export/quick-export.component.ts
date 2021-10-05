@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExportMockdefinitionService } from '../../../services/export-mockdefinition/export-mockdefinition.service';
 import { MockDefinition } from '../../../models/mock-definition/mock-definition.model';
@@ -9,7 +9,7 @@ import { NGXLogger } from 'ngx-logger';
   templateUrl: './quick-export.component.html',
   styleUrls: ['./quick-export.component.scss']
 })
-export class QuickExportComponent implements OnInit {
+export class QuickExportComponent {
   triggerOpenCancelBox: boolean;
   urlToNavigateTo: string;
   urlInService: string;
@@ -59,6 +59,4 @@ export class QuickExportComponent implements OnInit {
       this.router.navigate([url]);
     }
   }
-
-  ngOnInit() {}
 }

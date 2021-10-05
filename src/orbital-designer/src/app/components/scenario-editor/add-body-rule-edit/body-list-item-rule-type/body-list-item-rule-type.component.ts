@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { Component, Output, EventEmitter, Input} from '@angular/core';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
@@ -8,7 +8,7 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
   templateUrl: './body-list-item-rule-type.component.html',
   styleUrls: ['./body-list-item-rule-type.component.scss']
 })
-export class BodyListItemRuleTypeComponent implements OnInit {
+export class BodyListItemRuleTypeComponent {
 
   readonly rules = [
     { value: RuleType.JSONPATH, viewValue: 'JSON: Path' },
@@ -25,8 +25,6 @@ export class BodyListItemRuleTypeComponent implements OnInit {
    * The body rule to be deleted by the parent
    */
   @Output() bodyRuleRemovedEventEmitter = new EventEmitter<BodyRule>();
-
-  ngOnInit() {}
 
   /**
    * Gets the form control for the 'rule'

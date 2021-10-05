@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './endpoint-list-item.component.html',
   styleUrls: ['./endpoint-list-item.component.scss']
 })
-export class EndpointListItemComponent implements OnInit {
+export class EndpointListItemComponent {
   @Input() endpoint: Endpoint;
   @Input() scenarioCount: number;
 
@@ -18,8 +18,6 @@ export class EndpointListItemComponent implements OnInit {
     private logger: NGXLogger,
     private router: Router
   ) {}
-
-  ngOnInit() {}
 
   /**
    * Returns a list of scenarios for the clicked endpoint

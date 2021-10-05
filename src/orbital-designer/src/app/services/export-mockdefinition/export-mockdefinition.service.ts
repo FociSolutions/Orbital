@@ -14,7 +14,7 @@ export class ExportMockdefinitionService {
   urlCache: string;
   mockdefinitionCache: MockDefinition;
   constructor(private store: DesignerStore, private httpClient: HttpClient, private logger: NGXLogger) {
-    // tslint:disable-next-line: no-shadowed-variable
+    // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
     this.store.state$.subscribe(state => {
       if (!!state.mockDefinition) {
         this.mockdefinitionCache = state.mockDefinition;

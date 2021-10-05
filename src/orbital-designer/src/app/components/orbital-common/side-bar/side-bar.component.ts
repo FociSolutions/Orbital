@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
@@ -10,7 +10,7 @@ import { DesignerStore } from 'src/app/store/designer-store';
   templateUrl: './side-bar.component.html',
   styleUrls: ['./side-bar.component.scss']
 })
-export class SideBarComponent implements OnInit {
+export class SideBarComponent {
   mockDefinitions: MockDefinition[];
   selectedMockDefinition: string;
   title = 'MOCKDEFINITIONS';
@@ -72,7 +72,6 @@ export class SideBarComponent implements OnInit {
     }
     this.triggerOpenConfirmBox = false;
   }
-  ngOnInit() {}
 
   /**
    * Opens the dialog box for the Mockdefinition to be dismissed

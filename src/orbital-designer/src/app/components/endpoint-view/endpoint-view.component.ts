@@ -9,7 +9,7 @@ import { HttpRequest } from '@angular/common/http';
   templateUrl: './endpoint-view.component.html',
   styleUrls: ['./endpoint-view.component.scss']
 })
-export class EndpointViewComponent implements OnInit {
+export class EndpointViewComponent {
   mockDefinition: MockDefinition;
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
@@ -46,6 +46,4 @@ export class EndpointViewComponent implements OnInit {
   showNotFound() {
     return this.filteredList.length === 0;
   }
-
-  ngOnInit() {}
 }

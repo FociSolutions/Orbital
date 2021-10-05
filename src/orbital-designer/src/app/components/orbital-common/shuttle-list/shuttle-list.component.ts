@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   Output,
   EventEmitter,
@@ -13,7 +12,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
   templateUrl: './shuttle-list.component.html',
   styleUrls: ['./shuttle-list.component.scss']
 })
-export class ShuttleListComponent implements OnInit, OnDestroy {
+export class ShuttleListComponent implements OnDestroy {
   @Input() leftTitle = '';
   @Input() rightTitle = '';
 
@@ -87,6 +86,4 @@ export class ShuttleListComponent implements OnInit, OnDestroy {
     this.rightSelected = [];
     this.outputList.emit(this.rightList);
   }
-
-  ngOnInit() {}
 }

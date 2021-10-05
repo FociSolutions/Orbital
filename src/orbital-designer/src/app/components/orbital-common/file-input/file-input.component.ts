@@ -1,15 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 import { map } from 'rxjs/operators';
-import { recordAdd, recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
+import { recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-file-input',
   templateUrl: './file-input.component.html',
   styleUrls: ['./file-input.component.scss']
 })
-export class FileInputComponent implements OnInit {
+export class FileInputComponent {
   constructor(private logger: NGXLogger, private readfileparser: ReadFileService) {}
   fileName: string[] = [];
   currentFileName: string;
@@ -62,6 +62,4 @@ export class FileInputComponent implements OnInit {
   get errorMessages() {
     return this.errormessages;
   }
-
-  ngOnInit() {}
 }

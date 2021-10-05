@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
@@ -9,7 +9,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
   templateUrl: './shuttle-sub-list.component.html',
   styleUrls: ['./shuttle-sub-list.component.scss']
 })
-export class ShuttleSubListComponent implements OnInit {
+export class ShuttleSubListComponent {
   static readonly selectAllString = 'Select All';
   static readonly deselectAllString = 'Deselect All';
 
@@ -121,11 +121,10 @@ export class ShuttleSubListComponent implements OnInit {
    * Returns true if the target parameter contains the substring parameter. It sets
    * both of them to lowercase before performing the compares in order to ignore case.
    */
-  // tslint:disable-next-line: member-ordering
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   static ignoreCaseContainsMatch(target: string, substring: string): boolean {
     return target.toLowerCase().includes(substring.toLowerCase());
   }
-  ngOnInit() {}
 
   /**
    * Emits the selected items in the search results that are visible to the user

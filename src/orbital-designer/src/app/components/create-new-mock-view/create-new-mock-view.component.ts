@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { recordAdd } from 'src/app/models/record';
   templateUrl: './create-new-mock-view.component.html',
   styleUrls: ['./create-new-mock-view.component.scss']
 })
-export class CreateNewMockViewComponent implements OnInit {
+export class CreateNewMockViewComponent {
   formGroup: FormGroup;
   private openApiFile: string;
   errorMessageToEmitFromCreate = {} as Record<string, string[]>;
@@ -33,8 +33,6 @@ export class CreateNewMockViewComponent implements OnInit {
       description: new FormControl('')
     });
   }
-
-  ngOnInit() {}
 
   /**
    * createMock is a function that is responsible for storing the new MockDefinition

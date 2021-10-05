@@ -49,7 +49,7 @@ describe('SideBarComponent', () => {
 
   // Checks that the h1 rendered content is equals to "MOCKDEFINITIONS"
   it('should render title in h1 tag', waitForAsync(() => {
-    // tslint:disable-next-line: no-shadowed-variable
+    // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
     const fixture = TestBed.createComponent(SideBarComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;

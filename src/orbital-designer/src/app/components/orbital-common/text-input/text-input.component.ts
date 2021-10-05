@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 
@@ -7,7 +7,7 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
   templateUrl: './text-input.component.html',
   styleUrls: ['./text-input.component.scss']
 })
-export class TextInputComponent implements OnInit {
+export class TextInputComponent {
   errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   @Input() title = '';
   @Input() maxLength: number;
@@ -18,8 +18,6 @@ export class TextInputComponent implements OnInit {
   getErrors(): string[] {
     return !!this.control.errors ? Object.values(this.control.errors) : [];
   }
-
-  ngOnInit() {}
 
   /**
    * Sets the text input to dirty when it becomes out of focus. Required

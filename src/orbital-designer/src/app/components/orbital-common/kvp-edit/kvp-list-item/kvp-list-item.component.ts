@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { KeyValue } from '@angular/common';
 
 @Component({
@@ -6,7 +6,7 @@ import { KeyValue } from '@angular/common';
   templateUrl: './kvp-list-item.component.html',
   styleUrls: ['./kvp-list-item.component.scss']
 })
-export class KvpListItemComponent implements OnInit {
+export class KvpListItemComponent {
   currentKVP: KeyValue<string, string>;
 
   /**
@@ -18,8 +18,6 @@ export class KvpListItemComponent implements OnInit {
     this.removeKvp = new EventEmitter<KeyValue<string, string>>();
     this.currentKVP = { key: '', value: '' };
   }
-
-  ngOnInit() {}
 
   @Input()
   set kvp(input: KeyValue<string, string>) {

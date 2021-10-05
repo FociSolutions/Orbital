@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { FormGroup, AbstractControl } from '@angular/forms';
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './kvp-list-item-rule-type.component.html',
   styleUrls: ['./kvp-list-item-rule-type.component.scss']
 })
-export class KvpListItemRuleTypeComponent implements OnInit, OnDestroy {
+export class KvpListItemRuleTypeComponent implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
   type: RuleType;
@@ -30,8 +30,6 @@ export class KvpListItemRuleTypeComponent implements OnInit, OnDestroy {
   constructor() {
     this.removeKvp = new EventEmitter<KeyValuePairRule>();
   }
-
-  ngOnInit() {}
 
   /**
    * Gets the key from the current kvp

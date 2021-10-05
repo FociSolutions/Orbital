@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
@@ -8,7 +8,7 @@ import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model
   templateUrl: './endpoint-list.component.html',
   styleUrls: ['./endpoint-list.component.scss']
 })
-export class EndpointListComponent implements OnInit {
+export class EndpointListComponent {
   @Input() endpoints: Endpoint[] = [];
 
   constructor(private designerStore: DesignerStore) {}
@@ -19,6 +19,4 @@ export class EndpointListComponent implements OnInit {
   get scenarios(): Scenario[] {
     return this.designerStore.state.mockDefinition.scenarios;
   }
-
-  ngOnInit() {}
 }

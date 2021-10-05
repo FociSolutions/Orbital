@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   Output,
   EventEmitter,
@@ -15,7 +14,7 @@ import { MatInput } from '@angular/material/input';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent implements OnInit, OnChanges {
+export class SearchBarComponent implements OnChanges {
   @Output() filteredList: EventEmitter<any[]>;
   @ViewChild(MatInput) input: MatInput;
   @Input() list: any[] = [];
@@ -45,7 +44,7 @@ export class SearchBarComponent implements OnInit, OnChanges {
    * Returns true if the target parameter contains the substring parameter. It sets
    * both of them to lowercase before performing the compares in order to ignore case.
    */
-  // tslint:disable-next-line: member-ordering
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   static ignoreCaseContainsMatch(target: string, substring: string): boolean {
     return target.toLowerCase().includes(substring.toLowerCase());
   }
@@ -58,5 +57,5 @@ export class SearchBarComponent implements OnInit, OnChanges {
       this.onSearchInput('');
     }
   }
-  ngOnInit() {}
+
 }
