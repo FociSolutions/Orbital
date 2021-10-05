@@ -7,6 +7,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
@@ -15,7 +16,7 @@ describe('AddResponseComponent', () => {
   beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
-      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule],
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule, NgJsonEditorModule.forRoot()],
       providers: [ScenarioFormBuilder]
     }).compileComponents();
 

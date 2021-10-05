@@ -44,10 +44,8 @@
       (savedKvpEmitter)="saveHeaders($event)"
     ></app-kvp-edit>
     <div class="response-body">
-      <mat-form-field>
-        <div class="body-title">Body</div>
-        <textarea matInput rows="10" formControlName="body"></textarea>
-      </mat-form-field>
+      <div class="body-title">Body</div>
+        <json-editor [options]="options" [data]="bodyData" #editor></json-editor>
       <div class="error-message" *ngIf="!!this.responseFormGroup.controls.body.errors">
         Body is not valid JSON
       </div>

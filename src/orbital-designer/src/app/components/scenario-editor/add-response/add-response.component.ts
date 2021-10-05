@@ -5,7 +5,8 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
-  AfterContentChecked
+  AfterContentChecked,
+  ViewChild
 } from '@angular/core';
 import * as HttpStatus from 'http-status-codes';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
@@ -13,6 +14,7 @@ import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service
 import { NGXLogger } from 'ngx-logger';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import { FormGroup, FormControl } from '@angular/forms';
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'app-add-response',
@@ -23,6 +25,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
   @Input() responseFormGroup: FormGroup;
+
+  @ViewChild('editor', {static: false}) editor: JsonEditorComponent;
 
   headers: Record<string, string> = {};
 
@@ -48,6 +52,9 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
 
   shadowType: FormControl = new FormControl();
 
+  public options: JsonEditorOptions;
+  public bodyData: any;
+
   constructor(
     private jsonService: ValidJsonService,
     private logger: NGXLogger,
@@ -59,9 +66,16 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     this.titleForKvpAdded = 'Added Header Rules';
     this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
     this.statusMessage = 'Enter a Status Code';
+
+    this.options = new JsonEditorOptions();
+    this.options.mode = 'code';
+    this.options.modes = ['code', 'text'];
+    this.options.statusBar = true;
+    this.options.onChange = () => this.changeLog();
   }
 
   ngOnInit() {
+    this.checkBody();
     this.updateStatusCodeDescription();
 
     this.shadowType.setValue(this.responseFormGroup.controls.type.value === ResponseType.TEMPLATED);
@@ -69,15 +83,46 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     this.responseFormGroup.controls.status.valueChanges.subscribe(() => {
       this.updateStatusCodeDescription();
     });
+  }
 
-    this.responseFormGroup.controls.body.valueChanges.subscribe(() => {
-      const newBody = this.responseFormGroup.controls.body.value;
+  /**
+   * Checks & handles incoming JSON body for erroneous input
+   */
+  checkBody() {
+    try {
+      this.bodyData = JSON.parse(this.responseFormGroup.controls.body.value);
+    } catch (e) {
+      this.bodyData = {};
+    }
+  }
+
+  /**
+   * Handler method for any changes to json-editor content
+   */
+  changeLog() {
+    try {
+      const newBody = JSON.stringify(this.editor.get());
       if (newBody.length > 0 && this.jsonService.isValidJSON(newBody)) {
-        this.responseFormGroup.controls.body.setErrors(null);
+        this.setError(false);
+        this.responseFormGroup.controls.body.setValue(newBody);
       } else {
-        this.responseFormGroup.controls.body.setErrors({invalidJson: 'Body is not valid JSON'});
+        this.setError(true);
       }
-    });
+    } catch (e) {
+      this.setError(true);
+    }
+  }
+
+  /**
+   * Sets or clears JSON body error footer based on supplied boolean flag
+   * @param flag Set/clear flag
+   */
+  setError(flag: boolean) {
+    if (flag) {
+      this.responseFormGroup.controls.body.setErrors({invalidJson: 'Body is not valid JSON'});
+    } else {
+      this.responseFormGroup.controls.body.setErrors(null);
+    }
   }
 
   /**
@@ -170,9 +215,6 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * Disable and expand the card
    */
   private disableCard() {
-    this.logger.debug(
-      'AddResponseComponent:disableCard: Disable and expand card'
-    );
     this.isCardDisabled = true;
     this.panelExpanded = true;
   }
