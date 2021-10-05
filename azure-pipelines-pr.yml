@@ -17,7 +17,7 @@ stages:
     - task: NodeTool@0
       displayName: set node to version 12.x
       inputs:
-        versionSpec: "12.x"
+        versionSpec: "14.x"
     - script: npm ci
       displayName: npm ci
       workingDirectory: src/orbital-designer

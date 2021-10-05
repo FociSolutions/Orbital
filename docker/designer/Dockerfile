@@ -1,5 +1,5 @@
 # Label the stage as build
-FROM node:12.10.0-alpine as build
+FROM node:14-alpine as build
 
 # Set Working directory
 WORKDIR /app
@@ -19,7 +19,7 @@ RUN npm run build-ci -- --output-path=dist
 ############
 
 # base image
-FROM nginx:1.16.0-alpine
+FROM nginx:1.20-alpine
 
 ## Copy our default nginx config
 COPY ./src/orbital-designer/nginx/default.conf /etc/nginx/conf.d/
