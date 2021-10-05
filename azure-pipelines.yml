@@ -16,7 +16,7 @@ variables:
   buildConfiguration: 'Release'
   system.debug: true
 
-container: microsoft/dotnet:2.2-sdk
+container: mcr.microsoft.com/dotnet/core/sdk:2.2
 
 steps:
   - task: DotNetCoreCLI@2

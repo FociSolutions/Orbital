@@ -43,6 +43,7 @@ import { BodyListItemRuleTypeComponent } from './add-body-rule-edit/body-list-it
 import { BodyAddRuleComponent } from './add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.component';
 import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -73,7 +74,7 @@ describe('ScenarioEditorComponent', () => {
         BodyEditRuleComponent,
         BodyListItemRuleTypeComponent,
         BodyAddRuleComponent,
-        ScenarioViewComponent
+        ScenarioViewComponent,
       ],
       imports: [
         LoggerTestingModule,
@@ -86,7 +87,8 @@ describe('ScenarioEditorComponent', () => {
         BrowserAnimationsModule,
         MatMenuModule,
         MatIconModule,
-        MatChipsModule
+        MatChipsModule,
+        NgJsonEditorModule.forRoot()
       ],
       providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService]
     }).compileComponents();

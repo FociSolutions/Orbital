@@ -56,6 +56,7 @@ import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-
 import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 import { CoreModule } from './core/core.module';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import { CoreModule } from './core/core.module';
     MatMenuModule,
     MatExpansionModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgJsonEditorModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent]
