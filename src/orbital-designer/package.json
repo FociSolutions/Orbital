@@ -27,6 +27,7 @@
     "@angular/platform-browser": "~12.2.8",
     "@angular/platform-browser-dynamic": "~12.2.8",
     "@angular/router": "~12.2.8",
+    "ang-jsoneditor": "^1.10.5",
     "deep-equal": "^1.1.0",
     "file-saver": "^2.0.2",
     "http-status-codes": "^1.4.0",
