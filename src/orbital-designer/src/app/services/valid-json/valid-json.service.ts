@@ -24,7 +24,6 @@ export class ValidJsonService {
     try {
       return JSON.parse(json);
     } catch (e) {
-      this.logger.error('Invalid JSON file', e);
       return defaultValue;
     }
   }

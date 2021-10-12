@@ -1,9 +1,10 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, Input, ViewChild } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { FormGroup, AbstractControl } from '@angular/forms';
+import { FormGroup, AbstractControl, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BodyRule, defaultBodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { AddBodyRuleBuilder } from '../add-body-rule-builder/add-body-rule.builder';
+import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 
 @Component({
   selector: 'app-body-add-rule',
@@ -18,8 +19,15 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   private bodyRuleInEdit = defaultBodyRule;
   private ruleIsDuplicated = false;
 
+  /**
+   * variables for json editor
+   */
+  public editorOptions: JsonEditorOptions;
+  public bodyData: any;
+
   @Input() bodyRuleAddedIsDuplicated = new EventEmitter<boolean>();
   @Output() bodyRuleAddedEventEmitter = new EventEmitter<BodyRule>();
+  @ViewChild('editor', { static: false }) editor: JsonEditorComponent;
 
   readonly rules = [
     { value: RuleType.JSONPATH, viewValue: 'JSON: Path' },
@@ -34,16 +42,26 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
 
   bodyAddRuleFormGroup: FormGroup;
 
-  constructor(private addBodyRuleBuilder: AddBodyRuleBuilder) {}
+  constructor(private addBodyRuleBuilder: AddBodyRuleBuilder) {
+
+    this.editorOptions = new JsonEditorOptions();
+    this.editorOptions.mode = 'code';
+    this.editorOptions.modes = ['code', 'text'];
+    this.editorOptions.onChange = () => this.changeLog();
+    this.editorOptions.statusBar = true;
+  }
   ngOnInit() {
     const bodyDuplicatedSubscription = this.bodyRuleAddedIsDuplicated.subscribe(
       isDuplicated => (this.ruleIsDuplicated = isDuplicated)
     );
 
+
     this.bodyAddRuleFormGroup = this.addBodyRuleBuilder.createNewBodyRuleForm();
     this.bodyAddRuleFormGroup.controls.rule.setValue('');
     this.bodyRuleInEdit.rule = this.bodyAddRuleFormGroup.controls.rule.value;
     this.bodyRuleInEdit.type = this.bodyAddRuleFormGroup.controls.type.value;
+
+    this.checkBody();
 
     const ruleSubscription = this.bodyAddRuleFormGroup.get('rule').valueChanges.subscribe(rule => {
       this.ruleIsDuplicated = false;
@@ -85,6 +103,49 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   addBodyRule(): void {
     if (this.bodyAddRuleFormGroup.valid) {
       this.bodyRuleAddedEventEmitter.emit(this.bodyRuleInEdit);
+    }
+  }
+
+  /**
+   * Sets the rule object as invalid
+   */
+  setJsonInvalid(): void {
+    this.rule.setErrors({ invalidJson: true, message: 'The JSON is invalid' });
+  }
+
+  /**
+   * changelog function for json editor content
+   */
+  changeLog() {
+    try {
+      if (this.editor.isValidJson()) {
+        const jsonContent = this.editor.get();
+        if (Object.keys(jsonContent).length === 0) {
+          this.setJsonInvalid;
+          console.log(this.rule.status);
+        }
+        else {
+          const newData = JSON.stringify(jsonContent);
+          this.bodyAddRuleFormGroup.controls.rule.setValue(newData);
+        }
+      }
+      else {
+        this.setJsonInvalid;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  /**
+   * checks the initial json for errors
+   */
+  checkBody() {
+    try {
+      this.bodyData = JSON.parse(this.bodyAddRuleFormGroup.controls.rule.value);
+    } catch (e) {
+      this.setJsonInvalid;
+      this.bodyData = '';
     }
   }
 

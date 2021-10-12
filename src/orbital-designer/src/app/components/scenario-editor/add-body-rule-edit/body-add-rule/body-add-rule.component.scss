@@ -29,3 +29,10 @@
   height: 12em;
   width: 100%;
 }
+
+:host ::ng-deep json-editor,
+:host ::ng-deep json-editor .jsoneditor,
+:host ::ng-deep json-editor > div,
+:host ::ng-deep json-editor jsoneditor-outer {
+  height: 20em;
+}

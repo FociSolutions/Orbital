@@ -10,17 +10,17 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="body-value">
+        <div class="body-value">
           <mat-label>Value</mat-label>
-          <textarea matInput id="bodyaddrule" formControlName="rule"></textarea>
-        </mat-form-field>
+          <json-editor [data]='bodyData' [options]='editorOptions' #editor></json-editor>
+        </div>
         <button mat-mini-fab class="add-button" color="primary" (click)="addBodyRule()">
           <mat-icon>add</mat-icon>
         </button>
       </div>
     </form>
 
-    <div *ngIf="rule.invalid && (rule.dirty || rule.touched)">
+    <div *ngIf="rule.invalid || editor.isFocused">
       <mat-error *ngIf="rule.errors.required">
         Body rule is required
       </mat-error>
