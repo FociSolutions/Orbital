@@ -111,7 +111,7 @@ describe('KvpEditComponent', () => {
     it('Should emit the savedkvp kvp is Save is set to true', () => {
       const newKvpkvp = {} as Record<string, string>;
       newKvpkvp[faker.lorem.sentence()] = faker.lorem.sentence();
-      spyOn(component.savedKvpEmitter, 'emit');
+      jest.spyOn(component.savedKvpEmitter, 'emit');
       component.Save = true;
 
       expect(component.savedKvpEmitter.emit).toHaveBeenCalledWith(
@@ -122,7 +122,7 @@ describe('KvpEditComponent', () => {
     it('Should not emit the savedkvp kvp is Save is set to false', done => {
       const newKvpkvp = {} as Record<string, string>;
       newKvpkvp[faker.lorem.sentence()] = faker.lorem.sentence();
-      spyOn(component.savedKvpEmitter, 'emit');
+      jest.spyOn(component.savedKvpEmitter, 'emit');
       component.Save = false;
       fixture.whenStable().then(() => {
         expect(component.savedKvpEmitter.emit).not.toHaveBeenCalled();

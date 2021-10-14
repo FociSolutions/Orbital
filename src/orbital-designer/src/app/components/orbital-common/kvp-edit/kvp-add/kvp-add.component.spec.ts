@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpAddComponent } from './kvp-add.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
@@ -9,19 +9,15 @@ describe('KvpAddComponent', () => {
   let component: KvpAddComponent;
   let fixture: ComponentFixture<KvpAddComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OrbitalCommonModule,
-        BrowserAnimationsModule,
-        LoggerTestingModule
-      ]
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -57,22 +53,20 @@ describe('KvpAddComponent', () => {
   });
 
   describe('KvpAddComponent.onAdd', () => {
-    it('Should set key and value to kvpAdd and isValid to true', done => {
+    it('Should set key and value to kvpAdd and isValid to true', (done) => {
       const input = {
         key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+        value: faker.lorem.sentence(),
       };
       component.key = input.key;
       component.value = input.value;
 
-      component.kvp.subscribe(
-        actual => {
-          expect(component.isValid).toBeTruthy();
-          expect(actual.key).toEqual(input.key);
-          expect(actual.value).toEqual(input.value);
-          done();
-        }
-      );
+      component.kvp.subscribe((actual) => {
+        expect(component.isValid).toBeTruthy();
+        expect(actual.key).toEqual(input.key);
+        expect(actual.value).toEqual(input.value);
+        done();
+      });
 
       component.onAdd();
     });

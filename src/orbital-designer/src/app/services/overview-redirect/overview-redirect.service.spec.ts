@@ -24,7 +24,7 @@ describe('OverviewRedirectService', () => {
     const service: OverviewRedirectService = TestBed.get(
       OverviewRedirectService
     );
-    const routerSpy = spyOn(TestBed.get(Router), 'navigate');
+    const routerSpy = jest.spyOn(TestBed.get(Router), 'navigate');
     service.canActivate();
     tick();
     expect(routerSpy).toHaveBeenCalledWith(['/']);
@@ -34,7 +34,7 @@ describe('OverviewRedirectService', () => {
     const service: OverviewRedirectService = TestBed.get(
       OverviewRedirectService
     );
-    const routerSpy = spyOn(TestBed.get(Router), 'navigate');
+    const routerSpy = jest.spyOn(TestBed.get(Router), 'navigate');
     const store = TestBed.get(DesignerStore);
     store.updateMetadata({
       title: '',

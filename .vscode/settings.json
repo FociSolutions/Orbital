@@ -1,0 +1,3 @@
+{
+  "jest.jestCommandLine": "npm --prefix ./src/orbital-designer run test --"
+}

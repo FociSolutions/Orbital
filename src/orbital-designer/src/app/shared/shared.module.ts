@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-
+import { BlankComponent } from './components/test/blank.component';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ]
+  declarations: [BlankComponent],
+  imports: [CommonModule],
 })
-export class SharedModule { }
+export class SharedModule {}

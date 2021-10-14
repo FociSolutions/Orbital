@@ -13,16 +13,17 @@ import { BodyEditRuleComponent } from './body-edit-rule.component';
 import { BodyAddRuleComponent } from './body-add-rule/body-add-rule.component';
 import { BodyListItemRuleTypeComponent } from './body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 describe('BodyEditRuleComponent', () => {
   let component: BodyEditRuleComponent;
   let fixture: ComponentFixture<BodyEditRuleComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
+      imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule, NgJsonEditorModule],
       declarations: [BodyEditRuleComponent, BodyAddRuleComponent, BodyListItemRuleTypeComponent],
-      providers: [DesignerStore]
+      providers: [DesignerStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BodyEditRuleComponent);
@@ -33,7 +34,7 @@ describe('BodyEditRuleComponent', () => {
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.bodyMatchRuleFormArray = scenarioFormGroup.get('requestMatchRules.bodyMatchRules') as FormArray;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -44,14 +45,14 @@ describe('BodyEditRuleComponent', () => {
       const bodyRule = {
         type: faker.random.number({
           min: 0,
-          max: Object.keys(RuleType).length - 1
+          max: Object.keys(RuleType).length - 1,
         }) as RuleType,
-        rule: { test: faker.random.word() }
+        rule: { test: faker.random.word() },
       } as BodyRule;
       component.bodyMatchRuleFormArray.push(
         new FormGroup({
           rule: new FormControl(bodyRule.rule, [Validators.required, Validators.maxLength(3000)]),
-          type: new FormControl(bodyRule.type, [Validators.required])
+          type: new FormControl(bodyRule.type, [Validators.required]),
         })
       );
       component.deleteBodyEditRuleHandler(0);
@@ -65,42 +66,42 @@ describe('BodyEditRuleComponent', () => {
         {
           type: faker.random.number({
             min: 0,
-            max: Object.keys(RuleType).length - 1
+            max: Object.keys(RuleType).length - 1,
           }) as RuleType,
-          rule: { test: randomWord }
+          rule: { test: randomWord },
         },
         {
           type: faker.random.number({
             min: 0,
-            max: Object.keys(RuleType).length - 1
+            max: Object.keys(RuleType).length - 1,
           }) as RuleType,
-          rule: { testtwo: randomWord }
+          rule: { testtwo: randomWord },
         },
         {
           type: faker.random.number({
             min: 0,
-            max: Object.keys(RuleType).length - 1
+            max: Object.keys(RuleType).length - 1,
           }) as RuleType,
-          rule: { testthree: randomWord }
-        }
+          rule: { testthree: randomWord },
+        },
       ] as BodyRule[];
 
       component.bodyMatchRuleFormArray.push(
         new FormGroup({
           rule: new FormControl(bodyRules[0].rule, [Validators.required, Validators.maxLength(3000)]),
-          type: new FormControl(bodyRules[0].type, [Validators.required])
+          type: new FormControl(bodyRules[0].type, [Validators.required]),
         })
       );
       component.bodyMatchRuleFormArray.push(
         new FormGroup({
           rule: new FormControl(bodyRules[1].rule, [Validators.required, Validators.maxLength(3000)]),
-          type: new FormControl(bodyRules[1].type, [Validators.required])
+          type: new FormControl(bodyRules[1].type, [Validators.required]),
         })
       );
       component.bodyMatchRuleFormArray.push(
         new FormGroup({
           rule: new FormControl(bodyRules[2].rule, [Validators.required, Validators.maxLength(3000)]),
-          type: new FormControl(bodyRules[2].type, [Validators.required])
+          type: new FormControl(bodyRules[2].type, [Validators.required]),
         })
       );
       component.deleteBodyEditRuleHandler(0);
@@ -113,15 +114,15 @@ describe('BodyEditRuleComponent', () => {
       const bodyRule = {
         type: faker.random.number({
           min: 0,
-          max: Object.keys(RuleType).length - 1
+          max: Object.keys(RuleType).length - 1,
         }) as RuleType,
         rule: {
-          [faker.random.word()]: faker.random.word()
-        }
+          [faker.random.word()]: faker.random.word(),
+        },
       } as BodyRule;
       const bodyRuleasFormGroup = new FormGroup({
         rule: new FormControl(bodyRule.rule, [Validators.required, Validators.maxLength(3000)]),
-        type: new FormControl(bodyRule.type, [Validators.required])
+        type: new FormControl(bodyRule.type, [Validators.required]),
       });
       component.bodyMatchRuleFormArray.push(bodyRuleasFormGroup);
       expect(component.bodyMatchRuleFormArray.length).toBe(1);
@@ -133,13 +134,13 @@ describe('BodyEditRuleComponent', () => {
     const bodyRule = ({
       type: faker.random.number({
         min: 0,
-        max: Object.keys(RuleType).length - 1
+        max: Object.keys(RuleType).length - 1,
       }) as RuleType,
-      rule: '{\'x\': \'y\'}'
+      rule: "{'x': 'y'}",
     } as unknown) as BodyRule;
     const bodyRuleasFormGroup = new FormGroup({
       rule: new FormControl(bodyRule.rule, [Validators.required]),
-      type: new FormControl(bodyRule.type, [Validators.required])
+      type: new FormControl(bodyRule.type, [Validators.required]),
     });
     component.bodyMatchRuleFormArray.push(bodyRuleasFormGroup);
     component.addBodyEditRuleHandler(bodyRule);

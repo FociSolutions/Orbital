@@ -45,7 +45,7 @@ describe('CreateNewMockViewComponent', () => {
 
   describe('CreateNewMockViewComponent.goBack', () => {
     it('should return to the previous location', () => {
-      const locationSpy = spyOn(TestBed.get(Location), 'back');
+      const locationSpy = jest.spyOn(TestBed.get(Location), 'back');
       component.goBack();
       expect(locationSpy).toHaveBeenCalled();
     });
@@ -94,7 +94,7 @@ describe('CreateNewMockViewComponent', () => {
   describe('CreateNewMockViewComponent.createMock', () => {
     it('should set the mockDefinition store and route to mock editor', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
+        jest.spyOn(TestBed.get(Router), 'navigateByUrl').mockImplementation(route => {
           expect(route).toEqual('/endpoint-view');
         });
         generateMockDefinitionAndSetForm();
@@ -105,7 +105,7 @@ describe('CreateNewMockViewComponent', () => {
 
     it('should not navigate or change designer store state if the formGroup is invalid', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+        const routerSpy = jest.spyOn(TestBed.get(Router), 'navigateByUrl');
         generateMockDefinitionAndSetForm();
         fixture.detectChanges();
         component.formGroup.setErrors({ incorrect: true });

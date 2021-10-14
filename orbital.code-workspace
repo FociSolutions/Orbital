@@ -19,7 +19,8 @@
       "mockdefinition",
       "openapi"
     ],
-    "angularKarmaTestExplorer.projectRootPath": "/src/orbital-designer"
+    "angularKarmaTestExplorer.projectRootPath": "/src/orbital-designer",
+    "jest.jestCommandLine": "npm --prefix ./src/orbital-designer run test --"
   },
   "launch": {
     "configurations": [],

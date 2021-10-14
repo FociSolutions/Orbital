@@ -94,7 +94,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     BodyAddRuleComponent,
     BodyListItemRuleTypeComponent,
     BodyEditRuleComponent,
-    DeleteFromServerViewComponent
+    DeleteFromServerViewComponent,
   ],
   imports: [
     CoreModule,
@@ -116,9 +116,9 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     MatExpansionModule,
     MatChipsModule,
     MatSnackBarModule,
-    NgJsonEditorModule
+    NgJsonEditorModule,
   ],
   providers: [DesignerStore],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

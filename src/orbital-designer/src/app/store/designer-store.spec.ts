@@ -22,7 +22,7 @@ import { recordSize, recordAdd } from '../models/record';
 describe('DesignerStore', () => {
   let store: DesignerStore;
   let serviceFileReader: ReadFileService;
-  const acceptedVerbs = Object.keys(VerbType).map(verb => verb.toLowerCase());
+  const acceptedVerbs = Object.keys(VerbType).map((verb) => verb.toLowerCase());
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [LoggerTestingModule] });
@@ -39,7 +39,7 @@ describe('DesignerStore', () => {
       const Expected = {
         path: faker.random.words(),
         verb: VerbType.GET,
-        spec: null
+        spec: null,
       };
       store.selectedEndpoint = Expected;
       tick();
@@ -55,14 +55,14 @@ describe('DesignerStore', () => {
         id: uuid.v4(),
         metadata: {
           title: 'New Scenario',
-          description: ''
+          description: '',
         },
         verb: mockverb,
         path,
         response: {
           headers: {},
           status: 0,
-          body: ''
+          body: '',
         },
         requestMatchRules: {
           headerRules: [],
@@ -70,11 +70,11 @@ describe('DesignerStore', () => {
           bodyRules: [
             {
               type: RuleType.JSONEQUALITY,
-              rule: {}
-            }
-          ] as Array<BodyRule>
+              rule: {},
+            },
+          ] as Array<BodyRule>,
         },
-        defaultScenario: false
+        defaultScenario: false,
       } as Scenario;
       store.selectedScenario = Expected;
       tick();
@@ -85,7 +85,7 @@ describe('DesignerStore', () => {
   describe('DesignerStore.setEndpoints()', () => {
     it('should update the state with new endpoints', () => {
       const Expected: MockDefinition = {
-        ...validMockDefinition
+        ...validMockDefinition,
       };
       expect(store.state.endpoints).toEqual([]);
       store.setEndpoints(Expected.openApi);
@@ -95,7 +95,7 @@ describe('DesignerStore', () => {
           if (!!Expected.openApi.paths[path][verb]) {
             expect(
               store.state.endpoints.findIndex(
-                endpoint =>
+                (endpoint) =>
                   endpoint.path === path &&
                   endpoint.verb === VerbType[verb.toUpperCase()] &&
                   endpoint.spec === Expected.openApi.paths[path][verb]
@@ -106,25 +106,25 @@ describe('DesignerStore', () => {
       }
     });
 
-    it('should update the state with new endpoints without clearing old ones', done => {
+    it('should update the state with new endpoints without clearing old ones', (done) => {
       const service = new OpenApiSpecService();
       const petStore = new File([validOpenApi], 'test.yml');
       const originalEndpoint = {
         path: '/original-pets',
         verb: VerbType.GET,
-        spec: null
+        spec: null,
       };
       serviceFileReader.read(petStore).subscribe({
-        next: fileread => {
+        next: (fileread) => {
           service.readOpenApiSpec(fileread).subscribe({
-            next: n => {
+            next: (n) => {
               store.setEndpoints(n, false);
               for (const path of Object.keys(n.paths)) {
                 for (const verb of acceptedVerbs) {
                   if (!!n.paths[path][verb]) {
                     expect(
                       store.state.endpoints.findIndex(
-                        endpoint =>
+                        (endpoint) =>
                           endpoint.path === path &&
                           endpoint.verb === VerbType[verb.toUpperCase()] &&
                           endpoint.spec === n.paths[path][verb]
@@ -133,13 +133,11 @@ describe('DesignerStore', () => {
                   }
                 }
               }
-              expect(
-                store.state.endpoints.findIndex(e => e === originalEndpoint)
-              ).toBeGreaterThan(-1);
+              expect(store.state.endpoints.findIndex((e) => e === originalEndpoint)).toBeGreaterThan(-1);
               done();
-            }
+            },
           });
-        }
+        },
       });
 
       store.setState({ ...store.state, endpoints: [originalEndpoint] });
@@ -150,7 +148,7 @@ describe('DesignerStore', () => {
   describe('DesignerStore.mockDefinition', () => {
     it('should update the state with the new MockDefinition and endpoints', fakeAsync(() => {
       const Expected: MockDefinition = {
-        ...validMockDefinition
+        ...validMockDefinition,
       };
       store.mockDefinition = { ...Expected };
       tick();
@@ -160,7 +158,7 @@ describe('DesignerStore', () => {
           if (!!Expected.openApi.paths[path][verb]) {
             expect(
               store.state.endpoints.findIndex(
-                endpoint =>
+                (endpoint) =>
                   endpoint.path === path &&
                   endpoint.verb === VerbType[verb.toUpperCase()] &&
                   endpoint.spec === Expected.openApi.paths[path][verb]
@@ -194,7 +192,7 @@ describe('DesignerStore', () => {
     it('should update MetaData', fakeAsync(() => {
       const newMetaData: Metadata = {
         title: faker.random.word(),
-        description: faker.random.words()
+        description: faker.random.words(),
       };
       store.updateMetadata(newMetaData);
       tick();
@@ -208,13 +206,9 @@ describe('DesignerStore', () => {
       const apiInfo = {
         host: faker.internet.domainName(),
         basepath: faker.internet.domainSuffix(),
-        openApi: fakeDocument
+        openApi: fakeDocument,
       };
-      store.updateApiInformation(
-        apiInfo.host,
-        apiInfo.basepath,
-        apiInfo.openApi
-      );
+      store.updateApiInformation(apiInfo.host, apiInfo.basepath, apiInfo.openApi);
       tick();
       expect(store.state.mockDefinition.host).toEqual(apiInfo.host);
       expect(store.state.mockDefinition.basePath).toEqual(apiInfo.basepath);
@@ -233,14 +227,14 @@ describe('DesignerStore', () => {
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
-            description: ''
+            description: '',
           },
           verb: mockverb,
           path,
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
           },
           requestMatchRules: {
             headerRules: [],
@@ -248,11 +242,11 @@ describe('DesignerStore', () => {
             bodyRules: [
               {
                 type: RuleType.JSONEQUALITY,
-                rule: {}
-              }
-            ] as Array<BodyRule>
+                rule: {},
+              },
+            ] as Array<BodyRule>,
           },
-          defaultScenario: false
+          defaultScenario: false,
         } as Scenario);
       }
       tick();
@@ -357,32 +351,40 @@ describe('DesignerStore', () => {
       expect(recordSize(store.state.mockDefinitions)).toBe(1);
     }));
 
-    it('should set the endpoints when appending a single mock definition to a list of none', done => {
-      const mockDef = _.cloneDeep(validMockDefinition);
-      store.state$.subscribe(state => {
-        // checks if any state's endpoints is not empty (as events are emitted beforehand for mock definition updates)
-        // this will fail if all states have empty endpoints (good) as done will timeout in 5000ms
-        if (state.endpoints.length !== 0) {
-          expect(state.endpoints).not.toEqual([]);
-          done();
-        }
-      });
-
-      store.appendMockDefinition(mockDef);
-    });
-
-    it('should update the state subscription when the state is changed by appending a single mock definition', done => {
+    it('should set the endpoints when appending a single mock definition to a list of none', (done) => {
       const mockDef = _.cloneDeep(validMockDefinition);
       store.appendMockDefinition(mockDef);
-      store.state$.subscribe(state => {
-        if (!!state.mockDefinition) {
-          expect(state.mockDefinition).toEqual(mockDef);
+
+      store.state$.subscribe({
+        next: (state) => {
+          // checks if any state's endpoints is not empty (as events are emitted beforehand for mock definition updates)
+          // this will fail if all states have empty endpoints (good) as done will timeout in 5000ms
+          if (state.endpoints.length !== 0) {
+            expect(state.endpoints).not.toEqual([]);
+          }
           done();
-        }
+        },
+        complete: () => done(),
+        error: (err) => done.fail(err),
       });
     });
 
-    it('should update the state subscription when the state is changed when appending', done => {
+    it('should update the state subscription when the state is changed by appending a single mock definition', (done) => {
+      const mockDef = _.cloneDeep(validMockDefinition);
+      store.appendMockDefinition(mockDef);
+      store.state$.subscribe({
+        next: (state) => {
+          if (!!state.mockDefinition) {
+            expect(state.mockDefinition).toEqual(mockDef);
+          }
+          done();
+        },
+        complete: () => done(),
+        error: (err) => done.fail(err),
+      });
+    });
+
+    it('should update the state subscription when the state is changed when appending', (done) => {
       const mockDef1 = _.cloneDeep(validMockDefinition);
       const mockDef2 = _.cloneDeep(validMockDefinition);
       const mockDef3 = _.cloneDeep(validMockDefinition);
@@ -391,23 +393,27 @@ describe('DesignerStore', () => {
       mockDef2.metadata.title = faker.random.words(3);
       mockDef3.metadata.title = faker.random.words(3);
 
-      store.state$.subscribe(state => {
-        if (!!state.mockDefinition) {
-          expect(state.mockDefinition).toEqual(mockDef1);
-          done();
-        }
-      });
-
       store.appendMockDefinition(mockDef1);
       store.appendMockDefinition(mockDef2);
       store.appendMockDefinition(mockDef3);
+
+      store.state$.subscribe({
+        next: (state) => {
+          if (!!state.mockDefinition) {
+            expect(state.mockDefinition).toEqual(mockDef1);
+          }
+          done();
+        },
+        complete: () => done(),
+        error: (err) => done.fail(err),
+      });
 
       // remove one item from the store to simulate queuing
       store.state$.pipe(take(1));
     });
 
     // eslint-disable-next-line max-len
-    it('should update the state subscription when the state is changed when appending, and an item already exists with the same name', done => {
+    it('should update the state subscription when the state is changed when appending, and an item already exists with the same name', (done) => {
       const mockDef1 = _.cloneDeep(validMockDefinition);
       const mockDef2 = _.cloneDeep(validMockDefinition);
 
@@ -416,7 +422,7 @@ describe('DesignerStore', () => {
       mockDef2.scenarios = [{ id: faker.random.word() }] as Scenario[];
 
       let calls = 0;
-      store.state$.subscribe(state => {
+      store.state$.subscribe((state) => {
         if (!!state.mockDefinition) {
           if (calls === 1) {
             expect(state.mockDefinition).toEqual(mockDef1);
@@ -442,14 +448,14 @@ describe('DesignerStore', () => {
           id: uuid.v4(),
           metadata: {
             title: 'New Scenario',
-            description: ''
+            description: '',
           },
           verb: mockverb,
           path,
           response: {
             headers: {},
             status: 0,
-            body: ''
+            body: '',
           },
           requestMatchRules: {
             headerRules: [],
@@ -457,12 +463,12 @@ describe('DesignerStore', () => {
             bodyRules: [
               {
                 type: RuleType.JSONEQUALITY,
-                rule: {}
-              }
-            ] as Array<BodyRule>
+                rule: {},
+              },
+            ] as Array<BodyRule>,
           },
-          defaultScenario: false
-        } as Scenario
+          defaultScenario: false,
+        } as Scenario,
       };
       const expected = input.mock.scenarios.length + 1;
 
@@ -474,7 +480,7 @@ describe('DesignerStore', () => {
 
     it('should update existing scenario', fakeAsync(() => {
       const input = {
-        mock: validMockDefinition
+        mock: validMockDefinition,
       };
       const inputScenario = input.mock.scenarios[0];
       const expected = input.mock.scenarios.length;

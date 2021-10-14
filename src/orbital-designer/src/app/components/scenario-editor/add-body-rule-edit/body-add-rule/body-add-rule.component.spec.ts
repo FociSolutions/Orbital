@@ -9,12 +9,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyAddRuleComponent } from './body-add-rule.component';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 describe('BodyAddRuleComponent', () => {
   let component: BodyAddRuleComponent;
   let fixture: ComponentFixture<BodyAddRuleComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [BodyAddRuleComponent],
       imports: [
@@ -25,14 +26,15 @@ describe('BodyAddRuleComponent', () => {
         MatSelectModule,
         MatCardModule,
         FormsModule,
-        ReactiveFormsModule
-      ]
+        ReactiveFormsModule,
+        NgJsonEditorModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BodyAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -68,7 +70,7 @@ describe('BodyAddRuleComponent', () => {
       });
 
       describe('And the add button is pushed', () => {
-        it('Should emit the bodyRuleAddedEventEmitter', done => {
+        it('Should emit the bodyRuleAddedEventEmitter', (done) => {
           component.bodyRuleAddedEventEmitter.subscribe((bodyRule: BodyRule) => {
             expect(bodyRule).toEqual(({ rule: '{"x":"y"}', type: RuleType.JSONEQUALITY } as unknown) as BodyRule);
             done();

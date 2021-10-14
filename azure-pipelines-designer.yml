@@ -15,7 +15,7 @@ variables:
 resources:
   containers:
     - container: node
-      image: selenium/node-chrome:latest
+      image: node:14-alpine
       options: --user 0:0
 
 stages:
@@ -24,14 +24,8 @@ stages:
       - job: install_and_build
         displayName: install and build
         pool:
-          vmImage: "Ubuntu 16.04"
+          vmImage: "ubuntu-latest"
         steps:
-          - task: DeleteFiles@1
-            displayName: "Cleanup JUnit files"
-            inputs:
-              SourceFolder: ./junit
-              Contents: "TEST*.xml"
-
           - task: Npm@1
             displayName: "npm ci"
             inputs:
@@ -57,7 +51,7 @@ stages:
       - job: test_and_publish
         displayName: test and publish
         pool:
-          vmImage: "Ubuntu 16.04"
+          vmImage: "ubuntu-latest"
         steps:
           - task: Npm@1
             displayName: "npm ci"
@@ -66,10 +60,10 @@ stages:
               workingDir: "./src/orbital-designer"
 
           - task: Npm@1
-            displayName: "npm run test-ci"
+            displayName: "npm run test:ci"
             inputs:
               command: custom
-              customCommand: run test-ci
+              customCommand: run test:ci
               workingDir: "./src/orbital-designer"
 
           - task: PublishCodeCoverageResults@1
@@ -77,18 +71,17 @@ stages:
             condition: succeededOrFailed()
             inputs:
               codeCoverageTool: Cobertura
-              summaryFileLocation: "./src/coverage/cobertura-coverage.xml"
-              reportDirectory: "./src/coverage"
+              summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/cobertura-coverage.xml"
               failIfCoverageEmpty: true
 
           - task: PublishTestResults@2
             displayName: "Publish angular test results"
             condition: succeededOrFailed()
             inputs:
-              searchFolder: $(System.DefaultWorkingDirectory)/src/junit
+              searchFolder: $(System.DefaultWorkingDirectory)/src
               testRunTitle: Angular
               testResultsFormat: JUnit
-              testResultsFiles: "**/TESTS*.xml"
+              testResultsFiles: "**/junit.xml"
 
           - task: Npm@1
             displayName: "npm run lint --format=stylish"

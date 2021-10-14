@@ -59,7 +59,7 @@ describe('KvpAddComponent', () => {
       component.ruleKey.setValue(input.key);
       component.ruleValue.setValue(input.value);
       component.ruleType.setValue(RuleType.TEXTSTARTSWITH);
-      spyOn(component.kvp, 'emit');
+      jest.spyOn(component.kvp, 'emit');
       component.onAdd();
       expect(component.kvp.emit).toHaveBeenCalled();
       expect(component.isValid).toBe(true);

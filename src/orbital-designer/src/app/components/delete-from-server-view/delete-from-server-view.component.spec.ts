@@ -48,7 +48,7 @@ describe('DeleteFromServerViewComponent', () => {
 
   describe('DeleteFromServerViewComponent.onBack', () => {
     it('should call location.back()', () => {
-      const locationSpy = spyOn(TestBed.get(Location), 'back');
+      const locationSpy = jest.spyOn(TestBed.get(Location), 'back');
       component.onBack();
       expect(locationSpy).toHaveBeenCalled();
     });

@@ -6,28 +6,36 @@ import { Router } from '@angular/router';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { BlankComponent } from 'src/app/shared/components/test/blank.component';
 
 describe('HomeViewComponent', () => {
   let component: HomeViewComponent;
   let fixture: ComponentFixture<HomeViewComponent>;
   let router: Router;
+  let path: string;
 
-  beforeEach((() => {
+  beforeEach(() => {
+    path = faker.random.word();
     TestBed.configureTestingModule({
-      declarations: [HomeViewComponent],
+      declarations: [HomeViewComponent, BlankComponent],
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: path,
+            component: BlankComponent,
+          },
+        ]),
         MatGridListModule,
         MatCardModule,
-        MatButtonModule
-      ]
+        MatButtonModule,
+      ],
     }).compileComponents();
     router = TestBed.get(Router);
 
     fixture = TestBed.createComponent(HomeViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -36,8 +44,7 @@ describe('HomeViewComponent', () => {
   describe('HomeViewComponent.navigateTo', () => {
     it('should call the navigateUrl function passing in the given url', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        const navigationSpy = spyOn(router, 'navigateByUrl');
-        const path = faker.random.word();
+        const navigationSpy = jest.spyOn(router, 'navigateByUrl');
         component.navigateTo(path);
         tick();
         fixture.detectChanges();

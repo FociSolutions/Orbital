@@ -13,11 +13,11 @@ describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
   let fixture: ComponentFixture<AddResponseComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
-      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule, NgJsonEditorModule.forRoot()],
-      providers: [ScenarioFormBuilder]
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule, NgJsonEditorModule],
+      providers: [ScenarioFormBuilder],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddResponseComponent);
@@ -26,7 +26,7 @@ describe('AddResponseComponent', () => {
     const scenarioBuilder = TestBed.get(ScenarioFormBuilder);
     component.responseFormGroup = scenarioBuilder.responseFormGroup(emptyScenario.response);
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -55,13 +55,13 @@ describe('AddResponseComponent', () => {
       component.statusCode = testStatusCode;
       component.responseFormGroup.controls.body.setValue(testBodyResponse);
 
-      spyOn(component.isValid, 'emit');
-      spyOn(component.responseOutput, 'emit');
+      jest.spyOn(component.isValid, 'emit');
+      jest.spyOn(component.responseOutput, 'emit');
 
       const testResponse = {
         headers: testHeaderResponse,
         body: testBodyResponse,
-        status: +testStatusCode
+        status: +testStatusCode,
       } as Response;
 
       component.response = testResponse;
@@ -78,13 +78,13 @@ describe('AddResponseComponent', () => {
 
       const headerRecord = {};
       headerRecord[faker.random.word()] = faker.random.word();
-      const saveHeaderRecordSpy = spyOn(component.responseOutput, 'emit');
+      const saveHeaderRecordSpy = jest.spyOn(component.responseOutput, 'emit');
       component.saveHeaders(headerRecord);
 
       expect(saveHeaderRecordSpy).toHaveBeenCalledWith(({
         headers: headerRecord,
         body: component.responseFormGroup.controls.body.value,
-        status: +component.statusCode
+        status: +component.statusCode,
       } as unknown) as Response);
     });
   });

@@ -31,12 +31,13 @@ import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.buil
 import { BodyEditRuleComponent } from '../add-body-rule-edit/body-edit-rule.component';
 import { BodyListItemRuleTypeComponent } from '../add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyAddRuleComponent } from '../add-body-rule-edit/body-add-rule/body-add-rule.component';
+import { JsonEditorComponent } from 'ang-jsoneditor';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
   let fixture: ComponentFixture<AddRequestMatchRuleComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         AddRequestMatchRuleComponent,
@@ -52,7 +53,8 @@ describe('AddRequestMatchRuleComponent', () => {
         UrlListItemRuleTypeComponent,
         BodyEditRuleComponent,
         BodyListItemRuleTypeComponent,
-        BodyAddRuleComponent
+        BodyAddRuleComponent,
+        JsonEditorComponent,
       ],
       imports: [
         LoggerTestingModule,
@@ -67,9 +69,9 @@ describe('AddRequestMatchRuleComponent', () => {
         MatDividerModule,
         MatIconModule,
         MatCheckboxModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
       ],
-      providers: [DesignerStore, ScenarioFormBuilder]
+      providers: [DesignerStore, ScenarioFormBuilder],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddRequestMatchRuleComponent);
@@ -82,10 +84,10 @@ describe('AddRequestMatchRuleComponent', () => {
     component.requestMatchRule = ({
       headerRules: [],
       queryRules: [],
-      bodyRules: [{}] as BodyRule[]
+      bodyRules: [{}] as BodyRule[],
     } as unknown) as RequestMatchRule;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -93,19 +95,19 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('AddRequestMatchRule.Save', () => {
     it('should not emit the request match rules if the body match rules are invalid', () => {
-      spyOn(component.requestMatchRuleOutput, 'emit');
+      jest.spyOn(component.requestMatchRuleOutput, 'emit');
 
       const inputInvalidBodyMatchRule: BodyRule[] = [
         {
           type: -1,
           rule: {
             key: faker.lorem.sentence(),
-            value: faker.lorem.sentence()
-          }
-        }
+            value: faker.lorem.sentence(),
+          },
+        },
       ];
       const requestMatchRule = {
-        bodyRules: inputInvalidBodyMatchRule
+        bodyRules: inputInvalidBodyMatchRule,
       } as RequestMatchRule;
       component.requestMatchRule = requestMatchRule;
       component.saveStatus = true;

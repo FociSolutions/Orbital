@@ -179,7 +179,7 @@ describe('AddMetadataComponent', () => {
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
 
-      spyOn(component.metadataOutput, 'emit');
+      jest.spyOn(component.metadataOutput, 'emit');
       component.saveStatus = true;
       expect(component.metadataOutput.emit).toHaveBeenCalledWith(
         testMockDef.metadata
@@ -199,7 +199,7 @@ describe('AddMetadataComponent', () => {
       } as unknown) as Metadata;
       component.metadata = testMockDef.metadata;
 
-      spyOn(component.metadataOutput, 'emit');
+      jest.spyOn(component.metadataOutput, 'emit');
       component.saveStatus = false;
       expect(component.metadataOutput.emit).not.toHaveBeenCalled();
     });

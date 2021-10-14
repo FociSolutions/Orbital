@@ -50,7 +50,7 @@ describe('ScenarioEditorComponent', () => {
   let fixture: ComponentFixture<ScenarioEditorComponent>;
   let scenarioBuilder: ScenarioFormBuilder;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ScenarioEditorComponent,
@@ -80,17 +80,16 @@ describe('ScenarioEditorComponent', () => {
         LoggerTestingModule,
         MatCardModule,
         OrbitalCommonModule,
-        RouterTestingModule.withRoutes([
-          { path: 'scenario-view', component: ScenarioViewComponent }]),
+        RouterTestingModule.withRoutes([{ path: 'scenario-view', component: ScenarioViewComponent }]),
         MatButtonModule,
         MatExpansionModule,
         BrowserAnimationsModule,
         MatMenuModule,
         MatIconModule,
         MatChipsModule,
-        NgJsonEditorModule.forRoot()
+        NgJsonEditorModule,
       ],
-      providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService]
+      providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ScenarioEditorComponent);
@@ -99,7 +98,7 @@ describe('ScenarioEditorComponent', () => {
     component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
     component.selectedScenario = emptyScenario;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -109,7 +108,7 @@ describe('ScenarioEditorComponent', () => {
     it('should set the metadata to the metadata when the component outputs the metadata', () => {
       const fakeMetadata = {
         title: faker.random.word(),
-        description: faker.random.word()
+        description: faker.random.word(),
       } as Metadata;
       component.handleMetadataOutput(fakeMetadata);
       expect(component.metadata).toEqual(fakeMetadata);
@@ -145,8 +144,8 @@ describe('ScenarioEditorComponent', () => {
           scenario: validMockDefinition.scenarios[0],
           metadata: {
             title: faker.random.word(),
-            description: faker.random.word()
-          } as Metadata
+            description: faker.random.word(),
+          } as Metadata,
         };
         component.scenarioId = input.scenario.id;
         component.metadata = input.metadata;
@@ -158,14 +157,14 @@ describe('ScenarioEditorComponent', () => {
         component.requestMatchRuleValid = true;
         component.responseMatchRuleValid = true;
         ((component.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
-          .urlMatchRules as FormArray).controls = input.scenario.requestMatchRules.urlRules.map(ur =>
+          .urlMatchRules as FormArray).controls = input.scenario.requestMatchRules.urlRules.map((ur) =>
           scenarioBuilder.getUrlItemFormGroup(ur)
         );
 
         component.saveScenario();
         tick();
         fixture.detectChanges();
-        const actual = store.state.mockDefinition.scenarios.find(s => s.id === input.scenario.id);
+        const actual = store.state.mockDefinition.scenarios.find((s) => s.id === input.scenario.id);
         expect(actual).toBeTruthy();
         expect(actual.metadata.title).toEqual(input.metadata.title);
       });

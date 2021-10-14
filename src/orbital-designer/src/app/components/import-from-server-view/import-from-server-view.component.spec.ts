@@ -15,29 +15,35 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
+import { BlankComponent } from 'src/app/shared/components/test/blank.component';
 
 describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
   let fixture: ComponentFixture<ImportFromServerViewComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ImportFromServerViewComponent],
+      declarations: [ImportFromServerViewComponent, BlankComponent],
       imports: [
         MatCardModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: 'endpoint-view',
+            component: BlankComponent,
+          },
+        ]),
         OrbitalCommonModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
-        LoggerTestingModule
+        LoggerTestingModule,
       ],
-      providers: [Location, DesignerStore, OrbitalAdminService]
+      providers: [Location, DesignerStore, OrbitalAdminService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ImportFromServerViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -45,7 +51,7 @@ describe('ImportFromServerViewComponent', () => {
 
   describe('ImportFromServerViewComponent.onBack', () => {
     it('should call location.back()', () => {
-      const locationSpy = spyOn(TestBed.get(Location), 'back');
+      const locationSpy = jest.spyOn(TestBed.get(Location), 'back');
       component.onBack();
       expect(locationSpy).toHaveBeenCalled();
     });
@@ -54,7 +60,7 @@ describe('ImportFromServerViewComponent', () => {
   describe('ImportFromServerViewComponent.onSubmit', () => {
     it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        const routerSpy = spyOn(TestBed.get(Router), 'navigateByUrl');
+        const routerSpy = jest.spyOn(TestBed.get(Router), 'navigateByUrl');
         const store = TestBed.get(DesignerStore);
         const expectedMockDefinition: MockDefinition = validMockDefinition;
         const expectedMockDefinitions = {};
@@ -73,7 +79,7 @@ describe('ImportFromServerViewComponent', () => {
     it('should update the list of MockDefinitions using the values from the list of controls', () => {
       const expectedList = new Array(3).map(() => new FormControl(validMockDefinition));
       component.onListOutput(expectedList);
-      expect(component.mockDefinitions).toEqual(expectedList.map(control => control.value));
+      expect(component.mockDefinitions).toEqual(expectedList.map((control) => control.value));
     });
   });
 
@@ -92,7 +98,7 @@ describe('ImportFromServerViewComponent', () => {
     it('should set the control value to the response body given an http response with an array body', () => {
       const response = new HttpResponse({
         body: [{ body: faker.random.words(), openApi: { tags: [faker.random.words()] } }],
-        status: 200
+        status: 200,
       });
       component.onResponse((response.body as unknown) as MockDefinition[]);
       expect(component.formArray.controls[0].value).toEqual(response.body[0]);

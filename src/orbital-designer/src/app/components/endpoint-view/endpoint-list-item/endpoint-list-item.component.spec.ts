@@ -65,7 +65,7 @@ describe('EndpointListItemComponent', () => {
 
     it('Should select endpoint and navigate to scenario view page', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(route => {
+        jest.spyOn(TestBed.get(Router), 'navigateByUrl').mockImplementation(route => {
           expect(route).toEqual('/scenario-view');
         });
         component.selectEndpoint();
