@@ -15,6 +15,7 @@ import { NGXLogger } from 'ngx-logger';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import { FormGroup, FormControl } from '@angular/forms';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
+import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
 
 @Component({
   selector: 'app-add-response',
@@ -100,16 +101,13 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * Handler method for any changes to json-editor content
    */
   changeLog() {
-    try {
-      const newBody = JSON.stringify(this.editor.get());
-      if (newBody.length > 0 && this.jsonService.isValidJSON(newBody)) {
-        this.setError(false);
-        this.responseFormGroup.controls.body.setValue(newBody);
-      } else {
-        this.setError(true);
-      }
-    } catch (e) {
-      this.setError(true);
+    const jsonEditorString = this.editor.getText();
+    const errorType = this.jsonService.checkJSON(jsonEditorString);
+    if (errorType != jsonErrorType.NONE) {
+      this.setError("Response body" + this.jsonService.jsonErrorMap.get(errorType));
+    }
+    else {
+      this.responseFormGroup.controls.body.setValue(jsonEditorString);
     }
   }
 
@@ -117,12 +115,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * Sets or clears JSON body error footer based on supplied boolean flag
    * @param flag Set/clear flag
    */
-  setError(flag: boolean) {
-    if (flag) {
-      this.responseFormGroup.controls.body.setErrors({invalidJson: 'Body is not valid JSON'});
-    } else {
-      this.responseFormGroup.controls.body.setErrors(null);
-    }
+  setError(message: string) {
+      this.responseFormGroup.controls.body.setErrors({invalidJson: message});
   }
 
   /**

@@ -11,7 +11,7 @@ stages:
   jobs:
   - job: build_angular_designer
     pool:
-      vmImage: "Ubuntu 16.04"
+      vmImage: "ubuntu-latest"
     displayName: build angular designer
     steps:
     - task: NodeTool@0
@@ -28,14 +28,14 @@ stages:
       artifact: orbital-designer
   - job: publish_release_scripts
     pool:
-      vmImage: "Ubuntu 16.04"
+      vmImage: "ubuntu-latest"
     displayName: publish release scripts
     steps:
     - publish: $(System.DefaultWorkingDirectory)/scripts
       artifact: scripts
   - job: build_dotnet_mock_server
     pool:
-      vmImage: "Ubuntu 16.04"
+      vmImage: "ubuntu-latest"
     displayName: build dotnet mock server
     steps:
     - task: DotNetCoreCLI@2
@@ -48,7 +48,7 @@ stages:
       artifact: mock server
   - job: build_dotnet_mock_server_win_x64
     pool:
-      vmImage: "Ubuntu 16.04"
+      vmImage: "ubuntu-latest"
     displayName: build dotnet mock server win x64
     steps:
     - task: DotNetCoreCLI@2
@@ -61,7 +61,7 @@ stages:
       artifact: mock server win x64
   - job: build_dotnet_mock_server_lin_x64
     pool:
-      vmImage: "Ubuntu 16.04"
+      vmImage: "ubuntu-latest"
     displayName: build dotnet mock server linux x64
     steps:
     - task: DotNetCoreCLI@2
@@ -74,7 +74,7 @@ stages:
       artifact: mock server lin x64
   - job: build_dotnet_mock_server_osx_x64
     pool:
-      vmImage: "Ubuntu 16.04"
+      vmImage: "ubuntu-latest"
     displayName: build dotnet mock server osx x64
     steps:
     - task: DotNetCoreCLI@2
@@ -91,19 +91,18 @@ stages:
   jobs:
   - job: build_mock_server_container
     pool:
-      vmImage: "Ubuntu 16.04"
+      vmImage: "ubuntu-latest"
     displayName: build mock server container
     steps:
-    - task: NuGetCommand@2
-      displayName: install git version tool
+    - task: CmdLine@2
       inputs:
-        command: custom
-        arguments: install GitVersion.CommandLine -Version 4.0.0 -OutputDirectory $(Build.BinariesDirectory)/tools -ExcludeVersion
+        script: 'dotnet tool install --global GitVersion.Tool'
+      displayName: Install GitVersion.Tool
     - script: |
         chmod -R 755 $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/
         mkdir $(System.DefaultWorkingDirectory)/gitversion && touch $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
-        mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
-        mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output buildserver /nofetch
+        dotnet-gitversion /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+        dotnet-gitversion /output buildserver /nofetch
       displayName: set git version to environment variables
     - task: Docker@2
       displayName: build mock server container and push to Foci Container Registry
@@ -119,19 +118,18 @@ stages:
       artifact: drop
   - job: build_designer_container
     pool:
-      vmImage: "Ubuntu 16.04"
+      vmImage: "ubuntu-latest"
     displayName: build designer container
     steps:
-    - task: NuGetCommand@2
-      displayName: install git version tool
+    - task: CmdLine@2
       inputs:
-        command: custom
-        arguments: install GitVersion.CommandLine -Version 4.0.0 -OutputDirectory $(Build.BinariesDirectory)/tools -ExcludeVersion
+        script: 'dotnet tool install --global GitVersion.Tool'
+      displayName: Install GitVersion.Tool
     - script: |
         chmod -R 755 $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/
         mkdir $(System.DefaultWorkingDirectory)/gitversion && touch $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
-        mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
-        mono $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/GitVersion.exe /output buildserver /nofetch
+        dotnet-gitversion /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+        dotnet-gitversion /output buildserver /nofetch
       displayName: set git version to environment variables
     - task: Docker@2
       displayName: "buildAndPush Orbital Designer"
@@ -150,7 +148,7 @@ stages:
   - deployment: deploy_development
     displayName: deploy developmnet
     pool:
-      vmImage: 'Ubuntu 16.04'
+      vmImage: 'ubuntu-latest'
     environment: development
     variables:
     - group: Foci Secrets
@@ -189,7 +187,7 @@ stages:
   - deployment: deploy_production
     displayName: deploy production
     pool:
-      vmImage: 'Ubuntu 16.04'
+      vmImage: 'ubuntu-latest'
     environment: production
     variables:
     - group: Foci Secrets

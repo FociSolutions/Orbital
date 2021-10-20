@@ -2,6 +2,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ValidJsonService } from './valid-json.service';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
+import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
 
 describe('ValidJsonService', () => {
   beforeEach((() => {
@@ -15,38 +16,35 @@ describe('ValidJsonService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('add-body-rule.isValidJSON', () => {
-    it('should return false if the JSON cannot be parsed ', () => {
+  describe('add-body-rule.checkJSON', () => {
+    it('should return EMPTY if the JSON string is empty', () => {
       const service: ValidJsonService = TestBed.get(ValidJsonService);
-      const Actual = service.isValidJSON('invalid');
-      expect(Actual).toBe(false);
+      const Actual = service.checkJSON('');
+      expect(Actual).toBe(jsonErrorType.EMPTY);
     });
   });
 
-  describe('add-body-rule.isValidJSON', () => {
-    it('should return true if the JSON can be parsed ', () => {
+  describe('add-body-rule.checkJSON', () => {
+    it('should return EMPTY_JSON if json string parsed is an empty object', () => {
       const service: ValidJsonService = TestBed.get(ValidJsonService);
-      const Actual = service.isValidJSON('{}');
-      expect(Actual).toBe(true);
+      const Actual = service.checkJSON('{}');
+      expect(Actual).toBe(jsonErrorType.EMPTY_JSON);
     });
   });
 
-  describe('add-body-rule.parseJSONOrDefault', () => {
-    it('should return default value if the JSON cannot be parsed ', () => {
-      const invalidJSONString: string = faker.random.word();
+  describe('add-body-rule.checkJSON', () => {
+    it('should return INVALID if json cannot be parsed', () => {
       const service: ValidJsonService = TestBed.get(ValidJsonService);
-      const Actual = service.parseJSONOrDefault<object>(invalidJSONString, {});
-      expect(Actual).toEqual({});
+      const Actual = service.checkJSON('{');
+      expect(Actual).toBe(jsonErrorType.INVALID);
     });
   });
-  describe('add-body-rule.parseJSONOrDefault', () => {
-    it('should return the JSON object value if the JSON can be parsed ', () => {
+
+  describe('add-body-rule.checkJSON', () => {
+    it('should return INVALID if parsed json is not OBJECT', () => {
       const service: ValidJsonService = TestBed.get(ValidJsonService);
-      const Actual = service.parseJSONOrDefault<object>(
-        '{ "name":"Test", "age":30 }',
-        {}
-      );
-      expect(Actual).toEqual({ name: 'Test', age: 30 });
+      const Actual = service.checkJSON('test');
+      expect(Actual).toBe(jsonErrorType.INVALID);
     });
   });
 });

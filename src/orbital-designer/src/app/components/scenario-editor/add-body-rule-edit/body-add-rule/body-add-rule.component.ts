@@ -57,7 +57,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
 
 
     this.bodyAddRuleFormGroup = this.addBodyRuleBuilder.createNewBodyRuleForm();
-    this.bodyAddRuleFormGroup.controls.rule.setValue('');
+    this.bodyAddRuleFormGroup.controls.rule.setValue('{}');
     this.bodyRuleInEdit.rule = this.bodyAddRuleFormGroup.controls.rule.value;
     this.bodyRuleInEdit.type = this.bodyAddRuleFormGroup.controls.type.value;
 
@@ -109,32 +109,15 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   /**
    * Sets the rule object as invalid
    */
-  setJsonInvalid(): void {
-    this.rule.setErrors({ invalidJson: true, message: 'The JSON is invalid' });
+  setJsonInvalid(message: string): void {
+    this.rule.setErrors({ invalidJSON: true, message: message });
   }
 
   /**
    * changelog function for json editor content
    */
   changeLog() {
-    try {
-      if (this.editor.isValidJson()) {
-        const jsonContent = this.editor.get();
-        if (Object.keys(jsonContent).length === 0) {
-          this.setJsonInvalid;
-          console.log(this.rule.status);
-        }
-        else {
-          const newData = JSON.stringify(jsonContent);
-          this.bodyAddRuleFormGroup.controls.rule.setValue(newData);
-        }
-      }
-      else {
-        this.setJsonInvalid;
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    this.bodyAddRuleFormGroup.controls.rule.setValue(this.editor.getText());
   }
 
   /**

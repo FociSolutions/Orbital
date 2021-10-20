@@ -45,10 +45,10 @@
     ></app-kvp-edit>
     <div class="response-body">
       <div class="body-title">Body</div>
-        <json-editor [options]="options" [data]="bodyData" #editor></json-editor>
-      <div class="error-message" *ngIf="!!this.responseFormGroup.controls.body.errors">
-        Body is not valid JSON
-      </div>
+        <json-editor [options]="options" [data]="bodyData" #editor (click)='changeLog()'></json-editor>
+    </div>
+    <div class="error-message" *ngIf="!!this.responseFormGroup.controls.body.errors">
+      <mat-error>{{ this.responseFormGroup.controls.body.errors.invalidJson }}</mat-error>
     </div>
   </form>
   </mat-expansion-panel>

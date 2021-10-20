@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { BodyRule } from '../../../../models/mock-definition/scenario/body-rule.model';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class AddBodyRuleBuilder {
     return this.formBuilder.group({
       type: new FormControl(bodyRule.type, Validators.required),
       rule: new FormControl(
-        this.validJsonService.parseJSONOrDefault(JSON.stringify(bodyRule.rule), ''),
+        bodyRule.rule,
         this.validateJson.bind(this)
       )
     });
@@ -38,8 +39,22 @@ export class AddBodyRuleBuilder {
    * @param formControl The form control to validate against
    */
   validateJson(formControl: FormControl) {
-    return this.validJsonService.isValidJSON(formControl.value)
-      ? null
-      : { invalidJson: true, message: 'The JSON is invalid' };
+    const jsonErrorResult = this.validJsonService.checkJSON(formControl.value);
+
+    if (jsonErrorResult != jsonErrorType.NONE) {
+      return this.jsonInvalid("Body rule " + this.validJsonService.jsonErrorMap.get(jsonErrorResult));
+    }
+    else {
+      return null;
+    }
+  }
+
+  /**
+   *
+   * @param errorMessage the error message
+   * @returns the error object for a form control
+   */
+  jsonInvalid(errorMessage: string) {
+    return { invalidJSON: true, message: errorMessage }
   }
 }

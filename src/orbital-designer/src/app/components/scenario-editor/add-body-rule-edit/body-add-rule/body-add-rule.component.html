@@ -24,8 +24,8 @@
       <mat-error *ngIf="rule.errors.required">
         Body rule is required
       </mat-error>
-      <mat-error *ngIf="rule.errors.invalidJson">
-        Body rule must be valid JSON
+      <mat-error *ngIf="rule.errors.invalidJSON">
+        {{ rule.errors.message }}
       </mat-error>
     </div>
 
