@@ -3,6 +3,10 @@
     "title": "thisismytest",
     "description": ""
   },
+  "tokenValidation": {
+    "validate": true,
+    "key": "20ff353bedcdb6113c6ad3f8d7c8"
+  },
   "openApi": {
     "swagger": "2.0",
     "info": {
@@ -258,6 +262,11 @@
             "rule": {
               "urlPath": "/pets/34/shots/12"
             }
+          }
+        ],
+        "tokenRules": [
+          {
+            "type": 0
           }
         ]
       },
