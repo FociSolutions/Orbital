@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bogus;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
@@ -74,8 +73,9 @@ namespace Orbital.Mock.Server.LongRunningTests
             var Target = _mockServerProcessor;
             Target.Start();
             IEnumerable<Scenario> emptyList = new List<Scenario>();
-            HttpRequest request = new DefaultHttpRequest(new DefaultHttpContext());
-            var input = new MessageProcessorInput(request, emptyList);
+
+            var context = new DefaultHttpContext();
+            var input = new MessageProcessorInput(context.Request, emptyList);
 
             var Actual = Target.Push(input, cancelledTokenSource.Token).Result.Status;
             var Expected = StatusCodes.Status500InternalServerError;

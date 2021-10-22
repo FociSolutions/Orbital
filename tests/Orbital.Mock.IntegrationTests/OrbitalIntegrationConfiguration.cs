@@ -18,9 +18,9 @@ namespace Orbital.Mock.Server.IntegrationTests
 
         protected override void OnConfigure(LightBddConfiguration configuration)
         {
-            configuration.DependencyContainerConfiguration().UseDefaultContainer(cfg =>
+            configuration.DependencyContainerConfiguration().UseDefault(cfg =>
             {
-                cfg.RegisterInstance(new TestOutputHelper(), new RegistrationOptions().As<ITestOutputHelper>());
+                cfg.RegisterInstance(new TestOutputHelper(), opt => opt.As<ITestOutputHelper>());
             });
 
             configuration.ExecutionExtensionsConfiguration()

@@ -1,6 +1,6 @@
 ﻿using System;
+
 using Bogus;
-using Microsoft.EntityFrameworkCore.Internal;
 using Scriban.Runtime;
 
 namespace Orbital.Mock.Server.Functions
@@ -26,7 +26,7 @@ namespace Orbital.Mock.Server.Functions
         /// </summary>
         public static string Reviews()
         {
-            return faker.Rant.Reviews().Join(" ");
+            return string.Join(" ", faker.Rant.Reviews());
         }
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Registrations
                 var assemblyDescription = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyDescriptionAttribute>();
                 foreach (var version in provider.ApiVersionDescriptions)
                 {
-                    o.SwaggerDoc(version.GroupName, new Info()
+                    o.SwaggerDoc(version.GroupName, new OpenApiInfo()
                     {
                         Title = $"{assemblyProduct.Product} {version.ApiVersion}",
                         Version = version.ApiVersion.ToString(),

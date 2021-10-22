@@ -52,7 +52,7 @@ namespace Orbital.Mock.Server.Middleware
                 bufferSize: 1024,
                 leaveOpen: true))
             {
-                bodyAsText = streamReader.ReadToEnd();
+                bodyAsText = await streamReader.ReadToEndAsync();
                 request.Body.Position = 0;
             }
             return $"{request.Scheme} {request.Host}{request.Path} {request.QueryString} {bodyAsText}";

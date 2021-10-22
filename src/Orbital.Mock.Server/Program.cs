@@ -1,13 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Security.Authentication;
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
 using Serilog;
 using Serilog.Events;
 
@@ -27,9 +32,12 @@ namespace Orbital.Mock.Server
                 .UseSerilog()
                 .ConfigureKestrel(serverOptions =>
                 {
+                    serverOptions.ConfigureHttpsDefaults(configOptions =>
+                    {
+                        configOptions.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
+                    });
                     // max size of header
                     serverOptions.Limits.MaxRequestHeadersTotalSize = int.MaxValue - 2;
-
                     // max size for request buffer size
                     serverOptions.Limits.MaxRequestBufferSize = null;
                 })
@@ -42,7 +50,6 @@ namespace Orbital.Mock.Server
             .MinimumLevel.Information() 
             .Enrich.FromLogContext()
             .WriteTo.Console();
-
 
             if (context.HostingEnvironment.IsDevelopment())
             {

@@ -1,29 +1,34 @@
 ﻿using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+
+//using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Orbital.Mock.Server.Registrations;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using System.Diagnostics.CodeAnalysis;
-using FluentValidation.AspNetCore;
-using Orbital.Mock.Server.Models.Validators;
-using MediatR;
-using Orbital.Mock.Server.Models.Converters;
-using Orbital.Mock.Server.Pipelines;
-using Orbital.Mock.Server.Middleware;
-using Orbital.Mock.Server.Pipelines.Models.Interfaces;
-using Orbital.Mock.Server.Pipelines.Models;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Factories.Interfaces;
+
 using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Server.Factories.Interfaces;
+using Orbital.Mock.Server.Functions;
+using Orbital.Mock.Server.Middleware;
+using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.Models.Converters;
+using Orbital.Mock.Server.Models.Validators;
+using Orbital.Mock.Server.Pipelines;
+using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using Scriban;
+using Orbital.Mock.Server.Registrations;
+
 using Bogus;
-using Orbital.Mock.Server.Functions;
+using MediatR;
+using Scriban;
 using Scriban.Runtime;
+using FluentValidation.AspNetCore;
 
 namespace Orbital.Mock.Server
 {
@@ -45,14 +50,17 @@ namespace Orbital.Mock.Server
             services.AddCors(o => o.AddPolicy("OrbitalPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
             }));
 
-            services.AddMvc()
-                .AddJsonOptions(options => { options.SerializerSettings.Converters.Add(new OpenApiJsonConverter()); })
+            services.AddControllers()
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.Converters.Add(new OpenApiJsonConverter());
+                })
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>())
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
@@ -69,7 +77,6 @@ namespace Orbital.Mock.Server
 
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
-            
         }
 
         /// <summary>
@@ -78,8 +85,8 @@ namespace Orbital.Mock.Server
         /// <param name="app"></param>
         /// <param name="env"></param>
         /// <param name="provider"></param>
+        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider provider)
-
         {
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             if (env.IsDevelopment())
@@ -96,6 +103,7 @@ namespace Orbital.Mock.Server
             app.UseSwaggerUI(o =>
             {
                 o.RoutePrefix = "api/swagger";
+
                 foreach (var version in provider.ApiVersionDescriptions)
                 {
                     o.SwaggerEndpoint($"/swagger/{version.GroupName}/swagger.json", version.GroupName.ToUpperInvariant());
@@ -104,7 +112,14 @@ namespace Orbital.Mock.Server
 
             app.UseMiddleware<LoggingRequestResponseMiddleware>();
             app.UseMiddleware<ServerRequestMiddleware>();
-            app.UseMvc();
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
 
         /// <summary>
@@ -120,7 +135,6 @@ namespace Orbital.Mock.Server
 
             globalContext.PushGlobal(scriptObjectFaker);
             globalContext.PushGlobal(scriptObjectOrbital);
-            
 
             return globalContext;
         }

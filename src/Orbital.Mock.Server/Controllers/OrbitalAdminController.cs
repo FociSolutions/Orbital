@@ -1,17 +1,20 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Converters;
-using Orbital.Mock.Server.Filters;
-using Orbital.Mock.Server.MockDefinitions.Commands;
-using Orbital.Mock.Server.Models;
-using Serilog;
-using Orbital.Mock.Server.Pipelines.Models.Examples;
-using Swashbuckle.AspNetCore.Filters;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Net;
+using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Mvc;
+
+using Orbital.Mock.Server.Filters;
+using Orbital.Mock.Server.Models;
+using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Pipelines.Ports;
+using Orbital.Mock.Server.Pipelines.Models.Examples;
+
+using MediatR;
+using Serilog;
+using Newtonsoft.Json.Converters;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Orbital.Mock.Server.Controllers
 {
@@ -47,14 +50,13 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="id"> The mock definition title</param>
         /// <returns>MockDefinition</returns>
         [HttpGet("{id}")]
-        [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
+        [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples))]
         public ActionResult<MockDefinition> Get(string id)
         {
             var command = new GetMockDefinitionByTitleCommand(id, ref databaseLock);
             var result = this.mediator.Send(command).Result;
             Log.Information("OrbitalAdminController: Sent HTTPGet Command for MockDefinition on id: {Id}", id);
             return result;
-
         }
 
         /// <summary>
@@ -62,7 +64,7 @@ namespace Orbital.Mock.Server.Controllers
         /// </summary>
         /// <returns>MockDefinition</returns>
         [HttpGet]
-        [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
+        [SwaggerResponseExample((int)(HttpStatusCode.OK), typeof(MockDefinitionsModelExamples))]
         public ActionResult<IEnumerable<MockDefinition>> GetAll()
         {
             var command = new GetAllMockDefinitionsCommand(ref databaseLock);
@@ -78,7 +80,7 @@ namespace Orbital.Mock.Server.Controllers
         /// <returns>CreatedResult containing uri to the created resource</returns>
 
         [HttpPost]
-        [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
+        [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public IActionResult Post([FromBody]MockDefinition mockDefinition)
         {
             var command = new SaveMockDefinitionCommand(mockDefinition, ref databaseLock);
@@ -107,7 +109,7 @@ namespace Orbital.Mock.Server.Controllers
         /// <param name="mockDefinition"></param>
         /// <returns></returns>
         [HttpPut]
-        [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples), jsonConverter: typeof(StringEnumConverter))]
+        [SwaggerRequestExample(typeof(MockDefinition), typeof(MockDefinitionsModelExamples))]
         public IActionResult Put([FromBody]MockDefinition mockDefinition)
         {
             var command = new UpdateMockDefinitionByTitleCommand(mockDefinition, ref databaseLock);

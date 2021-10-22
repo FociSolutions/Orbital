@@ -51,8 +51,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
-                    {Scenarios = input.Scenarios, Body = input.Body})
-                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+                                {
+                                    Scenarios = input.Scenarios, Body = input.Body
+                                })
+                                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success))
+                                                 .Select(x => x.ScenarioId);
 
             var Expected = fakeScenario.Id ;
 

@@ -14,7 +14,7 @@ using System.Linq;
 namespace Orbital.Mock.Server.Pipelines.Models.Examples
 {
     [ExcludeFromCodeCoverage]
-    public class MockDefinitionsModelExamples : IExamplesProvider
+    public class MockDefinitionsModelExamples : IExamplesProvider<object>
     {
         /// <summary>
         /// Created a json example to show when the server is fired up.
