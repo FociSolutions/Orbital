@@ -51,21 +51,34 @@ describe('CreateNewMockViewComponent', () => {
     });
   });
 
-  describe('CreateNewMockViewComponent.validateTitle', () => {
+  describe('CreateNewMockViewComponent.validateText', () => {
+
     it('should return null if title is valid', () => {
-      const formControl: FormControl = new FormControl('ValidTitle');
-      expect(component.validateTitle(formControl)).toBeFalsy();
+      const title = component.formGroup.get('title');
+      title.setValue("test");
+      expect(title.errors).toBeFalsy();
     });
     it('should return error if title is empty', () => {
-      const formControl: FormControl = new FormControl('');
-      expect(component.validateTitle(formControl)).toEqual({
-        key: 'Must enter a title'
+      const title = component.formGroup.get('title');
+      title.setValue("");
+      expect(title.errors).toEqual({
+        key: 'Title is required.'
       });
     });
     it('should return error if title is just whitespace', () => {
-      const formControl: FormControl = new FormControl('   ');
-      expect(component.validateTitle(formControl)).toEqual({
+      const title = component.formGroup.get('title');
+      title.setValue(" ");
+      expect(title.errors).toEqual({
         key: 'Title cannot contain only whitespace'
+      });
+    });
+    it('should return error if it is a key and has whitespace in the string', () => {
+      const key = component.formGroup.get('key');
+      const valid = component.formGroup.get('validateToken');
+      valid.setValue(true);
+      key.setValue("test key");
+      expect(key.errors).toEqual({
+        key: 'Key cannot contain whitespace.'
       });
     });
   });
@@ -119,14 +132,18 @@ describe('CreateNewMockViewComponent', () => {
 
   function generateMockDefinitionAndSetForm(
     title = faker.random.words(3),
-    description = faker.random.words(5)
+    description = faker.random.words(5),
+    validateToken = true,
+    key = faker.random.words(3)
   ): MockDefinition {
     const service = TestBed.get(MockDefinitionService);
     let openApi: OpenAPIV2.Document;
     component.formGroup.setValue({
       ...component.formGroup.value,
       title,
-      description
+      description,
+      validateToken,
+      key
     });
     component.setOpenApiFile(validOpenApiText);
     openApi = yaml.safeLoad(validOpenApiText) as any;
@@ -134,6 +151,10 @@ describe('CreateNewMockViewComponent', () => {
       metadata: {
         title,
         description
+      },
+      tokenValidation: {
+        validate: validateToken,
+        key
       },
       openApi,
       scenarios: service.getDefaultScenarios(openApi.paths)

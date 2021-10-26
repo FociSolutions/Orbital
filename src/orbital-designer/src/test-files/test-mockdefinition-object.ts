@@ -78,5 +78,9 @@ export default {
   metadata: {
     title: 'Test Mock',
     description: 'A Test Mock'
+  },
+  tokenValidation: {
+    validate: true,
+    key: 'df2sfGD5'
   }
 } as MockDefinition;

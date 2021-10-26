@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -29,9 +29,16 @@ export class CreateNewMockViewComponent {
     private logger: NGXLogger
   ) {
     this.formGroup = new FormGroup({
-      title: new FormControl('', this.validateTitle),
-      description: new FormControl('')
+      title: new FormControl('', this.validateText("Title")),
+      description: new FormControl(''),
+      validateToken: new FormControl(false),
+      key: new FormControl('', this.validateText("Key"))
     });
+    this.checkTokenValidation();
+
+    this.formGroup.get('validateToken').valueChanges.subscribe( () => {
+      this.checkTokenValidation();
+    })
   }
 
   /**
@@ -79,12 +86,41 @@ export class CreateNewMockViewComponent {
     this.location.back();
   }
 
-  validateTitle(control: AbstractControl): { [key: string]: any } | null {
-    if (control.value.length > 0 && control.value.trim().length === 0) {
-      return { key: 'Title cannot contain only whitespace' };
+  get validateToken() {
+    return this.formGroup.get('validateToken');
+  }
+
+  /**
+   * Validation for text inputs on this page.
+   * @param name - the form control name
+   * @returns null, or an error object.
+   */
+  validateText(name: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (control.value.length > 0 && control.value.trim().length === 0) {
+        return { key: name + ' cannot contain only whitespace' };
+      }
+      if (control.value.length <= 0) {
+        return { key: name + ' is required.' };
+      }
+      if (name == "Key") {
+        //Checks for whitespace within the string
+        return /\s/.test(control.value) ? { 'key': "Key cannot contain whitespace." } : null;
+      }
     }
-    if (control.value.length <= 0) {
-      return { key: 'Must enter a title' };
+  }
+
+  /**
+   * sets key for control as disabled if token validation is unchecked
+   */
+  checkTokenValidation() {
+    const tokenValidation = this.formGroup.controls.validateToken.value;
+    const formKey = this.formGroup.controls.key
+    if (!tokenValidation) {
+      formKey.disable();
+    }
+    else {
+      formKey.enable();
     }
   }
 
@@ -106,6 +142,10 @@ export class CreateNewMockViewComponent {
           metadata: {
             title: this.formGroup.value.title,
             description: this.formGroup.value.description
+          },
+          tokenValidation: {
+            validate: this.formGroup.value.validateToken,
+            key: this.formGroup.value.key
           },
           openApi: openapi,
           scenarios: defaultScenariosPerEndpoint

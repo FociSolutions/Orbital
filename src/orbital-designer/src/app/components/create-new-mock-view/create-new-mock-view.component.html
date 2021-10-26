@@ -14,6 +14,19 @@
       multiLine="true"
       [control]="formGroup.controls['description']"
     ></app-text-input>
+    <mat-checkbox
+    class="tkValid"
+    name="tkValid"
+    [formControl]="formGroup.controls['validateToken']"
+    >Token Validation</mat-checkbox>
+  <app-text-input
+    class="flex-grow capitalize"
+    [title]="this.validateToken.value ? 'Key - Required' : 'Key'"
+    maxLength="200"
+    multiLine="true"
+    [control]="formGroup.controls['key']"
+    class="tokenKey"
+  ></app-text-input>
     <app-tool-tip message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
       ><app-file-input
         class="column"
