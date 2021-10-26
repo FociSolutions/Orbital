@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description"
+      ]
+    },
+    "tokenValidation": {
+      "type": "object",
+      "properties": {
+        "validate": {
+          "type": "boolean"
+        },
+        "key": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "validate",
+        "key"
+      ]
+    },    
+    "scenarios": {
+      "type": "array",
+      "items": 
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "metadata": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ]
+            },
+            "verb": {
+              "type": "integer"
+            },
+            "path": {
+              "type": "string"
+            },
+            "response": {
+              "type": "object",
+              "properties": {
+                "headers": {
+                  "type": "object"
+                },
+                "body": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "integer"
+                },
+                "type": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "headers",
+                "body",
+                "status",
+                "type"
+              ]
+            },
+            "requestMatchRules": {
+              "type": "object",
+              "properties": {
+                "headerRules": {
+                  "type": "array",
+                  "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "integer"
+                        },
+                        "rule": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "rule"
+                      ]
+                    }
+                },
+                "queryRules": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "integer"
+                        },
+                        "rule": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "rule"
+                      ]
+                    }
+                  ]
+                },
+                "bodyRules": {
+                  "type": "array",
+                  "items": {
+                      "type": "object",
+                      "properties": {
+                        "rule": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "rule",
+                        "type"
+                      ]
+                    }
+                },
+                "urlRules": {
+                  "type": "array",
+                  "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "integer"
+                        },
+                        "rule": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "rule"
+                      ]
+                    }
+                }
+              },
+              "required": [
+                "headerRules",
+                "queryRules",
+                "bodyRules",
+                "urlRules"
+              ]
+            },
+            "policies": {
+              "type": "array",
+              "items": {}
+            },
+            "defaultScenario": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "metadata",
+            "verb",
+            "path",
+            "response",
+            "requestMatchRules",
+            "policies",
+            "defaultScenario"
+          ]
+        }
+    }
+  },
+  "required": [
+    "metadata",
+    "scenarios"
+  ]
+}
