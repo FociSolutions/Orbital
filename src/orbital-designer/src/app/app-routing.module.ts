@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OverviewRedirectService } from './services/overview-redirect/overview-redirect.service';
 import { HomeViewComponent } from './components/home-view/home-view.component';
-import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
+import { CreateEditMockViewComponent } from './components/create-edit-mock-view/create-edit-mock-view.component';
 import { ImportFromFileViewComponent } from './components/import-from-file-view/import-from-file-view.component';
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
@@ -13,7 +13,8 @@ import { ExportToServerViewComponent } from './components/export-to-server-view/
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 
 const routes: Routes = [
-  { path: 'create-new-mock', component: CreateNewMockViewComponent },
+  { path: 'create-new-mock', component: CreateEditMockViewComponent },
+  { path: 'edit-mock/:uuid', component: CreateEditMockViewComponent },
   { path: 'import-from-file', component: ImportFromFileViewComponent },
   {
     path: 'download-mockdefinitions',

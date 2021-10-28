@@ -15,9 +15,14 @@
           <mat-icon mat-list-icon>insert_drive_file_outline</mat-icon>
           <h4 mat-line>{{ mockDefinition.metadata.title }}</h4>
         </div>
-        <button class="close-button" mat-icon-button (click)="openDialogBox(mockDefinition)">
-          <mat-icon mat-list-icon>close</mat-icon>
-        </button>
+        <div class="edit-close-buttons">
+          <button class="edit-button" mat-icon-button (click)="editMock(mockDefinition)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="close-button" mat-icon-button (click)="openDialogBox(mockDefinition)">
+            <mat-icon mat-list-icon>close</mat-icon>
+          </button>
+        </div>
       </div>
     </mat-action-list>
   </div>

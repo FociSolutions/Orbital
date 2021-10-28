@@ -17,7 +17,7 @@ import { GetEndpointScenariosPipe } from './pipes/get-endpoint-scenarios/get-end
 import { GetVerbColorPipe } from './pipes/get-verb-color/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
-import { CreateNewMockViewComponent } from './components/create-new-mock-view/create-new-mock-view.component';
+import { CreateEditMockViewComponent } from './components/create-edit-mock-view/create-edit-mock-view.component';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -64,7 +64,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     GetEndpointScenariosPipe,
     GetVerbColorPipe,
     HomeViewComponent,
-    CreateNewMockViewComponent,
+    CreateEditMockViewComponent,
     ImportFromFileViewComponent,
     ImportFromServerViewComponent,
     EndpointViewComponent,

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angul
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
-import { CreateNewMockViewComponent } from './create-new-mock-view.component';
+import { CreateEditMockViewComponent } from './create-edit-mock-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Location } from '@angular/common';
 import validOpenApiText from '../../../test-files/valid-openapi-spec';
@@ -16,15 +16,16 @@ import { OpenAPIV2 } from 'openapi-types';
 import { EMPTY } from 'rxjs';
 import * as yaml from 'js-yaml';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
-import { FormControl } from '@angular/forms';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import * as uuid from 'uuid';
+import { recordMap } from 'src/app/models/record';
 
-describe('CreateNewMockViewComponent', () => {
-  let component: CreateNewMockViewComponent;
-  let fixture: ComponentFixture<CreateNewMockViewComponent>;
+describe('CreateEditMockViewComponent', () => {
+  let component: CreateEditMockViewComponent;
+  let fixture: ComponentFixture<CreateEditMockViewComponent>;
   beforeEach((() => {
     TestBed.configureTestingModule({
-      declarations: [CreateNewMockViewComponent],
+      declarations: [CreateEditMockViewComponent],
       imports: [
         OrbitalCommonModule,
         MatCardModule,
@@ -35,7 +36,7 @@ describe('CreateNewMockViewComponent', () => {
       providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CreateNewMockViewComponent);
+    fixture = TestBed.createComponent(CreateEditMockViewComponent);
     component = fixture.componentInstance;
   }));
 
@@ -43,7 +44,7 @@ describe('CreateNewMockViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('CreateNewMockViewComponent.goBack', () => {
+  describe('CreateEditMockViewComponent.goBack', () => {
     it('should return to the previous location', () => {
       const locationSpy = jest.spyOn(TestBed.get(Location), 'back');
       component.goBack();
@@ -51,8 +52,7 @@ describe('CreateNewMockViewComponent', () => {
     });
   });
 
-  describe('CreateNewMockViewComponent.validateText', () => {
-
+  describe('CreateEditMockViewComponent.validateText', () => {
     it('should return null if title is valid', () => {
       const title = component.formGroup.get('title');
       title.setValue("test");
@@ -81,9 +81,18 @@ describe('CreateNewMockViewComponent', () => {
         key: 'Key cannot contain whitespace.'
       });
     });
+
+    it('should return error if it is a title and has a title that already exists', () => {
+      const title = component.formGroup.get('title');
+      component.titleList.push("myMockTest");
+      title.setValue("myMockTest");
+      expect(title.errors).toEqual({
+        key: 'Title already exists.'
+      })
+    })
   });
 
-  describe('CreateNewMockViewComponent.formToMockDefinition', () => {
+  describe('CreateEditMockViewComponent.formToMockDefinition', () => {
     it('should return a mockdefinition if form is valid', () => {
       const fakeMockDefinition = generateMockDefinitionAndSetForm();
       component.formToMockDefinition().subscribe(value => {
@@ -104,7 +113,7 @@ describe('CreateNewMockViewComponent', () => {
     });
   });
 
-  describe('CreateNewMockViewComponent.createMock', () => {
+  describe('CreateEditMockViewComponent.createMock', () => {
     it('should set the mockDefinition store and route to mock editor', fakeAsync(() => {
       fixture.ngZone.run(() => {
         jest.spyOn(TestBed.get(Router), 'navigateByUrl').mockImplementation(route => {
@@ -130,6 +139,45 @@ describe('CreateNewMockViewComponent', () => {
     }));
   });
 
+  describe('CreateEditMockViewComponent Edit methods', () => {
+    let selectedMockDef: MockDefinition;
+    let store: DesignerStore;
+
+    beforeEach(() => {
+      component.editMode = true;
+      store = TestBed.get(DesignerStore);
+
+      selectedMockDef = generateMockDefinitionAndSetForm();
+      store.appendMockDefinition(selectedMockDef);
+    })
+
+    it('should update the mock based on values in the form', () => {
+      const newTitle = faker.random.words(2);
+      const newDesc = faker.random.words(5);
+      const newValidate = false;
+      const newKey = "";
+
+      component.formGroup.setValue({
+        ...component.formGroup.value,
+        title: newTitle,
+        description: newDesc,
+        validateToken: newValidate,
+        key: newKey
+      });
+
+      const updatedMock = component.formToUpdateMockDefinition(selectedMockDef);
+      expect(updatedMock.metadata.title).toEqual(newTitle);
+      expect(updatedMock.metadata.description).toEqual(newDesc);
+      expect(updatedMock.tokenValidation.validate).toEqual(newValidate);
+      expect(updatedMock.tokenValidation.key).toEqual(newKey);
+    })
+
+    it('should find the mockdef in the store', () => {
+      const mockId = selectedMockDef.id;
+      expect(component.findSelectedMock(mockId, recordMap(store.state.mockDefinitions, md => md))).toEqual(selectedMockDef);
+    })
+  });
+
   function generateMockDefinitionAndSetForm(
     title = faker.random.words(3),
     description = faker.random.words(5),
@@ -148,6 +196,7 @@ describe('CreateNewMockViewComponent', () => {
     component.setOpenApiFile(validOpenApiText);
     openApi = yaml.safeLoad(validOpenApiText) as any;
     return {
+      id: uuid.v4(),
       metadata: {
         title,
         description

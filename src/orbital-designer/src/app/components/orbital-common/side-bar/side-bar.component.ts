@@ -4,6 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { recordMap } from 'src/app/models/record';
 import { DesignerStore } from 'src/app/store/designer-store';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-side-bar',
@@ -80,6 +81,14 @@ export class SideBarComponent {
   openDialogBox(mockDefinition: MockDefinition) {
     this.mockDefinitionToBeDismissed = mockDefinition;
     this.triggerOpenConfirmBox = true;
+  }
+
+  editMock(mockDefinition: MockDefinition) {
+    if (mockDefinition.id == null || undefined) {
+      mockDefinition.id = uuid.v4();
+      this.store.appendMockDefinition(mockDefinition);
+    }
+    this.router.navigate(["edit-mock", mockDefinition.id]);
   }
 
   /**

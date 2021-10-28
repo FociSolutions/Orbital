@@ -1,6 +1,7 @@
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import * as uuid from 'uuid';
 
 export default {
   scenarios: [
@@ -75,6 +76,7 @@ export default {
     },
     consumes: ['application/json']
   },
+  id: uuid.v4(),
   metadata: {
     title: 'Test Mock',
     description: 'A Test Mock'

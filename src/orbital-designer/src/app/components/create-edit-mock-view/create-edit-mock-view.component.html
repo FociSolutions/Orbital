@@ -1,6 +1,8 @@
 <mat-card class="create-mock-form row center-hr">
   <form class="column">
-    <h3 class="capitalize">Create New Mock</h3>
+    <h3 class="capitalize" *ngIf="!editMode">Create New Mock</h3>
+    <h3 class="capitalize" *ngIf="editMode">Edit Mock</h3>
+
     <app-text-input
       class="titleInput capitalize"
       title="Title - Required"
@@ -27,7 +29,7 @@
     [control]="formGroup.controls['key']"
     class="tokenKey"
   ></app-text-input>
-    <app-tool-tip message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
+    <app-tool-tip *ngIf="!editMode" message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
       ><app-file-input
         class="column"
         [multiple]="false"
@@ -44,8 +46,11 @@
       <button mat-raised-button color="primary" (click)="goBack()">
         Back
       </button>
-      <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="createMock()">
-        Next
+      <button *ngIf="!editMode" mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="createMock()">
+        Create
+      </button>
+      <button *ngIf="editMode" mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="editMock()">
+        Edit
       </button>
     </div>
   </form>

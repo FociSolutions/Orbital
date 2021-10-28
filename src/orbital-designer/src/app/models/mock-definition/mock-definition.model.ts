@@ -1,12 +1,14 @@
 import { Metadata, defaultMetadata } from './metadata.model';
 import { Scenario, emptyScenario } from './scenario/scenario.model';
 import { OpenAPIV2 } from 'openapi-types';
+import * as uuid from 'uuid';
 import { TokenValidation, defaultTokenValidation } from './token-validation.model';
 
 /**
  * Model representation of mock definition
  */
 export interface MockDefinition {
+  id: string;
   metadata: Metadata;
   tokenValidation: TokenValidation;
   host?: string;
@@ -16,6 +18,7 @@ export interface MockDefinition {
 }
 
 export const defaultMockDefinition: MockDefinition = {
+  id: uuid.v4(),
   metadata: defaultMetadata,
   tokenValidation: defaultTokenValidation,
   host: '',
