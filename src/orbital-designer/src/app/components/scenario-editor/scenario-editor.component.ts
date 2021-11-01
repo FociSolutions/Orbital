@@ -89,6 +89,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
     this.logger.debug('handleMetadataOutput:', metadata);
     this.metadataMatchRuleValid = !!metadata.title && metadata.description.length <= 500;
     this.metadata = metadata;
+    this.scenarioFormGroup.controls.metadata.setValue(metadata);
     this.saveScenario();
   }
 
