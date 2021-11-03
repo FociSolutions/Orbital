@@ -13,6 +13,7 @@ import { recordUpdateKeyName } from 'src/app/models/record';
 })
 export class KvpAddRuleComponent implements OnInit {
   private subscriptions: Subscription[] = [];
+  private hasOldKey = false;
   @Input() kvpAddedError = new EventEmitter<boolean>();
   // The kvp to be outputted to parent
   @Output() kvp = new EventEmitter<KeyValuePairRule>();
@@ -42,22 +43,27 @@ export class KvpAddRuleComponent implements OnInit {
       ruleValue: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
       type: new FormControl(RuleType.NONE, [Validators.required])
     });
+
     const ruleDuplicatedSubscription = this.kvpAddedError.subscribe(
       isDuplicated => (this.ruleIsDuplicated = isDuplicated)
     );
+
     const keySubscription = this.kvpAddRuleFormGroup.get('ruleKey').valueChanges.subscribe(newKey => {
       this.ruleIsDuplicated = false;
       const oldKey = this.kvpAddRuleFormGroup.value['ruleKey'];
-      if (oldKey) {
+      if (this.hasOldKey) {
         recordUpdateKeyName(this.kvpRuleInEdit.rule, oldKey, newKey);
       } else {
         this.kvpRuleInEdit.rule[newKey] = this.kvpAddRuleFormGroup.get('ruleValue').value;
+        this.hasOldKey = true;
       }
     });
+
     const valueSubscription = this.kvpAddRuleFormGroup.get('ruleValue').valueChanges.subscribe(value => {
       this.ruleIsDuplicated = false;
       this.kvpRuleInEdit.rule[this.ruleKey.value] = value;
     });
+
     const ruleSubscription = this.kvpAddRuleFormGroup.get('type').valueChanges.subscribe(type => {
       this.ruleIsDuplicated = false;
       if (!this.ruleValue && this.ruleType.value === RuleType.REGEX) {
@@ -68,6 +74,7 @@ export class KvpAddRuleComponent implements OnInit {
       }
       this.kvpRuleInEdit.type = type;
     });
+
     this.subscriptions.push(keySubscription, valueSubscription, ruleSubscription, ruleDuplicatedSubscription);
   }
 
