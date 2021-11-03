@@ -17,11 +17,16 @@ namespace Orbital.Mock.Server.Tests.Models
             .RuleFor(m => m.Title, f => f.Lorem.Sentence())
             .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
+            var tokenValidationFake = new Faker<TokenValidationInfo>()
+            .RuleFor(t => t.Validate, f => true)
+            .RuleFor(t => t.Key, f => Guid.NewGuid().ToString());
+
             this.mockDefinitionFake = new Faker<MockDefinition>()
             .RuleFor(m => m.Host, f => f.Internet.DomainName())
             .RuleFor(m => m.Metadata, f => metadataFake.Generate())
             .RuleFor(m => m.BasePath, f => f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()))
-            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { });
+            .RuleFor(m => m.OpenApi, f => new OpenApiDocument { })
+            .RuleFor(m => m.TokenValidation, f => tokenValidationFake.Generate());
         }
         [Fact]
         public void EqualsSuccessTest()
@@ -58,7 +63,8 @@ namespace Orbital.Mock.Server.Tests.Models
                 {
                     Metadata = Target.Metadata,
                     BasePath = Target.BasePath,
-                    OpenApi = Target.OpenApi
+                    OpenApi = Target.OpenApi,
+                    TokenValidation = Target.TokenValidation
                 }
             };
 
@@ -77,7 +83,8 @@ namespace Orbital.Mock.Server.Tests.Models
                 {
                     Host = Target.Host,
                     BasePath = Target.BasePath,
-                    OpenApi = Target.OpenApi
+                    OpenApi = Target.OpenApi,
+                    TokenValidation = Target.TokenValidation
                 }
             };
 
@@ -96,7 +103,8 @@ namespace Orbital.Mock.Server.Tests.Models
                 {
                     Metadata = Target.Metadata,
                     Host = Target.Host,
-                    OpenApi = Target.OpenApi
+                    OpenApi = Target.OpenApi,
+                    TokenValidation = Target.TokenValidation
                 }
             };
             var Actual = Target.Equals(input.mockDefinitionTest);
@@ -114,7 +122,8 @@ namespace Orbital.Mock.Server.Tests.Models
                 {
                     Metadata = Target.Metadata,
                     Host = Target.Host,
-                    BasePath = Target.BasePath
+                    BasePath = Target.BasePath,
+                    TokenValidation = Target.TokenValidation
                 }
             };
             var Actual = Target.Equals(input.mockDefinitionTest);
