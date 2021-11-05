@@ -23,22 +23,16 @@ import { recordMap } from 'src/app/models/record';
 describe('CreateEditMockViewComponent', () => {
   let component: CreateEditMockViewComponent;
   let fixture: ComponentFixture<CreateEditMockViewComponent>;
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CreateEditMockViewComponent],
-      imports: [
-        OrbitalCommonModule,
-        MatCardModule,
-        BrowserAnimationsModule,
-        LoggerTestingModule,
-        RouterTestingModule
-      ],
-      providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService]
+      imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule, RouterTestingModule],
+      providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CreateEditMockViewComponent);
     component = fixture.componentInstance;
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -55,47 +49,47 @@ describe('CreateEditMockViewComponent', () => {
   describe('CreateEditMockViewComponent.validateText', () => {
     it('should return null if title is valid', () => {
       const title = component.formGroup.get('title');
-      title.setValue("test");
+      title.setValue('test');
       expect(title.errors).toBeFalsy();
     });
     it('should return error if title is empty', () => {
       const title = component.formGroup.get('title');
-      title.setValue("");
+      title.setValue('');
       expect(title.errors).toEqual({
-        key: 'Title is required.'
+        key: 'Title is required.',
       });
     });
     it('should return error if title is just whitespace', () => {
       const title = component.formGroup.get('title');
-      title.setValue(" ");
+      title.setValue(' ');
       expect(title.errors).toEqual({
-        key: 'Title cannot contain only whitespace'
+        key: 'Title cannot contain only whitespace',
       });
     });
     it('should return error if it is a key and has whitespace in the string', () => {
       const key = component.formGroup.get('key');
       const valid = component.formGroup.get('validateToken');
       valid.setValue(true);
-      key.setValue("test key");
+      key.setValue('test key');
       expect(key.errors).toEqual({
-        key: 'Key cannot contain whitespace.'
+        key: 'Key cannot contain whitespace.',
       });
     });
 
     it('should return error if it is a title and has a title that already exists', () => {
       const title = component.formGroup.get('title');
-      component.titleList.push("myMockTest");
-      title.setValue("myMockTest");
+      component.titleList.push('myMockTest');
+      title.setValue('myMockTest');
       expect(title.errors).toEqual({
-        key: 'Title already exists.'
-      })
-    })
+        key: 'Title already exists.',
+      });
+    });
   });
 
   describe('CreateEditMockViewComponent.formToMockDefinition', () => {
-    it('should return a mockdefinition if form is valid', () => {
+    it('should return a mock definition if form is valid', () => {
       const fakeMockDefinition = generateMockDefinitionAndSetForm();
-      component.formToMockDefinition().subscribe(value => {
+      component.formToMockDefinition().subscribe((value) => {
         expect(value.openApi).toEqual(fakeMockDefinition.openApi);
         expect(value.metadata).toEqual(fakeMockDefinition.metadata);
         expect(value.host).toEqual(fakeMockDefinition.host);
@@ -116,7 +110,7 @@ describe('CreateEditMockViewComponent', () => {
   describe('CreateEditMockViewComponent.createMock', () => {
     it('should set the mockDefinition store and route to mock editor', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        jest.spyOn(TestBed.get(Router), 'navigateByUrl').mockImplementation(route => {
+        jest.spyOn(TestBed.get(Router), 'navigateByUrl').mockImplementation((route) => {
           expect(route).toEqual('/endpoint-view');
         });
         generateMockDefinitionAndSetForm();
@@ -139,6 +133,14 @@ describe('CreateEditMockViewComponent', () => {
     }));
   });
 
+  describe('CreateEditMockViewComponent.generateKey', () => {
+    it("should set the text of the 'key' form field to a valid uuid", () => {
+      component.generateKey();
+      const key = component.formGroup.get('key');
+      expect(uuid.validate(key.value)).toEqual(true);
+    });
+  });
+
   describe('CreateEditMockViewComponent Edit methods', () => {
     let selectedMockDef: MockDefinition;
     let store: DesignerStore;
@@ -149,20 +151,20 @@ describe('CreateEditMockViewComponent', () => {
 
       selectedMockDef = generateMockDefinitionAndSetForm();
       store.appendMockDefinition(selectedMockDef);
-    })
+    });
 
     it('should update the mock based on values in the form', () => {
       const newTitle = faker.random.words(2);
       const newDesc = faker.random.words(5);
       const newValidate = false;
-      const newKey = "";
+      const newKey = '';
 
       component.formGroup.setValue({
         ...component.formGroup.value,
         title: newTitle,
         description: newDesc,
         validateToken: newValidate,
-        key: newKey
+        key: newKey,
       });
 
       const updatedMock = component.formToUpdateMockDefinition(selectedMockDef);
@@ -170,12 +172,17 @@ describe('CreateEditMockViewComponent', () => {
       expect(updatedMock.metadata.description).toEqual(newDesc);
       expect(updatedMock.tokenValidation.validate).toEqual(newValidate);
       expect(updatedMock.tokenValidation.key).toEqual(newKey);
-    })
+    });
 
     it('should find the mockdef in the store', () => {
       const mockId = selectedMockDef.id;
-      expect(component.findSelectedMock(mockId, recordMap(store.state.mockDefinitions, md => md))).toEqual(selectedMockDef);
-    })
+      expect(
+        component.findSelectedMock(
+          mockId,
+          recordMap(store.state.mockDefinitions, (md) => md)
+        )
+      ).toEqual(selectedMockDef);
+    });
   });
 
   function generateMockDefinitionAndSetForm(
@@ -191,7 +198,7 @@ describe('CreateEditMockViewComponent', () => {
       title,
       description,
       validateToken,
-      key
+      key,
     });
     component.setOpenApiFile(validOpenApiText);
     openApi = yaml.safeLoad(validOpenApiText) as any;
@@ -199,14 +206,14 @@ describe('CreateEditMockViewComponent', () => {
       id: uuid.v4(),
       metadata: {
         title,
-        description
+        description,
       },
       tokenValidation: {
         validate: validateToken,
-        key
+        key,
       },
       openApi,
-      scenarios: service.getDefaultScenarios(openApi.paths)
+      scenarios: service.getDefaultScenarios(openApi.paths),
     } as MockDefinition;
   }
 });

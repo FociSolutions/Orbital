@@ -6,9 +6,16 @@
   margin: 6.824vh auto;
   align-items: stretch;
 
-mat-hint {
+  .token-validation-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  mat-hint {
     color: red !important;
- }
+  }
 
   form {
     align-items: stretch;
@@ -34,10 +41,7 @@ mat-hint {
         max-width: 131px;
       }
     }
-    .tkValid {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-    }
+
     .tokenKey {
       margin-bottom: 1rem;
     }

@@ -157,6 +157,10 @@ export class CreateEditMockViewComponent implements OnInit {
     this.router.navigateByUrl('/endpoint-view');
   }
 
+  generateKey() {
+    this.formGroup.get('key').setValue(uuid.v4());
+  }
+
   setOpenApiFile(openApiFileString: string) {
     this.openApiFile = openApiFileString;
   }
