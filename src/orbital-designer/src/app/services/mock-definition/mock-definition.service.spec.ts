@@ -5,7 +5,7 @@ import { MockDefinitionService } from './mock-definition.service';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import validMockDefinitionFile from '../../../test-files/test-mockdefinition-file.mock';
 import { DesignerStore } from '../../store/designer-store';
-import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb.type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { defaultMockDefinition, MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
@@ -19,6 +19,8 @@ import { ResponseType } from 'src/app/models/mock-definition/scenario/response.t
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
   let service: MockDefinitionService;
+  let scenarioParams: ScenarioParams;
+
   const ValidMockDefinitionInst = _.cloneDeep(validMockDefinition);
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -27,6 +29,7 @@ describe('MockDefinitionService', () => {
     }).compileComponents();
     store = TestBed.get(DesignerStore);
     service = TestBed.get(MockDefinitionService);
+    scenarioParams  = service.defaultScenarioParams('/test', VerbType.GET, 200);
     store.mockDefinition = ValidMockDefinitionInst;
     tick();
    }
@@ -39,29 +42,7 @@ describe('MockDefinitionService', () => {
   it('should clone a scenario from the store such that no name conflicts will be encountered', done => {
     const scenarios = [];
     for (let i = 0; i < 10; i++) {
-      const mockverb = VerbType.GET;
-      const path = '/test';
-      const scenario = {
-        id: uuid.v4(),
-        metadata: {
-          title: 'New Scenario',
-          description: ''
-        },
-        verb: mockverb,
-        path,
-        response: {
-          headers: {},
-          status: 0,
-          body: ''
-        },
-        requestMatchRules: {
-          headerRules: [],
-          queryRules: [],
-          bodyRules: [{}] as Array<BodyRule>
-        },
-        defaultScenario: false
-      } as Scenario;
-
+      let scenario = service.generateNewScenario(scenarioParams)
       scenario.metadata.title = faker.random.words(3);
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -79,28 +60,8 @@ describe('MockDefinitionService', () => {
   it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', done => {
     const scenarios = [];
     for (let i = 0; i < 10; i++) {
-      const mockverb = VerbType.GET;
-      const path = '/test';
-      const scenario = {
-        id: uuid.v4(),
-        metadata: {
-          title: 'New Scenario',
-          description: ''
-        },
-        verb: mockverb,
-        path,
-        response: {
-          headers: {},
-          status: 0,
-          body: ''
-        },
-        requestMatchRules: {
-          headerRules: [],
-          queryRules: [],
-          bodyRules: [{}] as Array<BodyRule>
-        },
-        defaultScenario: false
-      } as Scenario;
+      let scenario = service.generateNewScenario(scenarioParams);
+
       scenario.metadata.title = faker.random.words(3);
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -130,28 +91,8 @@ describe('MockDefinitionService', () => {
   it('should not clone a scenario from the store if the cloned scenario is invalid', done => {
     const scenarios = [];
     for (let i = 0; i < 10; i++) {
-      const mockverb = VerbType.GET;
-      const path = '/test';
-      const scenario = {
-        id: uuid.v4(),
-        metadata: {
-          title: 'New Scenario',
-          description: ''
-        },
-        verb: mockverb,
-        path,
-        response: {
-          headers: {},
-          status: 0,
-          body: ''
-        },
-        requestMatchRules: {
-          headerRules: [],
-          queryRules: [],
-          bodyRules: [{}] as Array<BodyRule>
-        },
-        defaultScenario: false
-      } as Scenario;
+      let scenario = service.generateNewScenario(scenarioParams);
+
       scenario.metadata.title = faker.random.words(3);
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }
@@ -170,31 +111,45 @@ describe('MockDefinitionService', () => {
     });
   });
 
+  describe('When getDefaultValidationScenarios is called', () => {
+    it('should not create any default token validation 401 scenarios if one exists already exists in each noted path-verb pair', done => {
+      const scenarios = [];
+      for (let i = 0; i < 3; i++) {
+        let scenario = service.generateNewScenario(scenarioParams);
+
+        scenario.metadata.title = faker.random.words(3);
+        scenario.response.status = 401;
+        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      }
+
+      const tokenValidationScenarios = service.getDefaultValidationScenarios(scenarios);
+      expect(tokenValidationScenarios.length).toEqual(0);
+      done();
+    });
+
+    it('should create the same amount of scenarios (3) as there are scenarios in a path-verb pair that do NOT have a 401 scenario (3)', done => {
+      const scenarios = [];
+      let path: string = "";
+      for (let i = 0; i < 3; i++) {
+        path += faker.random.words(1) + "/";
+        let scenario = service.generateNewScenario(scenarioParams);
+        scenario.metadata.title = faker.random.words(3);
+        scenario.path = path;
+        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      }
+
+      const tokenValidationScenarios = service.getDefaultValidationScenarios(scenarios);
+      expect(tokenValidationScenarios.length).toEqual(3);
+      done();
+    });
+  });
+
+
   it('should clone a scenario and ensure that the title and id are different', done => {
     const scenarios = [];
     for (let i = 0; i < 10; i++) {
-      const mockverb = VerbType.GET;
-      const path = '/test';
-      const scenario = {
-        id: uuid.v4(),
-        metadata: {
-          title: 'New Scenario',
-          description: ''
-        },
-        verb: mockverb,
-        path,
-        response: {
-          headers: {},
-          status: 0,
-          body: ''
-        },
-        requestMatchRules: {
-          headerRules: [],
-          queryRules: [],
-          bodyRules: [{}] as Array<BodyRule>
-        },
-        defaultScenario: false
-      } as Scenario;
+      let scenario = service.generateNewScenario(scenarioParams);
+
       scenario.metadata.title = faker.random.words(3);
       scenarios.push(JSON.parse(JSON.stringify(scenario)));
     }

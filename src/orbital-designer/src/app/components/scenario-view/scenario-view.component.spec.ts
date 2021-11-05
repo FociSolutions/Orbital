@@ -42,6 +42,7 @@ import { BodyListItemRuleTypeComponent } from '../scenario-editor/add-body-rule-
 import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -84,6 +85,7 @@ describe('ScenarioViewComponent', () => {
         FormsModule,
         MatChipsModule,
         NgJsonEditorModule,
+        BrowserAnimationsModule
       ],
       providers: [DesignerStore],
     }).compileComponents();

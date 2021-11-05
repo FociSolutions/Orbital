@@ -15,6 +15,18 @@
             [itemToStringFn]="scenarioToString"
           >
           </app-search-bar>
+          <div *ngIf="dropdownVisible">
+            <mat-form-field class="validation-type">
+              <mat-label>Validation Type</mat-label>
+              <mat-select name="validation-type" [(ngModel)]="selectedMode" required>
+                <div *ngFor="let mode of modes">
+                  <mat-option [value]="mode.value">
+                    {{ mode.viewValue }}
+                  </mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
           <p id="notFoundMessage" *ngIf="this.filteredList.length === 0">
             {{ this.errorMessage }}
           </p>

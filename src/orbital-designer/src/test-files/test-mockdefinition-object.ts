@@ -33,7 +33,8 @@ export default {
         ]
       },
       policies: [],
-      defaultScenario: false
+      defaultScenario: false,
+      validationType: 0
     } as Scenario
   ],
   openApi: {

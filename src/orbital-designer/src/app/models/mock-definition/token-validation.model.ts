@@ -10,3 +10,8 @@ export const defaultTokenValidation: TokenValidation = {
   validate: false,
   key: ''
 };
+
+export enum ValidationType {
+  NONE,
+  JWT_VALIDATION
+};

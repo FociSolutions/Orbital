@@ -1,4 +1,4 @@
-import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Injectable } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
@@ -146,60 +146,95 @@ export class MockDefinitionService {
    *
    * @param endpoints list of endpoints from the imported openapi document
    */
-  public getDefaultScenarios(endpoints: OpenAPIV2.PathsObject): Scenario[] {
+  public getDefaultScenarios(endpoints: OpenAPIV2.PathsObject, validation: boolean = false): Scenario[] {
     const defaultScenariosPerEndpoint = [];
     const keyArrayofEndpoints = Object.keys(endpoints);
+
     keyArrayofEndpoints.forEach(pathName => {
       const endpoint = endpoints[pathName];
-      if (endpoint.get) {
-        const newScenarioGet = this.generateNewScenario(pathName, VerbType.GET);
+      const types = this.getEndpointVerbTypes(endpoint);
+
+      types.forEach(type => {
+        const newScenarioGet = this.generateNewScenario(this.defaultScenarioParams(pathName, type), true);
         defaultScenariosPerEndpoint.push(newScenarioGet);
-      }
-      if (endpoint.put) {
-        const newScenarioPut = this.generateNewScenario(pathName, VerbType.PUT);
-        defaultScenariosPerEndpoint.push(newScenarioPut);
-      }
-      if (endpoint.post) {
-        const newScenarioPost = this.generateNewScenario(pathName, VerbType.POST);
-        defaultScenariosPerEndpoint.push(newScenarioPost);
-      }
-      if (endpoint.delete) {
-        const newScenarioDelete = this.generateNewScenario(pathName, VerbType.DELETE);
-        defaultScenariosPerEndpoint.push(newScenarioDelete);
-      }
-      if (endpoint.head) {
-        const newScenarioHead = this.generateNewScenario(pathName, VerbType.HEAD);
-        defaultScenariosPerEndpoint.push(newScenarioHead);
-      }
-      if (endpoint.patch) {
-        const newScenarioPatch = this.generateNewScenario(pathName, VerbType.PATCH);
-        defaultScenariosPerEndpoint.push(newScenarioPatch);
-      }
-      if (endpoint.options) {
-        const newScenarioOptions = this.generateNewScenario(pathName, VerbType.OPTIONS);
-        defaultScenariosPerEndpoint.push(newScenarioOptions);
-      }
+        if (validation) {
+          const tokenScenarioGet = this.generateNewScenario(this.defaultScenarioParams(pathName, type, 401, "Invalid-Token Scenario"));
+          defaultScenariosPerEndpoint.push(tokenScenarioGet);
+        }
+      })
     });
     return defaultScenariosPerEndpoint;
+  }
+
+  public getDefaultValidationScenarios(scenarios: Scenario[]): Scenario[] {
+    let scenarioList: Scenario[] = []
+    let scenarioDict = this.mapUnauthorizedScenarios(scenarios);
+
+    for (let endpoint in scenarioDict) {
+      for (let verb in scenarioDict[endpoint]) {
+        if (scenarioDict[endpoint][verb] == false) {
+          const verbInt = parseInt(verb);
+          scenarioList.push(this.generateNewScenario(this.defaultScenarioParams(endpoint, verbInt, 401, "Invalid-Token Scenario")));
+        }
+      }
+    }
+    return scenarioList;
+  }
+
+  private mapUnauthorizedScenarios(scenarios: Scenario[]): object {
+    let scenarioDict = {};
+    for (let scenario of scenarios) {
+      let isUnauthorized: boolean = scenario.response.status == 401;
+
+      if (scenarioDict[scenario.path]) {
+        isUnauthorized = scenarioDict[scenario.path][scenario.verb] ? true : isUnauthorized;
+      }
+      else {
+        scenarioDict[scenario.path] = {};
+      }
+      scenarioDict[scenario.path][scenario.verb] = isUnauthorized;
+    }
+    console.log(scenarioDict);
+    return scenarioDict
+  }
+
+  public defaultScenarioParams(path: string, type: VerbType, status: number = 200, title: string = "Default OK Scenario"): ScenarioParams {
+    return {
+      title: title,
+      description: '',
+      path,
+      status,
+      verb: type,
+    } as ScenarioParams;
+  }
+
+  private getEndpointVerbTypes(endpoint: any): VerbType[] {
+    let verbs: VerbType[] = []
+    const verbKeys = Object.keys(endpoint);
+    verbKeys.forEach(key => {
+      const type = VerbType[key.toUpperCase()];
+      verbs.push(type);
+    });
+    return verbs;
   }
 
   /**
    * Generates a new Scenario based on the path and verb.
    *
    */
-  private generateNewScenario(path: string, verb: VerbType): Scenario {
+  public generateNewScenario(scenario: ScenarioParams, defaultScenario: boolean = false): Scenario {
     return {
       id: uuid.v4(),
       metadata: {
-        title: 'default title for ' + path,
-        description: 'default description for ' + path
+        title: scenario.title,
+        description: scenario.description
       },
-      verb,
-      path,
+      verb: scenario.verb,
+      path: scenario.path,
       response: {
         headers: {},
-        body: '"default response for ' + path + '"',
-        status: 200,
+        body: {},
+        status: scenario.status,
         type: ResponseType.CUSTOM
       },
       requestMatchRules: {
@@ -209,7 +244,8 @@ export class MockDefinitionService {
         urlRules: []
       },
       policies: [],
-      defaultScenario: false
+      defaultScenario,
+      validationType: 0
     } as Scenario;
   }
 }

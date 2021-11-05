@@ -11,7 +11,6 @@ import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { recordAdd, recordMap } from 'src/app/models/record';
 import * as uuid from 'uuid';
-import { forEach } from 'lodash';
 
 @Component({
   selector: 'app-create-edit-mock-view',
@@ -144,8 +143,14 @@ export class CreateEditMockViewComponent implements OnInit {
   }
 
   editMock() {
-    const updatedMockDef = this.formToUpdateMockDefinition(this.selectedMockDefinition);
+    let updatedMockDef = this.formToUpdateMockDefinition(this.selectedMockDefinition);
     const oldTitle = this.selectedMockDefinition.metadata.title;
+
+    if (updatedMockDef.tokenValidation.validate) {
+      const validationScenarios = this.mockdefinitionService.getDefaultValidationScenarios(updatedMockDef.scenarios);
+      updatedMockDef.scenarios = updatedMockDef.scenarios.concat(validationScenarios);
+    }
+
     this.store.deleteMockDefinitionByTitle(oldTitle);
     this.store.appendMockDefinition(updatedMockDef);
     this.store.mockDefinition = updatedMockDef;
@@ -231,9 +236,10 @@ export class CreateEditMockViewComponent implements OnInit {
       this.logger.error('Form is invalid');
       return EMPTY;
     }
+    const validate = this.formGroup.value.validateToken;
     const obser = this.openapiservice.readOpenApiSpec(this.openApiFile).pipe(
       map(openapi => {
-        const defaultScenariosPerEndpoint = this.mockdefinitionService.getDefaultScenarios(openapi.paths);
+        const defaultScenariosPerEndpoint = this.mockdefinitionService.getDefaultScenarios(openapi.paths, validate);
         return {
           id: uuid.v4(),
           metadata: {
@@ -241,7 +247,7 @@ export class CreateEditMockViewComponent implements OnInit {
             description: this.formGroup.value.description
           },
           tokenValidation: {
-            validate: this.formGroup.value.validateToken,
+            validate,
             key: this.formGroup.value.key
           },
           openApi: openapi,

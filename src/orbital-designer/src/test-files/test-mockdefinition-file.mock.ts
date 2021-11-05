@@ -193,7 +193,8 @@ export default `{
                 "bodyRules": []
             },
             "policies": [],
-            "defaultScenario": false
+            "defaultScenario": false,
+            "validationType": 0
         }
     ]
 }`;

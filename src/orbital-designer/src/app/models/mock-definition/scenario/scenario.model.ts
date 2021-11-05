@@ -17,6 +17,7 @@ export interface Scenario {
   requestMatchRules: RequestMatchRule;
   policies: Policy[];
   defaultScenario: boolean;
+  validationType: number;
 }
 
 export const emptyScenario: Scenario = {
@@ -27,5 +28,14 @@ export const emptyScenario: Scenario = {
   response: defaultResponse,
   requestMatchRules: defaultRquestMatchRule,
   policies: [],
-  defaultScenario: false
+  defaultScenario: false,
+  validationType: 0
 };
+
+export interface ScenarioParams {
+  title: string,
+  description: string,
+  path: string,
+  verb: VerbType,
+  status: number
+}

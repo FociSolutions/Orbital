@@ -11,6 +11,8 @@ import { map } from 'rxjs/operators';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import * as HttpStatus from 'http-status-codes';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { ValidationType } from 'src/app/models/mock-definition/token-validation.model';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-scenario-view',
@@ -21,6 +23,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   @Input() scenarios: Scenario[] = [];
   @Output() shouldCloneToView = new EventEmitter<Scenario>();
   private storeSubscription: Subscription;
+  private _selectedMode: number;
 
   endpointVerb: VerbType;
   endpointPath: string;
@@ -32,6 +35,12 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   triggerOpen: string;
   mockDefinition: MockDefinition;
   isHoveringOverMenu: boolean;
+  dropdownVisible: boolean;
+
+    modes = [
+      {value: ValidationType.NONE, viewValue: "None"},
+      {value: ValidationType.JWT_VALIDATION, viewValue: "JWT Validation"}
+    ]
 
   constructor(
     private store: DesignerStore,
@@ -52,11 +61,15 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
         this.scenarioList = state.mockDefinition.scenarios.filter(
           s => s.path === this.endpointPath && s.verb === this.endpointVerb
         );
+        this.dropdownVisible = state.mockDefinition.tokenValidation.validate;
         this.logger.log('ScenarioViewComponent:ngOnInit: Resulting ScenarioList: ', this.scenarioList);
       }
     });
 
     this.errorMessage = 'No scenarios exist. Click the add button to create a new scenario.';
+    if (this.scenarioList.length != 0) {
+      this._selectedMode = this.scenarioList[0].validationType;
+    }
   }
 
   ngOnDestroy(): void {
@@ -174,5 +187,21 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
       scenario.defaultScenario = true;
       this.logger.debug('Set default scenario to ', scenario);
     }
+  }
+
+  updateScenariosValidationType(path: string, mode: number) {
+    this.scenarioList.forEach(scenario => {
+      scenario.validationType = mode;
+    })
+    this.store.updateScenarios(this.scenarioList);
+  }
+
+  get selectedMode(): number {
+    return this._selectedMode;
+  }
+
+  set selectedMode(value: number)  {
+    this._selectedMode = value;
+    this.updateScenariosValidationType(this.endpointPath, this.selectedMode);
   }
 }
