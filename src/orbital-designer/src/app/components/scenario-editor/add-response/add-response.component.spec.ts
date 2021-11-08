@@ -8,6 +8,7 @@ import { Response } from '../../../models/mock-definition/scenario/response.mode
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
@@ -87,5 +88,27 @@ describe('AddResponseComponent', () => {
         status: +component.statusCode,
       } as unknown) as Response);
     });
+  });
+
+  describe('addResponse.changeLog', () => {
+    it('Should return no errors if input is an empty json', () => {
+      let jsonEditor = component.editor;
+      let formErrors = component.responseFormGroup.get('body').errors;
+
+      jsonEditor.set(JSON.parse('{}'));
+      component.changeLog();
+      expect(component.getErrorType(jsonEditor.getText())).toBe(jsonErrorType.EMPTY_JSON);
+      expect(formErrors).toBe(null);
+    });
+
+    it('Should return no errors if input is a valid json', () => {
+      let jsonEditor = component.editor;
+      let formErrors = component.responseFormGroup.get('body').errors;
+
+      jsonEditor.set(JSON.parse(`{"myKey": "value"}`));
+      component.changeLog();
+      expect(component.getErrorType(jsonEditor.getText())).toBe(jsonErrorType.NONE);
+      expect(formErrors).toBe(null)
+    })
   });
 });

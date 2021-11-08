@@ -102,8 +102,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    */
   changeLog() {
     const jsonEditorString = this.editor.getText();
-    const errorType = this.jsonService.checkJSON(jsonEditorString);
-    if (errorType != jsonErrorType.NONE) {
+    const errorType = this.getErrorType(jsonEditorString);
+    if (errorType != jsonErrorType.NONE && errorType != jsonErrorType.EMPTY_JSON) {
       this.setError("Response body" + this.jsonService.jsonErrorMap.get(errorType));
     }
     else {
@@ -117,6 +117,15 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    */
   setError(message: string) {
       this.responseFormGroup.controls.body.setErrors({invalidJson: message});
+  }
+
+  /**
+   *
+   * @param jsonEditorString the json editor input
+   * @returns the errortype enum
+   */
+  getErrorType(jsonEditorString): jsonErrorType {
+    return this.jsonService.checkJSON(jsonEditorString)
   }
 
   /**
