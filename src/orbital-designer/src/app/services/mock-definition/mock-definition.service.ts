@@ -233,7 +233,7 @@ export class MockDefinitionService {
       path: scenario.path,
       response: {
         headers: {},
-        body: {},
+        body: '{}',
         status: scenario.status,
         type: ResponseType.CUSTOM
       },
