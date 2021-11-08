@@ -39,8 +39,12 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
             {
                 var idList = this.cache.GetOrCreate(mockIds, c => new List<string>());
                 var mockDefinitions = idList.Select(id => this.cache.Get<MockDefinition>(id));
+
                 var scenarios = mockDefinitions.SelectMany(mockDefinition => mockDefinition.Scenarios);
-                var response = this.mockServerProcessor.Push(new MessageProcessorInput(command.Request, scenarios.ToList()), cancellationToken).Result;
+                var signingKeys = mockDefinitions.Where(md => md.TokenValidation.Validate)
+                                                 .Select(mockDef => mockDef.TokenValidation.Key);
+
+                var response = this.mockServerProcessor.Push(new MessageProcessorInput(command.Request, scenarios.ToList(), signingKeys.ToList()), cancellationToken).Result;
                 return Task.FromResult(response);
             }
         }

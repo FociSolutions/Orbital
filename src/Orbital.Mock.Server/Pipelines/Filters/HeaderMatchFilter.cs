@@ -45,8 +45,6 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                     }
                     
                 }
-                
-
             }
 
             return port;

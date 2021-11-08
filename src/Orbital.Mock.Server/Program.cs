@@ -23,27 +23,19 @@ namespace Orbital.Mock.Server
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuild(args).Build().Run();
         }
 
+        public static IHostBuilder CreateHostBuild(string[] args) =>
+           Host.CreateDefaultBuilder(args)
+               .ConfigureAppConfiguration(ConfigAppConfiguration)
+               .UseSerilog()
+               .ConfigureWebHostDefaults(webBuilder =>
+               {
+                   webBuilder.UseStartup<Startup>();
+               });
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(ConfigAppConfiguration)
-                .UseSerilog()
-                .ConfigureKestrel(serverOptions =>
-                {
-                    serverOptions.ConfigureHttpsDefaults(configOptions =>
-                    {
-                        configOptions.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
-                    });
-                    // max size of header
-                    serverOptions.Limits.MaxRequestHeadersTotalSize = int.MaxValue - 2;
-                    // max size for request buffer size
-                    serverOptions.Limits.MaxRequestBufferSize = null;
-                })
-                .UseStartup<Startup>();
-
-        private static void ConfigAppConfiguration(WebHostBuilderContext context, IConfigurationBuilder configurationBuilder)
+        private static void ConfigAppConfiguration(HostBuilderContext context, IConfigurationBuilder configurationBuilder)
         {
             configurationBuilder.AddEnvironmentVariables();
             var loggerConfiguration = new LoggerConfiguration()

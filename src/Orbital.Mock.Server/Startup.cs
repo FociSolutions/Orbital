@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
+using Microsoft.IdentityModel.Tokens;
+
 //using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,11 +61,18 @@ namespace Orbital.Mock.Server
                 {
                     opt.SerializerSettings.Converters.Add(new OpenApiJsonConverter());
                 })
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>())
-                .SetCompatibilityVersion(CompatibilityVersion.Latest);
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>());
 
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
+            services.AddAuthentication("Bearer")
+                    .AddJwtBearer("Bearer", opt => 
+                    {
+                        opt.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateAudience = false
+                        };
+                    });
 
             services.AddSingleton<IAssertFactory, AssertFactory>();
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
@@ -86,18 +95,9 @@ namespace Orbital.Mock.Server
         /// <param name="env"></param>
         /// <param name="provider"></param>
         //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
             app.UseSwagger();
             app.UseSwaggerUI(o =>
@@ -113,8 +113,10 @@ namespace Orbital.Mock.Server
             app.UseMiddleware<LoggingRequestResponseMiddleware>();
             app.UseMiddleware<ServerRequestMiddleware>();
             app.UseHttpsRedirection();
+            app.UseHsts();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

@@ -14,11 +14,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class ResponseSelectorFilterTests
     {
+        private readonly Faker WordFaker;
         private readonly Faker<Scenario> fakerScenario;
-
 
         public ResponseSelectorFilterTests()
         {
+            WordFaker = new Faker();
+
             Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var fakerResponse = new Faker<MockResponse>()
                 .CustomInstantiator(f => new MockResponse(
@@ -121,6 +123,89 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var Actual = Target.Process(port).SelectedResponse;
 
             Assert.Null(Actual);
+        }
+
+        [Fact]
+        public void ResponseSelectorAuthenticationFailedTest()
+        {
+            #region TestSetup
+            var Scenarios = fakerScenario.Generate(10);
+
+            var random = new Random(42);
+
+            var SelectedScenariosRange = random.Next(2, Scenarios.Count);
+            var SelectedScenariosStartIndex = random.Next(Scenarios.Count - SelectedScenariosRange);
+            var SelectedScenarios = Scenarios.Skip(SelectedScenariosStartIndex).Take(SelectedScenariosRange).ToList();
+            var SelectedScenarioIndex = random.Next(Scenarios.Count);
+
+            string Secret = TestUtils.GetRandomString(WordFaker, minLen: 32);
+            var UnauthScenario = fakerScenario.Generate();
+            UnauthScenario.Response.Status = (int)HttpStatusCode.Unauthorized;
+            UnauthScenario.Response.Body = "";
+            UnauthScenario.TokenValidationType = TokenValidationType.JWT_VALIDATION;
+
+            var Response = UnauthScenario.Response;
+
+            Scenarios.Add(UnauthScenario);
+            #endregion
+
+            var port = new ProcessMessagePort()
+            {
+                Scenarios = Scenarios,
+                HeaderMatchResults = Scenarios.Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
+                QueryMatchResults = Scenarios.Skip(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
+                BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
+                SigningKeys = new List<string> { Secret },
+                TokenValidationResults = new List<MatchResult> { MatchResult.Create(MatchResultType.Fail, UnauthScenario) }
+            };
+
+            var Target = new ResponseSelectorFilter<ProcessMessagePort>(new TemplateContext());
+
+            var Actual = Target.Process(port).SelectedResponse;
+            Assert.Equal(Actual, Response);
+        }
+
+        [Fact]
+        public void ResponseSelectorAuthenticationPassedTest()
+        {
+            #region TestSetup
+            var Scenarios = fakerScenario.Generate(10);
+
+            var UnauthScenario = fakerScenario.Generate();
+            UnauthScenario.Response.Status = (int)HttpStatusCode.Unauthorized;
+            UnauthScenario.Response.Body = "";
+            UnauthScenario.TokenValidationType = TokenValidationType.JWT_VALIDATION;
+
+            Scenarios.Add(UnauthScenario);
+
+            var random = new Random(42);
+            var SelectedScenariosRange = random.Next(2, Scenarios.Count);
+            var SelectedScenariosStartIndex = random.Next(Scenarios.Count - SelectedScenariosRange);
+            var SelectedScenarios = Scenarios.Skip(SelectedScenariosStartIndex).Take(SelectedScenariosRange).ToList();
+            var SelectedScenarioIndex = random.Next(Scenarios.Count);
+            var PossibleResponses = SelectedScenarios.Select(s => s.Response);
+
+            string Secret = TestUtils.GetRandomString(WordFaker, minLen: 32);
+            var Token = TestUtils.GenerateToken(Secret);
+            #endregion
+
+            var port = new ProcessMessagePort()
+            {
+                Scenarios = Scenarios,
+                HeaderMatchResults = Scenarios.Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
+                QueryMatchResults = Scenarios.Skip(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
+                BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
+                SigningKeys = new List<string> { Secret },
+                Token = Token,
+                TokenScheme = TokenConstants.Bearer,
+                TokenParameter = TestUtils.SerializeToken(Token),
+                TokenValidationResults = new List<MatchResult> { MatchResult.Create(MatchResultType.Fail, UnauthScenario) }
+            };
+
+            var Target = new ResponseSelectorFilter<ProcessMessagePort>(new TemplateContext());
+
+            var Actual = Target.Process(port).SelectedResponse;
+            Assert.Contains(Actual, PossibleResponses);
         }
     }
 

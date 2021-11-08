@@ -25,16 +25,25 @@ namespace Orbital.Mock.Server.Pipelines
     {
         private readonly SyncBlockFactory blockFactory;
 
+        #region Blocks
+        private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
+        private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
+        #endregion
+
+        #region Filters
         private readonly PathValidationFilter<ProcessMessagePort> pathValidationFilter;
         private readonly HeaderMatchFilter<ProcessMessagePort> headerMatchFilter;
         private readonly ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter;
         private readonly QueryMatchFilter<ProcessMessagePort> queryMatchFilter;
         private readonly EndpointMatchFilter<ProcessMessagePort> endpointMatchFilter;
         private readonly BodyMatchFilter<ProcessMessagePort> bodyMatchFilter;
-        private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
-        private ActionBlock<IEnvelope<ProcessMessagePort>> endBlock;
         private readonly UrlMatchFilter<ProcessMessagePort> urlMatchFilter;
         private readonly PolicyFilter<ProcessMessagePort> policyFilter;
+
+        private readonly TokenParseFilter<ProcessMessagePort> tokenParseFilter;
+        private readonly TokenValidationFilter<ProcessMessagePort> tokenValidationFilter;
+        #endregion
+
         public bool PipelineIsRunning { get; private set; }
 
         public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher, TemplateContext templateContext)
@@ -45,7 +54,9 @@ namespace Orbital.Mock.Server.Pipelines
                   new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new ResponseSelectorFilter<ProcessMessagePort>(templateContext),
-                  new PolicyFilter<ProcessMessagePort>())
+                  new PolicyFilter<ProcessMessagePort>(),
+                  new TokenParseFilter<ProcessMessagePort>(),
+                  new TokenValidationFilter<ProcessMessagePort>())
         {
         }
 
@@ -57,7 +68,9 @@ namespace Orbital.Mock.Server.Pipelines
             HeaderMatchFilter<ProcessMessagePort> headerMatchFilter,
             UrlMatchFilter<ProcessMessagePort> urlMatchFilter,
             ResponseSelectorFilter<ProcessMessagePort> responseSelectorFilter,
-            PolicyFilter<ProcessMessagePort> policyFilter
+            PolicyFilter<ProcessMessagePort> policyFilter,
+            TokenParseFilter<ProcessMessagePort> tokenParseFilter,
+            TokenValidationFilter<ProcessMessagePort> tokenValidationFilter
         )
         {
             this.pathValidationFilter = pathValidationFilter;
@@ -69,6 +82,8 @@ namespace Orbital.Mock.Server.Pipelines
             this.urlMatchFilter = urlMatchFilter;
             this.responseSelectorFilter = responseSelectorFilter;
             this.policyFilter = policyFilter;
+            this.tokenParseFilter = tokenParseFilter;
+            this.tokenValidationFilter = tokenValidationFilter;
         }
 
         /// <inheritdoc />
@@ -76,7 +91,7 @@ namespace Orbital.Mock.Server.Pipelines
         {
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-            //Initialize blocks
+            #region Block Initialization
             this.startBlock = this.blockFactory.CreateTransformBlock(this.pathValidationFilter.Process, cancellationTokenSource);
 
             var broadCastBlock = this.blockFactory.CreateBroadcastBlock(envelope => envelope, cancellationTokenSource);
@@ -86,41 +101,48 @@ namespace Orbital.Mock.Server.Pipelines
             var bodyMatchFilterBlock = this.blockFactory.CreateTransformBlock(this.bodyMatchFilter.Process, cancellationTokenSource);
             var queryFilterBlock = this.blockFactory.CreateTransformBlock(this.queryMatchFilter.Process, cancellationTokenSource);
             var policyFilterBlock = this.blockFactory.CreateTransformBlock(this.policyFilter.Process, cancellationTokenSource);
-            var joinUrlAndOtherBlock = this.blockFactory.CreateJoinTwoBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
+            var tokenParseBlock = this.blockFactory.CreateTransformBlock(this.tokenParseFilter.Process, cancellationTokenSource);
+            var tokenValidationBlock = this.blockFactory.CreateTransformBlock(this.tokenValidationFilter.Process, cancellationTokenSource);
+
+            var joinUrlAndOthersBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
             var joinRequestPartsBlock = this.blockFactory.CreateJoinThreeBlock(new GroupingDataflowBlockOptions() { Greedy = false }, cancellationTokenSource);
+
             var mergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
-            var finalmergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
+            var finalmergeBlock = this.blockFactory.CreateJoinTransformBlock((Tuple<ProcessMessagePort, ProcessMessagePort, ProcessMessagePort> Ports) => Ports.Item1, cancellationTokenSource);
+
             var responseSelectorBlock = this.blockFactory.CreateTransformBlock(this.responseSelectorFilter.Process, cancellationTokenSource);
             this.endBlock = this.blockFactory.CreateFinalBlock(cancellationTokenSource);
+            #endregion
 
-
-            //Broadcast incoming request to all getter blocks
+            //< Link the 'startBlock' to the 'endpointFilterBlock' as a first step
             this.startBlock.LinkTo(endpointFilterBlock, linkOptions);
-            //Will need to add a join block when all three filters are added
+            //< After the endpoint filter - must then link to the broadcast block
             endpointFilterBlock.LinkTo(broadCastBlock, linkOptions);
-
+            //< Broadcast block must then link to the transform blocks
             broadCastBlock.LinkTo(queryFilterBlock, linkOptions);
             broadCastBlock.LinkTo(bodyMatchFilterBlock, linkOptions);
             broadCastBlock.LinkTo(headerFilterBlock, linkOptions);
             broadCastBlock.LinkTo(urlFilterBlock, linkOptions);
-
-
+            //< Broadcast links to 'tokenParseBlock' which in turn links to 'tokenValidationBlock'
+            broadCastBlock.LinkTo(tokenParseBlock, linkOptions);
+            tokenParseBlock.LinkTo(tokenValidationBlock, linkOptions);
+            //< Request match filters link into the 'joinRequestMatchPartsBlock'
             bodyMatchFilterBlock.LinkTo(joinRequestPartsBlock.Target1, linkOptions);
             queryFilterBlock.LinkTo(joinRequestPartsBlock.Target2, linkOptions);
             headerFilterBlock.LinkTo(joinRequestPartsBlock.Target3, linkOptions);
-            urlFilterBlock.LinkTo(joinUrlAndOtherBlock.Target2, linkOptions);
-
+            //< urlFilterBlock and tokenValidationBlock link into the final join block
+            urlFilterBlock.LinkTo(joinUrlAndOthersBlock.Target2, linkOptions);
+            tokenValidationBlock.LinkTo(joinUrlAndOthersBlock.Target3, linkOptions);
+            //< The 'joined' request match blocks are linked to the 'merge' block
             joinRequestPartsBlock.LinkTo(mergeBlock, linkOptions);
-
-            mergeBlock.LinkTo(joinUrlAndOtherBlock.Target1, linkOptions);
-
-            joinUrlAndOtherBlock.LinkTo(finalmergeBlock, linkOptions);
-
+            //< The 'merged' request match blocks are linked to the first target of final join block
+            mergeBlock.LinkTo(joinUrlAndOthersBlock.Target1, linkOptions);
+            //< The final 'join' links to final 'merge' - and then final 'merge' to response selection
+            joinUrlAndOthersBlock.LinkTo(finalmergeBlock, linkOptions);
             finalmergeBlock.LinkTo(responseSelectorBlock, linkOptions);
-
+            //< After response selection - we link to the policy filter as a final step
             responseSelectorBlock.LinkTo(policyFilterBlock, linkOptions);
             policyFilterBlock.LinkTo(this.endBlock, linkOptions);
-
         }
 
         /// <inheritdoc />
@@ -149,20 +171,18 @@ namespace Orbital.Mock.Server.Pipelines
                 body = reader.ReadToEnd();
             }
 
-
             Enum.TryParse(input.ServerHttpRequest.Method, true, out HttpMethod verb);
-
 
             var port = new ProcessMessagePort()
             {
                 Scenarios = input.Scenarios,
+                SigningKeys = input.SigningKeys,
                 Path = input.ServerHttpRequest.Path,
                 Verb = verb,
                 Query = input.QueryDictionary,
                 Headers = input.HeaderDictionary,
                 Body = body
             };
-
 
             var envelope = new SyncEnvelope(completionSource, port, token);
 

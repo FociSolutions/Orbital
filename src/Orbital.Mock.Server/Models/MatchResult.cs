@@ -54,5 +54,10 @@ namespace Orbital.Mock.Server.Models
         {
             return (ScenarioId != null ? ScenarioId.GetHashCode() : 0);
         }
+
+        public static MatchResult Create(MatchResultType type, Scenario scenario)
+        {
+            return new MatchResult(type, scenario.Id, scenario.defaultScenario);
+        }
     }
 }

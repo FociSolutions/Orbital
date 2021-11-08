@@ -1,18 +1,30 @@
-﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Diagnostics.CodeAnalysis;
+
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace Orbital.Mock.Server.Pipelines.Ports
 {
     /// <summary>
+    /// Intermediate interface to encapsulate all interfaces extended by ProcessMessagePort
+    /// </summary>
+    public interface IProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort,
+                                           IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IUrlMatchPort,
+                                           IResponseSelectorPort, IPolicyPort, ITokenParsePort, ITokenValidationPort
+    { }
+
+    /// <summary>
     /// Model class representing a port for message processor pipelines
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class ProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort, IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IResponseSelectorPort, IUrlMatchPort, IPolicyPort
+    public class ProcessMessagePort : IProcessMessagePort
     {
         /// <summary>
         /// A lock used to stop the database from corruption when multiple writers are using it. This is temporary
@@ -26,9 +38,11 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             this.HeaderMatchResults = new List<MatchResult>();
             this.BodyMatchResults = new List<MatchResult>();
             this.URLMatchResults = new List<MatchResult>();
+            this.TokenValidationResults = new List<MatchResult>();
             this.Query = new List<KeyValuePair<string, string>>();
             this.Headers = new List<KeyValuePair<string, string>>();
             this.Policies = new List<Policy>();
+            this.SigningKeys = new List<string>();
         }
 
         public ICollection<string> Faults { get; set; }
@@ -58,6 +72,15 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public ICollection<Policy> Policies { get; set; }
         public PolicyType PolicyType { get; set; }
 
+        public string TokenScheme { get; set; }
+        public string TokenParameter { get; set; }
+        public JwtSecurityToken Token { get; set; }
+        public IEnumerable<string> SigningKeys { get; set; }
+        public ICollection<MatchResult> TokenValidationResults { get; set; }
+        public ICollection<MatchResult> TokenMatchResults { get; set; }
+
+        public bool CheckAuthentication => SigningKeys.Count() > 0;
+
         public IFaultablePort AppendFault(Exception e)
         {
             var fault = e.Message;
@@ -67,7 +90,5 @@ namespace Orbital.Mock.Server.Pipelines.Ports
 
             return this;
         }
-
-
     }
 }

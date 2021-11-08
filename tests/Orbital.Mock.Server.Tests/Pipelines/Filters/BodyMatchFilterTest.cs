@@ -20,13 +20,21 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
     {
         private readonly Faker<Scenario> scenarioFaker;
 
+        private static readonly List<ComparerType> BodyMatchTestTypes = new List<ComparerType>()
+        { 
+            ComparerType.REGEX,
+            ComparerType.TEXTSTARTSWITH, ComparerType.TEXTENDSWITH, ComparerType.TEXTCONTAINS, ComparerType.TEXTEQUALS,
+            ComparerType.JSONEQUALITY, ComparerType.JSONCONTAINS, ComparerType.JSONSCHEMA,
+            ComparerType.ACCEPTALL
+        };
+
         public BodyMatchFilterTest()
         {
             Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var fakerJObject = new Faker<JObject>()
                             .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom(BodyMatchTestTypes), fakerJObject.Generate()));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
             this.scenarioFaker = new Faker<Scenario>()
@@ -43,22 +51,23 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()
+                Body = fakeScenario.RequestMatchRules.BodyRules.First().RuleValue.ToString()
             };
 
             #endregion
 
             var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
-            var Actual = Target.Process(new ProcessMessagePort()
-                                {
-                                    Scenarios = input.Scenarios, Body = input.Body
-                                })
-                                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success))
-                                                 .Select(x => x.ScenarioId);
+            var Result = Target.Process(new ProcessMessagePort()
+            {
+                Scenarios = input.Scenarios,
+                Body = input.Body
+            });
 
-            var Expected = fakeScenario.Id ;
+            var Actual = Result.BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success))
+                                                .Select(x => x.ScenarioId);
 
+            var Expected = fakeScenario.Id;
             Assert.Equal(Expected, Actual.First());
         }
 

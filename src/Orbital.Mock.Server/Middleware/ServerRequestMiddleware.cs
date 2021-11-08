@@ -1,11 +1,15 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Orbital.Mock.Server.Pipelines.Commands;
-using Orbital.Mock.Server.Pipelines.Ports;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
+﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Diagnostics.CodeAnalysis;
+
+using Microsoft.AspNetCore.Http;
+
+using Orbital.Mock.Server.Pipelines.Ports;
+using Orbital.Mock.Server.Pipelines.Commands;
+
+using MediatR;
 
 namespace Orbital.Mock.Server.Middleware
 {
@@ -16,6 +20,9 @@ namespace Orbital.Mock.Server.Middleware
     [ExcludeFromCodeCoverage]
     public class ServerRequestMiddleware
     {
+        private const string AdminRegexString = @"^/api/v\d/OrbitalAdmin";
+        private static readonly Regex AdminRegex = new Regex(AdminRegexString);
+
         private readonly RequestDelegate next;
         private readonly IMediator mediator;
 
@@ -38,9 +45,7 @@ namespace Orbital.Mock.Server.Middleware
         /// <returns></returns>
         public async Task InvokeAsync(HttpContext context)
         {
-            Regex rx = new Regex(@"^/api/v\d/OrbitalAdmin");
-
-            if (rx.IsMatch(context.Request.Path))
+            if (AdminRegex.IsMatch(context.Request.Path))
             {
                 await next.Invoke(context);
             }
