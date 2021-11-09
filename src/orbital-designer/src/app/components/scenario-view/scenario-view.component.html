@@ -35,10 +35,7 @@
               <mat-list-item *ngFor="let scenario of filteredList">
                 <div id="scenario-list-item">
                   <mat-card *ngIf="!!scenario" class="scenario-list-item-container min-card-height">
-                    <mat-card-content
-                      [routerLink]="this.isHoveringOverMenu ? null : ['/scenario-editor', scenario.id]"
-                      routerLinkActive="is-active"
-                    >
+                    <mat-card-content>
                       <mat-card-title>
                         <div>{{ scenario?.metadata.title }}</div>
                         <div class="scenario-options-menu">
@@ -88,11 +85,18 @@
                           </div>
                         </div>
                       </mat-card-subtitle>
-                      <mat-checkbox
-                      (mouseout)="this.isHoveringOverMenu = false"
-                      (mouseover)="this.isHoveringOverMenu = true"
-                      (change)="toggleDefaultScenario($event, scenario)"
-                      [checked]="scenario.defaultScenario">Default Scenario</mat-checkbox>
+                      <mat-card-footer>
+                        <mat-checkbox
+                        (mouseout)="this.isHoveringOverMenu = false"
+                        (mouseover)="this.isHoveringOverMenu = true"
+                        (change)="toggleDefaultScenario($event, scenario)"
+                        [checked]="scenario.defaultScenario">Default Scenario</mat-checkbox>
+                        <button mat-raised-button
+                        [routerLink]="this.isHoveringOverMenu ? null : ['/scenario-editor', scenario.id]"
+                        routerLinkActive="is-active">
+                          Edit
+                        </button>
+                      </mat-card-footer>
                     </mat-card-content>
                   </mat-card>
 
@@ -113,13 +117,15 @@
               </mat-list-item>
             </mat-list>
           </div>
-          <button (click)="addScenario()" id="add" mat-fab color="primary">
-            +
-          </button>
         </div>
-        <button id="back-to-endpoints" mat-raised-button color="primary" (click)="goToEndpoints()">
+        <div class="footer-buttons">
+          <button  mat-raised-button color="primary" (click)="goToEndpoints()">
           Back to Endpoints
         </button>
+          <button (click)="addScenario()" mat-raised-button color="primary">
+            Add Scenario
+          </button>
+        </div>
       </div>
     </div>
   </div>

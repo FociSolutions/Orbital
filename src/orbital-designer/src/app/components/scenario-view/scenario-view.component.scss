@@ -45,9 +45,18 @@ button#add {
   margin-top: 1%;
 }
 
-button#back-to-endpoints {
-  margin-left: 10%;
+.footer-buttons {
+  margin-left: 2.8rem;
+  display: flex;
+  align-items: flex-start;
+  width: 94%;
+  justify-content: space-between;
+  button {
   margin-top: 1em;
+  &:hover {
+    background-color: #005c50;
+  }
+  }
 }
 
 .title mat-chip-list {
@@ -154,4 +163,22 @@ p#notFoundMessage {
 .validation-type {
   margin-left: 2.5rem;
   margin-top: 0.25rem;
+}
+
+.mat-card-footer {
+  justify-content: space-between;
+  button {
+    float: right;
+    margin-right: 0.8rem;
+    background-color: #dfdfdf;
+    &:hover {
+      background-color: #b6b6b6;
+    }
+  }
+}
+
+.title {
+  display: flex;
+  place-items: lwft;
+
 }

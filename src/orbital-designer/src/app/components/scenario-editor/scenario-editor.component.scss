@@ -47,11 +47,17 @@ mat-card-title {
 button#go-to-scenarios {
   margin-top: 1em;
   width: 10em;
+  &:hover {
+    background-color: #005c50;
+  }
 }
 
 button#save-button {
   margin-top: 1em;
   width: 10em;
+  &:hover {
+    background-color: #005c50;
+  }
 }
 
 div#cancel-save-buttons {
