@@ -192,8 +192,8 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   updateScenariosValidationType(path: string, mode: number) {
     this.scenarioList.forEach(scenario => {
       scenario.validationType = mode;
+      this.store.addOrUpdateScenario(scenario);
     })
-    this.store.updateScenarios(this.scenarioList);
   }
 
   get selectedMode(): number {
