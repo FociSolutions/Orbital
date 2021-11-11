@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('EndpointListComponent', () => {
   let component: EndpointListComponent;
@@ -24,7 +25,12 @@ describe('EndpointListComponent', () => {
         GetVerbStringPipe,
         GetVerbColorPipe
       ],
-      imports: [MatListModule, MatCardModule, LoggerTestingModule],
+      imports: [
+        MatListModule,
+        MatCardModule,
+        LoggerTestingModule,
+        MatIconModule
+      ],
       providers: [DesignerStore]
     }).compileComponents();
 

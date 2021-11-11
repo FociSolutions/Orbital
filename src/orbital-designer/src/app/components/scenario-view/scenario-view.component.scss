@@ -144,6 +144,11 @@ p#notFoundMessage {
     justify-content: space-between;
     min-width: 80%;
     max-width: 80%;
+
+    .description {
+      width: 30%;
+      word-wrap: break-word;
+    }
   }
 }
 

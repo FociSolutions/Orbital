@@ -137,7 +137,7 @@ describe('CreateEditMockViewComponent', () => {
     it("should set the text of the 'key' form field to a valid uuid", () => {
       component.generateKey();
       const key = component.formGroup.get('key');
-      expect(uuid.validate(key.value)).toEqual(true);
+      expect(key.errors).toEqual(null);
     });
   });
 

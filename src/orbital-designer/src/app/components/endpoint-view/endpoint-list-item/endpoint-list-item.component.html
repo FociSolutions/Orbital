@@ -1,19 +1,18 @@
-<mat-card *ngIf="!!endpoint" class="endpointlistitemcontainer mincardheight">
-  <mat-card-header
-    class="verb-header"
-    [style.background-color]="endpoint.verb | getVerbColor"
-  >
-    <mat-card-title class="verb-text">{{
-      endpoint.verb | getVerbString
-    }}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content (click)="selectEndpoint()">
-    <mat-card-title> {{ endpoint.path }} </mat-card-title>
-    <mat-card-subtitle>
-      <div class="subtitle">
-        <div>{{ endpointDescription }}</div>
-        <div>{{ scenarioCount }} Scenarios</div>
-      </div>
-    </mat-card-subtitle>
+<mat-card *ngIf="!!endpoint"
+class="endpointlistitemcontainer mincardheight"
+(click)="selectEndpoint()">
+
+  <mat-card-content>
+    <mat-card-header class="verb-header" [style.background-color]="endpoint.verb | getVerbColor">
+      <mat-card-title class="verb-text">{{ endpoint.verb | getVerbString }}</mat-card-title>
+    </mat-card-header>
+    <div class="endpoint-info-content">
+      <mat-card-title> {{ endpoint.path }} </mat-card-title>
+      <mat-card-subtitle>{{ endpointDescription }}</mat-card-subtitle>
+    </div>
+    <div class="scenario-count">{{ scenarioDisplay }}</div>
+    <div class="view-endpoint">
+      <button><mat-icon>chevron_right</mat-icon></button>
+    </div>
   </mat-card-content>
 </mat-card>

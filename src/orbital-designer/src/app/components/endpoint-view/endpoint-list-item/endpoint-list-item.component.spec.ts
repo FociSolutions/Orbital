@@ -11,6 +11,7 @@ import { Endpoint } from 'src/app/models/endpoint.model';
 import * as faker from 'faker';
 import { VerbType } from 'src/app/models/verb.type';
 import { OpenAPIV2 } from 'openapi-types';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('EndpointListItemComponent', () => {
   let component: EndpointListItemComponent;
@@ -25,6 +26,7 @@ describe('EndpointListItemComponent', () => {
       ],
       imports: [
         MatCardModule,
+        MatIconModule,
         RouterTestingModule,
         LoggerTestingModule
       ],

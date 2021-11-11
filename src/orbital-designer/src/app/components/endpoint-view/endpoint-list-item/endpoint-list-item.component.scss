@@ -1,37 +1,70 @@
 .endpointlistitemcontainer {
   padding: 0em;
   display: flex;
-  flex-direction: row;
+  min-width: 0;
+  align-items: stretch;
   width: 100%;
+
   &:hover {
     background-color: #f0f0f0;
     cursor: pointer;
   }
 
   mat-card-content {
-    margin-left: 5%;
-    padding: 1%;
-    flex: 1;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+
+
+    .endpoint-info-content {
+      flex-grow: 1;
+      padding: 1rem;
+      min-width: 0;
+
+      mat-card-title {
+        word-wrap: break-word;
+        max-width: 65rem;
+      }
+    }
+
+    .scenario-count {
+      text-align: left;
+      font-weight: bold;
+      padding: 0 1.5rem 0 1rem;
+      white-space: nowrap;
+    }
+
+    mat-card-subtitle {
+      margin-bottom: 0;
+    }
+
+    .view-endpoint {
+      button {
+        border: none;
+        width: 100%;
+        height: 5rem;
+        background-color: transparent;
+        padding: 0rem 3rem;
+
+        .mat-icon {
+          transform: scale(1.5);
+        }
+      }
+    }
   }
 
   .verb-text {
-    font-weight: bold;
-    text-align: center;
-    vertical-align: 50%;
-    font-size: 0.75em;
+    font-size: 1.5em;
     margin-bottom: 0;
-  }
-
-  .subtitle {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    min-width: 80%;
-    max-width: 80%;
+    color: rgb(58, 58, 58);
   }
 
   .verb-header {
-    min-width: 12%;
+    width: 10rem;
+    flex-shrink: 0;
+    height: 100%;
   }
 }
 ::ng-deep .mat-card-header-text {

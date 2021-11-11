@@ -37,4 +37,13 @@ export class EndpointListItemComponent {
       ? 'No description'
       : this.endpoint.spec.description;
   }
+
+  get scenarioDisplay(): string {
+    let display = this.scenarioCount + " Scenario";
+    if (this.scenarioCount > 1 || this.scenarioCount == 0) {
+      display = display + "s";
+    }
+    return display;
+  }
+
 }
