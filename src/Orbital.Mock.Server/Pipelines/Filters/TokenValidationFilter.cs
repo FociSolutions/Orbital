@@ -13,6 +13,8 @@ using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 
+using Newtonsoft.Json.Linq;
+
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public static class TokenConstants
@@ -83,7 +85,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                     ValidateLifetime = false,
                     ValidateIssuerSigningKey = true,
                     TryAllIssuerSigningKeys = true,
-                    IssuerSigningKeys = ParseSecurityKeys(port.SigningKeys)
+                    IssuerSigningKeys = ParseSecurityKeys(port.SigningKeys),
                 }, out SecurityToken validatedToken);
 
                 validToken = (JwtSecurityToken)validatedToken;
@@ -97,13 +99,52 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         }
 
         /// <summary>
-        /// Converts string-based signing keys to SymmetricSecurityKeys
+        /// Converts input string SigningKeys into JsonWebKey SecurityKeys
         /// </summary>
-        /// <param name="keys">IEnumerable containing all available signing keys</param>
+        /// <param name="keys">IEnumerable containing all available signing keys (either JWK JSON or SymmetricSecurityKey text)</param>
         /// <returns></returns>
         static IEnumerable<SecurityKey> ParseSecurityKeys(IEnumerable<string> keys)
         {
-            return keys.Select(key => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key))).ToList();
+            return keys.Select(ParseSecurityKey).ToList();
+        }
+
+        /// <summary>
+        /// Parses input signing key into a JsonWebKey-based SecurityKey
+        /// </summary>
+        /// <param name="key">Input signing key (either JWK JSON or SymmetricSecurityKey text)</param>
+        /// <returns></returns>
+        static SecurityKey ParseSecurityKey(string key)
+        {
+            return IsJwk(key) ? new JsonWebKey(key) : ParseSymmetricKeyIntoJwk(key);
+        }
+
+        /// <summary>
+        /// Checks if the input string key is JWK JSON
+        /// </summary>
+        /// <param name="key">Input signing key (either JWK JSON or SymmetricSecurityKey text)</param>
+        /// <returns></returns>
+        static bool IsJwk(string key)
+        {
+            try
+            {
+                _ = JObject.Parse(key);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Parses an input SymmetricSecurityKey into a JsonWebKey-based SecurityKey
+        /// </summary>
+        /// <param name="key">Input SymmetricSecurityKey text</param>
+        /// <returns></returns>
+        static SecurityKey ParseSymmetricKeyIntoJwk(string key)
+        {
+            var secKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
+            return JsonWebKeyConverter.ConvertFromSymmetricSecurityKey(secKey);
         }
     }
 }

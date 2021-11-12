@@ -74,6 +74,13 @@ namespace Orbital.Mock.Server.Tests
             return handler.WriteToken(token);
         }
 
+        public static string GetJwtFromJwk(string secret, int expiryMinutes = 30)
+        {
+            var token = GenerateTokenFromJwk(secret, expiryMinutes);
+            var handler = new JwtSecurityTokenHandler();
+            return handler.WriteToken(token);
+        }
+
         /// <summary>
         /// Generates a valid JwtSecuriyToken given the input 'client secret'
         /// </summary>
@@ -104,6 +111,28 @@ namespace Orbital.Mock.Server.Tests
         {
             var handler = new JwtSecurityTokenHandler();
             return handler.WriteToken(token);
+        }
+
+        public static JsonWebKey GenerateJwk(string secret)
+        {
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
+            var jwk = JsonWebKeyConverter.ConvertFromSymmetricSecurityKey(key);
+            return jwk;
+        }
+
+        public static JwtSecurityToken GenerateTokenFromJwk(string secret, int expiryMinutes = 30)
+        {
+            var jwk = GenerateJwk(secret);
+
+            var handler = new JwtSecurityTokenHandler();
+            var descrip = new SecurityTokenDescriptor()
+            {
+                Expires = DateTime.UtcNow.AddMinutes(expiryMinutes),
+                SigningCredentials = new SigningCredentials(jwk, SecurityAlgorithms.HmacSha256)
+            };
+
+            var token = handler.CreateToken(descrip);
+            return token as JwtSecurityToken;
         }
     }
 }

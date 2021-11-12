@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading;
 using System.Collections.Generic;
 
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 
 using Orbital.Mock.Server.Models;
@@ -29,6 +31,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         private readonly Faker WordFaker;
         private readonly Faker<Scenario> ScenarioFaker;
 
+        private const int MinSecretSize = 64;
+
         public TokenValidationFilterTests()
         {
             this.WordFaker = new Faker();
@@ -50,7 +54,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void TokenValidationFilterNoSigningKeysIgnoreTest()
         {
             #region Test Setup
-            string secret = TestUtils.GetRandomString(WordFaker, minLen: 32);
+            string secret = TestUtils.GetRandomString(WordFaker, minLen: MinSecretSize);
             var fakeScenario = ScenarioFaker.Generate();
 
             var port = new ProcessMessagePort()
@@ -97,7 +101,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void TokenValidationFilterInvalidSchemeFailTest()
         {
             #region Test Setup
-            string secret = TestUtils.GetRandomString(WordFaker, minLen: 32);
+            string secret = TestUtils.GetRandomString(WordFaker, minLen: MinSecretSize);
             var fakeScenario = ScenarioFaker.Generate();
 
             var port = new ProcessMessagePort()
@@ -120,8 +124,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void TokenValidationFilterInvalidSigningKeyFailTest()
         {
             #region Test Setup
-            string secret = TestUtils.GetRandomString(WordFaker, minLen: 32);
-            string wrongSecret = TestUtils.GetRandomString(WordFaker, minLen: 32);
+            string secret = TestUtils.GetRandomString(WordFaker, minLen: MinSecretSize);
+            string wrongSecret = TestUtils.GetRandomString(WordFaker, minLen: MinSecretSize);
             var fakeScenario = ScenarioFaker.Generate();
 
             var port = new ProcessMessagePort()
@@ -144,8 +148,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void TokenValidationFilterValidTokenSuccessTest()
         {
             #region Test Setup
-            string secret = TestUtils.GetRandomString(WordFaker, minLen: 32);
-            string wrongSecret = TestUtils.GetRandomString(WordFaker, minLen: 32);
+            string secret = TestUtils.GetRandomString(WordFaker, minLen: MinSecretSize);
+            string wrongSecret = TestUtils.GetRandomString(WordFaker, minLen: MinSecretSize);
             var fakeScenario = ScenarioFaker.Generate();
 
             var port = new ProcessMessagePort()
