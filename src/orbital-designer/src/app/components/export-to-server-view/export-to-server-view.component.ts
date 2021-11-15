@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { finalize } from 'rxjs/operators';
 import { every } from 'lodash';
 import { OrbitalAdminService } from '../../services/orbital-admin/orbital-admin.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-export-to-server-view',
@@ -36,6 +37,7 @@ export class ExportToServerViewComponent implements OnInit {
 
   ngOnInit() {
     this.inputControl = new FormControl('');
+    this.inputControl.setValue(environment.apiUrl);
 
     this.resetForm();
   }

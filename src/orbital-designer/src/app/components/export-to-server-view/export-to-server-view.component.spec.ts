@@ -9,6 +9,7 @@
  import { ExportToServerViewComponent } from './export-to-server-view.component';
  import { DesignerStore } from '../../store/designer-store';
  import { OrbitalAdminService } from '../../services/orbital-admin/orbital-admin.service';
+import { environment } from 'src/environments/environment';
 
  describe('ExportToServerViewComponent', () => {
   let component: ExportToServerViewComponent;
@@ -36,4 +37,11 @@
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('When export component is initialized and the input form control is created', () => {
+
+    it('should equal the value stored in the environment', () => {
+      expect(component.inputControl.value).toBe(environment.apiUrl);
+    })
+  })
 });
