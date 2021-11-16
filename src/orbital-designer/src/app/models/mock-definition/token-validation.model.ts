@@ -13,5 +13,7 @@ export const defaultTokenValidation: TokenValidation = {
 
 export enum ValidationType {
   NONE,
-  JWT_VALIDATION
+  JWT_VALIDATION,
+  JWT_VALIDATION_CONTENT,
+  CONTENT
 };

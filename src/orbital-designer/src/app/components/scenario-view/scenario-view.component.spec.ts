@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
-import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
 import * as faker from 'faker';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { VerbType } from 'src/app/models/verb.type';
@@ -43,11 +43,22 @@ import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { ValidationType } from 'src/app/models/mock-definition/token-validation.model';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
   let fixture: ComponentFixture<ScenarioViewComponent>;
   let store: DesignerStore;
+  let mockDefService: MockDefinitionService;
+
+  const scenarioParams: ScenarioParams = {
+    path: '/test',
+    verb: VerbType.GET,
+    description: '',
+    title: "New Scenario",
+    status: 0
+  }
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -95,6 +106,7 @@ describe('ScenarioViewComponent', () => {
     fixture.detectChanges();
     store = TestBed.get(DesignerStore);
     store.mockDefinition = validMockDefinition;
+    mockDefService = TestBed.get(MockDefinitionService);
     tick();
     fixture.detectChanges();
   }));
@@ -119,11 +131,7 @@ describe('ScenarioViewComponent', () => {
   describe('ScenarioViewComponent.SearchBar', () => {
     describe('ScenarioViewComponent.scenarioToString', () => {
       it('should return the scenario title', () => {
-        const newScenario: Scenario = {
-          metadata: {
-            title: faker.random.words(),
-          } as Metadata,
-        } as Scenario;
+        const newScenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
 
         component.scenarioList = [newScenario];
 
@@ -154,34 +162,7 @@ describe('ScenarioViewComponent', () => {
     it('should clone a scenario from the store such that no name conflicts will be encountered', () => {
       const scenarios = [];
       for (let i = 0; i < 10; i++) {
-        const mockverb = VerbType.GET;
-        const path = '/test';
-        const scenario = {
-          id: uuid.v4(),
-          metadata: {
-            title: 'New Scenario',
-            description: '',
-          },
-          verb: mockverb,
-          path,
-          response: {
-            headers: {},
-            status: 0,
-            body: '',
-            type: ResponseType.CUSTOM,
-          },
-          requestMatchRules: {
-            headerRules: [],
-            queryRules: [],
-            bodyRules: [
-              {
-                type: RuleType.JSONEQUALITY,
-                rule: {},
-              },
-            ] as Array<BodyRule>,
-          },
-          defaultScenario: false,
-        } as Scenario;
+        const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -196,34 +177,7 @@ describe('ScenarioViewComponent', () => {
     it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', () => {
       const scenarios = [];
       for (let i = 0; i < 10; i++) {
-        const mockverb = VerbType.GET;
-        const path = '/test';
-        const scenario = {
-          id: uuid.v4(),
-          metadata: {
-            title: 'New Scenario',
-            description: '',
-          },
-          verb: mockverb,
-          path,
-          response: {
-            headers: {},
-            status: 0,
-            body: '',
-            type: ResponseType.CUSTOM,
-          },
-          requestMatchRules: {
-            headerRules: [],
-            queryRules: [],
-            bodyRules: [
-              {
-                type: RuleType.JSONEQUALITY,
-                rule: {},
-              },
-            ] as Array<BodyRule>,
-          },
-          defaultScenario: false,
-        } as Scenario;
+        const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -241,34 +195,7 @@ describe('ScenarioViewComponent', () => {
     it('should not clone a scenario from the store if the cloned scenario is invalid', () => {
       const scenarios = [];
       for (let i = 0; i < 10; i++) {
-        const mockverb = VerbType.GET;
-        const path = '/test';
-        const scenario = {
-          id: uuid.v4(),
-          metadata: {
-            title: 'New Scenario',
-            description: '',
-          },
-          verb: mockverb,
-          path,
-          response: {
-            headers: {},
-            status: 0,
-            body: '',
-            type: ResponseType.CUSTOM,
-          },
-          requestMatchRules: {
-            headerRules: [],
-            queryRules: [],
-            bodyRules: [
-              {
-                type: RuleType.JSONEQUALITY,
-                rule: {},
-              },
-            ] as Array<BodyRule>,
-          },
-          defaultScenario: false,
-        } as Scenario;
+        const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -285,34 +212,7 @@ describe('ScenarioViewComponent', () => {
     it('should clone a scenario and ensure that the title and id are different', () => {
       const scenarios = [];
       for (let i = 0; i < 10; i++) {
-        const mockverb = VerbType.GET;
-        const path = '/test';
-        const scenario = {
-          id: uuid.v4(),
-          metadata: {
-            title: 'New Scenario',
-            description: '',
-          },
-          verb: mockverb,
-          path,
-          response: {
-            headers: {},
-            status: 0,
-            body: '',
-            type: ResponseType.CUSTOM,
-          },
-          requestMatchRules: {
-            headerRules: [],
-            queryRules: [],
-            bodyRules: [
-              {
-                type: RuleType.JSONEQUALITY,
-                rule: {},
-              },
-            ] as Array<BodyRule>,
-          },
-          defaultScenario: false,
-        } as Scenario;
+        const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -329,35 +229,9 @@ describe('ScenarioViewComponent', () => {
     it('should clone a scenario and ensure that there exists another scenario with the same contents, except for title and id', () => {
       const scenarios = [];
       for (let i = 0; i < 3; i++) {
-        const mockverb = VerbType.GET;
-        const path = '/' + faker.random.words();
-        const scenario = {
-          id: uuid.v4(),
-          metadata: {
-            title: 'New Scenario',
-            description: '',
-          },
-          verb: mockverb,
-          path,
-          response: {
-            headers: {},
-            status: 0,
-            body: '',
-            type: ResponseType.CUSTOM,
-          },
-          requestMatchRules: {
-            headerRules: [],
-            queryRules: [],
-            bodyRules: [
-              {
-                type: RuleType.JSONEQUALITY,
-                rule: {},
-              },
-            ] as Array<BodyRule>,
-          },
-          defaultScenario: false,
-        } as Scenario;
+        const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
+        scenario.path = "/" + faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
 
@@ -366,6 +240,7 @@ describe('ScenarioViewComponent', () => {
       component.cloneScenario(scenarios[0]);
 
       const componentScenarioClonee = store.state.mockDefinition.scenarios[0];
+      const storeScenarios = store.state.mockDefinition.scenarios;
 
       // ensure that there are two results after the cloning operation
       const expectedResults = store.state.mockDefinition.scenarios.filter(
@@ -384,42 +259,15 @@ describe('ScenarioViewComponent', () => {
           aScenario.response.status === componentScenarioClonee.response.status &&
           JSON.stringify(aScenario.verb) === JSON.stringify(componentScenarioClonee.verb) &&
           aScenario.metadata.description === componentScenarioClonee.metadata.description
-      ).length;
+      );
 
-      expect(expectedResults).toEqual(1);
+      expect(expectedResults.length).toEqual(1);
     });
 
     it('should clone a scenario from the store and the defaultScenario property should be false', () => {
       const scenarios = [];
       for (let i = 0; i < 10; i++) {
-        const mockverb = VerbType.GET;
-        const path = '/test';
-        const scenario = {
-          id: uuid.v4(),
-          metadata: {
-            title: 'New Scenario',
-            description: '',
-          },
-          verb: mockverb,
-          path,
-          response: {
-            headers: {},
-            status: 0,
-            body: '',
-            type: ResponseType.CUSTOM,
-          },
-          requestMatchRules: {
-            headerRules: [],
-            queryRules: [],
-            bodyRules: [
-              {
-                type: RuleType.JSONEQUALITY,
-                rule: {},
-              },
-            ] as Array<BodyRule>,
-          },
-          defaultScenario: true,
-        } as Scenario;
+        const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
@@ -434,34 +282,7 @@ describe('ScenarioViewComponent', () => {
 
   describe('ScenarioViewComponent.deleteScenario', () => {
     it('should set the triggerOpen to scenarioId', () => {
-      const mockverb = VerbType.GET;
-      const path = '/test';
-      const scenario = {
-        id: uuid.v4(),
-        metadata: {
-          title: 'New Scenario',
-          description: '',
-        },
-        verb: mockverb,
-        path,
-        response: {
-          headers: {},
-          status: 0,
-          body: '',
-          type: ResponseType.CUSTOM,
-        },
-        requestMatchRules: {
-          headerRules: [],
-          queryRules: [],
-          bodyRules: [
-            {
-              type: RuleType.JSONEQUALITY,
-              rule: {},
-            },
-          ] as Array<BodyRule>,
-        },
-        defaultScenario: false,
-      } as Scenario;
+      const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
 
       component.confirmDeleteDialog(scenario);
       expect(component.triggerOpen).toEqual(scenario.id);
@@ -470,34 +291,7 @@ describe('ScenarioViewComponent', () => {
 
   describe('ScenarioViewComponent.showDialog', () => {
     it('should set the triggerOpen to scenarioId', () => {
-      const mockverb = VerbType.GET;
-      const path = '/test';
-      const scenario = {
-        id: uuid.v4(),
-        metadata: {
-          title: 'New Scenario',
-          description: '',
-        },
-        verb: mockverb,
-        path,
-        response: {
-          headers: {},
-          status: 0,
-          body: '',
-          type: ResponseType.CUSTOM,
-        },
-        requestMatchRules: {
-          headerRules: [],
-          queryRules: [],
-          bodyRules: [
-            {
-              type: RuleType.JSONEQUALITY,
-              rule: {},
-            },
-          ] as Array<BodyRule>,
-        },
-        defaultScenario: false,
-      } as Scenario;
+      const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
 
       component.showDialog(scenario);
       component.confirmDeleteDialog(scenario);
@@ -506,104 +300,37 @@ describe('ScenarioViewComponent', () => {
   });
 
   it('should return Not Found for a 404 status', () => {
-    const mockverb = VerbType.GET;
-    const path = '/test';
-    const scenario = {
-      id: uuid.v4(),
-      metadata: {
-        title: 'New Scenario',
-        description: '',
-      },
-      verb: mockverb,
-      path,
-      response: {
-        headers: {},
-        status: 0,
-        body: '',
-        type: ResponseType.CUSTOM,
-      },
-      requestMatchRules: {
-        headerRules: [],
-        queryRules: [],
-        bodyRules: [
-          {
-            type: RuleType.JSONEQUALITY,
-            rule: {},
-          },
-        ] as Array<BodyRule>,
-      },
-      defaultScenario: false,
-    } as Scenario;
+    const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
+
     scenario.response.status = 404;
     expect(component.getScenarioResponseStatusString(scenario)).toBe('Not Found');
   });
 
   it('should return Accepted for a 202 status', () => {
-    const mockverb = VerbType.GET;
-    const path = '/test';
-    const scenario = {
-      id: uuid.v4(),
-      metadata: {
-        title: 'New Scenario',
-        description: '',
-      },
-      verb: mockverb,
-      path,
-      response: {
-        headers: {},
-        status: 0,
-        body: '',
-        type: ResponseType.CUSTOM,
-      },
-      requestMatchRules: {
-        headerRules: [],
-        queryRules: [],
-        bodyRules: [
-          {
-            type: RuleType.JSONEQUALITY,
-            rule: {},
-          },
-        ] as Array<BodyRule>,
-      },
-      defaultScenario: false,
-    } as Scenario;
+    const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
+
     scenario.response.status = 202;
     expect(component.getScenarioResponseStatusString(scenario)).toBe('Accepted');
   });
 
+
   describe('ScenarioListItemComponent.deleteScenario', () => {
     it('should delete a scenario from the store', () => {
-      const mockverb = VerbType.GET;
-      const path = '/test';
-      const scenario = {
-        id: uuid.v4(),
-        metadata: {
-          title: 'New Scenario',
-          description: '',
-        },
-        verb: mockverb,
-        path,
-        response: {
-          headers: {},
-          status: 0,
-          body: '',
-          type: ResponseType.CUSTOM,
-        },
-        requestMatchRules: {
-          headerRules: [],
-          queryRules: [],
-          bodyRules: [
-            {
-              type: RuleType.JSONEQUALITY,
-              rule: {},
-            },
-          ] as Array<BodyRule>,
-        },
-        defaultScenario: false,
-      } as Scenario;
+      const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
+
       store.updateScenarios([scenario]);
       component.deleteScenario(scenario);
       expect(store.state.mockDefinition.scenarios).toEqual([]);
     });
   });
+
+  describe('ScenarioListItemComponent.updateScenariosValidationType', () => {
+    it('should update the validation type variable on the mockdef(s) in the list', () => {
+      const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
+      component.scenarioList.push(scenario);
+      component.updateScenariosValidationType(2);
+
+      expect(component.scenarioList[0].validationType).toEqual(ValidationType.JWT_VALIDATION_CONTENT);
+    })
+  })
 });

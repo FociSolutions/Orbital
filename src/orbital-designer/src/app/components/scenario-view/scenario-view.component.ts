@@ -39,8 +39,10 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
 
     modes = [
       {value: ValidationType.NONE, viewValue: "None"},
-      {value: ValidationType.JWT_VALIDATION, viewValue: "JWT Validation"}
-    ]
+      {value: ValidationType.JWT_VALIDATION, viewValue: "JWT Validation"},
+      {value: ValidationType.JWT_VALIDATION_CONTENT, viewValue: "JWT Validation and Contents"},
+      {value: ValidationType.CONTENT, viewValue: "Token Contents"}
+    ];
 
   constructor(
     private store: DesignerStore,
@@ -189,7 +191,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateScenariosValidationType(path: string, mode: number) {
+  updateScenariosValidationType(mode: number) {
     this.scenarioList.forEach(scenario => {
       scenario.validationType = mode;
       this.store.addOrUpdateScenario(scenario);
@@ -202,6 +204,6 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
 
   set selectedMode(value: number)  {
     this._selectedMode = value;
-    this.updateScenariosValidationType(this.endpointPath, this.selectedMode);
+    this.updateScenariosValidationType(this.selectedMode);
   }
 }
