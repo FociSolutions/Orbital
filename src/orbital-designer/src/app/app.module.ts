@@ -57,6 +57,7 @@ import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rul
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 import { CoreModule } from './core/core.module';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { AddTokenValidationRuleComponent } from './components/scenario-editor/add-token-validation-rule/add-token-validation-rule.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     BodyListItemRuleTypeComponent,
     BodyEditRuleComponent,
     DeleteFromServerViewComponent,
+    AddTokenValidationRuleComponent,
   ],
   imports: [
     CoreModule,

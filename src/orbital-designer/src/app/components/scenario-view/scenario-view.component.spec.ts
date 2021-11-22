@@ -43,6 +43,7 @@ import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddTokenValidationRuleComponent } from '../scenario-editor/add-token-validation-rule/add-token-validation-rule.component';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/token-validation.model';
 
@@ -85,6 +86,7 @@ describe('ScenarioViewComponent', () => {
         UrlAddRuleComponent,
         UrlEditRuleComponent,
         UrlListItemRuleTypeComponent,
+        AddTokenValidationRuleComponent
       ],
       imports: [
         LoggerTestingModule,
@@ -330,7 +332,7 @@ describe('ScenarioViewComponent', () => {
       component.scenarioList.push(scenario);
       component.updateScenariosValidationType(2);
 
-      expect(component.scenarioList[0].validationType).toEqual(ValidationType.JWT_VALIDATION_CONTENT);
+      expect(component.scenarioList[0].tokenRule.validationType).toEqual(ValidationType.JWT_VALIDATION_CONTENT);
     })
   })
 });

@@ -96,6 +96,11 @@ p#notFoundMessage {
   flex-direction: row;
   width: 100%;
 
+  &:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+
   mat-card-content {
     min-width: 90%;
     max-width: 90%;

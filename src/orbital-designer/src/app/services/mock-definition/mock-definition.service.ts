@@ -12,6 +12,7 @@ import { VerbType } from 'src/app/models/verb.type';
 import { OpenAPIV2 } from 'openapi-types';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 @Injectable({
   providedIn: 'root'
@@ -245,7 +246,8 @@ export class MockDefinitionService {
       },
       policies: [],
       defaultScenario,
-      validationType: 0
+      validationType: 0,
+      tokenRule: defaultTokenRule
     } as Scenario;
   }
 }

@@ -233,6 +233,8 @@ export class DesignerStore extends Store<State> {
         current.response.headers = scenario.response.headers;
         current.response.status = scenario.response.status;
         current.response.type = scenario.response.type;
+
+        current.tokenRule = scenario.tokenRule;
       } else {
         this.logger.debug(
           'DesignerStore:AddOrUpdateScenario: Unable to find provided scenario in the mock definition, Append it to the end of the list',

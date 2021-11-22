@@ -26,6 +26,11 @@
           >
           </app-add-request-match-rule>
 
+          <app-add-token-validation-rule
+          [tokenRule]="this.selectedScenario?.tokenRule"
+          [tokenRuleFormArray]="this.scenarioFormGroup.controls.tokenRule"
+          ></app-add-token-validation-rule>
+
           <app-add-response
             [response]="this.selectedScenario?.response"
             (responseOutput)="handleResponseOutput($event)"
@@ -35,6 +40,7 @@
           </app-add-response>
 
           <app-policy [policyFormArray]="this.scenarioFormGroup.controls.policies"></app-policy>
+
           <div class="row" style="justify-content: space-between">
             <div id="scenario-back-button-div">
               <button id="go-to-scenarios" color="primary" mat-raised-button (click)="cancel()">

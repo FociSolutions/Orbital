@@ -70,7 +70,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
 
     this.errorMessage = 'No scenarios exist. Click the add button to create a new scenario.';
     if (this.scenarioList.length != 0) {
-      this._selectedMode = this.scenarioList[0].validationType;
+      this._selectedMode = this.scenarioList[0].tokenRule.validationType;
     }
   }
 
@@ -193,7 +193,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
 
   updateScenariosValidationType(mode: number) {
     this.scenarioList.forEach(scenario => {
-      scenario.validationType = mode;
+      scenario.tokenRule.validationType = mode;
       this.store.addOrUpdateScenario(scenario);
     })
   }

@@ -34,7 +34,9 @@
             <mat-list class="scenariolistcontainer">
               <mat-list-item *ngFor="let scenario of filteredList">
                 <div id="scenario-list-item">
-                  <mat-card *ngIf="!!scenario" class="scenario-list-item-container min-card-height">
+                  <mat-card *ngIf="!!scenario" class="scenario-list-item-container min-card-height"
+                  [routerLink]="this.isHoveringOverMenu ? null : ['/scenario-editor', scenario.id]"
+                  routerLinkActive="is-active">
                     <mat-card-content>
                       <mat-card-title>
                         <div>{{ scenario?.metadata.title }}</div>
@@ -77,6 +79,9 @@
                             <div *ngIf="scenario.requestMatchRules.bodyRules.length > 0">
                               Body Rules: {{ scenario.requestMatchRules.bodyRules.length }}
                             </div>
+                            <div *ngIf="scenario.tokenRule.rules.length > 0">
+                              Token Rules: {{ scenario.tokenRule.rules.length }}
+                            </div>
                             <div *ngIf="scenario.policies.length > 0">Policies: {{ scenario.policies.length }}</div>
                           </div>
                           <div>
@@ -91,11 +96,6 @@
                         (mouseover)="this.isHoveringOverMenu = true"
                         (change)="toggleDefaultScenario($event, scenario)"
                         [checked]="scenario.defaultScenario">Default Scenario</mat-checkbox>
-                        <button mat-raised-button
-                        [routerLink]="this.isHoveringOverMenu ? null : ['/scenario-editor', scenario.id]"
-                        routerLinkActive="is-active">
-                          Edit
-                        </button>
                       </mat-card-footer>
                     </mat-card-content>
                   </mat-card>

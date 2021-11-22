@@ -4,6 +4,8 @@ import { VerbType } from '../../verb.type';
 import { Response, defaultResponse } from './response.model';
 import * as uuid from 'uuid';
 import { Policy } from './policy.model';
+import { defaultTokenRule, TokenRule } from './token-rule.model';
+import { ValidationType } from '../token-validation.model';
 
 /**
  * Model representation of a scenario
@@ -17,7 +19,7 @@ export interface Scenario {
   requestMatchRules: RequestMatchRule;
   policies: Policy[];
   defaultScenario: boolean;
-  validationType: number;
+  tokenRule: TokenRule;
 }
 
 export const emptyScenario: Scenario = {
@@ -29,7 +31,7 @@ export const emptyScenario: Scenario = {
   requestMatchRules: defaultRquestMatchRule,
   policies: [],
   defaultScenario: false,
-  validationType: 0
+  tokenRule: defaultTokenRule
 };
 
 export interface ScenarioParams {

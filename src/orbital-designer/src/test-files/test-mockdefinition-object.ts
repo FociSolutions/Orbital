@@ -2,6 +2,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import * as uuid from 'uuid';
+import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 export default {
   scenarios: [
@@ -34,7 +35,8 @@ export default {
       },
       policies: [],
       defaultScenario: false,
-      validationType: 0
+      validationType: 0,
+      tokenRule: defaultTokenRule
     } as Scenario
   ],
   openApi: {

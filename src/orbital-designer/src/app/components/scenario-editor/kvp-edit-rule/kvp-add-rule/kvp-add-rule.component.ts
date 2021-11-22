@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors  } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { recordUpdateKeyName } from 'src/app/models/record';
 
@@ -39,7 +39,7 @@ export class KvpAddRuleComponent implements OnInit {
 
   ngOnInit() {
     this.kvpAddRuleFormGroup = new FormGroup({
-      ruleKey: new FormControl('', [Validators.required, Validators.maxLength(200)]),
+      ruleKey: new FormControl('', [Validators.required, Validators.maxLength(200), this.noWhiteSpaceValidator]),
       ruleValue: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
       type: new FormControl(RuleType.NONE, [Validators.required])
     });
@@ -87,6 +87,7 @@ export class KvpAddRuleComponent implements OnInit {
       this.logger.debug('KvpAddComponent:onAdd: KVP emitted to parent', this.kvpRuleInEdit);
       this.isValid = true;
     } else {
+      this.errorMessage = this.ruleKeyError != null ? this.ruleKeyError.error: '';
       this.isValid = false;
     }
   }
@@ -106,6 +107,10 @@ export class KvpAddRuleComponent implements OnInit {
     return this.kvpAddRuleFormGroup.get('type');
   }
 
+  get ruleKeyError(): any {
+    return this.kvpAddRuleFormGroup.get('ruleKey').errors;
+  }
+
   /**
    * Returns true if the key field is empty and false otherwise
    */
@@ -118,4 +123,18 @@ export class KvpAddRuleComponent implements OnInit {
 
     return false;
   }
+
+  /**
+   * Matches against whitespace regex
+   * @param control the form control
+   * @returns an error message or null
+   */
+  noWhiteSpaceValidator(control: AbstractControl): ValidationErrors {
+    let error = null;
+    if (/\s/.test(control.value))  {
+      error = {"error": "Cannot contain whitespace"};
+    }
+    return error;
+  }
+
 }

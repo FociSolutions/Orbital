@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Scenario, emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
@@ -11,6 +11,7 @@ import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type'
 import { AddBodyRuleBuilder } from '../add-body-rule-edit/add-body-rule-builder/add-body-rule.builder';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,8 @@ export class ScenarioFormBuilder {
       metadata: this.metadataFormGroup(scenario.metadata),
       requestMatchRules: this.requestMatchRulesFormGroup(scenario.requestMatchRules),
       response: this.responseFormGroup(scenario.response),
-      policies: this.policiesFormArray(scenario.policies)
+      policies: this.policiesFormArray(scenario.policies),
+      tokenRule: this.tokenRuleFormArray(scenario.tokenRule)
     });
     return this.scenarioForm;
   }
@@ -123,20 +125,34 @@ export class ScenarioFormBuilder {
    *
    * @param headerOrQueryRule KeyValuePairRule to be turned to a form group.
    */
-  public getHeaderOrQueryItemFormGroup(headerOrQueryRule: KeyValuePairRule) {
+  public getHeaderOrQueryItemFormGroup(headerOrQueryRule: KeyValuePairRule,
+    validators = [Validators.required]) {
     return new FormGroup({
-      key: new FormControl(recordFirstOrDefaultKey(headerOrQueryRule.rule, ''), [
-        Validators.required,
-        Validators.maxLength(200)
-      ]),
-      value: new FormControl(recordFirstOrDefault(headerOrQueryRule.rule, ''), [
-        Validators.required,
-        Validators.maxLength(3000)
-      ]),
-      type: new FormControl(headerOrQueryRule.type, [Validators.required])
+      key: new FormControl(recordFirstOrDefaultKey(headerOrQueryRule.rule, ''), [...validators, Validators.maxLength(200)]),
+      value: new FormControl(recordFirstOrDefault(headerOrQueryRule.rule, ''), [...validators, Validators.maxLength(1000)]),
+      type: new FormControl(headerOrQueryRule.type, validators)
     });
   }
 
+  public tokenRuleFormArray(tokenRule: TokenRule): FormArray {
+    return new FormArray(
+      tokenRule.rules.map((t) =>
+        this.getHeaderOrQueryItemFormGroup(t, [
+          Validators.required,
+          Validators.maxLength(200),
+          this.noWhiteSpaceValidator,
+        ])
+      )
+    );
+  }
+
+  noWhiteSpaceValidator(control: AbstractControl): ValidationErrors {
+    let error = null;
+    if (/\s/.test(control.value))  {
+      error = {"error": "Cannot contain whitespace"};
+    }
+    return error;
+  }
 }
 
 @Injectable({

@@ -1,0 +1,18 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title>
+        Token Validation Rules
+      </mat-panel-title>
+      <mat-panel-description>
+        Rules for decoded JWT
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-checkbox (change)="toggleExpiration($event)" [checked]="checkExpiration">
+      Check Expiration
+    </mat-checkbox>
+    <app-kvp-edit-rule
+      [addKvpTitle]="'Add New JWT Content Match Rule'"
+      [matchRuleFormArray]="this.tokenRuleFormArray"></app-kvp-edit-rule>
+  </mat-expansion-panel>
+</mat-accordion>

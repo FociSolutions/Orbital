@@ -38,7 +38,7 @@ describe('KvpAddComponent', () => {
     });
 
     it('Should return false if both value and key are not empty', () => {
-      component.ruleValue.setValue(faker.lorem.sentence());
+      component.ruleValue.setValue(faker.lorem.word());
       component.ruleKey.setValue(faker.lorem.sentence());
       expect(component.isKeyEmpty()).toBe(false);
     });
@@ -53,7 +53,7 @@ describe('KvpAddComponent', () => {
   describe('KvpAddComponent.onAdd', () => {
     it('Should set key and value to kvp when onAdd() is called, kvp is emitted, and IsValid is true.', () => {
       const input = {
-        key: faker.lorem.sentence(),
+        key: faker.lorem.word(),
         value: faker.lorem.sentence()
       };
       component.ruleKey.setValue(input.key);
@@ -74,17 +74,24 @@ describe('KvpAddComponent', () => {
     });
 
     it('Should set isValid to false if isRegexEmpty is true', () => {
-      component.ruleKey.setValue(faker.lorem.sentence());
+      component.ruleKey.setValue(faker.lorem.word());
       component.ruleType.setValue(RuleType.REGEX);
       component.onAdd();
       expect(component.isValid).toBe(false);
     });
     it('Should set isValid to true if isRegexEmpty is false', () => {
-      component.ruleKey.setValue(faker.lorem.sentence());
+      component.ruleKey.setValue(faker.lorem.word());
       component.ruleValue.setValue(faker.lorem.sentence());
       component.ruleType.setValue(RuleType.REGEX);
       component.onAdd();
       expect(component.isValid).toBe(true);
+    });
+    it('Should set isValid to false if key contains whitespace', () => {
+      component.ruleKey.setValue(faker.lorem.sentence());
+      component.ruleValue.setValue(faker.lorem.sentence());
+      component.ruleType.setValue(RuleType.REGEX);
+      component.onAdd();
+      expect(component.isValid).toBe(false);
     });
   });
 });

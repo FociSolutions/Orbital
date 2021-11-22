@@ -13,6 +13,8 @@ import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder
 import { FormGroup, FormArray, Form } from '@angular/forms';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
+import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
@@ -32,6 +34,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   requestMatchRuleValid = false;
   responseMatchRuleValid = false;
   metadataMatchRuleValid = false;
+  tokenFormIsValid: boolean = false;
 
   triggerOpenCancelBox: boolean;
 
@@ -105,7 +108,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   }
 
   saveScenario() {
-    if (this.metadataMatchRuleValid && this.scenarioFormGroup.valid && this.responseMatchRuleValid) {
+    this.tokenFormIsValid = this.scenarioFormGroup.get('tokenRule').valid;
+    if (this.metadataMatchRuleValid && this.scenarioFormGroup.valid
+        && this.responseMatchRuleValid && this.tokenFormIsValid) {
       this.logger.debug(
         'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
         this.selectedScenario

@@ -44,6 +44,7 @@ import { BodyAddRuleComponent } from './add-body-rule-edit/body-add-rule/body-ad
 import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.component';
 import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { AddTokenValidationRuleComponent } from './add-token-validation-rule/add-token-validation-rule.component';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -75,6 +76,7 @@ describe('ScenarioEditorComponent', () => {
         BodyListItemRuleTypeComponent,
         BodyAddRuleComponent,
         ScenarioViewComponent,
+        AddTokenValidationRuleComponent
       ],
       imports: [
         LoggerTestingModule,
