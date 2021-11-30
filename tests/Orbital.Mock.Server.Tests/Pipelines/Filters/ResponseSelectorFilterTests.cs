@@ -142,7 +142,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var UnauthScenario = fakerScenario.Generate();
             UnauthScenario.Response.Status = (int)HttpStatusCode.Unauthorized;
             UnauthScenario.Response.Body = "";
-            UnauthScenario.TokenValidationType = TokenValidationType.JWT_VALIDATION;
+            UnauthScenario.TokenRule = new TokenRuleInfo();
+            UnauthScenario.TokenRule.ValidationType = TokenValidationType.JWT_VALIDATION;
 
             var Response = UnauthScenario.Response;
 
@@ -174,7 +175,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var UnauthScenario = fakerScenario.Generate();
             UnauthScenario.Response.Status = (int)HttpStatusCode.Unauthorized;
             UnauthScenario.Response.Body = "";
-            UnauthScenario.TokenValidationType = TokenValidationType.JWT_VALIDATION;
+            UnauthScenario.TokenRule = new TokenRuleInfo();
+            UnauthScenario.TokenRule.ValidationType = TokenValidationType.JWT_VALIDATION;
 
             Scenarios.Add(UnauthScenario);
 

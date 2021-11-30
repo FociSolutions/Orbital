@@ -55,6 +55,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                     (int)f.PickRandom<HttpStatusCode>(),
                     f.Lorem.Paragraph()
                     ));
+            var fakerTokenRule = new Faker<TokenRuleInfo>();
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                     .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
                     .RuleFor(m => m.HeaderRules, f => fakerHeaderQueryRule.Generate(3))
@@ -65,7 +66,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                 .RuleFor(m => m.Response, f => fakerResponse.Generate())
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
-                .RuleFor(m => m.Verb, f => f.PickRandom(validMethods));
+                .RuleFor(m => m.Verb, f => f.PickRandom(validMethods))
+                .RuleFor(m => m.TokenRule, f => fakerTokenRule.Generate());
             this.mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext());
         }
         [Fact]

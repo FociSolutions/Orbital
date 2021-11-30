@@ -69,6 +69,15 @@ namespace Orbital.Mock.Server.Models
         {
             return HashCode.Combine(Status, Body, Headers, Queries, Type);
         }
+
+        public static MockResponse Create401()
+        {
+            return new MockResponse()
+            {
+                Status = (int)System.Net.HttpStatusCode.Unauthorized,
+                Body = "{}"
+            };
+        }
     }
 
 

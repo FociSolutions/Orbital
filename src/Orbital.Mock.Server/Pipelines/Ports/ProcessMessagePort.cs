@@ -17,7 +17,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports
     /// </summary>
     public interface IProcessMessagePort : IFaultablePort, IPathValidationPort, IScenariosPort,
                                            IQueryMatchPort, IBodyMatchPort, IHeaderMatchPort, IUrlMatchPort,
-                                           IResponseSelectorPort, IPolicyPort, ITokenParsePort, ITokenValidationPort
+                                           IResponseSelectorPort, IPolicyPort, ITokenParsePort, ITokenValidationPort,
+                                           ITokenRequestMatchPort
     { }
 
     /// <summary>
@@ -39,6 +40,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             this.BodyMatchResults = new List<MatchResult>();
             this.URLMatchResults = new List<MatchResult>();
             this.TokenValidationResults = new List<MatchResult>();
+            this.TokenMatchResults = new List<MatchResult>();
             this.Query = new List<KeyValuePair<string, string>>();
             this.Headers = new List<KeyValuePair<string, string>>();
             this.Policies = new List<Policy>();
@@ -78,6 +80,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public IEnumerable<string> SigningKeys { get; set; }
         public ICollection<MatchResult> TokenValidationResults { get; set; }
         public ICollection<MatchResult> TokenMatchResults { get; set; }
+        public bool IsAuthenticated => Token != null;
 
         public bool CheckAuthentication => SigningKeys.Count() > 0;
 

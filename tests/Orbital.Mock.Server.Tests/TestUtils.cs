@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 
 using Bogus;
+using System.Security.Claims;
 
 namespace Orbital.Mock.Server.Tests
 {
@@ -67,9 +68,10 @@ namespace Orbital.Mock.Server.Tests
         /// <param name="secret">Client secret to be used to sign the JWT</param>
         /// <param name="expiryMinutes">Number of minutes (from DateTime.UtcNow) that the JWT expires - default is 30mins</param>
         /// <returns></returns>
-        public static string GenerateJwt(string secret, int expiryMinutes = 30)
+        public static string GenerateJwt(string secret, int expiryMinutes = 30, List<KeyValuePair<string, string>> claims = null)
         {
-            var token = GenerateToken(secret, expiryMinutes);
+            var token = GenerateToken(secret, expiryMinutes, claims);
+
             var handler = new JwtSecurityTokenHandler();
             return handler.WriteToken(token);
         }
@@ -87,15 +89,20 @@ namespace Orbital.Mock.Server.Tests
         /// <param name="secret">Client secret to be used to sign the JWT</param>
         /// <param name="expiryMinutes">Number of minutes (from DateTime.UtcNow) that the JWT expires - default is 30mins</param>
         /// <returns></returns>
-        public static JwtSecurityToken GenerateToken(string secret, int expiryMinutes = 30)
+        public static JwtSecurityToken GenerateToken(string secret, int expiryMinutes = 30, 
+            List<KeyValuePair<string, string>> claims = null)
         {
+            claims ??= new List<KeyValuePair<string, string>>();
+
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims.Select(c => new Claim(c.Key, c.Value)));
 
             var handler = new JwtSecurityTokenHandler();
             var descrip = new SecurityTokenDescriptor()
             {
                 Expires = DateTime.UtcNow.AddMinutes(expiryMinutes),
-                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature),
+                Subject = claimsIdentity
             };
 
             var token = handler.CreateToken(descrip);

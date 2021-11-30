@@ -25,13 +25,19 @@ namespace Orbital.Mock.Server.Models
         [JsonProperty("defaultScenario")]
         public bool defaultScenario { get; set; } = false;
 
-        [JsonProperty("validationType")]
-        public TokenValidationType TokenValidationType { get; set; }
+        [JsonProperty("tokenRule")]
+        public TokenRuleInfo TokenRule { get; set; }
 
         public bool RequiresTokenValidation()
         {
-            return TokenValidationType == TokenValidationType.JWT_VALIDATION || 
-                   TokenValidationType == TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH;
+            return TokenRule.ValidationType == TokenValidationType.JWT_VALIDATION ||
+                   TokenRule.ValidationType == TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH;
+        }
+
+        public bool RequiresTokenRequestMatch()
+        {
+            return TokenRule.ValidationType == TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH ||
+                   TokenRule.ValidationType == TokenValidationType.REQUEST_MATCH;
         }
 
         public override bool Equals(object obj)

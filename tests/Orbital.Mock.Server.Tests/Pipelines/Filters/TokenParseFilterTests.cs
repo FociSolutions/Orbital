@@ -74,7 +74,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void TokenParseFilterValidTokenSuccessTest()
         {
             #region Test Setup
-            string secret = TestUtils.GetRandomString(WordFaker);
+            string secret = TestUtils.GetRandomString(WordFaker, minLen: 64);
             string token = TestUtils.GenerateJwt(secret);
 
             var port = new ProcessMessagePort()

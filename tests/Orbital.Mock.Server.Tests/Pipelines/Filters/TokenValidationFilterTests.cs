@@ -44,10 +44,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
+            var fakerTokenRule = new Faker<TokenRuleInfo>()
+                .RuleFor(t => t.ValidationType, v => TokenValidationType.JWT_VALIDATION);
+
             this.ScenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, _ => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Id, n => n.Random.ToString())
-                .RuleFor(m => m.TokenValidationType, _ => TokenValidationType.JWT_VALIDATION);
+                .RuleFor(m => m.TokenRule, () => fakerTokenRule);
         }
 
         [Fact]

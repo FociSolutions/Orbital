@@ -108,33 +108,20 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         static bool AuthenticationFailure(IProcessMessagePort port, out MockResponse response)
         {
             //< If authentication was successful - pass through
-            if (port.Token != null)
+            if (port.IsAuthenticated)
             {
                 response = null;
                 return false;
             }
 
-            try
-            {
-                var res = port.TokenValidationResults.Select(x => x.ScenarioId)
-                                                     .ToHashSet();
-                //< Get the scenarios (for those IDs) that contained a 401 (unauthorized) response
-                var scenarios = port.Scenarios.Where(x => res.Contains(x.Id) && x.Response.Status == (int)HttpStatusCode.Unauthorized);
+            var res = port.TokenValidationResults
+                            .Concat(port.TokenMatchResults)
+                            .Select(x => x.ScenarioId)
+                            .ToHashSet();
+            //< Get the scenarios (for those IDs) that contained a 401 (unauthorized) response
+            var scenarios = port.Scenarios.Where(x => res.Contains(x.Id) && x.Response.Status == (int)HttpStatusCode.Unauthorized);
+            response = scenarios.Count() > 0 ? scenarios.First().Response : MockResponse.Create401();  
 
-                if (scenarios.Count() == 0)
-                {
-                    throw new NotImplementedException($"No 401 (Unauthorized) scenario provided - reverting to use default");
-                }
-                else
-                {
-                    response = scenarios.First().Response;
-                }
-            }
-            catch
-            {
-                response = null;
-                return false;
-            }
             return true;
         }
 
@@ -144,10 +131,11 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                        .Concat(port.BodyMatchResults)
                        .Concat(port.QueryMatchResults)
                        .Concat(port.URLMatchResults)
+                       .Concat(port.TokenMatchResults)
                        .GroupBy(result => result.ScenarioId)
                        .Where(scenarioGrouping =>
                            !scenarioGrouping.Select(scenarioGroup => scenarioGroup.Match)
-                               .Contains(MatchResultType.Fail))
+                                            .Contains(MatchResultType.Fail))
                        .Select(match => new ScenarioResultScore
                        {
                            ScenarioId = match.Key,

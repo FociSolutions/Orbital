@@ -8,5 +8,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
         string TokenParameter { get; set; }
 
         IEnumerable<KeyValuePair<string, string>> Headers { get; set; }
+
+        bool IsAuthenticated { get; }
     }
 }
