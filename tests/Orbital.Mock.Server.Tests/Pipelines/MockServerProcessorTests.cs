@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
@@ -22,6 +21,9 @@ using Assert = Xunit.Assert;
 using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Scriban;
+using NSubstitute;
+using Orbital.Mock.Server.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Orbital.Mock.Server.Tests.Pipelines
 {
@@ -36,6 +38,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             ["Access-Control-Allow-Origin"] = "*",
             ["Access-Control-Allow-Methods"] = "GET, POST"
         };
+
+        public static IPublicKeyService GetPublicKeyServiceMock()
+        {
+            var mock = Substitute.For<IPublicKeyService>();
+            mock.GetKey(default).ReturnsForAnyArgs((JsonWebKey)null);
+            return mock;
+        }
 
         // an always non-canceled cancellation token (to assume a valid non-canceled pipeline)
         private readonly CancellationToken cancellationToken = new CancellationTokenSource().Token;
@@ -68,7 +77,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(validMethods))
                 .RuleFor(m => m.TokenRule, f => fakerTokenRule.Generate());
-            this.mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext());
+            this.mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
         }
         [Fact]
         public void MockServerProcessorStopAfterStartTest()

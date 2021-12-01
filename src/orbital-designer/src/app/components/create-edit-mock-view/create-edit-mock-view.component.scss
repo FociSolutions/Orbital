@@ -27,7 +27,7 @@
       text-align: center;
     }
 
-    .titleInput {
+    .titleInput, .descInput {
       margin-bottom: 2em;
     }
 
@@ -40,10 +40,6 @@
         width: 10.234vw;
         max-width: 131px;
       }
-    }
-
-    .tokenKey {
-      margin-bottom: 1rem;
     }
   }
 }

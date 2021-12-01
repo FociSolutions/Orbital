@@ -2,12 +2,10 @@
 using System.Net;
 using System.Linq;
 using System.Collections.Generic;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
-using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using Scriban;
 using Scriban.Runtime;
 
@@ -51,7 +49,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             var bestScenario = GetBestOrDefault(bestScenarios);
 
             // if all scenarios do not match and there is a default scenario (which also doesn't match), use the default scenario
-            if (bestScenario == null && port.Scenarios.Any(scenario => scenario.defaultScenario))
+            if (bestScenario == null && port.Scenarios.Any(scenario => scenario.DefaultScenario))
             {
                 bestScenario = GetDefaultScenario(port);
             }
@@ -155,12 +153,12 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
         static ScenarioResultScore GetDefaultScenario(IProcessMessagePort port)
         {
-            return port.Scenarios.Where(scenario => scenario.defaultScenario)
+            return port.Scenarios.Where(scenario => scenario.DefaultScenario)
                                  .Select(match => new ScenarioResultScore
                                  {
                                      ScenarioId = match.Id,
                                      Score = 0,
-                                     DefaultScenario = match.defaultScenario
+                                     DefaultScenario = match.DefaultScenario
                                  }).FirstOrDefault();
         }
     }

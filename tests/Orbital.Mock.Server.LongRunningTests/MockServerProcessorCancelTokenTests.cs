@@ -23,6 +23,9 @@ using Orbital.Mock.Server.Tests.Pipelines.Filters;
 using Scriban;
 using Xunit;
 using Assert = Xunit.Assert;
+using NSubstitute;
+using Orbital.Mock.Server.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Orbital.Mock.Server.LongRunningTests
 {
@@ -31,6 +34,13 @@ namespace Orbital.Mock.Server.LongRunningTests
         private MockServerProcessor _mockServerProcessor;
         private readonly Faker<Scenario> _fakerScenario;
         private readonly List<HttpMethod> _validMethods = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Put, HttpMethod.Post, HttpMethod.Delete };
+
+        public static IPublicKeyService GetPublicKeyServiceMock()
+        {
+            var mock = Substitute.For<IPublicKeyService>();
+            mock.GetKey(default).ReturnsForAnyArgs((JsonWebKey) null);
+            return mock;
+        }
 
         public MockServerProcessorCancelTokenTests()
         {
@@ -57,7 +67,7 @@ namespace Orbital.Mock.Server.LongRunningTests
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(_validMethods));
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext());
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
         }
 
         /// <summary>
@@ -88,7 +98,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequest()
         {
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext());
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
 
             var scenarios = GenerateRandomScenarios(out var httpContext);
 
@@ -138,7 +148,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequestEnsuringInterpipelineEventsAreProcessed()
         {
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext());
+            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
 
             var Target = _mockServerProcessor;
 

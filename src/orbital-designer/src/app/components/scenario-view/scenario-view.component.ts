@@ -11,8 +11,8 @@ import { map } from 'rxjs/operators';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import * as HttpStatus from 'http-status-codes';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { ValidationType } from 'src/app/models/mock-definition/token-validation.model';
 import { state } from '@angular/animations';
+import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 @Component({
   selector: 'app-scenario-view',
@@ -40,7 +40,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
     modes = [
       {value: ValidationType.NONE, viewValue: "None"},
       {value: ValidationType.JWT_VALIDATION, viewValue: "JWT Validation"},
-      {value: ValidationType.JWT_VALIDATION_CONTENT, viewValue: "JWT Validation and Contents"},
+      {value: ValidationType.JWT_VALIDATION_AND_REQUEST_MATCH, viewValue: "JWT Validation and Contents"},
       {value: ValidationType.CONTENT, viewValue: "Token Contents"}
     ];
 
@@ -63,7 +63,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
         this.scenarioList = state.mockDefinition.scenarios.filter(
           s => s.path === this.endpointPath && s.verb === this.endpointVerb
         );
-        this.dropdownVisible = state.mockDefinition.tokenValidation.validate;
+        this.dropdownVisible = state.mockDefinition.tokenValidation;
         this.logger.log('ScenarioViewComponent:ngOnInit: Resulting ScenarioList: ', this.scenarioList);
       }
     });

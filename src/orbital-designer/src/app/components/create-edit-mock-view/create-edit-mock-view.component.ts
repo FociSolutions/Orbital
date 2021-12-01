@@ -47,14 +47,8 @@ export class CreateEditMockViewComponent implements OnInit {
     this.formGroup = new FormGroup({
       title: new FormControl('', this.validateText("Title")),
       description: new FormControl(''),
-      validateToken: new FormControl(false),
-      key: new FormControl('', this.validateText("Key"))
+      validateToken: new FormControl(false)
     });
-    this.checkTokenValidation();
-
-    this.formGroup.get('validateToken').valueChanges.subscribe( () => {
-      this.checkTokenValidation();
-    })
   }
 
   ngOnInit() {
@@ -96,10 +90,7 @@ export class CreateEditMockViewComponent implements OnInit {
     }
     if (foundMock != null || undefined) {
       if (foundMock.tokenValidation == null || undefined) {
-        foundMock.tokenValidation = {
-          validate: false,
-          key: ""
-        }
+        foundMock.tokenValidation = false;
       }
       this.populateEditData(foundMock);
       return foundMock;
@@ -146,7 +137,7 @@ export class CreateEditMockViewComponent implements OnInit {
     let updatedMockDef = this.formToUpdateMockDefinition(this.selectedMockDefinition);
     const oldTitle = this.selectedMockDefinition.metadata.title;
 
-    if (updatedMockDef.tokenValidation.validate) {
+    if (updatedMockDef.tokenValidation) {
       const validationScenarios = this.mockdefinitionService.getDefaultValidationScenarios(updatedMockDef.scenarios);
       updatedMockDef.scenarios = updatedMockDef.scenarios.concat(validationScenarios);
     }
@@ -155,10 +146,6 @@ export class CreateEditMockViewComponent implements OnInit {
     this.store.appendMockDefinition(updatedMockDef);
     this.store.mockDefinition = updatedMockDef;
     this.router.navigateByUrl('/endpoint-view');
-  }
-
-  generateKey() {
-    this.formGroup.get('key').setValue(uuid.v4());
   }
 
   setOpenApiFile(openApiFileString: string) {
@@ -189,10 +176,6 @@ export class CreateEditMockViewComponent implements OnInit {
         if (control.value.length <= 0) {
           return { key: name + ' is required.' };
         }
-        if (name == "Key") {
-          //Checks for whitespace within the string
-          return /\s/.test(control.value) ? { 'key': "Key cannot contain whitespace." } : null;
-        }
         if (name == "Title") {
           //checks if the current title already exist
           for (let i = 0; i < this.titleList.length; i++) {
@@ -205,29 +188,10 @@ export class CreateEditMockViewComponent implements OnInit {
     }
   }
 
-  /**
-   * sets key for control as disabled if token validation is unchecked
-   */
-  checkTokenValidation() {
-    const tokenValidation = this.formGroup.controls.validateToken.value;
-    const formKey = this.formGroup.controls.key
-    if (!tokenValidation) {
-      this.keyStore = formKey.value;
-      formKey.clearValidators();
-      formKey.updateValueAndValidity();
-    }
-    else {
-      formKey.setValidators(this.validateText("Key"));
-      formKey.updateValueAndValidity();
-      formKey.markAsDirty();
-    }
-  }
-
   populateEditData(md: MockDefinition) {
     this.formGroup.get('title').setValue(md.metadata.title);
     this.formGroup.get('description').setValue(md.metadata.description);
-    this.formGroup.get('validateToken').setValue(md.tokenValidation.validate);
-    this.formGroup.get('key').setValue(md.tokenValidation.key);
+    this.formGroup.get('validateToken').setValue(md.tokenValidation);
   }
 
   /**
@@ -250,10 +214,7 @@ export class CreateEditMockViewComponent implements OnInit {
             title: this.formGroup.value.title,
             description: this.formGroup.value.description
           },
-          tokenValidation: {
-            validate,
-            key: this.formGroup.value.key
-          },
+          tokenValidation: validate,
           openApi: openapi,
           scenarios: defaultScenariosPerEndpoint
         } as MockDefinition;
@@ -268,10 +229,7 @@ export class CreateEditMockViewComponent implements OnInit {
       title: this.formGroup.value.title,
       description: this.formGroup.value.description
     }
-    newMockDef.tokenValidation = {
-      validate: this.formGroup.value.validateToken,
-      key: this.formGroup.value.key == undefined ? this.keyStore: this.formGroup.value.key
-    }
+    newMockDef.tokenValidation = this.formGroup.value.validateToken;
     return newMockDef;
   }
 }

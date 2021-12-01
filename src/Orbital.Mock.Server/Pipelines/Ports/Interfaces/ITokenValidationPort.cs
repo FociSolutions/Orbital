@@ -9,7 +9,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     {
         public bool CheckAuthentication { get; }
 
-        public IEnumerable<string> SigningKeys { get; set; }
         public ICollection<MatchResult> TokenValidationResults { get; set; }
 
         public JwtSecurityToken Token { get; set; }

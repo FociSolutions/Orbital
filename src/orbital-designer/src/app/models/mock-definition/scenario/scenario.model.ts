@@ -5,8 +5,6 @@ import { Response, defaultResponse } from './response.model';
 import * as uuid from 'uuid';
 import { Policy } from './policy.model';
 import { defaultTokenRule, TokenRule } from './token-rule.model';
-import { ValidationType } from '../token-validation.model';
-
 /**
  * Model representation of a scenario
  */

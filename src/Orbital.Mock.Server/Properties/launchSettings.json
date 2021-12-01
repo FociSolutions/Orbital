@@ -22,7 +22,9 @@
       "launchBrowser": true,
       "launchUrl": "api/swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ORBITAL_PUB_KEYS__CACHE_TIME_HOURS": "12",
+        "ORBITAL_PUB_KEYS__JWKS_ENDPOINT": "https://localhost:4326/.well-known/openid-configuration"
       }
     }
   }

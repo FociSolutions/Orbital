@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 using Scriban;
+using Orbital.Mock.Server.Services.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -47,7 +48,7 @@ namespace Orbital.Mock.Server.Pipelines
 
         public bool PipelineIsRunning { get; private set; }
 
-        public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher, TemplateContext templateContext)
+        public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher, TemplateContext templateContext, IPublicKeyService pubKeyService)
             : this(new PathValidationFilter<ProcessMessagePort>(),
                   new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
                   new EndpointMatchFilter<ProcessMessagePort>(),
@@ -57,7 +58,7 @@ namespace Orbital.Mock.Server.Pipelines
                   new ResponseSelectorFilter<ProcessMessagePort>(templateContext),
                   new PolicyFilter<ProcessMessagePort>(),
                   new TokenParseFilter<ProcessMessagePort>(),
-                  new TokenValidationFilter<ProcessMessagePort>(),
+                  new TokenValidationFilter<ProcessMessagePort>(pubKeyService),
                   new TokenRequestMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher))
         {
         }
@@ -182,7 +183,6 @@ namespace Orbital.Mock.Server.Pipelines
             var port = new ProcessMessagePort()
             {
                 Scenarios = input.Scenarios,
-                SigningKeys = input.SigningKeys,
                 Path = input.ServerHttpRequest.Path,
                 Verb = verb,
                 Query = input.QueryDictionary,

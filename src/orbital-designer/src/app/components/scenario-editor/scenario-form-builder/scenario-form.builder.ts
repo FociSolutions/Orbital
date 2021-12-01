@@ -135,6 +135,7 @@ export class ScenarioFormBuilder {
   }
 
   public tokenRuleFormArray(tokenRule: TokenRule): FormArray {
+    tokenRule.rules ??= [];
     return new FormArray(
       tokenRule.rules.map((t) =>
         this.getHeaderOrQueryItemFormGroup(t, [

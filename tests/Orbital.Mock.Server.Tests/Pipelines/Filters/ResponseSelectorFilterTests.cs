@@ -27,9 +27,12 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                     (int)f.PickRandom<HttpStatusCode>(),
                     f.Lorem.Paragraph()
                     ));
+            var fakerTokenRule = new Faker<TokenRuleInfo>()
+                .RuleFor(t => t.ValidationType, v => TokenValidationType.NONE);
             this.fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())
-                .RuleFor(m => m.Response, f => fakerResponse.Generate());
+                .RuleFor(m => m.Response, f => fakerResponse.Generate())
+                .RuleFor(m => m.TokenRule, () => fakerTokenRule);
         }
         [Fact]
         public void ResponseSelectFilterSuccessSingleResponseTest()
@@ -156,7 +159,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 HeaderMatchResults = Scenarios.Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
                 QueryMatchResults = Scenarios.Skip(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
                 BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
-                SigningKeys = new List<string> { Secret },
                 TokenValidationResults = new List<MatchResult> { MatchResult.Create(MatchResultType.Fail, UnauthScenario) }
             };
 
@@ -197,7 +199,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 HeaderMatchResults = Scenarios.Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
                 QueryMatchResults = Scenarios.Skip(SelectedScenarioIndex).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
                 BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
-                SigningKeys = new List<string> { Secret },
                 Token = Token,
                 TokenScheme = TokenConstants.Bearer,
                 TokenParameter = TestUtils.SerializeToken(Token),

@@ -10,32 +10,11 @@
       [control]="formGroup.controls['title']"
     ></app-text-input>
     <app-text-input
-      class="flex-grow capitalize"
+      class="descInput flex-grow capitalize"
       title="Description"
       maxLength="1000"
       multiLine="true"
       [control]="formGroup.controls['description']"
-    ></app-text-input>
-    <div class="token-validation-row">
-      <mat-checkbox class="tkValid" name="tkValid" [formControl]="formGroup.controls['validateToken']">
-        Token Validation
-      </mat-checkbox>
-      <button
-        mat-raised-button
-        [disabled]="!formGroup.controls['validateToken'].value"
-        color="primary"
-        (click)="generateKey()"
-      >
-        Generate Key
-      </button>
-    </div>
-    <app-text-input
-      class="flex-grow capitalize"
-      [title]="this.validateToken.value ? 'Key - Required' : 'Key'"
-      maxLength="2000"
-      multiLine="true"
-      [control]="formGroup.controls['key']"
-      class="tokenKey"
     ></app-text-input>
     <app-tool-tip *ngIf="!editMode" message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
       ><app-file-input
@@ -49,6 +28,11 @@
       >
       </app-file-input
     ></app-tool-tip>
+    <div class="token-validation-row">
+      <mat-checkbox class="tkValid" name="tkValid" [formControl]="formGroup.controls['validateToken']">
+        Token Validation
+      </mat-checkbox>
+    </div>
 
     <div class="row buttons-div">
       <button mat-raised-button color="primary" (click)="goBack()">Back</button>

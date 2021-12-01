@@ -84,8 +84,5 @@ export default {
     title: 'Test Mock',
     description: 'A Test Mock'
   },
-  tokenValidation: {
-    validate: true,
-    key: 'df2sfGD5'
-  }
+  tokenValidation: true
 } as MockDefinition;

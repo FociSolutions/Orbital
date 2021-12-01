@@ -62,7 +62,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             {
                 TokenScheme = TokenConstants.Bearer,
                 TokenParameter = jwtString,
-                SigningKeys = new List<string>(),
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Token = new JwtSecurityToken(jwtString)
             };
@@ -91,7 +90,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             {
                 TokenScheme = TokenConstants.Bearer,
                 TokenParameter = jwtString,
-                SigningKeys = new List<string>(),
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Token = new JwtSecurityToken(jwtString)
             };
@@ -118,7 +116,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             {
                 TokenScheme = TokenConstants.Bearer,
                 TokenParameter = jwtString,
-                SigningKeys = new List<string>(),
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Token = null
             };

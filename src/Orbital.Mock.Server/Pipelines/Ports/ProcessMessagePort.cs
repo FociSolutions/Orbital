@@ -44,7 +44,6 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             this.Query = new List<KeyValuePair<string, string>>();
             this.Headers = new List<KeyValuePair<string, string>>();
             this.Policies = new List<Policy>();
-            this.SigningKeys = new List<string>();
         }
 
         public ICollection<string> Faults { get; set; }
@@ -77,18 +76,17 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public string TokenScheme { get; set; }
         public string TokenParameter { get; set; }
         public JwtSecurityToken Token { get; set; }
-        public IEnumerable<string> SigningKeys { get; set; }
         public ICollection<MatchResult> TokenValidationResults { get; set; }
         public ICollection<MatchResult> TokenMatchResults { get; set; }
         public bool IsAuthenticated => Token != null;
 
-        public bool CheckAuthentication => SigningKeys.Count() > 0;
+        public bool CheckAuthentication => Scenarios.Any(x => x.RequiresTokenValidation());
 
         public IFaultablePort AppendFault(Exception e)
         {
             var fault = e.Message;
 
-            Faults = Faults ?? new List<string>();
+            Faults ??= new List<string>();
             Faults.Add(fault);
 
             return this;

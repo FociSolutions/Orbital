@@ -45,7 +45,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddTokenValidationRuleComponent } from '../scenario-editor/add-token-validation-rule/add-token-validation-rule.component';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
-import { ValidationType } from 'src/app/models/mock-definition/token-validation.model';
+import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -332,7 +332,7 @@ describe('ScenarioViewComponent', () => {
       component.scenarioList.push(scenario);
       component.updateScenariosValidationType(2);
 
-      expect(component.scenarioList[0].tokenRule.validationType).toEqual(ValidationType.JWT_VALIDATION_CONTENT);
+      expect(component.scenarioList[0].tokenRule.validationType).toEqual(ValidationType.JWT_VALIDATION_AND_REQUEST_MATCH);
     })
   })
 });

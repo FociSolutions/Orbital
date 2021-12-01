@@ -25,12 +25,17 @@ using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 using Orbital.Mock.Server.Registrations;
+using Orbital.Mock.Server.Services;
+using Orbital.Mock.Server.Services.Interfaces;
 
 using Bogus;
 using MediatR;
 using Scriban;
 using Scriban.Runtime;
 using FluentValidation.AspNetCore;
+
+using System;
+using System.Collections;
 
 namespace Orbital.Mock.Server
 {
@@ -74,11 +79,14 @@ namespace Orbital.Mock.Server
                         };
                     });
 
+            services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyService.CFG_SEC_NAME).Bind(cfg));
+            services.AddSingleton<IPublicKeyService, PublicKeyService>();
+
             services.AddSingleton<IAssertFactory, AssertFactory>();
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
-                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), ConfigureTemplateContext());
+                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), ConfigureTemplateContext(), s.GetService<IPublicKeyService>());
                 processor.Start();
                 return processor;
             });
@@ -95,7 +103,7 @@ namespace Orbital.Mock.Server
         /// <param name="env"></param>
         /// <param name="provider"></param>
         //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment _, IApiVersionDescriptionProvider provider)
         {
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 

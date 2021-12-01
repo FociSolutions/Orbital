@@ -37,7 +37,10 @@ namespace Orbital.Mock.Server
 
         private static void ConfigAppConfiguration(HostBuilderContext context, IConfigurationBuilder configurationBuilder)
         {
+            // Gather any vars with the DOTNET_ prefix
             configurationBuilder.AddEnvironmentVariables();
+            // Also gather vars with the app specific prefix
+            configurationBuilder.AddEnvironmentVariables(Constants.ENV_PREFIX);
             var loggerConfiguration = new LoggerConfiguration()
             .MinimumLevel.Information() 
             .Enrich.FromLogContext()

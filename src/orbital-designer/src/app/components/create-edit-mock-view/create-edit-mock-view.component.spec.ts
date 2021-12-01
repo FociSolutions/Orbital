@@ -66,15 +66,6 @@ describe('CreateEditMockViewComponent', () => {
         key: 'Title cannot contain only whitespace',
       });
     });
-    it('should return error if it is a key and has whitespace in the string', () => {
-      const key = component.formGroup.get('key');
-      const valid = component.formGroup.get('validateToken');
-      valid.setValue(true);
-      key.setValue('test key');
-      expect(key.errors).toEqual({
-        key: 'Key cannot contain whitespace.',
-      });
-    });
 
     it('should return error if it is a title and has a title that already exists', () => {
       const title = component.formGroup.get('title');
@@ -133,14 +124,6 @@ describe('CreateEditMockViewComponent', () => {
     }));
   });
 
-  describe('CreateEditMockViewComponent.generateKey', () => {
-    it("should set the text of the 'key' form field to a valid uuid", () => {
-      component.generateKey();
-      const key = component.formGroup.get('key');
-      expect(key.errors).toEqual(null);
-    });
-  });
-
   describe('CreateEditMockViewComponent Edit methods', () => {
     let selectedMockDef: MockDefinition;
     let store: DesignerStore;
@@ -157,21 +140,18 @@ describe('CreateEditMockViewComponent', () => {
       const newTitle = faker.random.words(2);
       const newDesc = faker.random.words(5);
       const newValidate = false;
-      const newKey = '';
 
       component.formGroup.setValue({
         ...component.formGroup.value,
         title: newTitle,
         description: newDesc,
-        validateToken: newValidate,
-        key: newKey,
+        validateToken: newValidate
       });
 
       const updatedMock = component.formToUpdateMockDefinition(selectedMockDef);
       expect(updatedMock.metadata.title).toEqual(newTitle);
       expect(updatedMock.metadata.description).toEqual(newDesc);
-      expect(updatedMock.tokenValidation.validate).toEqual(newValidate);
-      expect(updatedMock.tokenValidation.key).toEqual(newKey);
+      expect(updatedMock.tokenValidation).toEqual(newValidate);
     });
 
     it('should find the mockdef in the store', () => {
@@ -188,8 +168,7 @@ describe('CreateEditMockViewComponent', () => {
   function generateMockDefinitionAndSetForm(
     title = faker.random.words(3),
     description = faker.random.words(5),
-    validateToken = true,
-    key = faker.random.words(3)
+    validateToken = true
   ): MockDefinition {
     const service = TestBed.get(MockDefinitionService);
     let openApi: OpenAPIV2.Document;
@@ -197,8 +176,7 @@ describe('CreateEditMockViewComponent', () => {
       ...component.formGroup.value,
       title,
       description,
-      validateToken,
-      key,
+      validateToken
     });
     component.setOpenApiFile(validOpenApiText);
     openApi = yaml.safeLoad(validOpenApiText) as any;
@@ -208,10 +186,7 @@ describe('CreateEditMockViewComponent', () => {
         title,
         description,
       },
-      tokenValidation: {
-        validate: validateToken,
-        key,
-      },
+      tokenValidation: validateToken,
       openApi,
       scenarios: service.getDefaultScenarios(openApi.paths),
     } as MockDefinition;

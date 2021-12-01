@@ -63,7 +63,7 @@ namespace Orbital.Mock.Server.Models
         /// <returns>A MatchResult Object</returns>
         public static MatchResult Create(MatchResultType type, Scenario scenario)
         {
-            return new MatchResult(type, scenario.Id, scenario.defaultScenario);
+            return new MatchResult(type, scenario.Id, scenario.DefaultScenario);
         }
 
         /// <summary>
