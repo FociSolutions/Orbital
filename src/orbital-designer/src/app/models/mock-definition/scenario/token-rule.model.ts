@@ -6,7 +6,6 @@ import { RuleType } from "./rule.type";
  */
 export interface TokenRule {
   validationType: number,
-  checkExpired: boolean,
   rules: KeyValuePairRule[]
 }
 
@@ -19,6 +18,5 @@ export enum ValidationType {
 
 export const defaultTokenRule: TokenRule = {
   validationType: ValidationType.NONE,
-  checkExpired: false,
   rules: []
 }

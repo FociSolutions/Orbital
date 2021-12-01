@@ -13,25 +13,17 @@ export class AddTokenValidationRuleComponent implements OnInit {
   formSubscription: Subscription;
   @Input() tokenRule: TokenRule;
   @Input() tokenRuleFormArray: FormArray;
-  checkExpiration: boolean;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.checkExpiration = this.tokenRule.checkExpired;
 
     this.formSubscription = this.tokenRuleFormArray.valueChanges.subscribe(() => {
       this.updateTokenRule();
     });
   }
 
-  toggleExpiration($event) {
-    this.checkExpiration = $event.checked;
-    this.updateTokenRule();
-  }
-
   updateTokenRule() {
-    this.tokenRule.checkExpired = this.checkExpiration;
     const formGroups = this.tokenRuleFormArray.controls;
 
     this.tokenRule.rules = formGroups.map((formGroup) => {

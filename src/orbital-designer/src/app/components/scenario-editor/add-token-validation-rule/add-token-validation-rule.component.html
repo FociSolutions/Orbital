@@ -8,9 +8,6 @@
         Rules for decoded JWT
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <mat-checkbox (change)="toggleExpiration($event)" [checked]="checkExpiration">
-      Check Expiration
-    </mat-checkbox>
     <app-kvp-edit-rule
       [addKvpTitle]="'Add New JWT Content Match Rule'"
       [matchRuleFormArray]="this.tokenRuleFormArray"></app-kvp-edit-rule>
