@@ -79,7 +79,7 @@ namespace Orbital.Mock.Server
                         };
                     });
 
-            services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyService.CFG_SEC_NAME).Bind(cfg));
+            services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyServiceConfig.SECTION_NAME).Bind(cfg));
             services.AddSingleton<IPublicKeyService, PublicKeyService>();
 
             services.AddSingleton<IAssertFactory, AssertFactory>();

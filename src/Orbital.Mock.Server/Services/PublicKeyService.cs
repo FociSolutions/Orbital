@@ -20,6 +20,17 @@ namespace Orbital.Mock.Server.Services
     public class PublicKeyServiceConfig
     {
         /// <summary>
+        /// The configuration section name for the configuration variables in this class
+        /// </summary>
+        public const string SECTION_NAME = "PUB_KEYS";
+
+        /// <summary>
+        /// The JSON data defining JWKs in the same format as it would be if it were
+        /// retrieved from an identity server.
+        /// </summary>
+        public string JWKS { get; set; }
+
+        /// <summary>
         /// The url to use when trying to retrieve jwks from an identity server
         /// </summary>
         public string JWKS_ENDPOINT { get; set; }
@@ -36,10 +47,6 @@ namespace Orbital.Mock.Server.Services
     /// </summary>
     public class PublicKeyService : IPublicKeyService
     {
-        /// <summary>
-        /// The configuration section name for the configuration variables of this service
-        /// </summary>
-        public const string CFG_SEC_NAME = "PUB_KEYS";
 
         /// <summary>
         /// The Dictionary where the JsonWebKeys are cached.
@@ -70,7 +77,7 @@ namespace Orbital.Mock.Server.Services
         /// <summary>
         /// The configuraiton object passed in to the constructor
         /// </summary>
-        readonly PublicKeyServiceConfig _cfg;
+        readonly PublicKeyServiceConfig cfg;
 
         /// <summary>
         /// Lock used to prevent race conditions when accessing the internal cache
@@ -87,9 +94,9 @@ namespace Orbital.Mock.Server.Services
         {
             client = httpClient ?? new HttpClient();
 
-            _cfg = options.Value;
+            cfg = options.Value;
 
-            try { CACHE_TIME_HOURS = int.Parse(_cfg.CACHE_TIME_HOURS); }
+            try { CACHE_TIME_HOURS = int.Parse(cfg.CACHE_TIME_HOURS); }
             catch (Exception) { CACHE_TIME_HOURS = DEFAULT_CACHE_TIME; }
         }
 
@@ -107,6 +114,25 @@ namespace Orbital.Mock.Server.Services
             try
             {
                 return KeyCache.TryGetValue(keyId, out JsonWebKey key) ? key : null;
+            }
+            finally
+            {
+                cacheLock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Retirieves all keys cached by the service
+        /// </summary>
+        /// <returns>An enumerable containing the keys</returns>
+        public IEnumerable<JsonWebKey> GetAllKeys()
+        {
+            MaybeRefreshKeys();
+
+            cacheLock.EnterReadLock();
+            try
+            {
+                return KeyCache.Values;
             }
             finally
             {
@@ -151,6 +177,7 @@ namespace Orbital.Mock.Server.Services
                         KeyCache.Clear();
 
                         LoadKeysFromEndpoint();
+                        LoadKeysFromConfig();
                     }
                     finally
                     {
@@ -165,14 +192,31 @@ namespace Orbital.Mock.Server.Services
         }
 
         /// <summary>
+        /// Tries to load keys from an environment or configuraiton variable
+        /// </summary>
+        private void LoadKeysFromConfig()
+        {
+            if (cfg.JWKS is null || cfg.JWKS == string.Empty) { return; }
+
+            try
+            {
+                foreach (var key in new JsonWebKeySet(cfg.JWKS).Keys) { MaybeAddKey(key); }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "JSON data from the JWK config failed to de-serialize");
+            }
+        }
+
+
+        /// <summary>
         /// Tries to load keys from an identity server whose url is provided by an environment variable
         /// </summary>
-        /// <returns></returns>
         void LoadKeysFromEndpoint()
         {
-            if (_cfg.JWKS_ENDPOINT is null || _cfg.JWKS_ENDPOINT == string.Empty) { return; }
+            if (cfg.JWKS_ENDPOINT is null || cfg.JWKS_ENDPOINT == string.Empty) { return; }
 
-            var endpointRawData = GetEndpointData(_cfg.JWKS_ENDPOINT);
+            var endpointRawData = GetEndpointData(cfg.JWKS_ENDPOINT);
 
             try
             {
@@ -190,15 +234,35 @@ namespace Orbital.Mock.Server.Services
 
             try
             {
-                foreach (var key in new JsonWebKeySet(endpointRawData).Keys)
-                {
-                    if (key.Kid is not null) { KeyCache.Add(key.Kid, key); }
-                }
+                foreach (var key in new JsonWebKeySet(endpointRawData).Keys) { MaybeAddKey(key); }
             }
             catch (Exception ex)
             {
                 Log.Warning(ex, "JSON data from the jwks endpoint failed to de-serialize");
             }
+        }
+
+        /// <summary>
+        /// Adds the key to the cache if there is an associated key id and
+        /// that key is is not already in the cache.
+        /// </summary>
+        /// <param name="key">The JWK object</param>
+        /// <returns>true if the key was added, otherwise false</returns>
+        bool MaybeAddKey(JsonWebKey key)
+        {
+            if (key is null || key.Kid is null || KeyCache.ContainsKey(key.Kid)) { return false; }
+
+            try
+            {
+                KeyCache.Add(key.Kid, key);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An unexpected error occurred while trying to cache the JWK with id '{Id}'", key.Kid);
+                return false;
+            }
+            
         }
 
         /// <summary>
