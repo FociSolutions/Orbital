@@ -7,6 +7,12 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { BlankComponent } from 'src/app/shared/components/test/blank.component';
+import { DesignerStore } from 'src/app/store/designer-store';
+import { NGXLogger } from 'ngx-logger';
+import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
+import { HttpClientModule } from '@angular/common/http';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 describe('HomeViewComponent', () => {
   let component: HomeViewComponent;
@@ -24,14 +30,20 @@ describe('HomeViewComponent', () => {
             path: path,
             component: BlankComponent,
           },
+          {
+            path: 'endpoint-view',
+            component: BlankComponent,
+          }
         ]),
         MatGridListModule,
         MatCardModule,
         MatButtonModule,
+        HttpClientModule,
+        LoggerTestingModule
       ],
+      providers: [DesignerStore]
     }).compileComponents();
     router = TestBed.get(Router);
-
     fixture = TestBed.createComponent(HomeViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -49,6 +61,19 @@ describe('HomeViewComponent', () => {
         tick();
         fixture.detectChanges();
         expect(navigationSpy).toHaveBeenCalledWith(path);
+      });
+    }));
+
+    it('should navigate to endpoint-view if store has at least one mock definiition', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const navigationSpy = jest.spyOn(router, 'navigateByUrl');
+        const mockDefs: Record<string, MockDefinition> = {
+          "key": testMockdefinitionObject
+        };
+        component.checkMockDefinitions(mockDefs);
+        tick();
+        fixture.detectChanges();
+        expect(navigationSpy).toHaveBeenCalledWith('/endpoint-view');
       });
     }));
   });
