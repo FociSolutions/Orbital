@@ -255,6 +255,10 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         bodyRules: [],
         urlRules: []
       } as RequestMatchRule,
+      tokenRule: {
+        validationType: 0,
+        rules: []
+      },
       policies: [] as Policy[],
       defaultScenario: false
     } as Scenario;
