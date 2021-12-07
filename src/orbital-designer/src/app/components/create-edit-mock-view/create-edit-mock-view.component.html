@@ -16,8 +16,9 @@
       multiLine="true"
       [control]="formGroup.controls['description']"
     ></app-text-input>
-    <app-tool-tip *ngIf="!editMode" message="Find out more about OpenAPI Specification 2.0: http://bit.ly/swagger-v2"
-      ><app-file-input
+
+    <div *ngIf="!editMode" class="open-api">
+      <app-file-input
         class="column"
         [multiple]="false"
         type="file"
@@ -26,8 +27,14 @@
         accept=".yml,.yaml, .json"
         [errorMessage]="errorMessageToEmitFromCreate"
       >
-      </app-file-input
-    ></app-tool-tip>
+      </app-file-input>
+      <a href="https://bit.ly/swagger-v2" target="_blank">
+        <app-tool-tip
+          message="Find out more about OpenAPI Specification 2.0"
+          [delay]="0"
+        ></app-tool-tip>
+      </a>
+    </div>
     <div class="token-validation-row">
       <mat-checkbox class="tkValid" name="tkValid" [formControl]="formGroup.controls['validateToken']">
         Token Validation

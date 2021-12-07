@@ -31,6 +31,19 @@
       margin-bottom: 2em;
     }
 
+    .open-api {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      app-file-input {
+        flex-grow: 1;
+      }
+      a {
+        text-decoration: none;
+        color: black;
+      }
+    }
+
     .buttons-div {
       justify-content: space-between;
       justify-self: flex-end;
