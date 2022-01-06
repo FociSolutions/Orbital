@@ -18,11 +18,11 @@ describe('KvpListItemRuleComponent', () => {
   let component: KvpListItemRuleTypeComponent;
   let fixture: ComponentFixture<KvpListItemRuleTypeComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
       declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent],
-      providers: [DesignerStore, ScenarioFormBuilder]
+      providers: [DesignerStore, ScenarioFormBuilder],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpListItemRuleTypeComponent);
@@ -35,13 +35,13 @@ describe('KvpListItemRuleComponent', () => {
       new FormGroup({
         key: new FormControl('', [Validators.required, Validators.maxLength(200)]),
         value: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
-        type: new FormControl(RuleType.NONE, [Validators.required])
+        type: new FormControl(RuleType.NONE, [Validators.required]),
       })
     );
     component.editRuleFormGroup = ((scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
       .queryMatchRules as FormArray).at(0) as FormGroup;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -61,9 +61,9 @@ describe('KvpListItemRuleComponent', () => {
     });
 
     it('should set the rule type for current rule type', () => {
-      const testRule = faker.random.number({
+      const testRule = faker.datatype.number({
         min: 0,
-        max: Object.keys(RuleType).length - 1
+        max: Object.keys(RuleType).length - 1,
       });
       component.ruleType.setValue(testRule);
       expect(component.ruleType.value).toEqual(testRule);
@@ -71,7 +71,7 @@ describe('KvpListItemRuleComponent', () => {
   });
 
   describe('onRemove', () => {
-    it('should emit a remove event', done => {
+    it('should emit a remove event', (done) => {
       component.key.setValue(recordFirstOrDefaultKey(faker.lorem.sentence(), ''));
       component.value.setValue(recordFirstOrDefault(faker.lorem.sentence(), ''));
       component.removeKvp.subscribe(() => {

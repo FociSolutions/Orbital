@@ -15,24 +15,19 @@ describe('GetEndpointScenariosPipe', () => {
   it('should return a filtered list of scenarios', () => {
     const pipe = new GetEndpointScenariosPipe();
     const mockPath = faker.internet.url();
-    const mockVerb = faker.random.arrayElement([
-      VerbType.GET,
-      VerbType.DELETE,
-      VerbType.PUT,
-      VerbType.POST
-    ]);
+    const mockVerb = faker.random.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
     const mockMatchingScenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
-        description: ''
+        description: '',
       },
       verb: mockVerb,
       path: mockPath,
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
       },
       requestMatchRules: {
         headerRules: [],
@@ -40,31 +35,26 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {}
-          }
-        ] as Array<BodyRule>
+            rule: {},
+          },
+        ] as Array<BodyRule>,
       },
-      defaultScenario: false
+      defaultScenario: false,
     } as Scenario;
     const mockpaths = mockPath + faker.random.words;
-    const mockVerbs = faker.random.arrayElement([
-      VerbType.GET,
-      VerbType.DELETE,
-      VerbType.PUT,
-      VerbType.POST
-    ]);
+    const mockVerbs = faker.random.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
     const mockNonMatchingScenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
-        description: ''
+        description: '',
       },
       verb: mockVerbs,
       path: mockpaths,
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
       },
       requestMatchRules: {
         headerRules: [],
@@ -72,22 +62,19 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {}
-          }
-        ] as Array<BodyRule>
+            rule: {},
+          },
+        ] as Array<BodyRule>,
       },
-      defaultScenario: false
+      defaultScenario: false,
     } as Scenario;
     const mockEndpoint = {
       path: mockPath,
       verb: mockVerb,
-      spec: null
+      spec: null,
     };
 
-    const results = pipe.transform(
-      [mockMatchingScenario, mockNonMatchingScenario],
-      mockEndpoint
-    );
+    const results = pipe.transform([mockMatchingScenario, mockNonMatchingScenario], mockEndpoint);
 
     expect(results).toEqual([mockMatchingScenario]);
   });
@@ -95,24 +82,19 @@ describe('GetEndpointScenariosPipe', () => {
   it('should return a filtered list of scenarios ignoring verb case', () => {
     const pipe = new GetEndpointScenariosPipe();
     const mockPath = faker.internet.url();
-    const mockVerb = faker.random.arrayElement([
-      VerbType.GET,
-      VerbType.DELETE,
-      VerbType.PUT,
-      VerbType.POST
-    ]);
+    const mockVerb = faker.random.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
     const mockMatchingScenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
-        description: ''
+        description: '',
       },
       verb: mockVerb,
       path: mockPath,
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
       },
       requestMatchRules: {
         headerRules: [],
@@ -120,26 +102,26 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {}
-          }
-        ] as Array<BodyRule>
+            rule: {},
+          },
+        ] as Array<BodyRule>,
       },
-      defaultScenario: false
+      defaultScenario: false,
     } as Scenario;
     const mockpaths = (mockPath + faker.random.words()) as string;
-    const mockVerbs = faker.random.number({min: 0, max: 3});
+    const mockVerbs = faker.datatype.number({ min: 0, max: 3 });
     const mockNonMatchingScenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
-        description: ''
+        description: '',
       },
       verb: mockVerbs,
       path: mockpaths,
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
       },
       requestMatchRules: {
         headerRules: [],
@@ -147,22 +129,19 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {}
-          }
-        ] as Array<BodyRule>
+            rule: {},
+          },
+        ] as Array<BodyRule>,
       },
-      defaultScenario: false
+      defaultScenario: false,
     } as Scenario;
     const mockEndpoint = {
       path: mockPath,
       verb: mockVerb,
-      spec: null
+      spec: null,
     };
 
-    const results = pipe.transform(
-      [mockMatchingScenario, mockNonMatchingScenario],
-      mockEndpoint
-    );
+    const results = pipe.transform([mockMatchingScenario, mockNonMatchingScenario], mockEndpoint);
 
     expect(results).toEqual([mockMatchingScenario]);
   });
@@ -170,24 +149,19 @@ describe('GetEndpointScenariosPipe', () => {
   it('should return an unfiltered list of scenarios if no endpoint is given', () => {
     const pipe = new GetEndpointScenariosPipe();
     const mockPath = faker.internet.url();
-    const mockVerb = faker.random.arrayElement([
-      VerbType.GET,
-      VerbType.DELETE,
-      VerbType.PUT,
-      VerbType.POST
-    ]);
+    const mockVerb = faker.random.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
     const mockMatchingScenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
-        description: ''
+        description: '',
       },
       verb: mockVerb,
       path: mockPath,
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
       },
       requestMatchRules: {
         headerRules: [],
@@ -195,31 +169,26 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {}
-          }
-        ] as Array<BodyRule>
+            rule: {},
+          },
+        ] as Array<BodyRule>,
       },
-      defaultScenario: false
+      defaultScenario: false,
     } as Scenario;
     const mockpaths = mockPath + faker.random.words();
-    const mockVerbs = faker.random.arrayElement([
-      VerbType.GET,
-      VerbType.DELETE,
-      VerbType.PUT,
-      VerbType.POST
-    ]);
+    const mockVerbs = faker.random.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
     const mockNonMatchingScenario = {
       id: uuid.v4(),
       metadata: {
         title: 'New Scenario',
-        description: ''
+        description: '',
       },
       verb: mockVerbs,
       path: mockpaths,
       response: {
         headers: {},
         status: 0,
-        body: ''
+        body: '',
       },
       requestMatchRules: {
         headerRules: [],
@@ -227,17 +196,14 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {}
-          }
-        ] as Array<BodyRule>
+            rule: {},
+          },
+        ] as Array<BodyRule>,
       },
-      defaultScenario: false
+      defaultScenario: false,
     } as Scenario;
 
-    const results = pipe.transform(
-      [mockMatchingScenario, mockNonMatchingScenario],
-      null
-    );
+    const results = pipe.transform([mockMatchingScenario, mockNonMatchingScenario], null);
 
     expect(results).toEqual([mockMatchingScenario, mockNonMatchingScenario]);
   });

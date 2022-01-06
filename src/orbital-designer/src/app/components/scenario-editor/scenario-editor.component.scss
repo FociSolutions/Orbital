@@ -73,15 +73,6 @@ mat-chip-list {
   padding-right: 1em;
 }
 
-app-scenario-card,
-app-add-metadata,
-app-add-request-match-rule,
-app-add-token-validation-rule,
-app-add-response
-{
-  margin-bottom: 1em;
-}
-
 .key-value-item div button {
   width: 20px;
   height: 20px;
@@ -102,11 +93,20 @@ div.flex-space-between {
   height: 100vh;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 10;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
 .endpoint-info {
   display: flex;
   align-items: center;
+}
+
+.tab-body {
+  padding: 1rem;
+}
+
+.button-row {
+  justify-content: space-between;
+  margin-bottom: 1rem
 }

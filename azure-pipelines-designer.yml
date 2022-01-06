@@ -10,12 +10,12 @@ trigger:
       - azure-pipelines-designer.yml
 
 variables:
-  buildConfiguration: "Release"
+  buildConfiguration: Release
 
 resources:
   containers:
     - container: node
-      image: node:14-alpine
+      image: node:lts-alpine
       options: --user 0:0
 
 stages:
@@ -24,25 +24,25 @@ stages:
       - job: install_and_build
         displayName: install and build
         pool:
-          vmImage: "ubuntu-latest"
+          vmImage: ubuntu-latest
         steps:
           - task: Npm@1
-            displayName: "npm ci"
+            displayName: npm ci
             inputs:
               command: ci
-              workingDir: "./src/orbital-designer"
+              workingDir: ./src/orbital-designer
 
           - task: Npm@1
-            displayName: "npm run build --prod"
+            displayName: npm run build --prod
             inputs:
               command: custom
               customCommand: run build -- --prod
-              workingDir: "./src/orbital-designer"
+              workingDir: ./src/orbital-designer
 
           - task: PublishBuildArtifacts@1
-            displayName: "Publish angular build artifact orbital-designer"
+            displayName: Publish angular build artifact orbital-designer
             inputs:
-              PathtoPublish: "./src/orbital-designer/dist"
+              PathtoPublish: ./src/orbital-designer/dist
               ArtifactName: orbital-designer
 
   - stage: test
@@ -51,31 +51,31 @@ stages:
       - job: test_and_publish
         displayName: test and publish
         pool:
-          vmImage: "ubuntu-latest"
+          vmImage: ubuntu-latest
         steps:
           - task: Npm@1
-            displayName: "npm ci"
+            displayName: npm ci
             inputs:
               command: ci
-              workingDir: "./src/orbital-designer"
+              workingDir: ./src/orbital-designer
 
           - task: Npm@1
-            displayName: "npm run test:ci"
+            displayName: npm run test:ci
             inputs:
               command: custom
               customCommand: run test:ci
-              workingDir: "./src/orbital-designer"
+              workingDir: ./src/orbital-designer
 
           - task: PublishCodeCoverageResults@1
-            displayName: "Publish angular code coverage results"
+            displayName: Publish angular code coverage results
             condition: succeededOrFailed()
             inputs:
               codeCoverageTool: Cobertura
-              summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/cobertura-coverage.xml"
+              summaryFileLocation: $(System.DefaultWorkingDirectory)/**/cobertura-coverage.xml
               failIfCoverageEmpty: true
 
           - task: PublishTestResults@2
-            displayName: "Publish angular test results"
+            displayName: Publish angular test results
             condition: succeededOrFailed()
             inputs:
               searchFolder: $(System.DefaultWorkingDirectory)/src
@@ -84,8 +84,8 @@ stages:
               testResultsFiles: "**/junit.xml"
 
           - task: Npm@1
-            displayName: "npm run lint --format=stylish"
+            displayName: npm run lint --format=stylish
             inputs:
               command: custom
               customCommand: run lint --  --format=stylish
-              workingDir: "./src/orbital-designer"
+              workingDir: ./src/orbital-designer

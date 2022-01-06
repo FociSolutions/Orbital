@@ -49,7 +49,7 @@ describe('AddResponseComponent', () => {
     it('should emit the response if the user wants to save', () => {
       const testStatusCode = 200;
       const testHeaderResponse: Record<string, string> = {};
-      const testBodyResponse = 'NOTVALID';
+      const testBodyResponse = 'INVALID';
 
       testHeaderResponse[faker.random.word()] = faker.random.word();
 
@@ -108,7 +108,7 @@ describe('AddResponseComponent', () => {
       jsonEditor.set(JSON.parse(`{"myKey": "value"}`));
       component.changeLog();
       expect(component.getErrorType(jsonEditor.getText())).toBe(jsonErrorType.NONE);
-      expect(formErrors).toBe(null)
-    })
+      expect(formErrors).toBe(null);
+    });
   });
 });

@@ -13,12 +13,11 @@ import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder
 import { FormGroup, FormArray, Form } from '@angular/forms';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
-import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
-  styleUrls: ['./scenario-editor.component.scss']
+  styleUrls: ['./scenario-editor.component.scss'],
 })
 export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentChecked {
   scenarioId: string;
@@ -64,7 +63,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       this.scenarioFormGroup = this.formBuilder.createScenarioForm(this.selectedScenario);
       this.store.selectedScenario = this.selectedScenario;
     });
-    this.storeSubscription = this.store.state$.subscribe(state => {
+    this.storeSubscription = this.store.state$.subscribe((state) => {
       if (!!state.mockDefinition && !!state.selectedEndpoint) {
         this.endpointVerb = state.selectedEndpoint.verb;
         this.endpointPath = state.selectedEndpoint.path;
@@ -109,8 +108,12 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
 
   saveScenario() {
     this.tokenFormIsValid = this.scenarioFormGroup.get('tokenRule').valid;
-    if (this.metadataMatchRuleValid && this.scenarioFormGroup.valid
-        && this.responseMatchRuleValid && this.tokenFormIsValid) {
+    if (
+      this.metadataMatchRuleValid &&
+      this.scenarioFormGroup.valid &&
+      this.responseMatchRuleValid &&
+      this.tokenFormIsValid
+    ) {
       this.logger.debug(
         'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
         this.selectedScenario
@@ -132,7 +135,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       );
 
       const newResponseType = this.scenarioFormMapper.GetResponseTypeFromForm(
-        (this.scenarioFormGroup.controls.response as FormGroup)
+        this.scenarioFormGroup.controls.response as FormGroup
       );
 
       this.selectedScenario.metadata.title = this.metadata.title;
@@ -176,7 +179,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
 
     // this delays by 0ms, which causes the event loop to continue and
     // set the setter
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     this.shouldSave = true;
   }
 
@@ -212,7 +215,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
       return;
     }
 
-    const selected = currentMock.scenarios.find(s => s.id === scenarioId);
+    const selected = currentMock.scenarios.find((s) => s.id === scenarioId);
     if (selected) {
       this.selectedScenario = _.cloneDeep(selected);
 
@@ -247,20 +250,20 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         headers: {},
         body: '',
         status: 200,
-        type: ResponseType.CUSTOM
+        type: ResponseType.CUSTOM,
       } as Response,
       requestMatchRules: {
         headerRules: [],
         queryRules: [],
         bodyRules: [],
-        urlRules: []
+        urlRules: [],
       } as RequestMatchRule,
       tokenRule: {
         validationType: 0,
-        rules: []
+        rules: [],
       },
       policies: [] as Policy[],
-      defaultScenario: false
+      defaultScenario: false,
     } as Scenario;
   }
 }

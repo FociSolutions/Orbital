@@ -43,7 +43,7 @@ describe('BodyEditRuleComponent', () => {
   describe('BodyEditRuleComponent.deleteBodyEditRuleHandler', () => {
     it('should delete the body rule if it defined', () => {
       const bodyRule = {
-        type: faker.random.number({
+        type: faker.datatype.number({
           min: 0,
           max: Object.keys(RuleType).length - 1,
         }) as RuleType,
@@ -64,21 +64,21 @@ describe('BodyEditRuleComponent', () => {
       // this has to have the same value for all the values to make sure that it is not deleting by value
       const bodyRules = [
         {
-          type: faker.random.number({
+          type: faker.datatype.number({
             min: 0,
             max: Object.keys(RuleType).length - 1,
           }) as RuleType,
           rule: { test: randomWord },
         },
         {
-          type: faker.random.number({
+          type: faker.datatype.number({
             min: 0,
             max: Object.keys(RuleType).length - 1,
           }) as RuleType,
           rule: { testtwo: randomWord },
         },
         {
-          type: faker.random.number({
+          type: faker.datatype.number({
             min: 0,
             max: Object.keys(RuleType).length - 1,
           }) as RuleType,
@@ -112,7 +112,7 @@ describe('BodyEditRuleComponent', () => {
   describe('BodyEditRuleComponent.addBodyEditRuleHandler', () => {
     it('should save valid body rule', () => {
       const bodyRule = {
-        type: faker.random.number({
+        type: faker.datatype.number({
           min: 0,
           max: Object.keys(RuleType).length - 1,
         }) as RuleType,
@@ -132,7 +132,7 @@ describe('BodyEditRuleComponent', () => {
 
   it('should not save repeated body rule', () => {
     const bodyRule = ({
-      type: faker.random.number({
+      type: faker.datatype.number({
         min: 0,
         max: Object.keys(RuleType).length - 1,
       }) as RuleType,

@@ -9,22 +9,20 @@ import { cloneDeep } from 'lodash';
 @Component({
   selector: 'app-policy',
   templateUrl: './policy.component.html',
-  styleUrls: ['./policy.component.scss']
+  styleUrls: ['./policy.component.scss'],
 })
 export class PolicyComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
-  panelExpanded: boolean;
-  isCardDisabled: boolean;
 
   @Output() policyIsDuplicated: EventEmitter<boolean>;
   @Input() policyFormArray: FormArray;
-  constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
+  constructor(private logger: NGXLogger, private formBuilder: ScenarioFormBuilder) {
     this.policyIsDuplicated = new EventEmitter<boolean>();
     this.policyIsDuplicated.emit(false);
   }
 
   ngOnInit(): void {
-    const policyFormArraySubscription = this.policyFormArray.valueChanges.subscribe(policies => {
+    const policyFormArraySubscription = this.policyFormArray.valueChanges.subscribe((policies) => {
       this.logger.debug('PolicyComponent checking for duplicate policies : ', this.policyFormArray);
       this.checkForDuplicates();
     });
@@ -40,7 +38,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
     if (!policyFound) {
       this.policyIsDuplicated.emit(false);
       const index = this.policyFormArray.length;
-      const newPolicyControl = this.formbuilder.getPolicyFormGroup(policyToAdd);
+      const newPolicyControl = this.formBuilder.getPolicyFormGroup(policyToAdd);
       this.policyFormArray.insert(index, newPolicyControl);
       this.logger.debug('PolicyComponent new rule added : ', policyToAdd);
     } else {
@@ -63,12 +61,12 @@ export class PolicyComponent implements OnInit, OnDestroy {
    */
   private isPolicyDuplicate(policyToAdd: Policy): boolean {
     return this.policyFormArray.controls
-      .map(group => {
+      .map((group) => {
         const formGroupsToCheck = cloneDeep(group);
         const policyFormGroup = this.generatePoliciesAttributes(formGroupsToCheck as FormGroup);
         return policyFormGroup;
       })
-      .some(policyFormGroup => {
+      .some((policyFormGroup) => {
         return (
           compareRecords(policyFormGroup.attributes, policyToAdd.attributes) &&
           policyFormGroup.policyType === policyToAdd.type
@@ -81,9 +79,9 @@ export class PolicyComponent implements OnInit, OnDestroy {
    * Double check to confirm there are no duplicates in the list of existing policies
    */
   private checkForDuplicates(): void {
-    this.policyFormArray.controls.forEach(c => c.setErrors(null));
+    this.policyFormArray.controls.forEach((c) => c.setErrors(null));
     this.policyFormArray.markAsUntouched();
-    const policies = this.policyFormArray.controls.map(group => {
+    const policies = this.policyFormArray.controls.map((group) => {
       const formGroupsToCheck = cloneDeep(group);
       const policyFormGroup = this.generatePoliciesAttributes(formGroupsToCheck as FormGroup);
       return policyFormGroup;
@@ -112,22 +110,22 @@ export class PolicyComponent implements OnInit, OnDestroy {
       policyType: number;
     }
     const attributes = {} as Record<string, string>;
-    Object.keys((group as FormGroup).controls).forEach(key => {
+    Object.keys((group as FormGroup).controls).forEach((key) => {
       if (key !== 'policyType') {
         recordAdd(attributes, key, (group as FormGroup).controls[key].value);
       }
     });
-    const policyformgroup = {
+    const policyFormGroup = {
       policyType: (group as FormGroup).controls['policyType'].value,
-      attributes
+      attributes,
     } as IPolicyFormGroup;
-    return policyformgroup;
+    return policyFormGroup;
   }
   /**
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

@@ -1,66 +1,46 @@
 <mat-accordion>
-  <mat-expansion-panel [disabled]="this.isCardDisabled" [expanded]="this.panelExpanded">
+  <mat-expansion-panel class="mat-elevation-z0">
     <mat-expansion-panel-header class="right-aligned-header">
-      <mat-panel-title>
-        Request Match Rules
-      </mat-panel-title>
-      <mat-panel-description
-        >Query Match Rules, Header Match Rules, Url Match Rules and Body Match Rules</mat-panel-description
-      >
+      <mat-panel-title> Header Match Rules </mat-panel-title>
+      <mat-divider></mat-divider>
     </mat-expansion-panel-header>
-    <mat-accordion>
-      <mat-expansion-panel class="mat-elevation-z0">
-        <mat-expansion-panel-header class="right-aligned-header">
-          <mat-panel-title>
-            Header Match Rules
-          </mat-panel-title>
-          <mat-divider></mat-divider>
-        </mat-expansion-panel-header>
-        <app-kvp-edit-rule
-          [addKvpTitle]="'Add New Header Match Rule'"
-          [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.headerMatchRules"
-        >
-        </app-kvp-edit-rule>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-accordion>
-      <mat-expansion-panel class="mat-elevation-z0">
-        <mat-expansion-panel-header class="right-aligned-header">
-          <mat-panel-title>
-            Query Match Rules
-          </mat-panel-title>
-          <mat-divider></mat-divider>
-        </mat-expansion-panel-header>
-        <app-kvp-edit-rule
-          [addKvpTitle]="'Add New Query Match Rule'"
-          [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.queryMatchRules"
-        >
-        </app-kvp-edit-rule>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-accordion>
-      <mat-expansion-panel class="mat-elevation-z0">
-        <mat-expansion-panel-header class="right-aligned-header">
-          <mat-panel-title>
-            Url Match Rules
-          </mat-panel-title>
-          <mat-divider></mat-divider>
-        </mat-expansion-panel-header>
-        <app-url-edit-rule [urlMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.urlMatchRules">
-        </app-url-edit-rule>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-accordion>
-      <mat-expansion-panel class="mat-elevation-z0">
-        <mat-expansion-panel-header class="right-aligned-header">
-          <mat-panel-title>
-            Body Match Rules
-          </mat-panel-title>
-          <mat-divider></mat-divider>
-        </mat-expansion-panel-header>
-        <app-body-edit-rule [bodyMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.bodyMatchRules">
-        </app-body-edit-rule>
-      </mat-expansion-panel>
-    </mat-accordion>
+    <app-kvp-edit-rule
+      [addKvpTitle]="'Add New Header Match Rule'"
+      [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.headerMatchRules"
+    >
+    </app-kvp-edit-rule>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel class="mat-elevation-z0">
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title> Query Match Rules </mat-panel-title>
+      <mat-divider></mat-divider>
+    </mat-expansion-panel-header>
+    <app-kvp-edit-rule
+      [addKvpTitle]="'Add New Query Match Rule'"
+      [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.queryMatchRules"
+    >
+    </app-kvp-edit-rule>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel class="mat-elevation-z0">
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title> Url Match Rules </mat-panel-title>
+      <mat-divider></mat-divider>
+    </mat-expansion-panel-header>
+    <app-url-edit-rule [urlMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.urlMatchRules">
+    </app-url-edit-rule>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel class="mat-elevation-z0">
+    <mat-expansion-panel-header class="right-aligned-header">
+      <mat-panel-title> Body Match Rules </mat-panel-title>
+      <mat-divider></mat-divider>
+    </mat-expansion-panel-header>
+    <app-body-edit-rule [bodyMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.bodyMatchRules">
+    </app-body-edit-rule>
   </mat-expansion-panel>
 </mat-accordion>

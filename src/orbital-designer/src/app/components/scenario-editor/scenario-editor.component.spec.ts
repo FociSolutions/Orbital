@@ -45,6 +45,7 @@ import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.compo
 import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { AddTokenValidationRuleComponent } from './add-token-validation-rule/add-token-validation-rule.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -76,7 +77,7 @@ describe('ScenarioEditorComponent', () => {
         BodyListItemRuleTypeComponent,
         BodyAddRuleComponent,
         ScenarioViewComponent,
-        AddTokenValidationRuleComponent
+        AddTokenValidationRuleComponent,
       ],
       imports: [
         LoggerTestingModule,
@@ -84,6 +85,7 @@ describe('ScenarioEditorComponent', () => {
         OrbitalCommonModule,
         RouterTestingModule.withRoutes([{ path: 'scenario-view', component: ScenarioViewComponent }]),
         MatButtonModule,
+        MatTabsModule,
         MatExpansionModule,
         BrowserAnimationsModule,
         MatMenuModule,

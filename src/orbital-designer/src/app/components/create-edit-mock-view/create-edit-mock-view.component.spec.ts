@@ -145,7 +145,7 @@ describe('CreateEditMockViewComponent', () => {
         ...component.formGroup.value,
         title: newTitle,
         description: newDesc,
-        validateToken: newValidate
+        validateToken: newValidate,
       });
 
       const updatedMock = component.formToUpdateMockDefinition(selectedMockDef);
@@ -176,10 +176,10 @@ describe('CreateEditMockViewComponent', () => {
       ...component.formGroup.value,
       title,
       description,
-      validateToken
+      validateToken,
     });
     component.setOpenApiFile(validOpenApiText);
-    openApi = yaml.safeLoad(validOpenApiText) as any;
+    openApi = yaml.load(validOpenApiText) as any;
     return {
       id: uuid.v4(),
       metadata: {

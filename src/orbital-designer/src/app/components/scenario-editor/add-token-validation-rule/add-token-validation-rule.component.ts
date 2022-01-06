@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
@@ -17,7 +17,6 @@ export class AddTokenValidationRuleComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-
     this.formSubscription = this.tokenRuleFormArray.valueChanges.subscribe(() => {
       this.updateTokenRule();
     });

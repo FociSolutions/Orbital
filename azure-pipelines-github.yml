@@ -1,27 +1,27 @@
 pool:
-  vmImage: 'Ubuntu 16.04'
-  
+  vmImage: Ubuntu 16.04
+
 trigger:
   branches:
     include:
-      - 'master'
+      - master
 
 stages:
-- stage: mirror_to_github
-  displayName: mirror to github  
-  jobs:
-  - job: mirror_to_github
+  - stage: mirror_to_github
     displayName: mirror to github
-    pool:
-      vmImage: "Ubuntu 16.04"
-    steps:
-    - task: InstallSSHKey@0
-      inputs:
-        knownHostsEntry: $(githubKnownHosts)
-        sshPublicKey: $(githubOrbitalDeployPublicKey)
-        sshKeySecureFile: orbital_github_deploy_key
-    - script: |
-        git clone --bare https://dev.azure.com/focisolutions/Orbital/_git/Orbital $(Pipeline.Workspace)/mirror
-        cd $(Pipeline.Workspace)/mirror
-        git remote add --mirror=push github git@github.com:FociSolutions/Orbital.git
-        git push --quiet github
+    jobs:
+      - job: mirror_to_github
+        displayName: mirror to github
+        pool:
+          vmImage: Ubuntu 16.04
+        steps:
+          - task: InstallSSHKey@0
+            inputs:
+              knownHostsEntry: $(githubKnownHosts)
+              sshPublicKey: $(githubOrbitalDeployPublicKey)
+              sshKeySecureFile: orbital_github_deploy_key
+          - script: |
+              git clone --bare https://dev.azure.com/focisolutions/Orbital/_git/Orbital $(Pipeline.Workspace)/mirror
+              cd $(Pipeline.Workspace)/mirror
+              git remote add --mirror=push github git@github.com:FociSolutions/Orbital.git
+              git push --quiet github

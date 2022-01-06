@@ -6,7 +6,7 @@ import {
   EventEmitter,
   ChangeDetectorRef,
   AfterContentChecked,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import * as HttpStatus from 'http-status-codes';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
@@ -20,14 +20,14 @@ import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-erro
 @Component({
   selector: 'app-add-response',
   templateUrl: './add-response.component.html',
-  styleUrls: ['./add-response.component.scss']
+  styleUrls: ['./add-response.component.scss'],
 })
 export class AddResponseComponent implements OnInit, AfterContentChecked {
   @Output() responseOutput: EventEmitter<Response>;
   @Output() isValid: EventEmitter<boolean>;
   @Input() responseFormGroup: FormGroup;
 
-  @ViewChild('editor', {static: false}) editor: JsonEditorComponent;
+  @ViewChild('editor', { static: false }) editor: JsonEditorComponent;
 
   headers: Record<string, string> = {};
 
@@ -48,7 +48,6 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   titleForKvpAdded: string;
 
   isCardDisabled: boolean;
-  panelExpanded: boolean;
   shouldSave: boolean;
 
   shadowType: FormControl = new FormControl();
@@ -56,11 +55,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   public options: JsonEditorOptions;
   public bodyData: any;
 
-  constructor(
-    private jsonService: ValidJsonService,
-    private logger: NGXLogger,
-    private cdRef: ChangeDetectorRef
-  ) {
+  constructor(private jsonService: ValidJsonService, private logger: NGXLogger, private cdRef: ChangeDetectorRef) {
     this.responseOutput = new EventEmitter<Response>();
     this.isValid = new EventEmitter<boolean>();
     this.titleForKvp = 'Add New Header Rule';
@@ -104,9 +99,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     const jsonEditorString = this.editor.getText();
     const errorType = this.getErrorType(jsonEditorString);
     if (errorType != jsonErrorType.NONE && errorType != jsonErrorType.EMPTY_JSON) {
-      this.setError("Response body" + this.jsonService.jsonErrorMap.get(errorType));
-    }
-    else {
+      this.setError('Response body' + this.jsonService.jsonErrorMap.get(errorType));
+    } else {
       this.responseFormGroup.controls.body.setValue(jsonEditorString);
     }
   }
@@ -116,16 +110,16 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    * @param flag Set/clear flag
    */
   setError(message: string) {
-      this.responseFormGroup.controls.body.setErrors({invalidJson: message});
+    this.responseFormGroup.controls.body.setErrors({ invalidJson: message });
   }
 
   /**
    *
    * @param jsonEditorString the json editor input
-   * @returns the errortype enum
+   * @returns the error type enum
    */
-  getErrorType(jsonEditorString): jsonErrorType {
-    return this.jsonService.checkJSON(jsonEditorString)
+  getErrorType(jsonEditorString: string): jsonErrorType {
+    return this.jsonService.checkJSON(jsonEditorString);
   }
 
   /**
@@ -187,16 +181,13 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     this.responseFormGroup.controls.type.setValue(type);
 
     if (this.responseFormGroup.valid) {
-        const responseToEmit = {
-          headers: map,
-          body: this.responseFormGroup.controls.body.value,
-          status: +this.responseFormGroup.controls.status.value
-        } as Response;
-        this.logger.debug(
-          'AddResponseComponent:saveHeaders: Response has been emitted',
-          responseToEmit
-        );
-        this.responseOutput.emit(responseToEmit);
+      const responseToEmit = {
+        headers: map,
+        body: this.responseFormGroup.controls.body.value,
+        status: +this.responseFormGroup.controls.status.value,
+      } as Response;
+      this.logger.debug('AddResponseComponent:saveHeaders: Response has been emitted', responseToEmit);
+      this.responseOutput.emit(responseToEmit);
     } else {
       this.disableCard();
     }
@@ -219,6 +210,5 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
    */
   private disableCard() {
     this.isCardDisabled = true;
-    this.panelExpanded = true;
   }
 }

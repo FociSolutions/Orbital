@@ -7,29 +7,27 @@ describe('SearchBarComponent', () => {
   let component: SearchBarComponent;
   let fixture: ComponentFixture<SearchBarComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SearchBarComponent],
-      imports: [MatIconModule]
+      imports: [MatIconModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   describe('SearchBarComponent.onSearch', () => {
-    it('should remove any items that do not match the criteria', done => {
+    it('should remove any items that do not match the criteria', (done) => {
       const unfilteredList: string[] = faker.random.words(10).split(' ');
       component.list = unfilteredList;
-      component.filteredList.subscribe(filteredList => {
-        expect(filteredList.findIndex(item => item === unfilteredList[0])).toBe(
-          -1
-        );
+      component.filteredList.subscribe((filteredList) => {
+        expect(filteredList.findIndex((item) => item === unfilteredList[0])).toBe(-1);
         done();
       });
       component.onSearchInput(unfilteredList[0] + 'sample');
@@ -38,14 +36,11 @@ describe('SearchBarComponent', () => {
 
   describe('SearchBarComponent.ignoreCaseContainsMatch', () => {
     it('Should return true if a substring matches', () => {
-      const teststring: string = faker.random.word();
+      const testString: string = faker.random.word();
       expect(
         SearchBarComponent.ignoreCaseContainsMatch(
-          teststring,
-          teststring.substring(
-            0,
-            faker.random.number({ min: 1, max: teststring.length - 1 })
-          )
+          testString,
+          testString.substring(0, faker.datatype.number({ min: 1, max: testString.length - 1 }))
         )
       ).toBeTruthy();
     });
@@ -53,13 +48,8 @@ describe('SearchBarComponent', () => {
 
   describe('SearchBarComponent.ignoreCaseContainsMatch', () => {
     it('Should return false if no substring is found', () => {
-      const teststring: string = faker.random.word();
-      expect(
-        SearchBarComponent.ignoreCaseContainsMatch(
-          teststring,
-          faker.random.word() + teststring
-        )
-      ).toBeFalsy();
+      const testString: string = faker.random.word();
+      expect(SearchBarComponent.ignoreCaseContainsMatch(testString, faker.random.word() + testString)).toBeFalsy();
     });
   });
 });

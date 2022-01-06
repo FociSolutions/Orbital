@@ -11,46 +11,66 @@
         <div id="metadata-cards">
           <h3>Scenario Properties</h3>
 
-          <app-add-metadata
-            [metadata]="this.selectedScenario?.metadata"
-            (metadataOutput)="handleMetadataOutput($event)"
-            [saveStatus]="this.shouldSave"
-          >
-          </app-add-metadata>
+          <mat-tab-group>
+            <mat-tab label="Metadata">
+              <div class="tab-body">
+                <app-add-metadata
+                  [metadata]="this.selectedScenario?.metadata"
+                  (metadataOutput)="handleMetadataOutput($event)"
+                  [saveStatus]="this.shouldSave"
+                >
+                </app-add-metadata>
+              </div>
+            </mat-tab>
 
-          <app-add-request-match-rule
-            [requestMatchRule]="this.selectedScenario?.requestMatchRules"
-            (requestMatchRuleOutput)="handleRequestMatchRuleOutput($event)"
-            [requestMatchRuleFormGroup]="this.scenarioFormGroup.controls.requestMatchRules"
-            [saveStatus]="this.shouldSave"
-          >
-          </app-add-request-match-rule>
+            <mat-tab label="Request Rules">
+              <div class="tab-body">
+                <app-add-request-match-rule
+                  [requestMatchRule]="this.selectedScenario?.requestMatchRules"
+                  (requestMatchRuleOutput)="handleRequestMatchRuleOutput($event)"
+                  [requestMatchRuleFormGroup]="this.scenarioFormGroup.controls.requestMatchRules"
+                  [saveStatus]="this.shouldSave"
+                >
+                </app-add-request-match-rule>
+              </div>
+            </mat-tab>
 
-          <app-add-token-validation-rule
-          [tokenRule]="this.selectedScenario?.tokenRule"
-          [tokenRuleFormArray]="this.scenarioFormGroup.controls.tokenRule"
-          ></app-add-token-validation-rule>
+            <mat-tab label="Token Rules">
+              <div class="tab-body">
+                <app-add-token-validation-rule
+                  [tokenRule]="this.selectedScenario?.tokenRule"
+                  [tokenRuleFormArray]="this.scenarioFormGroup.controls.tokenRule"
+                ></app-add-token-validation-rule>
+              </div>
+            </mat-tab>
 
-          <app-add-response
-            [response]="this.selectedScenario?.response"
-            (responseOutput)="handleResponseOutput($event)"
-            [responseFormGroup]="this.scenarioFormGroup.controls.response"
-            [saveStatus]="this.shouldSave"
-          >
-          </app-add-response>
+            <mat-tab label="Response">
+              <div class="tab-body">
+                <app-add-response
+                  [response]="this.selectedScenario?.response"
+                  (responseOutput)="handleResponseOutput($event)"
+                  [responseFormGroup]="this.scenarioFormGroup.controls.response"
+                  [saveStatus]="this.shouldSave"
+                >
+                </app-add-response>
+              </div>
+            </mat-tab>
 
-          <app-policy [policyFormArray]="this.scenarioFormGroup.controls.policies"></app-policy>
+            <mat-tab label="Policies">
+              <div class="tab-body">
+                <app-policy [policyFormArray]="this.scenarioFormGroup.controls.policies"></app-policy>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
 
-          <div class="row" style="justify-content: space-between">
+          <div class="row button-row">
             <div id="scenario-back-button-div">
               <button id="go-to-scenarios" color="primary" mat-raised-button (click)="cancel()">
                 Back to Scenarios
               </button>
             </div>
             <div id="save-button-div">
-              <button id="save-button" color="primary" mat-raised-button (click)="save()">
-                Save
-              </button>
+              <button id="save-button" color="primary" mat-raised-button (click)="save()">Save</button>
             </div>
           </div>
         </div>

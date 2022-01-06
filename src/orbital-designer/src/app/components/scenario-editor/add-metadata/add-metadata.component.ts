@@ -1,18 +1,11 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  AfterContentChecked,
-  ChangeDetectorRef
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-add-metadata',
   templateUrl: './add-metadata.component.html',
-  styleUrls: ['./add-metadata.component.scss']
+  styleUrls: ['./add-metadata.component.scss'],
 })
 export class AddMetadataComponent implements AfterContentChecked {
   @Output() metadataOutput: EventEmitter<Metadata>;
@@ -24,7 +17,6 @@ export class AddMetadataComponent implements AfterContentChecked {
   descriptionErrorMessage: string;
 
   isCardDisabled: boolean;
-  panelExpanded: boolean;
 
   constructor(private logger: NGXLogger, private cdRef: ChangeDetectorRef) {
     this.metadataOutput = new EventEmitter<Metadata>();
@@ -97,12 +89,9 @@ export class AddMetadataComponent implements AfterContentChecked {
       if (this.metadataTitleProp && this.metadataTitleProp.length > 0) {
         const metadataToOutput = {
           title: this.metadataTitle,
-          description: this.metadataDescription
+          description: this.metadataDescription,
         } as Metadata;
-        this.logger.debug(
-          'AddMetadataComponent:saveStatus: Emit metadata',
-          metadataToOutput
-        );
+        this.logger.debug('AddMetadataComponent:saveStatus: Emit metadata', metadataToOutput);
         this.metadataOutput.emit(metadataToOutput);
       } else {
         this.validate();
@@ -120,37 +109,23 @@ export class AddMetadataComponent implements AfterContentChecked {
   }
 
   private validateDescription() {
-    if (
-      !!this.metadataDescriptionProp &&
-      this.metadataDescriptionProp.length > 500
-    ) {
-      this.logger.debug(
-        'AddMetadataComponent:validateDescription: Description is longer than 500 characters'
-      );
-      this.descriptionErrorMessage =
-        'Metadata description can only be 500 characters long';
+    if (!!this.metadataDescriptionProp && this.metadataDescriptionProp.length > 500) {
+      this.logger.debug('AddMetadataComponent:validateDescription: Description is longer than 500 characters');
+      this.descriptionErrorMessage = 'Metadata description can only be 500 characters long';
     } else {
       this.descriptionErrorMessage = '';
     }
   }
 
   private validateTitle() {
-    if (
-      this.metadataTitleProp.length > 0 &&
-      this.metadataTitleProp.trim().length === 0
-    ) {
+    if (this.metadataTitleProp.length > 0 && this.metadataTitleProp.trim().length === 0) {
       this.titleErrorMessage = 'Scenario title cannot contain only whitespace';
     } else if (!this.metadataTitleProp || this.metadataTitleProp.length === 0) {
-      this.logger.debug(
-        'AddMetadataComponent:validateTitle: Title is null or empty'
-      );
+      this.logger.debug('AddMetadataComponent:validateTitle: Title is null or empty');
       this.titleErrorMessage = 'Metadata title is required';
     } else if (this.metadataTitleProp.length > 50) {
-      this.logger.debug(
-        'AddMetadataComponent:validateTitle: Title is longer than 50 characters'
-      );
-      this.titleErrorMessage =
-        'Metadata title max length exceeded (50 characters)';
+      this.logger.debug('AddMetadataComponent:validateTitle: Title is longer than 50 characters');
+      this.titleErrorMessage = 'Metadata title max length exceeded (50 characters)';
     } else {
       this.titleErrorMessage = '';
     }
@@ -170,10 +145,7 @@ export class AddMetadataComponent implements AfterContentChecked {
    * Disable and expand the card
    */
   private disableCard() {
-    this.logger.debug(
-      'AddMetadataComponent:disableCard: Disable and expand card'
-    );
+    this.logger.debug('AddMetadataComponent:disableCard: Disable and expand card');
     this.isCardDisabled = true;
-    this.panelExpanded = true;
   }
 }

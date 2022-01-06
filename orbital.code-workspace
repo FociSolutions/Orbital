@@ -4,20 +4,47 @@
       "path": "."
     },
     {
-      "path": "src\\orbital-designer"
+      "path": "src/orbital-designer"
     },
     {
-      "path": "src\\Orbital.Mock.Server"
+      "path": "src/Orbital.Mock.Server"
     }
   ],
   "settings": {
     "cSpell.words": [
+      "acrprodscript",
       "APIV",
+      "azureregistrypassword",
+      "buildserver",
+      "clonedeep",
+      "Cobertura",
+      "compodoc",
       "controlkey",
+      "Dans",
+      "devkit",
+      "dockerprod",
+      "gitversion",
+      "gitversionvariables",
+      "globaltool",
+      "jasminewd",
+      "jsoneditor",
+      "jsonpath",
+      "Lucki",
       "maxlength",
       "minlength",
+      "mkdir",
       "mockdefinition",
-      "openapi"
+      "Mockdefinitions",
+      "nofetch",
+      "openapi",
+      "orbitaldesigner",
+      "orbitalmock",
+      "Pathto",
+      "reportgenerator",
+      "reporttypes",
+      "targetdir",
+      "vsts",
+      "webcomponents"
     ],
     "angularKarmaTestExplorer.projectRootPath": "/src/orbital-designer",
     "jest.jestCommandLine": "npm --prefix ./src/orbital-designer run test --"

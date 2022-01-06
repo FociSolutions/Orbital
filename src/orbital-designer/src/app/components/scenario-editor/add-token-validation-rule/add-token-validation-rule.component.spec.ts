@@ -16,19 +16,9 @@ describe('AddTokenValidationRuleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AddTokenValidationRuleComponent,
-        KvpEditRuleComponent,
-        KvpListItemRuleTypeComponent
-      ],
-      imports: [
-        OrbitalCommonModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        LoggerTestingModule
-      ]
-    })
-    .compileComponents();
+      declarations: [AddTokenValidationRuleComponent, KvpEditRuleComponent, KvpListItemRuleTypeComponent],
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, MatCardModule, LoggerTestingModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

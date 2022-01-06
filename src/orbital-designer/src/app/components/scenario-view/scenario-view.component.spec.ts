@@ -46,6 +46,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddTokenValidationRuleComponent } from '../scenario-editor/add-token-validation-rule/add-token-validation-rule.component';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
+import { MatTabsModule } from '@angular/material/tabs';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -57,9 +58,9 @@ describe('ScenarioViewComponent', () => {
     path: '/test',
     verb: VerbType.GET,
     description: '',
-    title: "New Scenario",
-    status: 0
-  }
+    title: 'New Scenario',
+    status: 0,
+  };
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -86,7 +87,7 @@ describe('ScenarioViewComponent', () => {
         UrlAddRuleComponent,
         UrlEditRuleComponent,
         UrlListItemRuleTypeComponent,
-        AddTokenValidationRuleComponent
+        AddTokenValidationRuleComponent,
       ],
       imports: [
         LoggerTestingModule,
@@ -95,10 +96,11 @@ describe('ScenarioViewComponent', () => {
         RouterTestingModule.withRoutes([{ path: 'scenario-editor/:scenarioId', component: ScenarioEditorComponent }]),
         MatMenuModule,
         MatButtonModule,
+        MatTabsModule,
         FormsModule,
         MatChipsModule,
         NgJsonEditorModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
       ],
       providers: [DesignerStore],
     }).compileComponents();
@@ -233,7 +235,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 3; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenario.path = "/" + faker.random.words();
+        scenario.path = '/' + faker.random.words();
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
 
@@ -315,7 +317,6 @@ describe('ScenarioViewComponent', () => {
     expect(component.getScenarioResponseStatusString(scenario)).toBe('Accepted');
   });
 
-
   describe('ScenarioListItemComponent.deleteScenario', () => {
     it('should delete a scenario from the store', () => {
       const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
@@ -332,7 +333,9 @@ describe('ScenarioViewComponent', () => {
       component.scenarioList.push(scenario);
       component.updateScenariosValidationType(2);
 
-      expect(component.scenarioList[0].tokenRule.validationType).toEqual(ValidationType.JWT_VALIDATION_AND_REQUEST_MATCH);
-    })
-  })
+      expect(component.scenarioList[0].tokenRule.validationType).toEqual(
+        ValidationType.JWT_VALIDATION_AND_REQUEST_MATCH
+      );
+    });
+  });
 });

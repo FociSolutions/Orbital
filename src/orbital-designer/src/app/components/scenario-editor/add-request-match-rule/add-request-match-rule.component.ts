@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-add-request-match-rule',
   templateUrl: './add-request-match-rule.component.html',
-  styleUrls: ['./add-request-match-rule.component.scss']
+  styleUrls: ['./add-request-match-rule.component.scss'],
 })
 export class AddRequestMatchRuleComponent {
   @Input() requestMatchRule: RequestMatchRule;
@@ -16,8 +16,7 @@ export class AddRequestMatchRuleComponent {
   bodyMatchRules: BodyRule[];
 
   shouldSave: boolean;
-  panelExpanded: boolean;
-  isCardDisabled: boolean;
+
   constructor() {
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
     this.bodyMatchRules = [];

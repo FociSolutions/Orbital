@@ -1,5 +1,5 @@
 # Label the stage as build
-FROM node:14-alpine as build
+FROM node:lts-alpine as build
 
 # Set Working directory
 WORKDIR /app

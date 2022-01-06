@@ -19,11 +19,11 @@ describe('PolicyComponent', () => {
   let component: PolicyComponent;
   let fixture: ComponentFixture<PolicyComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [PolicyEditComponent, PolicyAddComponent, PolicyComponent],
-      providers: [DesignerStore]
+      providers: [DesignerStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PolicyComponent);
@@ -34,7 +34,7 @@ describe('PolicyComponent', () => {
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.policyFormArray = scenarioFormGroup.get('policies') as FormArray;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -44,15 +44,15 @@ describe('PolicyComponent', () => {
     it('should delete the policy if its defined', () => {
       const policy = {
         type: PolicyType.DELAYRESPONSE,
-        attributes: { delay: faker.random.number().toString() } as Record<string, string>
+        attributes: { delay: faker.datatype.number().toString() } as Record<string, string>,
       } as Policy;
       component.policyFormArray.push(
         new FormGroup({
           delay: new FormControl(recordFirstOrDefault(policy.attributes, '0'), [
             Validators.required,
-            Validators.min(1)
+            Validators.min(1),
           ]),
-          policyType: new FormControl(policy.type, [Validators.required])
+          policyType: new FormControl(policy.type, [Validators.required]),
         })
       );
       component.deletePolicyHandler(0);
@@ -60,48 +60,48 @@ describe('PolicyComponent', () => {
     });
 
     it('should delete the policy by key if there are multiple similar policies', () => {
-      const randomNumber = faker.random.number().toString();
+      const randomNumber = faker.datatype.number().toString();
       // this has to have the same value for all the values to make sure that it is not deleting by value
       const policies = [
         {
           type: PolicyType.DELAYRESPONSE,
-          attributes: { test: randomNumber } as Record<string, string>
+          attributes: { test: randomNumber } as Record<string, string>,
         },
         {
           type: PolicyType.DELAYRESPONSE,
-          attributes: { testtwo: randomNumber } as Record<string, string>
+          attributes: { testtwo: randomNumber } as Record<string, string>,
         },
         {
           type: PolicyType.DELAYRESPONSE,
-          attributes: { testthree: randomNumber } as Record<string, string>
-        }
+          attributes: { testthree: randomNumber } as Record<string, string>,
+        },
       ] as Policy[];
 
       component.policyFormArray.push(
         new FormGroup({
           delay: new FormControl(recordFirstOrDefault(policies[0].attributes, 'delay'), [
             Validators.required,
-            Validators.min(1)
+            Validators.min(1),
           ]),
-          policyType: new FormControl(policies[0].type, [Validators.required])
+          policyType: new FormControl(policies[0].type, [Validators.required]),
         })
       );
       component.policyFormArray.push(
         new FormGroup({
           delay: new FormControl(recordFirstOrDefault(policies[1].attributes, 'delay'), [
             Validators.required,
-            Validators.min(1)
+            Validators.min(1),
           ]),
-          policyType: new FormControl(policies[1].type, [Validators.required])
+          policyType: new FormControl(policies[1].type, [Validators.required]),
         })
       );
       component.policyFormArray.push(
         new FormGroup({
           delay: new FormControl(recordFirstOrDefault(policies[2].attributes, 'delay'), [
             Validators.required,
-            Validators.min(1)
+            Validators.min(1),
           ]),
-          policyType: new FormControl(policies[2].type, [Validators.required])
+          policyType: new FormControl(policies[2].type, [Validators.required]),
         })
       );
       component.deletePolicyHandler(0);
@@ -113,7 +113,7 @@ describe('PolicyComponent', () => {
     it('should save valid policy', () => {
       const policy = {
         type: PolicyType.DELAYRESPONSE,
-        attributes: { delay: faker.random.number().toString() } as Record<string, string>
+        attributes: { delay: faker.datatype.number().toString() } as Record<string, string>,
       } as Policy;
       component.addPolicyHandler(policy);
       expect(component.policyFormArray.length).toBe(1);
@@ -123,12 +123,12 @@ describe('PolicyComponent', () => {
   it('should not save repeated policy', () => {
     const policy = {
       type: PolicyType.DELAYRESPONSE,
-      attributes: { delay: faker.random.number().toString() } as Record<string, string>
+      attributes: { delay: faker.datatype.number().toString() } as Record<string, string>,
     } as Policy;
     const delayValue = recordFirstOrDefault(policy.attributes, '');
     const policyFormGroup = new FormGroup({
       delay: new FormControl(delayValue, [Validators.required, Validators.min(1)]),
-      policyType: new FormControl(policy.type, [Validators.required])
+      policyType: new FormControl(policy.type, [Validators.required]),
     });
     component.policyFormArray.push(policyFormGroup);
     component.addPolicyHandler(policy);
