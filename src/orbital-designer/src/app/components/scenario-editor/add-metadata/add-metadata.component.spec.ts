@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import * as faker from 'faker';
@@ -30,7 +30,7 @@ describe('AddMetadataComponent', () => {
         MatSelectModule,
         MatCardModule,
         MatIconModule,
-        OrbitalCommonModule,
+        SharedModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
         MatDividerModule,

@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
-import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { KvpEditRuleComponent } from '../kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from '../kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
@@ -17,7 +17,7 @@ describe('AddTokenValidationRuleComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AddTokenValidationRuleComponent, KvpEditRuleComponent, KvpListItemRuleTypeComponent],
-      imports: [OrbitalCommonModule, BrowserAnimationsModule, MatCardModule, LoggerTestingModule],
+      imports: [SharedModule, BrowserAnimationsModule, MatCardModule, LoggerTestingModule],
     }).compileComponents();
   });
 

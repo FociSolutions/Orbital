@@ -2,14 +2,14 @@
   <mat-card-title class="capitalize">Export to Server</mat-card-title>
   <mat-card-subtitle>Export local Mockdefinition file(s) to a server</mat-card-subtitle>
   <div class="column center-hr flex-grow div-body">
-    <app-tool-tip message="Enter the Server URI that your Mockdefinition files should be exported to">
+    <app-tooltip message="Enter the Server URI that your Mockdefinition files should be exported to">
       <div class="container">
         <app-text-input title="Server URI" maxLength="200" [control]="inputControl"></app-text-input>
         <div *ngIf="disabled" id="submit-buttons">
           <mat-spinner diameter="25" [id]="getSpinnerId()"></mat-spinner>
         </div>
       </div>
-    </app-tool-tip>
+    </app-tooltip>
     <div *ngIf="!!exportStatusMessage?.length" class="status-message">{{ exportStatusMessage }}</div>
     <div *ngIf="!!exportErrors?.length" class="error-message">{{ exportErrors }}</div>
     <app-shuttle-list

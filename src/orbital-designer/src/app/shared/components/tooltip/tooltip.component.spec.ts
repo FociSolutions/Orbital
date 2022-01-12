@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ToolTipComponent } from './tool-tip.component';
+import { ToolTipComponent } from './tooltip.component';
 import { MatIconModule } from '@angular/material/icon';
 
 describe('ToolTipComponent', () => {

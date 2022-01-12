@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
-import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
+import { SharedModule } from '../../shared/shared.module';
 import { CreateEditMockViewComponent } from './create-edit-mock-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Location } from '@angular/common';
@@ -26,7 +26,7 @@ describe('CreateEditMockViewComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CreateEditMockViewComponent],
-      imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule, RouterTestingModule],
+      imports: [SharedModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule, RouterTestingModule],
       providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService],
     }).compileComponents();
 

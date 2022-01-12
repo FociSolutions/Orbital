@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { Location } from '@angular/common';
-import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
+import { SharedModule } from '../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DeleteFromServerViewComponent } from './delete-from-server-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -27,7 +27,7 @@ describe('DeleteFromServerViewComponent', () => {
         imports: [
           MatCardModule,
           RouterTestingModule,
-          OrbitalCommonModule,
+          SharedModule,
           HttpClientTestingModule,
           BrowserAnimationsModule,
           LoggerTestingModule,

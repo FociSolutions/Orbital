@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpAddComponent } from './kvp-add.component';
-import { OrbitalCommonModule } from '../../orbital-common.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 describe('KvpAddComponent', () => {
   let component: KvpAddComponent;
@@ -11,7 +11,7 @@ describe('KvpAddComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule],
+      imports: [SharedModule, BrowserAnimationsModule, LoggerTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpAddComponent);

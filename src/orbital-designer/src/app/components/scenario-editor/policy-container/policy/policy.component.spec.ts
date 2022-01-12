@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { PolicyComponent } from './policy.component';
-import { OrbitalCommonModule } from 'src/app/components/orbital-common/orbital-common.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { PolicyEditComponent } from '../policy-edit/policy-edit.component';
@@ -21,7 +21,7 @@ describe('PolicyComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
+      imports: [SharedModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [PolicyEditComponent, PolicyAddComponent, PolicyComponent],
       providers: [DesignerStore],
     }).compileComponents();

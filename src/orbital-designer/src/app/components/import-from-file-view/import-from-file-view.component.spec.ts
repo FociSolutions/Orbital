@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ImportFromFileViewComponent } from './import-from-file-view.component';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
+import { SharedModule } from '../../shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from '../../store/designer-store';
@@ -20,7 +20,7 @@ describe('ImportFromFileComponent', () => {
         MatCardModule,
         MatListModule,
         MatIconModule,
-        OrbitalCommonModule,
+        SharedModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
         RouterTestingModule,

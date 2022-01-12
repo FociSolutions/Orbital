@@ -2,7 +2,7 @@
   <mat-card-title class="capitalize">Import from Server</mat-card-title>
   <mat-card-subtitle>Import existing Mockdefinition(s) below</mat-card-subtitle>
   <div class="column center-hr flex-grow div-body">
-    <app-tool-tip message="Enter the Server URI that your Mockdefinition(s) are hosted on">
+    <app-tooltip message="Enter the Server URI that your Mockdefinition(s) are hosted on">
       <form>
         <div class="container">
           <div class="uri-field">
@@ -23,7 +23,7 @@
           </div>
         </div>
       </form>
-    </app-tool-tip>
+    </app-tooltip>
     <app-shuttle-list
       class="column flex-grow"
       [list]="formArray.controls"

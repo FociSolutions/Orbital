@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KvpEditRuleComponent } from './kvp-edit-rule.component';
-import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type/kvp-list-item-rule-type.component';
@@ -19,7 +19,7 @@ describe('KvpEditRuleComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
+      imports: [SharedModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent],
       providers: [DesignerStore, ScenarioFormBuilder],
     }).compileComponents();

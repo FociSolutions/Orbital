@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +21,7 @@ describe('BodyEditRuleComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule, NgJsonEditorModule],
+      imports: [SharedModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule, NgJsonEditorModule],
       declarations: [BodyEditRuleComponent, BodyAddRuleComponent, BodyListItemRuleTypeComponent],
       providers: [DesignerStore],
     }).compileComponents();

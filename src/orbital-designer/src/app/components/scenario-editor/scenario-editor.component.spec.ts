@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
+import { SharedModule } from '../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
 
@@ -21,9 +21,9 @@ import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './add-response/add-response.component';
-import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
+import { SideBarComponent } from '../../shared/components/side-bar/side-bar.component';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
-import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
+import { OverviewHeaderComponent } from '../../shared/components/overview-header/overview-header.component';
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
 import { GetVerbStringPipe } from '../../pipes/get-verb-string/get-verb-string.pipe';
 import { KvpEditRuleComponent } from './kvp-edit-rule/kvp-edit-rule.component';
@@ -82,7 +82,7 @@ describe('ScenarioEditorComponent', () => {
       imports: [
         LoggerTestingModule,
         MatCardModule,
-        OrbitalCommonModule,
+        SharedModule,
         RouterTestingModule.withRoutes([{ path: 'scenario-view', component: ScenarioViewComponent }]),
         MatButtonModule,
         MatTabsModule,

@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import * as faker from 'faker';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { ShuttleSubListComponent } from '../orbital-common/shuttle-list/shuttle-sub-list/shuttle-sub-list.component';
+import { ShuttleSubListComponent } from '../../shared/components/shuttle-list/shuttle-sub-list/shuttle-sub-list.component';
 
 describe('DownloadMockdefinitionsComponent', () => {
   let component: DownloadMockdefinitionsComponent;

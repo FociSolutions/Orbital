@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddResponseComponent } from './add-response.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
+import { SharedModule } from '../../../shared/shared.module';
 import * as faker from 'faker';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
@@ -18,7 +18,7 @@ describe('AddResponseComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AddResponseComponent],
-      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule, NgJsonEditorModule],
+      imports: [SharedModule, BrowserAnimationsModule, LoggerTestingModule, NgJsonEditorModule],
       providers: [ScenarioFormBuilder],
     }).compileComponents();
 

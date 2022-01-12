@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { OrbitalCommonModule } from 'src/app/components/orbital-common/orbital-common.module';
+import { SharedModule } from '../../shared/shared.module';
 import { ExportToServerViewComponent } from './export-to-server-view.component';
 import { DesignerStore } from '../../store/designer-store';
 import { OrbitalAdminService } from '../../services/orbital-admin/orbital-admin.service';
@@ -24,7 +24,7 @@ describe('ExportToServerViewComponent', () => {
         HttpClientTestingModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        OrbitalCommonModule,
+        SharedModule,
       ],
       providers: [Location, DesignerStore, OrbitalAdminService],
     }).compileComponents();

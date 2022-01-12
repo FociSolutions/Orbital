@@ -1,9 +1,87 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BlankComponent } from './components/test/blank.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { TextInputComponent } from './components/text-input/text-input.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FileInputComponent } from './components/file-input/file-input.component';
+import { MatCardModule } from '@angular/material/card';
+import { ToolTipComponent } from './components/tooltip/tooltip.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ShuttleSubListComponent } from './components/shuttle-list/shuttle-sub-list/shuttle-sub-list.component';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { ShuttleListComponent } from './components/shuttle-list/shuttle-list.component';
+import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
+import { KvpEditComponent } from './components/kvp-edit/kvp-edit.component';
+import { KvpAddComponent } from './components/kvp-edit/kvp-add/kvp-add.component';
+import { KvpListItemComponent } from './components/kvp-edit/kvp-list-item/kvp-list-item.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { KvpAddRuleComponent } from '../components/scenario-editor/kvp-edit-rule/kvp-add-rule/kvp-add-rule.component';
+import { QuickExportComponent } from './components/quick-export/quick-export.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [BlankComponent],
-  imports: [CommonModule],
+  declarations: [
+    TextInputComponent,
+    FileInputComponent,
+    ToolTipComponent,
+    ShuttleSubListComponent,
+    SearchBarComponent,
+    ShuttleListComponent,
+    DialogBoxComponent,
+    KvpAddRuleComponent,
+    QuickExportComponent,
+    KvpAddComponent,
+    KvpEditComponent,
+    KvpListItemComponent
+  ],
+  exports: [
+    TextInputComponent,
+    FileInputComponent,
+    ToolTipComponent,
+    ShuttleSubListComponent,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    SearchBarComponent,
+    ShuttleListComponent,
+    DialogBoxComponent,
+    MatExpansionModule,
+    KvpAddRuleComponent,
+    QuickExportComponent,
+    KvpAddComponent,
+    KvpEditComponent,
+    KvpListItemComponent
+  ],
+  imports: [
+    CommonModule,
+    MatTooltipModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    HttpClientModule
+  ],
 })
 export class SharedModule {}

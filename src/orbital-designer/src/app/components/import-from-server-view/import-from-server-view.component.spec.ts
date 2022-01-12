@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { Location } from '@angular/common';
-import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
+import { SharedModule } from '../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ImportFromServerViewComponent } from './import-from-server-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -32,7 +32,7 @@ describe('ImportFromServerViewComponent', () => {
             component: BlankComponent,
           },
         ]),
-        OrbitalCommonModule,
+        SharedModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
         LoggerTestingModule,

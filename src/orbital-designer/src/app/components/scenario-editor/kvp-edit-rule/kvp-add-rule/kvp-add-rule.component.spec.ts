@@ -3,7 +3,7 @@ import * as faker from 'faker';
 import { KvpAddRuleComponent } from './kvp-add-rule.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
-import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
+import { SharedModule } from '../../../../shared/shared.module';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 
 describe('KvpAddComponent', () => {
@@ -12,7 +12,7 @@ describe('KvpAddComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule],
+      imports: [SharedModule, BrowserAnimationsModule, LoggerTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpAddRuleComponent);

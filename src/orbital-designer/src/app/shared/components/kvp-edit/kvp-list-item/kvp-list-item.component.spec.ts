@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpListItemComponent } from './kvp-list-item.component';
-import { OrbitalCommonModule } from '../../orbital-common.module';
 import { KeyValue } from '@angular/common';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 describe('KvpListItemComponent', () => {
   let component: KvpListItemComponent;
@@ -10,7 +10,9 @@ describe('KvpListItemComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule],
+      imports: [
+        SharedModule
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpListItemComponent);

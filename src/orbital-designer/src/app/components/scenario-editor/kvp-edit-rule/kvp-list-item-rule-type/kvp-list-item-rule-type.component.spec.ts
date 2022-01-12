@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type.component';
-import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
+import { SharedModule } from '../../../../shared/shared.module';
 import { MatCardModule } from '@angular/material/card';
 import { KvpEditRuleComponent } from '../kvp-edit-rule.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,7 +19,7 @@ describe('KvpListItemRuleComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
+      imports: [SharedModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
       declarations: [KvpListItemRuleTypeComponent, KvpEditRuleComponent],
       providers: [DesignerStore, ScenarioFormBuilder],
     }).compileComponents();

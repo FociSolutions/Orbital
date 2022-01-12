@@ -11,7 +11,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { OrbitalCommonModule } from './components/orbital-common/orbital-common.module';
+import { SharedModule } from './shared/shared.module';
+import { MaterialModule } from './shared/material.module';
 import { GetEndpointScenariosPipe } from './pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { GetVerbColorPipe } from './pipes/get-verb-color/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
@@ -25,9 +26,9 @@ import { ImportFromFileViewComponent } from './components/import-from-file-view/
 import { ImportFromServerViewComponent } from './components/import-from-server-view/import-from-server-view.component';
 import { EndpointViewComponent } from './components/endpoint-view/endpoint-view.component';
 import { EndpointListComponent } from './components/endpoint-view/endpoint-list/endpoint-list.component';
-import { OverviewHeaderComponent } from './components/orbital-common/overview-header/overview-header.component';
+import { OverviewHeaderComponent } from './shared/components/overview-header/overview-header.component';
 import { EndpointListItemComponent } from './components/endpoint-view/endpoint-list-item/endpoint-list-item.component';
-import { SideBarComponent } from './components/orbital-common/side-bar/side-bar.component';
+import { SideBarComponent } from './shared/components/side-bar/side-bar.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
 import { MatChipsModule } from '@angular/material/chips';
@@ -41,6 +42,9 @@ import { ExportToServerViewComponent } from './components/export-to-server-view/
 import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
 import { KvpListItemRuleTypeComponent } from './components/scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { KvpEditRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
+import { KvpEditComponent } from './shared/components/kvp-edit/kvp-edit.component';
+import { KvpAddComponent } from './shared/components/kvp-edit/kvp-add/kvp-add.component';
+import { KvpListItemComponent } from './shared/components/kvp-edit/kvp-list-item/kvp-list-item.component';
 import { GetRuleTypeStringPipe } from './pipes/get-rule-type-string/get-rule-type-string.pipe';
 import { UrlEditRuleComponent } from './components/scenario-editor/url-edit-rule/url-edit-rule.component';
 import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
@@ -101,6 +105,7 @@ import { AddTokenValidationRuleComponent } from './components/scenario-editor/ad
     CoreModule,
     HttpClientModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG }),
+    MaterialModule,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
@@ -113,8 +118,8 @@ import { AddTokenValidationRuleComponent } from './components/scenario-editor/ad
     MatSnackBarModule,
     MatTabsModule,
     NgJsonEditorModule,
-    OrbitalCommonModule,
     ReactiveFormsModule,
+    SharedModule
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent],

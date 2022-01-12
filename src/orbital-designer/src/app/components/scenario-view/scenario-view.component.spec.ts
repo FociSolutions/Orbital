@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { ScenarioViewComponent } from './scenario-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
+import { SharedModule } from '../../shared/shared.module';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
-import { SideBarComponent } from '../orbital-common/side-bar/side-bar.component';
+import { SideBarComponent } from '../../shared/components/side-bar/side-bar.component';
 import { MatCardModule } from '@angular/material/card';
-import { OverviewHeaderComponent } from '../orbital-common/overview-header/overview-header.component';
+import { OverviewHeaderComponent } from '../../shared/components/overview-header/overview-header.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -85,7 +85,7 @@ describe('ScenarioViewComponent', () => {
       imports: [
         LoggerTestingModule,
         MatCardModule,
-        OrbitalCommonModule,
+        SharedModule,
         RouterTestingModule.withRoutes([{ path: 'scenario-editor/:scenarioId', component: ScenarioEditorComponent }]),
         MatMenuModule,
         MatButtonModule,

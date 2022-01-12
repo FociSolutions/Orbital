@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UrlEditRuleComponent } from './url-edit-rule.component';
-import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +21,7 @@ describe('UrlEditRuleComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
+      imports: [SharedModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [UrlEditRuleComponent, UrlAddRuleComponent, UrlListItemRuleTypeComponent],
       providers: [DesignerStore, ScenarioFormBuilder],
     }).compileComponents();
