@@ -1,23 +1,22 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
-import { map } from 'rxjs/operators';
 import { recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-file-input',
   templateUrl: './file-input.component.html',
-  styleUrls: ['./file-input.component.scss']
+  styleUrls: ['./file-input.component.scss'],
 })
 export class FileInputComponent {
-  constructor(private logger: NGXLogger, private readfileparser: ReadFileService) {}
+  constructor(private logger: NGXLogger, private readFileParser: ReadFileService) {}
   fileName: string[] = [];
   currentFileName: string;
   fileContent: string;
   @Input() label = '';
   @Input() accept = '';
   @Input() multiple = true;
-  private errormessages = {} as Record<string, string[]>;
+  private _errorMessages: Record<string, string[]> = {};
   @Output() fileContentEmit = new EventEmitter<string>();
   @Output() fileNameEmit = new EventEmitter<string>();
   @Output() clearContentEmit = new EventEmitter<boolean>();
@@ -28,19 +27,16 @@ export class FileInputComponent {
   emitFileContent(files: File[]) {
     this.fileName = [];
     for (const file of files) {
-      this.readfileparser
-        .read(file)
-        .pipe(map(fileReadresult => fileReadresult))
-        .subscribe(
-          fileReadresult => {
-            this.fileName.push(file.name);
-            this.currentFileName = file.name;
-            this.fileContent = fileReadresult;
-            this.fileNameEmit.emit(this.currentFileName);
-            this.fileContentEmit.emit(this.fileContent);
-          },
-          err => recordAdd(this.errormessages, file.name, err)
-        );
+      this.readFileParser.read(file).subscribe(
+        (fileReadResult) => {
+          this.fileName.push(file.name);
+          this.currentFileName = file.name;
+          this.fileContent = fileReadResult;
+          this.fileNameEmit.emit(this.currentFileName);
+          this.fileContentEmit.emit(this.fileContent);
+        },
+        (err) => recordAdd(this._errorMessages, file.name, err)
+      );
     }
     this.logger.log('File Contents emitted');
   }
@@ -56,10 +52,10 @@ export class FileInputComponent {
 
   @Input()
   set errorMessage(errorMessage: Record<string, string[]>) {
-    this.errormessages = errorMessage;
+    this._errorMessages = errorMessage;
   }
 
   get errorMessages() {
-    return this.errormessages;
+    return this._errorMessages;
   }
 }

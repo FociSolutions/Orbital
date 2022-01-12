@@ -5,10 +5,10 @@ import { RuleType } from './rule.type';
  */
 export interface BodyRule {
   type: RuleType;
-  rule: object;
+  rule: Record<string, unknown>;
 }
 
 export const defaultBodyRule: BodyRule = {
   type: RuleType.NONE,
-  rule: {}
+  rule: {},
 };

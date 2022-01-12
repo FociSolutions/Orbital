@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PolicyAddComponent } from './policy-add.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
@@ -13,7 +13,7 @@ describe('PolicyAddComponent', () => {
   let component: PolicyAddComponent;
   let fixture: ComponentFixture<PolicyAddComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PolicyAddComponent],
       imports: [
@@ -23,14 +23,14 @@ describe('PolicyAddComponent', () => {
         MatSelectModule,
         MatCardModule,
         FormsModule,
-        ReactiveFormsModule
-      ]
+        ReactiveFormsModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PolicyAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -66,17 +66,14 @@ describe('PolicyAddComponent', () => {
 
     describe('And delay has been set to a value', () => {
       beforeEach(() => {
-        component.attributes
-          .at(0)
-          .get('delay')
-          .setValue('2');
+        component.attributes.at(0).get('delay').setValue('2');
       });
       it('should have delay set to VALID status', () => {
         expect(component.delay.status).toBe('VALID');
       });
 
       describe('And the add button is pushed', () => {
-        it('Should emit the policyAddedEventEmitter', done => {
+        it('Should emit the policyAddedEventEmitter', (done) => {
           component.policyAddedEventEmitter.subscribe((policy: Policy) => {
             expect(policy.attributes).toEqual({ delay: '2' });
             done();

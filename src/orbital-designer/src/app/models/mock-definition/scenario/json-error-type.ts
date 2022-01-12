@@ -1,10 +1,10 @@
 /**
  *  Enum for json error types
  */
- export enum jsonErrorType {
+export enum jsonErrorType {
   NONE = 0,
   EMPTY,
   INVALID,
   TYPE,
-  EMPTY_JSON
+  EMPTY_JSON,
 }

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ShuttleListComponent } from './shuttle-list.component';
 import { ShuttleSubListComponent } from './shuttle-sub-list/shuttle-sub-list.component';
 import { MatCardModule } from '@angular/material/card';
@@ -16,7 +16,7 @@ describe('ShuttleListComponent', () => {
   let component: ShuttleListComponent;
   let fixture: ComponentFixture<ShuttleListComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ShuttleListComponent, ShuttleSubListComponent],
       imports: [
@@ -26,14 +26,14 @@ describe('ShuttleListComponent', () => {
         MatCheckboxModule,
         MatDividerModule,
         MatListModule,
-        LoggerTestingModule
-      ]
+        LoggerTestingModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShuttleListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -62,7 +62,6 @@ describe('ShuttleListComponent', () => {
       expect(component.leftList).toEqual(expectedList);
       expect(component.rightList).toEqual([]);
     });
-
   });
 
   describe('ShuttleListComponent.onMoveLeft()', () => {
@@ -74,10 +73,12 @@ describe('ShuttleListComponent', () => {
     });
 
     it('should append to the leftList and not overwrite', () => {
-      const expectedList = [testMockDefinitionObject,
+      const expectedList = [
         testMockDefinitionObject,
         testMockDefinitionObject,
-        testMockDefinitionObject];
+        testMockDefinitionObject,
+        testMockDefinitionObject,
+      ];
 
       const fakedList = [testMockDefinitionObject];
       component.leftList = expectedList;
@@ -98,18 +99,14 @@ describe('ShuttleListComponent', () => {
 
   describe('ShuttleListComponent.onMoveRight()', () => {
     it('should move the items in leftSelected to the rightList when the first parameter is true or empty', () => {
-      const expectedList = [testMockDefinitionObject,
-        testMockDefinitionObject,
-        testMockDefinitionObject];
+      const expectedList = [testMockDefinitionObject, testMockDefinitionObject, testMockDefinitionObject];
       component.leftSelected = [...expectedList];
       component.onMoveRight();
       expect(component.rightList).toEqual(expectedList);
     });
 
     it('should append to the rightList and not overwrite', () => {
-      const fakedList = [testMockDefinitionObject,
-        testMockDefinitionObject,
-        testMockDefinitionObject];
+      const fakedList = [testMockDefinitionObject, testMockDefinitionObject, testMockDefinitionObject];
       const originalListItem = fakedList[0];
       component.rightList = [originalListItem];
       component.leftSelected = [...fakedList];
@@ -121,9 +118,7 @@ describe('ShuttleListComponent', () => {
     });
 
     it('should clear the leftSelected', () => {
-      component.leftSelected = [testMockDefinitionObject,
-        testMockDefinitionObject,
-        testMockDefinitionObject];
+      component.leftSelected = [testMockDefinitionObject, testMockDefinitionObject, testMockDefinitionObject];
       component.onMoveRight();
       expect(component.leftSelected).toEqual([]);
     });

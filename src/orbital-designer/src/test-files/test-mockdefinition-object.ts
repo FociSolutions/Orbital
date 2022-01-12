@@ -1,24 +1,23 @@
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import * as uuid from 'uuid';
 import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
-export default {
+const validMockDefinition: MockDefinition = {
   scenarios: [
     {
       id: '72dded1d-3755-4749-9aad-f7b4d769ea57',
       metadata: {
         title: 'Another Scenario',
-        description: 'Another test scenario'
+        description: 'Another test scenario',
       },
       verb: 0,
       path: '/',
       response: {
-        headers: {} as Record<string, string>,
+        headers: {},
         status: 404,
         body: '',
-        type: ResponseType.CUSTOM
+        type: ResponseType.CUSTOM,
       },
       requestMatchRules: {
         bodyRules: [],
@@ -28,22 +27,21 @@ export default {
           {
             type: 5,
             rule: {
-              urlPath: '/pets/12'
-            }
-          }
-        ]
+              urlPath: '/pets/12',
+            },
+          },
+        ],
       },
       policies: [],
       defaultScenario: false,
-      validationType: 0,
-      tokenRule: defaultTokenRule
-    } as Scenario
+      tokenRule: defaultTokenRule,
+    },
   ],
   openApi: {
     swagger: '2.0',
     info: {
       title: 'Simple API overview',
-      version: 'v2'
+      version: 'v2',
     },
     paths: {
       '/': {
@@ -53,13 +51,13 @@ export default {
           produces: ['application/json'],
           responses: {
             200: {
-              description: '200 300 response'
+              description: '200 300 response',
             },
             300: {
-              description: '200 300 response'
-            }
-          }
-        }
+              description: '200 300 response',
+            },
+          },
+        },
       },
       '/v2': {
         get: {
@@ -68,21 +66,23 @@ export default {
           produces: ['application/json'],
           responses: {
             200: {
-              description: '200 203 response'
+              description: '200 203 response',
             },
             203: {
-              description: '200 203 response'
-            }
-          }
-        }
-      }
+              description: '200 203 response',
+            },
+          },
+        },
+      },
     },
-    consumes: ['application/json']
+    consumes: ['application/json'],
   },
   id: uuid.v4(),
   metadata: {
     title: 'Test Mock',
-    description: 'A Test Mock'
+    description: 'A Test Mock',
   },
-  tokenValidation: true
-} as MockDefinition;
+  tokenValidation: true,
+};
+
+export default validMockDefinition;

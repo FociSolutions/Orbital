@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
-import { recordAdd, compareRecords } from 'src/app/models/record';
+import { compareRecords, recordAdd } from 'src/app/models/record';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 import { cloneDeep } from 'lodash';
@@ -22,7 +22,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const policyFormArraySubscription = this.policyFormArray.valueChanges.subscribe((policies) => {
+    const policyFormArraySubscription = this.policyFormArray.valueChanges.subscribe((_policies) => {
       this.logger.debug('PolicyComponent checking for duplicate policies : ', this.policyFormArray);
       this.checkForDuplicates();
     });
@@ -63,6 +63,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
     return this.policyFormArray.controls
       .map((group) => {
         const formGroupsToCheck = cloneDeep(group);
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         const policyFormGroup = this.generatePoliciesAttributes(formGroupsToCheck as FormGroup);
         return policyFormGroup;
       })
@@ -83,6 +84,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
     this.policyFormArray.markAsUntouched();
     const policies = this.policyFormArray.controls.map((group) => {
       const formGroupsToCheck = cloneDeep(group);
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const policyFormGroup = this.generatePoliciesAttributes(formGroupsToCheck as FormGroup);
       return policyFormGroup;
     });
@@ -94,10 +96,10 @@ export class PolicyComponent implements OnInit, OnDestroy {
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
           this.logger.error('PolicyComponent: found duplicate', policyToCheck);
-          (this.policyFormArray.at(indexToCheck) as FormGroup).get('policyType').markAsTouched();
-          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).get('policyType').markAsTouched();
-          (this.policyFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
-          (this.policyFormArray.at(indexToCheck) as FormGroup).setErrors({ duplicated: true });
+          this.policyFormArray.at(indexToCheck).get('policyType').markAsTouched();
+          this.policyFormArray.at(indexToCheckAgainst).get('policyType').markAsTouched();
+          this.policyFormArray.at(indexToCheckAgainst).setErrors({ duplicated: true });
+          this.policyFormArray.at(indexToCheck).setErrors({ duplicated: true });
           this.policyFormArray.setErrors({ duplicated: true });
         }
       });
@@ -109,16 +111,16 @@ export class PolicyComponent implements OnInit, OnDestroy {
       attributes: Record<string, string>;
       policyType: number;
     }
-    const attributes = {} as Record<string, string>;
-    Object.keys((group as FormGroup).controls).forEach((key) => {
+    const attributes = {};
+    Object.keys(group.controls).forEach((key) => {
       if (key !== 'policyType') {
-        recordAdd(attributes, key, (group as FormGroup).controls[key].value);
+        recordAdd(attributes, key, group.controls[key].value);
       }
     });
-    const policyFormGroup = {
-      policyType: (group as FormGroup).controls['policyType'].value,
+    const policyFormGroup: IPolicyFormGroup = {
+      policyType: group.controls.policyType.value,
       attributes,
-    } as IPolicyFormGroup;
+    };
     return policyFormGroup;
   }
   /**

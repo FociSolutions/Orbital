@@ -9,14 +9,14 @@ import { recordAdd } from 'src/app/models/record';
 @Component({
   selector: 'app-import-from-file-view',
   templateUrl: './import-from-file-view.component.html',
-  styleUrls: ['./import-from-file-view.component.scss']
+  styleUrls: ['./import-from-file-view.component.scss'],
 })
 export class ImportFromFileViewComponent {
   private mockDefinitionString: string[] = [];
   mockdefinitionValid: string[] = [];
   mockdefinitionInvalid: string[] = [];
   mockDefinitionNameString: string[] = [];
-  errorMessageToEmitFromCreate = {} as Record<string, string[]>;
+  errorMessageToEmitFromCreate: Record<string, string[]> = {};
   validFileFlag = true;
   buttonDisabled = true;
   tempName = '';
@@ -36,9 +36,9 @@ export class ImportFromFileViewComponent {
    * Validates the Mockdefinition and returns a boolean validation status
    */
   async validateMock(mockDefinitionString: string, index: number) {
-    this.logger.log('validateMock ' + mockDefinitionString);
+    this.logger.log(`validateMock ${mockDefinitionString}`);
     this.mockDefinitionService.validateMockDefinition(mockDefinitionString).subscribe(
-      value => {
+      (value) => {
         if (value) {
           this.logger.log('mock definition file selected is valid');
           this.validFileFlag = true;
@@ -51,7 +51,7 @@ export class ImportFromFileViewComponent {
           }
         }
       },
-      error => {
+      (error) => {
         this.logger.error('mock definition is invalid and was not saved to the store');
         this.errorMessageToEmitFromCreate = recordAdd(
           this.errorMessageToEmitFromCreate,
@@ -95,7 +95,7 @@ export class ImportFromFileViewComponent {
    */
   checkEmit(x: boolean) {
     if (this.mockDefinitionNameString.length > 0 && x) {
-      this.errorMessageToEmitFromCreate = {} as Record<string, string[]>;
+      this.errorMessageToEmitFromCreate = {};
       this.clearArrays();
     }
   }
@@ -109,15 +109,15 @@ export class ImportFromFileViewComponent {
     this.mockDefinitionString.forEach((mock, index) => {
       this.mockDefinitionService
         .AddMockDefinitionToStore(mock)
-        .pipe(map(value => value))
+        .pipe(map((value) => value))
         .subscribe(
-          value => {
+          (value) => {
             if (value) {
               this.logger.log('mock definition was saved to the store');
               this.router.navigateByUrl('endpoint-view');
             }
           },
-          error => {
+          (error) => {
             this.logger.error('mock definition is invalid and was not saved to the store');
             recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], [error.message]);
           }

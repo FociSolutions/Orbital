@@ -1,12 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
-import { recordDelete, recordAdd } from 'src/app/models/record';
+import { recordAdd, recordDelete } from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-edit',
   templateUrl: './kvp-edit.component.html',
-  styleUrls: ['./kvp-edit.component.scss']
+  styleUrls: ['./kvp-edit.component.scss'],
 })
 export class KvpEditComponent {
   /**

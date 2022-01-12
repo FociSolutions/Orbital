@@ -1,7 +1,4 @@
-<mat-card *ngIf="!!endpoint"
-class="endpointlistitemcontainer mincardheight"
-(click)="selectEndpoint()">
-
+<mat-card *ngIf="!!endpoint" class="endpointlistitemcontainer mincardheight" (click)="selectEndpoint()">
   <mat-card-content>
     <mat-card-header class="verb-header" [style.background-color]="endpoint.verb | getVerbColor">
       <mat-card-title class="verb-text">{{ endpoint.verb | getVerbString }}</mat-card-title>

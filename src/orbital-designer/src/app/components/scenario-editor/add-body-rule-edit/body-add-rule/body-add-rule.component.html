@@ -12,7 +12,7 @@
         </mat-form-field>
         <div class="body-value">
           <mat-label>Value</mat-label>
-          <json-editor [data]='bodyData' [options]='editorOptions' #editor></json-editor>
+          <json-editor [data]="bodyData" [options]="editorOptions" #editor></json-editor>
         </div>
         <button mat-mini-fab class="add-button" color="primary" (click)="addBodyRule()">
           <mat-icon>add</mat-icon>
@@ -21,23 +21,17 @@
     </form>
 
     <div *ngIf="rule.invalid || editor.isFocused">
-      <mat-error *ngIf="rule.errors.required">
-        Body rule is required
-      </mat-error>
+      <mat-error *ngIf="rule.errors.required"> Body rule is required </mat-error>
       <mat-error *ngIf="rule.errors.invalidJSON">
         {{ rule.errors.message }}
       </mat-error>
     </div>
 
     <div *ngIf="type.invalid && (type.dirty || type.touched)">
-      <mat-error *ngIf="type.errors.required">
-        Body rule type is required
-      </mat-error>
+      <mat-error *ngIf="type.errors.required"> Body rule type is required </mat-error>
     </div>
     <div *ngIf="this.isRuleDuplicated">
-      <mat-error>
-        Rule already exists
-      </mat-error>
+      <mat-error> Rule already exists </mat-error>
     </div>
   </mat-card-content>
 </mat-card>

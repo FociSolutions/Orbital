@@ -2,14 +2,12 @@ import { Injectable, NgZone } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
+  readonly default_snackbar_duration_ms = 3000;
 
-  constructor(
-    private snackBar: MatSnackBar,
-    private zone: NgZone
-  ) {}
+  constructor(private snackBar: MatSnackBar, private zone: NgZone) {}
 
   /**
    *
@@ -17,9 +15,9 @@ export class NotificationService {
    * @param action The name of the button which dismisses the snackbar
    * @param duration How long in milliseconds to show the snackbar for
    */
-  public open(message: string,  action = null, duration = 3000) {
-      this.zone.run(() => {
-          this.snackBar.open(message, action, {duration});
-      });
+  open(message: string, action = null, duration = this.default_snackbar_duration_ms) {
+    this.zone.run(() => {
+      this.snackBar.open(message, action, { duration });
+    });
   }
 }

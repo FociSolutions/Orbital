@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,7 +8,7 @@ import { RuleType } from '../../../models/mock-definition/scenario/rule.type';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
-import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BodyEditRuleComponent } from './body-edit-rule.component';
 import { BodyAddRuleComponent } from './body-add-rule/body-add-rule.component';
 import { BodyListItemRuleTypeComponent } from './body-list-item-rule-type/body-list-item-rule-type.component';
@@ -131,13 +131,13 @@ describe('BodyEditRuleComponent', () => {
   });
 
   it('should not save repeated body rule', () => {
-    const bodyRule = ({
+    const bodyRule = {
       type: faker.datatype.number({
         min: 0,
         max: Object.keys(RuleType).length - 1,
       }) as RuleType,
       rule: "{'x': 'y'}",
-    } as unknown) as BodyRule;
+    } as unknown as BodyRule;
     const bodyRuleasFormGroup = new FormGroup({
       rule: new FormControl(bodyRule.rule, [Validators.required]),
       type: new FormControl(bodyRule.type, [Validators.required]),

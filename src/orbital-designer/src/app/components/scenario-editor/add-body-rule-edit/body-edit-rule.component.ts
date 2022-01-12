@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
@@ -10,14 +10,18 @@ import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service
 @Component({
   selector: 'app-body-edit-rule',
   templateUrl: './body-edit-rule.component.html',
-  styleUrls: ['./body-edit-rule.component.scss']
+  styleUrls: ['./body-edit-rule.component.scss'],
 })
 export class BodyEditRuleComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   @Output() bodyRuleIsDuplicated: EventEmitter<boolean>;
   @Input() bodyMatchRuleFormArray: FormArray;
-  constructor(private logger: NGXLogger, private formbuilder: AddBodyRuleBuilder, private validJsonService: ValidJsonService) {
+  constructor(
+    private logger: NGXLogger,
+    private formBuilder: AddBodyRuleBuilder,
+    private validJsonService: ValidJsonService
+  ) {
     this.bodyRuleIsDuplicated = new EventEmitter<boolean>();
     this.bodyRuleIsDuplicated.emit(false);
   }
@@ -39,7 +43,7 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
     if (!ruleFound && this.bodyMatchRuleFormArray.valid) {
       this.bodyRuleIsDuplicated.emit(false);
       const index = this.bodyMatchRuleFormArray.length;
-      const newBodyRuleControl = this.formbuilder.createBodyRuleForm(bodyRule);
+      const newBodyRuleControl = this.formBuilder.createBodyRuleForm(bodyRule);
       this.bodyMatchRuleFormArray.insert(index, newBodyRuleControl);
       this.logger.debug('BodyEditRuleComponent new rule added : ', bodyRule);
     } else {
@@ -67,12 +71,16 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
     }
 
     return this.bodyMatchRuleFormArray.controls
-      .map(group => {
-        return (group as FormGroup).getRawValue() as BodyRuleFormGroup;
+      .map((group): BodyRuleFormGroup => {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return (group as FormGroup).getRawValue();
       })
-      .some(bodyFormGroup => {
-        return bodyFormGroup.rule === (typeof(bodyRuleToAdd.rule) === 'object' ? JSON.stringify(bodyRuleToAdd.rule) : bodyRuleToAdd.rule)
-            && bodyFormGroup.type === bodyRuleToAdd.type;
+      .some((bodyFormGroup) => {
+        return (
+          bodyFormGroup.rule ===
+            (typeof bodyRuleToAdd.rule === 'object' ? JSON.stringify(bodyRuleToAdd.rule) : bodyRuleToAdd.rule) &&
+          bodyFormGroup.type === bodyRuleToAdd.type
+        );
       });
   }
 
@@ -87,8 +95,9 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
       rule: string;
       type: RuleType;
     }
-    const bodyRules = this.bodyMatchRuleFormArray.controls.map(group => {
-      return (group as FormGroup).getRawValue() as BodyRuleFormGroup;
+    const bodyRules = this.bodyMatchRuleFormArray.controls.map((group): BodyRuleFormGroup => {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      return (group as FormGroup).getRawValue();
     });
     bodyRules.forEach((bodyToCheck, indexToCheck) => {
       bodyRules.forEach((bodyToCheckAgainst, indexToCheckAgainst) => {
@@ -97,10 +106,10 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
           bodyToCheck.type === bodyToCheckAgainst.type &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
-          (this.bodyMatchRuleFormArray.at(indexToCheck) as FormGroup).get('rule').markAsTouched();
-          (this.bodyMatchRuleFormArray.at(indexToCheck) as FormGroup).get('type').markAsTouched();
-          (this.bodyMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('rule').markAsTouched();
-          (this.bodyMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('type').markAsTouched();
+          this.bodyMatchRuleFormArray.at(indexToCheck).get('rule').markAsTouched();
+          this.bodyMatchRuleFormArray.at(indexToCheck).get('type').markAsTouched();
+          this.bodyMatchRuleFormArray.at(indexToCheckAgainst).get('rule').markAsTouched();
+          this.bodyMatchRuleFormArray.at(indexToCheckAgainst).get('type').markAsTouched();
           this.bodyMatchRuleFormArray.setErrors({ duplicated: true });
         }
       });
@@ -110,7 +119,7 @@ export class BodyEditRuleComponent implements OnInit, OnDestroy {
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

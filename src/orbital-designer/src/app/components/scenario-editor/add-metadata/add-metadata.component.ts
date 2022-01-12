@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 
@@ -74,7 +74,7 @@ export class AddMetadataComponent implements AfterContentChecked {
    */
   @Input()
   set metadata(metadata: Metadata) {
-    if (!!metadata) {
+    if (metadata) {
       this.metadataTitle = metadata.title;
       this.metadataDescription = metadata.description;
     }
@@ -90,7 +90,7 @@ export class AddMetadataComponent implements AfterContentChecked {
         const metadataToOutput = {
           title: this.metadataTitle,
           description: this.metadataDescription,
-        } as Metadata;
+        };
         this.logger.debug('AddMetadataComponent:saveStatus: Emit metadata', metadataToOutput);
         this.metadataOutput.emit(metadataToOutput);
       } else {
@@ -109,7 +109,8 @@ export class AddMetadataComponent implements AfterContentChecked {
   }
 
   private validateDescription() {
-    if (!!this.metadataDescriptionProp && this.metadataDescriptionProp.length > 500) {
+    const max_description_length = 500;
+    if (this.metadataDescriptionProp.length > max_description_length) {
       this.logger.debug('AddMetadataComponent:validateDescription: Description is longer than 500 characters');
       this.descriptionErrorMessage = 'Metadata description can only be 500 characters long';
     } else {
@@ -118,12 +119,13 @@ export class AddMetadataComponent implements AfterContentChecked {
   }
 
   private validateTitle() {
+    const max_title_length = 50;
     if (this.metadataTitleProp.length > 0 && this.metadataTitleProp.trim().length === 0) {
       this.titleErrorMessage = 'Scenario title cannot contain only whitespace';
     } else if (!this.metadataTitleProp || this.metadataTitleProp.length === 0) {
       this.logger.debug('AddMetadataComponent:validateTitle: Title is null or empty');
       this.titleErrorMessage = 'Metadata title is required';
-    } else if (this.metadataTitleProp.length > 50) {
+    } else if (this.metadataTitleProp.length > max_title_length) {
       this.logger.debug('AddMetadataComponent:validateTitle: Title is longer than 50 characters');
       this.titleErrorMessage = 'Metadata title max length exceeded (50 characters)';
     } else {

@@ -2,20 +2,17 @@ import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenari
 import { Injectable } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Observable } from 'rxjs';
 import * as uuid from 'uuid';
 import * as _ from 'lodash';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { VerbType } from 'src/app/models/verb.type';
 import { OpenAPIV2 } from 'openapi-types';
-import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
+import * as HttpStatus from 'http-status-codes';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MockDefinitionService {
   constructor(private store: DesignerStore, private logger: NGXLogger) {}
@@ -24,32 +21,32 @@ export class MockDefinitionService {
    * Parse provided string to mock definition, save it in the store and make it the current mockdefinition in the store.
    * @param mockDefinition String representation of mock definition
    */
-  public AddMockDefinitionToStore(mockDefinition: string): Observable<boolean> {
-    return new Observable(observer => {
+  AddMockDefinitionToStore(mockDefinition: string): Observable<boolean> {
+    return new Observable((observer) => {
       try {
         let content = JSON.parse(mockDefinition);
         content = {
           ...content,
-          scenarios: content.scenarios.map(s => ({
+          scenarios: content.scenarios.map((s) => ({
             ...s,
             response: {
               ...s.response,
               headers: s.response.headers,
-              type: s.response.type || ResponseType.CUSTOM
+              type: s.response.type || ResponseType.CUSTOM,
             },
             requestMatchRules: {
-              headerRules: s.requestMatchRules.headerRules || ([] as KeyValuePairRule[]),
-              queryRules: s.requestMatchRules.queryRules || ([] as KeyValuePairRule[]),
-              bodyRules: s.requestMatchRules.bodyRules || ([] as BodyRule[]),
-              urlRules: s.requestMatchRules.urlRules || ([] as KeyValuePairRule[])
+              headerRules: s.requestMatchRules.headerRules || [],
+              queryRules: s.requestMatchRules.queryRules || [],
+              bodyRules: s.requestMatchRules.bodyRules || [],
+              urlRules: s.requestMatchRules.urlRules || [],
             },
-            policies: s.policies || ([] as Policy[]),
-            defaultScenario: s.defaultScenario || false
-          }))
+            policies: s.policies || [],
+            defaultScenario: s.defaultScenario || false,
+          })),
         };
         this.store.appendMockDefinition(content);
         this.store.mockDefinition = content;
-        this.store.state.mockDefinition = content as MockDefinition;
+        this.store.state.mockDefinition = content;
         observer.next(true);
       } catch (error) {
         observer.error(error);
@@ -62,31 +59,31 @@ export class MockDefinitionService {
    * Validates if a string is a valid mockdefinition.
    * @param mockDefinition String representation of mock definition
    */
-  public validateMockDefinition(mockDefinition: string): Observable<boolean> {
-    return new Observable(observer => {
+  validateMockDefinition(mockDefinition: string): Observable<boolean> {
+    return new Observable((observer) => {
       try {
-        let content = JSON.parse(mockDefinition);
-        content = {
-          ...content,
-          scenarios: content.scenarios.map(s => ({
-            ...s,
-            response: {
-              ...s.response,
-              headers: s.response.headers,
-              type: s.response.type || ResponseType.CUSTOM
-            },
-            requestMatchRules: {
-              headerRules: s.requestMatchRules.headerRules,
-              queryRules: s.requestMatchRules.queryRules,
-              bodyRules: s.requestMatchRules.bodyRules,
-              urlRules: s.requestMatchRules.urlRules
-            },
-            policies: {
-              ...s.policies
-            },
-            defaultScenario: s.defaultScenario
-          }))
-        };
+        JSON.parse(mockDefinition);
+        // content = {
+        //   ...content,
+        //   scenarios: content.scenarios.map((s) => ({
+        //     ...s,
+        //     response: {
+        //       ...s.response,
+        //       headers: s.response.headers,
+        //       type: s.response.type || ResponseType.CUSTOM,
+        //     },
+        //     requestMatchRules: {
+        //       headerRules: s.requestMatchRules.headerRules,
+        //       queryRules: s.requestMatchRules.queryRules,
+        //       bodyRules: s.requestMatchRules.bodyRules,
+        //       urlRules: s.requestMatchRules.urlRules,
+        //     },
+        //     policies: {
+        //       ...s.policies,
+        //     },
+        //     defaultScenario: s.defaultScenario,
+        //   })),
+        // };
         observer.next(true);
       } catch (error) {
         observer.error(error);
@@ -100,8 +97,8 @@ export class MockDefinitionService {
    * @param mockId  string representation of mock definition's id
    * @param scenario Object representation of the scenario to be cloned
    */
-  public cloneScenario(mockId: string, scenario: Scenario): Observable<boolean> {
-    return new Observable(observer => {
+  cloneScenario(mockId: string, scenario: Scenario): Observable<boolean> {
+    return new Observable((observer) => {
       try {
         if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {
           this.logger.warn('Scenario not cloned because it contains undefined attributes');
@@ -113,26 +110,26 @@ export class MockDefinitionService {
         const clonedScenario = _.cloneDeep(scenario);
         clonedScenario.defaultScenario = false;
         clonedScenario.id = uuid.v4();
-        clonedScenario.metadata.title = clonedScenario.metadata.title + '-copy';
-        const scenariomockdefinition = this.store.state.mockDefinitions[mockId];
-        this.store.state.mockDefinition = scenariomockdefinition;
-        const originalScenarioIndex = scenariomockdefinition.scenarios.indexOf(scenario);
+        clonedScenario.metadata.title = `${clonedScenario.metadata.title}-copy`;
+        const scenarioMockDefinition = this.store.state.mockDefinitions[mockId];
+        this.store.state.mockDefinition = scenarioMockDefinition;
+        const originalScenarioIndex = scenarioMockDefinition.scenarios.indexOf(scenario);
 
         // ensure that there are no naming conflicts; if there are, repeat until a name is found
-        if (scenariomockdefinition.scenarios.find(x => x.metadata.title === clonedScenario.metadata.title)) {
+        if (scenarioMockDefinition.scenarios.find((x) => x.metadata.title === clonedScenario.metadata.title)) {
           let copyCounter = 2;
           while (
-            scenariomockdefinition.scenarios.find(
-              x => x.metadata.title === clonedScenario.metadata.title + ' ' + copyCounter
+            scenarioMockDefinition.scenarios.find(
+              (x) => x.metadata.title === `${clonedScenario.metadata.title} ${copyCounter}`
             )
           ) {
             copyCounter++;
           }
 
-          clonedScenario.metadata.title = clonedScenario.metadata.title + ' ' + copyCounter;
+          clonedScenario.metadata.title = `${clonedScenario.metadata.title} ${copyCounter}`;
         }
-        scenariomockdefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
-        this.store.updateScenarios([...scenariomockdefinition.scenarios]);
+        scenarioMockDefinition.scenarios.splice(originalScenarioIndex + 1, 0, clonedScenario);
+        this.store.updateScenarios([...scenarioMockDefinition.scenarios]);
         this.logger.warn('Scenario successfully cloned: ', clonedScenario);
         observer.next(true);
       } catch (error) {
@@ -147,72 +144,88 @@ export class MockDefinitionService {
    *
    * @param endpoints list of endpoints from the imported openapi document
    */
-  public getDefaultScenarios(endpoints: OpenAPIV2.PathsObject, validation: boolean = false): Scenario[] {
+  getDefaultScenarios(endpoints: OpenAPIV2.PathsObject, validation = false): Scenario[] {
     const defaultScenariosPerEndpoint = [];
-    const keyArrayofEndpoints = Object.keys(endpoints);
+    const keyArrayOfEndpoints = Object.keys(endpoints);
 
-    keyArrayofEndpoints.forEach(pathName => {
+    keyArrayOfEndpoints.forEach((pathName) => {
       const endpoint = endpoints[pathName];
       const types = this.getEndpointVerbTypes(endpoint);
 
-      types.forEach(type => {
+      types.forEach((type) => {
         const newScenarioGet = this.generateNewScenario(this.defaultScenarioParams(pathName, type), true);
         defaultScenariosPerEndpoint.push(newScenarioGet);
         if (validation) {
-          const tokenScenarioGet = this.generateNewScenario(this.defaultScenarioParams(pathName, type, 401, "Invalid-Token Scenario"));
+          const tokenScenarioGet = this.generateNewScenario(
+            this.defaultScenarioParams(pathName, type, HttpStatus.StatusCodes.UNAUTHORIZED, 'Invalid-Token Scenario')
+          );
           defaultScenariosPerEndpoint.push(tokenScenarioGet);
         }
-      })
+      });
     });
     return defaultScenariosPerEndpoint;
   }
 
-  public getDefaultValidationScenarios(scenarios: Scenario[]): Scenario[] {
-    let scenarioList: Scenario[] = []
-    let scenarioDict = this.mapUnauthorizedScenarios(scenarios);
+  getDefaultValidationScenarios(scenarios: Scenario[]): Scenario[] {
+    const scenarioList: Scenario[] = [];
+    const scenarioDict = this.mapUnauthorizedScenarios(scenarios);
 
-    for (let endpoint in scenarioDict) {
-      for (let verb in scenarioDict[endpoint]) {
+    for (const endpoint in scenarioDict) {
+      for (const verb in scenarioDict[endpoint]) {
         if (scenarioDict[endpoint][verb] == false) {
           const verbInt = parseInt(verb);
-          scenarioList.push(this.generateNewScenario(this.defaultScenarioParams(endpoint, verbInt, 401, "Invalid-Token Scenario")));
+          scenarioList.push(
+            this.generateNewScenario(
+              this.defaultScenarioParams(
+                endpoint,
+                verbInt,
+                HttpStatus.StatusCodes.UNAUTHORIZED,
+                'Invalid-Token Scenario'
+              )
+            )
+          );
         }
       }
     }
     return scenarioList;
   }
 
-  private mapUnauthorizedScenarios(scenarios: Scenario[]): object {
-    let scenarioDict = {};
-    for (let scenario of scenarios) {
-      let isUnauthorized: boolean = scenario.response.status == 401;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private mapUnauthorizedScenarios(scenarios: Scenario[]): Record<string, any> {
+    const scenarioDict = {};
+    for (const scenario of scenarios) {
+      let isUnauthorized: boolean = scenario.response.status == HttpStatus.StatusCodes.UNAUTHORIZED;
 
       if (scenarioDict[scenario.path]) {
         isUnauthorized = scenarioDict[scenario.path][scenario.verb] ? true : isUnauthorized;
-      }
-      else {
+      } else {
         scenarioDict[scenario.path] = {};
       }
       scenarioDict[scenario.path][scenario.verb] = isUnauthorized;
     }
     console.log(scenarioDict);
-    return scenarioDict
+    return scenarioDict;
   }
 
-  public defaultScenarioParams(path: string, type: VerbType, status: number = 200, title: string = "Default OK Scenario"): ScenarioParams {
+  defaultScenarioParams(
+    path: string,
+    type: VerbType,
+    status = HttpStatus.StatusCodes.OK,
+    title = 'Default OK Scenario'
+  ): ScenarioParams {
     return {
-      title: title,
+      title,
       description: '',
       path,
       status,
       verb: type,
-    } as ScenarioParams;
+    };
   }
 
-  private getEndpointVerbTypes(endpoint: any): VerbType[] {
-    let verbs: VerbType[] = []
+  private getEndpointVerbTypes(endpoint: unknown): VerbType[] {
+    const verbs: VerbType[] = [];
     const verbKeys = Object.keys(endpoint);
-    verbKeys.forEach(key => {
+    verbKeys.forEach((key) => {
       const type = VerbType[key.toUpperCase()];
       verbs.push(type);
     });
@@ -223,12 +236,12 @@ export class MockDefinitionService {
    * Generates a new Scenario based on the path and verb.
    *
    */
-  public generateNewScenario(scenario: ScenarioParams, defaultScenario: boolean = false): Scenario {
+  generateNewScenario(scenario: ScenarioParams, defaultScenario = false): Scenario {
     return {
       id: uuid.v4(),
       metadata: {
         title: scenario.title,
-        description: scenario.description
+        description: scenario.description,
       },
       verb: scenario.verb,
       path: scenario.path,
@@ -236,18 +249,17 @@ export class MockDefinitionService {
         headers: {},
         body: '{}',
         status: scenario.status,
-        type: ResponseType.CUSTOM
+        type: ResponseType.CUSTOM,
       },
       requestMatchRules: {
         headerRules: [],
         queryRules: [],
         bodyRules: [],
-        urlRules: []
+        urlRules: [],
       },
       policies: [],
       defaultScenario,
-      validationType: 0,
-      tokenRule: defaultTokenRule
-    } as Scenario;
+      tokenRule: defaultTokenRule,
+    };
   }
 }

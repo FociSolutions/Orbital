@@ -3,5 +3,5 @@
  */
 export enum PolicyType {
   NONE = 0,
-  DELAYRESPONSE
+  DELAYRESPONSE,
 }

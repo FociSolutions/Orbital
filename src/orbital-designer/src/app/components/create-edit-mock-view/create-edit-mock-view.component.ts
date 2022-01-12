@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormControl, AbstractControl, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
 import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api-spec.service';
-import { Observable, EMPTY } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { recordAdd, recordMap } from 'src/app/models/record';
@@ -15,26 +15,26 @@ import * as uuid from 'uuid';
 @Component({
   selector: 'app-create-edit-mock-view',
   templateUrl: './create-edit-mock-view.component.html',
-  styleUrls: ['./create-edit-mock-view.component.scss']
+  styleUrls: ['./create-edit-mock-view.component.scss'],
 })
 export class CreateEditMockViewComponent implements OnInit {
   formGroup: FormGroup;
   private openApiFile: string;
   private mockDefinitions: MockDefinition[] = [];
-  private mockId: string;
+  private mockId: string | null;
   private keyStore: string;
 
-  public editMode: boolean;
-  public titleList: string[] = [];
-  public selectedMockDefinition: MockDefinition;
+  editMode: boolean;
+  titleList: string[] = [];
+  selectedMockDefinition: MockDefinition | null;
 
   //Data variables for edit mode
-  public mockTitle: string;
-  public mockDesc: string;
-  public mockTokenValid: boolean;
-  public mockKey: string;
+  mockTitle: string;
+  mockDesc: string;
+  mockTokenValid: boolean;
+  mockKey: string;
 
-  errorMessageToEmitFromCreate = {} as Record<string, string[]>;
+  errorMessageToEmitFromCreate: Record<string, string[]> = {};
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -45,9 +45,9 @@ export class CreateEditMockViewComponent implements OnInit {
     private logger: NGXLogger
   ) {
     this.formGroup = new FormGroup({
-      title: new FormControl('', this.validateText("Title")),
+      title: new FormControl('', this.validateText('Title')),
       description: new FormControl(''),
-      validateToken: new FormControl(false)
+      validateToken: new FormControl(false),
     });
   }
 
@@ -55,21 +55,20 @@ export class CreateEditMockViewComponent implements OnInit {
     this.mockId = this.route.snapshot.paramMap.get('uuid');
     this.editMode = !!this.mockId;
 
-    this.store.state$.subscribe(state => {
-      if (!!state.mockDefinition) {
-        this.mockDefinitions = recordMap(state.mockDefinitions, md => md);
+    this.store.state$.subscribe((state) => {
+      if (state.mockDefinition) {
+        this.mockDefinitions = recordMap(state.mockDefinitions, (md) => md);
       }
     });
     if (this.editMode) {
       this.selectedMockDefinition = this.findSelectedMock(this.mockId, this.mockDefinitions);
-      if (this.selectedMockDefinition == null) {
+      if (!this.selectedMockDefinition) {
         this.router.navigateByUrl('/endpoint-view');
       }
-    }
-    else {
+    } else {
       if (this.mockDefinitions.length != 0) {
-        for (let key in this.mockDefinitions) {
-          this.titleList.push(this.mockDefinitions[key].metadata.title);
+        for (const mockDef of this.mockDefinitions) {
+          this.titleList.push(mockDef.metadata.title);
         }
       }
     }
@@ -79,23 +78,20 @@ export class CreateEditMockViewComponent implements OnInit {
    * Finds mock selected on sidebar and populated the form data
    */
   findSelectedMock(mockId: string, mockDefinitions: MockDefinition[]): MockDefinition {
-    let foundMock: MockDefinition;
-    for (let key in mockDefinitions) {
-      if (mockDefinitions[key].id == mockId) {
-        foundMock = mockDefinitions[key];
-      }
-      else {
-        this.titleList.push(mockDefinitions[key].metadata.title);
+    let foundMock: MockDefinition = null;
+    for (const mockDef of mockDefinitions) {
+      if (mockDef.id == mockId) {
+        foundMock = mockDef;
+      } else {
+        this.titleList.push(mockDef.metadata.title);
       }
     }
-    if (foundMock != null || undefined) {
-      if (foundMock.tokenValidation == null || undefined) {
-        foundMock.tokenValidation = false;
-      }
+    if (foundMock) {
+      foundMock.tokenValidation = !foundMock.tokenValidation ? false : true;
       this.populateEditData(foundMock);
       return foundMock;
     }
-    return null
+    return null;
   }
 
   /**
@@ -111,8 +107,8 @@ export class CreateEditMockViewComponent implements OnInit {
       return;
     }
     observable.subscribe(
-      value => {
-        if (!!value) {
+      (value) => {
+        if (value) {
           this.logger.debug('MockDefinition created from form ', value);
           this.store.appendMockDefinition(value);
           this.store.mockDefinition = value;
@@ -121,7 +117,7 @@ export class CreateEditMockViewComponent implements OnInit {
           this.logger.log(value);
         }
       },
-      error => {
+      (error) => {
         this.logger.error('openapi file provided is invalid');
         this.logger.error(error);
         this.errorMessageToEmitFromCreate = recordAdd(
@@ -134,7 +130,7 @@ export class CreateEditMockViewComponent implements OnInit {
   }
 
   editMock() {
-    let updatedMockDef = this.formToUpdateMockDefinition(this.selectedMockDefinition);
+    const updatedMockDef = this.formToUpdateMockDefinition(this.selectedMockDefinition);
     const oldTitle = this.selectedMockDefinition.metadata.title;
 
     if (updatedMockDef.tokenValidation) {
@@ -168,24 +164,24 @@ export class CreateEditMockViewComponent implements OnInit {
    * @returns null, or an error object.
    */
   validateText(name: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      if (control.value != null || undefined) {
-        if (control.value.length > 0 && control.value.trim().length === 0) {
-          return { key: name + ' cannot contain only whitespace' };
+    return (control: AbstractControl): { [key: string]: unknown } | null => {
+      if (control.value !== null && control.value !== undefined) {
+        if (!control.value.length) {
+          return { key: `${name} is required.` };
         }
-        if (control.value.length <= 0) {
-          return { key: name + ' is required.' };
+        if (!control.value.trim().length) {
+          return { key: `${name} cannot contain only whitespace` };
         }
-        if (name == "Title") {
+        if (name === 'Title') {
           //checks if the current title already exist
-          for (let i = 0; i < this.titleList.length; i++) {
-            if (control.value == this.titleList[i]) {
-              return { key: name + " already exists."}
+          for (const title of this.titleList) {
+            if (control.value == title) {
+              return { key: `${name} already exists.` };
             }
           }
         }
       }
-    }
+    };
   }
 
   populateEditData(md: MockDefinition) {
@@ -199,39 +195,37 @@ export class CreateEditMockViewComponent implements OnInit {
    * form values. If the form is invalid then the function will return null, otherwise it uses
    * the form values to create and return a new MockDefinition
    */
-  formToMockDefinition(): Observable<MockDefinition> {
+  formToMockDefinition(): Observable<MockDefinition | never> {
     if (this.formGroup.invalid) {
       this.logger.error('Form is invalid');
       return EMPTY;
     }
     const validate = this.formGroup.value.validateToken;
-    const obser = this.openapiservice.readOpenApiSpec(this.openApiFile).pipe(
-      map(openapi => {
+    const observable = this.openapiservice.readOpenApiSpec(this.openApiFile).pipe(
+      map((openapi) => {
         const defaultScenariosPerEndpoint = this.mockdefinitionService.getDefaultScenarios(openapi.paths, validate);
         return {
           id: uuid.v4(),
           metadata: {
             title: this.formGroup.value.title,
-            description: this.formGroup.value.description
+            description: this.formGroup.value.description,
           },
           tokenValidation: validate,
           openApi: openapi,
-          scenarios: defaultScenariosPerEndpoint
-        } as MockDefinition;
+          scenarios: defaultScenariosPerEndpoint,
+        };
       })
     );
-    return obser;
+    return observable;
   }
 
   formToUpdateMockDefinition(oldMockDef: MockDefinition): MockDefinition {
-    let newMockDef: MockDefinition = JSON.parse(JSON.stringify(oldMockDef));
+    const newMockDef: MockDefinition = JSON.parse(JSON.stringify(oldMockDef));
     newMockDef.metadata = {
       title: this.formGroup.value.title,
-      description: this.formGroup.value.description
-    }
+      description: this.formGroup.value.description,
+    };
     newMockDef.tokenValidation = this.formGroup.value.validateToken;
     return newMockDef;
   }
 }
-
-

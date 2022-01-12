@@ -3,7 +3,7 @@ import { CanActivate, Router } from '@angular/router';
 import { DesignerStore } from '../../store/designer-store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 /**

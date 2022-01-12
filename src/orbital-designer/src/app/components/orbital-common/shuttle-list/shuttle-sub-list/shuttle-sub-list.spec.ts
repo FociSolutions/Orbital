@@ -2,11 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { ShuttleSubListComponent } from './shuttle-sub-list.component';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
-import {
-  MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import validMockDefinition from '../../../../../test-files/test-mockdefinition-object';
 import * as _ from 'lodash';
@@ -16,16 +14,10 @@ describe('ShuttleSubListComponent', () => {
   let component: ShuttleSubListComponent;
   let fixture: ComponentFixture<ShuttleSubListComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ShuttleSubListComponent],
-      imports: [
-        MatIconModule,
-        MatListModule,
-        MatCardModule,
-        MatCheckboxModule,
-        MatDividerModule
-      ]
+      imports: [MatIconModule, MatListModule, MatCardModule, MatCheckboxModule, MatDividerModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShuttleSubListComponent);
@@ -34,9 +26,9 @@ describe('ShuttleSubListComponent', () => {
     const mock2 = _.cloneDeep(validMockDefinition);
     mock1.metadata.title = faker.random.words(3);
     mock2.metadata.title = faker.random.words(3);
-    component.list = [mock1, mock2].map(mock => new FormControl(mock, null));
+    component.list = [mock1, mock2].map((mock) => new FormControl(mock, null));
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -45,9 +37,7 @@ describe('ShuttleSubListComponent', () => {
   describe('ShuttleSubListComponent.onSelect()', () => {
     describe('ShuttleSubListComponent.checkboxLabel', () => {
       it(`should return the select all string if none of the lists options are selected`, () => {
-        expect(component.checkboxLabel).toEqual(
-          ShuttleSubListComponent.selectAllString
-        );
+        expect(component.checkboxLabel).toEqual(ShuttleSubListComponent.selectAllString);
       });
     });
 
@@ -73,38 +63,24 @@ describe('ShuttleSubListComponent', () => {
         const mock2 = _.cloneDeep(validMockDefinition);
 
         mock2.metadata.title = 'ZZZ';
-        component.list = [mock1, mock2].map(mock => new FormControl(mock, null));
+        component.list = [mock1, mock2].map((mock) => new FormControl(mock, null));
         const filteredString = mock1.metadata.title.substr(0, 1);
         fixture.detectChanges();
         component.onSearchInput(filteredString);
-        expect(
-          component.filteredOutOptions.map(option => option.value.value)
-        ).toContain(component.list[1].value);
-        expect(
-          component.filteredOutOptions.map(option => option.value.value)
-        ).not.toContain(component.list[0].value);
+        expect(component.filteredOutOptions.map((option) => option.value.value)).toContain(component.list[1].value);
+        expect(component.filteredOutOptions.map((option) => option.value.value)).not.toContain(component.list[0].value);
       });
     });
 
     describe('ignoreCaseStartsWithMatch', () => {
       it('should return true if the first parameter string start with the second parameter', () => {
         const targetString: string = faker.random.word();
-        expect(
-          ShuttleSubListComponent.ignoreCaseContainsMatch(
-            targetString,
-            targetString.substr(0, 1)
-          )
-        ).toBeTruthy();
+        expect(ShuttleSubListComponent.ignoreCaseContainsMatch(targetString, targetString.substr(0, 1))).toBeTruthy();
       });
 
       it('should return false if the first parameter string does not start with in the second parameter', () => {
         const targetString: string = faker.random.word();
-        expect(
-          ShuttleSubListComponent.ignoreCaseContainsMatch(
-            targetString.substr(0, 1),
-            targetString
-          )
-        ).toBeFalsy();
+        expect(ShuttleSubListComponent.ignoreCaseContainsMatch(targetString.substr(0, 1), targetString)).toBeFalsy();
       });
 
       it('should ignore case', () => {

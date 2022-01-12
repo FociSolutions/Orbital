@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from '../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { recordFirstOrDefault } from '../../../models/record';
@@ -9,14 +9,14 @@ import { FormArray, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-url-edit-rule',
   templateUrl: './url-edit-rule.component.html',
-  styleUrls: ['./url-edit-rule.component.scss']
+  styleUrls: ['./url-edit-rule.component.scss'],
 })
 export class UrlEditRuleComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   @Output() urlRuleIsDuplicated: EventEmitter<boolean>;
   @Input() urlMatchRuleFormArray: FormArray;
-  constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
+  constructor(private logger: NGXLogger, private formBuilder: ScenarioFormBuilder) {
     this.urlRuleIsDuplicated = new EventEmitter<boolean>();
     this.urlRuleIsDuplicated.emit(false);
   }
@@ -38,7 +38,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
     if (!ruleFound) {
       this.urlRuleIsDuplicated.emit(false);
       const index = this.urlMatchRuleFormArray.length;
-      const newUrlRuleControl = this.formbuilder.getUrlItemFormGroup(kvpToAdd);
+      const newUrlRuleControl = this.formBuilder.getUrlItemFormGroup(kvpToAdd);
       this.urlMatchRuleFormArray.insert(index, newUrlRuleControl);
       this.logger.debug('UrlEditRuleComponent new rule added : ', kvpToAdd);
     } else {
@@ -56,7 +56,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * checks if the keyvaluepairrule is inside the current form array
+   * checks if the key-value-pair-rule is inside the current form array
    *
    */
   private isUrlRuleDuplicate(kvpToAdd: KeyValuePairRule): boolean {
@@ -66,10 +66,11 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
     }
 
     return this.urlMatchRuleFormArray.controls
-      .map(group => {
-        return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
+      .map((group): UrlRuleFormGroup => {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return (group as FormGroup).getRawValue();
       })
-      .some(urlFormGroup => {
+      .some((urlFormGroup) => {
         return urlFormGroup.path === recordFirstOrDefault(kvpToAdd.rule, '') && urlFormGroup.ruleType === kvpToAdd.type;
       });
   }
@@ -79,14 +80,15 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
    * Double check to confirm there are no duplicates in the list of existing url rules
    */
   private checkForDuplicates(): void {
-    this.urlMatchRuleFormArray.controls.forEach(c => c.setErrors(null));
+    this.urlMatchRuleFormArray.controls.forEach((c) => c.setErrors(null));
     this.urlMatchRuleFormArray.markAsUntouched();
     interface UrlRuleFormGroup {
       path?: string;
       ruleType: number;
     }
-    const urlRules = this.urlMatchRuleFormArray.controls.map(group => {
-      return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
+    const urlRules = this.urlMatchRuleFormArray.controls.map((group): UrlRuleFormGroup => {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      return (group as FormGroup).getRawValue();
     });
     urlRules.forEach((urlToCheck, indexToCheck) => {
       urlRules.forEach((urlToCheckAgainst, indexToCheckAgainst) => {
@@ -95,12 +97,12 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
           urlToCheck.ruleType === urlToCheckAgainst.ruleType &&
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
-          (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('path').markAsTouched();
-          (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).get('ruleType').markAsTouched();
-          (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('path').markAsTouched();
-          (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('ruleType').markAsTouched();
-          (this.urlMatchRuleFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
-          (this.urlMatchRuleFormArray.at(indexToCheck) as FormGroup).setErrors({ duplicated: true });
+          this.urlMatchRuleFormArray.at(indexToCheck).get('path').markAsTouched();
+          this.urlMatchRuleFormArray.at(indexToCheck).get('ruleType').markAsTouched();
+          this.urlMatchRuleFormArray.at(indexToCheckAgainst).get('path').markAsTouched();
+          this.urlMatchRuleFormArray.at(indexToCheckAgainst).get('ruleType').markAsTouched();
+          this.urlMatchRuleFormArray.at(indexToCheckAgainst).setErrors({ duplicated: true });
+          this.urlMatchRuleFormArray.at(indexToCheck).setErrors({ duplicated: true });
         }
       });
     });
@@ -109,7 +111,7 @@ export class UrlEditRuleComponent implements OnInit, OnDestroy {
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

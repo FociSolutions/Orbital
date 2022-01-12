@@ -16,14 +16,12 @@ describe('OpenApiSpecService', () => {
     expect(service.readOpenApiSpec(validOpenApiTest)).toBeDefined();
   });
 
-
   it('should reject an invalid opena api string', () => {
     const service: OpenApiSpecService = TestBed.get(OpenApiSpecService);
     service.readOpenApiSpec(faker.random.words()).subscribe({
       error: (err) => {
         expect(err).toEqual(['should be object']);
-      }
-    }
-    );
+      },
+    });
   });
 });

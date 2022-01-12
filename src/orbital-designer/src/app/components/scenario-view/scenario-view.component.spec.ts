@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ScenarioViewComponent } from './scenario-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -11,17 +11,12 @@ import { OverviewHeaderComponent } from '../orbital-common/overview-header/overv
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
 import * as faker from 'faker';
-import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { VerbType } from 'src/app/models/verb.type';
-import * as uuid from 'uuid';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 import { ScenarioEditorComponent } from '../scenario-editor/scenario-editor.component';
 import { AddMetadataComponent } from '../scenario-editor/add-metadata/add-metadata.component';
@@ -37,10 +32,8 @@ import { UrlEditRuleComponent } from '../scenario-editor/url-edit-rule/url-edit-
 import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { PolicyEditComponent } from '../scenario-editor/policy-container/policy-edit/policy-edit.component';
 import { BodyEditRuleComponent } from '../scenario-editor/add-body-rule-edit/body-edit-rule.component';
-// eslint-disable-next-line max-len
 import { BodyListItemRuleTypeComponent } from '../scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
-import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddTokenValidationRuleComponent } from '../scenario-editor/add-token-validation-rule/add-token-validation-rule.component';
@@ -175,7 +168,7 @@ describe('ScenarioViewComponent', () => {
 
       component.cloneScenario(scenarios[0]);
 
-      expect(store.state.mockDefinition.scenarios.find((x) => x.metadata.title.indexOf('-copy') !== -1)).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find((x) => x.metadata.title.includes('-copy'))).toBeTruthy();
     });
 
     it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', () => {
@@ -192,8 +185,8 @@ describe('ScenarioViewComponent', () => {
       component.cloneScenario(scenarios[0]);
       component.cloneScenario(scenarios[0]);
 
-      expect(store.state.mockDefinition.scenarios.find((x) => x.metadata.title.indexOf('-copy 2') !== -1)).toBeTruthy();
-      expect(store.state.mockDefinition.scenarios.find((x) => x.metadata.title.indexOf('-copy 3') !== -1)).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find((x) => x.metadata.title.includes('-copy 2'))).toBeTruthy();
+      expect(store.state.mockDefinition.scenarios.find((x) => x.metadata.title.includes('-copy 3'))).toBeTruthy();
     });
 
     it('should not clone a scenario from the store if the cloned scenario is invalid', () => {
@@ -235,7 +228,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 3; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenario.path = '/' + faker.random.words();
+        scenario.path = `/${faker.random.words()}`;
         scenarios.push(JSON.parse(JSON.stringify(scenario)));
       }
 
@@ -243,26 +236,25 @@ describe('ScenarioViewComponent', () => {
 
       component.cloneScenario(scenarios[0]);
 
-      const componentScenarioClonee = store.state.mockDefinition.scenarios[0];
-      const storeScenarios = store.state.mockDefinition.scenarios;
+      const componentScenarioClone = store.state.mockDefinition.scenarios[0];
 
       // ensure that there are two results after the cloning operation
       const expectedResults = store.state.mockDefinition.scenarios.filter(
         (aScenario) =>
-          aScenario.id !== componentScenarioClonee.id &&
-          aScenario.metadata.title !== componentScenarioClonee.metadata.title &&
-          aScenario.path === componentScenarioClonee.path &&
+          aScenario.id !== componentScenarioClone.id &&
+          aScenario.metadata.title !== componentScenarioClone.metadata.title &&
+          aScenario.path === componentScenarioClone.path &&
           JSON.stringify(aScenario.requestMatchRules.bodyRules) ===
-            JSON.stringify(componentScenarioClonee.requestMatchRules.bodyRules) &&
+            JSON.stringify(componentScenarioClone.requestMatchRules.bodyRules) &&
           JSON.stringify(aScenario.requestMatchRules.headerRules) ===
-            JSON.stringify(componentScenarioClonee.requestMatchRules.headerRules) &&
+            JSON.stringify(componentScenarioClone.requestMatchRules.headerRules) &&
           JSON.stringify(aScenario.requestMatchRules.queryRules) ===
-            JSON.stringify(componentScenarioClonee.requestMatchRules.queryRules) &&
-          aScenario.response.body === componentScenarioClonee.response.body &&
-          JSON.stringify(aScenario.response.headers) === JSON.stringify(componentScenarioClonee.response.headers) &&
-          aScenario.response.status === componentScenarioClonee.response.status &&
-          JSON.stringify(aScenario.verb) === JSON.stringify(componentScenarioClonee.verb) &&
-          aScenario.metadata.description === componentScenarioClonee.metadata.description
+            JSON.stringify(componentScenarioClone.requestMatchRules.queryRules) &&
+          aScenario.response.body === componentScenarioClone.response.body &&
+          JSON.stringify(aScenario.response.headers) === JSON.stringify(componentScenarioClone.response.headers) &&
+          aScenario.response.status === componentScenarioClone.response.status &&
+          JSON.stringify(aScenario.verb) === JSON.stringify(componentScenarioClone.verb) &&
+          aScenario.metadata.description === componentScenarioClone.metadata.description
       );
 
       expect(expectedResults.length).toEqual(1);
@@ -328,7 +320,7 @@ describe('ScenarioViewComponent', () => {
   });
 
   describe('ScenarioListItemComponent.updateScenariosValidationType', () => {
-    it('should update the validation type variable on the mockdef(s) in the list', () => {
+    it('should update the validation type variable on the mock def(s) in the list', () => {
       const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
       component.scenarioList.push(scenario);
       component.updateScenariosValidationType(2);

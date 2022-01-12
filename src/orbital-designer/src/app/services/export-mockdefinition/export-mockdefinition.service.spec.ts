@@ -9,7 +9,7 @@ describe('ExportMockdefinitionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ExportMockdefinitionService, DesignerStore],
-      imports: [HttpClientTestingModule, LoggerTestingModule]
+      imports: [HttpClientTestingModule, LoggerTestingModule],
     });
     service = TestBed.get(ExportMockdefinitionService);
   });

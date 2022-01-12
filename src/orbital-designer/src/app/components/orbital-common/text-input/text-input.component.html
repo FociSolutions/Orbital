@@ -11,9 +11,7 @@
   <mat-error *ngFor="let error of getErrors()">
     {{ error }}
   </mat-error>
-  <mat-hint *ngIf="!!maxLength" align="end"
-    >{{ control.value?.length }}/{{ maxLength }}</mat-hint
-  >
+  <mat-hint *ngIf="!!maxLength" align="end">{{ control.value?.length }}/{{ maxLength }}</mat-hint>
 </mat-form-field>
 <mat-form-field *ngIf="multiLine">
   <textarea
@@ -30,7 +28,5 @@
   <mat-error *ngFor="let error of getErrors()">
     {{ error }}
   </mat-error>
-  <mat-hint *ngIf="!!maxLength" align="end"
-    >{{ control.value?.length }}/{{ maxLength }}</mat-hint
-  >
+  <mat-hint *ngIf="!!maxLength" align="end">{{ control.value?.length }}/{{ maxLength }}</mat-hint>
 </mat-form-field>

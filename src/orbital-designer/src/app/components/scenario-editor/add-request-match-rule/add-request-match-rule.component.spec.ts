@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { AddRequestMatchRuleComponent } from './add-request-match-rule.component';
 import { MatCardModule } from '@angular/material/card';
@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
 import { KvpAddComponent } from '../../orbital-common/kvp-edit/kvp-add/kvp-add.component';
@@ -17,8 +17,6 @@ import { KvpEditComponent } from '../../orbital-common/kvp-edit/kvp-edit.compone
 import { KvpListItemComponent } from '../../orbital-common/kvp-edit/kvp-list-item/kvp-list-item.component';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { KvpEditRuleComponent } from '../kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from '../kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
@@ -81,11 +79,11 @@ describe('AddRequestMatchRuleComponent', () => {
     const scenarioForm = scenarioFormBuilder.createNewScenarioForm();
     component.requestMatchRuleFormGroup = scenarioForm.controls.requestMatchRules as FormGroup;
 
-    component.requestMatchRule = ({
+    component.requestMatchRule = {
       headerRules: [],
       queryRules: [],
       bodyRules: [{}] as BodyRule[],
-    } as unknown) as RequestMatchRule;
+    } as unknown as RequestMatchRule;
     fixture.detectChanges();
   });
 
@@ -95,7 +93,7 @@ describe('AddRequestMatchRuleComponent', () => {
 
   describe('AddRequestMatchRule.Save', () => {
     it('should not emit the request match rules if the body match rules are invalid', () => {
-      jest.spyOn(component.requestMatchRuleOutput, 'emit');
+      const spy = jest.spyOn(component.requestMatchRuleOutput, 'emit');
 
       const inputInvalidBodyMatchRule: BodyRule[] = [
         {
@@ -112,7 +110,8 @@ describe('AddRequestMatchRuleComponent', () => {
       component.requestMatchRule = requestMatchRule;
       component.saveStatus = true;
 
-      expect(component.requestMatchRuleOutput.emit).not.toHaveBeenCalled();
+      expect(spy).not.toHaveBeenCalled();
+      spy.mockRestore();
     });
   });
 });

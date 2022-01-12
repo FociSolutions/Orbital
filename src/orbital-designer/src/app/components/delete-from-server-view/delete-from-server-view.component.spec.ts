@@ -20,21 +20,23 @@ describe('DeleteFromServerViewComponent', () => {
   let component: DeleteFromServerViewComponent;
   let fixture: ComponentFixture<DeleteFromServerViewComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [DeleteFromServerViewComponent],
-      imports: [
-        MatCardModule,
-        RouterTestingModule,
-        OrbitalCommonModule,
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        LoggerTestingModule,
-        MatSnackBarModule
-      ],
-      providers: [Location, OrbitalAdminService, NotificationService]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DeleteFromServerViewComponent],
+        imports: [
+          MatCardModule,
+          RouterTestingModule,
+          OrbitalCommonModule,
+          HttpClientTestingModule,
+          BrowserAnimationsModule,
+          LoggerTestingModule,
+          MatSnackBarModule,
+        ],
+        providers: [Location, OrbitalAdminService, NotificationService],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DeleteFromServerViewComponent);
@@ -58,7 +60,7 @@ describe('DeleteFromServerViewComponent', () => {
     it('should update the list of MockDefinitions using the values from the list of controls', () => {
       const expectedList = new Array(3).map(() => new FormControl(validMockDefinition));
       component.onListOutput(expectedList);
-      expect(component.mockDefinitions).toEqual(expectedList.map(control => control.value));
+      expect(component.mockDefinitions).toEqual(expectedList.map((control) => control.value));
     });
   });
 
@@ -77,9 +79,9 @@ describe('DeleteFromServerViewComponent', () => {
     it('should set the control value to the response body given an http response with an array body', () => {
       const response = new HttpResponse({
         body: [{ body: faker.random.words(), openApi: { tags: [faker.random.words()] } }],
-        status: 200
+        status: 200,
       });
-      component.onResponse((response.body as unknown) as MockDefinition[]);
+      component.onResponse(response.body as unknown as MockDefinition[]);
       expect(component.formArray.controls[0].value).toEqual(response.body[0]);
     });
   });

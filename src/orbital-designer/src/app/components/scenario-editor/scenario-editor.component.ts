@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
-import { Router, Params, ActivatedRoute } from '@angular/router';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { NGXLogger } from 'ngx-logger';
@@ -10,8 +10,7 @@ import { Response } from 'src/app/models/mock-definition/scenario/response.model
 import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
 import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
-import { FormGroup, FormArray, Form } from '@angular/forms';
-import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
+import { FormArray, FormGroup } from '@angular/forms';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 @Component({
@@ -33,7 +32,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   requestMatchRuleValid = false;
   responseMatchRuleValid = false;
   metadataMatchRuleValid = false;
-  tokenFormIsValid: boolean = false;
+  tokenFormIsValid = false;
 
   triggerOpenCancelBox: boolean;
 
@@ -88,8 +87,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
    * @param metadata The metadata input from the component
    */
   handleMetadataOutput(metadata: Metadata) {
+    const max_description_length = 500;
     this.logger.debug('handleMetadataOutput:', metadata);
-    this.metadataMatchRuleValid = !!metadata.title && metadata.description.length <= 500;
+    this.metadataMatchRuleValid = !!metadata.title && metadata.description.length <= max_description_length;
     this.metadata = metadata;
     this.scenarioFormGroup.controls.metadata.setValue(metadata);
     this.saveScenario();
@@ -101,7 +101,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
    */
   handleRequestMatchRuleOutput(requestMatchRule: RequestMatchRule) {
     this.logger.debug('handleRequestMatchRuleOutput:', requestMatchRule);
-    this.requestMatchRuleValid = requestMatchRule !== ({} as RequestMatchRule);
+    this.requestMatchRuleValid = true;
     this.requestMatchRule = requestMatchRule;
     this.saveScenario();
   }
@@ -119,22 +119,28 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         this.selectedScenario
       );
       const newUrlRules = this.scenarioFormMapper.GetUrlRulesFromForm(
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.urlMatchRules as FormArray
       );
       const newPolicyRules = this.scenarioFormMapper.GetPolicyRulesFromForm(
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         this.scenarioFormGroup.controls.policies as FormArray
       );
       const newHeaderRules = this.scenarioFormMapper.GetHeaderOrQueryRulesFromForm(
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.headerMatchRules as FormArray
       );
       const newQueryRules = this.scenarioFormMapper.GetHeaderOrQueryRulesFromForm(
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.queryMatchRules as FormArray
       );
       const newBodyRules = this.scenarioFormMapper.GetBodyRulesFromForm(
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.bodyMatchRules as FormArray
       );
 
       const newResponseType = this.scenarioFormMapper.GetResponseTypeFromForm(
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         this.scenarioFormGroup.controls.response as FormGroup
       );
 
@@ -243,7 +249,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
   private createEmptyScenario(scenarioId: string, scenarioVerb: VerbType, scenarioPath: string): Scenario {
     return {
       id: scenarioId,
-      metadata: {} as Metadata,
+      metadata: { title: '', description: '' },
       verb: scenarioVerb,
       path: scenarioPath,
       response: {
@@ -251,19 +257,19 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         body: '',
         status: 200,
         type: ResponseType.CUSTOM,
-      } as Response,
+      },
       requestMatchRules: {
         headerRules: [],
         queryRules: [],
         bodyRules: [],
         urlRules: [],
-      } as RequestMatchRule,
+      },
       tokenRule: {
         validationType: 0,
         rules: [],
       },
-      policies: [] as Policy[],
+      policies: [],
       defaultScenario: false,
-    } as Scenario;
+    };
   }
 }

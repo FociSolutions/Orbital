@@ -23,18 +23,15 @@ export class OpenApiSpecService {
   readOpenApiSpec(openApiString: string): Observable<OpenAPIV2.Document> {
     return new Observable((observer) => {
       try {
-        const content = yaml.load(openApiString) as any;
-        let result;
-        if (content.swagger === '2.0') {
-          result = this.validatorV2.validate(content);
-        } else {
-          result = this.validatorV3.validate(content);
-        }
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        const content: OpenAPIV2.Document = yaml.load(openApiString) as OpenAPIV2.Document;
+        const result =
+          content.swagger === '2.0' ? this.validatorV2.validate(content) : this.validatorV3.validate(content);
 
-        if (!result.errors || result.errors.length === 0) {
-          observer.next(content);
-        } else {
+        if (result.errors.length) {
           observer.error(result.errors.map((err) => `${err.dataPath} ${err.message}`.trim()));
+        } else {
+          observer.next(content);
         }
       } catch (error) {
         observer.error(['file content is invalid yaml']);

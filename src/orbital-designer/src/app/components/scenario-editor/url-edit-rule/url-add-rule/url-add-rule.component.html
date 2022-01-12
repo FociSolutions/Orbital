@@ -21,23 +21,15 @@
     </form>
 
     <div *ngIf="path.invalid && (path.dirty || path.touched)">
-      <mat-error *ngIf="path.errors.required">
-        Url path is required
-      </mat-error>
-      <mat-error *ngIf="path.errors.maxlength">
-        Url path cannot exceed 3000 characters
-      </mat-error>
+      <mat-error *ngIf="path.errors.required"> Url path is required </mat-error>
+      <mat-error *ngIf="path.errors.maxlength"> Url path cannot exceed 3000 characters </mat-error>
     </div>
 
     <div *ngIf="ruleType.invalid && (ruleType.dirty || ruleType.touched)">
-      <mat-error *ngIf="ruleType.errors.required">
-        Url rule type is required
-      </mat-error>
+      <mat-error *ngIf="ruleType.errors.required"> Url rule type is required </mat-error>
     </div>
     <div *ngIf="this.isRuleDuplicated">
-      <mat-error>
-        Rule already exists
-      </mat-error>
+      <mat-error> Rule already exists </mat-error>
     </div>
   </mat-card-content>
 </mat-card>

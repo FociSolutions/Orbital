@@ -7,5 +7,5 @@ export interface Policy {
 
 export const defaultPolicy: Policy = {
   type: PolicyType.NONE,
-  attributes: {}
+  attributes: {},
 };

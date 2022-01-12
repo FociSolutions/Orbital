@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { Location } from '@angular/common';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
@@ -100,7 +100,7 @@ describe('ImportFromServerViewComponent', () => {
         body: [{ body: faker.random.words(), openApi: { tags: [faker.random.words()] } }],
         status: 200,
       });
-      component.onResponse((response.body as unknown) as MockDefinition[]);
+      component.onResponse(response.body as unknown as MockDefinition[]);
       expect(component.formArray.controls[0].value).toEqual(response.body[0]);
     });
   });

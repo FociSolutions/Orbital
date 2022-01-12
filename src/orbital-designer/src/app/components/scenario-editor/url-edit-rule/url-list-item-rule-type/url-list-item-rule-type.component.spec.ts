@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -8,13 +8,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 describe('UrlListItemRuleTypeComponent', () => {
   let component: UrlListItemRuleTypeComponent;
   let fixture: ComponentFixture<UrlListItemRuleTypeComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -24,19 +24,19 @@ describe('UrlListItemRuleTypeComponent', () => {
         MatSelectModule,
         MatCardModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
       ],
-      declarations: [UrlListItemRuleTypeComponent]
+      declarations: [UrlListItemRuleTypeComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UrlListItemRuleTypeComponent);
     component = fixture.componentInstance;
     component.urlEditRuleFormGroup = new FormGroup({
       path: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
-      ruleType: new FormControl(RuleType.NONE, [Validators.required])
+      ruleType: new FormControl(RuleType.NONE, [Validators.required]),
     });
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -76,7 +76,7 @@ describe('UrlListItemRuleTypeComponent', () => {
       });
 
       describe('And the remove button is pushed', () => {
-        it('Should emitt the urlRuleRemovedEventEmitter', done => {
+        it('Should emitt the urlRuleRemovedEventEmitter', (done) => {
           component.urlRuleRemovedEventEmitter.subscribe((url: KeyValuePairRule) => {
             expect(url.rule).toEqual({ urlPath: 'cool/path' });
             done();

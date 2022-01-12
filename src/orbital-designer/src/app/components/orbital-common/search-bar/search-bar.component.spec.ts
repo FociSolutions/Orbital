@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchBarComponent } from './search-bar.component';
@@ -30,7 +30,7 @@ describe('SearchBarComponent', () => {
         expect(filteredList.findIndex((item) => item === unfilteredList[0])).toBe(-1);
         done();
       });
-      component.onSearchInput(unfilteredList[0] + 'sample');
+      component.onSearchInput(`${unfilteredList[0]}sample`);
     });
   });
 

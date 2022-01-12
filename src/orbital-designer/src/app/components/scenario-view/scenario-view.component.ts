@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Router } from '@angular/router';
@@ -11,13 +11,12 @@ import { map } from 'rxjs/operators';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import * as HttpStatus from 'http-status-codes';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { state } from '@angular/animations';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 @Component({
   selector: 'app-scenario-view',
   templateUrl: './scenario-view.component.html',
-  styleUrls: ['./scenario-view.component.scss']
+  styleUrls: ['./scenario-view.component.scss'],
 })
 export class ScenarioViewComponent implements OnInit, OnDestroy {
   @Input() scenarios: Scenario[] = [];
@@ -37,12 +36,12 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   isHoveringOverMenu: boolean;
   dropdownVisible: boolean;
 
-    modes = [
-      {value: ValidationType.NONE, viewValue: "None"},
-      {value: ValidationType.JWT_VALIDATION, viewValue: "JWT Validation"},
-      {value: ValidationType.JWT_VALIDATION_AND_REQUEST_MATCH, viewValue: "JWT Validation and Contents"},
-      {value: ValidationType.CONTENT, viewValue: "Token Contents"}
-    ];
+  modes = [
+    { value: ValidationType.NONE, viewValue: 'None' },
+    { value: ValidationType.JWT_VALIDATION, viewValue: 'JWT Validation' },
+    { value: ValidationType.JWT_VALIDATION_AND_REQUEST_MATCH, viewValue: 'JWT Validation and Contents' },
+    { value: ValidationType.CONTENT, viewValue: 'Token Contents' },
+  ];
 
   constructor(
     private store: DesignerStore,
@@ -50,18 +49,18 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
     private logger: NGXLogger,
     private mockDefinitionService: MockDefinitionService
   ) {
-    this.store.state$.subscribe(state => {
+    this.store.state$.subscribe((state) => {
       this.mockDefinition = state.mockDefinition;
     });
   }
 
   ngOnInit() {
-    this.storeSubscription = this.store.state$.subscribe(state => {
+    this.storeSubscription = this.store.state$.subscribe((state) => {
       if (!!state.mockDefinition && !!state.selectedEndpoint) {
         this.endpointVerb = state.selectedEndpoint.verb;
         this.endpointPath = state.selectedEndpoint.path;
         this.scenarioList = state.mockDefinition.scenarios.filter(
-          s => s.path === this.endpointPath && s.verb === this.endpointVerb
+          (s) => s.path === this.endpointPath && s.verb === this.endpointVerb
         );
         this.dropdownVisible = state.mockDefinition.tokenValidation;
         this.logger.log('ScenarioViewComponent:ngOnInit: Resulting ScenarioList: ', this.scenarioList);
@@ -115,9 +114,9 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
     this.logger.debug(scenario);
     const observable = this.mockDefinitionService
       .cloneScenario(this.store.state.mockDefinition.metadata.title, scenario)
-      .pipe(map(value => value));
+      .pipe(map((value) => value));
 
-    observable.subscribe(result => {
+    observable.subscribe((result) => {
       if (result) {
         this.logger.log('Scenario successfully cloned');
       }
@@ -184,7 +183,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * @param scenario The scenario to make default
    */
   toggleDefaultScenario(event: MatCheckboxChange, scenario: Scenario) {
-    this.scenarioList.forEach(aScenario => aScenario.defaultScenario = false);
+    this.scenarioList.forEach((aScenario) => (aScenario.defaultScenario = false));
     if (event.checked) {
       scenario.defaultScenario = true;
       this.logger.debug('Set default scenario to ', scenario);
@@ -192,17 +191,17 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   }
 
   updateScenariosValidationType(mode: number) {
-    this.scenarioList.forEach(scenario => {
+    this.scenarioList.forEach((scenario) => {
       scenario.tokenRule.validationType = mode;
       this.store.addOrUpdateScenario(scenario);
-    })
+    });
   }
 
   get selectedMode(): number {
     return this._selectedMode;
   }
 
-  set selectedMode(value: number)  {
+  set selectedMode(value: number) {
     this._selectedMode = value;
     this.updateScenariosValidationType(this.selectedMode);
   }

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpAddRuleComponent } from './kvp-add-rule.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,15 +10,15 @@ describe('KvpAddComponent', () => {
   let component: KvpAddRuleComponent;
   let fixture: ComponentFixture<KvpAddRuleComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule]
+      imports: [OrbitalCommonModule, BrowserAnimationsModule, LoggerTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -54,15 +54,16 @@ describe('KvpAddComponent', () => {
     it('Should set key and value to kvp when onAdd() is called, kvp is emitted, and IsValid is true.', () => {
       const input = {
         key: faker.lorem.word(),
-        value: faker.lorem.sentence()
+        value: faker.lorem.sentence(),
       };
       component.ruleKey.setValue(input.key);
       component.ruleValue.setValue(input.value);
       component.ruleType.setValue(RuleType.TEXTSTARTSWITH);
-      jest.spyOn(component.kvp, 'emit');
+      const spy = jest.spyOn(component.kvp, 'emit');
       component.onAdd();
-      expect(component.kvp.emit).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
       expect(component.isValid).toBe(true);
+      spy.mockRestore();
     });
 
     it('Should set isValid to false if isEmpty is true', () => {

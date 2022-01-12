@@ -1,43 +1,39 @@
 <mat-card class="mat-elevation-z20 import-from-file-container flexColumn">
   <mat-card-title>Import From File(s)</mat-card-title>
   <mat-card-subtitle>Import existing Mockdefinition file(s) below</mat-card-subtitle>
-  <app-file-input 
-  class="capitalize" 
-  (fileContentEmit)="setMockDefinition($event)"
-  (fileNameEmit)="setMockDefinitionName($event)" 
-  (clearContentEmit)="checkEmit(true)" 
-  label="Select Files - Required"
-  accept=".json" 
-  [errorMessage]="errorMessageToEmitFromCreate">
+  <app-file-input
+    class="capitalize"
+    (fileContentEmit)="setMockDefinition($event)"
+    (fileNameEmit)="setMockDefinitionName($event)"
+    (clearContentEmit)="checkEmit(true)"
+    label="Select Files - Required"
+    accept=".json"
+    [errorMessage]="errorMessageToEmitFromCreate"
+  >
   </app-file-input>
-    <mat-card>
-      <mat-card-subtitle>
-        <h3>Imported Mockdefinition(s)</h3>
-      </mat-card-subtitle>
-            <mat-card-content class="expand">
-              <mat-list dense>
-                
-                <mat-list-item *ngFor="let mocks of mockdefinitionValid">
-                  <h3>{{ mocks | titlecase }}</h3>
-                  <mat-icon matListIcon color="primary">check_circle_outline</mat-icon>
-                </mat-list-item>
-                <mat-list-item *ngFor="let mocks of mockdefinitionInvalid">
-                  <h3>{{ mocks | titlecase }}</h3>
-                  <mat-icon matListIcon color="warn">cancel</mat-icon>
-                </mat-list-item>
+  <mat-card>
+    <mat-card-subtitle>
+      <h3>Imported Mockdefinition(s)</h3>
+    </mat-card-subtitle>
+    <mat-card-content class="expand">
+      <mat-list dense>
+        <mat-list-item *ngFor="let mocks of mockdefinitionValid">
+          <h3>{{ mocks | titlecase }}</h3>
+          <mat-icon matListIcon color="primary">check_circle_outline</mat-icon>
+        </mat-list-item>
+        <mat-list-item *ngFor="let mocks of mockdefinitionInvalid">
+          <h3>{{ mocks | titlecase }}</h3>
+          <mat-icon matListIcon color="warn">cancel</mat-icon>
+        </mat-list-item>
 
-              <p class="errorStyle" *ngIf="!isValid()">Valid File(s) Required</p>
-            </mat-list>
-            </mat-card-content>
-   </mat-card>
-<mat-card-footer>
-  <div class="row buttons-div">
-    <button mat-raised-button color="primary" (click)="goBack()">
-      Back
-    </button>
-    <button mat-raised-button color="primary" [disabled]="buttonDisabled" (click)="createMock()">
-      Next
-    </button>
-  </div>
-</mat-card-footer>
+        <p class="errorStyle" *ngIf="!isValid()">Valid File(s) Required</p>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+  <mat-card-footer>
+    <div class="row buttons-div">
+      <button mat-raised-button color="primary" (click)="goBack()">Back</button>
+      <button mat-raised-button color="primary" [disabled]="buttonDisabled" (click)="createMock()">Next</button>
+    </div>
+  </mat-card-footer>
 </mat-card>

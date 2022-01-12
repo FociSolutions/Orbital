@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuickExportComponent } from './quick-export.component';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,17 +10,17 @@ describe('QuickExportComponent', () => {
   let component: QuickExportComponent;
   let fixture: ComponentFixture<QuickExportComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [QuickExportComponent],
       imports: [MatIconModule, RouterTestingModule, LoggerTestingModule, HttpClientModule],
-      providers: [DesignerStore]
+      providers: [DesignerStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(QuickExportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

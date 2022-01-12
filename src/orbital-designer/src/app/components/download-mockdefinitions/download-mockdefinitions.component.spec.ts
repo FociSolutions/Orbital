@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DownloadMockdefinitionsComponent } from './download-mockdefinitions.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -16,12 +16,9 @@ describe('DownloadMockdefinitionsComponent', () => {
   let component: DownloadMockdefinitionsComponent;
   let fixture: ComponentFixture<DownloadMockdefinitionsComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        DownloadMockdefinitionsComponent,
-        ShuttleSubListComponent
-      ],
+      declarations: [DownloadMockdefinitionsComponent, ShuttleSubListComponent],
       imports: [
         MatCardModule,
         MatButtonModule,
@@ -30,15 +27,15 @@ describe('DownloadMockdefinitionsComponent', () => {
         MatDividerModule,
         MatListModule,
         LoggerTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
       ],
-      providers: [DesignerStore]
+      providers: [DesignerStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DownloadMockdefinitionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

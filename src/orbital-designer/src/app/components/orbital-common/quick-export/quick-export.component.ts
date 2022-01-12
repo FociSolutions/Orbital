@@ -7,7 +7,7 @@ import { NGXLogger } from 'ngx-logger';
 @Component({
   selector: 'app-quick-export',
   templateUrl: './quick-export.component.html',
-  styleUrls: ['./quick-export.component.scss']
+  styleUrls: ['./quick-export.component.scss'],
 })
 export class QuickExportComponent {
   triggerOpenCancelBox: boolean;
@@ -35,25 +35,26 @@ export class QuickExportComponent {
     this.mockInService = this.mockdefinitionService.getMockdefinition();
     if (this.router.url.includes('scenario-editor')) {
       this.triggerOpenCancelBox = true;
-    } else if (!!this.urlInService) {
+    } else if (this.urlInService) {
       this.exportStatusMessage = '';
       this.exportErrorMessage = '';
       this.mockdefinitionService.exportMockDefinition(this.urlInService, this.mockInService).subscribe(
-        gotExported => {
-        if (gotExported) {
-          this.logger.debug('Mockdefinition has been exported: ', this.mockInService);
-          this.logger.debug('To Url: ', this.urlInService);
-          this.exportStatusMessage = 'File successfully exported to ' + this.urlInService;
-          this.urlToNavigateTo = url;
-        } else {
+        (gotExported) => {
+          if (gotExported) {
+            this.logger.debug('Mockdefinition has been exported: ', this.mockInService);
+            this.logger.debug('To Url: ', this.urlInService);
+            this.exportStatusMessage = `File successfully exported to ${this.urlInService}`;
+            this.urlToNavigateTo = url;
+          } else {
+            this.exportErrorMessage = 'File could not be exported because of an error';
+            this.router.navigate([url]);
+          }
+        },
+        () => {
           this.exportErrorMessage = 'File could not be exported because of an error';
           this.router.navigate([url]);
         }
-      },
-      () => {
-        this.exportErrorMessage = 'File could not be exported because of an error';
-        this.router.navigate([url]);
-      });
+      );
     } else {
       this.exportErrorMessage = 'File could not be exported because of an error';
       this.router.navigate([url]);

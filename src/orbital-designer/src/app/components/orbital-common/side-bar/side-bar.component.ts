@@ -9,7 +9,7 @@ import * as uuid from 'uuid';
 @Component({
   selector: 'app-side-bar',
   templateUrl: './side-bar.component.html',
-  styleUrls: ['./side-bar.component.scss']
+  styleUrls: ['./side-bar.component.scss'],
 })
 export class SideBarComponent {
   mockDefinitions: MockDefinition[];
@@ -18,14 +18,14 @@ export class SideBarComponent {
 
   triggerOpenConfirmBox: boolean;
   triggerOpenCancelBox: boolean;
-  urlToNavigatTo: string;
+  urlToNavigateTo: string;
 
   mockDefinitionToBeDismissed: MockDefinition;
 
   constructor(private store: DesignerStore, private router: Router, private logger: NGXLogger) {
-    this.store.state$.subscribe(state => {
-      if (!!state.mockDefinition) {
-        this.mockDefinitions = recordMap(state.mockDefinitions, md => md);
+    this.store.state$.subscribe((state) => {
+      if (state.mockDefinition) {
+        this.mockDefinitions = recordMap(state.mockDefinitions, (md) => md);
         this.selectedMockDefinition = state.mockDefinition.metadata.title;
       }
     });
@@ -84,11 +84,11 @@ export class SideBarComponent {
   }
 
   editMock(mockDefinition: MockDefinition) {
-    if (mockDefinition.id == null || undefined) {
+    if (mockDefinition.id === null || mockDefinition.id === undefined) {
       mockDefinition.id = uuid.v4();
       this.store.appendMockDefinition(mockDefinition);
     }
-    this.router.navigate(["edit-mock", mockDefinition.id]);
+    this.router.navigate(['edit-mock', mockDefinition.id]);
   }
 
   /**
@@ -97,7 +97,7 @@ export class SideBarComponent {
    */
   openCancelDialogOrNavigateToUrl(url: string) {
     if (this.router.url.includes('scenario-editor')) {
-      this.urlToNavigatTo = url;
+      this.urlToNavigateTo = url;
       this.triggerOpenCancelBox = true;
     } else {
       this.router.navigate([url]);
@@ -112,8 +112,8 @@ export class SideBarComponent {
     this.logger.debug('User answer for scenario-editor cancel box', shouldCancel);
     this.triggerOpenCancelBox = false;
     if (shouldCancel) {
-      this.logger.debug('The user has cancelled; navigating to', this.urlToNavigatTo);
-      this.router.navigate([this.urlToNavigatTo]);
+      this.logger.debug('The user has cancelled; navigating to', this.urlToNavigateTo);
+      this.router.navigate([this.urlToNavigateTo]);
     }
   }
 }

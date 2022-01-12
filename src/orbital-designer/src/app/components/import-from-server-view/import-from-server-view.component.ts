@@ -11,17 +11,16 @@ import { DesignerStore } from 'src/app/store/designer-store';
 @Component({
   selector: 'app-import-from-server-view',
   templateUrl: './import-from-server-view.component.html',
-  styleUrls: ['./import-from-server-view.component.scss']
+  styleUrls: ['./import-from-server-view.component.scss'],
 })
 export class ImportFromServerViewComponent implements OnInit {
   static readonly urlMaxLength = 2048;
   readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
 
-
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
-  options: object = {};
+  options: Record<string, unknown> = {};
   body?: string = null;
 
   concatToURI = '';
@@ -32,10 +31,10 @@ export class ImportFromServerViewComponent implements OnInit {
 
   errors: string;
 
-  controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
+  controlsMockDefinitionToString = (control: AbstractControl) => control.value.metadata.title;
 
-  @Input() set errorsRestRequest(errors: object) {
-    if (!!this.inputControl) {
+  @Input() set errorsRestRequest(errors: Record<string, unknown>) {
+    if (this.inputControl) {
       this.inputControl.setErrors(errors);
     }
   }
@@ -50,7 +49,7 @@ export class ImportFromServerViewComponent implements OnInit {
     this.formArray = new FormArray([]);
 
     this.requestObserver = {
-      next: event => {
+      next: (event) => {
         this.onResponse(event);
         this.errors = '';
       },
@@ -59,7 +58,7 @@ export class ImportFromServerViewComponent implements OnInit {
         this.requestInProgress = false;
         this.formArray = new FormArray([]);
       },
-      complete: () => (this.requestInProgress = false)
+      complete: () => (this.requestInProgress = false),
     };
   }
 
@@ -106,7 +105,7 @@ export class ImportFromServerViewComponent implements OnInit {
    * one list to the other.
    */
   onListOutput(list: FormControl[]) {
-    this.mockDefinitions = list.map(control => control.value);
+    this.mockDefinitions = list.map((control) => control.value);
   }
 
   /**
@@ -124,9 +123,9 @@ export class ImportFromServerViewComponent implements OnInit {
   onResponse(response: MockDefinition[]) {
     this.logger.debug('Received http response', response);
 
-    if (!!response) {
-      response.forEach(m => (m.openApi.tags = m.openApi.tags.filter(t => t.name !== 'openapi')));
-      this.formArray = new FormArray(response.map(mockDef => new FormControl(mockDef, null)));
+    if (response) {
+      response.forEach((m) => (m.openApi.tags = m.openApi.tags.filter((t) => t.name !== 'openapi')));
+      this.formArray = new FormArray(response.map((mockDef) => new FormControl(mockDef, null)));
 
       this.logger.debug('ImportFormServerViewComponent FormArray value:', this.formArray);
     }

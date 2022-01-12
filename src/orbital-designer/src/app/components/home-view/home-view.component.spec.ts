@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as faker from 'faker';
 import { HomeViewComponent } from './home-view.component';
@@ -8,7 +8,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { BlankComponent } from 'src/app/shared/components/test/blank.component';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { NGXLogger } from 'ngx-logger';
 import testMockdefinitionObject from 'src/test-files/test-mockdefinition-object';
 import { HttpClientModule } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -27,21 +26,21 @@ describe('HomeViewComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([
           {
-            path: path,
+            path,
             component: BlankComponent,
           },
           {
             path: 'endpoint-view',
             component: BlankComponent,
-          }
+          },
         ]),
         MatGridListModule,
         MatCardModule,
         MatButtonModule,
         HttpClientModule,
-        LoggerTestingModule
+        LoggerTestingModule,
       ],
-      providers: [DesignerStore]
+      providers: [DesignerStore],
     }).compileComponents();
     router = TestBed.get(Router);
     fixture = TestBed.createComponent(HomeViewComponent);
@@ -68,7 +67,7 @@ describe('HomeViewComponent', () => {
       fixture.ngZone.run(() => {
         const navigationSpy = jest.spyOn(router, 'navigateByUrl');
         const mockDefs: Record<string, MockDefinition> = {
-          "key": testMockdefinitionObject
+          key: testMockdefinitionObject,
         };
         component.checkMockDefinitions(mockDefs);
         tick();

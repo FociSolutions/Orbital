@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpListItemComponent } from './kvp-list-item.component';
 import { OrbitalCommonModule } from '../../orbital-common.module';
@@ -8,15 +8,15 @@ describe('KvpListItemComponent', () => {
   let component: KvpListItemComponent;
   let fixture: ComponentFixture<KvpListItemComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrbitalCommonModule]
+      imports: [OrbitalCommonModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -30,7 +30,7 @@ describe('KvpListItemComponent', () => {
     it('Should contain correct key value pair', () => {
       const input: KeyValue<string, string> = {
         key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+        value: faker.lorem.sentence(),
       };
 
       component.kvp = input;
@@ -40,20 +40,18 @@ describe('KvpListItemComponent', () => {
   });
 
   describe('onRemove', () => {
-    it('Should emit a remove event', done => {
+    it('Should emit a remove event', (done) => {
       const input: KeyValue<string, string> = {
         key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+        value: faker.lorem.sentence(),
       };
 
       component.kvp = input;
 
-      component.removeKvp.subscribe(
-        actual => {
-          expect(actual).toEqual(input);
-          done();
-        }
-      );
+      component.removeKvp.subscribe((actual) => {
+        expect(actual).toEqual(input);
+        done();
+      });
 
       component.onRemove();
     });

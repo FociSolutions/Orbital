@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpListItemRuleTypeComponent } from './kvp-list-item-rule-type.component';
 import { OrbitalCommonModule } from '../../../orbital-common/orbital-common.module';
@@ -6,10 +6,9 @@ import { MatCardModule } from '@angular/material/card';
 import { KvpEditRuleComponent } from '../kvp-edit-rule.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
-import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
@@ -38,8 +37,9 @@ describe('KvpListItemRuleComponent', () => {
         type: new FormControl(RuleType.NONE, [Validators.required]),
       })
     );
-    component.editRuleFormGroup = ((scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
-      .queryMatchRules as FormArray).at(0) as FormGroup;
+    component.editRuleFormGroup = (
+      (scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.queryMatchRules as FormArray
+    ).at(0) as FormGroup;
     fixture.detectChanges();
   });
 

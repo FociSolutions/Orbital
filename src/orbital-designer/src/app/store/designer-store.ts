@@ -8,7 +8,7 @@ import { VerbType } from '../models/verb.type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
-import { recordDelete, recordAdd, recordFirstOrDefault } from '../models/record';
+import { recordAdd, recordDelete, recordFirstOrDefault } from '../models/record';
 
 export interface State {
   selectedEndpoint: Endpoint;
@@ -33,10 +33,10 @@ export class DesignerStore extends Store<State> {
       selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey)),
       mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
       mockDefinitions: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)) || {},
-      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || []
+      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || [],
     });
 
-    this.state$.subscribe(state => {
+    this.state$.subscribe((state) => {
       const clonedDefinition = cloneDeep(state.mockDefinition);
       const clonedDefinitions = cloneDeep(state.mockDefinitions);
       localStorage.setItem(DesignerStore.mockDefinitionStoreKey, JSON.stringify(clonedDefinition));
@@ -56,10 +56,10 @@ export class DesignerStore extends Store<State> {
     this.logger.debug('Setting mockDefinitions to ', mockDefinitions);
     this.setState({
       ...this.state,
-      mockDefinitions: mockDefinitions.reduce(
+      mockDefinitions: mockDefinitions.reduce<Record<string, MockDefinition>>(
         (previous, current) => recordAdd(previous, current.metadata.title, current),
-        {} as Record<string, MockDefinition>
-      )
+        {}
+      ),
     });
     this.mockDefinition = mockDefinitions[0];
   }
@@ -72,7 +72,7 @@ export class DesignerStore extends Store<State> {
       this.logger.debug('Deleting mock ', mockTitle);
       this.setState({
         ...this.state,
-        mockDefinitions: recordDelete(this.state.mockDefinitions, mockTitle)
+        mockDefinitions: recordDelete(this.state.mockDefinitions, mockTitle),
       });
 
       const mockDefKeys = Object.keys(this.state.mockDefinitions);
@@ -95,7 +95,7 @@ export class DesignerStore extends Store<State> {
     this.logger.debug('Updating mock ', mockDefinition.metadata.title);
     this.setState({
       ...this.state,
-      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition)
+      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition),
     });
   }
 
@@ -107,7 +107,7 @@ export class DesignerStore extends Store<State> {
     this.logger.debug('Appending mock definition', mockDefinition);
     this.setState({
       ...this.state,
-      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition)
+      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition),
     });
     this.logger.debug('New state after appending', this.state);
     this.mockDefinition = recordFirstOrDefault(this.state.mockDefinitions, null);
@@ -126,8 +126,8 @@ export class DesignerStore extends Store<State> {
     this.setState({
       ...this.state,
       selectedEndpoint: {
-        ...endpoint
-      }
+        ...endpoint,
+      },
     });
   }
 
@@ -139,8 +139,8 @@ export class DesignerStore extends Store<State> {
     this.setState({
       ...this.state,
       selectedScenario: {
-        ...scenario
-      }
+        ...scenario,
+      },
     });
   }
 
@@ -157,15 +157,15 @@ export class DesignerStore extends Store<State> {
     for (const path of pathStrings) {
       const pathObject: OpenAPIV2.PathItemObject = doc.paths[path];
       const newEndpoints = Object.keys(VerbType)
-        .map(verb => ({ verb: VerbType[verb], lowerVerb: verb.toLowerCase() }))
-        .map(({ verb, lowerVerb }) => (!!pathObject[lowerVerb] ? { path, verb, spec: pathObject[lowerVerb] } : null))
-        .filter(endpoint => !!endpoint);
+        .map((verb) => ({ verb: VerbType[verb], lowerVerb: verb.toLowerCase() }))
+        .map(({ verb, lowerVerb }) => (pathObject[lowerVerb] ? { path, verb, spec: pathObject[lowerVerb] } : null))
+        .filter((endpoint) => !!endpoint);
       endpoints = [...endpoints, ...newEndpoints];
     }
     this.logger.debug('Endpoints from openApi document ', endpoints);
     this.setState({
       ...this.state,
-      endpoints: clearStore ? [...endpoints] : [...this.state.endpoints, ...endpoints]
+      endpoints: clearStore ? [...endpoints] : [...this.state.endpoints, ...endpoints],
     });
   }
 
@@ -180,7 +180,7 @@ export class DesignerStore extends Store<State> {
     this.setState({
       ...this.state,
       mockDefinitions,
-      mockDefinition: mockDefinitionCopy
+      mockDefinition: mockDefinitionCopy,
     });
     this.setEndpoints(mockDefinition.openApi);
   }
@@ -197,9 +197,9 @@ export class DesignerStore extends Store<State> {
       mockDefinition: {
         ...this.state.mockDefinition,
         metadata: {
-          ...metadata
-        }
-      }
+          ...metadata,
+        },
+      },
     });
   }
 
@@ -211,7 +211,7 @@ export class DesignerStore extends Store<State> {
   addOrUpdateScenario(scenario: Scenario) {
     const currentMock = this.state.mockDefinition;
     if (currentMock) {
-      let current = currentMock.scenarios.find(s => s.id === scenario.id);
+      let current = currentMock.scenarios.find((s) => s.id === scenario.id);
       if (current) {
         this.logger.debug(
           'DesignerStore:AddOrUpdateScenario: Provided scenario already exist in the mock definition',
@@ -263,8 +263,8 @@ export class DesignerStore extends Store<State> {
         ...this.state.mockDefinition,
         host,
         basePath,
-        openApi: { ...openApi }
-      }
+        openApi: { ...openApi },
+      },
     });
   }
 
@@ -276,14 +276,14 @@ export class DesignerStore extends Store<State> {
     this.logger.debug('Setting scenarios to ', scenarios);
     this.mockDefinition = {
       ...this.state.mockDefinition,
-      scenarios: [...scenarios]
+      scenarios: [...scenarios],
     };
   }
 
   deleteScenario(scenarioId: string) {
     this.mockDefinition = {
       ...this.state.mockDefinition,
-      scenarios: this.state.mockDefinition.scenarios.filter(s => s.id !== scenarioId)
+      scenarios: this.state.mockDefinition.scenarios.filter((s) => s.id !== scenarioId),
     };
   }
 }

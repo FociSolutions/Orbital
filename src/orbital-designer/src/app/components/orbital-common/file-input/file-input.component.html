@@ -15,7 +15,7 @@
       (click)="fileInput.click()"
       (click)="emitClearContent(true)"
     >
-      Choose File{{ this.multiple ? "(s)" : "" }}
+      Choose File{{ this.multiple ? '(s)' : '' }}
     </button>
   </div>
 
@@ -24,11 +24,11 @@
     [multiple]="this.multiple"
     type="file"
     (change)="emitFileContent($event.target.files)"
-    style="display:none;"
+    style="display: none"
     [accept]="accept"
     onclick="this.value=null;"
   />
-  <input matInput style="display:none;" />
+  <input matInput style="display: none" />
 </mat-form-field>
 
 <div *ngFor="let message of this.errorMessages | keyvalue">
@@ -37,4 +37,3 @@
     {{ v }}
   </li>
 </div>
-

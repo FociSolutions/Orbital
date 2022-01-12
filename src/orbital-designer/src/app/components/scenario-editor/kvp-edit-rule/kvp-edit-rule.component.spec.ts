@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KvpEditRuleComponent } from './kvp-edit-rule.component';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
@@ -11,8 +11,8 @@ import * as faker from 'faker';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
-import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
 describe('KvpEditRuleComponent', () => {
   let component: KvpEditRuleComponent;
   let fixture: ComponentFixture<KvpEditRuleComponent>;

@@ -5,7 +5,7 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 @Component({
   selector: 'app-text-input',
   templateUrl: './text-input.component.html',
-  styleUrls: ['./text-input.component.scss']
+  styleUrls: ['./text-input.component.scss'],
 })
 export class TextInputComponent {
   errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
@@ -13,10 +13,9 @@ export class TextInputComponent {
   @Input() maxLength: number;
   @Input() multiLine = false;
   @Input() control!: FormControl;
-  constructor() {}
 
   getErrors(): string[] {
-    return !!this.control.errors ? Object.values(this.control.errors) : [];
+    return this.control.errors ? Object.values(this.control.errors) : [];
   }
 
   /**

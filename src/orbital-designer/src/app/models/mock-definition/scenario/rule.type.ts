@@ -12,5 +12,5 @@ export enum RuleType {
   JSONEQUALITY,
   JSONCONTAINS,
   JSONSCHEMA,
-  ACCEPTALL
+  ACCEPTALL,
 }

@@ -83,6 +83,7 @@ If you're running Windows, you'll need:
 `npm run start` (defaults to http://localhost:4200)
 
 # How to use the Orbital Designer
+
 ## Create a new mock
 
 1. Go to the [Orbital Designer homepage](http://localhost:4200) and click **"Create New Mock"**.
@@ -102,10 +103,12 @@ This page will display all endpoints defined in the uploaded YAML file. On the r
 The next step in this guide will be to create a new scenario.
 
 ### What is a Scenario?
+
 The purpose of a scenario is to describe what the endpoint will expect from the user's HTTP request and the response the user should expect from the endpoint. A scenario consists of:
-* **Metadata**: A title and description to explain the purpose of the scenario.
-* **Request Match Rules**: These rules will indicate what the user's HTTP request has to match to get a response from the server.
-* **Response**: The server's response to the user's HTTP request.
+
+- **Metadata**: A title and description to explain the purpose of the scenario.
+- **Request Match Rules**: These rules will indicate what the user's HTTP request has to match to get a response from the server.
+- **Response**: The server's response to the user's HTTP request.
 
 ### Create a Scenario
 
@@ -114,15 +117,16 @@ The purpose of a scenario is to describe what the endpoint will expect from the 
 2. Click **"+"** on the bottom right to add a new scenario.
 
 3. Start by filling the **"Metadata"** section. Give the new scenario a name and description. The name is required.
-![newScenarioMetadata](/readme_images/newScenarioMetadata.png)
+   ![newScenarioMetadata](/readme_images/newScenarioMetadata.png)
 
-4. Click **"Request Match Rules"** and then click **"Header Match Rules"**. Enter in *"Content-Type"* as the key and *"application/json"* as the value.
+4. Click **"Request Match Rules"** and then click **"Header Match Rules"**. Enter in _"Content-Type"_ as the key and _"application/json"_ as the value.
 
 5. Click **"+"** next to the value to add it as a header rule. The rule will appear below.
-![headerMatchRule](/readme_images/headerMatchRule.png)
+   ![headerMatchRule](/readme_images/headerMatchRule.png)
 
 6. A response has to be defined for this header rule. Click **Response** and enter in the text as shown below. In this example, the server will return a `200` with the following response:
-![response](/readme_images/newScenarioResponse.png)
+   ![response](/readme_images/newScenarioResponse.png)
+
 ```
 {
 	"pet1": "max"
@@ -137,7 +141,7 @@ The purpose of a scenario is to describe what the endpoint will expect from the 
 
 To test the new scenario, the mock has to be exported to the Orbital Server. Click "Export to Server" in the menu bar, then type in **"http://localhost:5000/api/v1/OrbitalAdmin"** as the URL. Select the mock definition(s) that you would like to export on the left-hand side and click `>` to move them to the pending export view. Then, click **"Upload"** to upload the definitions.
 
-If the upload is successful, the message *"Mockdefinition successfully uploaded to server"* will appear.
+If the upload is successful, the message _"Mockdefinition successfully uploaded to server"_ will appear.
 
 ### Test the Scenario
 

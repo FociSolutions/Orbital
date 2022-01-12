@@ -6,13 +6,11 @@ import { DesignerStore } from 'src/app/store/designer-store';
 @Component({
   selector: 'app-home-view',
   templateUrl: './home-view.component.html',
-  styleUrls: ['./home-view.component.scss']
+  styleUrls: ['./home-view.component.scss'],
 })
 export class HomeViewComponent {
-
-  constructor(private router: Router,
-              private store: DesignerStore) {
-    this.store.state$.subscribe(state => {
+  constructor(private router: Router, private store: DesignerStore) {
+    this.store.state$.subscribe((state) => {
       this.checkMockDefinitions(state.mockDefinitions);
     });
   }
@@ -26,5 +24,4 @@ export class HomeViewComponent {
   navigateTo(url: string) {
     this.router.navigateByUrl(url);
   }
-
 }

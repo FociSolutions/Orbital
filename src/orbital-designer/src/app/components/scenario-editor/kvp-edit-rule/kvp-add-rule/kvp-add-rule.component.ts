@@ -1,15 +1,15 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors  } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { recordUpdateKeyName } from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-add-rule',
   templateUrl: './kvp-add-rule.component.html',
-  styleUrls: ['./kvp-add-rule.component.scss']
+  styleUrls: ['./kvp-add-rule.component.scss'],
 })
 export class KvpAddRuleComponent implements OnInit {
   private subscriptions: Subscription[] = [];
@@ -18,10 +18,10 @@ export class KvpAddRuleComponent implements OnInit {
   // The kvp to be outputted to parent
   @Output() kvp = new EventEmitter<KeyValuePairRule>();
 
-  private kvpRuleInEdit = {
-    rule: {} as Record<string, string>,
-    type: RuleType.NONE
-  } as KeyValuePairRule;
+  private kvpRuleInEdit: KeyValuePairRule = {
+    rule: {},
+    type: RuleType.NONE,
+  };
   isValid: boolean;
   errorMessage: string;
   ruleIsDuplicated: boolean;
@@ -32,25 +32,27 @@ export class KvpAddRuleComponent implements OnInit {
     { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
     { value: RuleType.TEXTENDSWITH, viewValue: 'Ends With' },
     { value: RuleType.TEXTCONTAINS, viewValue: 'Contains' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' }
+    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
   ];
 
   constructor(private logger: NGXLogger) {}
 
   ngOnInit() {
     this.kvpAddRuleFormGroup = new FormGroup({
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       ruleKey: new FormControl('', [Validators.required, Validators.maxLength(200), this.noWhiteSpaceValidator]),
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       ruleValue: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
-      type: new FormControl(RuleType.NONE, [Validators.required])
+      type: new FormControl(RuleType.NONE, [Validators.required]),
     });
 
     const ruleDuplicatedSubscription = this.kvpAddedError.subscribe(
-      isDuplicated => (this.ruleIsDuplicated = isDuplicated)
+      (isDuplicated) => (this.ruleIsDuplicated = isDuplicated)
     );
 
-    const keySubscription = this.kvpAddRuleFormGroup.get('ruleKey').valueChanges.subscribe(newKey => {
+    const keySubscription = this.kvpAddRuleFormGroup.get('ruleKey').valueChanges.subscribe((newKey) => {
       this.ruleIsDuplicated = false;
-      const oldKey = this.kvpAddRuleFormGroup.value['ruleKey'];
+      const oldKey = this.kvpAddRuleFormGroup.value.ruleKey;
       if (this.hasOldKey) {
         recordUpdateKeyName(this.kvpRuleInEdit.rule, oldKey, newKey);
       } else {
@@ -59,12 +61,12 @@ export class KvpAddRuleComponent implements OnInit {
       }
     });
 
-    const valueSubscription = this.kvpAddRuleFormGroup.get('ruleValue').valueChanges.subscribe(value => {
+    const valueSubscription = this.kvpAddRuleFormGroup.get('ruleValue').valueChanges.subscribe((value) => {
       this.ruleIsDuplicated = false;
       this.kvpRuleInEdit.rule[this.ruleKey.value] = value;
     });
 
-    const ruleSubscription = this.kvpAddRuleFormGroup.get('type').valueChanges.subscribe(type => {
+    const ruleSubscription = this.kvpAddRuleFormGroup.get('type').valueChanges.subscribe((type) => {
       this.ruleIsDuplicated = false;
       if (!this.ruleValue && this.ruleType.value === RuleType.REGEX) {
         this.errorMessage = 'A Regex Value Must be Entered';
@@ -87,7 +89,7 @@ export class KvpAddRuleComponent implements OnInit {
       this.logger.debug('KvpAddComponent:onAdd: KVP emitted to parent', this.kvpRuleInEdit);
       this.isValid = true;
     } else {
-      this.errorMessage = this.ruleKeyError != null ? this.ruleKeyError.error: '';
+      this.errorMessage = this.ruleKeyError?.error ?? '';
       this.isValid = false;
     }
   }
@@ -107,7 +109,7 @@ export class KvpAddRuleComponent implements OnInit {
     return this.kvpAddRuleFormGroup.get('type');
   }
 
-  get ruleKeyError(): any {
+  get ruleKeyError(): ValidationErrors {
     return this.kvpAddRuleFormGroup.get('ruleKey').errors;
   }
 
@@ -129,12 +131,11 @@ export class KvpAddRuleComponent implements OnInit {
    * @param control the form control
    * @returns an error message or null
    */
-  noWhiteSpaceValidator(control: AbstractControl): ValidationErrors {
+  noWhiteSpaceValidator(this: void, control: AbstractControl): ValidationErrors {
     let error = null;
-    if (/\s/.test(control.value))  {
-      error = {"error": "Cannot contain whitespace"};
+    if (/\s/.test(control.value)) {
+      error = { error: 'Cannot contain whitespace' };
     }
     return error;
   }
-
 }

@@ -1,16 +1,10 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-shuttle-list',
   templateUrl: './shuttle-list.component.html',
-  styleUrls: ['./shuttle-list.component.scss']
+  styleUrls: ['./shuttle-list.component.scss'],
 })
 export class ShuttleListComponent implements OnDestroy {
   @Input() leftTitle = '';
@@ -19,7 +13,7 @@ export class ShuttleListComponent implements OnDestroy {
   @Output() outputList: EventEmitter<MockDefinition[]>;
 
   @Input() set list(list: MockDefinition[]) {
-    if (!!list) {
+    if (list) {
       this.leftList = list;
       this.rightList = [];
     }
@@ -34,7 +28,7 @@ export class ShuttleListComponent implements OnDestroy {
   leftSelected: MockDefinition[] = [];
   rightSelected: MockDefinition[] = [];
 
-  @Input() itemToStringFn: (_: MockDefinition) => string = x => x as unknown as string;
+  @Input() itemToStringFn: (_: MockDefinition) => string;
 
   constructor() {
     this.outputList = new EventEmitter<MockDefinition[]>();
@@ -68,9 +62,7 @@ export class ShuttleListComponent implements OnDestroy {
    */
   onMoveRight(): void {
     this.rightList = [...this.rightList, ...this.leftSelected];
-    this.leftList = this.leftList.filter(
-      item => !this.leftSelected.includes(item)
-    );
+    this.leftList = this.leftList.filter((item) => !this.leftSelected.includes(item));
     this.leftSelected = [];
     this.outputList.emit(this.rightList);
   }
@@ -80,9 +72,7 @@ export class ShuttleListComponent implements OnDestroy {
    */
   onMoveLeft(): void {
     this.leftList = [...this.leftList, ...this.rightSelected];
-    this.rightList = this.rightList.filter(
-      item => !this.rightSelected.includes(item)
-    );
+    this.rightList = this.rightList.filter((item) => !this.rightSelected.includes(item));
     this.rightSelected = [];
     this.outputList.emit(this.rightList);
   }

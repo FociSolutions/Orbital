@@ -39,7 +39,7 @@ import { HttpClientModule } from '@angular/common/http';
     KvpAddComponent,
     KvpListItemComponent,
     KvpAddRuleComponent,
-    QuickExportComponent
+    QuickExportComponent,
   ],
   imports: [
     CommonModule,
@@ -56,7 +56,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatSelectModule,
     MatCheckboxModule,
     MatExpansionModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   exports: [
     TextInputComponent,
@@ -81,7 +81,7 @@ import { HttpClientModule } from '@angular/common/http';
     KvpListItemComponent,
     MatExpansionModule,
     KvpAddRuleComponent,
-    QuickExportComponent
-  ]
+    QuickExportComponent,
+  ],
 })
 export class OrbitalCommonModule {}

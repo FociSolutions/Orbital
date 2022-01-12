@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { ImportFromFileViewComponent } from './import-from-file-view.component';
 import { MatListModule } from '@angular/material/list';
@@ -13,7 +13,7 @@ describe('ImportFromFileComponent', () => {
   let component: ImportFromFileViewComponent;
   let fixture: ComponentFixture<ImportFromFileViewComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ImportFromFileViewComponent],
       imports: [
@@ -23,15 +23,15 @@ describe('ImportFromFileComponent', () => {
         OrbitalCommonModule,
         BrowserAnimationsModule,
         LoggerTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
       ],
-      providers: [DesignerStore]
+      providers: [DesignerStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ImportFromFileViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

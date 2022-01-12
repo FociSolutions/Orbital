@@ -15,5 +15,5 @@ export const defaultRquestMatchRule: RequestMatchRule = {
   headerRules: [],
   queryRules: [],
   bodyRules: [],
-  urlRules: []
+  urlRules: [],
 };

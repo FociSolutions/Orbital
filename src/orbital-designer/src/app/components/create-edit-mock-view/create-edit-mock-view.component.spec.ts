@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OrbitalCommonModule } from '../orbital-common/orbital-common.module';
@@ -171,7 +171,7 @@ describe('CreateEditMockViewComponent', () => {
     validateToken = true
   ): MockDefinition {
     const service = TestBed.get(MockDefinitionService);
-    let openApi: OpenAPIV2.Document;
+    const openApi: OpenAPIV2.Document = yaml.load(validOpenApiText) as OpenAPIV2.Document;
     component.formGroup.setValue({
       ...component.formGroup.value,
       title,
@@ -179,7 +179,6 @@ describe('CreateEditMockViewComponent', () => {
       validateToken,
     });
     component.setOpenApiFile(validOpenApiText);
-    openApi = yaml.load(validOpenApiText) as any;
     return {
       id: uuid.v4(),
       metadata: {
@@ -189,6 +188,6 @@ describe('CreateEditMockViewComponent', () => {
       tokenValidation: validateToken,
       openApi,
       scenarios: service.getDefaultScenarios(openApi.paths),
-    } as MockDefinition;
+    };
   }
 });

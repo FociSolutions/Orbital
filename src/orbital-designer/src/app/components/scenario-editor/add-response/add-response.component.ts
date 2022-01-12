@@ -1,11 +1,11 @@
 import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ChangeDetectorRef,
   AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import * as HttpStatus from 'http-status-codes';
@@ -13,7 +13,7 @@ import { Response } from '../../../models/mock-definition/scenario/response.mode
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import { NGXLogger } from 'ngx-logger';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
 
@@ -52,8 +52,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
 
   shadowType: FormControl = new FormControl();
 
-  public options: JsonEditorOptions;
-  public bodyData: any;
+  options: JsonEditorOptions;
+  bodyData: unknown;
 
   constructor(private jsonService: ValidJsonService, private logger: NGXLogger, private cdRef: ChangeDetectorRef) {
     this.responseOutput = new EventEmitter<Response>();
@@ -99,7 +99,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     const jsonEditorString = this.editor.getText();
     const errorType = this.getErrorType(jsonEditorString);
     if (errorType != jsonErrorType.NONE && errorType != jsonErrorType.EMPTY_JSON) {
-      this.setError('Response body' + this.jsonService.jsonErrorMap.get(errorType));
+      this.setError(`Response body${this.jsonService.jsonErrorMap.get(errorType)}`);
     } else {
       this.responseFormGroup.controls.body.setValue(jsonEditorString);
     }
@@ -181,11 +181,12 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
     this.responseFormGroup.controls.type.setValue(type);
 
     if (this.responseFormGroup.valid) {
-      const responseToEmit = {
+      const responseToEmit: Response = {
         headers: map,
         body: this.responseFormGroup.controls.body.value,
         status: +this.responseFormGroup.controls.status.value,
-      } as Response;
+        type: ResponseType.NONE,
+      };
       this.logger.debug('AddResponseComponent:saveHeaders: Response has been emitted', responseToEmit);
       this.responseOutput.emit(responseToEmit);
     } else {

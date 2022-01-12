@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PolicyFormBuilder {
   constructor(private formBuilder: FormBuilder) {}
@@ -12,13 +12,13 @@ export class PolicyFormBuilder {
    *
    * @param metadata The metadata information to be turned to a form group.
    */
-  public generateDelayPolicyFormGroup(): FormGroup {
+  generateDelayPolicyFormGroup(): FormGroup {
     return this.formBuilder.group({
-      delay: new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]*$')])
+      delay: new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]*$')]),
     });
   }
 
-  public generateEmptyPolicyFormArray(): FormArray {
+  generateEmptyPolicyFormArray(): FormArray {
     return this.formBuilder.array([], Validators.required);
   }
 }

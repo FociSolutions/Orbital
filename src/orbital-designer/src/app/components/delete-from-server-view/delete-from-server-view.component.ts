@@ -11,12 +11,11 @@ import { NotificationService } from 'src/app/services/notification-service/notif
 @Component({
   selector: 'app-delete-from-server-view',
   templateUrl: './delete-from-server-view.component.html',
-  styleUrls: ['./delete-from-server-view.component.scss']
+  styleUrls: ['./delete-from-server-view.component.scss'],
 })
 export class DeleteFromServerViewComponent implements OnInit {
-
-  @Input() set errorsRestRequest(errors: object) {
-    if (!!this.inputControl) {
+  @Input() set errorsRestRequest(errors: Record<string, unknown>) {
+    if (this.inputControl) {
       this.inputControl.setErrors(errors);
     }
   }
@@ -30,7 +29,7 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.formArray = new FormArray([]);
 
     this.requestObserver = {
-      next: event => {
+      next: (event) => {
         this.onResponse(event);
         this.statusMessage = '';
       },
@@ -40,7 +39,7 @@ export class DeleteFromServerViewComponent implements OnInit {
         this.requestInProgress = false;
         this.clearForm();
       },
-      complete: () => (this.requestInProgress = false)
+      complete: () => (this.requestInProgress = false),
     };
   }
 
@@ -53,11 +52,10 @@ export class DeleteFromServerViewComponent implements OnInit {
   static readonly urlMaxLength = 2048;
   readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
 
-
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
-  options: object = {};
+  options: Record<string, unknown> = {};
   body?: string = null;
 
   concatToURI = '';
@@ -71,7 +69,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   deleteInProgress: boolean;
   triggerOpenConfirmBox: boolean;
 
-  controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
+  controlsMockDefinitionToString = (control: AbstractControl) => control.value.metadata.title;
 
   ngOnInit() {
     this.inputControl = new FormControl(
@@ -105,16 +103,19 @@ export class DeleteFromServerViewComponent implements OnInit {
    */
   onSubmit() {
     this.deleteInProgress = true;
-    this.orbitalService.deleteMockDefinitions(`${this.inputControl.value}${this.concatToURI}`,
-      this.mockDefinitions.map(mockDefinition => mockDefinition.metadata.title))
+    this.orbitalService
+      .deleteMockDefinitions(
+        `${this.inputControl.value}${this.concatToURI}`,
+        this.mockDefinitions.map((mockDefinition) => mockDefinition.metadata.title)
+      )
       .pipe(
         finalize(() => {
           this.deleteInProgress = false;
         })
       )
       .subscribe({
-        next: deleteMockStatus => {
-          if (deleteMockStatus.every(mockDeletedSuccessfully => mockDeletedSuccessfully)) {
+        next: (deleteMockStatus) => {
+          if (deleteMockStatus.every((mockDeletedSuccessfully) => mockDeletedSuccessfully)) {
             this.logger.debug('Received response from export to server promise resolution');
             this.statusMessage = 'Mock(s) successfully deleted';
             this.clearRightHandSide();
@@ -123,12 +124,11 @@ export class DeleteFromServerViewComponent implements OnInit {
             this.logger.debug('Mock deletion statuses', deleteMockStatus);
           }
         },
-        error: error => {
+        error: (error) => {
           this.logger.error('Mock(s) could not be deleted because of an error', error);
           this.notificationService.open('Mock(s) could not be deleted because of an error');
-        }
-      }
-    );
+        },
+      });
   }
 
   /**
@@ -138,20 +138,20 @@ export class DeleteFromServerViewComponent implements OnInit {
    * one list to the other.
    */
   onListOutput(list: FormControl[]) {
-    this.mockDefinitions = list.map(control => control.value);
+    this.mockDefinitions = list.map((control) => control.value);
   }
 
   /**
-   * If the response returned is not an error or domexceptions it sets the controls
+   * If the response returned is not an error or dom exceptions it sets the controls
    * values to the response body. The control is then responsible for validation.
    * @param response HttpResponse received by the input
    */
   onResponse(response: MockDefinition[]) {
     this.logger.debug('Received http response', response);
 
-    if (!!response) {
-      response.forEach(m => (m.openApi.tags = m.openApi.tags.filter(t => t.name !== 'openapi')));
-      this.formArray = new FormArray(response.map(mockDef => new FormControl(mockDef, null)));
+    if (response) {
+      response.forEach((m) => (m.openApi.tags = m.openApi.tags.filter((t) => t.name !== 'openapi')));
+      this.formArray = new FormArray(response.map((mockDef) => new FormControl(mockDef, null)));
 
       this.logger.debug('DeleteFromServerViewComponent FormArray value:', this.formArray);
     }
@@ -169,10 +169,12 @@ export class DeleteFromServerViewComponent implements OnInit {
    */
   private clearRightHandSide() {
     const chosenMocks = this.formArray.controls
-      .filter(mock => !this.mockDefinitions.map(rightHandMock => rightHandMock.metadata.title)
-      .includes((mock.value as MockDefinition).metadata.title))
-      .map(aMock => aMock.value);
-    this.formArray = new FormArray(chosenMocks.map(mockDef => new FormControl(mockDef, null)));
+      .filter(
+        (mock) =>
+          !this.mockDefinitions.map((rightHandMock) => rightHandMock.metadata.title).includes(mock.value.metadata.title)
+      )
+      .map((aMock) => aMock.value);
+    this.formArray = new FormArray(chosenMocks.map((mockDef) => new FormControl(mockDef, null)));
     this.mockDefinitions = [];
   }
 
@@ -187,7 +189,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   /**
    * Opens the confirmation box when attempting to delete Mockdefinitions from the server
    */
-  public triggerOpenConfirmationBox() {
+  triggerOpenConfirmationBox() {
     this.triggerOpenConfirmBox = true;
   }
 
@@ -195,7 +197,7 @@ export class DeleteFromServerViewComponent implements OnInit {
    * Performs the server Mockdefinition deletion if the user confirms
    * @param choice The boolean value of the user's choice for the popup
    */
-  public onConfirmDialogAction(choice: boolean) {
+  onConfirmDialogAction(choice: boolean) {
     this.triggerOpenConfirmBox = false;
     if (choice) {
       this.onSubmit();

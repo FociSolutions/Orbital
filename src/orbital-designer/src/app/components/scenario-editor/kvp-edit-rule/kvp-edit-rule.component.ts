@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
+import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
 import { FormArray, FormGroup } from '@angular/forms';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-kvp-edit-rule',
   templateUrl: './kvp-edit-rule.component.html',
-  styleUrls: ['./kvp-edit-rule.component.scss']
+  styleUrls: ['./kvp-edit-rule.component.scss'],
 })
 export class KvpEditRuleComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -22,7 +22,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
 
   @Output() kvpIsDuplicated: EventEmitter<boolean>;
 
-  constructor(private logger: NGXLogger, private formbuilder: ScenarioFormBuilder) {
+  constructor(private logger: NGXLogger, private formBuilder: ScenarioFormBuilder) {
     this.kvpIsDuplicated = new EventEmitter<boolean>();
     this.kvpIsDuplicated.emit(false);
   }
@@ -49,11 +49,11 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
    * @param kvpToAdd The key-value pair to add to the list
    */
   addKvp(kvpToAdd: KeyValuePairRule) {
-    const rulefound = this.isRuleDuplicate(kvpToAdd);
-    if (!rulefound) {
+    const ruleWasFound = this.isRuleDuplicate(kvpToAdd);
+    if (!ruleWasFound) {
       this.kvpIsDuplicated.emit(false);
       const index = this.matchRuleFormArray.length;
-      const newRuleControl = this.formbuilder.getHeaderOrQueryItemFormGroup(kvpToAdd);
+      const newRuleControl = this.formBuilder.getHeaderOrQueryItemFormGroup(kvpToAdd);
       this.matchRuleFormArray.insert(index, newRuleControl);
       this.logger.debug('KvpEditRuleComponent: new rule added ', kvpToAdd);
     } else {
@@ -62,7 +62,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * checks if the keyvaluepairrule is inside the current form array
+   * checks if the key value pair rule is inside the current form array
    *
    */
   private isRuleDuplicate(kvpToAdd: KeyValuePairRule): boolean {
@@ -73,10 +73,11 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
     }
 
     return this.matchRuleFormArray.controls
-      .map(group => {
-        return (group as FormGroup).getRawValue() as HeaderQueryRuleFormGroup;
+      .map((group): HeaderQueryRuleFormGroup => {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return (group as FormGroup).getRawValue();
       })
-      .some(kvFormGroup => {
+      .some((kvFormGroup) => {
         return (
           kvFormGroup.value === recordFirstOrDefault(kvpToAdd.rule, '') &&
           kvFormGroup.key === recordFirstOrDefaultKey(kvpToAdd.rule, '') &&
@@ -90,15 +91,16 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
    * Double check to confirm there are no duplicates in the list of existing rules
    */
   private checkForDuplicates(): void {
-    this.matchRuleFormArray.controls.forEach(c => c.setErrors(null));
+    this.matchRuleFormArray.controls.forEach((c) => c.setErrors(null));
     this.matchRuleFormArray.markAsUntouched();
     interface HeaderQueryRuleFormGroup {
       key: string;
       value: string;
       type: number;
     }
-    const rules = this.matchRuleFormArray.controls.map(group => {
-      return (group as FormGroup).getRawValue() as HeaderQueryRuleFormGroup;
+    const rules = this.matchRuleFormArray.controls.map((group): HeaderQueryRuleFormGroup => {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      return (group as FormGroup).getRawValue();
     });
     rules.forEach((ruleToCheck, indexToCheck) => {
       rules.forEach((ruleToCheckAgainst, indexToCheckAgainst) => {
@@ -109,10 +111,10 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
           indexToCheck !== indexToCheckAgainst;
         if (foundDuplicate) {
           this.logger.error('KvpEditRuleComponent: found duplicate', ruleToCheck);
-          (this.matchRuleFormArray.at(indexToCheck) as FormGroup).get('type').markAsTouched();
-          (this.matchRuleFormArray.at(indexToCheckAgainst) as FormGroup).get('type').markAsTouched();
-          (this.matchRuleFormArray.at(indexToCheckAgainst) as FormGroup).setErrors({ duplicated: true });
-          (this.matchRuleFormArray.at(indexToCheck) as FormGroup).setErrors({ duplicated: true });
+          this.matchRuleFormArray.at(indexToCheck).get('type').markAsTouched();
+          this.matchRuleFormArray.at(indexToCheckAgainst).get('type').markAsTouched();
+          this.matchRuleFormArray.at(indexToCheckAgainst).setErrors({ duplicated: true });
+          this.matchRuleFormArray.at(indexToCheck).setErrors({ duplicated: true });
         }
       });
     });
@@ -122,7 +124,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

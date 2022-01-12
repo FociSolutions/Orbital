@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EndpointListComponent } from './endpoint-list.component';
 import { DesignerStore } from '../../../store/designer-store';
 import SampleMockDefinition from '../../../../test-files/test-mockdefinition-object';
@@ -16,29 +16,24 @@ describe('EndpointListComponent', () => {
   let fixture: ComponentFixture<EndpointListComponent>;
   let store: DesignerStore;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         EndpointListComponent,
         EndpointListItemComponent,
         GetEndpointScenariosPipe,
         GetVerbStringPipe,
-        GetVerbColorPipe
+        GetVerbColorPipe,
       ],
-      imports: [
-        MatListModule,
-        MatCardModule,
-        LoggerTestingModule,
-        MatIconModule
-      ],
-      providers: [DesignerStore]
+      imports: [MatListModule, MatCardModule, LoggerTestingModule, MatIconModule],
+      providers: [DesignerStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EndpointListComponent);
     component = fixture.componentInstance;
     store = TestBed.get(DesignerStore);
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

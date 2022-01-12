@@ -1,11 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-kvp-add',
   templateUrl: './kvp-add.component.html',
-  styleUrls: ['./kvp-add.component.scss']
+  styleUrls: ['./kvp-add.component.scss'],
 })
 export class KvpAddComponent implements OnInit {
   // The kvp to be outputted to parent
@@ -33,7 +33,7 @@ export class KvpAddComponent implements OnInit {
     if (!this.isEmpty()) {
       const kvpAdd: KeyValue<string, string> = {
         key: this.key.trim(),
-        value: this.value
+        value: this.value,
       };
 
       this.kvp.emit(kvpAdd);
@@ -54,8 +54,7 @@ export class KvpAddComponent implements OnInit {
       this.errorMessage = 'Empty Field(s) Found: Please Enter All Values';
       this.logger.debug('Empty Field(s) Found: Please Enter All Values');
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 }

@@ -57,8 +57,7 @@ describe('SideBarComponent', () => {
   it(
     'should render title in h1 tag',
     waitForAsync(() => {
-      // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
-      const fixture = TestBed.createComponent(SideBarComponent);
+      fixture = TestBed.createComponent(SideBarComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.nativeElement;
       expect(compiled.querySelector('h1').textContent).toContain('MOCKDEFINITIONS');
@@ -78,7 +77,7 @@ describe('SideBarComponent', () => {
   // Check if a false value was passed to the isSelected method.
   describe('SideBarComponent.isSelected', () => {
     it('should return false if the Mockdefinitions title list is not selected', () => {
-      const title = validMockDefinition.metadata.title + 'false';
+      const title = `${validMockDefinition.metadata.title}false`;
       expect(component.isSelected(title)).toBeFalsy();
     });
   });
@@ -87,12 +86,13 @@ describe('SideBarComponent', () => {
   describe('SideBarComponent.updateSelected', () => {
     it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', fakeAsync(() => {
       const router = TestBed.inject(Router);
-      jest.spyOn(router, 'navigateByUrl');
+      const spy = jest.spyOn(router, 'navigateByUrl');
       const expected = validMockDefinition;
       component.updateSelected(validMockDefinition);
       fixture.detectChanges();
       expect(store.state.mockDefinition).toEqual(expected);
-      expect(router.navigateByUrl).toHaveBeenCalledWith('/endpoint-view');
+      expect(spy).toHaveBeenCalledWith('/endpoint-view');
+      spy.mockRestore();
     }));
   });
   describe('SideBarComponent.openDialogBox', () => {

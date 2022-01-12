@@ -1,24 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { Endpoint } from 'src/app/models/endpoint.model';
-import { HttpRequest } from '@angular/common/http';
 
 @Component({
   selector: 'app-endpoint-view',
   templateUrl: './endpoint-view.component.html',
-  styleUrls: ['./endpoint-view.component.scss']
+  styleUrls: ['./endpoint-view.component.scss'],
 })
 export class EndpointViewComponent {
   mockDefinition: MockDefinition;
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
 
-
   isExportedMessage: string;
 
   constructor(private store: DesignerStore) {
-    this.store.state$.subscribe(state => {
+    this.store.state$.subscribe((state) => {
       this.mockDefinition = state.mockDefinition;
       this.endpointList = [...state.endpoints];
     });

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
 import { UrlAddRuleComponent } from './url-add-rule.component';
@@ -14,7 +14,7 @@ describe('UrlAddRuleComponent', () => {
   let component: UrlAddRuleComponent;
   let fixture: ComponentFixture<UrlAddRuleComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UrlAddRuleComponent],
       imports: [
@@ -25,14 +25,14 @@ describe('UrlAddRuleComponent', () => {
         MatSelectModule,
         MatCardModule,
         FormsModule,
-        ReactiveFormsModule
-      ]
+        ReactiveFormsModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UrlAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -78,13 +78,11 @@ describe('UrlAddRuleComponent', () => {
       });
 
       describe('And the add button is pushed', () => {
-        it('Should emitt the urlRuleAddedEventEmitter', done => {
-          component.urlRuleAddedEventEmitter.subscribe(
-            (url: KeyValuePairRule) => {
-              expect(url.rule).toEqual({ urlPath: 'cool/path' });
-              done();
-            }
-          );
+        it('Should emitt the urlRuleAddedEventEmitter', (done) => {
+          component.urlRuleAddedEventEmitter.subscribe((url: KeyValuePairRule) => {
+            expect(url.rule).toEqual({ urlPath: 'cool/path' });
+            done();
+          });
 
           component.addUrlRule();
         });

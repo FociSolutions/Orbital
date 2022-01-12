@@ -9,21 +9,17 @@ describe('OverviewRedirectService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, LoggerTestingModule],
-      providers: [DesignerStore]
+      providers: [DesignerStore],
     });
   });
 
   it('should be created', () => {
-    const service: OverviewRedirectService = TestBed.get(
-      OverviewRedirectService
-    );
+    const service: OverviewRedirectService = TestBed.get(OverviewRedirectService);
     expect(service).toBeTruthy();
   });
 
   it('should call navigate if no MockDefinition', fakeAsync(() => {
-    const service: OverviewRedirectService = TestBed.get(
-      OverviewRedirectService
-    );
+    const service: OverviewRedirectService = TestBed.get(OverviewRedirectService);
     const routerSpy = jest.spyOn(TestBed.get(Router), 'navigate');
     service.canActivate();
     tick();
@@ -31,14 +27,12 @@ describe('OverviewRedirectService', () => {
   }));
 
   it('should not call navigate if there exists a MockDefinition', fakeAsync(() => {
-    const service: OverviewRedirectService = TestBed.get(
-      OverviewRedirectService
-    );
+    const service: OverviewRedirectService = TestBed.get(OverviewRedirectService);
     const routerSpy = jest.spyOn(TestBed.get(Router), 'navigate');
     const store = TestBed.get(DesignerStore);
     store.updateMetadata({
       title: '',
-      description: ''
+      description: '',
     });
     service.canActivate();
     tick();

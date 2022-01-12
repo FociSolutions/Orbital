@@ -8,11 +8,10 @@ describe('OrbitalAdminService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrbitalAdminService],
-      imports: [HttpClientTestingModule, LoggerTestingModule]
+      imports: [HttpClientTestingModule, LoggerTestingModule],
     });
     service = TestBed.get(OrbitalAdminService);
-  }
-  );
+  });
 
   it('should be created', () => {
     expect(service).toBeTruthy();

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import { KvpEditComponent } from './kvp-edit.component';
 import { OrbitalCommonModule } from '../orbital-common.module';
@@ -10,19 +10,15 @@ describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
   let fixture: ComponentFixture<KvpEditComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OrbitalCommonModule,
-        LoggerTestingModule,
-        BrowserAnimationsModule
-      ]
+      imports: [OrbitalCommonModule, LoggerTestingModule, BrowserAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -36,7 +32,7 @@ describe('KvpEditComponent', () => {
     it('Should return a kvp with the added a case-sensitive kvp', () => {
       const kvpToAdd: KeyValue<string, string> = {
         key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+        value: faker.lorem.sentence(),
       };
       component.isCaseSensitive = true;
       component.addKvp(kvpToAdd);
@@ -46,7 +42,7 @@ describe('KvpEditComponent', () => {
     it('Should return a kvp with the added a case-insensitive kvp', () => {
       const kvpToAdd: KeyValue<string, string> = {
         key: faker.lorem.sentence().toUpperCase(),
-        value: faker.lorem.sentence().toUpperCase()
+        value: faker.lorem.sentence().toUpperCase(),
       };
       component.isCaseSensitive = false;
       component.addKvp(kvpToAdd);
@@ -57,7 +53,7 @@ describe('KvpEditComponent', () => {
       component.savedKvp = {} as Record<string, string>;
       const kvpToAdd: KeyValue<string, string> = {
         key: null,
-        value: ''
+        value: '',
       };
 
       component.addKvp(kvpToAdd);
@@ -73,7 +69,7 @@ describe('KvpEditComponent', () => {
     it('Should return a kvp without the deleted kvp', () => {
       const kvpToAdd: KeyValue<string, string> = {
         key: faker.lorem.sentence(),
-        value: faker.lorem.sentence()
+        value: faker.lorem.sentence(),
       };
 
       component.addKvp(kvpToAdd);
@@ -85,7 +81,7 @@ describe('KvpEditComponent', () => {
       component.savedKvp = {} as Record<string, string>;
       const kvpToAdd: KeyValue<string, string> = {
         key: null,
-        value: ''
+        value: '',
       };
 
       component.addKvp(kvpToAdd);
@@ -114,12 +110,10 @@ describe('KvpEditComponent', () => {
       jest.spyOn(component.savedKvpEmitter, 'emit');
       component.Save = true;
 
-      expect(component.savedKvpEmitter.emit).toHaveBeenCalledWith(
-        component.savedKvp
-      );
+      expect(component.savedKvpEmitter.emit).toHaveBeenCalledWith(component.savedKvp);
     });
 
-    it('Should not emit the savedkvp kvp is Save is set to false', done => {
+    it('Should not emit the savedkvp kvp is Save is set to false', (done) => {
       const newKvpkvp = {} as Record<string, string>;
       newKvpkvp[faker.lorem.sentence()] = faker.lorem.sentence();
       jest.spyOn(component.savedKvpEmitter, 'emit');

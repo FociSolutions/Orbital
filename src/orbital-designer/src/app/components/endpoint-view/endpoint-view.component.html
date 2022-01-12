@@ -16,13 +16,8 @@
             [itemToStringFn]="endpointToString"
           >
           </app-search-bar>
-          <p id="notFoundMessage" *ngIf="showNotFound()">
-            No Result(s) Found
-          </p>
-          <app-endpoint-list
-            class="row flex-grow"
-            [endpoints]="filteredList"
-          ></app-endpoint-list>
+          <p id="notFoundMessage" *ngIf="showNotFound()">No Result(s) Found</p>
+          <app-endpoint-list class="row flex-grow" [endpoints]="filteredList"></app-endpoint-list>
         </div>
       </div>
     </div>

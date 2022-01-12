@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 import { Subscription } from 'rxjs';
-import { FormGroup, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 
 @Component({
   selector: 'app-policy-edit',
   templateUrl: './policy-edit.component.html',
-  styleUrls: ['./policy-edit.component.scss']
+  styleUrls: ['./policy-edit.component.scss'],
 })
 export class PolicyEditComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -21,7 +21,7 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
   @Output() policyRemovedEventEmitter = new EventEmitter<Policy>();
 
   ngOnInit() {
-    const policyTypeSubscription = this.policyEditFormGroup.get('policyType').valueChanges.subscribe(type => {
+    const policyTypeSubscription = this.policyEditFormGroup.get('policyType').valueChanges.subscribe(() => {
       this.policyEditFormGroup.updateValueAndValidity();
     });
 
@@ -47,10 +47,10 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
    * Emits a removes event with the policy for the parent to remove
    */
   onRemove() {
-    const removePolicy = {
+    const removePolicy: Policy = {
       attributes: { delay: this.delay.value.toString() },
-      type: this.policyType.value
-    } as Policy;
+      type: this.policyType.value,
+    };
     this.policyRemovedEventEmitter.emit(removePolicy);
   }
 
@@ -66,16 +66,15 @@ export class PolicyEditComponent implements OnInit, OnDestroy {
   isPolicyDuplicated() {
     if (this.policyEditFormGroup.hasError('duplicated')) {
       return this.policyEditFormGroup.errors.duplicated;
-    } else {
-      return false;
     }
+    return false;
   }
 
   /**
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

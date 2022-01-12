@@ -1,13 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { FormGroup, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-kvp-list-item-rule-type',
   templateUrl: './kvp-list-item-rule-type.component.html',
-  styleUrls: ['./kvp-list-item-rule-type.component.scss']
+  styleUrls: ['./kvp-list-item-rule-type.component.scss'],
 })
 export class KvpListItemRuleTypeComponent implements OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -18,14 +18,14 @@ export class KvpListItemRuleTypeComponent implements OnDestroy {
     { value: RuleType.TEXTSTARTSWITH, viewValue: 'Starts With' },
     { value: RuleType.TEXTENDSWITH, viewValue: 'Ends With' },
     { value: RuleType.TEXTCONTAINS, viewValue: 'Contains' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' }
+    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
   ];
 
   @Input() editRuleFormGroup: FormGroup;
   /**
    * The kvp to be deleted by the parent
    */
-  @Output() removeKvp: EventEmitter<any>;
+  @Output() removeKvp: EventEmitter<unknown>;
 
   constructor() {
     this.removeKvp = new EventEmitter<KeyValuePairRule>();
@@ -72,7 +72,7 @@ export class KvpListItemRuleTypeComponent implements OnDestroy {
   }
 
   /**
-   * Return true if the formgroup contains a 'duplicated' error.
+   * Return true if the form group contains a 'duplicated' error.
    */
   isRuleDuplicated() {
     if (this.editRuleFormGroup.hasError('duplicated')) {
@@ -85,7 +85,7 @@ export class KvpListItemRuleTypeComponent implements OnDestroy {
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

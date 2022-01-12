@@ -9,7 +9,7 @@ describe('ReadFileService', () => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [LoggerTestingModule],
-      providers: []
+      providers: [],
     }).compileComponents();
     service = TestBed.get(ReadFileService);
   });
@@ -19,7 +19,7 @@ describe('ReadFileService', () => {
   });
 
   describe('ReadFileService.read', () => {
-    it('should read a given file and return an observable with the content from the file', done => {
+    it('should read a given file and return an observable with the content from the file', (done) => {
       const content = faker.random.word();
 
       service.read(new File([content], 'test.txt')).subscribe((fileContent: string) => {
@@ -28,9 +28,9 @@ describe('ReadFileService', () => {
       });
     });
 
-    it('should read a given file and return an observable with the content from the file', done => {
+    it('should read a given file and return an observable with the content from the file', (done) => {
       service.read(null).subscribe(
-        () => {},
+        () => undefined,
         (error: ProgressEvent) => {
           expect(error).toBeTruthy();
           done();

@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { VerbType } from 'src/app/models/verb.type';
 
 @Pipe({
-  name: 'getVerbString'
+  name: 'getVerbString',
 })
 export class GetVerbStringPipe implements PipeTransform {
   /**
@@ -25,6 +25,18 @@ export class GetVerbStringPipe implements PipeTransform {
         return 'OPTIONS';
       case VerbType.PATCH:
         return 'PATCH';
+      case VerbType.CONNECT:
+        return 'CONNECT';
+      case VerbType.CUSTOM:
+        return 'CUSTOM';
+      case VerbType.NONE:
+        return 'NONE';
+      case VerbType.TRACE:
+        return 'TRACE';
+      default: {
+        // Cause a type-check error if a case is missed
+        const _: never = verb;
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UrlEditRuleComponent } from './url-edit-rule.component';
 import { OrbitalCommonModule } from '../../orbital-common/orbital-common.module';
 import { LoggerTestingModule } from 'ngx-logger/testing/';
@@ -12,7 +12,7 @@ import { UrlListItemRuleTypeComponent } from './url-list-item-rule-type/url-list
 import { DesignerStore } from 'src/app/store/designer-store';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
-import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { recordFirstOrDefault } from 'src/app/models/record';
 
 describe('UrlEditRuleComponent', () => {
@@ -132,16 +132,16 @@ describe('UrlEditRuleComponent', () => {
           [faker.random.word()]: faker.random.word(),
         } as Record<string, string>,
       } as KeyValuePairRule;
-      const urlRuleasFormGroup = new FormGroup({
+      const urlRulesFormGroup = new FormGroup({
         path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
           Validators.required,
           Validators.maxLength(3000),
         ]),
         ruleType: new FormControl(urlRule.type, [Validators.required]),
       });
-      component.urlMatchRuleFormArray.push(urlRuleasFormGroup);
+      component.urlMatchRuleFormArray.push(urlRulesFormGroup);
       expect(component.urlMatchRuleFormArray.length).toBe(1);
-      expect(component.urlMatchRuleFormArray.at(0)).toEqual(urlRuleasFormGroup);
+      expect(component.urlMatchRuleFormArray.at(0)).toEqual(urlRulesFormGroup);
     });
   });
 
@@ -155,16 +155,16 @@ describe('UrlEditRuleComponent', () => {
         [faker.random.word()]: faker.random.word(),
       } as Record<string, string>,
     } as KeyValuePairRule;
-    const urlRuleasFormGroup = new FormGroup({
+    const urlRulesFormGroup = new FormGroup({
       path: new FormControl(recordFirstOrDefault(urlRule.rule, 'urlPath'), [
         Validators.required,
         Validators.maxLength(3000),
       ]),
       ruleType: new FormControl(urlRule.type, [Validators.required]),
     });
-    component.urlMatchRuleFormArray.push(urlRuleasFormGroup);
+    component.urlMatchRuleFormArray.push(urlRulesFormGroup);
     component.addUrlEditRuleHandler(urlRule);
     expect(component.urlMatchRuleFormArray.length).toBe(1);
-    expect(component.urlMatchRuleFormArray.at(0)).toEqual(urlRuleasFormGroup);
+    expect(component.urlMatchRuleFormArray.at(0)).toEqual(urlRulesFormGroup);
   });
 });

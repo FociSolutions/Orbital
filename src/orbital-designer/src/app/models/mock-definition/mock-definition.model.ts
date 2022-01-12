@@ -23,5 +23,9 @@ export const defaultMockDefinition: MockDefinition = {
   host: '',
   basePath: '',
   scenarios: [emptyScenario],
-  openApi: {} as OpenAPIV2.Document
+  openApi: {
+    info: { title: '', version: '' },
+    paths: {},
+    swagger: '',
+  },
 };

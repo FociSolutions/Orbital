@@ -14,5 +14,5 @@ export const defaultResponse: Response = {
   headers: {},
   body: '',
   status: 200,
-  type: ResponseType.CUSTOM
+  type: ResponseType.CUSTOM,
 };

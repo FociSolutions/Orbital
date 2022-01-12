@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { FormGroup, AbstractControl, FormControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BodyRule, defaultBodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { AddBodyRuleBuilder } from '../add-body-rule-builder/add-body-rule.builder';
@@ -9,7 +9,7 @@ import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
 @Component({
   selector: 'app-body-add-rule',
   templateUrl: './body-add-rule.component.html',
-  styleUrls: ['./body-add-rule.component.scss']
+  styleUrls: ['./body-add-rule.component.scss'],
 })
 export class BodyAddRuleComponent implements OnInit, OnDestroy {
   /**
@@ -22,8 +22,8 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   /**
    * variables for json editor
    */
-  public editorOptions: JsonEditorOptions;
-  public bodyData: any;
+  editorOptions: JsonEditorOptions;
+  bodyData: unknown;
 
   @Input() bodyRuleAddedIsDuplicated = new EventEmitter<boolean>();
   @Output() bodyRuleAddedEventEmitter = new EventEmitter<BodyRule>();
@@ -37,13 +37,12 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
     { value: RuleType.TEXTCONTAINS, viewValue: 'Text: Contains' },
     { value: RuleType.TEXTENDSWITH, viewValue: 'Text: Ends With' },
     { value: RuleType.TEXTEQUALS, viewValue: 'Text: Equals' },
-    { value: RuleType.TEXTSTARTSWITH, viewValue: 'Text: Starts With' }
+    { value: RuleType.TEXTSTARTSWITH, viewValue: 'Text: Starts With' },
   ];
 
   bodyAddRuleFormGroup: FormGroup;
 
   constructor(private addBodyRuleBuilder: AddBodyRuleBuilder) {
-
     this.editorOptions = new JsonEditorOptions();
     this.editorOptions.mode = 'code';
     this.editorOptions.modes = ['code', 'text'];
@@ -52,9 +51,8 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     const bodyDuplicatedSubscription = this.bodyRuleAddedIsDuplicated.subscribe(
-      isDuplicated => (this.ruleIsDuplicated = isDuplicated)
+      (isDuplicated) => (this.ruleIsDuplicated = isDuplicated)
     );
-
 
     this.bodyAddRuleFormGroup = this.addBodyRuleBuilder.createNewBodyRuleForm();
     this.bodyAddRuleFormGroup.controls.rule.setValue('{}');
@@ -63,12 +61,12 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
 
     this.checkBody();
 
-    const ruleSubscription = this.bodyAddRuleFormGroup.get('rule').valueChanges.subscribe(rule => {
+    const ruleSubscription = this.bodyAddRuleFormGroup.get('rule').valueChanges.subscribe((rule) => {
       this.ruleIsDuplicated = false;
       this.bodyRuleInEdit.rule = rule;
     });
 
-    const typeSubscription = this.bodyAddRuleFormGroup.get('type').valueChanges.subscribe(type => {
+    const typeSubscription = this.bodyAddRuleFormGroup.get('type').valueChanges.subscribe((type) => {
       this.ruleIsDuplicated = false;
       this.bodyRuleInEdit.type = type;
     });
@@ -110,7 +108,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
    * Sets the rule object as invalid
    */
   setJsonInvalid(message: string): void {
-    this.rule.setErrors({ invalidJSON: true, message: message });
+    this.rule.setErrors({ invalidJSON: true, message });
   }
 
   /**
@@ -127,7 +125,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
     try {
       this.bodyData = JSON.parse(this.bodyAddRuleFormGroup.controls.rule.value);
     } catch (e) {
-      this.setJsonInvalid;
+      this.setJsonInvalid('Invalid JSON');
       this.bodyData = '';
     }
   }
@@ -136,7 +134,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

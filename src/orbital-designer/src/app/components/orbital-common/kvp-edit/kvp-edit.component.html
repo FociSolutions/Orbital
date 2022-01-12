@@ -5,12 +5,7 @@
 <div>
   <p class="description">{{ listKvpTitle }}</p>
 </div>
-<div *ngIf="!hasValuesAdded()">
-  No rules Added
-</div>
+<div *ngIf="!hasValuesAdded()">No rules Added</div>
 <div *ngFor="let kv of savedKvp | keyvalue">
-  <app-kvp-list-item
-    [kvp]="kv"
-    (removeKvp)="deleteKvp($event)"
-  ></app-kvp-list-item>
+  <app-kvp-list-item [kvp]="kv" (removeKvp)="deleteKvp($event)"></app-kvp-list-item>
 </div>

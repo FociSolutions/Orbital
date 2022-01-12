@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { Observable, throwError, forkJoin } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DesignerStore } from '../../store/designer-store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExportMockdefinitionService {
   urlCache: string;
   mockdefinitionCache: MockDefinition;
   constructor(private store: DesignerStore, private httpClient: HttpClient, private logger: NGXLogger) {
-    // eslint-disable-next-line no-shadow, @typescript-eslint/no-shadow
-    this.store.state$.subscribe(state => {
-      if (!!state.mockDefinition) {
+    this.store.state$.subscribe((state) => {
+      if (state.mockDefinition) {
         this.mockdefinitionCache = state.mockDefinition;
       }
     });
@@ -51,14 +50,13 @@ export class ExportMockdefinitionService {
     return this.httpClient
       .post<boolean>(url, mockDefinitionToExport, {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json; charset=utf-8'
-        })
+          'Content-Type': 'application/json; charset=utf-8',
+        }),
       })
       .pipe(
-        catchError(error => {
+        catchError((error) => {
           return throwError(error);
         })
       );
   }
-
 }

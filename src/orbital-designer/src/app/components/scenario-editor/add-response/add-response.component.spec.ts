@@ -9,6 +9,7 @@ import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.buil
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
@@ -56,8 +57,7 @@ describe('AddResponseComponent', () => {
       component.statusCode = testStatusCode;
       component.responseFormGroup.controls.body.setValue(testBodyResponse);
 
-      jest.spyOn(component.isValid, 'emit');
-      jest.spyOn(component.responseOutput, 'emit');
+      const spy = jest.spyOn(component.responseOutput, 'emit');
 
       const testResponse = {
         headers: testHeaderResponse,
@@ -68,7 +68,8 @@ describe('AddResponseComponent', () => {
       component.response = testResponse;
       component.saveStatus = true;
 
-      expect(component.responseOutput.emit).not.toHaveBeenCalledWith(testResponse);
+      expect(spy).not.toHaveBeenCalledWith(testResponse);
+      spy.mockRestore();
     });
   });
 
@@ -82,18 +83,19 @@ describe('AddResponseComponent', () => {
       const saveHeaderRecordSpy = jest.spyOn(component.responseOutput, 'emit');
       component.saveHeaders(headerRecord);
 
-      expect(saveHeaderRecordSpy).toHaveBeenCalledWith(({
+      expect(saveHeaderRecordSpy).toHaveBeenCalledWith({
         headers: headerRecord,
         body: component.responseFormGroup.controls.body.value,
         status: +component.statusCode,
-      } as unknown) as Response);
+        type: ResponseType.NONE,
+      } as unknown as Response);
     });
   });
 
   describe('addResponse.changeLog', () => {
     it('Should return no errors if input is an empty json', () => {
-      let jsonEditor = component.editor;
-      let formErrors = component.responseFormGroup.get('body').errors;
+      const jsonEditor = component.editor;
+      const formErrors = component.responseFormGroup.get('body').errors;
 
       jsonEditor.set(JSON.parse('{}'));
       component.changeLog();
@@ -102,8 +104,8 @@ describe('AddResponseComponent', () => {
     });
 
     it('Should return no errors if input is a valid json', () => {
-      let jsonEditor = component.editor;
-      let formErrors = component.responseFormGroup.get('body').errors;
+      const jsonEditor = component.editor;
+      const formErrors = component.responseFormGroup.get('body').errors;
 
       jsonEditor.set(JSON.parse(`{"myKey": "value"}`));
       component.changeLog();

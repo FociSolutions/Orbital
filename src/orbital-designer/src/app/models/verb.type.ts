@@ -12,5 +12,5 @@ export enum VerbType {
   CONNECT = 7,
   OPTIONS = 8,
   CUSTOM = 9,
-  NONE = 255
+  NONE = 255,
 }

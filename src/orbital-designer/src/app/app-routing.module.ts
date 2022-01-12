@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { OverviewRedirectService } from './services/overview-redirect/overview-redirect.service';
 import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateEditMockViewComponent } from './components/create-edit-mock-view/create-edit-mock-view.component';
@@ -18,35 +18,35 @@ const routes: Routes = [
   { path: 'import-from-file', component: ImportFromFileViewComponent },
   {
     path: 'download-mockdefinitions',
-    component: DownloadMockdefinitionsComponent
+    component: DownloadMockdefinitionsComponent,
   },
   { path: 'import-from-server', component: ImportFromServerViewComponent },
   {
     path: 'endpoint-view',
     component: EndpointViewComponent,
-    canActivate: [OverviewRedirectService]
+    canActivate: [OverviewRedirectService],
   },
   {
     path: 'scenario-view',
     component: ScenarioViewComponent,
-    canActivate: [OverviewRedirectService]
+    canActivate: [OverviewRedirectService],
   },
   {
     path: 'scenario-editor/:scenarioId',
     component: ScenarioEditorComponent,
-    canActivate: [OverviewRedirectService]
+    canActivate: [OverviewRedirectService],
   },
   {
     path: 'export-to-server',
     component: ExportToServerViewComponent,
-    canActivate: [OverviewRedirectService]
+    canActivate: [OverviewRedirectService],
   },
   { path: 'delete-from-server', component: DeleteFromServerViewComponent },
-  { path: '**', component: HomeViewComponent }
+  { path: '**', component: HomeViewComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

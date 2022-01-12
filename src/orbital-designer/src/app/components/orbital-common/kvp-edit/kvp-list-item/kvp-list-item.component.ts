@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-kvp-list-item',
   templateUrl: './kvp-list-item.component.html',
-  styleUrls: ['./kvp-list-item.component.scss']
+  styleUrls: ['./kvp-list-item.component.scss'],
 })
 export class KvpListItemComponent {
   currentKVP: KeyValue<string, string>;

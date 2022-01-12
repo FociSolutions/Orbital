@@ -1,9 +1,9 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-dialog-box',
   templateUrl: './dialog-box.component.html',
-  styleUrls: ['./dialog-box.component.scss']
+  styleUrls: ['./dialog-box.component.scss'],
 })
 export class DialogBoxComponent {
   @Input() titleText: string;
@@ -12,8 +12,6 @@ export class DialogBoxComponent {
   @Input() cancelButtonText = 'Cancel';
 
   @Output() choiceBoolean: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  constructor() {}
 
   /**
    * Emits true to parent when the user wishes the delete a scenario

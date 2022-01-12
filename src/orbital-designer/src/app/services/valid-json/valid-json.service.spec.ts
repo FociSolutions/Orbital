@@ -1,15 +1,14 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ValidJsonService } from './valid-json.service';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import * as faker from 'faker';
 import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
 
 describe('ValidJsonService', () => {
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [LoggerTestingModule]
+      imports: [LoggerTestingModule],
     }).compileComponents();
-  }));
+  });
 
   it('should be created', () => {
     const service: ValidJsonService = TestBed.get(ValidJsonService);

@@ -4,7 +4,7 @@ import { VerbType } from '../../verb.type';
 import { Response, defaultResponse } from './response.model';
 import * as uuid from 'uuid';
 import { Policy } from './policy.model';
-import { defaultTokenRule, TokenRule } from './token-rule.model';
+import { TokenRule, defaultTokenRule } from './token-rule.model';
 /**
  * Model representation of a scenario
  */
@@ -29,13 +29,13 @@ export const emptyScenario: Scenario = {
   requestMatchRules: defaultRquestMatchRule,
   policies: [],
   defaultScenario: false,
-  tokenRule: defaultTokenRule
+  tokenRule: defaultTokenRule,
 };
 
 export interface ScenarioParams {
-  title: string,
-  description: string,
-  path: string,
-  verb: VerbType,
-  status: number
+  title: string;
+  description: string;
+  path: string;
+  verb: VerbType;
+  status: number;
 }

@@ -1,23 +1,23 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-url-add-rule',
   templateUrl: './url-add-rule.component.html',
-  styleUrls: ['./url-add-rule.component.scss']
+  styleUrls: ['./url-add-rule.component.scss'],
 })
 export class UrlAddRuleComponent implements OnInit, OnDestroy {
   /**
    * Stores the subscriptions that will be destroyed during OnDestroy
    */
   private subscriptions: Subscription[] = [];
-  private urlRuleInEdit = {
-    rule: { urlPath: '' } as Record<string, string>,
-    type: RuleType.ACCEPTALL
-  } as KeyValuePairRule;
+  private urlRuleInEdit: KeyValuePairRule = {
+    rule: { urlPath: '' },
+    type: RuleType.ACCEPTALL,
+  };
   private ruleIsDuplicated = false;
 
   @Input() urlRuleAddedIsDuplicated = new EventEmitter<boolean>();
@@ -26,25 +26,26 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
   readonly rules = [
     { value: RuleType.REGEX, viewValue: 'Matches Regex' },
     { value: RuleType.ACCEPTALL, viewValue: 'Accept All' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' }
+    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
   ];
 
   urlAddRuleFormGroup: FormGroup;
   ngOnInit() {
     const urlDuplicatedSubscription = this.urlRuleAddedIsDuplicated.subscribe(
-      isDuplicated => (this.ruleIsDuplicated = isDuplicated)
+      (isDuplicated) => (this.ruleIsDuplicated = isDuplicated)
     );
     this.urlAddRuleFormGroup = new FormGroup({
-      path: new FormControl(this.urlRuleInEdit.rule['urlPath'], [Validators.required, Validators.maxLength(3000)]),
-      ruleType: new FormControl(this.urlRuleInEdit.type, [Validators.required])
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      path: new FormControl(this.urlRuleInEdit.rule.urlPath, [Validators.required, Validators.maxLength(3000)]),
+      ruleType: new FormControl(this.urlRuleInEdit.type, [Validators.required]),
     });
 
-    const pathSubscription = this.urlAddRuleFormGroup.get('path').valueChanges.subscribe(path => {
+    const pathSubscription = this.urlAddRuleFormGroup.get('path').valueChanges.subscribe((path) => {
       this.ruleIsDuplicated = false;
-      this.urlRuleInEdit.rule['urlPath'] = path;
+      this.urlRuleInEdit.rule.urlPath = path;
     });
 
-    const ruleTypeSubscription = this.urlAddRuleFormGroup.get('ruleType').valueChanges.subscribe(type => {
+    const ruleTypeSubscription = this.urlAddRuleFormGroup.get('ruleType').valueChanges.subscribe((type) => {
       this.ruleIsDuplicated = false;
       this.urlRuleInEdit.type = type;
 
@@ -82,7 +83,7 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Controls the logic for emmiting a new addUrlRule event
+   * Controls the logic for emitting a new addUrlRule event
    */
   addUrlRule(): void {
     if (this.urlAddRuleFormGroup.valid) {
@@ -94,7 +95,7 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

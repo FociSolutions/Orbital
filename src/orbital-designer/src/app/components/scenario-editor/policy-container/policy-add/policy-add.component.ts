@@ -1,25 +1,25 @@
-import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
-import { FormGroup, FormControl, Validators, AbstractControl, FormArray } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PolicyFormBuilder } from '../policy-form-builder/policy-form.builder';
-import { recordAdd, recordFirstOrDefaultKey, recordFirstOrDefault } from 'src/app/models/record';
+import { recordAdd, recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
 
 @Component({
   selector: 'app-policy-add',
   templateUrl: './policy-add.component.html',
-  styleUrls: ['./policy-add.component.scss']
+  styleUrls: ['./policy-add.component.scss'],
 })
 export class PolicyAddComponent implements OnInit, OnDestroy {
   /**
    * Stores the subscriptions that will be destroyed during OnDestroy
    */
   private subscriptions: Subscription[] = [];
-  private policyToAdd = {
-    attributes: {} as Record<string, string>,
-    type: PolicyType.NONE
-  } as Policy;
+  private policyToAdd: Policy = {
+    attributes: {},
+    type: PolicyType.NONE,
+  };
   private policyIsDuplicated = false;
 
   @Input() policyAddedIsDuplicated = new EventEmitter<boolean>();
@@ -31,35 +31,35 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: PolicyFormBuilder) {}
   ngOnInit() {
     const policyDuplicatedSubscription = this.policyAddedIsDuplicated.subscribe(
-      isDuplicated => (this.policyIsDuplicated = isDuplicated)
+      (isDuplicated) => (this.policyIsDuplicated = isDuplicated)
     );
     this.policyAddFormGroup = new FormGroup({
       attributes: this.formBuilder.generateEmptyPolicyFormArray(),
-      policyType: new FormControl(this.policyToAdd.type, [Validators.required])
+      policyType: new FormControl(this.policyToAdd.type, [Validators.required]),
     });
 
-    const policyAttributeSubscription = (this.policyAddFormGroup.controls
-      .attributes as FormArray).valueChanges.subscribe(changedAttributes => {
-      this.policyIsDuplicated = false;
-      if (changedAttributes.length > 0) {
-        const attributePolicies = changedAttributes.map(att => {
-          return att as Record<string, string>;
-        });
-        attributePolicies.forEach(attributeToAdd => {
-          recordAdd(
-            this.policyToAdd.attributes,
-            recordFirstOrDefaultKey(attributeToAdd, ''),
-            recordFirstOrDefault(attributeToAdd, '')
-          );
-        });
+    const policyAttributeSubscription = this.policyAddFormGroup.controls.attributes.valueChanges.subscribe(
+      (changedAttributes) => {
+        this.policyIsDuplicated = false;
+        if (changedAttributes.length > 0) {
+          changedAttributes.forEach((attributeToAdd) => {
+            recordAdd(
+              this.policyToAdd.attributes,
+              recordFirstOrDefaultKey(attributeToAdd, ''),
+              recordFirstOrDefault(attributeToAdd, '')
+            );
+          });
+        }
       }
-    });
+    );
 
-    const policyTypeSubscription = this.policyAddFormGroup.get('policyType').valueChanges.subscribe(type => {
+    const policyTypeSubscription = this.policyAddFormGroup.get('policyType').valueChanges.subscribe((type) => {
       this.policyIsDuplicated = false;
       this.policyToAdd.type = type;
       if (type === PolicyType.DELAYRESPONSE) {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         const lengthOfArray = (this.policyAddFormGroup.controls.attributes as FormArray).length;
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (this.policyAddFormGroup.controls.attributes as FormArray).insert(
           lengthOfArray,
           this.formBuilder.generateDelayPolicyFormGroup()
@@ -81,10 +81,11 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
    * Gets the form control for the 'delay'
    */
   get delay(): AbstractControl {
-    const arrayAttributes = this.policyAddFormGroup.get('attributes') as FormArray;
-    const delayFormGroup = arrayAttributes.at(0) as FormGroup;
-    const delaytoReturn = delayFormGroup.get('delay');
-    return delaytoReturn;
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const arrayAttributes: FormArray = this.policyAddFormGroup.get('attributes') as FormArray;
+    const delayFormGroup = arrayAttributes.at(0);
+    const delayToReturn = delayFormGroup.get('delay');
+    return delayToReturn;
   }
 
   /**
@@ -94,11 +95,12 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
     return this.policyAddFormGroup.get('policyType');
   }
   get attributes(): FormArray {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.policyAddFormGroup.get('attributes') as FormArray;
   }
 
   /**
-   * Controls the logic for emmiting a new addPolicy event
+   * Controls the logic for emitting a new addPolicy event
    */
   addPolicy(): void {
     if (this.policyAddFormGroup.valid) {
@@ -123,7 +125,7 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
+    this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
   }

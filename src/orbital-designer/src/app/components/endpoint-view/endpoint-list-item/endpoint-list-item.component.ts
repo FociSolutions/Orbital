@@ -7,17 +7,13 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-endpoint-list-item',
   templateUrl: './endpoint-list-item.component.html',
-  styleUrls: ['./endpoint-list-item.component.scss']
+  styleUrls: ['./endpoint-list-item.component.scss'],
 })
 export class EndpointListItemComponent {
   @Input() endpoint: Endpoint;
   @Input() scenarioCount: number;
 
-  constructor(
-    private store: DesignerStore,
-    private logger: NGXLogger,
-    private router: Router
-  ) {}
+  constructor(private store: DesignerStore, private logger: NGXLogger, private router: Router) {}
 
   /**
    * Returns a list of scenarios for the clicked endpoint
@@ -33,17 +29,14 @@ export class EndpointListItemComponent {
    * Gets the endpoint's description
    */
   get endpointDescription(): string {
-    return !this.endpoint || !this.endpoint.spec.description
-      ? 'No description'
-      : this.endpoint.spec.description;
+    return !this.endpoint || !this.endpoint.spec.description ? 'No description' : this.endpoint.spec.description;
   }
 
   get scenarioDisplay(): string {
-    let display = this.scenarioCount + " Scenario";
+    let display = `${this.scenarioCount} Scenario`;
     if (this.scenarioCount > 1 || this.scenarioCount == 0) {
-      display = display + "s";
+      display = `${display}s`;
     }
     return display;
   }
-
 }

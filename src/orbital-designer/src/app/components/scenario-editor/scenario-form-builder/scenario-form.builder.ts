@@ -1,5 +1,14 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Scenario, emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
@@ -14,7 +23,7 @@ import { ResponseType } from 'src/app/models/mock-definition/scenario/response.t
 import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ScenarioFormBuilder {
   private scenarioForm: FormGroup;
@@ -39,7 +48,7 @@ export class ScenarioFormBuilder {
       requestMatchRules: this.requestMatchRulesFormGroup(scenario.requestMatchRules),
       response: this.responseFormGroup(scenario.response),
       policies: this.policiesFormArray(scenario.policies),
-      tokenRule: this.tokenRuleFormArray(scenario.tokenRule)
+      tokenRule: this.tokenRuleFormArray(scenario.tokenRule),
     });
     return this.scenarioForm;
   }
@@ -48,12 +57,13 @@ export class ScenarioFormBuilder {
    * Returns a form group with the provided response values.
    *
    */
-  public responseFormGroup(response: Response): FormGroup {
+  responseFormGroup(response: Response): FormGroup {
     return this.formBuilder.group({
       status: response.status,
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       headers: this.formBuilder.array,
       body: response.body,
-      type: response.type
+      type: response.type,
     });
   }
 
@@ -62,18 +72,18 @@ export class ScenarioFormBuilder {
    *
    * @param requestMatchRules RequestMatchRules to be turned to form groups
    */
-  public requestMatchRulesFormGroup(requestMatchRules: RequestMatchRule): FormGroup {
+  requestMatchRulesFormGroup(requestMatchRules: RequestMatchRule): FormGroup {
     return this.formBuilder.group({
       headerMatchRules: this.formBuilder.array(
-        requestMatchRules.headerRules.map(h => this.getHeaderOrQueryItemFormGroup(h))
+        requestMatchRules.headerRules.map((h) => this.getHeaderOrQueryItemFormGroup(h))
       ),
       queryMatchRules: this.formBuilder.array(
-        requestMatchRules.queryRules.map(q => this.getHeaderOrQueryItemFormGroup(q))
+        requestMatchRules.queryRules.map((q) => this.getHeaderOrQueryItemFormGroup(q))
       ),
-      urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map(u => this.getUrlItemFormGroup(u))),
+      urlMatchRules: this.formBuilder.array(requestMatchRules.urlRules.map((u) => this.getUrlItemFormGroup(u))),
       bodyMatchRules: this.formBuilder.array(
-        requestMatchRules.bodyRules.map(u => this.bodyRuleFormBuilder.createBodyRuleForm(u))
-      )
+        requestMatchRules.bodyRules.map((u) => this.bodyRuleFormBuilder.createBodyRuleForm(u))
+      ),
     });
   }
 
@@ -82,59 +92,66 @@ export class ScenarioFormBuilder {
    *
    * @param metadata The metadata information to be turned to a form group.
    */
-  public metadataFormGroup(metadata: Metadata): FormGroup {
+  metadataFormGroup(metadata: Metadata): FormGroup {
     return this.formBuilder.group({
       title: [metadata.title, [Validators.maxLength(50)]],
-      description: [metadata.description, [Validators.maxLength(500)]]
+      description: [metadata.description, [Validators.maxLength(500)]],
     });
   }
 
-  public policiesFormArray(policies: Policy[]): FormArray {
-    return this.formBuilder.array(policies.map(p => this.getPolicyFormGroup(p)));
+  policiesFormArray(policies: Policy[]): FormArray {
+    return this.formBuilder.array(policies.map((p) => this.getPolicyFormGroup(p)));
   }
 
-  public getPolicyFormGroup(policy: Policy): FormGroup {
+  getPolicyFormGroup(policy: Policy): FormGroup {
     switch (policy.type) {
       case PolicyType.DELAYRESPONSE: {
         return new FormGroup({
           delay: new FormControl(recordFirstOrDefault(policy.attributes, ''), [
             Validators.required,
             Validators.min(1),
-            Validators.pattern('^[0-9]*$')
+            Validators.pattern('^[0-9]*$'),
           ]),
-          policyType: new FormControl(policy.type, [Validators.required])
+          policyType: new FormControl(policy.type, [Validators.required]),
         });
       }
+      default:
+        throw new Error('Invalid PolicyType');
     }
   }
 
   /**
-   * This method will return you the keyvaluepairrule provided as a form group.
+   * This method will return you the key-value-pair-rule provided as a form group.
    *
    * @param urlRule KeyValuePairRule to be turned to a form group.
    */
-  public getUrlItemFormGroup(urlRule: KeyValuePairRule) {
+  getUrlItemFormGroup(urlRule: KeyValuePairRule) {
     return new FormGroup({
       path: new FormControl(recordFirstOrDefault(urlRule.rule, ''), [Validators.required, Validators.maxLength(3000)]),
-      ruleType: new FormControl(urlRule.type, [Validators.required])
+      ruleType: new FormControl(urlRule.type, [Validators.required]),
     });
   }
 
   /**
-   * This method will return you the keyvaluepairrule provided as a form group.
+   * This method will return you the key-value-pair-rule provided as a form group.
    *
    * @param headerOrQueryRule KeyValuePairRule to be turned to a form group.
    */
-  public getHeaderOrQueryItemFormGroup(headerOrQueryRule: KeyValuePairRule,
-    validators = [Validators.required]) {
+  getHeaderOrQueryItemFormGroup(headerOrQueryRule: KeyValuePairRule, validators = [Validators.required]) {
     return new FormGroup({
-      key: new FormControl(recordFirstOrDefaultKey(headerOrQueryRule.rule, ''), [...validators, Validators.maxLength(200)]),
-      value: new FormControl(recordFirstOrDefault(headerOrQueryRule.rule, ''), [...validators, Validators.maxLength(1000)]),
-      type: new FormControl(headerOrQueryRule.type, validators)
+      key: new FormControl(recordFirstOrDefaultKey(headerOrQueryRule.rule, ''), [
+        ...validators,
+        Validators.maxLength(200),
+      ]),
+      value: new FormControl(recordFirstOrDefault(headerOrQueryRule.rule, ''), [
+        ...validators,
+        Validators.maxLength(1000),
+      ]),
+      type: new FormControl(headerOrQueryRule.type, validators),
     });
   }
 
-  public tokenRuleFormArray(tokenRule: TokenRule): FormArray {
+  tokenRuleFormArray(tokenRule: TokenRule): FormArray {
     tokenRule.rules ??= [];
     return new FormArray(
       tokenRule.rules.map((t) =>
@@ -147,17 +164,22 @@ export class ScenarioFormBuilder {
     );
   }
 
-  noWhiteSpaceValidator(control: AbstractControl): ValidationErrors {
+  noWhiteSpaceValidator(this: void, control: AbstractControl): ValidationErrors {
     let error = null;
-    if (/\s/.test(control.value))  {
-      error = {"error": "Cannot contain whitespace"};
+    if (/\s/.test(control.value)) {
+      error = { error: 'Cannot contain whitespace' };
     }
     return error;
   }
 }
 
+interface PolicyDelayFormGroup {
+  delay: string;
+  policyType: number;
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ScenarioFormMapper {
   /**
@@ -168,23 +190,22 @@ export class ScenarioFormMapper {
     return responseForm.controls.type.value;
   }
 
-  public GetUrlRulesFromForm(urlMatchRules: FormArray) {
+  GetUrlRulesFromForm(urlMatchRules: FormArray) {
     interface UrlRuleFormGroup {
       path: string;
       ruleType: number;
     }
 
-    let urlRules: KeyValuePairRule[];
-
-    urlRules = urlMatchRules.controls
-      .map(group => {
-        return (group as FormGroup).getRawValue() as UrlRuleFormGroup;
+    const urlRules: KeyValuePairRule[] = urlMatchRules.controls
+      .map((group) => {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return (group as FormGroup).getRawValue();
       })
-      .map(urlFormGroup => {
+      .map((urlFormGroup: UrlRuleFormGroup) => {
         return {
           type: urlFormGroup.ruleType,
-          rule: { urlPath: urlFormGroup.path }
-        } as KeyValuePairRule;
+          rule: { urlPath: urlFormGroup.path },
+        };
       });
     return urlRules;
   }
@@ -194,21 +215,19 @@ export class ScenarioFormMapper {
    *
    * @param policies raw policies to be transformed
    */
-  public GetPolicyRulesFromForm(policies: FormArray) {
-    let newPolicies: Policy[];
-
-    newPolicies = policies.controls.map(group => {
-      const policytype = (group as FormGroup).get('policyType').value;
+  GetPolicyRulesFromForm(policies: FormArray) {
+    const newPolicies: Policy[] = policies.controls.map((group) => {
+      const policyType = group.get('policyType').value;
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const rawValue = (group as FormGroup).getRawValue();
-      return this.getPolicy(policytype, rawValue);
+      return this.getPolicy(policyType, rawValue);
     });
     return newPolicies;
   }
 
-  public GetBodyRulesFromForm(bodyRules: FormArray) {
-    let newBodyRules: BodyRule[];
-
-    newBodyRules = bodyRules.controls.map(group => {
+  GetBodyRulesFromForm(bodyRules: FormArray) {
+    const newBodyRules: BodyRule[] = bodyRules.controls.map((group) => {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const rawValue = (group as FormGroup).getRawValue();
       return this.getBodyRule(rawValue);
     });
@@ -216,59 +235,56 @@ export class ScenarioFormMapper {
   }
 
   /**
-   * Transforms FormGroup into the appropiate policy
-   * @param policytype The type of policy
+   * Transforms FormGroup into the appropriate policy
+   * @param policyType The type of policy
    * @param rawValue The raw FormGroup value to be transformed
    */
-  private getPolicy(policytype: PolicyType, rawValue: any) {
-    switch (policytype) {
+  private getPolicy(policyType: PolicyType, rawValue: PolicyDelayFormGroup) {
+    switch (policyType) {
       case PolicyType.DELAYRESPONSE: {
-        interface PolicyDelayFormGroup {
-          delay: string;
-          policyType: number;
-        }
-        const rawPolicy = rawValue as PolicyDelayFormGroup;
+        const rawPolicy = rawValue;
         const policyToReturn = {
           type: rawPolicy.policyType,
-          attributes: { delay: rawPolicy.delay } as Record<string, string>
+          attributes: { delay: rawPolicy.delay },
         };
         return policyToReturn;
       }
+      default:
+        throw new Error('Invalid PolicyType');
     }
   }
 
   /**
    * Transforms FormGroup into the appropriate query or header rule
-   * @param headerOrQuerRules The header or query rules form array to extract from
+   * @param headerOrQueryRules The header or query rules form array to extract from
    */
-  public GetHeaderOrQueryRulesFromForm(headerOrQuerRules: FormArray) {
+  GetHeaderOrQueryRulesFromForm(headerOrQueryRules: FormArray) {
     interface HeaderQueryRuleFormGroup {
       key: string;
       value: string;
       type: number;
     }
 
-    let kvpRules: KeyValuePairRule[];
-
-    kvpRules = headerOrQuerRules.controls
-      .map(group => {
-        return (group as FormGroup).getRawValue() as HeaderQueryRuleFormGroup;
+    const kvpRules: KeyValuePairRule[] = headerOrQueryRules.controls
+      .map((group): HeaderQueryRuleFormGroup => {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return (group as FormGroup).getRawValue();
       })
-      .map(kvpRuleFormGroup => {
+      .map((kvpRuleFormGroup): KeyValuePairRule => {
         return {
           type: kvpRuleFormGroup.type,
-          rule: { [kvpRuleFormGroup.key]: kvpRuleFormGroup.value }
-        } as KeyValuePairRule;
+          rule: { [kvpRuleFormGroup.key]: kvpRuleFormGroup.value },
+        };
       });
     return kvpRules;
   }
 
   /*
-   * Transforms FormGroup into the appropiate policy
-   * @param policytype The type of policy
+   * Transforms FormGroup into the appropriate policy
    * @param rawValue The raw FormGroup value to be transformed
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getBodyRule(rawValue: any): BodyRule {
-    return { rule: rawValue.rule, type: rawValue.type } as BodyRule;
+    return { rule: rawValue.rule, type: rawValue.type };
   }
 }

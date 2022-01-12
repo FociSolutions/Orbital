@@ -3,7 +3,7 @@ import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
 import { Endpoint } from '../../models/endpoint.model';
 
 @Pipe({
-  name: 'getEndpointScenarios'
+  name: 'getEndpointScenarios',
 })
 export class GetEndpointScenariosPipe implements PipeTransform {
   /**
@@ -12,15 +12,14 @@ export class GetEndpointScenariosPipe implements PipeTransform {
    * @param scenarios The list of scenarios to filter
    * @param endpoint The endpoint to filter the scenarios against
    */
-  transform(scenarios: Scenario[] = [], endpoint: Endpoint): Scenario[] {
+  transform(scenarios: Scenario[], endpoint: Endpoint): Scenario[] {
     if (!endpoint) {
       return scenarios;
     }
     return scenarios.filter(
-      scenario =>
+      (scenario) =>
         scenario.path === endpoint.path &&
-        scenario.verb.toString().toUpperCase() ===
-          endpoint.verb.toString().toUpperCase()
+        scenario.verb.toString().toUpperCase() === endpoint.verb.toString().toUpperCase()
     );
   }
 }

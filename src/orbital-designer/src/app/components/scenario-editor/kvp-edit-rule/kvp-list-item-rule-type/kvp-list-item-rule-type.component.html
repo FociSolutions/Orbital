@@ -28,13 +28,9 @@
         </button>
       </div>
     </div>
-    <div class="error-message" *ngIf="isValueEmpty()">
-      Regex value is required
-    </div>
+    <div class="error-message" *ngIf="isValueEmpty()">Regex value is required</div>
     <div *ngIf="isRuleDuplicated() && this.ruleType.touched">
-      <mat-error>
-        Rule is duplicated
-      </mat-error>
+      <mat-error> Rule is duplicated </mat-error>
     </div>
   </form>
 </mat-card>

@@ -3,7 +3,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReadFileService {
   constructor(private logger: NGXLogger) {}
@@ -19,6 +19,7 @@ export class ReadFileService {
     return new Observable((observer) => {
       fileReader.readAsText(file);
       fileReader.onload = () => {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         const contentString = fileReader.result as string;
         this.logger.debug('File read succeeded');
         observer.next(contentString);

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormControl, FormArray, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl } from '@angular/forms';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-export-to-server-view',
   templateUrl: './export-to-server-view.component.html',
-  styleUrls: ['./export-to-server-view.component.scss']
+  styleUrls: ['./export-to-server-view.component.scss'],
 })
 export class ExportToServerViewComponent implements OnInit {
   readonly emptyListMessageServerBox = 'No Mockdefinitions';
@@ -25,7 +25,7 @@ export class ExportToServerViewComponent implements OnInit {
   isUploadingMocks: boolean;
   exportErrors: string;
 
-  controlsMockDefinitionToString = (control: AbstractControl) => (control.value as MockDefinition).metadata.title;
+  controlsMockDefinitionToString = (control: AbstractControl) => control.value.metadata.title;
 
   constructor(
     private location: Location,
@@ -47,7 +47,7 @@ export class ExportToServerViewComponent implements OnInit {
    */
   private resetForm() {
     const keys = Object.keys(this.store.state.mockDefinitions);
-    const controls = keys.map(k => new FormControl(this.store.state.mockDefinitions[k]));
+    const controls = keys.map((k) => new FormControl(this.store.state.mockDefinitions[k]));
     this.leftHandSideMocks = new FormArray(controls);
     this.rightHandSideMocks = [];
   }
@@ -69,7 +69,7 @@ export class ExportToServerViewComponent implements OnInit {
         })
       )
       .subscribe(
-        uploadMockStatus => {
+        (uploadMockStatus) => {
           if (every(uploadMockStatus)) {
             this.logger.debug('Received response from export to server promise resolution');
             this.exportStatusMessage = 'File(s) successfully exported';
@@ -90,10 +90,7 @@ export class ExportToServerViewComponent implements OnInit {
    */
   exportMocksFromForm(): Observable<boolean[]> {
     this.logger.debug('Mockdefinitions to export', this.rightHandSideMocks);
-    return this.service.exportMockDefinitions(
-      this.inputControl.value,
-      this.rightHandSideMocks
-    );
+    return this.service.exportMockDefinitions(this.inputControl.value, this.rightHandSideMocks);
   }
 
   /**
@@ -103,7 +100,7 @@ export class ExportToServerViewComponent implements OnInit {
    * one list to the other.
    */
   onListOutput(list: FormControl[]) {
-    this.rightHandSideMocks = list.map(control => control.value);
+    this.rightHandSideMocks = list.map((control) => control.value);
   }
 
   /**

@@ -1,37 +1,35 @@
-import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { saveAs } from 'file-saver';
 import { recordMap } from 'src/app/models/record';
 
 @Component({
   selector: 'app-download-mockdefinitions',
   templateUrl: './download-mockdefinitions.component.html',
-  styleUrls: ['./download-mockdefinitions.component.scss']
+  styleUrls: ['./download-mockdefinitions.component.scss'],
 })
 export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
-  outputList: EventEmitter<any[]>;
+  outputList: EventEmitter<unknown[]>;
 
   emptyListMessage = 'List is empty';
   noSearchResultsMessage = 'No search results found';
 
-  list: any[] = [];
+  list: unknown[] = [];
   selected: any[] = [];
   isMockSelected = false;
 
   constructor(private location: Location, private store: DesignerStore) {
-    this.outputList = new EventEmitter<any[]>();
+    this.outputList = new EventEmitter<unknown[]>();
   }
 
   ngOnInit() {
-    this.store.state$.subscribe(state => {
-      this.list = recordMap(state.mockDefinitions, md => new FormControl(md));
+    this.store.state$.subscribe((state) => {
+      this.list = recordMap(state.mockDefinitions, (md) => new FormControl(md));
     });
   }
-
-
 
   /**
    * Completes event emitter
@@ -60,9 +58,9 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
    * Downloads multiple mock files from the designer
    */
   downloadMocks() {
-    this.selected.forEach(mockDefinition => {
+    this.selected.forEach((mockDefinition) => {
       const blob = new Blob([JSON.stringify(mockDefinition.value)], { type: 'text/plain;charset=utf-8' });
-      saveAs(blob, mockDefinition.value.metadata.title + '.json');
+      saveAs(blob, `${mockDefinition.value.metadata.title}.json`);
     });
   }
 }

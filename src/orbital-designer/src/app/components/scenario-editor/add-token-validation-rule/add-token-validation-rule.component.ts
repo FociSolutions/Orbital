@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 @Component({
@@ -14,8 +13,6 @@ export class AddTokenValidationRuleComponent implements OnInit {
   @Input() tokenRule: TokenRule;
   @Input() tokenRuleFormArray: FormArray;
 
-  constructor() {}
-
   ngOnInit(): void {
     this.formSubscription = this.tokenRuleFormArray.valueChanges.subscribe(() => {
       this.updateTokenRule();
@@ -26,12 +23,12 @@ export class AddTokenValidationRuleComponent implements OnInit {
     const formGroups = this.tokenRuleFormArray.controls;
 
     this.tokenRule.rules = formGroups.map((formGroup) => {
-      let kvpRule: Record<string, string> = {};
+      const kvpRule: Record<string, string> = {};
       kvpRule[formGroup.get('key').value] = formGroup.get('value').value;
       return {
         type: formGroup.get('type').value,
         rule: kvpRule,
-      } as KeyValuePairRule;
+      };
     });
   }
 }

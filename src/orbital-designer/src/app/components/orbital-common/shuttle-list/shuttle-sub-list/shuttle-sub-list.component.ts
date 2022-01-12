@@ -7,7 +7,7 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 @Component({
   selector: 'app-shuttle-sub-list',
   templateUrl: './shuttle-sub-list.component.html',
-  styleUrls: ['./shuttle-sub-list.component.scss']
+  styleUrls: ['./shuttle-sub-list.component.scss'],
 })
 export class ShuttleSubListComponent {
   static readonly selectAllString = 'Select All';
@@ -33,9 +33,7 @@ export class ShuttleSubListComponent {
    * it returns the deselectAllString, else it returns the selectAllString
    */
   get checkboxLabel() {
-    return this.selectAllChecked
-      ? ShuttleSubListComponent.deselectAllString
-      : ShuttleSubListComponent.selectAllString;
+    return this.selectAllChecked ? ShuttleSubListComponent.deselectAllString : ShuttleSubListComponent.selectAllString;
   }
 
   /**
@@ -46,10 +44,7 @@ export class ShuttleSubListComponent {
    */
   get selectAllChecked() {
     return (
-      !!this.matList &&
-      this.matList.selectedOptions.selected.filter(
-        opt => !this.hideOption(opt.value)
-      ).length > 0
+      !!this.matList && this.matList.selectedOptions.selected.filter((opt) => !this.hideOption(opt.value)).length > 0
     );
   }
 
@@ -60,14 +55,9 @@ export class ShuttleSubListComponent {
    */
   onSelectAll(event: MatCheckboxChange) {
     this.matList.options.forEach(
-      option =>
-        (option.selected = this.hideOption(option.value)
-          ? option.selected
-          : event.checked)
+      (option) => (option.selected = this.hideOption(option.value) ? option.selected : event.checked)
     );
-    this.itemSelected.emit(
-      this.matList.selectedOptions.selected.map(option => option.value)
-    );
+    this.itemSelected.emit(this.matList.selectedOptions.selected.map((option) => option.value));
 
     this.emitSearchResultsSelected();
   }
@@ -86,7 +76,7 @@ export class ShuttleSubListComponent {
    */
   hideOption(item: MockDefinition): boolean {
     if (this.filteredOutOptions.length > 0) {
-      return !!this.filteredOutOptions.find(option => option.value === item);
+      return !!this.filteredOutOptions.find((option) => option.value === item);
     }
     return false;
   }
@@ -97,11 +87,7 @@ export class ShuttleSubListComponent {
    */
   onSearchInput(value: string) {
     this.filteredOutOptions = this.matList.options.filter(
-      option =>
-        !ShuttleSubListComponent.ignoreCaseContainsMatch(
-          (option.value.value as MockDefinition).metadata.title,
-          value
-        )
+      (option) => !ShuttleSubListComponent.ignoreCaseContainsMatch(option.value.value.metadata.title, value)
     );
     this.emitSearchResultsSelected();
   }
@@ -111,17 +97,13 @@ export class ShuttleSubListComponent {
   }
 
   get noSearchResults() {
-    return (
-      this.list.length > 0 &&
-      this.list.length === this.filteredOutOptions.length
-    );
+    return this.list.length > 0 && this.list.length === this.filteredOutOptions.length;
   }
 
   /**
    * Returns true if the target parameter contains the substring parameter. It sets
    * both of them to lowercase before performing the compares in order to ignore case.
    */
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   static ignoreCaseContainsMatch(target: string, substring: string): boolean {
     return target.toLowerCase().includes(substring.toLowerCase());
   }
@@ -130,9 +112,11 @@ export class ShuttleSubListComponent {
    * Emits the selected items in the search results that are visible to the user
    */
   private emitSearchResultsSelected() {
-    this.itemSelected.emit(this.matList.selectedOptions.selected
-    .filter(e => !this.filteredOutOptions.includes(e))
-    .filter(option => option.selected)
-    .map(option => option.value));
+    this.itemSelected.emit(
+      this.matList.selectedOptions.selected
+        .filter((e) => !this.filteredOutOptions.includes(e))
+        .filter((option) => option.selected)
+        .map((option) => option.value)
+    );
   }
 }

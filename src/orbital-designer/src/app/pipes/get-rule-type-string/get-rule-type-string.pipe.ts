@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 import { Pipe, PipeTransform } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 @Pipe({
-  name: 'getRuleTypeString'
+  name: 'getRuleTypeString',
 })
 export class GetRuleTypeStringPipe implements PipeTransform {
   /**

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { FormGroup } from '@angular/forms';

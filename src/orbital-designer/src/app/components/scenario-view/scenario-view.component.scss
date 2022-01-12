@@ -52,10 +52,10 @@ button#add {
   width: 94%;
   justify-content: space-between;
   button {
-  margin-top: 1em;
-  &:hover {
-    background-color: #005c50;
-  }
+    margin-top: 1em;
+    &:hover {
+      background-color: #005c50;
+    }
   }
 }
 
@@ -191,5 +191,4 @@ p#notFoundMessage {
 .title {
   display: flex;
   place-items: lwft;
-
 }

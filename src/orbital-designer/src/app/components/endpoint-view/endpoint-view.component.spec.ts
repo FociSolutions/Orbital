@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EndpointViewComponent } from './endpoint-view.component';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -21,7 +21,7 @@ describe('EndpointViewComponent', () => {
   let fixture: ComponentFixture<EndpointViewComponent>;
   let store: DesignerStore;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         EndpointViewComponent,
@@ -31,7 +31,7 @@ describe('EndpointViewComponent', () => {
         SideBarComponent,
         GetEndpointScenariosPipe,
         GetVerbStringPipe,
-        GetVerbColorPipe
+        GetVerbColorPipe,
       ],
       imports: [
         LoggerTestingModule,
@@ -39,16 +39,16 @@ describe('EndpointViewComponent', () => {
         OrbitalCommonModule,
         RouterTestingModule,
         BrowserAnimationsModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
       ],
-      providers: [DesignerStore]
+      providers: [DesignerStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EndpointViewComponent);
     component = fixture.componentInstance;
     store = TestBed.get(DesignerStore);
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -70,5 +70,4 @@ describe('EndpointViewComponent', () => {
       expect(component.showNotFound()).toBeTruthy();
     });
   });
-
 });

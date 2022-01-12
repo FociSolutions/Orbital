@@ -4,5 +4,5 @@
 export enum ResponseType {
   NONE = 0,
   CUSTOM,
-  TEMPLATED
+  TEMPLATED,
 }

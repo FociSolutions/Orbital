@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, flush, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -33,7 +33,7 @@ import { UrlAddRuleComponent } from './url-edit-rule/url-add-rule/url-add-rule.c
 import { UrlEditRuleComponent } from './url-edit-rule/url-edit-rule.component';
 import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
 import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
-import { FormGroup, FormArray } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { PolicyComponent } from './policy-container/policy/policy.component';
 import { PolicyAddComponent } from './policy-container/policy-add/policy-add.component';
@@ -130,7 +130,7 @@ describe('ScenarioEditorComponent', () => {
   describe('ScenarioEditorComponent.handleResponseOutput', () => {
     it('should set the response to the response when the component outputs the response', fakeAsync(() => {
       component.selectedScenario = validMockDefinition.scenarios[0];
-      const fakeResponse = (validMockDefinition.scenarios[0].response as unknown) as Response;
+      const fakeResponse = validMockDefinition.scenarios[0].response as unknown as Response;
       component.handleResponseOutput(fakeResponse);
       tick();
       fixture.detectChanges();
@@ -160,10 +160,9 @@ describe('ScenarioEditorComponent', () => {
         component.metadataMatchRuleValid = true;
         component.requestMatchRuleValid = true;
         component.responseMatchRuleValid = true;
-        ((component.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls
-          .urlMatchRules as FormArray).controls = input.scenario.requestMatchRules.urlRules.map((ur) =>
-          scenarioBuilder.getUrlItemFormGroup(ur)
-        );
+        (
+          (component.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.urlMatchRules as FormArray
+        ).controls = input.scenario.requestMatchRules.urlRules.map((ur) => scenarioBuilder.getUrlItemFormGroup(ur));
 
         component.saveScenario();
         tick();

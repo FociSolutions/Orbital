@@ -24,23 +24,15 @@
     </form>
 
     <div *ngIf="type.invalid && type.dirty">
-      <mat-error *ngIf="type.errors.required">
-        Body rule type is required
-      </mat-error>
+      <mat-error *ngIf="type.errors.required"> Body rule type is required </mat-error>
     </div>
 
     <div *ngIf="rule.invalid && rule.dirty">
-      <mat-error *ngIf="rule.errors.required">
-        Body rule is required
-      </mat-error>
-      <mat-error *ngIf="rule.errors.invalidJson">
-        Body rule must be valid JSON
-      </mat-error>
+      <mat-error *ngIf="rule.errors.required"> Body rule is required </mat-error>
+      <mat-error *ngIf="rule.errors.invalidJson"> Body rule must be valid JSON </mat-error>
     </div>
     <div *ngIf="rule.touched && type.touched">
-      <mat-error>
-        Rule is duplicated
-      </mat-error>
+      <mat-error> Rule is duplicated </mat-error>
     </div>
   </mat-card-content>
 </mat-card>

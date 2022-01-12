@@ -8,7 +8,7 @@ import { Metadata } from '../models/mock-definition/metadata.model';
 import { OpenAPIV2 } from 'openapi-types';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
-import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Scenario } from '../models/mock-definition/scenario/scenario.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
@@ -17,7 +17,7 @@ import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec
 import { ReadFileService } from '../services/read-file/read-file.service';
 import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
-import { recordSize, recordAdd } from '../models/record';
+import { recordAdd, recordSize } from '../models/record';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -92,7 +92,7 @@ describe('DesignerStore', () => {
 
       for (const path of Object.keys(Expected.openApi.paths)) {
         for (const verb of acceptedVerbs) {
-          if (!!Expected.openApi.paths[path][verb]) {
+          if (Expected.openApi.paths[path][verb]) {
             expect(
               store.state.endpoints.findIndex(
                 (endpoint) =>
@@ -121,7 +121,7 @@ describe('DesignerStore', () => {
               store.setEndpoints(n, false);
               for (const path of Object.keys(n.paths)) {
                 for (const verb of acceptedVerbs) {
-                  if (!!n.paths[path][verb]) {
+                  if (n.paths[path][verb]) {
                     expect(
                       store.state.endpoints.findIndex(
                         (endpoint) =>
@@ -155,7 +155,7 @@ describe('DesignerStore', () => {
       expect(store.state.mockDefinition).toEqual(Expected);
       for (const path of Object.keys(Expected.openApi.paths)) {
         for (const verb of acceptedVerbs) {
-          if (!!Expected.openApi.paths[path][verb]) {
+          if (Expected.openApi.paths[path][verb]) {
             expect(
               store.state.endpoints.findIndex(
                 (endpoint) =>
@@ -374,7 +374,7 @@ describe('DesignerStore', () => {
       store.appendMockDefinition(mockDef);
       store.state$.subscribe({
         next: (state) => {
-          if (!!state.mockDefinition) {
+          if (state.mockDefinition) {
             expect(state.mockDefinition).toEqual(mockDef);
           }
           done();
@@ -399,7 +399,7 @@ describe('DesignerStore', () => {
 
       store.state$.subscribe({
         next: (state) => {
-          if (!!state.mockDefinition) {
+          if (state.mockDefinition) {
             expect(state.mockDefinition).toEqual(mockDef1);
           }
           done();
@@ -412,7 +412,6 @@ describe('DesignerStore', () => {
       store.state$.pipe(take(1));
     });
 
-    // eslint-disable-next-line max-len
     it('should update the state subscription when the state is changed when appending, and an item already exists with the same name', (done) => {
       const mockDef1 = _.cloneDeep(validMockDefinition);
       const mockDef2 = _.cloneDeep(validMockDefinition);
@@ -423,7 +422,7 @@ describe('DesignerStore', () => {
 
       let calls = 0;
       store.state$.subscribe((state) => {
-        if (!!state.mockDefinition) {
+        if (state.mockDefinition) {
           if (calls === 1) {
             expect(state.mockDefinition).toEqual(mockDef1);
             done();

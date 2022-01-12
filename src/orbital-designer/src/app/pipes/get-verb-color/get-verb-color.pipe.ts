@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { VerbType } from '../../models/verb.type';
 
 @Pipe({
-  name: 'getVerbColor'
+  name: 'getVerbColor',
 })
 export class GetVerbColorPipe implements PipeTransform {
   readonly blue: string = 'rgba(0, 163, 255, 0.25)';
@@ -19,10 +19,10 @@ export class GetVerbColorPipe implements PipeTransform {
    * class for the verb type. If a prefix string is passed into the parameters
    * then the pipe will prefix the color string with the prefix string.
    * @param verb The verb whose color we are trying to get
-   * @param prefix An optional argument that prefixes the verbscdf
+   * @param prefix An optional argument that prefixes the verbs
    * color string with the passed in string
    */
-  transform(verb: VerbType, prefix: string = ''): string {
+  transform(verb: VerbType, prefix = ''): string {
     switch (verb) {
       case VerbType.DELETE:
         return prefix + this.red;
@@ -38,6 +38,15 @@ export class GetVerbColorPipe implements PipeTransform {
         return prefix + this.notsonavyblue;
       case VerbType.PATCH:
         return prefix + this.turquoise;
+      case VerbType.CONNECT:
+      case VerbType.CUSTOM:
+      case VerbType.NONE:
+      case VerbType.TRACE:
+        return prefix;
+      default: {
+        // Cause a type-check error if a case is missed
+        const _: never = verb;
+      }
     }
   }
 }

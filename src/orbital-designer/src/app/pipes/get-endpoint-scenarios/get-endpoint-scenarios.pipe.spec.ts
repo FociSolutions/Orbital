@@ -41,7 +41,7 @@ describe('GetEndpointScenariosPipe', () => {
       },
       defaultScenario: false,
     } as Scenario;
-    const mockpaths = mockPath + faker.random.words;
+    const mockpaths = mockPath + faker.random.words();
     const mockVerbs = faker.random.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
     const mockNonMatchingScenario = {
       id: uuid.v4(),

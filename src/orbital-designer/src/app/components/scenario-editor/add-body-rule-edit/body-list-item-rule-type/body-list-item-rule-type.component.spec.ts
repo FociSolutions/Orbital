@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BodyListItemRuleTypeComponent } from './body-list-item-rule-type.component';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 
@@ -14,7 +14,7 @@ describe('BodyListItemRuleTypeComponent', () => {
   let component: BodyListItemRuleTypeComponent;
   let fixture: ComponentFixture<BodyListItemRuleTypeComponent>;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -24,19 +24,19 @@ describe('BodyListItemRuleTypeComponent', () => {
         MatSelectModule,
         MatCardModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
       ],
-      declarations: [BodyListItemRuleTypeComponent]
+      declarations: [BodyListItemRuleTypeComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BodyListItemRuleTypeComponent);
     component = fixture.componentInstance;
     component.bodyEditRuleFormGroup = new FormGroup({
       rule: new FormControl('', [Validators.required]),
-      type: new FormControl(RuleType.NONE, [Validators.required])
+      type: new FormControl(RuleType.NONE, [Validators.required]),
     });
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -66,7 +66,7 @@ describe('BodyListItemRuleTypeComponent', () => {
       });
 
       describe('And the remove button is pushed', () => {
-        it('Should emit the bodyRuleRemovedEventEmitter', done => {
+        it('Should emit the bodyRuleRemovedEventEmitter', (done) => {
           component.bodyRuleRemovedEventEmitter.subscribe((body: BodyRule) => {
             expect(body.rule).toEqual({ bodyrule: '{"x":"y"}' });
             done();

@@ -12,6 +12,7 @@ export function recordAdd<K extends string | number | symbol, T>(record: Record<
  * Deletes a record
  */
 export function recordDelete<K extends string | number | symbol, T>(record: Record<K, T>, key: K): Record<K, T> {
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   delete record[key];
   return record;
 }
@@ -26,6 +27,7 @@ export function recordUpdateKeyName<K extends string | number | symbol, T>(
 ): Record<K, T> {
   if (oldKey !== newKey) {
     Object.defineProperty(o, newKey, Object.getOwnPropertyDescriptor(o, oldKey));
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete o[oldKey];
   }
 
@@ -69,7 +71,7 @@ export function recordMap<K extends string | number | symbol, T, TResult>(
   fn: (record: T) => TResult
 ): TResult[] {
   const keys = Object.keys(record);
-  return keys.map(k => fn(cloneDeep(record[k])));
+  return keys.map((k) => fn(cloneDeep(record[k])));
 }
 
 /**
@@ -81,22 +83,28 @@ export function recordSize<K extends string | number | symbol, T>(record: Record
   return keys.length;
 }
 
+/**
+ * Performs a shallow equality check on two objects.
+ * @param record The first object to compare
+ * @param recordToCompare The second object to compare
+ * @returns true if the objects have the same keys with the same values, false otherwise
+ */
 export function compareRecords<K extends string | number | symbol, T>(
   record: Record<K, T>,
   recordToCompare: Record<K, T>
 ): boolean {
-  let equal = false;
   const keys = Object.keys(record);
   const keysToCompare = Object.keys(recordToCompare);
-  if (keys.length === keysToCompare.length) {
-    for (const keyIndex in keys) {
-      if (record[keys[keyIndex]] === recordToCompare[keysToCompare[keyIndex]]) {
-        equal = true;
-      }
-    }
-  } else {
-    return equal;
+
+  if (keys.length !== keysToCompare.length) {
+    return false;
   }
 
-  return equal;
+  for (const key of keys) {
+    if (record[key] !== recordToCompare[key]) {
+      return false;
+    }
+  }
+
+  return true;
 }

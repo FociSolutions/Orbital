@@ -7,7 +7,7 @@ describe('NotificationServiceService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
-      providers: [NotificationService]
+      providers: [NotificationService],
     }).compileComponents()
   );
 

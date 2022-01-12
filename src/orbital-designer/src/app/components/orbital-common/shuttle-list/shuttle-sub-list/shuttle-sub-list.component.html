@@ -1,7 +1,6 @@
 <div class="container">
   <div class="search-bar-div">
-    <mat-icon>search</mat-icon
-    ><input matInput (keyup)="onSearchInput($event.target.value)" />
+    <mat-icon>search</mat-icon><input matInput (keyup)="onSearchInput($event.target.value)" />
   </div>
   <div *ngIf="!!this.list.length" class="checkbox-div">
     <mat-checkbox
@@ -14,11 +13,7 @@
     </mat-checkbox>
     <mat-divider></mat-divider>
   </div>
-  <mat-selection-list
-    #matList
-    class="matList"
-    (selectionChange)="optionSelected()"
-  >
+  <mat-selection-list #matList class="matList" (selectionChange)="optionSelected()">
     <mat-list-option
       *ngFor="let item of list"
       [value]="item"
@@ -26,10 +21,10 @@
       color="primary"
       checkboxPosition="before"
     >
-    <div class="list-item">
-      <h5>{{ item.value?.metadata?.title }}</h5>
-      <mat-divider></mat-divider>
-    </div>
+      <div class="list-item">
+        <h5>{{ item.value?.metadata?.title }}</h5>
+        <mat-divider></mat-divider>
+      </div>
     </mat-list-option>
     <mat-list-item class="emptyMessage" *ngIf="isEmpty">
       <span>{{ emptyListMessage }}</span>
