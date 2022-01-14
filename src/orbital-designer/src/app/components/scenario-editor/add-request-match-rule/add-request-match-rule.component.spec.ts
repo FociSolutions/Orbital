@@ -30,6 +30,7 @@ import { BodyEditRuleComponent } from '../add-body-rule-edit/body-edit-rule.comp
 import { BodyListItemRuleTypeComponent } from '../add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyAddRuleComponent } from '../add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { JsonEditorComponent } from 'ang-jsoneditor';
+import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -74,10 +75,12 @@ describe('AddRequestMatchRuleComponent', () => {
 
     fixture = TestBed.createComponent(AddRequestMatchRuleComponent);
     component = fixture.componentInstance;
+    component.tokenRule = defaultTokenRule;
 
     const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
     const scenarioForm = scenarioFormBuilder.createNewScenarioForm();
     component.requestMatchRuleFormGroup = scenarioForm.controls.requestMatchRules as FormGroup;
+    component.tokenRuleFormArray = scenarioFormBuilder.tokenRuleFormArray(component.tokenRule);
 
     component.requestMatchRule = {
       headerRules: [],
@@ -89,6 +92,10 @@ describe('AddRequestMatchRuleComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set default values when constructed', () => {
+    expect(component.currentRuleType).toEqual('header');
   });
 
   describe('AddRequestMatchRule.Save', () => {
@@ -112,6 +119,14 @@ describe('AddRequestMatchRuleComponent', () => {
 
       expect(spy).not.toHaveBeenCalled();
       spy.mockRestore();
+    });
+  });
+
+  describe('AddRequestMatchRule.compareAllEqual', () => {
+    it('should return 0', () => {
+      expect(component.compareAllEqual(undefined, undefined)).toEqual(0);
+      expect(component.compareAllEqual(1, 'undefined')).toEqual(0);
+      expect(component.compareAllEqual({}, [])).toEqual(0);
     });
   });
 });

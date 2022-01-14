@@ -36,7 +36,6 @@ import { BodyListItemRuleTypeComponent } from '../scenario-editor/add-body-rule-
 import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AddTokenValidationRuleComponent } from '../scenario-editor/add-token-validation-rule/add-token-validation-rule.component';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -80,7 +79,6 @@ describe('ScenarioViewComponent', () => {
         UrlAddRuleComponent,
         UrlEditRuleComponent,
         UrlListItemRuleTypeComponent,
-        AddTokenValidationRuleComponent,
       ],
       imports: [
         LoggerTestingModule,

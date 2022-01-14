@@ -39,7 +39,7 @@ import { HttpClientModule } from '@angular/common/http';
     QuickExportComponent,
     KvpAddComponent,
     KvpEditComponent,
-    KvpListItemComponent
+    KvpListItemComponent,
   ],
   exports: [
     TextInputComponent,
@@ -64,7 +64,7 @@ import { HttpClientModule } from '@angular/common/http';
     QuickExportComponent,
     KvpAddComponent,
     KvpEditComponent,
-    KvpListItemComponent
+    KvpListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -81,7 +81,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatSelectModule,
     MatCheckboxModule,
     MatExpansionModule,
-    HttpClientModule
+    HttpClientModule,
   ],
 })
 export class SharedModule {}

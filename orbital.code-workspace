@@ -1,16 +1,21 @@
 {
   "folders": [
     {
-      "path": "."
+      "path": ".",
+      "name": "Orbital Repo Root"
     },
     {
-      "path": "src/orbital-designer"
+      "path": "src/orbital-designer",
+      "name": "Orbital Designer"
     },
     {
-      "path": "src/Orbital.Mock.Server"
+      "path": "src/Orbital.Mock.Server",
+      "name": "Orbital Mock Server"
     }
   ],
   "settings": {
+    "editor.tabSize": 2,
+    "files.eol": "\n",
     "angularKarmaTestExplorer.projectRootPath": "src/orbital-designer",
     "jest.jestCommandLine": "npm --prefix ./src/orbital-designer run test --",
     "typescript.tsdk": "src/orbital-designer/node_modules/typescript/lib",
@@ -30,6 +35,7 @@
       "DELAYRESPONSE",
       "devkit",
       "dockerprod",
+      "focisolutions",
       "gitversion",
       "gitversionvariables",
       "globaltool",
@@ -38,6 +44,7 @@
       "jsoneditor",
       "JSONEQUALITY",
       "jsonpath",
+      "keyvalue",
       "kvps",
       "Lucki",
       "maxlength",

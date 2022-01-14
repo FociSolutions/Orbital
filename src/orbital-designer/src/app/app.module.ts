@@ -42,9 +42,6 @@ import { ExportToServerViewComponent } from './components/export-to-server-view/
 import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
 import { KvpListItemRuleTypeComponent } from './components/scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { KvpEditRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
-import { KvpEditComponent } from './shared/components/kvp-edit/kvp-edit.component';
-import { KvpAddComponent } from './shared/components/kvp-edit/kvp-add/kvp-add.component';
-import { KvpListItemComponent } from './shared/components/kvp-edit/kvp-list-item/kvp-list-item.component';
 import { GetRuleTypeStringPipe } from './pipes/get-rule-type-string/get-rule-type-string.pipe';
 import { UrlEditRuleComponent } from './components/scenario-editor/url-edit-rule/url-edit-rule.component';
 import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
@@ -58,14 +55,12 @@ import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rul
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 import { CoreModule } from './core/core.module';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
-import { AddTokenValidationRuleComponent } from './components/scenario-editor/add-token-validation-rule/add-token-validation-rule.component';
 
 @NgModule({
   declarations: [
     AddMetadataComponent,
     AddRequestMatchRuleComponent,
     AddResponseComponent,
-    AddTokenValidationRuleComponent,
     AppComponent,
     BodyAddRuleComponent,
     BodyEditRuleComponent,
@@ -119,7 +114,7 @@ import { AddTokenValidationRuleComponent } from './components/scenario-editor/ad
     MatTabsModule,
     NgJsonEditorModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [DesignerStore],
   bootstrap: [AppComponent],

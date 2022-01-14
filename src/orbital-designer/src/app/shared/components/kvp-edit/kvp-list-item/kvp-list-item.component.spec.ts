@@ -10,9 +10,7 @@ describe('KvpListItemComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SharedModule
-      ],
+      imports: [SharedModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpListItemComponent);

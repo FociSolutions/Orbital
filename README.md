@@ -90,13 +90,13 @@ If you're running Windows, you'll need:
 
 2. Enter in a title and description for the new mock.
 
-3. Click **"Select File"** and provide a valid OpenAPI YAML file. For this guide, [OpenAPI petstore](https://github.com/OAI/OpenAPI-Specification/blob/master/examples/v2.0/yaml/petstore.yaml) is used. Download this file and provide it to the file selector.
+3. Click **"Select File"** and provide a valid OpenAPI YAML file. For this guide, [OpenAPI Pet Store](https://github.com/OAI/OpenAPI-Specification/blob/master/examples/v2.0/yaml/petstore.yaml) is used. Download this file and provide it to the file selector.
 
 4. Click **"Next"**.
 
 5. The following endpoint view page will be displayed:
 
-![endpointoverview](/readme_images/endpointoverview.png)
+![Endpoint Editor View](/readme_images/endpointoverview.png)
 
 This page will display all endpoints defined in the uploaded YAML file. On the right of each row, the number of existing scenarios are indicated.
 
@@ -117,15 +117,15 @@ The purpose of a scenario is to describe what the endpoint will expect from the 
 2. Click **"+"** on the bottom right to add a new scenario.
 
 3. Start by filling the **"Metadata"** section. Give the new scenario a name and description. The name is required.
-   ![newScenarioMetadata](/readme_images/newScenarioMetadata.png)
+   ![New Scenario Metadata](/readme_images/newScenarioMetadata.png)
 
 4. Click **"Request Match Rules"** and then click **"Header Match Rules"**. Enter in _"Content-Type"_ as the key and _"application/json"_ as the value.
 
 5. Click **"+"** next to the value to add it as a header rule. The rule will appear below.
-   ![headerMatchRule](/readme_images/headerMatchRule.png)
+   ![Header Match Rule](/readme_images/headerMatchRule.png)
 
 6. A response has to be defined for this header rule. Click **Response** and enter in the text as shown below. In this example, the server will return a `200` with the following response:
-   ![response](/readme_images/newScenarioResponse.png)
+   ![New Scenario Response](/readme_images/newScenarioResponse.png)
 
 ```
 {
@@ -147,8 +147,8 @@ If the upload is successful, the message _"Mockdefinition successfully uploaded 
 
 For this example, the following postman request is used:
 
-![postman](/readme_images/postmanRequest.png)
+![Postman](/readme_images/postmanRequest.png)
 
 This request complies with the header rule created previously. After sending it to the server, the following is the response we get back:
 
-![postmanResponse](/readme_images/postmanResponse.png)
+![Postman Response](/readme_images/postmanResponse.png)

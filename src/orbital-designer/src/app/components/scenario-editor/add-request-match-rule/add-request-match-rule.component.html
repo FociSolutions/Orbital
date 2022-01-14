@@ -1,46 +1,42 @@
-<mat-accordion>
-  <mat-expansion-panel class="mat-elevation-z0">
-    <mat-expansion-panel-header class="right-aligned-header">
-      <mat-panel-title> Header Match Rules </mat-panel-title>
-      <mat-divider></mat-divider>
-    </mat-expansion-panel-header>
-    <app-kvp-edit-rule
-      [addKvpTitle]="'Add New Header Match Rule'"
-      [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.headerMatchRules"
-    >
-    </app-kvp-edit-rule>
-  </mat-expansion-panel>
-</mat-accordion>
-<mat-accordion>
-  <mat-expansion-panel class="mat-elevation-z0">
-    <mat-expansion-panel-header class="right-aligned-header">
-      <mat-panel-title> Query Match Rules </mat-panel-title>
-      <mat-divider></mat-divider>
-    </mat-expansion-panel-header>
-    <app-kvp-edit-rule
-      [addKvpTitle]="'Add New Query Match Rule'"
-      [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.queryMatchRules"
-    >
-    </app-kvp-edit-rule>
-  </mat-expansion-panel>
-</mat-accordion>
-<mat-accordion>
-  <mat-expansion-panel class="mat-elevation-z0">
-    <mat-expansion-panel-header class="right-aligned-header">
-      <mat-panel-title> Url Match Rules </mat-panel-title>
-      <mat-divider></mat-divider>
-    </mat-expansion-panel-header>
-    <app-url-edit-rule [urlMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.urlMatchRules">
-    </app-url-edit-rule>
-  </mat-expansion-panel>
-</mat-accordion>
-<mat-accordion>
-  <mat-expansion-panel class="mat-elevation-z0">
-    <mat-expansion-panel-header class="right-aligned-header">
-      <mat-panel-title> Body Match Rules </mat-panel-title>
-      <mat-divider></mat-divider>
-    </mat-expansion-panel-header>
-    <app-body-edit-rule [bodyMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.bodyMatchRules">
-    </app-body-edit-rule>
-  </mat-expansion-panel>
-</mat-accordion>
+<div class="rule-set-selector-container">
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Request Rule Type</mat-label>
+    <mat-select [(ngModel)]="currentRuleType">
+      <mat-option *ngFor="let rule of ruleTypes | keyvalue: compareAllEqual" [value]="rule.key">
+        {{ rule.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<app-kvp-edit-rule
+  *ngIf="currentRuleType === 'header'"
+  [addKvpTitle]="'Add New Header Match Rule'"
+  [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.headerMatchRules"
+>
+</app-kvp-edit-rule>
+
+<app-kvp-edit-rule
+  *ngIf="currentRuleType === 'query'"
+  [addKvpTitle]="'Add New Query Match Rule'"
+  [matchRuleFormArray]="this.requestMatchRuleFormGroup.controls.queryMatchRules"
+>
+</app-kvp-edit-rule>
+
+<app-url-edit-rule
+  *ngIf="currentRuleType === 'url'"
+  [urlMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.urlMatchRules"
+>
+</app-url-edit-rule>
+
+<app-body-edit-rule
+  *ngIf="currentRuleType === 'body'"
+  [bodyMatchRuleFormArray]="this.requestMatchRuleFormGroup.controls.bodyMatchRules"
+>
+</app-body-edit-rule>
+
+<app-kvp-edit-rule
+  *ngIf="currentRuleType === 'token_payload'"
+  [addKvpTitle]="'Add New JWT Payload Match Rule'"
+  [matchRuleFormArray]="this.tokenRuleFormArray"
+></app-kvp-edit-rule>

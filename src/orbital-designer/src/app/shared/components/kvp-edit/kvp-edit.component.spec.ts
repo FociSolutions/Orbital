@@ -13,12 +13,7 @@ describe('KvpEditComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SharedModule,
-        MaterialModule,
-        LoggerTestingModule,
-        BrowserAnimationsModule
-      ]
+      imports: [SharedModule, MaterialModule, LoggerTestingModule, BrowserAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KvpEditComponent);

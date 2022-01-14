@@ -23,24 +23,17 @@
               </div>
             </mat-tab>
 
-            <mat-tab label="Request Rules">
+            <mat-tab label="Request">
               <div class="tab-body">
                 <app-add-request-match-rule
                   [requestMatchRule]="this.selectedScenario?.requestMatchRules"
                   (requestMatchRuleOutput)="handleRequestMatchRuleOutput($event)"
                   [requestMatchRuleFormGroup]="this.scenarioFormGroup.controls.requestMatchRules"
+                  [tokenRule]="this.selectedScenario?.tokenRule"
+                  [tokenRuleFormArray]="this.scenarioFormGroup.controls.tokenRule"
                   [saveStatus]="this.shouldSave"
                 >
                 </app-add-request-match-rule>
-              </div>
-            </mat-tab>
-
-            <mat-tab label="Token Rules">
-              <div class="tab-body">
-                <app-add-token-validation-rule
-                  [tokenRule]="this.selectedScenario?.tokenRule"
-                  [tokenRuleFormArray]="this.scenarioFormGroup.controls.tokenRule"
-                ></app-add-token-validation-rule>
               </div>
             </mat-tab>
 

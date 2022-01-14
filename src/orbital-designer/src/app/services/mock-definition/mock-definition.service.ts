@@ -203,7 +203,6 @@ export class MockDefinitionService {
       }
       scenarioDict[scenario.path][scenario.verb] = isUnauthorized;
     }
-    console.log(scenarioDict);
     return scenarioDict;
   }
 
