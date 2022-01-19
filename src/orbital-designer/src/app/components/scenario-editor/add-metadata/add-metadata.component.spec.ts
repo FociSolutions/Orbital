@@ -20,8 +20,8 @@ describe('AddMetadataComponent', () => {
   let component: AddMetadataComponent;
   let fixture: ComponentFixture<AddMetadataComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [AddMetadataComponent],
       imports: [
         MatExpansionModule,
@@ -38,7 +38,9 @@ describe('AddMetadataComponent', () => {
         LoggerTestingModule,
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(AddMetadataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

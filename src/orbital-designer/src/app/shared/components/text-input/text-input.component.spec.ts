@@ -10,12 +10,14 @@ describe('TextInputComponent', () => {
   let component: TextInputComponent;
   let fixture: ComponentFixture<TextInputComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [TextInputComponent],
       imports: [MatFormFieldModule, FormsModule, ReactiveFormsModule, MatInputModule, BrowserAnimationsModule],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(TextInputComponent);
     component = fixture.componentInstance;
     control = new FormControl('', []);

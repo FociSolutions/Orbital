@@ -7,12 +7,14 @@ describe('ToolTipComponent', () => {
   let component: ToolTipComponent;
   let fixture: ComponentFixture<ToolTipComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [MatTooltipModule, MatIconModule],
       declarations: [ToolTipComponent],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ToolTipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

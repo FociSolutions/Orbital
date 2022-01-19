@@ -11,11 +11,13 @@ describe('KvpEditComponent', () => {
   let component: KvpEditComponent;
   let fixture: ComponentFixture<KvpEditComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [SharedModule, MaterialModule, LoggerTestingModule, BrowserAnimationsModule],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(KvpEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

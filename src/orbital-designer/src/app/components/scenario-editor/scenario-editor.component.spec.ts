@@ -43,7 +43,7 @@ import { BodyListItemRuleTypeComponent } from './add-body-rule-edit/body-list-it
 import { BodyAddRuleComponent } from './add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.component';
 import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { JsonEditorComponent } from 'ang-jsoneditor';
 import { MatTabsModule } from '@angular/material/tabs';
 
 describe('ScenarioEditorComponent', () => {
@@ -51,8 +51,8 @@ describe('ScenarioEditorComponent', () => {
   let fixture: ComponentFixture<ScenarioEditorComponent>;
   let scenarioBuilder: ScenarioFormBuilder;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         ScenarioEditorComponent,
         SideBarComponent,
@@ -76,6 +76,7 @@ describe('ScenarioEditorComponent', () => {
         BodyListItemRuleTypeComponent,
         BodyAddRuleComponent,
         ScenarioViewComponent,
+        JsonEditorComponent,
       ],
       imports: [
         LoggerTestingModule,
@@ -89,14 +90,15 @@ describe('ScenarioEditorComponent', () => {
         MatMenuModule,
         MatIconModule,
         MatChipsModule,
-        NgJsonEditorModule,
       ],
       providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
-    scenarioBuilder = TestBed.get(ScenarioFormBuilder);
+    scenarioBuilder = TestBed.inject(ScenarioFormBuilder);
     component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
     component.selectedScenario = emptyScenario;
     fixture.detectChanges();
@@ -139,7 +141,7 @@ describe('ScenarioEditorComponent', () => {
   describe('ScenarioEditorComponent.saveScenario', () => {
     it('should save the scenario if all the fields are valid', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        const store: DesignerStore = TestBed.get(DesignerStore);
+        const store: DesignerStore = TestBed.inject(DesignerStore);
         store.state.mockDefinition = validMockDefinition;
 
         const input = {

@@ -14,8 +14,8 @@ describe('UrlAddRuleComponent', () => {
   let component: UrlAddRuleComponent;
   let fixture: ComponentFixture<UrlAddRuleComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [UrlAddRuleComponent],
       imports: [
         BrowserAnimationsModule,
@@ -28,7 +28,9 @@ describe('UrlAddRuleComponent', () => {
         ReactiveFormsModule,
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(UrlAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -21,8 +21,8 @@ describe('ImportFromServerViewComponent', () => {
   let component: ImportFromServerViewComponent;
   let fixture: ComponentFixture<ImportFromServerViewComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ImportFromServerViewComponent, BlankComponent],
       imports: [
         MatCardModule,
@@ -39,7 +39,9 @@ describe('ImportFromServerViewComponent', () => {
       ],
       providers: [Location, DesignerStore, OrbitalAdminService],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ImportFromServerViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -51,7 +53,7 @@ describe('ImportFromServerViewComponent', () => {
 
   describe('ImportFromServerViewComponent.onBack', () => {
     it('should call location.back()', () => {
-      const locationSpy = jest.spyOn(TestBed.get(Location), 'back');
+      const locationSpy = jest.spyOn(TestBed.inject(Location), 'back');
       component.onBack();
       expect(locationSpy).toHaveBeenCalled();
     });
@@ -60,8 +62,8 @@ describe('ImportFromServerViewComponent', () => {
   describe('ImportFromServerViewComponent.onSubmit', () => {
     it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        const routerSpy = jest.spyOn(TestBed.get(Router), 'navigateByUrl');
-        const store = TestBed.get(DesignerStore);
+        const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
+        const store = TestBed.inject(DesignerStore);
         const expectedMockDefinition: MockDefinition = validMockDefinition;
         const expectedMockDefinitions = {};
         expectedMockDefinitions[validMockDefinition.metadata.title] = expectedMockDefinition;

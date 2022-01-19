@@ -11,7 +11,7 @@ describe('ExportMockdefinitionService', () => {
       providers: [ExportMockdefinitionService, DesignerStore],
       imports: [HttpClientTestingModule, LoggerTestingModule],
     });
-    service = TestBed.get(ExportMockdefinitionService);
+    service = TestBed.inject(ExportMockdefinitionService);
   });
 
   it('should be created', () => {

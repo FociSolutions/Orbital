@@ -10,7 +10,7 @@ describe('OrbitalAdminService', () => {
       providers: [OrbitalAdminService],
       imports: [HttpClientTestingModule, LoggerTestingModule],
     });
-    service = TestBed.get(OrbitalAdminService);
+    service = TestBed.inject(OrbitalAdminService);
   });
 
   it('should be created', () => {

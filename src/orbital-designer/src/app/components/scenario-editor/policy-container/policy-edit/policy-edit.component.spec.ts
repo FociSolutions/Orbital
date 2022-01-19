@@ -13,8 +13,8 @@ describe('PolicyEditComponent', () => {
   let component: PolicyEditComponent;
   let fixture: ComponentFixture<PolicyEditComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
         MatInputModule,
@@ -26,7 +26,9 @@ describe('PolicyEditComponent', () => {
       ],
       declarations: [PolicyEditComponent],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(PolicyEditComponent);
     component = fixture.componentInstance;
     component.policyEditFormGroup = new FormGroup({

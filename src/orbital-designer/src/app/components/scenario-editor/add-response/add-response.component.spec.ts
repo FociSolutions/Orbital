@@ -7,25 +7,27 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { Response } from '../../../models/mock-definition/scenario/response.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { JsonEditorComponent } from 'ang-jsoneditor';
 
 describe('AddResponseComponent', () => {
   let component: AddResponseComponent;
   let fixture: ComponentFixture<AddResponseComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [AddResponseComponent],
-      imports: [SharedModule, BrowserAnimationsModule, LoggerTestingModule, NgJsonEditorModule],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AddResponseComponent, JsonEditorComponent],
+      imports: [SharedModule, BrowserAnimationsModule, LoggerTestingModule],
       providers: [ScenarioFormBuilder],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(AddResponseComponent);
     component = fixture.componentInstance;
     component.response = { headers: {} } as Response;
-    const scenarioBuilder = TestBed.get(ScenarioFormBuilder);
+    const scenarioBuilder = TestBed.inject(ScenarioFormBuilder);
     component.responseFormGroup = scenarioBuilder.responseFormGroup(emptyScenario.response);
     fixture.detectChanges();
   });

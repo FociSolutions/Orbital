@@ -36,8 +36,8 @@ describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
   let fixture: ComponentFixture<AddRequestMatchRuleComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         AddRequestMatchRuleComponent,
         KvpAddComponent,
@@ -72,12 +72,14 @@ describe('AddRequestMatchRuleComponent', () => {
       ],
       providers: [DesignerStore, ScenarioFormBuilder],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(AddRequestMatchRuleComponent);
     component = fixture.componentInstance;
     component.tokenRule = defaultTokenRule;
 
-    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
+    const scenarioFormBuilder = TestBed.inject(ScenarioFormBuilder) as ScenarioFormBuilder;
     const scenarioForm = scenarioFormBuilder.createNewScenarioForm();
     component.requestMatchRuleFormGroup = scenarioForm.controls.requestMatchRules as FormGroup;
     component.tokenRuleFormArray = scenarioFormBuilder.tokenRuleFormArray(component.tokenRule);

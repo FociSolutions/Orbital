@@ -14,12 +14,14 @@ describe('ShuttleSubListComponent', () => {
   let component: ShuttleSubListComponent;
   let fixture: ComponentFixture<ShuttleSubListComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ShuttleSubListComponent],
       imports: [MatIconModule, MatListModule, MatCardModule, MatCheckboxModule, MatDividerModule],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ShuttleSubListComponent);
     component = fixture.componentInstance;
     const mock1 = _.cloneDeep(validMockDefinition);

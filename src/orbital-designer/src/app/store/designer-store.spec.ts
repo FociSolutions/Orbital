@@ -26,8 +26,8 @@ describe('DesignerStore', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [LoggerTestingModule] });
-    serviceFileReader = TestBed.get(ReadFileService);
-    store = new DesignerStore(TestBed.get(NGXLogger));
+    serviceFileReader = TestBed.inject(ReadFileService);
+    store = new DesignerStore(TestBed.inject(NGXLogger));
   });
 
   it('should create an instance', () => {

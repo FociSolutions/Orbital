@@ -12,8 +12,8 @@ describe('FileInputComponent', () => {
   let component: FileInputComponent;
   let fixture: ComponentFixture<FileInputComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [FileInputComponent],
       imports: [
         MatFormFieldModule,
@@ -26,7 +26,9 @@ describe('FileInputComponent', () => {
       ],
       providers: [ReadFileService],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(FileInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

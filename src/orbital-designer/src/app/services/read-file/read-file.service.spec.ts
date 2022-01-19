@@ -5,13 +5,17 @@ import * as faker from 'faker';
 
 describe('ReadFileService', () => {
   let service: ReadFileService;
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [],
       imports: [LoggerTestingModule],
       providers: [],
     }).compileComponents();
-    service = TestBed.get(ReadFileService);
+  });
+
+  beforeEach(() => {
+    service = TestBed.inject(ReadFileService);
   });
 
   it('should be created', () => {

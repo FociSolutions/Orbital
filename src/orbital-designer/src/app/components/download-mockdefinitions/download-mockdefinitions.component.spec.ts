@@ -16,8 +16,8 @@ describe('DownloadMockdefinitionsComponent', () => {
   let component: DownloadMockdefinitionsComponent;
   let fixture: ComponentFixture<DownloadMockdefinitionsComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [DownloadMockdefinitionsComponent, ShuttleSubListComponent],
       imports: [
         MatCardModule,
@@ -31,7 +31,9 @@ describe('DownloadMockdefinitionsComponent', () => {
       ],
       providers: [DesignerStore],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(DownloadMockdefinitionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

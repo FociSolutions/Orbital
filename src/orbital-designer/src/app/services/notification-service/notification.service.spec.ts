@@ -4,15 +4,15 @@ import { NotificationService } from './notification.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('NotificationServiceService', () => {
-  beforeEach(() =>
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
       providers: [NotificationService],
-    }).compileComponents()
-  );
+    }).compileComponents();
+  });
 
   it('should be created', () => {
-    const service: NotificationService = TestBed.get(NotificationService);
+    const service: NotificationService = TestBed.inject(NotificationService);
     expect(service).toBeTruthy();
   });
 });

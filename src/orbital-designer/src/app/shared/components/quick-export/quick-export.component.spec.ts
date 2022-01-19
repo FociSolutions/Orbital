@@ -10,13 +10,15 @@ describe('QuickExportComponent', () => {
   let component: QuickExportComponent;
   let fixture: ComponentFixture<QuickExportComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [QuickExportComponent],
       imports: [MatIconModule, RouterTestingModule, LoggerTestingModule, HttpClientModule],
       providers: [DesignerStore],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(QuickExportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -20,13 +20,17 @@ describe('MockDefinitionService', () => {
   let scenarioParams: ScenarioParams;
 
   const ValidMockDefinitionInst = _.cloneDeep(validMockDefinition);
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [LoggerTestingModule],
       providers: [DesignerStore, MockDefinitionService],
     }).compileComponents();
-    store = TestBed.get(DesignerStore);
-    service = TestBed.get(MockDefinitionService);
+  });
+
+  beforeEach(fakeAsync(() => {
+    store = TestBed.inject(DesignerStore);
+    service = TestBed.inject(MockDefinitionService);
     scenarioParams = service.defaultScenarioParams('/test', VerbType.GET, 200);
     store.mockDefinition = ValidMockDefinitionInst;
     tick();

@@ -23,13 +23,16 @@ import { recordMap } from 'src/app/models/record';
 describe('CreateEditMockViewComponent', () => {
   let component: CreateEditMockViewComponent;
   let fixture: ComponentFixture<CreateEditMockViewComponent>;
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CreateEditMockViewComponent],
       imports: [SharedModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule, RouterTestingModule],
       providers: [Location, DesignerStore, OpenApiSpecService, ReadFileService, MockDefinitionService],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(CreateEditMockViewComponent);
     component = fixture.componentInstance;
   });
@@ -40,7 +43,7 @@ describe('CreateEditMockViewComponent', () => {
 
   describe('CreateEditMockViewComponent.goBack', () => {
     it('should return to the previous location', () => {
-      const locationSpy = jest.spyOn(TestBed.get(Location), 'back');
+      const locationSpy = jest.spyOn(TestBed.inject(Location), 'back');
       component.goBack();
       expect(locationSpy).toHaveBeenCalled();
     });
@@ -101,8 +104,9 @@ describe('CreateEditMockViewComponent', () => {
   describe('CreateEditMockViewComponent.createMock', () => {
     it('should set the mockDefinition store and route to mock editor', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        jest.spyOn(TestBed.get(Router), 'navigateByUrl').mockImplementation((route) => {
+        jest.spyOn(TestBed.inject(Router), 'navigateByUrl').mockImplementation((route) => {
           expect(route).toEqual('/endpoint-view');
+          return Promise.resolve(false);
         });
         generateMockDefinitionAndSetForm();
         component.createMock();
@@ -112,7 +116,7 @@ describe('CreateEditMockViewComponent', () => {
 
     it('should not navigate or change designer store state if the formGroup is invalid', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        const routerSpy = jest.spyOn(TestBed.get(Router), 'navigateByUrl');
+        const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
         generateMockDefinitionAndSetForm();
         fixture.detectChanges();
         component.formGroup.setErrors({ incorrect: true });
@@ -130,7 +134,7 @@ describe('CreateEditMockViewComponent', () => {
 
     beforeEach(() => {
       component.editMode = true;
-      store = TestBed.get(DesignerStore);
+      store = TestBed.inject(DesignerStore);
 
       selectedMockDef = generateMockDefinitionAndSetForm();
       store.appendMockDefinition(selectedMockDef);
@@ -170,7 +174,7 @@ describe('CreateEditMockViewComponent', () => {
     description = faker.random.words(5),
     validateToken = true
   ): MockDefinition {
-    const service = TestBed.get(MockDefinitionService);
+    const service = TestBed.inject(MockDefinitionService);
     const openApi: OpenAPIV2.Document = yaml.load(validOpenApiText) as OpenAPIV2.Document;
     component.formGroup.setValue({
       ...component.formGroup.value,

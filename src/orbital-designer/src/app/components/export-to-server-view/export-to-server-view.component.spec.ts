@@ -15,8 +15,8 @@ describe('ExportToServerViewComponent', () => {
   let component: ExportToServerViewComponent;
   let fixture: ComponentFixture<ExportToServerViewComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ExportToServerViewComponent],
       imports: [
         MatCardModule,
@@ -28,7 +28,9 @@ describe('ExportToServerViewComponent', () => {
       ],
       providers: [Location, DesignerStore, OrbitalAdminService],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ExportToServerViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

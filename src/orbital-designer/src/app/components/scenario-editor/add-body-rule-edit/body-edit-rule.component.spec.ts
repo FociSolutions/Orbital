@@ -13,23 +13,25 @@ import { BodyEditRuleComponent } from './body-edit-rule.component';
 import { BodyAddRuleComponent } from './body-add-rule/body-add-rule.component';
 import { BodyListItemRuleTypeComponent } from './body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { JsonEditorComponent } from 'ang-jsoneditor';
 
 describe('BodyEditRuleComponent', () => {
   let component: BodyEditRuleComponent;
   let fixture: ComponentFixture<BodyEditRuleComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [SharedModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule, NgJsonEditorModule],
-      declarations: [BodyEditRuleComponent, BodyAddRuleComponent, BodyListItemRuleTypeComponent],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SharedModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
+      declarations: [BodyEditRuleComponent, BodyAddRuleComponent, BodyListItemRuleTypeComponent, JsonEditorComponent],
       providers: [DesignerStore],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(BodyEditRuleComponent);
     component = fixture.componentInstance;
-    const designerStore = TestBed.get(DesignerStore) as DesignerStore;
-    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
+    const designerStore = TestBed.inject(DesignerStore) as DesignerStore;
+    const scenarioFormBuilder = TestBed.inject(ScenarioFormBuilder) as ScenarioFormBuilder;
     designerStore.selectedScenario = emptyScenario;
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.bodyMatchRuleFormArray = scenarioFormGroup.get('requestMatchRules.bodyMatchRules') as FormArray;

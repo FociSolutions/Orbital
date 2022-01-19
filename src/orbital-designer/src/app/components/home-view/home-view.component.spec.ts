@@ -19,9 +19,9 @@ describe('HomeViewComponent', () => {
   let router: Router;
   let path: string;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     path = faker.random.word();
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [HomeViewComponent, BlankComponent],
       imports: [
         RouterTestingModule.withRoutes([
@@ -42,7 +42,10 @@ describe('HomeViewComponent', () => {
       ],
       providers: [DesignerStore],
     }).compileComponents();
-    router = TestBed.get(Router);
+  });
+
+  beforeEach(() => {
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(HomeViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

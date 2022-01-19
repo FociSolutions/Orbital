@@ -17,13 +17,14 @@ describe('EndpointListItemComponent', () => {
   let component: EndpointListItemComponent;
   let fixture: ComponentFixture<EndpointListItemComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [EndpointListItemComponent, GetVerbColorPipe, GetVerbStringPipe],
       imports: [MatCardModule, MatIconModule, RouterTestingModule, LoggerTestingModule],
       providers: [DesignerStore],
     }).compileComponents();
-
+  });
+  beforeEach(() => {
     fixture = TestBed.createComponent(EndpointListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -53,8 +54,9 @@ describe('EndpointListItemComponent', () => {
 
     it('Should select endpoint and navigate to scenario view page', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        jest.spyOn(TestBed.get(Router), 'navigateByUrl').mockImplementation((route) => {
+        jest.spyOn(TestBed.inject(Router), 'navigateByUrl').mockImplementation((route) => {
           expect(route).toEqual('/scenario-view');
+          return Promise.resolve(false);
         });
         component.selectEndpoint();
         tick();

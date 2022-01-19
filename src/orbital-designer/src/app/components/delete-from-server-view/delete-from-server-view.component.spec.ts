@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { Location } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
@@ -20,23 +20,21 @@ describe('DeleteFromServerViewComponent', () => {
   let component: DeleteFromServerViewComponent;
   let fixture: ComponentFixture<DeleteFromServerViewComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [DeleteFromServerViewComponent],
-        imports: [
-          MatCardModule,
-          RouterTestingModule,
-          SharedModule,
-          HttpClientTestingModule,
-          BrowserAnimationsModule,
-          LoggerTestingModule,
-          MatSnackBarModule,
-        ],
-        providers: [Location, OrbitalAdminService, NotificationService],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [DeleteFromServerViewComponent],
+      imports: [
+        MatCardModule,
+        RouterTestingModule,
+        SharedModule,
+        HttpClientTestingModule,
+        BrowserAnimationsModule,
+        LoggerTestingModule,
+        MatSnackBarModule,
+      ],
+      providers: [Location, OrbitalAdminService, NotificationService],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DeleteFromServerViewComponent);
@@ -50,7 +48,7 @@ describe('DeleteFromServerViewComponent', () => {
 
   describe('DeleteFromServerViewComponent.onBack', () => {
     it('should call location.back()', () => {
-      const locationSpy = jest.spyOn(TestBed.get(Location), 'back');
+      const locationSpy = jest.spyOn(TestBed.inject(Location), 'back');
       component.onBack();
       expect(locationSpy).toHaveBeenCalled();
     });

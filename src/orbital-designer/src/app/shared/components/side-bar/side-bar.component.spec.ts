@@ -20,8 +20,8 @@ describe('SideBarComponent', () => {
   let fixture: ComponentFixture<SideBarComponent>;
   let store: DesignerStore;
 
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [SideBarComponent, BlankComponent, DialogBoxComponent, QuickExportComponent],
       imports: [
         MatSidenavModule,
@@ -40,7 +40,9 @@ describe('SideBarComponent', () => {
       ],
       providers: [DesignerStore],
     }).compileComponents();
+  });
 
+  beforeEach(fakeAsync(() => {
     store = TestBed.inject(DesignerStore);
     store.mockDefinition = validMockDefinition;
     tick();
@@ -98,7 +100,7 @@ describe('SideBarComponent', () => {
   describe('SideBarComponent.openDialogBox', () => {
     it('should return to homepage if last mockdefinition is dismissed', fakeAsync(() => {
       fixture.ngZone.run(() => {
-        const routerSpy = jest.spyOn(TestBed.get(Router), 'navigate');
+        const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
         component.mockDefinitions = [validMockDefinition];
 
         component.onDismiss(validMockDefinition);

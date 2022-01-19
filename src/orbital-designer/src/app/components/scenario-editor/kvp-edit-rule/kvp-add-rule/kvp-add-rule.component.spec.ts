@@ -10,11 +10,13 @@ describe('KvpAddComponent', () => {
   let component: KvpAddRuleComponent;
   let fixture: ComponentFixture<KvpAddRuleComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [SharedModule, BrowserAnimationsModule, LoggerTestingModule],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(KvpAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

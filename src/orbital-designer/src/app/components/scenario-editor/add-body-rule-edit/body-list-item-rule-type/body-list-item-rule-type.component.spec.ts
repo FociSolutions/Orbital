@@ -14,8 +14,8 @@ describe('BodyListItemRuleTypeComponent', () => {
   let component: BodyListItemRuleTypeComponent;
   let fixture: ComponentFixture<BodyListItemRuleTypeComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
         LoggerTestingModule,
@@ -28,7 +28,9 @@ describe('BodyListItemRuleTypeComponent', () => {
       ],
       declarations: [BodyListItemRuleTypeComponent],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(BodyListItemRuleTypeComponent);
     component = fixture.componentInstance;
     component.bodyEditRuleFormGroup = new FormGroup({

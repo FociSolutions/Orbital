@@ -29,7 +29,7 @@ export class OpenApiSpecService {
           content.swagger === '2.0' ? this.validatorV2.validate(content) : this.validatorV3.validate(content);
 
         if (result.errors.length) {
-          observer.error(result.errors.map((err) => `${err.dataPath} ${err.message}`.trim()));
+          observer.error(result.errors.map((err) => `${err.instancePath} ${err.message}`.trim()));
         } else {
           observer.next(content);
         }

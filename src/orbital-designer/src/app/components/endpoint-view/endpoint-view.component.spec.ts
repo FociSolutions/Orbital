@@ -21,8 +21,8 @@ describe('EndpointViewComponent', () => {
   let fixture: ComponentFixture<EndpointViewComponent>;
   let store: DesignerStore;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         EndpointViewComponent,
         OverviewHeaderComponent,
@@ -43,10 +43,12 @@ describe('EndpointViewComponent', () => {
       ],
       providers: [DesignerStore],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(EndpointViewComponent);
     component = fixture.componentInstance;
-    store = TestBed.get(DesignerStore);
+    store = TestBed.inject(DesignerStore);
     fixture.detectChanges();
   });
 

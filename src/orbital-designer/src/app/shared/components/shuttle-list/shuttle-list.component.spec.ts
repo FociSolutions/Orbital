@@ -16,8 +16,8 @@ describe('ShuttleListComponent', () => {
   let component: ShuttleListComponent;
   let fixture: ComponentFixture<ShuttleListComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ShuttleListComponent, ShuttleSubListComponent],
       imports: [
         MatCardModule,
@@ -29,7 +29,9 @@ describe('ShuttleListComponent', () => {
         LoggerTestingModule,
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ShuttleListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

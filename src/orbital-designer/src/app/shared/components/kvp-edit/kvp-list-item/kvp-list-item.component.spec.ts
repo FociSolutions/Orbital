@@ -8,11 +8,13 @@ describe('KvpListItemComponent', () => {
   let component: KvpListItemComponent;
   let fixture: ComponentFixture<KvpListItemComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [SharedModule],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(KvpListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

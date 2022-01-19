@@ -7,17 +7,17 @@ describe('OpenApiSpecService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: OpenApiSpecService = TestBed.get(OpenApiSpecService);
+    const service: OpenApiSpecService = TestBed.inject(OpenApiSpecService);
     expect(service).toBeTruthy();
   });
 
   it('should read a open API string and return the open api document object representation of the string', () => {
-    const service: OpenApiSpecService = TestBed.get(OpenApiSpecService);
+    const service: OpenApiSpecService = TestBed.inject(OpenApiSpecService);
     expect(service.readOpenApiSpec(validOpenApiTest)).toBeDefined();
   });
 
   it('should reject an invalid opena api string', () => {
-    const service: OpenApiSpecService = TestBed.get(OpenApiSpecService);
+    const service: OpenApiSpecService = TestBed.inject(OpenApiSpecService);
     service.readOpenApiSpec(faker.random.words()).subscribe({
       error: (err) => {
         expect(err).toEqual(['should be object']);

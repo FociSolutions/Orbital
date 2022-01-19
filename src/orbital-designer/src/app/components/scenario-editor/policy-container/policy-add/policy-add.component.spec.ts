@@ -13,8 +13,8 @@ describe('PolicyAddComponent', () => {
   let component: PolicyAddComponent;
   let fixture: ComponentFixture<PolicyAddComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [PolicyAddComponent],
       imports: [
         BrowserAnimationsModule,
@@ -26,7 +26,9 @@ describe('PolicyAddComponent', () => {
         ReactiveFormsModule,
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(PolicyAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

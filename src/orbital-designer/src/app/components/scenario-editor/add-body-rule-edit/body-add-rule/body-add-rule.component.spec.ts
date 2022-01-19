@@ -9,15 +9,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyAddRuleComponent } from './body-add-rule.component';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { JsonEditorComponent } from 'ang-jsoneditor';
 
 describe('BodyAddRuleComponent', () => {
   let component: BodyAddRuleComponent;
   let fixture: ComponentFixture<BodyAddRuleComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [BodyAddRuleComponent],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [BodyAddRuleComponent, JsonEditorComponent],
       imports: [
         BrowserAnimationsModule,
         LoggerTestingModule,
@@ -27,10 +27,11 @@ describe('BodyAddRuleComponent', () => {
         MatCardModule,
         FormsModule,
         ReactiveFormsModule,
-        NgJsonEditorModule,
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(BodyAddRuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -56,6 +56,7 @@
       "nofetch",
       "openapi",
       "openapiservice",
+      "openapispecservice",
       "orbitaldesigner",
       "orbitalmock",
       "Pathto",

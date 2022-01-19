@@ -34,7 +34,6 @@ import { PolicyEditComponent } from '../scenario-editor/policy-container/policy-
 import { BodyEditRuleComponent } from '../scenario-editor/add-body-rule-edit/body-edit-rule.component';
 import { BodyListItemRuleTypeComponent } from '../scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
 import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
@@ -54,8 +53,8 @@ describe('ScenarioViewComponent', () => {
     status: 0,
   };
 
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         AddMetadataComponent,
         AddRequestMatchRuleComponent,
@@ -90,18 +89,19 @@ describe('ScenarioViewComponent', () => {
         MatTabsModule,
         FormsModule,
         MatChipsModule,
-        NgJsonEditorModule,
         BrowserAnimationsModule,
       ],
       providers: [DesignerStore],
     }).compileComponents();
+  });
 
+  beforeEach(fakeAsync(() => {
     fixture = TestBed.createComponent(ScenarioViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    store = TestBed.get(DesignerStore);
+    store = TestBed.inject(DesignerStore);
     store.mockDefinition = validMockDefinition;
-    mockDefService = TestBed.get(MockDefinitionService);
+    mockDefService = TestBed.inject(MockDefinitionService);
     tick();
     fixture.detectChanges();
   }));
@@ -113,7 +113,7 @@ describe('ScenarioViewComponent', () => {
   describe('ScenarioViewComponent.addScenario', () => {
     // it('should navigate to scenario editor', fakeAsync(() => {
     //   fixture.ngZone.run(() => {
-    //     const routerSpy = jest.spyOn(TestBed.get(Router), 'navigateByUrl');
+    //     const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
     //     component.addScenario();
     //     fixture.detectChanges();
     //     tick();

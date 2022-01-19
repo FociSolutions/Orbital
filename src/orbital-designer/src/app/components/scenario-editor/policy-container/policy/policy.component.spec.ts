@@ -19,17 +19,19 @@ describe('PolicyComponent', () => {
   let component: PolicyComponent;
   let fixture: ComponentFixture<PolicyComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [SharedModule, LoggerTestingModule, BrowserAnimationsModule, MatCardModule],
       declarations: [PolicyEditComponent, PolicyAddComponent, PolicyComponent],
       providers: [DesignerStore],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(PolicyComponent);
     component = fixture.componentInstance;
-    const designerStore = TestBed.get(DesignerStore) as DesignerStore;
-    const scenarioFormBuilder = TestBed.get(ScenarioFormBuilder) as ScenarioFormBuilder;
+    const designerStore = TestBed.inject(DesignerStore) as DesignerStore;
+    const scenarioFormBuilder = TestBed.inject(ScenarioFormBuilder) as ScenarioFormBuilder;
     designerStore.selectedScenario = emptyScenario;
     const scenarioFormGroup = scenarioFormBuilder.createNewScenarioForm();
     component.policyFormArray = scenarioFormGroup.get('policies') as FormArray;

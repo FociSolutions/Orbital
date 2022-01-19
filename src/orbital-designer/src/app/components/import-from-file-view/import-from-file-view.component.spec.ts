@@ -13,8 +13,8 @@ describe('ImportFromFileComponent', () => {
   let component: ImportFromFileViewComponent;
   let fixture: ComponentFixture<ImportFromFileViewComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ImportFromFileViewComponent],
       imports: [
         MatCardModule,
@@ -27,7 +27,9 @@ describe('ImportFromFileComponent', () => {
       ],
       providers: [DesignerStore],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ImportFromFileViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

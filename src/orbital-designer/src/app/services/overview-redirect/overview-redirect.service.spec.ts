@@ -14,22 +14,22 @@ describe('OverviewRedirectService', () => {
   });
 
   it('should be created', () => {
-    const service: OverviewRedirectService = TestBed.get(OverviewRedirectService);
+    const service: OverviewRedirectService = TestBed.inject(OverviewRedirectService);
     expect(service).toBeTruthy();
   });
 
   it('should call navigate if no MockDefinition', fakeAsync(() => {
-    const service: OverviewRedirectService = TestBed.get(OverviewRedirectService);
-    const routerSpy = jest.spyOn(TestBed.get(Router), 'navigate');
+    const service: OverviewRedirectService = TestBed.inject(OverviewRedirectService);
+    const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
     service.canActivate();
     tick();
     expect(routerSpy).toHaveBeenCalledWith(['/']);
   }));
 
   it('should not call navigate if there exists a MockDefinition', fakeAsync(() => {
-    const service: OverviewRedirectService = TestBed.get(OverviewRedirectService);
-    const routerSpy = jest.spyOn(TestBed.get(Router), 'navigate');
-    const store = TestBed.get(DesignerStore);
+    const service: OverviewRedirectService = TestBed.inject(OverviewRedirectService);
+    const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
+    const store = TestBed.inject(DesignerStore);
     store.updateMetadata({
       title: '',
       description: '',
