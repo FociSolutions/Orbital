@@ -13,6 +13,24 @@
       "name": "Orbital Mock Server"
     }
   ],
+  "extensions": {
+    "recommendations": [
+      // Use prettier as a formatter in VSCode
+      "esbenp.prettier-vscode",
+      // Git Blame and other git metadata integrated into VSCode
+      "eamodio.gitlens",
+      // enable eslint-based intellisense in code
+      "dbaeumer.vscode-eslint",
+      // VSCode message when package-lock.json changes
+      "matteopieroni.refresh-npm-packages",
+      // Command Pallette for scripts defined in package.json
+      "eg2.vscode-npm-script",
+      // INtellisense when creating imports for node_modules packages
+      "christian-kohler.npm-intellisense",
+      // Code-aware spell checker
+      "streetsidesoftware.code-spell-checker"
+    ]
+  },
   "settings": {
     "editor.tabSize": 2,
     "files.eol": "\n",
@@ -32,9 +50,12 @@
       "compodoc",
       "controlkey",
       "Dans",
+      "dbaeumer",
       "DELAYRESPONSE",
       "devkit",
       "dockerprod",
+      "eamodio",
+      "esbenp",
       "focisolutions",
       "gitversion",
       "gitversionvariables",
@@ -45,8 +66,11 @@
       "JSONEQUALITY",
       "jsonpath",
       "keyvalue",
+      "kohler",
       "kvps",
+      "leizongmin",
       "Lucki",
+      "matteopieroni",
       "maxlength",
       "minlength",
       "mkdir",
