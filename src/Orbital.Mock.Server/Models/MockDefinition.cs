@@ -15,7 +15,7 @@ namespace Orbital.Mock.Server.Models
         public string BasePath { get; set; }
 
         [JsonProperty("tokenValidation")]
-        public TokenValidationInfo TokenValidation { get; set; }
+        public bool TokenValidation { get; set; }
 
         [JsonProperty("metadata")]
         public MetadataInfo Metadata { get; set; }
@@ -39,7 +39,7 @@ namespace Orbital.Mock.Server.Models
                    EqualityComparer<OpenApiDocument>.Default.Equals(OpenApi, other.OpenApi) &&
                    EqualityComparer<MetadataInfo>.Default.Equals(Metadata, other.Metadata) &&
                    EqualityComparer<List<Scenario>>.Default.Equals(Scenarios, other.Scenarios) &&
-                   EqualityComparer<TokenValidationInfo>.Default.Equals(TokenValidation, other.TokenValidation);
+                   EqualityComparer<bool>.Default.Equals(TokenValidation, other.TokenValidation);
         }
 
         public override int GetHashCode()
