@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import { Pipe, PipeTransform } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
@@ -11,29 +10,34 @@ export class GetRuleTypeStringPipe implements PipeTransform {
    * @param ruleType The ruleType to be piped in
    */
   transform(ruleType: RuleType): string {
-    switch (+ruleType) {
-      case 0:
+    switch (ruleType) {
+      case RuleType.NONE:
         return 'None';
-      case 1:
-        return 'Regex';
-      case 2:
+      case RuleType.REGEX:
+        return 'Match Regex';
+      case RuleType.TEXTSTARTSWITH:
         return 'Text: Starts With';
-      case 3:
+      case RuleType.TEXTENDSWITH:
         return 'Text: Ends With';
-      case 4:
+      case RuleType.TEXTCONTAINS:
         return 'Text: Contains';
-      case 5:
+      case RuleType.TEXTEQUALS:
         return 'Text: Equals';
-      case 6:
+      case RuleType.JSONPATH:
         return 'JSON: Path';
-      case 7:
+      case RuleType.JSONEQUALITY:
         return 'JSON: Equality';
-      case 8:
+      case RuleType.JSONCONTAINS:
         return 'JSON: Contains';
-      case 9:
+      case RuleType.JSONSCHEMA:
         return 'JSON: Schema';
-      default:
+      case RuleType.ACCEPTALL:
+        return 'Accept All';
+      default: {
+        // Cause a type-check error if a case is missed
+        const _: never = ruleType;
         return 'Invalid Rule';
+      }
     }
   }
 }

@@ -1,23 +1,30 @@
 .row {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+}
+
+.url-path {
+  flex-grow: 1;
+  margin-left: 0.5rem;
+  margin-right: 1.5rem;
+}
+
+.url-type {
+  margin-right: 1.5rem;
 }
 
 .mat-card {
-  padding: 0.75em;
-  min-width: 35vw;
-  margin-bottom: 1em;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
 }
 
-.kvp-value {
-  flex: 1;
-  padding-right: 3vw;
+.error-message {
+  padding-left: 1.5rem;
 }
 
 .delete-button {
   background: none;
   border: 0;
+  margin-right: 0;
 }
 
 .delete-button-container {
@@ -25,17 +32,7 @@
   padding-right: 1em;
 }
 
-.kvp-key {
-  width: 12%;
-  margin-left: 1.5em;
-  margin-right: 2em;
-}
-
-.rule-type {
-  margin-right: 3.25em;
-}
-
 .error-message {
-  padding-left: 1.5em;
+  padding-left: 1.5rem;
   padding-top: 1em;
 }

@@ -4,14 +4,14 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
-import { Metadata } from 'src/app/models/mock-definition/metadata.model';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import { VerbType } from 'src/app/models/verb.type';
 import * as _ from 'lodash';
 import { ScenarioFormBuilder, ScenarioFormMapper } from './scenario-form-builder/scenario-form.builder';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { MetadataFormValues } from './metadata-form/metadata-form.component';
 
 @Component({
   selector: 'app-scenario-editor',
@@ -19,25 +19,35 @@ import { ResponseType } from 'src/app/models/mock-definition/scenario/response.t
   styleUrls: ['./scenario-editor.component.scss'],
 })
 export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentChecked {
+  subscriptions: Subscription[] = [];
+  // The new formGroup that the controls will be migrated into
+  scenarioForm: FormGroup;
+
+  get metadata(): FormGroup {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.scenarioForm.get('metadata') as FormGroup;
+  }
+
   scenarioId: string;
   selectedScenario: Scenario;
-  paramsSubscription: Subscription;
-  storeSubscription: Subscription;
 
   requestMatchRule: RequestMatchRule;
-  metadata: Metadata;
   response: Response;
 
   shouldSave: boolean;
   requestMatchRuleValid = false;
   responseMatchRuleValid = false;
-  metadataMatchRuleValid = false;
   tokenFormIsValid = false;
 
   triggerOpenCancelBox: boolean;
 
   endpointVerb: VerbType;
   endpointPath: string;
+
+  /**
+   * The old from group that the controls will be migrated out of
+   * @deprecated Use scenarioForm instead.
+   */
   scenarioFormGroup: FormGroup;
 
   constructor(
@@ -46,28 +56,39 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
     private logger: NGXLogger,
     private activatedRouter: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
-    private formBuilder: ScenarioFormBuilder,
+    private formBuilder: FormBuilder,
+    private oldFormBuilder: ScenarioFormBuilder,
     private scenarioFormMapper: ScenarioFormMapper
-  ) {}
+  ) {
+    this.scenarioForm = this.formBuilder.group({
+      metadata: [],
+    });
+  }
 
   /**
    * Runs when the app is initialized
    */
   ngOnInit() {
     this.triggerOpenCancelBox = false;
-    this.paramsSubscription = this.activatedRouter.params.subscribe((param: Params) => {
-      this.scenarioId = param.scenarioId;
-      this.logger.debug('ScenarioEditorComponent:ngOnInit: Retrieved Scenario ID from URL', param.scenarioId);
-      this.retrieveScenario(param.scenarioId);
-      this.scenarioFormGroup = this.formBuilder.createScenarioForm(this.selectedScenario);
-      this.store.selectedScenario = this.selectedScenario;
-    });
-    this.storeSubscription = this.store.state$.subscribe((state) => {
-      if (!!state.mockDefinition && !!state.selectedEndpoint) {
-        this.endpointVerb = state.selectedEndpoint.verb;
-        this.endpointPath = state.selectedEndpoint.path;
-      }
-    });
+    this.subscriptions.push(
+      this.activatedRouter.params.subscribe((param: Params) => {
+        this.scenarioId = param.scenarioId;
+        this.logger.debug('ScenarioEditorComponent:ngOnInit: Retrieved Scenario ID from URL', param.scenarioId);
+        this.retrieveScenario(param.scenarioId);
+        this.scenarioFormGroup = this.oldFormBuilder.createScenarioForm(this.selectedScenario);
+        this.store.selectedScenario = this.selectedScenario;
+
+        this.metadata.setValue(this.selectedScenario.metadata);
+      })
+    );
+    this.subscriptions.push(
+      this.store.state$.subscribe((state) => {
+        if (state.mockDefinition && state.selectedEndpoint) {
+          this.endpointVerb = state.selectedEndpoint.verb;
+          this.endpointPath = state.selectedEndpoint.path;
+        }
+      })
+    );
   }
 
   ngAfterContentChecked(): void {
@@ -78,21 +99,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
    * Unsubscribes from the params subscription when the module is unloaded
    */
   ngOnDestroy() {
-    this.paramsSubscription.unsubscribe();
-    this.storeSubscription.unsubscribe();
-  }
-
-  /*
-   * Saves the metadata to the scenario editor
-   * @param metadata The metadata input from the component
-   */
-  handleMetadataOutput(metadata: Metadata) {
-    const max_description_length = 500;
-    this.logger.debug('handleMetadataOutput:', metadata);
-    this.metadataMatchRuleValid = !!metadata.title && metadata.description.length <= max_description_length;
-    this.metadata = metadata;
-    this.scenarioFormGroup.controls.metadata.setValue(metadata);
-    this.saveScenario();
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   /**
@@ -108,12 +115,15 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
 
   saveScenario() {
     this.tokenFormIsValid = this.scenarioFormGroup.get('tokenRule').valid;
-    if (
-      this.metadataMatchRuleValid &&
-      this.scenarioFormGroup.valid &&
-      this.responseMatchRuleValid &&
-      this.tokenFormIsValid
-    ) {
+
+    this.logger.debug('saveScenario() - this.tokenFormIsValid:', this.tokenFormIsValid);
+    this.logger.debug('saveScenario() - this.metadata.valid:', this.metadata.valid);
+    this.logger.debug('saveScenario() - this.scenarioFormGroup.valid:', this.scenarioFormGroup.valid);
+    this.logger.debug('saveScenario() - this.responseMatchRuleValid:', this.responseMatchRuleValid);
+
+    this.logger.debug('saveScenario() - this.scenarioFormGroup.value:', this.scenarioFormGroup.value);
+
+    if (this.metadata.valid && this.scenarioFormGroup.valid && this.responseMatchRuleValid && this.tokenFormIsValid) {
       this.logger.debug(
         'ScenarioEditorComponent:saveScenario: Attempt to update the provided scenario',
         this.selectedScenario
@@ -126,11 +136,11 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         this.scenarioFormGroup.controls.policies as FormArray
       );
-      const newHeaderRules = this.scenarioFormMapper.GetHeaderOrQueryRulesFromForm(
+      const newHeaderRules = this.scenarioFormMapper.GetKeyValuePairRulesFromForm(
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.headerMatchRules as FormArray
       );
-      const newQueryRules = this.scenarioFormMapper.GetHeaderOrQueryRulesFromForm(
+      const newQueryRules = this.scenarioFormMapper.GetKeyValuePairRulesFromForm(
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (this.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.queryMatchRules as FormArray
       );
@@ -144,8 +154,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy, AfterContentC
         this.scenarioFormGroup.controls.response as FormGroup
       );
 
-      this.selectedScenario.metadata.title = this.metadata.title;
-      this.selectedScenario.metadata.description = this.metadata.description;
+      const metadata: MetadataFormValues = this.metadata.value;
+      this.selectedScenario.metadata = metadata;
+
       this.selectedScenario.requestMatchRules.headerRules = newHeaderRules;
       this.selectedScenario.requestMatchRules.queryRules = newQueryRules;
       this.selectedScenario.requestMatchRules.bodyRules = newBodyRules;

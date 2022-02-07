@@ -16,7 +16,7 @@ namespace Orbital.Mock.Server.Models
         public TokenValidationType ValidationType { get; set; } = TokenValidationType.NONE;
 
         [JsonProperty("rules")]
-        public ICollection<KeyValuePairRule> Rules { get; set; }
+        public ICollection<KeyValueTypeRule> Rules { get; set; }
 
         public override bool Equals(object obj)
         {

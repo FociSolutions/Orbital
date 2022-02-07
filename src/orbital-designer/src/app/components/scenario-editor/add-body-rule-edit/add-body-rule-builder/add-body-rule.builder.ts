@@ -38,7 +38,7 @@ export class AddBodyRuleBuilder {
   validateJson(formControl: FormControl) {
     const jsonErrorResult = this.validJsonService.checkJSON(formControl.value);
 
-    if (jsonErrorResult != jsonErrorType.NONE) {
+    if (jsonErrorResult !== jsonErrorType.NONE) {
       return this.jsonInvalid(`Body rule ${this.validJsonService.jsonErrorMap.get(jsonErrorResult)}`);
     }
     return null;

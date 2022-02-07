@@ -8,7 +8,7 @@ import { VerbType } from '../models/verb.type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
-import { recordAdd, recordDelete, recordFirstOrDefault } from '../models/record';
+import { recordFirstOrDefault } from '../models/record';
 
 export interface State {
   selectedEndpoint: Endpoint;
@@ -56,10 +56,10 @@ export class DesignerStore extends Store<State> {
     this.logger.debug('Setting mockDefinitions to ', mockDefinitions);
     this.setState({
       ...this.state,
-      mockDefinitions: mockDefinitions.reduce<Record<string, MockDefinition>>(
-        (previous, current) => recordAdd(previous, current.metadata.title, current),
-        {}
-      ),
+      mockDefinitions: mockDefinitions.reduce<Record<string, MockDefinition>>((dictionary, mockDef) => {
+        dictionary[mockDef.metadata.title] = mockDef;
+        return dictionary;
+      }, {}),
     });
     this.mockDefinition = mockDefinitions[0];
   }
@@ -70,18 +70,17 @@ export class DesignerStore extends Store<State> {
   deleteMockDefinitionByTitle(mockTitle: string) {
     if (this.state.mockDefinitions[mockTitle]) {
       this.logger.debug('Deleting mock ', mockTitle);
-      this.setState({
-        ...this.state,
-        mockDefinitions: recordDelete(this.state.mockDefinitions, mockTitle),
-      });
+      const { [mockTitle]: _, ...mockDefinitions } = this.state.mockDefinitions;
+      this.state.mockDefinitions = mockDefinitions;
+      this.setState({ ...this.state });
 
-      const mockDefKeys = Object.keys(this.state.mockDefinitions);
-      if (!!this.state.mockDefinitions && mockDefKeys.length > 0) {
+      const mockDefNames = Object.keys(this.state.mockDefinitions ?? {});
+      if (mockTitle === this.mockDefinition?.metadata?.title && mockDefNames.length) {
         this.logger.debug(
           'Mock store contains at least one mock; setting first mock to one in store ',
           this.state.mockDefinitions
         );
-        this.mockDefinition = this.state.mockDefinitions[mockDefKeys[0]];
+        this.mockDefinition = this.state.mockDefinitions[mockDefNames[0]];
         this.selectedEndpoint = null;
         this.selectedScenario = null;
       }
@@ -93,10 +92,8 @@ export class DesignerStore extends Store<State> {
    */
   private updateMockDefinitionsState(mockDefinition: MockDefinition) {
     this.logger.debug('Updating mock ', mockDefinition.metadata.title);
-    this.setState({
-      ...this.state,
-      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition),
-    });
+    this.state.mockDefinitions[mockDefinition.metadata.title] = mockDefinition;
+    this.setState({ ...this.state });
   }
 
   /**
@@ -105,10 +102,8 @@ export class DesignerStore extends Store<State> {
    */
   appendMockDefinition(mockDefinition: MockDefinition) {
     this.logger.debug('Appending mock definition', mockDefinition);
-    this.setState({
-      ...this.state,
-      mockDefinitions: recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinition),
-    });
+    this.updateMockDefinitionsState(mockDefinition);
+
     this.logger.debug('New state after appending', this.state);
     this.mockDefinition = recordFirstOrDefault(this.state.mockDefinitions, null);
 
@@ -159,7 +154,7 @@ export class DesignerStore extends Store<State> {
       const newEndpoints = Object.keys(VerbType)
         .map((verb) => ({ verb: VerbType[verb], lowerVerb: verb.toLowerCase() }))
         .map(({ verb, lowerVerb }) => (pathObject[lowerVerb] ? { path, verb, spec: pathObject[lowerVerb] } : null))
-        .filter((endpoint) => !!endpoint);
+        .filter((endpoint) => endpoint);
       endpoints = [...endpoints, ...newEndpoints];
     }
     this.logger.debug('Endpoints from openApi document ', endpoints);
@@ -175,20 +170,16 @@ export class DesignerStore extends Store<State> {
    */
   set mockDefinition(mockDefinition: MockDefinition) {
     const mockDefinitionCopy = { ...mockDefinition };
-    const mockDefinitions = recordAdd(this.state.mockDefinitions, mockDefinition.metadata.title, mockDefinitionCopy);
+    this.state.mockDefinitions[mockDefinition.metadata.title] = mockDefinitionCopy;
     this.logger.debug('Setting mockDefinition to ', mockDefinition);
-    this.setState({
-      ...this.state,
-      mockDefinitions,
-      mockDefinition: mockDefinitionCopy,
-    });
+    this.setState({ ...this.state, mockDefinition: mockDefinitionCopy });
     this.setEndpoints(mockDefinition.openApi);
   }
 
   /**
    * This method updates Metadata for the MockDefinition in the designer store
    *
-   * @param metadata The metdata to update
+   * @param metadata The metadata to update
    */
   updateMetadata(metadata: Metadata): void {
     this.logger.debug('Setting metadata to ', metadata);
@@ -248,7 +239,7 @@ export class DesignerStore extends Store<State> {
   }
 
   /**
-   * This method updates the host,basepath and openAPI spec of the MockDefinition in the designer store
+   * This method updates the host,basePath and openAPI spec of the MockDefinition in the designer store
    * @param host The string representing the host
    * @param basePath The string representing endpoint path
    * @param openApi The string representing openSpecAPI file contents

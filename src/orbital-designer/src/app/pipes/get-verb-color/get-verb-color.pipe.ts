@@ -12,7 +12,7 @@ export class GetVerbColorPipe implements PipeTransform {
   readonly orange: string = 'rgba(255, 165, 0, 0.25)';
   readonly purple: string = 'rgba(82, 0, 255, 0.25)';
   readonly turquoise: string = 'rgba(64,224,208 ,1 )';
-  readonly notsonavyblue: string = 'rgba(30,144,255 ,1)';
+  readonly notSoNavyBlue: string = 'rgba(30,144,255 ,1)';
 
   /**
    * Returns a string containing the appropriate bootstrap color
@@ -35,7 +35,7 @@ export class GetVerbColorPipe implements PipeTransform {
       case VerbType.HEAD:
         return prefix + this.purple;
       case VerbType.OPTIONS:
-        return prefix + this.notsonavyblue;
+        return prefix + this.notSoNavyBlue;
       case VerbType.PATCH:
         return prefix + this.turquoise;
       case VerbType.CONNECT:

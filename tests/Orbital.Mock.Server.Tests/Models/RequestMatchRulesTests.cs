@@ -15,9 +15,9 @@ namespace Orbital.Mock.Server.Tests.Models
         public RequestMatchRulesTests()
         {
             this.requestMatchRulesFake = new Faker<RequestMatchRules>()
-                .RuleFor(m => m.UrlRules, f => new List<KeyValuePairRule>())
-                .RuleFor(m => m.HeaderRules, f => new List<KeyValuePairRule>())
-                .RuleFor(m => m.QueryRules, f => new List<KeyValuePairRule>())
+                .RuleFor(m => m.UrlRules, f => new List<PathTypeRule>())
+                .RuleFor(m => m.HeaderRules, f => new List<KeyValueTypeRule>())
+                .RuleFor(m => m.QueryRules, f => new List<KeyValueTypeRule>())
                 .RuleFor(m => m.BodyRules, f => new List<BodyRule>());
         }
         [Fact]

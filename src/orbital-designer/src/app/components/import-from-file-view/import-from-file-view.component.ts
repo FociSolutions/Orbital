@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
-import { recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-import-from-file-view',
@@ -53,11 +52,7 @@ export class ImportFromFileViewComponent {
       },
       (error) => {
         this.logger.error('mock definition is invalid and was not saved to the store');
-        this.errorMessageToEmitFromCreate = recordAdd(
-          this.errorMessageToEmitFromCreate,
-          this.mockDefinitionNameString[index],
-          [error.message]
-        );
+        this.errorMessageToEmitFromCreate[this.mockDefinitionNameString[index]] = [error.message];
         this.validFileFlag = false;
         this.buttonDisabled = true;
         this.mockdefinitionInvalid.push(this.tempName);
@@ -119,7 +114,7 @@ export class ImportFromFileViewComponent {
           },
           (error) => {
             this.logger.error('mock definition is invalid and was not saved to the store');
-            recordAdd(this.errorMessageToEmitFromCreate, this.mockDefinitionNameString[index], [error.message]);
+            this.errorMessageToEmitFromCreate[this.mockDefinitionNameString[index]] = [error.message];
           }
         );
     });

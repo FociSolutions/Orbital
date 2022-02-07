@@ -42,10 +42,8 @@ export class ShuttleSubListComponent {
    * of the options are selected then the checkbox should be selected because it's
    * functionality is now to deselect the selected options.
    */
-  get selectAllChecked() {
-    return (
-      !!this.matList && this.matList.selectedOptions.selected.filter((opt) => !this.hideOption(opt.value)).length > 0
-    );
+  get selectAllChecked(): boolean {
+    return !!this.matList?.selectedOptions.selected.filter((opt) => !this.hideOption(opt.value)).length;
   }
 
   /**

@@ -19,7 +19,7 @@ import { VerbType } from 'src/app/models/verb.type';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 import { ScenarioEditorComponent } from '../scenario-editor/scenario-editor.component';
-import { AddMetadataComponent } from '../scenario-editor/add-metadata/add-metadata.component';
+import { MetadataFormComponent } from '../scenario-editor/metadata-form/metadata-form.component';
 import { AddRequestMatchRuleComponent } from '../scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from '../scenario-editor/add-response/add-response.component';
 import { PolicyAddComponent } from '../scenario-editor/policy-container/policy-add/policy-add.component';
@@ -56,7 +56,7 @@ describe('ScenarioViewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        AddMetadataComponent,
+        MetadataFormComponent,
         AddRequestMatchRuleComponent,
         AddResponseComponent,
         BodyAddRuleComponent,

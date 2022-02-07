@@ -4,7 +4,6 @@ import { RuleType } from '../../../../models/mock-definition/scenario/rule.type'
 import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { recordUpdateKeyName } from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-add-rule',
@@ -19,7 +18,8 @@ export class KvpAddRuleComponent implements OnInit {
   @Output() kvp = new EventEmitter<KeyValuePairRule>();
 
   private kvpRuleInEdit: KeyValuePairRule = {
-    rule: {},
+    key: '',
+    value: '',
     type: RuleType.NONE,
   };
   isValid: boolean;
@@ -50,20 +50,19 @@ export class KvpAddRuleComponent implements OnInit {
       (isDuplicated) => (this.ruleIsDuplicated = isDuplicated)
     );
 
-    const keySubscription = this.kvpAddRuleFormGroup.get('ruleKey').valueChanges.subscribe((newKey) => {
+    const keySubscription = this.kvpAddRuleFormGroup.get('ruleKey').valueChanges.subscribe((newKey: string) => {
       this.ruleIsDuplicated = false;
-      const oldKey = this.kvpAddRuleFormGroup.value.ruleKey;
       if (this.hasOldKey) {
-        recordUpdateKeyName(this.kvpRuleInEdit.rule, oldKey, newKey);
+        this.kvpRuleInEdit.key = newKey;
       } else {
-        this.kvpRuleInEdit.rule[newKey] = this.kvpAddRuleFormGroup.get('ruleValue').value;
+        this.kvpRuleInEdit.value = this.kvpAddRuleFormGroup.get('ruleValue').value;
         this.hasOldKey = true;
       }
     });
 
     const valueSubscription = this.kvpAddRuleFormGroup.get('ruleValue').valueChanges.subscribe((value) => {
       this.ruleIsDuplicated = false;
-      this.kvpRuleInEdit.rule[this.ruleKey.value] = value;
+      this.kvpRuleInEdit.value = value;
     });
 
     const ruleSubscription = this.kvpAddRuleFormGroup.get('type').valueChanges.subscribe((type) => {

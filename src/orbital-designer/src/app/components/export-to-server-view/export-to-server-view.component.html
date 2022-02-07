@@ -10,8 +10,8 @@
         </div>
       </div>
     </app-tooltip>
-    <div *ngIf="!!exportStatusMessage?.length" class="status-message">{{ exportStatusMessage }}</div>
-    <div *ngIf="!!exportErrors?.length" class="error-message">{{ exportErrors }}</div>
+    <div *ngIf="exportStatusMessage?.length" class="status-message">{{ exportStatusMessage }}</div>
+    <div *ngIf="exportErrors?.length" class="error-message">{{ exportErrors }}</div>
     <app-shuttle-list
       class="column flex-grow"
       [list]="leftHandSideMocks.controls"

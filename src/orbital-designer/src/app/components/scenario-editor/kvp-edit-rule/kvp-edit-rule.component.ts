@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
-import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
 import { FormArray, FormGroup } from '@angular/forms';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { Subscription } from 'rxjs';
@@ -53,7 +52,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
     if (!ruleWasFound) {
       this.kvpIsDuplicated.emit(false);
       const index = this.matchRuleFormArray.length;
-      const newRuleControl = this.formBuilder.getHeaderOrQueryItemFormGroup(kvpToAdd);
+      const newRuleControl = this.formBuilder.getKeyValuePairFormGroup(kvpToAdd);
       this.matchRuleFormArray.insert(index, newRuleControl);
       this.logger.debug('KvpEditRuleComponent: new rule added ', kvpToAdd);
     } else {
@@ -66,24 +65,12 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
    *
    */
   private isRuleDuplicate(kvpToAdd: KeyValuePairRule): boolean {
-    interface HeaderQueryRuleFormGroup {
-      key: string;
-      value: string;
-      type: number;
-    }
-
     return this.matchRuleFormArray.controls
-      .map((group): HeaderQueryRuleFormGroup => {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        return (group as FormGroup).getRawValue();
-      })
-      .some((kvFormGroup) => {
-        return (
-          kvFormGroup.value === recordFirstOrDefault(kvpToAdd.rule, '') &&
-          kvFormGroup.key === recordFirstOrDefaultKey(kvpToAdd.rule, '') &&
-          kvFormGroup.type === kvpToAdd.type
-        );
-      });
+      .map((group: FormGroup): KeyValuePairRule => group.getRawValue())
+      .some(
+        (kvFormGroup) =>
+          kvFormGroup.value === kvpToAdd.value && kvFormGroup.key === kvpToAdd.key && kvFormGroup.type === kvpToAdd.type
+      );
   }
 
   /**
@@ -93,15 +80,7 @@ export class KvpEditRuleComponent implements OnInit, OnDestroy {
   private checkForDuplicates(): void {
     this.matchRuleFormArray.controls.forEach((c) => c.setErrors(null));
     this.matchRuleFormArray.markAsUntouched();
-    interface HeaderQueryRuleFormGroup {
-      key: string;
-      value: string;
-      type: number;
-    }
-    const rules = this.matchRuleFormArray.controls.map((group): HeaderQueryRuleFormGroup => {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      return (group as FormGroup).getRawValue();
-    });
+    const rules = this.matchRuleFormArray.controls.map((group: FormGroup): KeyValuePairRule => group.getRawValue());
     rules.forEach((ruleToCheck, indexToCheck) => {
       rules.forEach((ruleToCheckAgainst, indexToCheckAgainst) => {
         const foundDuplicate =

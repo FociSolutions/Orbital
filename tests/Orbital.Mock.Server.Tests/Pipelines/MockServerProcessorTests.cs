@@ -33,6 +33,26 @@ namespace Orbital.Mock.Server.Tests.Pipelines
         private readonly MockServerProcessor mockServerProcessor;
         private readonly List<HttpMethod> validMethods = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Put, HttpMethod.Post, HttpMethod.Delete };
 
+        private static readonly ComparerType[] BodyRuleComparisons = new[] 
+        { 
+            ComparerType.JSONSCHEMA, ComparerType.JSONPATH, 
+            ComparerType.TEXTCONTAINS, ComparerType.TEXTENDSWITH, ComparerType.TEXTEQUALS,ComparerType.TEXTSTARTSWITH, 
+            ComparerType.REGEX 
+        };
+
+        private static readonly ComparerType[] HeaderRuleComparisons = new[]
+        {
+            ComparerType.JSONCONTAINS, ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA
+        };
+
+
+        private static readonly ComparerType[] UrlRuleComparisons = new[]
+        {
+            ComparerType.JSONCONTAINS, ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA,
+            ComparerType.TEXTCONTAINS, ComparerType.TEXTENDSWITH, ComparerType.TEXTSTARTSWITH,
+            ComparerType.REGEX
+        };
+
         private readonly Dictionary<string, string> emptyHeadersWithAllowAllCors = new Dictionary<string, string>
         {
             ["Access-Control-Allow-Origin"] = "*",
@@ -54,11 +74,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var fakerJObject = new Faker<JObject>()
                 .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandomWithout<ComparerType>(ComparerType.JSONSCHEMA, ComparerType.JSONPATH, ComparerType.TEXTCONTAINS, ComparerType.TEXTENDSWITH, ComparerType.TEXTEQUALS,ComparerType.TEXTSTARTSWITH, ComparerType.REGEX), fakerJObject.Generate()));
-            var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandomWithout<ComparerType>(ComparerType.JSONCONTAINS, ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
-            var fakerUrlRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandomWithout<ComparerType>(ComparerType.JSONCONTAINS, ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA, ComparerType.TEXTCONTAINS, ComparerType.TEXTENDSWITH, ComparerType.TEXTSTARTSWITH, ComparerType.REGEX), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+                .CustomInstantiator(f => new BodyRule(f.PickRandomWithout(BodyRuleComparisons), fakerJObject.Generate()));
+            var fakerHeaderQueryRule = new Faker<KeyValueTypeRule>()
+                .CustomInstantiator(f => new KeyValueTypeRule() { Type = f.PickRandomWithout(HeaderRuleComparisons), Key = f.Random.String(), Value = f.Random.String() });
+            var fakerUrlRule = new Faker<PathTypeRule>()
+                .CustomInstantiator(f => new PathTypeRule() { Type = f.PickRandomWithout(UrlRuleComparisons), Path = f.Random.String() });
             var fakerResponse = new Faker<MockResponse>()
                    .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -104,18 +124,18 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var scenarios = this.fakerScenario.Generate(10);
             //Ensures one of the scenarios request match is unique for the test
             scenarios[0].RequestMatchRules.HeaderRules = scenarios[0].RequestMatchRules.HeaderRules.Select(x =>
-                                                        new KeyValuePairRule() {Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
+                                                        new KeyValueTypeRule() {Type = x.Type, Key = x.Key, Value = x.Value + "-unique" }).ToList();
             scenarios[0].RequestMatchRules.QueryRules = scenarios[0].RequestMatchRules.QueryRules.Select(x =>
-                                                        new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
+                                                        new KeyValueTypeRule() { Type = x.Type, Key = x.Key, Value = x.Value + "-unique" }).ToList();
             scenarios[0].RequestMatchRules.UrlRules = scenarios[0].RequestMatchRules.UrlRules.Select(x =>
-                                                        new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
+                                                        new PathTypeRule() { Type = x.Type, Path = x.Path + "-unique" }).ToList();
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb.ToString();
             httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()));
-            scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => httpContext.Request.Headers.Add(k.RuleValue.Key, k.RuleValue.Value));
-            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.RuleValue.Key, x => new StringValues(x.RuleValue.Value)));
+            scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => httpContext.Request.Headers.Add(k.Key, k.Value));
+            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
             
             var input = new MessageProcessorInput(httpContext.Request, scenarios);
             #endregion
@@ -142,11 +162,12 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb.ToString();
             httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes("invalid \\json"));
-            scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => httpContext.Request.Headers.Add(k.RuleValue.Key, k.RuleValue.Value));
-            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.RuleValue.Key, x => new StringValues(x.RuleValue.Value)));
+            scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => httpContext.Request.Headers.Add(k.Key, k.Value));
+            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
 
             var input = new MessageProcessorInput(httpContext.Request, scenarios);
             #endregion
+
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken);
@@ -164,6 +185,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Method = HttpMethods.Get;
             var input = new MessageProcessorInput(httpContext.Request, scenarios);
             #endregion
+
             var Target = this.mockServerProcessor;
             var Expected = new MockResponse();
             Target.Start();
@@ -189,6 +211,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             #region TestSetup
             var input = new MessageProcessorInput(null, new List<Scenario>());
             #endregion
+
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
@@ -204,6 +227,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
             input.ServerHttpRequest.Body = null;
             #endregion
+
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
@@ -218,6 +242,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var httpContext = new DefaultHttpContext();
             var input = new MessageProcessorInput(httpContext.Request, null);
             #endregion
+
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
@@ -233,6 +258,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Method = HttpMethods.Options;
             var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
             #endregion
+
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
@@ -249,6 +275,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Path = null;
             var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
             #endregion
+
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;
@@ -265,6 +292,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             httpContext.Request.Path = "";
             var input = new MessageProcessorInput(httpContext.Request, new List<Scenario>());
             #endregion
+
             var Target = this.mockServerProcessor;
             Target.Start();
             var Actual = Target.Push(input, cancellationToken).Result;

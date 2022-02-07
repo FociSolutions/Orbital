@@ -172,7 +172,7 @@ export class MockDefinitionService {
 
     for (const endpoint in scenarioDict) {
       for (const verb in scenarioDict[endpoint]) {
-        if (scenarioDict[endpoint][verb] == false) {
+        if (scenarioDict[endpoint][verb] === false) {
           const verbInt = parseInt(verb);
           scenarioList.push(
             this.generateNewScenario(
@@ -194,7 +194,7 @@ export class MockDefinitionService {
   private mapUnauthorizedScenarios(scenarios: Scenario[]): Record<string, any> {
     const scenarioDict = {};
     for (const scenario of scenarios) {
-      let isUnauthorized: boolean = scenario.response.status == HttpStatus.StatusCodes.UNAUTHORIZED;
+      let isUnauthorized: boolean = scenario.response.status === HttpStatus.StatusCodes.UNAUTHORIZED;
 
       if (scenarioDict[scenario.path]) {
         isUnauthorized = scenarioDict[scenario.path][scenario.verb] ? true : isUnauthorized;

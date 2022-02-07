@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { UrlRule } from 'src/app/models/mock-definition/scenario/url-rule.model';
 
 @Component({
   selector: 'app-url-add-rule',
@@ -14,20 +14,17 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
    * Stores the subscriptions that will be destroyed during OnDestroy
    */
   private subscriptions: Subscription[] = [];
-  private urlRuleInEdit: KeyValuePairRule = {
-    rule: { urlPath: '' },
+  private urlRuleInEdit: UrlRule = {
+    path: '',
     type: RuleType.ACCEPTALL,
   };
   private ruleIsDuplicated = false;
 
+  @Input() readonly PATH_MAXLENGTH = 3000;
   @Input() urlRuleAddedIsDuplicated = new EventEmitter<boolean>();
-  @Output() urlRuleAddedEventEmitter = new EventEmitter<KeyValuePairRule>();
+  @Output() urlRuleAddedEventEmitter = new EventEmitter<UrlRule>();
 
-  readonly rules = [
-    { value: RuleType.REGEX, viewValue: 'Matches Regex' },
-    { value: RuleType.ACCEPTALL, viewValue: 'Accept All' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Equals' },
-  ];
+  readonly rules = [RuleType.REGEX, RuleType.ACCEPTALL, RuleType.TEXTEQUALS];
 
   urlAddRuleFormGroup: FormGroup;
   ngOnInit() {
@@ -35,17 +32,16 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
       (isDuplicated) => (this.ruleIsDuplicated = isDuplicated)
     );
     this.urlAddRuleFormGroup = new FormGroup({
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      path: new FormControl(this.urlRuleInEdit.rule.urlPath, [Validators.required, Validators.maxLength(3000)]),
-      ruleType: new FormControl(this.urlRuleInEdit.type, [Validators.required]),
+      path: new FormControl(this.urlRuleInEdit.path, [Validators.required, Validators.maxLength(this.PATH_MAXLENGTH)]),
+      type: new FormControl(this.urlRuleInEdit.type, [Validators.required]),
     });
 
-    const pathSubscription = this.urlAddRuleFormGroup.get('path').valueChanges.subscribe((path) => {
+    const pathSubscription = this.urlAddRuleFormGroup.get('path').valueChanges.subscribe((path: string) => {
       this.ruleIsDuplicated = false;
-      this.urlRuleInEdit.rule.urlPath = path;
+      this.urlRuleInEdit.path = path;
     });
 
-    const ruleTypeSubscription = this.urlAddRuleFormGroup.get('ruleType').valueChanges.subscribe((type) => {
+    const ruleTypeSubscription = this.urlAddRuleFormGroup.get('type').valueChanges.subscribe((type: RuleType) => {
       this.ruleIsDuplicated = false;
       this.urlRuleInEdit.type = type;
 
@@ -76,10 +72,10 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Gets the form control for the 'ruleType'
+   * Gets the form control for the 'type'
    */
-  get ruleType(): AbstractControl {
-    return this.urlAddRuleFormGroup.get('ruleType');
+  get type(): AbstractControl {
+    return this.urlAddRuleFormGroup.get('type');
   }
 
   /**
@@ -95,8 +91,6 @@ export class UrlAddRuleComponent implements OnInit, OnDestroy {
    * Implementation for NG On Destroy
    */
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 }

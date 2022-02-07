@@ -1,24 +1,25 @@
-.kvp-add {
+.url-add {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .add-button {
-  margin-right: 1.3em;
+  margin-right: 0.5rem;
 }
 
-.kvp-value {
-  width: 25em;
+.url-path {
+  flex-grow: 1;
+  margin-left: 0.5rem;
+  margin-right: 1.5rem;
 }
 
-.kvp-key {
-  padding-left: 1.3em;
-  width: 12%;
+.url-type {
+  margin-right: 1.5rem;
 }
 
 .error-message {
-  padding-left: 1.6em;
+  padding-left: 1.5rem;
 }
 
 .row {

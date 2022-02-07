@@ -16,7 +16,7 @@ export class HomeViewComponent {
   }
 
   checkMockDefinitions(mockDefs: Record<string, MockDefinition>) {
-    if (Object.keys(mockDefs).length > 0 && this.router.url == '/') {
+    if (Object.keys(mockDefs).length && this.router.url === '/') {
       this.navigateTo('/endpoint-view');
     }
   }

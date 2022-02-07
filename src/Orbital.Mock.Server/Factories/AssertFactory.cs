@@ -20,22 +20,22 @@ namespace Orbital.Mock.Server.Factories
         }
 
         /// <inheritdoc />
-        public IEnumerable<Assert> CreateAssert(KeyValuePairRule rule, IEnumerable<KeyValuePair<string, string>> request)
+        public IEnumerable<Assert> CreateAssert(KeyValueTypeRule rule, IEnumerable<KeyValuePair<string, string>> request)
         {
             var ruleAsserts = new List<Assert>();
 
             foreach (var kvpRequest in request)
             {
-                if (kvpRequest.Key == rule.RuleValue.Key)
+                if (kvpRequest.Key == rule.Key)
                 {
                     var queryheaderkeyassert = new Assert()
                     {
-                        Expect = rule.RuleValue.Key,
+                        Expect = rule.Key,
                         Actual = kvpRequest.Key,
                         Rule = ComparerType.TEXTEQUALS
                     };
 
-                    var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = rule.RuleValue.Value, Rule = rule.Type };
+                    var queryheadervalueassert = new Assert() { Actual = kvpRequest.Value, Expect = rule.Value, Rule = rule.Type };
 
                     ruleAsserts.Add(queryheaderkeyassert);
                     ruleAsserts.Add(queryheadervalueassert);
@@ -45,14 +45,24 @@ namespace Orbital.Mock.Server.Factories
         }
 
         /// <inheritdoc />
-        public IEnumerable<Assert> CreateAssert(KeyValuePairRule rules, string request)
+        public IEnumerable<Assert> CreateAssert(KeyValueTypeRule rules, string request)
         {
             var asserts = new List<Assert>();
-            var UrlAssert = new Assert() { Actual = request, Expect = rules.RuleValue.Value, Rule = rules.Type };
+            var UrlAssert = new Assert() { Actual = request, Expect = rules.Value, Rule = rules.Type };
             asserts.Add(UrlAssert);
 
             return asserts;
 
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Assert> CreateAssert(PathTypeRule rules, string request)
+        {
+            var asserts = new List<Assert>();
+            var UrlAssert = new Assert() { Actual = request, Expect = rules.Path, Rule = rules.Type };
+            asserts.Add(UrlAssert);
+
+            return asserts;
         }
     }
 }

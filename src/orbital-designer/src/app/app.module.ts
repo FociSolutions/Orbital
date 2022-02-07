@@ -34,7 +34,7 @@ import { ScenarioEditorComponent } from './components/scenario-editor/scenario-e
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AddMetadataComponent } from './components/scenario-editor/add-metadata/add-metadata.component';
+import { MetadataFormComponent } from './components/scenario-editor/metadata-form/metadata-form.component';
 import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
 import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
@@ -55,10 +55,11 @@ import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rul
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 import { CoreModule } from './core/core.module';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
+import { GetStringErrorsPipe } from './pipes/get-string-errors/get-string-errors.pipe';
 
 @NgModule({
   declarations: [
-    AddMetadataComponent,
+    MetadataFormComponent,
     AddRequestMatchRuleComponent,
     AddResponseComponent,
     AppComponent,
@@ -74,6 +75,7 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
     ExportToServerViewComponent,
     GetEndpointScenariosPipe,
     GetRuleTypeStringPipe,
+    GetStringErrorsPipe,
     GetVerbColorPipe,
     GetVerbStringPipe,
     HomeViewComponent,

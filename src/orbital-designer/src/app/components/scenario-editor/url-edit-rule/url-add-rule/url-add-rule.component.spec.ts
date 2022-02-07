@@ -8,7 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
-import { KeyValuePairRule } from 'src/app/models/mock-definition/scenario/key-value-pair-rule.model';
+import { UrlRule } from 'src/app/models/mock-definition/scenario/url-rule.model';
+import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
 
 describe('UrlAddRuleComponent', () => {
   let component: UrlAddRuleComponent;
@@ -16,7 +17,7 @@ describe('UrlAddRuleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UrlAddRuleComponent],
+      declarations: [UrlAddRuleComponent, GetRuleTypeStringPipe],
       imports: [
         BrowserAnimationsModule,
         LoggerTestingModule,
@@ -45,14 +46,14 @@ describe('UrlAddRuleComponent', () => {
       expect(component.path).toBeTruthy();
     });
 
-    it('should have a ruleType from control', () => {
-      expect(component.ruleType).toBeTruthy();
+    it('should have a type from control', () => {
+      expect(component.type).toBeTruthy();
     });
   });
 
-  describe('When the ruleType is ACEEPTALL', () => {
+  describe('When the RuleType is ACCEPTALL', () => {
     beforeEach(() => {
-      component.ruleType.setValue(RuleType.ACCEPTALL);
+      component.type.setValue(RuleType.ACCEPTALL);
     });
 
     it('should have the path be disabled', () => {
@@ -60,9 +61,9 @@ describe('UrlAddRuleComponent', () => {
     });
   });
 
-  describe('When the ruleType is REGEX', () => {
+  describe('When the RuleType is REGEX', () => {
     beforeEach(() => {
-      component.ruleType.setValue(RuleType.REGEX);
+      component.type.setValue(RuleType.REGEX);
     });
 
     describe('And path has not been set to a value', () => {
@@ -80,9 +81,9 @@ describe('UrlAddRuleComponent', () => {
       });
 
       describe('And the add button is pushed', () => {
-        it('Should emitt the urlRuleAddedEventEmitter', (done) => {
-          component.urlRuleAddedEventEmitter.subscribe((url: KeyValuePairRule) => {
-            expect(url.rule).toEqual({ urlPath: 'cool/path' });
+        it('Should emit the urlRuleAddedEventEmitter', (done) => {
+          component.urlRuleAddedEventEmitter.subscribe((url: UrlRule) => {
+            expect(url.path).toEqual('cool/path');
             done();
           });
 

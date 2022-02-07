@@ -27,8 +27,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             Randomizer.Seed = new Random(FilterTestHelpers.Seed);
             var pathfaker = new Faker();
             var path = pathfaker.Random.String();
-            var fakerurlRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() { Type = ComparerType.TEXTEQUALS, RuleValue = new KeyValuePair<string, string>("url", f.Random.String()) });
+            var fakerurlRule = new Faker<PathTypeRule>()
+                .CustomInstantiator(f => new PathTypeRule() { Type = ComparerType.TEXTEQUALS, Path = f.Random.String() });
             var requestMatchRulesFake = new Faker<RequestMatchRules>()
                                         .RuleFor(m => m.UrlRules, f => fakerurlRule.Generate(5));
 
@@ -46,10 +46,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Path = fakeScenario.RequestMatchRules.UrlRules.FirstOrDefault().RuleValue.Value
-
+                Path = fakeScenario.RequestMatchRules.UrlRules.FirstOrDefault().Path
             };
             #endregion
+
             var Target = new UrlMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var port = new ProcessMessagePort()
@@ -77,9 +77,9 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Path = faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())
-
             };
             #endregion
+
             var Target = new UrlMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
             var port = new ProcessMessagePort()
@@ -106,10 +106,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Path = faker.Random.AlphaNumeric(TestUtils.GetRandomStringLength())
-
             };
 
             #endregion
+
             var Target = new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
 
             var port = new ProcessMessagePort()

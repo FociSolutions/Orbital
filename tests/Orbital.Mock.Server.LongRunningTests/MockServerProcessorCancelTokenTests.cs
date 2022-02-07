@@ -50,8 +50,8 @@ namespace Orbital.Mock.Server.LongRunningTests
                 .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
                 .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
-            var fakerHeaderQueryRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+            var fakerHeaderQueryRule = new Faker<KeyValueTypeRule>()
+                .CustomInstantiator(f => new KeyValueTypeRule() { Type = f.PickRandom<ComparerType>(), Key = f.Random.String(), Value = f.Random.String() });
             var fakerResponse = new Faker<MockResponse>()
                 .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -199,17 +199,17 @@ namespace Orbital.Mock.Server.LongRunningTests
             // generate 10 unique scenarios (it doesn't matter what they do) as long as they get mostly through the pipeline
             var scenarios = _fakerScenario.Generate(10);
             scenarios[0].RequestMatchRules.HeaderRules = scenarios[0].RequestMatchRules.HeaderRules.Select( x =>
-                                                    new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
+                                                    new KeyValueTypeRule() { Type = x.Type, Key = x.Key, Value = x.Value + "-unique" }).ToList();
             scenarios[0].RequestMatchRules.QueryRules = scenarios[0].RequestMatchRules.QueryRules.Select(x =>
-                                                         new KeyValuePairRule() { Type = x.Type, RuleValue = new KeyValuePair<string, string>(x.RuleValue.Key, x.RuleValue.Value + "-unique") }).ToList();
+                                                         new KeyValueTypeRule() { Type = x.Type, Key = x.Key, Value = x.Value + "-unique" }).ToList();
             httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb.ToString();
             httpContext.Request.Body =
                 new MemoryStream(Encoding.ASCII.GetBytes((string) scenarios[0].RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()));
             var context = httpContext;
-            scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => context.Request.Headers.Add(k.RuleValue.Key, k.RuleValue.Value));
-            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.RuleValue.Key, x => new StringValues(x.RuleValue.Value)));
+            scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => context.Request.Headers.Add(k.Key, k.Value));
+            httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
             return scenarios;
         }
     }

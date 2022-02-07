@@ -4,19 +4,19 @@
   <mat-divider class="divider-padding"></mat-divider>
   <app-url-add-rule
     class="add-rule"
+    [PATH_MAXLENGTH]="PATH_MAXLENGTH"
     (urlRuleAddedEventEmitter)="addUrlEditRuleHandler($event)"
     [urlRuleAddedIsDuplicated]="this.urlRuleIsDuplicated"
   ></app-url-add-rule>
 </div>
 
 <ng-template [ngIf]="this.urlMatchRuleFormArray.controls.length" [ngIfElse]="noRulesAdded">
-  <div *ngFor="let urlruleform of urlMatchRuleFormArray.controls; let i = index">
+  <div *ngFor="let urlRuleForm of urlMatchRuleFormArray.controls; let i = index">
     <app-url-list-item-rule-type
-      [urlEditRuleFormGroup]="urlruleform"
+      [urlEditRuleFormGroup]="urlRuleForm"
       (urlRuleRemovedEventEmitter)="deleteUrlEditRuleHandler(i)"
-      ruleIsDuplicatedIndex="this.existingUrlRuleAtIndecIsDuplicated"
     ></app-url-list-item-rule-type>
   </div>
 </ng-template>
 
-<ng-template #noRulesAdded> No rules Added URL Rule </ng-template>
+<ng-template #noRulesAdded>No rules Added URL Rule</ng-template>

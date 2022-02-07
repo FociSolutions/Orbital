@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,13 +8,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
-
 import { MatMenuModule } from '@angular/material/menu';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
-import { AddMetadataComponent } from './add-metadata/add-metadata.component';
-import { Metadata } from 'src/app/models/mock-definition/metadata.model';
+import { MetadataFormComponent } from './metadata-form/metadata-form.component';
 import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 import * as faker from 'faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
@@ -58,7 +54,7 @@ describe('ScenarioEditorComponent', () => {
         SideBarComponent,
         GetEndpointScenariosPipe,
         OverviewHeaderComponent,
-        AddMetadataComponent,
+        MetadataFormComponent,
         AddRequestMatchRuleComponent,
         AddResponseComponent,
         GetVerbColorPipe,
@@ -108,17 +104,6 @@ describe('ScenarioEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ScenarioEditorComponent.handleMetadataOutput', () => {
-    it('should set the metadata to the metadata when the component outputs the metadata', () => {
-      const fakeMetadata = {
-        title: faker.random.word(),
-        description: faker.random.word(),
-      } as Metadata;
-      component.handleMetadataOutput(fakeMetadata);
-      expect(component.metadata).toEqual(fakeMetadata);
-    });
-  });
-
   describe('ScenarioEditorComponent.handleRequestMatchRuleOutput', () => {
     it('should set the request match rule to the one that the component emitted', () => {
       const fakeRequestMatchRule = validMockDefinition.scenarios[0].requestMatchRules;
@@ -149,15 +134,14 @@ describe('ScenarioEditorComponent', () => {
           metadata: {
             title: faker.random.word(),
             description: faker.random.word(),
-          } as Metadata,
+          },
         };
         component.scenarioId = input.scenario.id;
-        component.metadata = input.metadata;
+        component.metadata.setValue(input.metadata);
         component.response = input.scenario.response;
         component.requestMatchRule = input.scenario.requestMatchRules;
         component.selectedScenario = input.scenario;
 
-        component.metadataMatchRuleValid = true;
         component.requestMatchRuleValid = true;
         component.responseMatchRuleValid = true;
         (

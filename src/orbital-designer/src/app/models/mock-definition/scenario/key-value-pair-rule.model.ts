@@ -5,5 +5,6 @@ import { RuleType } from './rule.type';
  */
 export interface KeyValuePairRule {
   type: RuleType;
-  rule: Record<string, string>;
+  key: string;
+  value: string;
 }

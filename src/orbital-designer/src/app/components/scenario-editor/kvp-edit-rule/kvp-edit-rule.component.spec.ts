@@ -12,7 +12,6 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { ScenarioFormBuilder } from '../scenario-form-builder/scenario-form.builder';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
 describe('KvpEditRuleComponent', () => {
   let component: KvpEditRuleComponent;
   let fixture: ComponentFixture<KvpEditRuleComponent>;
@@ -43,23 +42,18 @@ describe('KvpEditRuleComponent', () => {
 
   describe('KvpEditRuleComponent.deleteKvpFromRule', () => {
     it('should not delete the kvp if it is defined', () => {
-      const kvpType = {
+      const kvpType: KeyValuePairRule = {
         type: faker.datatype.number({
           min: 0,
           max: Object.keys(RuleType).length - 1,
-        }) as RuleType,
-        rule: { test: faker.random.word() },
-      } as KeyValuePairRule;
+        }),
+        key: 'test',
+        value: faker.random.word(),
+      };
       component.matchRuleFormArray.push(
         new FormGroup({
-          key: new FormControl(recordFirstOrDefaultKey(kvpType.rule, ''), [
-            Validators.required,
-            Validators.maxLength(200),
-          ]),
-          value: new FormControl(recordFirstOrDefault(kvpType.rule, ''), [
-            Validators.required,
-            Validators.maxLength(3000),
-          ]),
+          key: new FormControl(kvpType.key, [Validators.required, Validators.maxLength(200)]),
+          value: new FormControl(kvpType.value, [Validators.required, Validators.maxLength(3000)]),
           type: new FormControl(kvpType.type, [Validators.required]),
         })
       );
@@ -68,23 +62,18 @@ describe('KvpEditRuleComponent', () => {
     });
 
     it('should delete the kvp if it defined', () => {
-      const kvpType = {
+      const kvpType: KeyValuePairRule = {
         type: faker.datatype.number({
           min: 0,
           max: Object.keys(RuleType).length - 1,
-        }) as RuleType,
-        rule: { test: faker.random.word() },
-      } as KeyValuePairRule;
+        }),
+        key: 'test',
+        value: faker.random.word(),
+      };
       component.matchRuleFormArray.push(
         new FormGroup({
-          key: new FormControl(recordFirstOrDefaultKey(kvpType.rule, ''), [
-            Validators.required,
-            Validators.maxLength(200),
-          ]),
-          value: new FormControl(recordFirstOrDefault(kvpType.rule, ''), [
-            Validators.required,
-            Validators.maxLength(3000),
-          ]),
+          key: new FormControl(kvpType.key, [Validators.required, Validators.maxLength(200)]),
+          value: new FormControl(kvpType.value, [Validators.required, Validators.maxLength(3000)]),
           type: new FormControl(kvpType.type, [Validators.required]),
         })
       );
@@ -95,65 +84,50 @@ describe('KvpEditRuleComponent', () => {
     it('should delete the kvp by key if there are multiple similar kvps', () => {
       const randomWord = faker.random.word();
       // this has to have the same value for all the values to make sure that it is not deleting by value
-      const kvpType = [
+      const kvpType: KeyValuePairRule[] = [
         {
           type: faker.datatype.number({
             min: 0,
             max: Object.keys(RuleType).length - 1,
-          }) as RuleType,
-          rule: { test: randomWord } as Record<string, string>,
+          }),
+          key: 'test',
+          value: randomWord,
         },
         {
           type: faker.datatype.number({
             min: 0,
             max: Object.keys(RuleType).length - 1,
-          }) as RuleType,
-          rule: { testtwo: randomWord } as Record<string, string>,
+          }),
+          key: 'test',
+          value: randomWord,
         },
         {
           type: faker.datatype.number({
             min: 0,
             max: Object.keys(RuleType).length - 1,
-          }) as RuleType,
-          rule: { testthree: randomWord } as Record<string, string>,
+          }),
+          key: 'test',
+          value: randomWord,
         },
-      ] as KeyValuePairRule[];
+      ];
       component.matchRuleFormArray.push(
         new FormGroup({
-          key: new FormControl(recordFirstOrDefaultKey(kvpType[0].rule, ''), [
-            Validators.required,
-            Validators.maxLength(200),
-          ]),
-          value: new FormControl(recordFirstOrDefault(kvpType[0].rule, ''), [
-            Validators.required,
-            Validators.maxLength(3000),
-          ]),
+          key: new FormControl(kvpType[0].key, [Validators.required, Validators.maxLength(200)]),
+          value: new FormControl(kvpType[0].value, [Validators.required, Validators.maxLength(3000)]),
           type: new FormControl(kvpType[0].type, [Validators.required]),
         })
       );
       component.matchRuleFormArray.push(
         new FormGroup({
-          key: new FormControl(recordFirstOrDefaultKey(kvpType[1].rule, ''), [
-            Validators.required,
-            Validators.maxLength(200),
-          ]),
-          value: new FormControl(recordFirstOrDefault(kvpType[1].rule, ''), [
-            Validators.required,
-            Validators.maxLength(3000),
-          ]),
+          key: new FormControl(kvpType[1].key, [Validators.required, Validators.maxLength(200)]),
+          value: new FormControl(kvpType[1].value, [Validators.required, Validators.maxLength(3000)]),
           type: new FormControl(kvpType[1].type, [Validators.required]),
         })
       );
       component.matchRuleFormArray.push(
         new FormGroup({
-          key: new FormControl(recordFirstOrDefaultKey(kvpType[2].rule, ''), [
-            Validators.required,
-            Validators.maxLength(200),
-          ]),
-          value: new FormControl(recordFirstOrDefault(kvpType[2].rule, ''), [
-            Validators.required,
-            Validators.maxLength(3000),
-          ]),
+          key: new FormControl(kvpType[2].key, [Validators.required, Validators.maxLength(200)]),
+          value: new FormControl(kvpType[2].value, [Validators.required, Validators.maxLength(3000)]),
           type: new FormControl(kvpType[2].type, [Validators.required]),
         })
       );
@@ -164,34 +138,36 @@ describe('KvpEditRuleComponent', () => {
 
   describe('KvpEditRuleComponent.addKvp', () => {
     it('should save valid key value pair', () => {
-      const kvp = {
+      const kvp: KeyValuePairRule = {
         type: faker.datatype.number({
           min: 0,
           max: Object.keys(RuleType).length - 1,
-        }) as RuleType,
-        rule: { test: faker.random.word() },
-      } as KeyValuePairRule;
+        }),
+        key: 'test',
+        value: faker.random.word(),
+      };
       component.addKvp(kvp);
       expect(component.matchRuleFormArray.length).toBe(1);
     });
   });
 
   it('should not save repeated key value pair', () => {
-    const kvp = {
+    const kvp: KeyValuePairRule = {
       type: faker.datatype.number({
         min: 0,
         max: Object.keys(RuleType).length - 1,
-      }) as RuleType,
-      rule: { test: faker.random.word() },
-    } as KeyValuePairRule;
+      }),
+      key: 'test',
+      value: faker.random.word(),
+    };
     const kvpForm = new FormGroup({
-      key: new FormControl(recordFirstOrDefaultKey(kvp.rule, ''), [Validators.required, Validators.maxLength(200)]),
-      value: new FormControl(recordFirstOrDefault(kvp.rule, ''), [Validators.required, Validators.maxLength(3000)]),
+      key: new FormControl(kvp.key, [Validators.required, Validators.maxLength(200)]),
+      value: new FormControl(kvp.value, [Validators.required, Validators.maxLength(3000)]),
       type: new FormControl(kvp.type, [Validators.required]),
     });
     component.matchRuleFormArray.push(kvpForm);
     component.addKvp(kvp);
     expect(component.matchRuleFormArray.length).toBe(1);
-    expect(component.matchRuleFormArray.at(0) as FormGroup).toEqual(kvpForm);
+    expect(component.matchRuleFormArray.at(0)).toEqual(kvpForm);
   });
 });

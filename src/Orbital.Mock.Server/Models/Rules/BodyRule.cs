@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Orbital.Mock.Server.Models.Interfaces;
-using System;
 
 namespace Orbital.Mock.Server.Models.Rules
 {

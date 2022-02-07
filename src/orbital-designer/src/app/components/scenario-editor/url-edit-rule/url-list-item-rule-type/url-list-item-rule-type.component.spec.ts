@@ -6,9 +6,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { UrlListItemRuleTypeComponent } from './url-list-item-rule-type.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UrlRule } from 'src/app/models/mock-definition/scenario/url-rule.model';
+import { UrlEditRuleComponent } from '../url-edit-rule.component';
 
 describe('UrlListItemRuleTypeComponent', () => {
   let component: UrlListItemRuleTypeComponent;
@@ -34,8 +35,8 @@ describe('UrlListItemRuleTypeComponent', () => {
     fixture = TestBed.createComponent(UrlListItemRuleTypeComponent);
     component = fixture.componentInstance;
     component.urlEditRuleFormGroup = new FormGroup({
-      path: new FormControl('', [Validators.required, Validators.maxLength(3000)]),
-      ruleType: new FormControl(RuleType.NONE, [Validators.required]),
+      path: new FormControl('', [Validators.required, Validators.maxLength(UrlEditRuleComponent.PATH_MAXLENGTH)]),
+      type: new FormControl(RuleType.NONE, [Validators.required]),
     });
     fixture.detectChanges();
   });
@@ -49,14 +50,14 @@ describe('UrlListItemRuleTypeComponent', () => {
       expect(component.path).toBeTruthy();
     });
 
-    it('should have a ruleType from control', () => {
-      expect(component.ruleType).toBeTruthy();
+    it('should have a type from control', () => {
+      expect(component.type).toBeTruthy();
     });
   });
 
-  describe('When the ruleType is ACEEPTALL', () => {
+  describe('When the RuleType is ACCEPTALL', () => {
     beforeEach(() => {
-      component.ruleType.setValue(RuleType.ACCEPTALL);
+      component.type.setValue(RuleType.ACCEPTALL);
     });
 
     it('should have the path be disabled', () => {
@@ -64,9 +65,9 @@ describe('UrlListItemRuleTypeComponent', () => {
     });
   });
 
-  describe('When the ruleType is REGEX', () => {
+  describe('When the RuleType is REGEX', () => {
     beforeEach(() => {
-      component.ruleType.setValue(RuleType.REGEX);
+      component.type.setValue(RuleType.REGEX);
     });
 
     describe('And path has been set to a value', () => {
@@ -78,9 +79,9 @@ describe('UrlListItemRuleTypeComponent', () => {
       });
 
       describe('And the remove button is pushed', () => {
-        it('Should emitt the urlRuleRemovedEventEmitter', (done) => {
-          component.urlRuleRemovedEventEmitter.subscribe((url: KeyValuePairRule) => {
-            expect(url.rule).toEqual({ urlPath: 'cool/path' });
+        it('Should emit the urlRuleRemovedEventEmitter', (done) => {
+          component.urlRuleRemovedEventEmitter.subscribe((url: UrlRule) => {
+            expect(url.path).toEqual('cool/path');
             done();
           });
 

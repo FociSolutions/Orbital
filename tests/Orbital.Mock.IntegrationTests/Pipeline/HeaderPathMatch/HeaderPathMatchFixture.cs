@@ -37,25 +37,25 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.HeaderPathMatch
 
         private void Given_the_request_matches_against_a_scenario()
         {
-            foreach (var keyval in this.scenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue))
+            foreach (var rule in this.scenario.RequestMatchRules.HeaderRules)
             {
-                this.request.Headers.Add(keyval.Key, keyval.Value);
+                this.request.Headers.Add(rule.Key, rule.Value);
             }
         }
 
         private void Given_the_request_header_values_do_not_match_against_a_scenario()
         {
-            foreach (var keyval in this.scenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue))
+            foreach (var rule in this.scenario.RequestMatchRules.HeaderRules)
             {
-                this.request.Headers.Add(keyval.Key, $"{keyval.Value}-diff");
+                this.request.Headers.Add(rule.Key, $"{rule.Value}-diff");
             }
         }
 
         private void Given_the_request_header_keys_do_not_match_against_a_scenario()
         {
-            foreach (var keyval in this.scenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue))
+            foreach (var rule in this.scenario.RequestMatchRules.HeaderRules)
             {
-                this.request.Headers.Add(keyval.Key.Substring(0, keyval.Key.Length / 2), keyval.Value);
+                this.request.Headers.Add(rule.Key.Substring(0, rule.Key.Length / 2), rule.Value);
             }
         }
 

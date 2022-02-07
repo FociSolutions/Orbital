@@ -34,8 +34,8 @@ export class EndpointListItemComponent {
 
   get scenarioDisplay(): string {
     let display = `${this.scenarioCount} Scenario`;
-    if (this.scenarioCount > 1 || this.scenarioCount == 0) {
-      display = `${display}s`;
+    if (this.scenarioCount !== 1) {
+      display += 's';
     }
     return display;
   }

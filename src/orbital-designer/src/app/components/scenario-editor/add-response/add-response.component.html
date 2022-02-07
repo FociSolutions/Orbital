@@ -1,6 +1,6 @@
 <div class="response-type">Response Type</div>
 
-<mat-checkbox [formControl]="shadowType" id="shadowType"> Templated </mat-checkbox>
+<mat-checkbox [formControl]="shadowType" id="shadowType">Templated</mat-checkbox>
 
 <mat-divider class="divider-padding"></mat-divider>
 
@@ -19,13 +19,13 @@
       </div>
     </div>
   </div>
-  <div class="error-message mb" *ngIf="!!this.responseFormGroup.controls.status.errors">Invalid Status Code</div>
+  <div class="error-message mb" *ngIf="this.responseFormGroup.controls.status.errors">Invalid Status Code</div>
 
   <mat-divider class="divider-padding mt-0"></mat-divider>
 
   <app-kvp-edit
-    [addKvpTitle]="titleForKvp"
-    [listKvpTitle]="titleForKvpAdded"
+    [addKvpTitle]="titleForNewHeaderRuleControl"
+    [listKvpTitle]="titleForAddedHeaderRules"
     [isCaseSensitive]="false"
     [Save]="this.shouldSave"
     [kvp]="this.headers"
@@ -39,7 +39,7 @@
     <json-editor [options]="options" [data]="bodyData" #editor (click)="changeLog()"></json-editor>
   </div>
 
-  <div class="error-message" *ngIf="!!this.responseFormGroup.controls.body.errors">
+  <div class="error-message" *ngIf="this.responseFormGroup.controls.body.errors">
     <mat-error>{{ this.responseFormGroup.controls.body.errors.invalidJson }}</mat-error>
   </div>
 </form>

@@ -43,10 +43,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                                      ? new MatchResult(MatchResultType.Success, scenario.Id, scenario.DefaultScenario)
                                      : new MatchResult(MatchResultType.Fail, scenario.Id, scenario.DefaultScenario));
                     }
-
                 }
-
-
             }
 
             return port;

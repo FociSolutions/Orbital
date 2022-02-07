@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
-import { KeyValuePairRule } from '../../../../models/mock-definition/scenario/key-value-pair-rule.model';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { UrlRule } from 'src/app/models/mock-definition/scenario/url-rule.model';
 
 @Component({
   selector: 'app-url-list-item-rule-type',
@@ -22,10 +22,10 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
   /**
    * The kvp to be deleted by the parent
    */
-  @Output() urlRuleRemovedEventEmitter = new EventEmitter<KeyValuePairRule>();
+  @Output() urlRuleRemovedEventEmitter = new EventEmitter<UrlRule>();
 
   ngOnInit() {
-    const ruleTypeSubscription = this.urlEditRuleFormGroup.get('ruleType').valueChanges.subscribe((type) => {
+    const ruleTypeSubscription = this.urlEditRuleFormGroup.get('type').valueChanges.subscribe((type) => {
       if (type === RuleType.ACCEPTALL) {
         this.path.disable();
         this.path.setValue('');
@@ -36,7 +36,7 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
       this.urlEditRuleFormGroup.updateValueAndValidity();
     });
 
-    if (this.urlEditRuleFormGroup.controls.ruleType.value === RuleType.ACCEPTALL) {
+    if (this.urlEditRuleFormGroup.controls.type.value === RuleType.ACCEPTALL) {
       this.path.disable();
       this.urlEditRuleFormGroup.markAsUntouched();
     }
@@ -55,17 +55,17 @@ export class UrlListItemRuleTypeComponent implements OnInit, OnDestroy {
    * Gets the value from the current url rule type
    */
 
-  get ruleType(): AbstractControl {
-    return this.urlEditRuleFormGroup.get('ruleType');
+  get type(): AbstractControl {
+    return this.urlEditRuleFormGroup.get('type');
   }
 
   /**
    * Emits a removes event with the KeyValue for the parent to remove
    */
   onRemove() {
-    const removeRule: KeyValuePairRule = {
-      rule: { urlPath: this.path.value },
-      type: this.ruleType.value,
+    const removeRule: UrlRule = {
+      path: this.path.value,
+      type: this.type.value,
     };
     this.urlRuleRemovedEventEmitter.emit(removeRule);
   }

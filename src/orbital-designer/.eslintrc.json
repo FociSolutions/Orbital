@@ -58,6 +58,8 @@
         "no-else-return": ["error", { "allowElseIf": false }],
         // Be explicit with nulls! No == null please!
         "no-eq-null": "error",
+        // Use strictly typed comparisons, unless you (and everyone else) memorized this algorithm: https://262.ecma-international.org/5.1/#sec-11.9.3
+        "eqeqeq": "error",
         // Security risk!! We do not need eval!
         "no-eval": "error",
         // Again this is also a security risk we are blocking. We do not need to execute any of these blocked cases.

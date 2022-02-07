@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
 import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { FormArray, FormGroup } from '@angular/forms';
 import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 import { Subscription } from 'rxjs';
+import { ScenarioFormMapper } from '../scenario-form-builder/scenario-form.builder';
 
 @Component({
   selector: 'app-add-request-match-rule',
   templateUrl: './add-request-match-rule.component.html',
   styleUrls: ['./add-request-match-rule.component.scss'],
 })
-export class AddRequestMatchRuleComponent implements OnInit {
+export class AddRequestMatchRuleComponent implements OnInit, OnDestroy {
   formSubscription: Subscription;
   @Input() requestMatchRule: RequestMatchRule;
   @Output() requestMatchRuleOutput: EventEmitter<RequestMatchRule>;
@@ -34,7 +35,7 @@ export class AddRequestMatchRuleComponent implements OnInit {
 
   currentRuleType: keyof typeof AddRequestMatchRuleComponent.ruleTypesStatic;
 
-  constructor() {
+  constructor(private scenarioFormMapper: ScenarioFormMapper) {
     this.requestMatchRuleOutput = new EventEmitter<RequestMatchRule>();
     this.bodyMatchRules = [];
     this.currentRuleType = 'header';
@@ -50,21 +51,12 @@ export class AddRequestMatchRuleComponent implements OnInit {
 
   ngOnInit(): void {
     this.formSubscription = this.tokenRuleFormArray.valueChanges.subscribe(() => {
-      this.updateTokenRule();
+      this.tokenRule.rules = this.scenarioFormMapper.GetKeyValuePairRulesFromForm(this.tokenRuleFormArray);
     });
   }
 
-  updateTokenRule() {
-    const formGroups = this.tokenRuleFormArray.controls;
-
-    this.tokenRule.rules = formGroups.map((formGroup) => {
-      const kvpRule: Record<string, string> = {};
-      kvpRule[formGroup.get('key').value] = formGroup.get('value').value;
-      return {
-        type: formGroup.get('type').value,
-        rule: kvpRule,
-      };
-    });
+  ngOnDestroy(): void {
+    this.formSubscription.unsubscribe();
   }
 
   /**

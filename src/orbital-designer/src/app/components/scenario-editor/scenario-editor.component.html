@@ -4,22 +4,15 @@
       <div class="sidebar row">
         <app-side-bar class="row"></app-side-bar>
       </div>
-      <div class="metadata">
+      <div class="full-width" [formGroup]="scenarioForm">
         <div>
           <app-overview-header [header]="headerContent"></app-overview-header>
         </div>
         <div id="metadata-cards">
-          <h3>Scenario Properties</h3>
-
           <mat-tab-group>
             <mat-tab label="Metadata">
               <div class="tab-body">
-                <app-add-metadata
-                  [metadata]="this.selectedScenario?.metadata"
-                  (metadataOutput)="handleMetadataOutput($event)"
-                  [saveStatus]="this.shouldSave"
-                >
-                </app-add-metadata>
+                <app-metadata-form formControlName="metadata"></app-metadata-form>
               </div>
             </mat-tab>
 

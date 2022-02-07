@@ -44,8 +44,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   /**
    * The titles for the kvp edit component
    */
-  titleForKvp: string;
-  titleForKvpAdded: string;
+  titleForNewHeaderRuleControl: string;
+  titleForAddedHeaderRules: string;
 
   isCardDisabled: boolean;
   shouldSave: boolean;
@@ -58,8 +58,8 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   constructor(private jsonService: ValidJsonService, private logger: NGXLogger, private cdRef: ChangeDetectorRef) {
     this.responseOutput = new EventEmitter<Response>();
     this.isValid = new EventEmitter<boolean>();
-    this.titleForKvp = 'Add New Header Rule';
-    this.titleForKvpAdded = 'Added Header Rules';
+    this.titleForNewHeaderRuleControl = 'Add New Header Rule';
+    this.titleForAddedHeaderRules = 'Added Header Rules';
     this.bodyErrorMessage = 'Body Content not in Valid JSON Format';
     this.statusMessage = 'Enter a Status Code';
 
@@ -98,7 +98,7 @@ export class AddResponseComponent implements OnInit, AfterContentChecked {
   changeLog() {
     const jsonEditorString = this.editor.getText();
     const errorType = this.getErrorType(jsonEditorString);
-    if (errorType != jsonErrorType.NONE && errorType != jsonErrorType.EMPTY_JSON) {
+    if (errorType !== jsonErrorType.NONE && errorType !== jsonErrorType.EMPTY_JSON) {
       this.setError(`Response body${this.jsonService.jsonErrorMap.get(errorType)}`);
     } else {
       this.responseFormGroup.controls.body.setValue(jsonEditorString);

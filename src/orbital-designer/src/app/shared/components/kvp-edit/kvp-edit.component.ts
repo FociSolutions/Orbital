@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
-import { recordAdd, recordDelete } from 'src/app/models/record';
 
 @Component({
   selector: 'app-kvp-edit',
@@ -32,7 +31,7 @@ export class KvpEditComponent {
   }
 
   /**
-   * This setter calls the emitter for the savedkvp if shouldSave is true
+   * This setter calls the emitter for the savedKvp if shouldSave is true
    */
   @Input()
   set Save(shouldSave: boolean) {
@@ -57,24 +56,26 @@ export class KvpEditComponent {
    * @param kvpToAdd The key-value pair to add
    */
   addKvp(kvpToAdd: KeyValue<string, string>) {
-    if (!!kvpToAdd && !!kvpToAdd.key && !!kvpToAdd.value) {
+    if (kvpToAdd?.key && kvpToAdd?.value) {
       if (this.isCaseSensitive) {
-        recordAdd(this.savedKvp, kvpToAdd.key, kvpToAdd.value);
+        this.savedKvp[kvpToAdd.key] = kvpToAdd.value;
         this.logger.debug('Adding a case sensitive KVP', kvpToAdd);
       } else {
-        recordAdd(this.savedKvp, kvpToAdd.key.toLowerCase(), kvpToAdd.value);
+        this.savedKvp[kvpToAdd.key.toLowerCase()] = kvpToAdd.value;
         this.logger.debug('Adding a case insensitive KVP', kvpToAdd);
       }
     }
   }
+
   /**
    * This method listens to the event emitter from the child component and deletes the KeyValue pair from the list
    * @param kvpToDelete The key-value pair to delete
    */
   deleteKvp(kvpToDelete: KeyValue<string, string>) {
-    if (!!kvpToDelete && !!kvpToDelete.key) {
-      recordDelete(this.savedKvp, kvpToDelete.key);
-      this.logger.debug('Delete Header Rule', kvpToDelete);
+    if (kvpToDelete?.key !== undefined) {
+      this.logger.debug('Deleting Header Rule', kvpToDelete);
+      const { [kvpToDelete.key]: _, ...keep } = this.savedKvp;
+      this.savedKvp = keep;
     }
   }
 

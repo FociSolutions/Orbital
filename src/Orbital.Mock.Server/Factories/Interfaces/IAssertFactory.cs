@@ -12,7 +12,7 @@ namespace Orbital.Mock.Server.Factories.Interfaces
         /// <param name="rules">KeyValuePairRules containing rules and rule type</param>
         /// <param name="request">the request key/value pairs</param>
         /// <returns>An IEnumerable of Assert models containing expected rule, actual values from the request, and the comparer type</returns>
-        IEnumerable<Assert> CreateAssert(KeyValuePairRule rules, IEnumerable<KeyValuePair<string, string>> request);
+        IEnumerable<Assert> CreateAssert(KeyValueTypeRule rules, IEnumerable<KeyValuePair<string, string>> request);
 
         /// <summary>
         /// Create Assert model based on the body match port provided and the request JToken
@@ -28,6 +28,14 @@ namespace Orbital.Mock.Server.Factories.Interfaces
         /// <param name="rules">KeyValuePairRules containing rules and rule type</param>
         /// <param name="request">the request path as a string</param>
         /// <returns>An IEnumerable of Assert models containing expected value, actual values from the request, and the comparer type</returns>
-        IEnumerable<Assert> CreateAssert(KeyValuePairRule rules, string request);
+        IEnumerable<Assert> CreateAssert(KeyValueTypeRule rules, string request);
+
+        /// <summary>
+        /// Create Assert model based on the rules provided and the request path
+        /// </summary>
+        /// <param name="rules">KeyValuePairRules containing rules and rule type</param>
+        /// <param name="request">the request path as a string</param>
+        /// <returns>An IEnumerable of Assert models containing expected value, actual values from the request, and the comparer type</returns>
+        IEnumerable<Assert> CreateAssert(PathTypeRule rules, string request);
     }
 }

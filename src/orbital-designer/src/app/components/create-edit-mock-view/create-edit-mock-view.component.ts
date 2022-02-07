@@ -9,7 +9,7 @@ import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
-import { recordAdd, recordMap } from 'src/app/models/record';
+import { recordMap } from 'src/app/models/record';
 import * as uuid from 'uuid';
 
 @Component({
@@ -65,11 +65,9 @@ export class CreateEditMockViewComponent implements OnInit {
       if (!this.selectedMockDefinition) {
         this.router.navigateByUrl('/endpoint-view');
       }
-    } else {
-      if (this.mockDefinitions.length != 0) {
-        for (const mockDef of this.mockDefinitions) {
-          this.titleList.push(mockDef.metadata.title);
-        }
+    } else if (this.mockDefinitions.length) {
+      for (const mockDef of this.mockDefinitions) {
+        this.titleList.push(mockDef.metadata.title);
       }
     }
   }
@@ -80,7 +78,7 @@ export class CreateEditMockViewComponent implements OnInit {
   findSelectedMock(mockId: string, mockDefinitions: MockDefinition[]): MockDefinition {
     let foundMock: MockDefinition = null;
     for (const mockDef of mockDefinitions) {
-      if (mockDef.id == mockId) {
+      if (mockDef.id === mockId) {
         foundMock = mockDef;
       } else {
         this.titleList.push(mockDef.metadata.title);
@@ -120,11 +118,7 @@ export class CreateEditMockViewComponent implements OnInit {
       (error) => {
         this.logger.error('openapi file provided is invalid');
         this.logger.error(error);
-        this.errorMessageToEmitFromCreate = recordAdd(
-          this.errorMessageToEmitFromCreate,
-          'The provided OpenApi file has the following errors ',
-          error
-        );
+        this.errorMessageToEmitFromCreate['The provided OpenApi file has the following errors '] = error;
       }
     );
   }
@@ -175,7 +169,7 @@ export class CreateEditMockViewComponent implements OnInit {
         if (name === 'Title') {
           //checks if the current title already exist
           for (const title of this.titleList) {
-            if (control.value == title) {
+            if (control.value === title) {
               return { key: `${name} already exists.` };
             }
           }

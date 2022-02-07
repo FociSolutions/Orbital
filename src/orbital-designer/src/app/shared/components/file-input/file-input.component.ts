@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
-import { recordAdd } from 'src/app/models/record';
 
 @Component({
   selector: 'app-file-input',
@@ -35,7 +34,10 @@ export class FileInputComponent {
           this.fileNameEmit.emit(this.currentFileName);
           this.fileContentEmit.emit(this.fileContent);
         },
-        (err) => recordAdd(this._errorMessages, file.name, err)
+        (err) => {
+          this._errorMessages[file.name] = err;
+          return this._errorMessages;
+        }
       );
     }
     this.logger.log('File Contents emitted');

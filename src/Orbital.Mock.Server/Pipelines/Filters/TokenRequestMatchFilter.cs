@@ -53,7 +53,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             foreach (var scenario in tokenMatchScenarios)
             {
 
-                foreach (KeyValuePairRule rule in scenario.TokenRule.Rules)
+                foreach (KeyValueTypeRule rule in scenario.TokenRule.Rules)
                 {
                     var assertList = AssertFactory.CreateAssert(rule, tokenMap);
                     if (!assertList.Any())

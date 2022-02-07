@@ -20,8 +20,8 @@ namespace Orbital.Mock.Server.Tests.Factories
             #region TestSetup
             var Target = new AssertFactory();
             var faker = new Faker();
-            var fakerQueryRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+            var fakerQueryRule = new Faker<KeyValueTypeRule>()
+                .CustomInstantiator(f => new KeyValueTypeRule() { Type = f.PickRandom<ComparerType>(), Key = f.Random.String(), Value = f.Random.String() });
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
@@ -34,7 +34,7 @@ namespace Orbital.Mock.Server.Tests.Factories
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Query = fakeScenario.RequestMatchRules.QueryRules.Select(r => r.RuleValue)
+                Query = fakeScenario.RequestMatchRules.QueryRules.Select(r => r.GenerateKeyValuePair())
             };
             var actual = new List<AssertOrbital>();
             #endregion
@@ -60,8 +60,8 @@ namespace Orbital.Mock.Server.Tests.Factories
             #region TestSetup
             var Target = new AssertFactory();
             var faker = new Faker();
-            var fakerHeaderRule = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule() { Type = f.PickRandom<ComparerType>(), RuleValue = new KeyValuePair<string, string>(f.Random.String(), f.Random.String()) });
+            var fakerHeaderRule = new Faker<KeyValueTypeRule>()
+                .CustomInstantiator(f => new KeyValueTypeRule() { Type = f.PickRandom<ComparerType>(), Key = f.Random.String(), Value = f.Random.String() });
 
             var scenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, f => new RequestMatchRules
@@ -74,16 +74,16 @@ namespace Orbital.Mock.Server.Tests.Factories
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Header = fakeScenario.RequestMatchRules.HeaderRules.Select(r => r.RuleValue)
+                Header = fakeScenario.RequestMatchRules.HeaderRules.Select(r => r.GenerateKeyValuePair())
             };
             var actual = new List<AssertOrbital>();
             #endregion
+
             foreach(var rule in fakeScenario.RequestMatchRules.HeaderRules)
             {
                 actual.AddRange(Target.CreateAssert(rule, input.Header));
             }
             
-
             foreach (var expected in input.Header)
             {
                 Assert.NotNull(actual.Select(a => a.Expect == expected.Key));

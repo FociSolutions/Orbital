@@ -26,9 +26,7 @@ const validMockDefinition: MockDefinition = {
         urlRules: [
           {
             type: 5,
-            rule: {
-              urlPath: '/pets/12',
-            },
+            path: '/pets/12',
           },
         ],
       },

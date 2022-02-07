@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { Subscription } from 'rxjs';
 import { FormArray, FormGroup } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
-import { compareRecords, recordAdd } from 'src/app/models/record';
+import { compareRecords } from 'src/app/models/record';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { ScenarioFormBuilder } from '../../scenario-form-builder/scenario-form.builder';
 import { cloneDeep } from 'lodash';
@@ -114,7 +114,7 @@ export class PolicyComponent implements OnInit, OnDestroy {
     const attributes = {};
     Object.keys(group.controls).forEach((key) => {
       if (key !== 'policyType') {
-        recordAdd(attributes, key, group.controls[key].value);
+        attributes[key] = group.controls[key].value;
       }
     });
     const policyFormGroup: IPolicyFormGroup = {

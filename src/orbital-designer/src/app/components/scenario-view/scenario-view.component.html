@@ -35,7 +35,7 @@
               <mat-list-item *ngFor="let scenario of filteredList">
                 <div id="scenario-list-item">
                   <mat-card
-                    *ngIf="!!scenario"
+                    *ngIf="scenario"
                     class="scenario-list-item-container min-card-height"
                     [routerLink]="this.isHoveringOverMenu ? null : ['/scenario-editor', scenario.id]"
                     routerLinkActive="is-active"

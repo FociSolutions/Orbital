@@ -4,7 +4,7 @@ import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type'
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PolicyFormBuilder } from '../policy-form-builder/policy-form.builder';
-import { recordAdd, recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
+import { recordFirstOrDefault, recordFirstOrDefaultKey } from 'src/app/models/record';
 
 @Component({
   selector: 'app-policy-add',
@@ -42,13 +42,13 @@ export class PolicyAddComponent implements OnInit, OnDestroy {
       (changedAttributes) => {
         this.policyIsDuplicated = false;
         if (changedAttributes.length > 0) {
-          changedAttributes.forEach((attributeToAdd) => {
-            recordAdd(
-              this.policyToAdd.attributes,
-              recordFirstOrDefaultKey(attributeToAdd, ''),
-              recordFirstOrDefault(attributeToAdd, '')
-            );
-          });
+          changedAttributes.forEach(
+            (attributeToAdd) =>
+              (this.policyToAdd.attributes[recordFirstOrDefaultKey(attributeToAdd, '')] = recordFirstOrDefault(
+                attributeToAdd,
+                ''
+              ))
+          );
         }
       }
     );

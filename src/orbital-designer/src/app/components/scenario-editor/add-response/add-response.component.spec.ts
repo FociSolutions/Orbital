@@ -61,11 +61,12 @@ describe('AddResponseComponent', () => {
 
       const spy = jest.spyOn(component.responseOutput, 'emit');
 
-      const testResponse = {
+      const testResponse: Response = {
         headers: testHeaderResponse,
         body: testBodyResponse,
-        status: +testStatusCode,
-      } as Response;
+        status: testStatusCode,
+        type: ResponseType.CUSTOM,
+      };
 
       component.response = testResponse;
       component.saveStatus = true;
@@ -88,9 +89,9 @@ describe('AddResponseComponent', () => {
       expect(saveHeaderRecordSpy).toHaveBeenCalledWith({
         headers: headerRecord,
         body: component.responseFormGroup.controls.body.value,
-        status: +component.statusCode,
+        status: component.statusCode,
         type: ResponseType.NONE,
-      } as unknown as Response);
+      });
     });
   });
 

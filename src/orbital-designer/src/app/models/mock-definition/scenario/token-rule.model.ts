@@ -4,7 +4,7 @@ import { KeyValuePairRule } from './key-value-pair-rule.model';
  * Model representation of a token rule
  */
 export interface TokenRule {
-  validationType: number;
+  validationType: ValidationType;
   rules: KeyValuePairRule[];
 }
 

@@ -56,7 +56,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.storeSubscription = this.store.state$.subscribe((state) => {
-      if (!!state.mockDefinition && !!state.selectedEndpoint) {
+      if (state.mockDefinition && state.selectedEndpoint) {
         this.endpointVerb = state.selectedEndpoint.verb;
         this.endpointPath = state.selectedEndpoint.path;
         this.scenarioList = state.mockDefinition.scenarios.filter(
@@ -68,7 +68,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
     });
 
     this.errorMessage = 'No scenarios exist. Click the add button to create a new scenario.';
-    if (this.scenarioList.length != 0) {
+    if (this.scenarioList.length) {
       this._selectedMode = this.scenarioList[0].tokenRule.validationType;
     }
   }
@@ -91,7 +91,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * @param scenario The scenario to be converted to string
    */
   scenarioToString(scenario: Scenario): string {
-    if (!!scenario && !!scenario.metadata) {
+    if (scenario?.metadata) {
       return scenario.metadata.title;
     }
   }

@@ -15,20 +15,20 @@ export class ValidJsonService {
   ]);
 
   /**
-   * Returns an errortype depending on JSON string content
+   * Returns an error type depending on JSON string content
    * @param json The JSON string to check
    * @return the error type
    */
   checkJSON(json: string): jsonErrorType {
-    if (json == '') {
+    if (json === '') {
       return jsonErrorType.EMPTY;
     }
     try {
       const parsedJson = JSON.parse(json);
-      if (Object.keys(parsedJson).length == 0) {
+      if (!Object.keys(parsedJson).length) {
         return jsonErrorType.EMPTY_JSON;
       }
-      if (typeof parsedJson != 'object') {
+      if (typeof parsedJson !== 'object') {
         return jsonErrorType.INVALID;
       }
       return jsonErrorType.NONE;

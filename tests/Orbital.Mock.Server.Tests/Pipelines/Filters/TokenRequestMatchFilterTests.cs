@@ -34,11 +34,12 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
         public TokenRequestMatchFilterTests()
         {
-            var fakeTokenRequestMatchRules = new Faker<KeyValuePairRule>()
-                .CustomInstantiator(f => new KeyValuePairRule()
+            var fakeTokenRequestMatchRules = new Faker<KeyValueTypeRule>()
+                .CustomInstantiator(f => new KeyValueTypeRule()
                 {
                     Type = ComparerType.TEXTEQUALS,
-                    RuleValue = new KeyValuePair<string, string>(f.Random.Word(), f.Random.Word())
+                    Key = f.Random.Word(),
+                    Value = f.Random.Word()
                 });
             var fakeTokenRule = new Faker<TokenRuleInfo>()
                 .RuleFor(t => t.Rules, f => fakeTokenRequestMatchRules.Generate(5));
@@ -56,7 +57,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             fakeScenario.TokenRule.ValidationType = TokenValidationType.REQUEST_MATCH;
 
             string secret = TestUtils.GetRandomString(new Faker(), minLen: 64);
-            var rules = fakeScenario.TokenRule.Rules.Select(r => r.RuleValue);
+            var rules = fakeScenario.TokenRule.Rules.Select(r => r.GenerateKeyValuePair());
             var jwtString = TestUtils.GenerateJwt(secret, claims: rules.ToList());
             var port = new ProcessMessagePort()
             {
@@ -83,7 +84,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             fakeScenario.TokenRule.CheckExpired = true;
 
             string secret = TestUtils.GetRandomString(new Faker(), minLen: 64);
-            var rules = fakeScenario.TokenRule.Rules.Select(r => KeyValuePair.Create(r.RuleValue.Key, "test")).Take(4).ToList();
+            var rules = fakeScenario.TokenRule.Rules.Select(r => KeyValuePair.Create(r.Key, "test")).Take(4).ToList();
             var jwtString = TestUtils.GenerateJwt(secret, claims: rules);
 
             var port = new ProcessMessagePort()
@@ -110,7 +111,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             fakeScenario.TokenRule.ValidationType = TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH;
 
             string secret = TestUtils.GetRandomString(new Faker(), minLen: 64);
-            var rules = fakeScenario.TokenRule.Rules.Select(r => r.RuleValue);
+            var rules = fakeScenario.TokenRule.Rules.Select(r => r.GenerateKeyValuePair());
             var jwtString = TestUtils.GenerateJwt(secret, claims: rules.ToList());
             var port = new ProcessMessagePort()
             {

@@ -4,7 +4,7 @@
       <mat-icon mat-list-icon>new_releases</mat-icon>
       <h4 mat-line>Quick Export</h4>
     </button>
-    <div *ngIf="!!exportStatusMessage?.length" class="status-message">{{ exportStatusMessage }}</div>
-    <div *ngIf="!!exportErrorMessage?.length" class="error-message">{{ exportErrorMessage }}</div>
+    <div *ngIf="exportStatusMessage?.length" class="status-message">{{ exportStatusMessage }}</div>
+    <div *ngIf="exportErrorMessage?.length" class="error-message">{{ exportErrorMessage }}</div>
   </div>
 </div>
