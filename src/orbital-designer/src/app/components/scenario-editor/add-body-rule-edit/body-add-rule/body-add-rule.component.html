@@ -1,12 +1,20 @@
 <mat-card class="body-add-card">
-  <mat-card-content>
-    <form class="body-add" [formGroup]="bodyAddRuleFormGroup">
-      <div class="row">
+  <mat-card-content class="body-add">
+    <form class="body-add-form" [formGroup]="bodyAddRuleFormGroup">
+      <div class="body-rule-input-wrapper">
         <mat-form-field class="body-type">
           <mat-label>Select Rule</mat-label>
-          <mat-select formControlName="type" name="rules">
-            <mat-option *ngFor="let r of rules" [value]="r.value">
-              {{ r.viewValue }}
+          <mat-select formControlName="ruleType" name="rules">
+            <mat-option *ngFor="let r of ruleTypes" [value]="r.value">
+              {{ r.display }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="body-condition">
+          <mat-label>Select Condition</mat-label>
+          <mat-select formControlName="ruleCondition" name="condition">
+            <mat-option *ngFor="let c of jsonRuleConditions" [value]="c.value">
+              {{ c.display }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -14,24 +22,26 @@
           <mat-label>Value</mat-label>
           <json-editor [data]="bodyData" [options]="editorOptions" #editor></json-editor>
         </div>
-        <button mat-mini-fab class="add-button" color="primary" (click)="addBodyRule()">
-          <mat-icon>add</mat-icon>
+      </div>
+      <div class="button-wrapper">
+        <button mat-mini-fab class="save-button" color="primary" (click)="addBodyRule()">
+          <mat-icon>save</mat-icon>
         </button>
       </div>
     </form>
-
-    <div *ngIf="rule.invalid || editor.isFocused">
-      <mat-error *ngIf="rule.errors.required"> Body rule is required </mat-error>
-      <mat-error *ngIf="rule.errors.invalidJSON">
-        {{ rule.errors.message }}
-      </mat-error>
-    </div>
-
-    <div *ngIf="type.invalid && (type.dirty || type.touched)">
-      <mat-error *ngIf="type.errors.required"> Body rule type is required </mat-error>
-    </div>
-    <div *ngIf="this.isRuleDuplicated">
-      <mat-error> Rule already exists </mat-error>
+    <div class="error-message">
+      <div *ngIf="rule.invalid || editor.isFocused">
+        <mat-error *ngIf="rule.errors.required">Body rule is required.</mat-error>
+        <mat-error *ngIf="rule.errors.invalidJSON">
+          {{ rule.errors.message }}
+        </mat-error>
+      </div>
+      <div *ngIf="ruleType.invalid && (ruleType.dirty || ruleType.touched)">
+        <mat-error *ngIf="type.errors.required">Body rule type is required.</mat-error>
+      </div>
+      <div *ngIf="this.isRuleDuplicated">
+        <mat-error>Rule already exists.</mat-error>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

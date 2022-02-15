@@ -10,13 +10,15 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { NGXLogger } from 'ngx-logger';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Scenario } from '../models/mock-definition/scenario/scenario.model';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import * as uuid from 'uuid';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { OpenApiSpecService } from '../services/openapispecservice/open-api-spec.service';
 import { ReadFileService } from '../services/read-file/read-file.service';
 import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
+import { defaultTokenRule } from '../models/mock-definition/scenario/token-rule.model';
+import { defaultResponse } from '../models/mock-definition/scenario/response.model';
+import { RuleType } from '../models/mock-definition/scenario/rule.type';
+import { defaultPolicy } from '../models/mock-definition/scenario/policy.model';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -50,7 +52,7 @@ describe('DesignerStore', () => {
     it('should set the selectedScenario', fakeAsync(() => {
       const mockverb = VerbType.GET;
       const path = faker.random.words();
-      const Expected = {
+      const Expected: Scenario = {
         id: uuid.v4(),
         metadata: {
           title: 'New Scenario',
@@ -58,23 +60,22 @@ describe('DesignerStore', () => {
         },
         verb: mockverb,
         path,
-        response: {
-          headers: {},
-          status: 0,
-          body: '',
-        },
+        response: defaultResponse,
         requestMatchRules: {
           headerRules: [],
           queryRules: [],
+          urlRules: [],
           bodyRules: [
             {
               type: RuleType.JSONEQUALITY,
               rule: {},
             },
-          ] as Array<BodyRule>,
+          ],
         },
+        policies: [],
+        tokenRule: defaultTokenRule,
         defaultScenario: false,
-      } as Scenario;
+      };
       store.selectedScenario = Expected;
       tick();
       expect(store.state.selectedScenario).toEqual(Expected);
@@ -172,7 +173,7 @@ describe('DesignerStore', () => {
   describe('DesignerStore.mockDefinitions', () => {
     it('should update the list of Mockdefinitions', () => {
       const mockDef = validMockDefinition;
-      const expectedMap = {} as Record<string, MockDefinition>;
+      const expectedMap: Record<string, MockDefinition> = {};
       expectedMap[mockDef.metadata.title] = mockDef;
       expect(Object.keys(store.state.mockDefinitions).length).toBe(0);
       store.mockDefinitions = [mockDef];
@@ -201,7 +202,7 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.updateApiInformation()', () => {
     it('should update openApi, host, and basepath', fakeAsync(() => {
-      const fakeDocument = { basePath: '', host: '' } as OpenAPIV2.Document;
+      const fakeDocument: OpenAPIV2.Document = { basePath: '', host: '', info: null, paths: null, swagger: '' };
       const apiInfo = {
         host: faker.internet.domainName(),
         basepath: faker.internet.domainSuffix(),
@@ -229,24 +230,23 @@ describe('DesignerStore', () => {
             description: '',
           },
           verb: mockverb,
+          policies: [defaultPolicy],
+          tokenRule: defaultTokenRule,
           path,
-          response: {
-            headers: {},
-            status: 0,
-            body: '',
-          },
+          response: defaultResponse,
           requestMatchRules: {
             headerRules: [],
             queryRules: [],
+            urlRules: [],
             bodyRules: [
               {
                 type: RuleType.JSONEQUALITY,
                 rule: {},
               },
-            ] as Array<BodyRule>,
+            ],
           },
           defaultScenario: false,
-        } as Scenario);
+        });
       }
       tick();
       store.updateScenarios(scenarios);
@@ -275,7 +275,7 @@ describe('DesignerStore', () => {
     }));
 
     it('should not delete a mock definition by title if there are none in the store', fakeAsync(() => {
-      store.state.mockDefinitions = {} as Record<string, MockDefinition>;
+      store.state.mockDefinitions = {};
       store.deleteMockDefinitionByTitle('Invalid');
       tick();
       expect(Object.keys(store.state.mockDefinitions).length).toBe(0);
@@ -314,7 +314,7 @@ describe('DesignerStore', () => {
 
       store.deleteMockDefinitionByTitle(mockDef1.metadata.title);
 
-      const expected = {} as Record<string, MockDefinition>;
+      const expected: Record<string, MockDefinition> = {};
       expected[mockDef2.metadata.title] = mockDef2;
       expected[mockDef3.metadata.title] = mockDef3;
       tick();
@@ -324,7 +324,7 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.appendMockDefinition()', () => {
     it('should append a mock definition to the store if the store is empty', fakeAsync(() => {
-      store.state.mockDefinitions = {} as Record<string, MockDefinition>;
+      store.state.mockDefinitions = {};
       store.appendMockDefinition(validMockDefinition);
       tick();
       expect(Object.keys(store.state.mockDefinitions).length).toBe(1);
@@ -417,7 +417,7 @@ describe('DesignerStore', () => {
 
       mockDef1.metadata.title = faker.random.word();
       mockDef2.metadata.title = mockDef1.metadata.title;
-      mockDef2.scenarios = [{ id: faker.random.word() }] as Scenario[];
+      mockDef2.scenarios = [{ id: faker.random.word() } as Scenario];
 
       let calls = 0;
       store.state$.subscribe((state) => {
@@ -440,38 +440,34 @@ describe('DesignerStore', () => {
     it('should add new scenario', fakeAsync(() => {
       const mockverb = VerbType.GET;
       const path = faker.random.words();
-      const input = {
-        mock: validMockDefinition,
-        scenario: {
-          id: uuid.v4(),
-          metadata: {
-            title: 'New Scenario',
-            description: '',
-          },
-          verb: mockverb,
-          path,
-          response: {
-            headers: {},
-            status: 0,
-            body: '',
-          },
-          requestMatchRules: {
-            headerRules: [],
-            queryRules: [],
-            bodyRules: [
-              {
-                type: RuleType.JSONEQUALITY,
-                rule: {},
-              },
-            ] as Array<BodyRule>,
-          },
-          defaultScenario: false,
-        } as Scenario,
+      const scenario: Scenario = {
+        id: uuid.v4(),
+        metadata: {
+          title: 'New Scenario',
+          description: '',
+        },
+        verb: mockverb,
+        path,
+        response: defaultResponse,
+        policies: [defaultPolicy],
+        tokenRule: defaultTokenRule,
+        requestMatchRules: {
+          urlRules: [],
+          headerRules: [],
+          queryRules: [],
+          bodyRules: [
+            {
+              type: RuleType.JSONEQUALITY,
+              rule: {},
+            },
+          ],
+        },
+        defaultScenario: false,
       };
-      const expected = input.mock.scenarios.length + 1;
+      const expected = validMockDefinition.scenarios.length + 1;
 
-      store.state.mockDefinition = input.mock;
-      store.addOrUpdateScenario(input.scenario);
+      store.state.mockDefinition = validMockDefinition;
+      store.addOrUpdateScenario(scenario);
       tick();
       expect(store.state.mockDefinition.scenarios.length).toEqual(expected);
     }));

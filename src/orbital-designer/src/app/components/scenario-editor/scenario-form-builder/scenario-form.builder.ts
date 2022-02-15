@@ -8,11 +8,17 @@ import { Response } from 'src/app/models/mock-definition/scenario/response.model
 import { Policy, defaultPolicy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy.type';
 import { AddBodyRuleBuilder } from '../add-body-rule-edit/add-body-rule-builder/add-body-rule.builder';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.model';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
 import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 import { UrlRule } from 'src/app/models/mock-definition/scenario/url-rule.model';
 import { UrlEditRuleComponent } from '../url-edit-rule/url-edit-rule.component';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { TextBodyRule } from 'src/app/models/mock-definition/scenario/body-rule/rule-type/text-body-rule.model';
+import { JsonBodyRule } from 'src/app/models/mock-definition/scenario/body-rule/rule-type/json-body-rule.model';
+import { TextRuleCondition } from 'src/app/models/mock-definition/scenario/body-rule/rule-condition/text.condition';
+import { JsonRuleCondition } from 'src/app/models/mock-definition/scenario/body-rule/rule-condition/json.condition';
 
 @Injectable({
   providedIn: 'root',
@@ -175,7 +181,48 @@ export class ScenarioFormMapper {
   }
 
   GetBodyRulesFromForm(bodyRules: FormArray): BodyRule[] {
-    return bodyRules.controls.map((group: FormGroup) => group.getRawValue());
+    return bodyRules.controls.map((group: FormGroup) => {
+      const rawValue = group.getRawValue();
+      return { rule: rawValue.rule, type: this.convertBodyRuleToRuleType(rawValue) };
+    });
+  }
+
+  convertBodyRuleToRuleType(rule: TextBodyRule | JsonBodyRule): RuleType {
+    switch (rule.ruleType) {
+      case BodyRuleType.TEXT:
+        switch (rule.ruleCondition) {
+          case TextRuleCondition.CONTAINS:
+            return RuleType.TEXTCONTAINS;
+          case TextRuleCondition.EQUALS:
+            return RuleType.TEXTEQUALS;
+          case TextRuleCondition.STARTS_WITH:
+            return RuleType.TEXTSTARTSWITH;
+          case TextRuleCondition.ENDS_WITH:
+            return RuleType.TEXTENDSWITH;
+          default: {
+            const _: never = rule;
+          }
+        }
+        break;
+      case BodyRuleType.JSON:
+        switch (rule.ruleCondition) {
+          case JsonRuleCondition.CONTAINS:
+            return RuleType.JSONCONTAINS;
+          case JsonRuleCondition.EQUALITY:
+            return RuleType.JSONEQUALITY;
+          case JsonRuleCondition.PATH:
+            return RuleType.JSONPATH;
+          case JsonRuleCondition.SCHEMA:
+            return RuleType.JSONSCHEMA;
+          default: {
+            const _: never = rule;
+          }
+        }
+        break;
+      default: {
+        const _: never = rule;
+      }
+    }
   }
 
   /**

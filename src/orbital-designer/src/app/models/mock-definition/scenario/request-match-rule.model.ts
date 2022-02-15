@@ -1,4 +1,4 @@
-import { BodyRule } from './body-rule.model';
+import { BodyRule } from './body-rule/body-rule.model';
 import { KeyValuePairRule } from './key-value-pair-rule.model';
 import { UrlRule } from './url-rule.model';
 

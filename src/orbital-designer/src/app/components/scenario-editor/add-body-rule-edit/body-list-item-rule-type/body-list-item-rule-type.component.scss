@@ -1,6 +1,7 @@
 .row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
@@ -10,6 +11,10 @@
   margin-bottom: 1em;
 }
 
+.body-add-card {
+  padding: 1.5em;
+}
+
 .body-value {
   flex: 1;
   padding-right: 3vw;
@@ -17,14 +22,15 @@
   margin-top: -5em;
 }
 
-.delete-button {
-  background: none;
-  border: 0;
+.body-rule-summary {
+  font-size: 18px;
+  font-weight: 800;
 }
 
 .delete-button-container {
-  display: flex;
+  float: right;
   padding-right: 1em;
+  cursor: pointer;
 }
 
 .rule-type {

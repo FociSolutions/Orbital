@@ -16,7 +16,7 @@ import { KvpAddComponent } from '../../../shared/components/kvp-edit/kvp-add/kvp
 import { KvpEditComponent } from '../../../shared/components/kvp-edit/kvp-edit.component';
 import { KvpListItemComponent } from '../../../shared/components/kvp-edit/kvp-list-item/kvp-list-item.component';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.model';
 import { KvpEditRuleComponent } from '../kvp-edit-rule/kvp-edit-rule.component';
 import { KvpListItemRuleTypeComponent } from '../kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
@@ -31,6 +31,7 @@ import { BodyListItemRuleTypeComponent } from '../add-body-rule-edit/body-list-i
 import { BodyAddRuleComponent } from '../add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { JsonEditorComponent } from 'ang-jsoneditor';
 import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 
 describe('AddRequestMatchRuleComponent', () => {
   let component: AddRequestMatchRuleComponent;
@@ -106,17 +107,17 @@ describe('AddRequestMatchRuleComponent', () => {
 
       const inputInvalidBodyMatchRule: BodyRule[] = [
         {
-          type: -1,
+          type: -1 as RuleType.JSONCONTAINS,
           rule: {
             key: faker.lorem.sentence(),
             value: faker.lorem.sentence(),
           },
         },
       ];
-      const requestMatchRule = {
+      const requestMatchRule: Pick<RequestMatchRule, 'bodyRules'> = {
         bodyRules: inputInvalidBodyMatchRule,
-      } as RequestMatchRule;
-      component.requestMatchRule = requestMatchRule;
+      };
+      component.requestMatchRule = requestMatchRule as RequestMatchRule;
       component.saveStatus = true;
 
       expect(spy).not.toHaveBeenCalled();

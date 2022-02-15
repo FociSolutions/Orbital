@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.type';
+import { JsonRuleCondition } from 'src/app/models/mock-definition/scenario/body-rule/rule-condition/json.condition';
+import { TextRuleCondition } from 'src/app/models/mock-definition/scenario/body-rule/rule-condition/text.condition';
+import { FormBodyRule } from 'src/app/models/mock-definition/scenario/body-rule/rule-type/form-body-rule.model';
 
 @Component({
   selector: 'app-body-list-item-rule-type',
@@ -9,21 +11,30 @@ import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.mode
   styleUrls: ['./body-list-item-rule-type.component.scss'],
 })
 export class BodyListItemRuleTypeComponent {
-  readonly rules = [
-    { value: RuleType.JSONPATH, viewValue: 'JSON: Path' },
-    { value: RuleType.JSONCONTAINS, viewValue: 'JSON: Contains' },
-    { value: RuleType.JSONEQUALITY, viewValue: 'JSON: Equality' },
-    { value: RuleType.TEXTCONTAINS, viewValue: 'Text: Contains' },
-    { value: RuleType.TEXTENDSWITH, viewValue: 'Text: Ends With' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Text: Equals' },
-    { value: RuleType.TEXTSTARTSWITH, viewValue: 'Text: Starts With' },
+  readonly ruleTypes = [
+    { value: BodyRuleType.JSON, display: 'JSON' },
+    { value: BodyRuleType.TEXT, display: 'Text' },
+  ];
+
+  readonly jsonRuleConditions = [
+    { value: JsonRuleCondition.CONTAINS, display: 'Contains' },
+    { value: JsonRuleCondition.EQUALITY, display: 'Equality' },
+    { value: JsonRuleCondition.PATH, display: 'Path' },
+    { value: JsonRuleCondition.SCHEMA, display: 'Schema' },
+  ];
+
+  readonly textRuleConditions = [
+    { value: TextRuleCondition.STARTS_WITH, display: 'Starts With' },
+    { value: TextRuleCondition.ENDS_WITH, display: 'Ends With' },
+    { value: TextRuleCondition.EQUALS, display: 'Equals' },
+    { value: TextRuleCondition.CONTAINS, display: 'Contains' },
   ];
 
   @Input() bodyEditRuleFormGroup: FormGroup;
   /**
    * The body rule to be deleted by the parent
    */
-  @Output() bodyRuleRemovedEventEmitter = new EventEmitter<BodyRule>();
+  @Output() bodyRuleRemovedEventEmitter = new EventEmitter<FormBodyRule>();
 
   /**
    * Gets the form control for the 'rule'
@@ -36,8 +47,15 @@ export class BodyListItemRuleTypeComponent {
    * Gets the value from the current body rule type
    */
 
-  get type(): AbstractControl {
-    return this.bodyEditRuleFormGroup.get('type');
+  get ruleType(): AbstractControl {
+    return this.bodyEditRuleFormGroup.get('ruleType');
+  }
+
+  /**
+   * Gets the value from the current body rule condition
+   */
+  get ruleCondition(): AbstractControl {
+    return this.bodyEditRuleFormGroup.get('ruleCondition');
   }
 
   /**
@@ -46,7 +64,8 @@ export class BodyListItemRuleTypeComponent {
   onRemove() {
     const removeRule = {
       rule: { bodyrule: this.rule.value },
-      type: this.type.value,
+      ruleType: this.ruleType.value,
+      ruleCondition: this.ruleCondition.value,
     };
     this.bodyRuleRemovedEventEmitter.emit(removeRule);
   }

@@ -5,10 +5,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { RuleType } from '../../../../models/mock-definition/scenario/rule.type';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BodyListItemRuleTypeComponent } from './body-list-item-rule-type.component';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.model';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.type';
+import { JsonRuleCondition } from 'src/app/models/mock-definition/scenario/body-rule/rule-condition/json.condition';
 
 describe('BodyListItemRuleTypeComponent', () => {
   let component: BodyListItemRuleTypeComponent;
@@ -35,7 +36,8 @@ describe('BodyListItemRuleTypeComponent', () => {
     component = fixture.componentInstance;
     component.bodyEditRuleFormGroup = new FormGroup({
       rule: new FormControl('', [Validators.required]),
-      type: new FormControl(RuleType.NONE, [Validators.required]),
+      ruleType: new FormControl(BodyRuleType.JSON, [Validators.required]),
+      ruleCondition: new FormControl(JsonRuleCondition.CONTAINS, [Validators.required]),
     });
     fixture.detectChanges();
   });
@@ -50,13 +52,14 @@ describe('BodyListItemRuleTypeComponent', () => {
     });
 
     it('should have a type from control', () => {
-      expect(component.type).toBeTruthy();
+      expect(component.ruleType).toBeTruthy();
     });
   });
 
   describe('When the type is JSONEQUALITY', () => {
     beforeEach(() => {
-      component.type.setValue(RuleType.JSONEQUALITY);
+      component.ruleType.setValue(BodyRuleType.JSON);
+      component.ruleCondition.setValue(JsonRuleCondition.EQUALITY);
     });
 
     describe('And rule has been set to a value', () => {

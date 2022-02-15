@@ -9,9 +9,9 @@ export class ValidJsonService {
   constructor(private logger: NGXLogger) {}
 
   readonly jsonErrorMap = new Map([
-    [jsonErrorType.EMPTY, ' cannot be empty'],
-    [jsonErrorType.INVALID, ' be valid JSON'],
-    [jsonErrorType.EMPTY_JSON, ' must have content'],
+    [jsonErrorType.EMPTY, ' cannot be empty.'],
+    [jsonErrorType.INVALID, ' be valid JSON.'],
+    [jsonErrorType.EMPTY_JSON, ' must have content.'],
   ]);
 
   /**

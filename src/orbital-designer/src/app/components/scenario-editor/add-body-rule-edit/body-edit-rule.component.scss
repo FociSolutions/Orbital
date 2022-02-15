@@ -3,12 +3,21 @@ mat-expansion-panel {
   border: 0 !important;
 }
 
-p.description {
+p.text-description {
+  margin-top: 10px;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 1em;
-  color: rgba(0, 0, 0, 0.539261);
+  color: rgb(0, 0, 0);
+  text-align: center;
+}
+
+div#add-button-wrapper {
+  position: sticky;
+  float: right;
+  margin-top: 20px;
+  margin-right: 10px;
 }
 
 .divider-padding {

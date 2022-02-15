@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { BodyRule, defaultBodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
 import { AddBodyRuleBuilder } from '../add-body-rule-builder/add-body-rule.builder';
 import { JsonEditorComponent, JsonEditorOptions } from 'ang-jsoneditor';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.type';
+import { TextRuleCondition } from 'src/app/models/mock-definition/scenario/body-rule/rule-condition/text.condition';
+import { JsonRuleCondition } from 'src/app/models/mock-definition/scenario/body-rule/rule-condition/json.condition';
+import { defaultJsonBodyRule } from 'src/app/models/mock-definition/scenario/body-rule/rule-type/json-body-rule.model';
+import { FormBodyRule } from 'src/app/models/mock-definition/scenario/body-rule/rule-type/form-body-rule.model';
 
 @Component({
   selector: 'app-body-add-rule',
@@ -16,7 +19,7 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
    * Stores the subscriptions that will be destroyed during OnDestroy
    */
   private subscriptions: Subscription[] = [];
-  private bodyRuleInEdit = defaultBodyRule;
+  private bodyRuleInEdit: FormBodyRule = defaultJsonBodyRule;
   private ruleIsDuplicated = false;
 
   /**
@@ -26,18 +29,26 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   bodyData: unknown;
 
   @Input() bodyRuleAddedIsDuplicated = new EventEmitter<boolean>();
-  @Output() bodyRuleAddedEventEmitter = new EventEmitter<BodyRule>();
+  @Output() bodyRuleAddedEventEmitter = new EventEmitter<FormBodyRule>();
   @ViewChild('editor', { static: false }) editor: JsonEditorComponent;
 
-  readonly rules = [
-    { value: RuleType.JSONPATH, viewValue: 'JSON: Path' },
-    { value: RuleType.JSONSCHEMA, viewValue: 'JSON: Schema' },
-    { value: RuleType.JSONCONTAINS, viewValue: 'JSON: Contains' },
-    { value: RuleType.JSONEQUALITY, viewValue: 'JSON: Equality' },
-    { value: RuleType.TEXTCONTAINS, viewValue: 'Text: Contains' },
-    { value: RuleType.TEXTENDSWITH, viewValue: 'Text: Ends With' },
-    { value: RuleType.TEXTEQUALS, viewValue: 'Text: Equals' },
-    { value: RuleType.TEXTSTARTSWITH, viewValue: 'Text: Starts With' },
+  readonly ruleTypes = [
+    { value: BodyRuleType.JSON, display: 'JSON' },
+    { value: BodyRuleType.TEXT, display: 'Text' },
+  ];
+
+  readonly textRuleConditions = [
+    { value: TextRuleCondition.STARTS_WITH, display: 'Starts With' },
+    { value: TextRuleCondition.ENDS_WITH, display: 'Ends With' },
+    { value: TextRuleCondition.EQUALS, display: 'Equals' },
+    { value: TextRuleCondition.CONTAINS, display: 'Contains' },
+  ];
+
+  readonly jsonRuleConditions = [
+    { value: JsonRuleCondition.CONTAINS, display: 'Contains' },
+    { value: JsonRuleCondition.EQUALITY, display: 'Equality' },
+    { value: JsonRuleCondition.PATH, display: 'Path' },
+    { value: JsonRuleCondition.SCHEMA, display: 'Schema' },
   ];
 
   bodyAddRuleFormGroup: FormGroup;
@@ -57,7 +68,8 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
     this.bodyAddRuleFormGroup = this.addBodyRuleBuilder.createNewBodyRuleForm();
     this.bodyAddRuleFormGroup.controls.rule.setValue('{}');
     this.bodyRuleInEdit.rule = this.bodyAddRuleFormGroup.controls.rule.value;
-    this.bodyRuleInEdit.type = this.bodyAddRuleFormGroup.controls.type.value;
+    this.bodyRuleInEdit.ruleType = this.bodyAddRuleFormGroup.controls.ruleType.value;
+    this.bodyRuleInEdit.ruleCondition = this.bodyAddRuleFormGroup.controls.ruleCondition.value;
 
     this.checkBody();
 
@@ -66,12 +78,19 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
       this.bodyRuleInEdit.rule = rule;
     });
 
-    const typeSubscription = this.bodyAddRuleFormGroup.get('type').valueChanges.subscribe((type) => {
+    const typeSubscription = this.bodyAddRuleFormGroup.get('ruleType').valueChanges.subscribe((ruleType) => {
       this.ruleIsDuplicated = false;
-      this.bodyRuleInEdit.type = type;
+      this.bodyRuleInEdit.ruleType = ruleType;
     });
 
-    this.subscriptions.push(ruleSubscription, typeSubscription, bodyDuplicatedSubscription);
+    const conditionSubscription = this.bodyAddRuleFormGroup
+      .get('ruleCondition')
+      .valueChanges.subscribe((ruleCondition) => {
+        this.ruleIsDuplicated = false;
+        this.bodyRuleInEdit.ruleCondition = ruleCondition;
+      });
+
+    this.subscriptions.push(ruleSubscription, typeSubscription, conditionSubscription, bodyDuplicatedSubscription);
   }
 
   /**
@@ -91,8 +110,15 @@ export class BodyAddRuleComponent implements OnInit, OnDestroy {
   /**
    * Gets the form control for the 'type'
    */
-  get type(): AbstractControl {
-    return this.bodyAddRuleFormGroup.get('type');
+  get ruleType(): AbstractControl {
+    return this.bodyAddRuleFormGroup.get('ruleType');
+  }
+
+  /**
+   * Gets the form control for the 'condition'
+   */
+  get ruleCondition(): AbstractControl {
+    return this.bodyAddRuleFormGroup.get('ruleCondition');
   }
 
   /**

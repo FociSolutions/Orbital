@@ -6,9 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
 import { BodyAddRuleComponent } from './body-add-rule.component';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.model';
+import { BodyRuleType } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.type';
+import { JsonRuleCondition } from 'src/app/models/mock-definition/scenario/body-rule/rule-condition/json.condition';
 import { JsonEditorComponent } from 'ang-jsoneditor';
 
 describe('BodyAddRuleComponent', () => {
@@ -47,13 +48,14 @@ describe('BodyAddRuleComponent', () => {
     });
 
     it('should have a type from control', () => {
-      expect(component.type).toBeTruthy();
+      expect(component.ruleType).toBeTruthy();
     });
   });
 
   describe('When the type is JSONEQUALITY', () => {
     beforeEach(() => {
-      component.type.setValue(RuleType.JSONEQUALITY);
+      component.ruleType.setValue(BodyRuleType.JSON);
+      component.ruleCondition.setValue(JsonRuleCondition.EQUALITY);
     });
 
     describe('And rule has not been set to a value', () => {
@@ -73,7 +75,11 @@ describe('BodyAddRuleComponent', () => {
       describe('And the add button is pushed', () => {
         it('Should emit the bodyRuleAddedEventEmitter', (done) => {
           component.bodyRuleAddedEventEmitter.subscribe((bodyRule: BodyRule) => {
-            expect(bodyRule).toEqual({ rule: '{"x":"y"}', type: RuleType.JSONEQUALITY } as unknown as BodyRule);
+            expect(bodyRule).toEqual({
+              rule: '{"x":"y"}',
+              ruleType: BodyRuleType.JSON,
+              ruleCondition: JsonRuleCondition.EQUALITY,
+            } as unknown as BodyRule);
             done();
           });
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { RequestMatchRule } from 'src/app/models/mock-definition/scenario/request-match-rule.model';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.model';
 import { FormArray, FormGroup } from '@angular/forms';
 import { TokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 import { Subscription } from 'rxjs';

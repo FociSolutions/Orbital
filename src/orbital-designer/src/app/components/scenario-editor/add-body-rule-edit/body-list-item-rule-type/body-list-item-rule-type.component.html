@@ -1,12 +1,28 @@
 <mat-card class="body-add-card">
   <mat-card-content>
     <form class="body-added-item" [formGroup]="bodyEditRuleFormGroup">
+      <!-- add state-based dispaly formats here-->
       <div class="row">
-        <mat-form-field class="body-type">
+        <!-- TODO: FIX SO THAT THIS IS FUNCTIONALLY DYNAMIC-->
+        <span class="body-rule-summary">
+          {{ ruleTypes[this.ruleType.value].display + ': ' + jsonRuleConditions[this.ruleCondition.value - 1].display }}
+        </span>
+        <span>
+          {{ rule.value }}
+        </span>
+        <!--<mat-form-field class="body-type">
           <mat-label>Select Rule</mat-label>
-          <mat-select formControlName="type">
-            <mat-option *ngFor="let rule of rules" [value]="rule.value">
-              {{ rule.viewValue }}
+          <mat-select formControlName="ruleType">
+            <mat-option *ngFor="let type of ruleTypes" [value]="type.value">
+              {{ type.display }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="body-condition">
+          <mat-label>Select Condition</mat-label>
+          <mat-select formControlName="ruleCondition">
+            <mat-option *ngFor="let c of jsonRuleConditions" [value]="c.value">
+              {{ c.display }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -14,16 +30,16 @@
         <mat-form-field class="body-value">
           <input matInput id="bodyaddrule" formControlName="rule" />
         </mat-form-field>
-
+        -->
         <div class="delete-button-container">
-          <button class="delete-button" (click)="onRemove()">
-            <mat-icon>close</mat-icon>
+          <button mat-icon-button color="warn" class="delete-button" (click)="onRemove()">
+            <mat-icon>delete_forever</mat-icon>
           </button>
         </div>
       </div>
     </form>
 
-    <div *ngIf="type.invalid && type.dirty">
+    <div *ngIf="ruleType.invalid && ruleType.dirty">
       <mat-error *ngIf="type.errors.required"> Body rule type is required </mat-error>
     </div>
 
@@ -31,7 +47,7 @@
       <mat-error *ngIf="rule.errors.required"> Body rule is required </mat-error>
       <mat-error *ngIf="rule.errors.invalidJson"> Body rule must be valid JSON </mat-error>
     </div>
-    <div *ngIf="rule.touched && type.touched">
+    <div *ngIf="rule.touched && ruleType.touched">
       <mat-error> Rule is duplicated </mat-error>
     </div>
   </mat-card-content>
