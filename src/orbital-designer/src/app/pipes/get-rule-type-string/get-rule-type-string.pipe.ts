@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 
 @Pipe({
   name: 'getRuleTypeString',

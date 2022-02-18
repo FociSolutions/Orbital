@@ -5,14 +5,14 @@ import validMockDefinition from '../../../test-files/test-mockdefinition-object'
 import validMockDefinitionFile from '../../../test-files/test-mockdefinition-file.mock';
 import { DesignerStore } from '../../store/designer-store';
 import { ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
-import { VerbType } from 'src/app/models/verb.type';
+import { VerbType } from 'src/app/models/verb-type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { defaultMockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validOpenApiTest from '../../../test-files/valid-openapi-spec';
 import * as yaml from 'js-yaml';
 import { OpenAPIV2 } from 'openapi-types';
 import * as _ from 'lodash';
-import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response-type';
 
 describe('MockDefinitionService', () => {
   let store: DesignerStore;

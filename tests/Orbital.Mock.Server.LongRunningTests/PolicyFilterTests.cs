@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Policies;
+
 using Xunit;
 using Assert = Xunit.Assert;
 
@@ -20,10 +21,7 @@ namespace Orbital.Mock.Server.LongRunningTests
             Policy policy = new Policy
             {
                 Type = PolicyType.DELAYRESPONSE,
-                Attributes = new Dictionary<string, string>
-                {
-                    ["delay"] = "5000"
-                }
+                Value = 5000
             };
 
             Stopwatch stopwatch = new Stopwatch();
@@ -42,7 +40,6 @@ namespace Orbital.Mock.Server.LongRunningTests
             Policy policy = new Policy
             {
                 Type = PolicyType.NONE,
-                Attributes = new Dictionary<string, string>{}
             };
 
             var Actual = PolicyExecuter.ExecutePolicy(policy);

@@ -1,5 +1,5 @@
 import { GetVerbStringPipe } from './get-verb-string.pipe';
-import { VerbType } from 'src/app/models/verb.type';
+import { VerbType } from 'src/app/models/verb-type';
 
 describe('GetVerbStringPipe', () => {
   it('create an instance', () => {

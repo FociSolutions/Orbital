@@ -15,25 +15,14 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
 import * as faker from 'faker';
-import { VerbType } from 'src/app/models/verb.type';
+import { VerbType } from 'src/app/models/verb-type';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 import { ScenarioEditorComponent } from '../scenario-editor/scenario-editor.component';
 import { MetadataFormComponent } from '../scenario-editor/metadata-form/metadata-form.component';
-import { AddRequestMatchRuleComponent } from '../scenario-editor/add-request-match-rule/add-request-match-rule.component';
-import { AddResponseComponent } from '../scenario-editor/add-response/add-response.component';
-import { PolicyAddComponent } from '../scenario-editor/policy-container/policy-add/policy-add.component';
-import { PolicyComponent } from '../scenario-editor/policy-container/policy/policy.component';
-import { KvpEditRuleComponent } from '../scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
-import { KvpListItemRuleTypeComponent } from '../scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
+import { ResponseFormComponent } from '../scenario-editor/response-form/response-form.component';
+import { PoliciesFormComponent } from '../scenario-editor/policies-form/policies-form.component';
 import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
-import { UrlAddRuleComponent } from '../scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
-import { UrlEditRuleComponent } from '../scenario-editor/url-edit-rule/url-edit-rule.component';
-import { UrlListItemRuleTypeComponent } from '../scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
-import { PolicyEditComponent } from '../scenario-editor/policy-container/policy-edit/policy-edit.component';
-import { BodyEditRuleComponent } from '../scenario-editor/add-body-rule-edit/body-edit-rule.component';
-import { BodyListItemRuleTypeComponent } from '../scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
-import { BodyAddRuleComponent } from '../scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
@@ -57,27 +46,16 @@ describe('ScenarioViewComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MetadataFormComponent,
-        AddRequestMatchRuleComponent,
-        AddResponseComponent,
-        BodyAddRuleComponent,
-        BodyEditRuleComponent,
-        BodyListItemRuleTypeComponent,
+        ResponseFormComponent,
         GetEndpointScenariosPipe,
         GetRuleTypeStringPipe,
         GetVerbColorPipe,
         GetVerbStringPipe,
-        KvpEditRuleComponent,
-        KvpListItemRuleTypeComponent,
         OverviewHeaderComponent,
-        PolicyAddComponent,
-        PolicyComponent,
-        PolicyEditComponent,
+        PoliciesFormComponent,
         ScenarioEditorComponent,
         ScenarioViewComponent,
         SideBarComponent,
-        UrlAddRuleComponent,
-        UrlEditRuleComponent,
-        UrlListItemRuleTypeComponent,
       ],
       imports: [
         LoggerTestingModule,

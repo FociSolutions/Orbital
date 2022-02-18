@@ -1,5 +1,5 @@
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response-type';
 import * as uuid from 'uuid';
 import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 

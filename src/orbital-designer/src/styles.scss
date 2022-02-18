@@ -112,24 +112,18 @@ body {
 .mat-content > mat-panel-description {
   flex: 0 0 auto;
 }
-.error-message {
-  color: rgb(244, 67, 54);
+
+.error-message,
+.mat-error {
   display: block;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
-  height: 13px;
-  line-height: 13.5px;
-  text-align: left;
 }
 
 .error-message {
   color: rgb(244, 67, 54);
-  display: block;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  height: 13px;
-  line-height: 13.5px;
-  text-align: left;
+}
+
+.text-muted {
+  color: #8f8f8f;
 }

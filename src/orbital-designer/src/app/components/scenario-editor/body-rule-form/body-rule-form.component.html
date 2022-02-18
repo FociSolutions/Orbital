@@ -1,0 +1,24 @@
+<ng-container [formGroup]="form">
+  <div class="item-form" formArrayName="formArray" *ngFor="let ctrl of formArray.controls; let i = index">
+    <app-body-rule-item-form
+      [mode]="newItemIndex === i ? 'edit' : 'view'"
+      [formControlName]="i"
+      (removeItemEvent)="removeItemHandler(i)"
+      [errors]="ctrl.errors | getStringErrors"
+    ></app-body-rule-item-form>
+  </div>
+
+  <mat-card>
+    <div *ngIf="!formArray.length" class="row justify-content-center">
+      <p>It looks like you don't have any {{ itemNamePlural }}. Click on the add button below to get started.</p>
+    </div>
+    <div *ngIf="formArray.length" class="row justify-content-center">
+      <p>Add a new {{ itemName }}.</p>
+    </div>
+    <div class="row justify-content-center">
+      <button mat-mini-fab color="primary" (click)="addItem()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</ng-container>

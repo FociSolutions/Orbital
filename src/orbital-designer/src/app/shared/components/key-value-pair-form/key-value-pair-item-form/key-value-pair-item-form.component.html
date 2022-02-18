@@ -1,0 +1,38 @@
+<mat-card [formGroup]="form">
+  <div class="mat-h3 policy-title" *ngIf="title">{{ title }}</div>
+
+  <div class="row">
+    <mat-form-field class="flex-grow">
+      <input formControlName="key" matInput placeholder="Key" />
+    </mat-form-field>
+
+    <mat-form-field class="flex-grow-2">
+      <input formControlName="value" matInput placeholder="Value" />
+    </mat-form-field>
+
+    <button
+      mat-mini-fab
+      *ngIf="mode === 'add'"
+      color="primary"
+      [disabled]="!form.valid || !form.touched"
+      (click)="addItem()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="mode === 'edit'" color="warn" (click)="removeItem()">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </div>
+  <ng-container *ngIf="key.invalid && key.errors && (key.dirty || key.touched)">
+    <mat-error *ngIf="key.errors.required">The Key is required</mat-error>
+    <mat-error *ngFor="let error of key.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <ng-container *ngIf="value.invalid && value.errors && (value.dirty || value.touched)">
+    <mat-error *ngIf="value.errors.required">The Value is required</mat-error>
+    <mat-error *ngFor="let error of value.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <ng-container *ngIf="form.invalid && form.errors && (form.dirty || form.touched)">
+    <mat-error *ngFor="let error of form.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <mat-error *ngFor="let error of errors">{{ error }}</mat-error>
+</mat-card>

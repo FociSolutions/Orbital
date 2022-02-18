@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { VerbType } from '../../models/verb.type';
+import { VerbType } from '../../models/verb-type';
 
 @Pipe({
   name: 'getVerbColor',

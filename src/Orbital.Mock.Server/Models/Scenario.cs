@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+
+using Newtonsoft.Json;
 
 namespace Orbital.Mock.Server.Models
 {

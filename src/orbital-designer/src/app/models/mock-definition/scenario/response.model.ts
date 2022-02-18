@@ -1,4 +1,4 @@
-import { ResponseType } from './response.type';
+import { ResponseType } from './response-type';
 
 /**
  * Model representation of a mock response

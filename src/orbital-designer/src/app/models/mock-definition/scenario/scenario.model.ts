@@ -1,10 +1,11 @@
-import { RequestMatchRule, defaultRequestMatchRule } from './request-match-rule.model';
+import { RequestMatchRules, defaultRequestMatchRule } from './request-match-rules.model';
 import { Metadata, defaultMetadata } from '../metadata.model';
-import { VerbType } from '../../verb.type';
+import { VerbType } from '../../verb-type';
 import { Response, defaultResponse } from './response.model';
 import * as uuid from 'uuid';
 import { Policy } from './policy.model';
 import { TokenRule, defaultTokenRule } from './token-rule.model';
+
 /**
  * Model representation of a scenario
  */
@@ -14,7 +15,7 @@ export interface Scenario {
   verb: VerbType;
   path: string;
   response: Response;
-  requestMatchRules: RequestMatchRule;
+  requestMatchRules: RequestMatchRules;
   policies: Policy[];
   defaultScenario: boolean;
   tokenRule: TokenRule;

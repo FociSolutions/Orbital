@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, Output, forwardRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -8,6 +8,7 @@ import {
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
+  Validator,
   Validators,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -34,10 +35,8 @@ export interface MetadataFormValues {
     },
   ],
 })
-export class MetadataFormComponent implements ControlValueAccessor, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
-
-  @Output() form: FormGroup;
+export class MetadataFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+  form: FormGroup;
 
   @Input() readonly title_maxlength = 50;
   @Input() readonly description_maxlength = 500;
@@ -51,57 +50,39 @@ export class MetadataFormComponent implements ControlValueAccessor, OnDestroy {
     return this.form.get('description') as FormControl;
   }
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
     this.form = this.formBuilder.group({
       title: [
-        '',
+        null,
         [
           Validators.required,
           Validators.maxLength(this.title_maxlength),
           MetadataFormComponent.notOnlyWhiteSpaceValidator,
         ],
       ],
-      description: ['', [Validators.maxLength(this.description_maxlength)]],
+      description: [null, [Validators.maxLength(this.description_maxlength)]],
     });
 
     this.subscriptions.push(
-      this.form.valueChanges.subscribe((value) => {
-        this.onChange(value);
-        this.onTouched();
+      this.form.valueChanges.subscribe((value: MetadataFormValues | null) => {
+        this.onChange.forEach((fn) => fn(value));
+        this.onTouched.forEach((fn) => fn());
       })
     );
   }
 
-  validate(_: FormControl): ValidationErrors | null {
-    return this.form.valid ? null : { metadata: { valid: false } };
-  }
-
   setDisabledState(isDisabled: boolean): void {
-    Object.values(this.form.controls).forEach((c) => (isDisabled ? c.disable() : c.enable()));
+    isDisabled ? this.form.disable() : this.form.enable();
   }
 
-  writeValue(value?: MetadataFormValues | null): void {
+  writeValue(value?: Partial<MetadataFormValues> | null): void {
     if (value === null || value === undefined) {
-      this.form.reset();
+      this.form.reset({ value: null }, { emitEvent: false });
     } else {
-      this.form.setValue(value);
+      this.form.patchValue(value, { emitEvent: false });
     }
-  }
-
-  registerOnChange(fn: (value: MetadataFormValues) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  // Provide default implementations for these, which can be overridden with the register functions
-  onChange = (_value: MetadataFormValues): void => undefined;
-  onTouched = (): void => undefined;
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   static notOnlyWhiteSpaceValidator(control: AbstractControl): ValidationErrors | null {
@@ -109,5 +90,30 @@ export class MetadataFormComponent implements ControlValueAccessor, OnDestroy {
       return { whitespace: 'Must contain at least one character that is not a space.' };
     }
     return null;
+  }
+
+  /*
+   * Boilerplate Code Below Here
+   */
+
+  validate(_: FormControl): ValidationErrors | null {
+    return this.form.valid ? null : { metadata: true };
+  }
+
+  private readonly subscriptions: Subscription[] = [];
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+
+  readonly onChange: Array<(value: MetadataFormValues) => void> = [];
+  readonly onTouched: Array<() => void> = [];
+
+  registerOnChange(fn: (value: MetadataFormValues) => void): void {
+    this.onChange.push(fn);
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched.push(fn);
   }
 }

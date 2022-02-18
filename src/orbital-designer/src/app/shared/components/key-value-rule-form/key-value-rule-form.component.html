@@ -1,0 +1,23 @@
+<ng-container [formGroup]="form">
+  <app-key-value-rule-item-form
+    formControlName="add"
+    title="Add {{ itemName }}"
+    mode="add"
+    (addItemEvent)="addItemHandler($event)"
+    [itemIsDuplicatedEvent]="itemIsDuplicatedEvent"
+    [allowKeyWhitespace]="allowKeyWhitespace"
+  ></app-key-value-rule-item-form>
+
+  <mat-divider></mat-divider>
+
+  <div class="text-muted" *ngIf="!formArray.controls.length">No {{ itemNamePlural }} added</div>
+
+  <div class="item-form" formArrayName="formArray" *ngFor="let ctrl of formArray.controls; let i = index">
+    <app-key-value-rule-item-form
+      [formControlName]="i"
+      (removeItemEvent)="removeItemHandler(i)"
+      [errors]="ctrl.errors | getStringErrors"
+      [allowKeyWhitespace]="allowKeyWhitespace"
+    ></app-key-value-rule-item-form>
+  </div>
+</ng-container>

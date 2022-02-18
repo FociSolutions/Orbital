@@ -12,40 +12,28 @@ import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MetadataFormComponent } from './metadata-form/metadata-form.component';
-import { Response } from 'src/app/models/mock-definition/scenario/response.model';
-import * as faker from 'faker';
-import validMockDefinition from '../../../test-files/test-mockdefinition-object';
-import { AddRequestMatchRuleComponent } from './add-request-match-rule/add-request-match-rule.component';
-import { AddResponseComponent } from './add-response/add-response.component';
+import { ResponseFormComponent } from './response-form/response-form.component';
 import { SideBarComponent } from '../../shared/components/side-bar/side-bar.component';
 import { GetEndpointScenariosPipe } from 'src/app/pipes/get-endpoint-scenarios/get-endpoint-scenarios.pipe';
 import { OverviewHeaderComponent } from '../../shared/components/overview-header/overview-header.component';
 import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pipe';
 import { GetVerbStringPipe } from '../../pipes/get-verb-string/get-verb-string.pipe';
-import { KvpEditRuleComponent } from './kvp-edit-rule/kvp-edit-rule.component';
-import { KvpListItemRuleTypeComponent } from './kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
 import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-rule-type-string.pipe';
-import { UrlAddRuleComponent } from './url-edit-rule/url-add-rule/url-add-rule.component';
-import { UrlEditRuleComponent } from './url-edit-rule/url-edit-rule.component';
-import { UrlListItemRuleTypeComponent } from './url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
-import { ScenarioFormBuilder } from './scenario-form-builder/scenario-form.builder';
-import { FormArray, FormGroup } from '@angular/forms';
-import { emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
-import { PolicyComponent } from './policy-container/policy/policy.component';
-import { PolicyAddComponent } from './policy-container/policy-add/policy-add.component';
-import { PolicyEditComponent } from './policy-container/policy-edit/policy-edit.component';
+import { Scenario, emptyScenario } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { PoliciesFormComponent } from './policies-form/policies-form.component';
+import { PolicyFormComponent } from './policies-form/policy-form/policy-form.component';
 import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinition/export-mockdefinition.service';
-import { BodyListItemRuleTypeComponent } from './add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
-import { BodyAddRuleComponent } from './add-body-rule-edit/body-add-rule/body-add-rule.component';
-import { BodyEditRuleComponent } from './add-body-rule-edit/body-edit-rule.component';
 import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
 import { JsonEditorComponent } from 'ang-jsoneditor';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { RequestFormComponent } from './request-form/request-form.component';
+import validMockDefinition from 'src/test-files/test-mockdefinition-object';
+import * as faker from 'faker';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
   let fixture: ComponentFixture<ScenarioEditorComponent>;
-  let scenarioBuilder: ScenarioFormBuilder;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -55,23 +43,13 @@ describe('ScenarioEditorComponent', () => {
         GetEndpointScenariosPipe,
         OverviewHeaderComponent,
         MetadataFormComponent,
-        AddRequestMatchRuleComponent,
-        AddResponseComponent,
+        ResponseFormComponent,
         GetVerbColorPipe,
         GetVerbStringPipe,
-        KvpEditRuleComponent,
-        KvpListItemRuleTypeComponent,
         GetRuleTypeStringPipe,
-        UrlAddRuleComponent,
-        UrlEditRuleComponent,
-        UrlListItemRuleTypeComponent,
-        PolicyComponent,
-        PolicyAddComponent,
-        PolicyEditComponent,
-        BodyEditRuleComponent,
-        BodyListItemRuleTypeComponent,
-        BodyAddRuleComponent,
-        ScenarioViewComponent,
+        PoliciesFormComponent,
+        PolicyFormComponent,
+        RequestFormComponent,
         JsonEditorComponent,
       ],
       imports: [
@@ -87,15 +65,13 @@ describe('ScenarioEditorComponent', () => {
         MatIconModule,
         MatChipsModule,
       ],
-      providers: [DesignerStore, ScenarioFormBuilder, ExportMockdefinitionService],
+      providers: [DesignerStore, ExportMockdefinitionService, MockDefinitionService],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ScenarioEditorComponent);
     component = fixture.componentInstance;
-    scenarioBuilder = TestBed.inject(ScenarioFormBuilder);
-    component.scenarioFormGroup = scenarioBuilder.createNewScenarioForm();
     component.selectedScenario = emptyScenario;
     fixture.detectChanges();
   });
@@ -104,66 +80,56 @@ describe('ScenarioEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ScenarioEditorComponent.handleRequestMatchRuleOutput', () => {
-    it('should set the request match rule to the one that the component emitted', () => {
-      const fakeRequestMatchRule = validMockDefinition.scenarios[0].requestMatchRules;
-      component.handleRequestMatchRuleOutput(fakeRequestMatchRule);
-      expect(component.requestMatchRule).toEqual(fakeRequestMatchRule);
-    });
-  });
-
-  describe('ScenarioEditorComponent.handleResponseOutput', () => {
-    it('should set the response to the response when the component outputs the response', fakeAsync(() => {
-      component.selectedScenario = validMockDefinition.scenarios[0];
-      const fakeResponse = validMockDefinition.scenarios[0].response as unknown as Response;
-      component.handleResponseOutput(fakeResponse);
-      tick();
-      fixture.detectChanges();
-      expect(component.response).toEqual(fakeResponse);
-    }));
-  });
-
-  describe('ScenarioEditorComponent.saveScenario', () => {
+  describe('ScenarioEditorComponent.save', () => {
     it('should save the scenario if all the fields are valid', fakeAsync(() => {
       fixture.ngZone.run(() => {
         const store: DesignerStore = TestBed.inject(DesignerStore);
         store.state.mockDefinition = validMockDefinition;
 
-        const input = {
-          scenario: validMockDefinition.scenarios[0],
+        const scenario: Scenario = {
+          ...validMockDefinition.scenarios[0],
           metadata: {
             title: faker.random.word(),
             description: faker.random.word(),
           },
         };
-        component.scenarioId = input.scenario.id;
-        component.metadata.setValue(input.metadata);
-        component.response = input.scenario.response;
-        component.requestMatchRule = input.scenario.requestMatchRules;
-        component.selectedScenario = input.scenario;
 
-        component.requestMatchRuleValid = true;
-        component.responseMatchRuleValid = true;
-        (
-          (component.scenarioFormGroup.controls.requestMatchRules as FormGroup).controls.urlMatchRules as FormArray
-        ).controls = input.scenario.requestMatchRules.urlRules.map((ur) => scenarioBuilder.getUrlItemFormGroup(ur));
+        component.scenarioId = scenario.id;
+        component.selectedScenario = scenario;
+        component.scenarioForm.setValue(component.convertScenarioToFormData(scenario));
 
-        component.saveScenario();
-        tick();
-        fixture.detectChanges();
-        const actual = store.state.mockDefinition.scenarios.find((s) => s.id === input.scenario.id);
+        component.save();
+
+        const actual = store.state.mockDefinition.scenarios.find((s) => s.id === scenario.id);
         expect(actual).toBeTruthy();
-        expect(actual.metadata.title).toEqual(input.metadata.title);
+        expect(actual.metadata.title).toEqual(scenario.metadata.title);
       });
     }));
-  });
 
-  describe('ScenarioEditorComponent.save', () => {
-    it('should set the shouldSave variable to true', async () => {
-      await component.save();
-      fixture.detectChanges();
-      expect(component.shouldSave).toBe(true);
-    });
+    it('should not save the scenario if the form id invalid', fakeAsync(() => {
+      fixture.ngZone.run(() => {
+        const store: DesignerStore = TestBed.inject(DesignerStore);
+        store.state.mockDefinition = validMockDefinition;
+
+        const scenario: Scenario = {
+          ...validMockDefinition.scenarios[0],
+          metadata: {
+            title: '',
+            description: faker.random.word(),
+          },
+        };
+
+        component.scenarioId = scenario.id;
+        component.selectedScenario = scenario;
+        component.scenarioForm.setValue(component.convertScenarioToFormData(scenario));
+
+        component.save();
+
+        const actual = store.state.mockDefinition.scenarios.find((s) => s.id === scenario.id);
+        expect(actual).toBeTruthy();
+        expect(actual.metadata.title).toEqual(validMockDefinition.scenarios[0].metadata.title);
+      });
+    }));
   });
 
   describe('ScenarioEditorComponent.cancel', () => {

@@ -1,0 +1,51 @@
+<div [formGroup]="form">
+  <h3 class="mat-h3">Response Metadata</h3>
+
+  <mat-card class="row align-items-flex-start mb-1">
+    <mat-form-field class="mr-3">
+      <mat-label>Response Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let p of responseTypes" [value]="p.value">
+          {{ p.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="flex-grow">
+      <div class="row">
+        <mat-form-field class="status-code">
+          <input matInput type="number" min="100" max="599" formControlName="status" placeholder="Status Code" />
+        </mat-form-field>
+
+        <mat-form-field class="flex-grow">
+          <mat-label>Status Message</mat-label>
+          <input matInput readonly [value]="getStatusDescription(status.value) || ' '" />
+        </mat-form-field>
+      </div>
+
+      <ng-container *ngIf="status.invalid && status.errors && (status.dirty || status.touched)">
+        <mat-error *ngIf="status.errors.required">The Status Code is required</mat-error>
+        <mat-error *ngFor="let error of status.errors | getStringErrors">{{ error }}</mat-error>
+      </ng-container>
+    </div>
+  </mat-card>
+
+  <h3 class="mat-h3">Response Headers</h3>
+  <app-key-value-pair-form
+    formControlName="headers"
+    itemName="Header"
+    itemNamePlural="Headers"
+  ></app-key-value-pair-form>
+
+  <br />
+  <div class="response-body">
+    <h3 class="mat-h3">Response Body</h3>
+
+    <ng-container *ngIf="body.invalid && body.errors && (body.dirty || body.touched)">
+      <mat-error *ngIf="body.errors.required">The Body is required</mat-error>
+      <mat-error *ngFor="let error of body.errors | getStringErrors">{{ error }}</mat-error>
+    </ng-container>
+
+    <json-editor [options]="bodyEditorOptions" [data]="initBodyData"></json-editor>
+  </div>
+</div>

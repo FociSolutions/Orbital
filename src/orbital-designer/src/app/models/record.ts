@@ -1,37 +1,6 @@
 import { cloneDeep } from 'lodash';
 
 /**
- * Returns the first record, or a default value
- * @deprecated Do not use, to be removed after refactoring code
- */
-export function recordFirstOrDefault<K extends string | number | symbol, T>(record: Record<K, T>, fallback: T): T {
-  const keys = Object.keys(record);
-
-  if (keys.length <= 0) {
-    return fallback;
-  }
-
-  return record[keys[0]];
-}
-
-/**
- * Gets the key's name from the provided record
- * @deprecated Do not use, to be removed after refactoring code
- */
-export function recordFirstOrDefaultKey<K extends string | number | symbol, T>(
-  record: Record<K, T>,
-  fallback: string
-): string {
-  const keys = Object.keys(record);
-
-  if (keys.length <= 0) {
-    return fallback;
-  }
-
-  return keys[0];
-}
-
-/**
  * Converts the list of records into an array, in the form of (key, value)
  * @deprecated Do not use, to be removed after refactoring code
  */

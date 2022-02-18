@@ -1,11 +1,11 @@
-import { KeyValuePairRule } from './key-value-pair-rule.model';
+import { KeyValueRule } from './key-value-rule.model';
 
 /**
  * Model representation of a token rule
  */
 export interface TokenRule {
   validationType: ValidationType;
-  rules: KeyValuePairRule[];
+  rules: KeyValueRule[];
 }
 
 export enum ValidationType {

@@ -1,0 +1,32 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.row > * {
+  margin-right: 1rem;
+}
+
+.row > *:last-child {
+  margin-right: 0;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.hide {
+  display: none;
+}
+
+.mat-error {
+  margin-left: 0.5rem;
+}
+
+.policy-title {
+  margin-bottom: 0.5rem;
+}

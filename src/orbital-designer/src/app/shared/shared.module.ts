@@ -18,13 +18,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ShuttleListComponent } from './components/shuttle-list/shuttle-list.component';
 import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
-import { KvpEditComponent } from './components/kvp-edit/kvp-edit.component';
-import { KvpAddComponent } from './components/kvp-edit/kvp-add/kvp-add.component';
-import { KvpListItemComponent } from './components/kvp-edit/kvp-list-item/kvp-list-item.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { KvpAddRuleComponent } from '../components/scenario-editor/kvp-edit-rule/kvp-add-rule/kvp-add-rule.component';
 import { QuickExportComponent } from './components/quick-export/quick-export.component';
 import { HttpClientModule } from '@angular/common/http';
+import { KeyValuePairFormComponent } from './components/key-value-pair-form/key-value-pair-form.component';
+import { KeyValuePairItemFormComponent } from './components/key-value-pair-form/key-value-pair-item-form/key-value-pair-item-form.component';
+import { GetStringErrorsPipe } from './pipes/get-string-errors/get-string-errors.pipe';
+import { KeyValueRuleItemFormComponent } from './components/key-value-rule-form/key-value-rule-item-form/key-value-rule-item-form.component';
+import { KeyValueRuleFormComponent } from './components/key-value-rule-form/key-value-rule-form.component';
+import { UrlRuleItemFormComponent } from './components/url-rule-form/url-rule-item-form/url-rule-item-form.component';
+import { UrlRuleFormComponent } from './components/url-rule-form/url-rule-form.component';
 
 @NgModule({
   declarations: [
@@ -35,11 +38,14 @@ import { HttpClientModule } from '@angular/common/http';
     SearchBarComponent,
     ShuttleListComponent,
     DialogBoxComponent,
-    KvpAddRuleComponent,
     QuickExportComponent,
-    KvpAddComponent,
-    KvpEditComponent,
-    KvpListItemComponent,
+    KeyValuePairFormComponent,
+    KeyValuePairItemFormComponent,
+    KeyValueRuleItemFormComponent,
+    KeyValueRuleFormComponent,
+    UrlRuleItemFormComponent,
+    UrlRuleFormComponent,
+    GetStringErrorsPipe,
   ],
   exports: [
     TextInputComponent,
@@ -60,11 +66,14 @@ import { HttpClientModule } from '@angular/common/http';
     ShuttleListComponent,
     DialogBoxComponent,
     MatExpansionModule,
-    KvpAddRuleComponent,
     QuickExportComponent,
-    KvpAddComponent,
-    KvpEditComponent,
-    KvpListItemComponent,
+    KeyValuePairFormComponent,
+    KeyValuePairItemFormComponent,
+    KeyValueRuleItemFormComponent,
+    KeyValueRuleFormComponent,
+    UrlRuleItemFormComponent,
+    UrlRuleFormComponent,
+    GetStringErrorsPipe,
   ],
   imports: [
     CommonModule,

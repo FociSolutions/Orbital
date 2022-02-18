@@ -1,18 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MetadataFormComponent, MetadataFormValues } from './metadata-form.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoggerTestingModule } from 'ngx-logger/testing';
-import { SharedModule } from '../../../shared/shared.module';
 import * as faker from 'faker';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 
 describe('MetadataFormComponent', () => {
   let component: MetadataFormComponent;
@@ -22,20 +13,7 @@ describe('MetadataFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MetadataFormComponent],
-      imports: [
-        MatExpansionModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatCardModule,
-        MatIconModule,
-        SharedModule,
-        BrowserAnimationsModule,
-        LoggerTestingModule,
-        MatDividerModule,
-        MatCheckboxModule,
-        LoggerTestingModule,
-      ],
+      imports: [BrowserAnimationsModule, MatInputModule, ReactiveFormsModule],
     }).compileComponents();
   });
 
@@ -69,29 +47,25 @@ describe('MetadataFormComponent', () => {
       expect(component.form.value).toEqual(value);
     });
 
-    it('should notify of a change when called', () => {
-      const spy = jest.spyOn(component, 'onChange');
-      const value_null: MetadataFormValues = {
-        title: null,
-        description: null,
-      };
+    it('should not notify of a change when called', () => {
+      const spy = jest.fn();
+      component.registerOnChange(spy);
 
       component.writeValue(SAMPLE_VALUE);
       component.writeValue(null);
 
-      expect(spy).toHaveBeenCalledTimes(2);
-      expect(spy).toHaveBeenCalledWith(SAMPLE_VALUE);
-      expect(spy).toHaveBeenCalledWith(value_null);
+      expect(spy).toHaveBeenCalledTimes(0);
       spy.mockRestore();
     });
 
-    it('should notify of a touch when called', () => {
-      const spy = jest.spyOn(component, 'onTouched');
+    it('should not notify of a touch when called', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
 
       component.writeValue(SAMPLE_VALUE);
       component.writeValue(null);
 
-      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledTimes(0);
       spy.mockRestore();
     });
   });
@@ -111,6 +85,7 @@ describe('MetadataFormComponent', () => {
       const actual = component.title.validator(component.title);
       expect(actual).toBeTruthy();
       expect(actual.required).toBeTruthy();
+      expect(component.validate(null)).toBeTruthy();
     });
 
     it('should fail validation if the title field contains only whitespace', () => {
@@ -120,6 +95,7 @@ describe('MetadataFormComponent', () => {
       const actual = component.title.validator(component.title);
       expect(actual).toBeTruthy();
       expect(actual.whitespace).toBeTruthy();
+      expect(component.validate(null)).toBeTruthy();
     });
 
     it('should fail validation if the title field has more than the max characters', () => {
@@ -132,6 +108,7 @@ describe('MetadataFormComponent', () => {
       const actual = component.title.validator(component.title);
       expect(actual).toBeTruthy();
       expect(actual.maxlength).toBeTruthy();
+      expect(component.validate(null)).toBeTruthy();
     });
 
     it('should fail validation if the description field has more than the max characters', () => {
@@ -144,6 +121,7 @@ describe('MetadataFormComponent', () => {
       const actual = component.description.validator(component.description);
       expect(actual).toBeTruthy();
       expect(actual.maxlength).toBeTruthy();
+      expect(component.validate(null)).toBeTruthy();
     });
 
     it('should not fail validation if the description field is empty', () => {
@@ -152,6 +130,7 @@ describe('MetadataFormComponent', () => {
 
       const actual = component.description.validator(component.description);
       expect(actual).toBeNull();
+      expect(component.validate(null)).toBeNull();
     });
   });
 
@@ -173,16 +152,16 @@ describe('MetadataFormComponent', () => {
       const expected = () => undefined;
       component.registerOnChange(expected);
 
-      expect(component.onChange).toBe(expected);
+      expect(component.onChange).toContain(expected);
     });
   });
 
   describe('MetadataFormComponent.registerOnTouched', () => {
-    it('should set the onChange function', () => {
+    it('should set the onTouched function', () => {
       const expected = () => undefined;
       component.registerOnTouched(expected);
 
-      expect(component.onTouched).toBe(expected);
+      expect(component.onTouched).toContain(expected);
     });
   });
 

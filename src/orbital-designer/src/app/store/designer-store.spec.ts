@@ -1,6 +1,6 @@
 import { DesignerStore } from './designer-store';
 import * as faker from 'faker';
-import { VerbType } from '../models/verb.type';
+import { VerbType } from '../models/verb-type';
 import { MockDefinition } from '../models/mock-definition/mock-definition.model';
 import validOpenApi from '../../test-files/valid-openapi-spec';
 import validMockDefinition from '../../test-files/test-mockdefinition-object';
@@ -17,7 +17,7 @@ import * as _ from 'lodash';
 import { take } from 'rxjs/operators';
 import { defaultTokenRule } from '../models/mock-definition/scenario/token-rule.model';
 import { defaultResponse } from '../models/mock-definition/scenario/response.model';
-import { RuleType } from '../models/mock-definition/scenario/rule.type';
+import { RuleType } from '../models/mock-definition/scenario/rule-type';
 import { defaultPolicy } from '../models/mock-definition/scenario/policy.model';
 
 describe('DesignerStore', () => {
@@ -68,7 +68,7 @@ describe('DesignerStore', () => {
           bodyRules: [
             {
               type: RuleType.JSONEQUALITY,
-              rule: {},
+              value: '{}',
             },
           ],
         },
@@ -241,7 +241,7 @@ describe('DesignerStore', () => {
             bodyRules: [
               {
                 type: RuleType.JSONEQUALITY,
-                rule: {},
+                value: '{}',
               },
             ],
           },
@@ -458,7 +458,7 @@ describe('DesignerStore', () => {
           bodyRules: [
             {
               type: RuleType.JSONEQUALITY,
-              rule: {},
+              value: '{}',
             },
           ],
         },

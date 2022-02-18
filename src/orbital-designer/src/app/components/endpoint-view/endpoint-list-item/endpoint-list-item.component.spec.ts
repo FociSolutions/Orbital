@@ -9,7 +9,7 @@ import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string
 import { Router } from '@angular/router';
 import { Endpoint } from 'src/app/models/endpoint.model';
 import * as faker from 'faker';
-import { VerbType } from 'src/app/models/verb.type';
+import { VerbType } from 'src/app/models/verb-type';
 import { OpenAPIV2 } from 'openapi-types';
 import { MatIconModule } from '@angular/material/icon';
 

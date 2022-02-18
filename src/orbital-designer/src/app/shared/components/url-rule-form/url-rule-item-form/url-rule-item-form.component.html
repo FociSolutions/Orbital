@@ -1,0 +1,44 @@
+<mat-card [formGroup]="form">
+  <div class="mat-h3 policy-title" *ngIf="title">{{ title }}</div>
+
+  <div class="row">
+    <mat-form-field>
+      <mat-label>Match Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.value">
+          {{ ruleType.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field [ngClass]="['flex-grow', !type.value || type.value === ruleType.ACCEPTALL ? 'hide' : '']">
+      <input matInput formControlName="path" placeholder="URL Path" [maxlength]="pathMaxLength" />
+      <mat-hint>{{ path.value?.length || 0 }}/{{ pathMaxLength }}</mat-hint>
+    </mat-form-field>
+
+    <button
+      mat-mini-fab
+      *ngIf="mode === 'add'"
+      color="primary"
+      [disabled]="!form.valid || !form.touched"
+      (click)="addItem()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="mode === 'edit'" color="warn" (click)="removeItem()">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </div>
+  <ng-container *ngIf="type.invalid && type.errors && (type.dirty || type.touched)">
+    <mat-error *ngIf="type.errors.required">The Match Type is required</mat-error>
+    <mat-error *ngFor="let error of type.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <ng-container *ngIf="path.invalid && path.errors && (path.dirty || path.touched)">
+    <mat-error *ngIf="path.errors.required">The Path is required</mat-error>
+    <mat-error *ngFor="let error of path.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <ng-container *ngIf="form.invalid && form.errors && (form.dirty || form.touched)">
+    <mat-error *ngFor="let error of form.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <mat-error *ngFor="let error of errors">{{ error }}</mat-error>
+</mat-card>

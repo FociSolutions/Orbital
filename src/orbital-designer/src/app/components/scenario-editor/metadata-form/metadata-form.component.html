@@ -3,23 +3,19 @@
     <input formControlName="title" matInput [maxlength]="title_maxlength" placeholder="Scenario Name" />
     <mat-hint>{{ title.value?.length ?? 0 }}/{{ title_maxlength }}</mat-hint>
   </mat-form-field>
-  <div *ngIf="title.invalid && title.errors && (title.dirty || title.touched)">
-    <div class="error-message" *ngIf="title.errors.required">The scenario name is required.</div>
-    <div class="error-message" *ngIf="title.errors.maxlength">
-      Cannot be more than {{ title_maxlength }} characters long.
-    </div>
-    <div *ngFor="let error of title.errors | getStringErrors">
-      <div class="error-message">{{ error }}</div>
-    </div>
-  </div>
+  <ng-container *ngIf="title.invalid && title.errors && (title.dirty || title.touched)">
+    <mat-error *ngIf="title.errors.required">The scenario name is required.</mat-error>
+    <mat-error *ngIf="title.errors.maxlength"> Cannot be more than {{ title_maxlength }} characters long. </mat-error>
+    <mat-error *ngFor="let error of title.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
 
   <mat-form-field class="full-width top-margin">
     <input formControlName="description" matInput [maxlength]="description_maxlength" placeholder="Description" />
     <mat-hint>{{ description.value?.length ?? 0 }}/{{ description_maxlength }}</mat-hint>
   </mat-form-field>
-  <div *ngIf="description.invalid && description.errors && (description.dirty || description.touched)">
-    <div class="error-message" *ngIf="description.errors.maxlength">
+  <ng-container *ngIf="description.invalid && description.errors && (description.dirty || description.touched)">
+    <mat-error *ngIf="description.errors.maxlength">
       Cannot be more than {{ description_maxlength }} characters long.
-    </div>
-  </div>
+    </mat-error>
+  </ng-container>
 </mat-card>

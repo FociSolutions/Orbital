@@ -5,11 +5,12 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import * as uuid from 'uuid';
 import * as _ from 'lodash';
-import { VerbType } from 'src/app/models/verb.type';
+import { VerbType } from 'src/app/models/verb-type';
 import { OpenAPIV2 } from 'openapi-types';
-import { ResponseType } from 'src/app/models/mock-definition/scenario/response.type';
+import { ResponseType } from 'src/app/models/mock-definition/scenario/response-type';
 import { defaultTokenRule } from 'src/app/models/mock-definition/scenario/token-rule.model';
 import * as HttpStatus from 'http-status-codes';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,25 +25,31 @@ export class MockDefinitionService {
   AddMockDefinitionToStore(mockDefinition: string): Observable<boolean> {
     return new Observable((observer) => {
       try {
-        let content = JSON.parse(mockDefinition);
+        let content: MockDefinition = JSON.parse(mockDefinition);
         content = {
           ...content,
-          scenarios: content.scenarios.map((s) => ({
-            ...s,
-            response: {
-              ...s.response,
-              headers: s.response.headers,
-              type: s.response.type || ResponseType.CUSTOM,
-            },
-            requestMatchRules: {
-              headerRules: s.requestMatchRules.headerRules || [],
-              queryRules: s.requestMatchRules.queryRules || [],
-              bodyRules: s.requestMatchRules.bodyRules || [],
-              urlRules: s.requestMatchRules.urlRules || [],
-            },
-            policies: s.policies || [],
-            defaultScenario: s.defaultScenario || false,
-          })),
+          scenarios: content.scenarios.map(
+            (s: Scenario): Scenario => ({
+              ...s,
+              response: {
+                ...s.response,
+                headers: s.response.headers,
+                type: s.response.type ?? ResponseType.CUSTOM,
+              },
+              requestMatchRules: {
+                headerRules: s.requestMatchRules?.headerRules ?? [],
+                queryRules: s.requestMatchRules?.queryRules ?? [],
+                bodyRules: s.requestMatchRules?.bodyRules ?? [],
+                urlRules: s.requestMatchRules?.urlRules ?? [],
+              },
+              policies: s.policies ?? [],
+              tokenRule: {
+                ...s.tokenRule,
+                rules: s.tokenRule?.rules ?? [],
+              },
+              defaultScenario: s.defaultScenario ?? false,
+            })
+          ),
         };
         this.store.appendMockDefinition(content);
         this.store.mockDefinition = content;
@@ -63,27 +70,6 @@ export class MockDefinitionService {
     return new Observable((observer) => {
       try {
         JSON.parse(mockDefinition);
-        // content = {
-        //   ...content,
-        //   scenarios: content.scenarios.map((s) => ({
-        //     ...s,
-        //     response: {
-        //       ...s.response,
-        //       headers: s.response.headers,
-        //       type: s.response.type || ResponseType.CUSTOM,
-        //     },
-        //     requestMatchRules: {
-        //       headerRules: s.requestMatchRules.headerRules,
-        //       queryRules: s.requestMatchRules.queryRules,
-        //       bodyRules: s.requestMatchRules.bodyRules,
-        //       urlRules: s.requestMatchRules.urlRules,
-        //     },
-        //     policies: {
-        //       ...s.policies,
-        //     },
-        //     defaultScenario: s.defaultScenario,
-        //   })),
-        // };
         observer.next(true);
       } catch (error) {
         observer.error(error);
@@ -208,16 +194,16 @@ export class MockDefinitionService {
 
   defaultScenarioParams(
     path: string,
-    type: VerbType,
-    status = HttpStatus.StatusCodes.OK,
-    title = 'Default OK Scenario'
+    verb: VerbType,
+    status: HttpStatus.StatusCodes = HttpStatus.StatusCodes.OK,
+    title: string = 'Default OK Scenario'
   ): ScenarioParams {
     return {
       title,
       description: '',
       path,
       status,
-      verb: type,
+      verb,
     };
   }
 

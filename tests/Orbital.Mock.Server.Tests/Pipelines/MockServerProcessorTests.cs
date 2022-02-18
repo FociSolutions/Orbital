@@ -1,29 +1,33 @@
-﻿using Bogus;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Pipelines;
-using Orbital.Mock.Server.Pipelines.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
-using Orbital.Mock.Server.Tests.Pipelines.Filters;
-using Xunit;
+using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
+
+using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Interfaces;
-using Assert = Xunit.Assert;
-using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Server.Services.Interfaces;
+using Orbital.Mock.Server.Pipelines;
+using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
+using Orbital.Mock.Server.Tests.Pipelines.Filters;
+
+using Bogus;
+using Xunit;
 using Scriban;
 using NSubstitute;
-using Orbital.Mock.Server.Services.Interfaces;
-using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Pipelines
 {
@@ -133,7 +137,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb.ToString();
-            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()));
+            httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes(scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Value));
             scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => httpContext.Request.Headers.Add(k.Key, k.Value));
             httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));
             

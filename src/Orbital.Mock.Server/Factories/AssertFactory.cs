@@ -13,7 +13,7 @@ namespace Orbital.Mock.Server.Factories
         public IEnumerable<Assert> CreateAssert(BodyRule rule, string request)
         {
             var asserts = new List<Assert>();
-            var bodyAssert = new Assert() { Actual = request, Expect = rule.RuleValue.ToString(), Rule = rule.Type };
+            var bodyAssert = new Assert() { Actual = request, Expect = rule.Value, Rule = rule.Type };
             asserts.Add(bodyAssert);
 
             return asserts;

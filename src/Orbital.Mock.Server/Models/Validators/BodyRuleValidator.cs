@@ -11,7 +11,7 @@ namespace Orbital.Mock.Server.Models.Validators
         public BodyRuleValidator()
         {
             RuleFor(m => m.Type).NotNull();
-            RuleFor(m => m.RuleValue).NotNull();
+            RuleFor(m => m.Value).NotNull();
         }
     }
 }

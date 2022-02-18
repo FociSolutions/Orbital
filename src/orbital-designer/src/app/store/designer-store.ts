@@ -4,11 +4,10 @@ import { MockDefinition } from '../models/mock-definition/mock-definition.model'
 import { Store } from 'rxjs-observable-store';
 import { Injectable } from '@angular/core';
 import { OpenAPIV2 } from 'openapi-types';
-import { VerbType } from '../models/verb.type';
+import { VerbType } from '../models/verb-type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
-import { recordFirstOrDefault } from '../models/record';
 
 export interface State {
   selectedEndpoint: Endpoint;
@@ -105,7 +104,7 @@ export class DesignerStore extends Store<State> {
     this.updateMockDefinitionsState(mockDefinition);
 
     this.logger.debug('New state after appending', this.state);
-    this.mockDefinition = recordFirstOrDefault(this.state.mockDefinitions, null);
+    this.mockDefinition = Object.values(this.state.mockDefinitions)?.[0] ?? null;
 
     if (this.state.mockDefinition) {
       this.selectedEndpoint = null;

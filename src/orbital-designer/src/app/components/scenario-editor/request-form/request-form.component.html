@@ -1,0 +1,39 @@
+<div class="rule-set-selector-container">
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Request Rule Type</mat-label>
+    <mat-select [(ngModel)]="currentRuleType">
+      <mat-option *ngFor="let rule of ruleTypes | keyvalue: compareAllEqual" [value]="rule.key">
+        {{ rule.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div [formGroup]="form">
+  <div [formGroup]="requestMatchRules">
+    <app-key-value-rule-form
+      *ngIf="currentRuleType === 'header'"
+      formControlName="headerRules"
+      itemName="Header Match Rule"
+      itemNamePlural="Header Match Rules"
+    ></app-key-value-rule-form>
+
+    <app-key-value-rule-form
+      *ngIf="currentRuleType === 'query'"
+      formControlName="queryRules"
+      itemName="Query Param Match Rule"
+      itemNamePlural="Query Param Match Rules"
+    ></app-key-value-rule-form>
+
+    <app-url-rule-form *ngIf="currentRuleType === 'url'" formControlName="urlRules"></app-url-rule-form>
+
+    <app-body-rule-form *ngIf="currentRuleType === 'body'" formControlName="bodyRules"></app-body-rule-form>
+  </div>
+
+  <app-key-value-rule-form
+    *ngIf="currentRuleType === 'token_payload'"
+    formControlName="tokenRules"
+    itemName="Token (JWT) Payload Match Rule"
+    itemNamePlural="Token (JWT) Payload Match Rules"
+  ></app-key-value-rule-form>
+</div>

@@ -206,7 +206,7 @@ namespace Orbital.Mock.Server.LongRunningTests
             httpContext.Request.Path = scenarios[0].Path;
             httpContext.Request.Method = scenarios[0].Verb.ToString();
             httpContext.Request.Body =
-                new MemoryStream(Encoding.ASCII.GetBytes((string) scenarios[0].RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()));
+                new MemoryStream(Encoding.ASCII.GetBytes((string) scenarios[0].RequestMatchRules.BodyRules.ToList()[0].Value));
             var context = httpContext;
             scenarios[0].RequestMatchRules.HeaderRules.ToList().ForEach(k => context.Request.Headers.Add(k.Key, k.Value));
             httpContext.Request.Query = new QueryCollection(scenarios[0].RequestMatchRules.QueryRules.ToDictionary(x => x.Key, x => new StringValues(x.Value)));

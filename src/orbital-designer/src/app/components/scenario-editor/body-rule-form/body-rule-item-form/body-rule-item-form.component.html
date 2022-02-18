@@ -1,0 +1,85 @@
+<mat-card [formGroup]="form">
+  <div class="mat-h3 policy-title" *ngIf="title">{{ title }}</div>
+
+  <div class="row">
+    <ng-container *ngIf="mode === 'view'">
+      <mat-form-field class="flex-grow">
+        <mat-label>Match Type</mat-label>
+        <input matInput required readonly [value]="getTypeText(ruleType.value)" />
+      </mat-form-field>
+
+      <mat-form-field class="flex-grow">
+        <mat-label>Match Condition</mat-label>
+        <input matInput required readonly [value]="getConditionText(ruleCondition.value)" />
+      </mat-form-field>
+
+      <button mat-icon-button color="primary" (click)="editItem()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="mode === 'edit'">
+      <mat-form-field class="flex-grow">
+        <mat-label>Match Type</mat-label>
+        <mat-select formControlName="ruleType">
+          <mat-option *ngFor="let type of ruleTypes" [value]="type.value">
+            {{ type.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="flex-grow">
+        <mat-label>Match Condition</mat-label>
+        <mat-select formControlName="ruleCondition">
+          <mat-option *ngFor="let condition of currentMatchConditions" [value]="condition.value">
+            {{ condition.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-icon-button color="primary" [disabled]="!form.valid" (click)="saveItem()">
+        <mat-icon>visibility</mat-icon>
+      </button>
+    </ng-container>
+
+    <button mat-icon-button color="warn" (click)="removeItem()">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </div>
+
+  <ng-container *ngIf="ruleType.invalid && ruleType.errors && (ruleType.dirty || ruleType.touched)">
+    <mat-error *ngIf="ruleType.errors.required">The Match Type is required</mat-error>
+    <mat-error *ngFor="let error of ruleType.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <ng-container *ngIf="ruleCondition.invalid && ruleCondition.errors && (ruleCondition.dirty || ruleCondition.touched)">
+    <mat-error *ngIf="ruleCondition.errors.required">The Match Condition is required</mat-error>
+    <mat-error *ngFor="let error of ruleCondition.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <ng-container *ngIf="form.invalid && form.errors && (form.dirty || form.touched)">
+    <mat-error *ngFor="let error of form.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <mat-error *ngFor="let error of errors">{{ error }}</mat-error>
+
+  <br />
+  <div class="match-value" *ngIf="mode !== 'edit' || ruleType.value">
+    <h3 class="mat-h3" *ngIf="mode !== 'edit' || ruleType.value !== BodyRuleType.TEXT">Match Value *</h3>
+
+    <mat-form-field class="w-100" *ngIf="mode === 'edit' && ruleType.value === BodyRuleType.TEXT">
+      <mat-label>Match Value</mat-label>
+      <textarea matInput rows="5" formControlName="value"></textarea>
+    </mat-form-field>
+
+    <ng-container *ngIf="value.invalid && value.errors && (value.dirty || value.touched)">
+      <mat-error *ngIf="value.errors.required">The Match Value is required</mat-error>
+      <mat-error *ngFor="let error of value.errors | getStringErrors">{{ error }}</mat-error>
+    </ng-container>
+
+    <json-editor
+      *ngIf="mode === 'edit' && ruleType.value === BodyRuleType.JSON"
+      [options]="valueEditorOptions"
+      [data]="initValueData"
+    ></json-editor>
+
+    <div *ngIf="mode === 'view'">{{ value.value }}</div>
+  </div>
+</mat-card>

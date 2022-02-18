@@ -1,39 +1,32 @@
 import { Injectable } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
-import { jsonErrorType } from 'src/app/models/mock-definition/scenario/json-error-type';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ValidJsonService {
-  constructor(private logger: NGXLogger) {}
-
-  readonly jsonErrorMap = new Map([
-    [jsonErrorType.EMPTY, ' cannot be empty.'],
-    [jsonErrorType.INVALID, ' be valid JSON.'],
-    [jsonErrorType.EMPTY_JSON, ' must have content.'],
-  ]);
-
-  /**
-   * Returns an error type depending on JSON string content
-   * @param json The JSON string to check
-   * @return the error type
-   */
-  checkJSON(json: string): jsonErrorType {
-    if (json === '') {
-      return jsonErrorType.EMPTY;
-    }
-    try {
-      const parsedJson = JSON.parse(json);
-      if (!Object.keys(parsedJson).length) {
-        return jsonErrorType.EMPTY_JSON;
+  static getValidator =
+    (required: boolean = true) =>
+    (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return required ? { required: true } : null;
       }
-      if (typeof parsedJson !== 'object') {
-        return jsonErrorType.INVALID;
+
+      try {
+        const value = JSON.parse(control.value);
+
+        // Yes, `typeof []` and `typeof null` returns 'object'
+        if (typeof value !== 'object' || Array.isArray(value) || value === null) {
+          return { top_level_object: 'The top-level JSON must be an object' };
+        }
+
+        if (!Object.keys(value).length && required) {
+          return { empty: 'The top-level JSON object cannot be empty' };
+        }
+      } catch (error: unknown) {
+        return { invalid: 'The content is not valid JSON' };
       }
-      return jsonErrorType.NONE;
-    } catch (e) {
-      return jsonErrorType.INVALID;
-    }
-  }
+
+      return null;
+    };
 }

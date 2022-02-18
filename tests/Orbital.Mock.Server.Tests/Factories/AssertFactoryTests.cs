@@ -112,7 +112,7 @@ namespace Orbital.Mock.Server.Tests.Factories
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].RuleValue.ToString()
+                Body = fakeScenario.RequestMatchRules.BodyRules.ToList()[0].Value
             };
             var actual = new List<AssertOrbital>();
             #endregion

@@ -1,10 +1,10 @@
 import { GetEndpointScenariosPipe } from './get-endpoint-scenarios.pipe';
 import * as faker from 'faker';
-import { VerbType } from '../../models/verb.type';
+import { VerbType } from '../../models/verb-type';
 import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
 import * as uuid from 'uuid';
-import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule/body-rule.model';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { BodyRule } from 'src/app/models/mock-definition/scenario/body-rule.model';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 
 describe('GetEndpointScenariosPipe', () => {
   it('create an instance', () => {
@@ -35,7 +35,7 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONCONTAINS,
-            rule: {},
+            value: '{}',
           },
         ] as Array<BodyRule>,
       },
@@ -62,7 +62,7 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {},
+            value: '{}',
           },
         ] as Array<BodyRule>,
       },
@@ -102,7 +102,7 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {},
+            value: '{}',
           },
         ] as Array<BodyRule>,
       },
@@ -129,7 +129,7 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {},
+            value: '{}',
           },
         ] as Array<BodyRule>,
       },
@@ -169,7 +169,7 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {},
+            value: '{}',
           },
         ] as Array<BodyRule>,
       },
@@ -196,7 +196,7 @@ describe('GetEndpointScenariosPipe', () => {
         bodyRules: [
           {
             type: RuleType.JSONEQUALITY,
-            rule: {},
+            value: '{}',
           },
         ] as Array<BodyRule>,
       },

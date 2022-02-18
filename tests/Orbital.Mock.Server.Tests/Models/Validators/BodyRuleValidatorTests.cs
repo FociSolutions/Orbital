@@ -1,9 +1,11 @@
-﻿using Bogus;
-using Newtonsoft.Json.Linq;
+﻿using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Validators;
+
 using Xunit;
+using Bogus;
+using Newtonsoft.Json.Linq;
+
 using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Models.Validators
@@ -32,7 +34,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public void BodyRuleValidatorFailsNullRuleTest()
         {
             var input = fakerBodyRule.Generate();
-            input.RuleValue = null;
+            input.Value = null;
             var Target = new BodyRuleValidator();
             var Actual = Target.Validate(input);
             Assert.False(Actual.IsValid);

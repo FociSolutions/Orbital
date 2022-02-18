@@ -1,0 +1,53 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.row > * {
+  margin-right: 1rem;
+}
+
+.row > *:last-child {
+  margin-right: 0;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.flex-grow-2 {
+  flex-grow: 2;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.hide {
+  display: none;
+}
+
+.mat-error {
+  margin-left: 0.5rem;
+}
+
+.item-title {
+  margin-bottom: 0.5rem;
+}
+
+.match-value {
+  .mat-error {
+    margin-bottom: 0.5em;
+  }
+}
+
+:host ::ng-deep json-editor,
+:host ::ng-deep json-editor .jsoneditor,
+:host ::ng-deep json-editor > div,
+:host ::ng-deep json-editor jsoneditor-outer {
+  height: 25rem;
+}

@@ -1,0 +1,21 @@
+<ng-container [formGroup]="form">
+  <app-policy-form
+    formControlName="add"
+    title="Add Policy"
+    mode="add"
+    (addPolicyEvent)="addPolicyHandler($event)"
+    [policyIsDuplicatedEvent]="policyIsDuplicatedEvent"
+  ></app-policy-form>
+
+  <mat-divider></mat-divider>
+
+  <div class="text-muted" *ngIf="!formArray.controls.length">No policies added</div>
+
+  <div class="policy-form" formArrayName="formArray" *ngFor="let ctrl of formArray.controls; let i = index">
+    <app-policy-form
+      [formControlName]="i"
+      (removePolicyEvent)="removePolicyHandler(i)"
+      [errors]="ctrl.errors | getStringErrors"
+    ></app-policy-form>
+  </div>
+</ng-container>

@@ -51,7 +51,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
-                Body = fakeScenario.RequestMatchRules.BodyRules.First().RuleValue.ToString()
+                Body = fakeScenario.RequestMatchRules.BodyRules.First().Value
             };
 
             #endregion
@@ -378,7 +378,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         [Fact]
         public void BodyMatchContainsNestedJSONKeyValueFirstTestFail()
         {
-            #region
+            #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
                 new List<BodyRule> { new BodyRule(ComparerType.JSONCONTAINS, JObject.Parse("{'a': 'b', 'c': 'd', 'e': {'f': 'g'}}")) };
@@ -405,24 +405,23 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         [Fact]
         public void BodyMatchFilterNullJsonMatchSuccess()
         {
-            #region
+            #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
             fakeScenario.RequestMatchRules.BodyRules =
-                new List<BodyRule> { new BodyRule(ComparerType.JSONEQUALITY,null) };
+                new List<BodyRule> { new BodyRule(ComparerType.JSONEQUALITY, null) };
 
             var input = new
             {
                 Scenarios = new List<Scenario>() { fakeScenario },
                 Body = new JObject()
             };
-
             #endregion
 
             var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
 
-            var Actual = Target.Process(new ProcessMessagePort()
-                    { Scenarios = input.Scenarios, Body = input.Body.ToString() })
-                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId);
+            var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Body = input.Body.ToString() })
+                               .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success))
+                                                .Select(x => x.ScenarioId);
 
             var Expected = new List<string> { fakeScenario.Id };
 

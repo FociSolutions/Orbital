@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import * as uuid from 'uuid';
 import { Subscription } from 'rxjs';
-import { VerbType } from 'src/app/models/verb.type';
+import { VerbType } from 'src/app/models/verb-type';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { map } from 'rxjs/operators';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';

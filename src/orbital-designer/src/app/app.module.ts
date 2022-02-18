@@ -35,37 +35,26 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MetadataFormComponent } from './components/scenario-editor/metadata-form/metadata-form.component';
-import { AddRequestMatchRuleComponent } from './components/scenario-editor/add-request-match-rule/add-request-match-rule.component';
-import { AddResponseComponent } from './components/scenario-editor/add-response/add-response.component';
+import { ResponseFormComponent } from './components/scenario-editor/response-form/response-form.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';
 import { ExportToServerViewComponent } from './components/export-to-server-view/export-to-server-view.component';
 import { GetVerbStringPipe } from './pipes/get-verb-string/get-verb-string.pipe';
-import { KvpListItemRuleTypeComponent } from './components/scenario-editor/kvp-edit-rule/kvp-list-item-rule-type/kvp-list-item-rule-type.component';
-import { KvpEditRuleComponent } from './components/scenario-editor/kvp-edit-rule/kvp-edit-rule.component';
 import { GetRuleTypeStringPipe } from './pipes/get-rule-type-string/get-rule-type-string.pipe';
-import { UrlEditRuleComponent } from './components/scenario-editor/url-edit-rule/url-edit-rule.component';
-import { UrlAddRuleComponent } from './components/scenario-editor/url-edit-rule/url-add-rule/url-add-rule.component';
-import { UrlListItemRuleTypeComponent } from './components/scenario-editor/url-edit-rule/url-list-item-rule-type/url-list-item-rule-type.component';
-import { PolicyAddComponent } from './components/scenario-editor/policy-container/policy-add/policy-add.component';
-import { PolicyEditComponent } from './components/scenario-editor/policy-container/policy-edit/policy-edit.component';
-import { PolicyComponent } from './components/scenario-editor/policy-container/policy/policy.component';
-import { BodyAddRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-add-rule/body-add-rule.component';
-import { BodyListItemRuleTypeComponent } from './components/scenario-editor/add-body-rule-edit/body-list-item-rule-type/body-list-item-rule-type.component';
-import { BodyEditRuleComponent } from './components/scenario-editor/add-body-rule-edit/body-edit-rule.component';
+import { PoliciesFormComponent } from './components/scenario-editor/policies-form/policies-form.component';
 import { DeleteFromServerViewComponent } from './components/delete-from-server-view/delete-from-server-view.component';
 import { CoreModule } from './core/core.module';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
-import { GetStringErrorsPipe } from './pipes/get-string-errors/get-string-errors.pipe';
+import { PolicyFormComponent } from './components/scenario-editor/policies-form/policy-form/policy-form.component';
+import { BodyRuleFormComponent } from './components/scenario-editor/body-rule-form/body-rule-form.component';
+import { BodyRuleItemFormComponent } from './components/scenario-editor/body-rule-form/body-rule-item-form/body-rule-item-form.component';
+import { RequestFormComponent } from './components/scenario-editor/request-form/request-form.component';
 
 @NgModule({
   declarations: [
     MetadataFormComponent,
-    AddRequestMatchRuleComponent,
-    AddResponseComponent,
+    RequestFormComponent,
+    ResponseFormComponent,
     AppComponent,
-    BodyAddRuleComponent,
-    BodyEditRuleComponent,
-    BodyListItemRuleTypeComponent,
     CreateEditMockViewComponent,
     DeleteFromServerViewComponent,
     DownloadMockdefinitionsComponent,
@@ -75,24 +64,19 @@ import { GetStringErrorsPipe } from './pipes/get-string-errors/get-string-errors
     ExportToServerViewComponent,
     GetEndpointScenariosPipe,
     GetRuleTypeStringPipe,
-    GetStringErrorsPipe,
     GetVerbColorPipe,
     GetVerbStringPipe,
     HomeViewComponent,
     ImportFromFileViewComponent,
     ImportFromServerViewComponent,
-    KvpEditRuleComponent,
-    KvpListItemRuleTypeComponent,
     OverviewHeaderComponent,
-    PolicyAddComponent,
-    PolicyComponent,
-    PolicyEditComponent,
+    PoliciesFormComponent,
+    PolicyFormComponent,
     ScenarioEditorComponent,
     ScenarioViewComponent,
     SideBarComponent,
-    UrlAddRuleComponent,
-    UrlEditRuleComponent,
-    UrlListItemRuleTypeComponent,
+    BodyRuleItemFormComponent,
+    BodyRuleFormComponent,
   ],
   imports: [
     AppRoutingModule,

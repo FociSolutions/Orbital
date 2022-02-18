@@ -1,5 +1,5 @@
 import { GetRuleTypeStringPipe } from './get-rule-type-string.pipe';
-import { RuleType } from 'src/app/models/mock-definition/scenario/rule.type';
+import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 
 describe('GetVerbStringPipe', () => {
   it('create an instance', () => {

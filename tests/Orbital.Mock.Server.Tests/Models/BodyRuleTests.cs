@@ -1,8 +1,9 @@
-﻿using Bogus;
-using Newtonsoft.Json.Linq;
-using Xunit;
-using Orbital.Mock.Server.Models.Rules;
+﻿using Orbital.Mock.Server.Models.Rules;
 using Orbital.Mock.Server.Models.Interfaces;
+
+using Bogus;
+using Xunit;
+using Newtonsoft.Json.Linq;
 
 using Assert = Xunit.Assert;
 
@@ -24,7 +25,7 @@ namespace Orbital.Mock.Server.Tests.Models
         {
             var Target = this.fakerBodyRule.Generate();
 
-            var input = new BodyRule(Target.Type, Target.RuleValue) as object;
+            var input = new BodyRule(Target.Type, Target.Value) as object;
 
             Assert.True(Target.Equals(input));
         }
@@ -42,7 +43,7 @@ namespace Orbital.Mock.Server.Tests.Models
         {
             var Target = this.fakerBodyRule.Generate();
             Target.Type = ComparerType.JSONEQUALITY;
-            var input = new BodyRule(ComparerType.JSONCONTAINS, Target.RuleValue) as object;
+            var input = new BodyRule(ComparerType.JSONCONTAINS, Target.Value) as object;
             Assert.False(Target.Equals(input));
         }
     }

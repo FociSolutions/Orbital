@@ -10,7 +10,7 @@ namespace Orbital.Mock.Server.Pipelines.Policies
         {
             switch (policy.Type) {
                 case PolicyType.DELAYRESPONSE:
-                    int millisecondDelay = Convert.ToInt32(policy.Attributes["delay"]);
+                    int millisecondDelay = Convert.ToInt32(policy.Value);
                     return DelayPolicy.Execute(millisecondDelay);
                 default:
                     return true;

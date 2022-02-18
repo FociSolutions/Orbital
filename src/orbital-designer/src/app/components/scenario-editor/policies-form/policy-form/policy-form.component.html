@@ -1,0 +1,45 @@
+<mat-card [formGroup]="form">
+  <div class="mat-h3 policy-title" *ngIf="title">{{ title }}</div>
+
+  <div class="row">
+    <mat-form-field>
+      <mat-label>Policy Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let p of policyTypes" [value]="p.value">
+          {{ p.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field [ngClass]="[type.value !== PolicyType.DELAY_RESPONSE ? 'hide' : '', 'flex-grow']">
+      <input formControlName="value" matInput type="number" min="1" step="1" placeholder="Delay" />
+      <mat-hint>Milliseconds</mat-hint>
+    </mat-form-field>
+
+    <button
+      mat-mini-fab
+      *ngIf="mode === 'add'"
+      color="primary"
+      [disabled]="!form.valid || !form.touched"
+      (click)="addPolicy()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="mode === 'edit'" color="warn" (click)="removePolicy()">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </div>
+  <ng-container *ngIf="value.invalid && value.errors && (value.dirty || value.touched)">
+    <mat-error *ngIf="value.errors.required">The delay amount is required</mat-error>
+    <mat-error *ngIf="value.errors.pattern || value.errors.min">The delay must be a positive integer</mat-error>
+    <mat-error *ngIf="value.errors.duplicate">Policy already exists</mat-error>
+    <mat-error *ngFor="let error of value.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <ng-container *ngIf="type.invalid && type.errors && (type.dirty || type.touched)">
+    <mat-error *ngIf="type.errors.required">The policy type is required</mat-error>
+  </ng-container>
+  <ng-container *ngIf="form.invalid && form.errors && (form.dirty || form.touched)">
+    <mat-error *ngFor="let error of form.errors | getStringErrors">{{ error }}</mat-error>
+  </ng-container>
+  <mat-error *ngFor="let error of errors">{{ error }}</mat-error>
+</mat-card>
