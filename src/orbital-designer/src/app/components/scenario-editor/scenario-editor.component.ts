@@ -4,7 +4,6 @@ import { DesignerStore } from 'src/app/store/designer-store';
 import { Scenario } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
-import { RequestMatchRules } from 'src/app/models/mock-definition/scenario/request-match-rules.model';
 import { VerbType } from 'src/app/models/verb-type';
 import { cloneDeep } from 'lodash';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -58,7 +57,6 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
 
   scenarioId: string;
   selectedScenario: Scenario;
-  requestMatchRule: RequestMatchRules;
   triggerOpenCancelBox: boolean;
   endpointVerb: VerbType;
   endpointPath: string;

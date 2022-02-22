@@ -10,25 +10,41 @@
         </div>
         <div id="metadata-cards">
           <mat-tab-group>
-            <mat-tab label="Metadata">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Metadata
+                <mat-icon class="tab-warning-icon" color="warn" *ngIf="!metadata.valid">priority_high</mat-icon>
+              </ng-template>
               <div class="tab-body">
                 <app-metadata-form formControlName="metadata"></app-metadata-form>
               </div>
             </mat-tab>
 
-            <mat-tab label="Request">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Request
+                <mat-icon class="tab-warning-icon" color="warn" *ngIf="!request.valid">priority_high</mat-icon>
+              </ng-template>
               <div class="tab-body">
                 <app-request-form formControlName="request"></app-request-form>
               </div>
             </mat-tab>
 
-            <mat-tab label="Response">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Response
+                <mat-icon class="tab-warning-icon" color="warn" *ngIf="!response.valid">priority_high</mat-icon>
+              </ng-template>
               <div class="tab-body">
                 <app-response-form formControlName="response"></app-response-form>
               </div>
             </mat-tab>
 
-            <mat-tab label="Policies">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Policies
+                <mat-icon class="tab-warning-icon" color="warn" *ngIf="!policies.valid">priority_high</mat-icon>
+              </ng-template>
               <div class="tab-body">
                 <app-policies-form formControlName="policies"></app-policies-form>
               </div>

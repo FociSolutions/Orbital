@@ -7,23 +7,15 @@
   box-shadow: 0px 1px 12px 3px rgba(153, 148, 153, 1);
 }
 
+.tab-warning-icon {
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  height: 1.4rem;
+  margin-left: 0.25rem;
+}
+
 .full-width {
   width: 100% !important;
-}
-
-div.metadata {
-  width: 100%;
-  overflow-y: hidden;
-}
-
-div.metadata h3 {
-  text-align: center;
-}
-
-p#description {
-  font-size: 1.4em;
-  color: rgba(0, 0, 0, 0.541327);
-  font-family: Roboto;
 }
 
 app-overview-header {
@@ -71,17 +63,6 @@ mat-form-field {
 
 mat-chip-list {
   padding-right: 1em;
-}
-
-.key-value-item div button {
-  width: 20px;
-  height: 20px;
-  margin-top: 25px;
-}
-
-div.flex-space-between {
-  display: flex;
-  justify-content: space-between;
 }
 
 .overlay {
