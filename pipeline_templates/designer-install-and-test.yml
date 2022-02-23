@@ -46,6 +46,13 @@ jobs:
           workingDir: ${{ parameters.designerWorkingDir }}
 
       - task: Npm@1
+        displayName: Run Npm Package Check
+        inputs:
+          command: custom
+          customCommand: run pkg-chk
+          workingDir: ${{ parameters.designerWorkingDir }}
+
+      - task: Npm@1
         displayName: Run Unit Tests
         inputs:
           command: custom
