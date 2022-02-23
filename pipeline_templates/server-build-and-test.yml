@@ -1,0 +1,52 @@
+---
+parameters:
+  - name: buildConfiguration
+    type: string
+    default: Release
+  - name: testsWorkingDir
+    type: string
+    default: tests/Orbital.Mock.Server.Tests
+
+jobs:
+  - job: build_and_test_server
+    displayName: Build and Test Orbital Mock Server
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - task: UseDotNet@2
+        displayName: Set DotNet version
+        inputs:
+          version: 5.0.x
+          performMultiLevelLookup: true
+
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          command: build
+          arguments: --configuration ${{ parameters.buildConfiguration }}
+
+      - task: DotNetCoreCLI@2
+        displayName: Run Unit Tests
+        inputs:
+          command: test
+          arguments: "--configuration ${{ parameters.buildConfiguration }}
+            /p:CollectCoverage=true
+            /p:CoverletOutput=$(System.DefaultWorkingDirectory)/mock
+            /p:CoverletOutputFormat=cobertura
+            /p:Include=[Orbital.*]*
+            /p:Exclude=[*.Tests]*
+            /p:ExcludeByAttribute=GeneratedCodeAttribute"
+          publishTestResults: true
+          workingDirectory: ${{ parameters.testsWorkingDir }}
+
+      - script: |
+          dotnet tool install dotnet-reportgenerator-globaltool --tool-path . --version 4.1.5
+          ./reportgenerator "-reports:$(System.DefaultWorkingDirectory)/mock.cobertura.xml" "-targetdir:$(System.DefaultWorkingDirectory)/results" "-reporttypes:HTMLInline;HTMLChart"
+        displayName: Generating code coverage report
+
+      - task: PublishCodeCoverageResults@1
+        displayName: Publish the code coverage results
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: $(System.DefaultWorkingDirectory)/**/mock.cobertura.xml
+          reportDirectory: $(System.DefaultWorkingDirectory)/**/results

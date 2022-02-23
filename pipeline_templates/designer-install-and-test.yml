@@ -1,0 +1,77 @@
+---
+parameters:
+  - name: designerWorkingDir
+    type: string
+    default: ./src/orbital-designer
+
+jobs:
+  - job: install_and_test_designer
+    displayName: Install and Test Orbital Designer
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - task: Npm@1
+        displayName: Install npm Packages
+        inputs:
+          command: custom
+          customCommand: ci --ignore-scripts
+          workingDir: ${{ parameters.designerWorkingDir }}
+
+      - task: Npm@1
+        displayName: Run Formatting Checks
+        inputs:
+          command: custom
+          customCommand: run format:ci
+          workingDir: ${{ parameters.designerWorkingDir }}
+
+      - task: Npm@1
+        displayName: Run Type Checks on Codebase
+        inputs:
+          command: custom
+          customCommand: run type
+          workingDir: ${{ parameters.designerWorkingDir }}
+
+      - task: Npm@1
+        displayName: Run Type Checks on Unit Tests
+        inputs:
+          command: custom
+          customCommand: run type:spec
+          workingDir: ${{ parameters.designerWorkingDir }}
+
+      - task: Npm@1
+        displayName: Run Linting Checks
+        inputs:
+          command: custom
+          customCommand: run lint:ci
+          workingDir: ${{ parameters.designerWorkingDir }}
+
+      - task: Npm@1
+        displayName: Run Npm Package Check
+        inputs:
+          command: custom
+          customCommand: run pkg-chk
+          workingDir: ${{ parameters.designerWorkingDir }}
+
+      - task: Npm@1
+        displayName: Run Unit Tests
+        inputs:
+          command: custom
+          customCommand: run test:ci
+          workingDir: ${{ parameters.designerWorkingDir }}
+
+      - task: PublishCodeCoverageResults@1
+        displayName: Publish angular code coverage results
+        condition: succeededOrFailed()
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: $(System.DefaultWorkingDirectory)/**/cobertura-coverage.xml
+          failIfCoverageEmpty: true
+
+      - task: PublishTestResults@2
+        displayName: Publish angular test results
+        condition: succeededOrFailed()
+        inputs:
+          searchFolder: $(System.DefaultWorkingDirectory)/src
+          testRunTitle: Angular
+          testResultsFormat: JUnit
+          testResultsFiles: "**/junit.xml"
