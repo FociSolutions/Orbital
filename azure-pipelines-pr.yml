@@ -1,0 +1,10 @@
+---
+trigger: none
+
+stages:
+  - stage: install_and_test
+    displayName: Install and Test
+
+    jobs:
+      - template: pipeline_templates/designer-install-and-test.yml
+      - template: pipeline_templates/server-build-and-test.yml
