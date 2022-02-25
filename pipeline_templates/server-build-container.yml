@@ -1,0 +1,32 @@
+---
+jobs:
+  - job: build_server_container
+    displayName: Build Orbital Server Container
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - task: CmdLine@2
+        inputs:
+          script: dotnet tool install --global GitVersion.Tool
+        displayName: Install GitVersion.Tool
+
+      - script: |
+          chmod -R 755 $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/
+          mkdir $(System.DefaultWorkingDirectory)/gitversion && touch $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+          dotnet-gitversion /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+          dotnet-gitversion /output buildserver /nofetch
+        displayName: set git version to environment variables
+
+      - task: Docker@2
+        displayName: Build and Push Server Container
+        inputs:
+          command: buildAndPush
+          containerRegistry: Foci Container Registry
+          repository: orbitalmock
+          buildContext: $(System.DefaultWorkingDirectory)
+          dockerfile: $(System.DefaultWorkingDirectory)/docker/mock/Dockerfile
+          tags: |
+            $(GitVersion.SemVer)
+
+      - publish: $(System.DefaultWorkingDirectory)/gitversion
+        artifact: gitversion

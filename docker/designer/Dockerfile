@@ -12,7 +12,7 @@ RUN npm ci
 COPY ./src/orbital-designer .
 
 # start app
-RUN npm run build-ci -- --output-path=dist
+RUN npm run build:ci -- --output-path=dist
 
 ############
 ### prod ###
