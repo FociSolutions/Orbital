@@ -1,0 +1,32 @@
+---
+jobs:
+  - job: deploy_dev_containers
+    displayName: Deploy Dev Containers
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - download: current
+        artifact: gitversion
+
+      - task: OneLuckiDev.json2variable.vsts-release-web-test.oneLuckiDevJson2Variable@1
+        displayName: Set git variables to environment variables
+        inputs:
+          jsonFile: $(Pipeline.Workspace)/gitversion/gitversionvariables.json
+          variablePrefix: GitVersion
+
+      - task: FileTransform@1
+        displayName: File Transform ARM Template
+        inputs:
+          folderPath: $(System.DefaultWorkingDirectory)/scripts/
+          fileType: json
+          targetFiles: orbitalARMTemplate.json
+
+      - task: AzureResourceGroupDeployment@2
+        displayName: Deploy Azure ARM Template
+        inputs:
+          azureSubscription: Dans Subscription
+          resourceGroupName: $(variables.resourceGroupName)
+          location: Canada Central
+          csmFile: $(System.DefaultWorkingDirectory)/scripts/orbitalARMTemplate.json
+          deploymentName: $(GitVersion.SemVer)
+          deploymentOutputs: ARM_OUTPUTS

@@ -1,0 +1,20 @@
+---
+jobs:
+  - job: mirror_to_github
+    displayName: Mirror to GitHub
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - task: InstallSSHKey@0
+        displayName: Setup GitHub Credentials
+        inputs:
+          knownHostsEntry: $(githubKnownHosts)
+          sshPublicKey: $(githubOrbitalDeployPublicKey)
+          sshKeySecureFile: orbital_github_deploy_key
+
+      - script: |
+          git clone --bare https://dev.azure.com/focisolutions/Orbital/_git/Orbital $(Pipeline.Workspace)/mirror
+          cd $(Pipeline.Workspace)/mirror
+          git remote add --mirror=push github git@github.com:FociSolutions/Orbital.git
+          git push --quiet github
+        displayName: Push to GitHub
