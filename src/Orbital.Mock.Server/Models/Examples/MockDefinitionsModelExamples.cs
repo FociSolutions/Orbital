@@ -1,15 +1,19 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
-using Swashbuckle.AspNetCore.Filters;
-using System;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
+
 using Microsoft.AspNetCore.Http;
-using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Interfaces;
-using System.Linq;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Response;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Orbital.Mock.Server.Pipelines.Models.Examples
 {
@@ -83,7 +87,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Metadata = new MetadataInfo { Title = "Scenario 1", Description = "Test Scenario 1" },
                 Verb = 0,
                 Path = "/pets",
-                Response = new MockResponse { Status = 0, Body = "Scenario 1", Headers = headers[0], Type = ResponseType.CUSTOM },
+                Response = new MockResponse { Status = 0, Body = "Scenario 1", Headers = headers[0], Type = MockResponseType.CUSTOM },
                 RequestMatchRules = new RequestMatchRules {
                     HeaderRules = new List<KeyValueTypeRule>() { new KeyValueTypeRule() { Type = ComparerType.TEXTCONTAINS, Key = headers[0].Keys.ToList().First(), Value = headers[0].Values.ToList().First() }  },
                     QueryRules = new List<KeyValueTypeRule>() { new KeyValueTypeRule() { Type = ComparerType.TEXTCONTAINS, Key = queryRules[0].Keys.ToList().First(), Value = queryRules[0].Values.ToList().First() } }, 
@@ -95,7 +99,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Metadata = new MetadataInfo { Title = "Scenario 2", Description = "Test Scenario 2" },
                 Verb = 0,
                 Path = "/pets",
-                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Testing scenario 2", Headers = headers[1], Type = ResponseType.CUSTOM },
+                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Testing scenario 2", Headers = headers[1], Type = MockResponseType.CUSTOM },
                 RequestMatchRules = new RequestMatchRules {
                     UrlRules = new List<PathTypeRule>() { new PathTypeRule() { Type = ComparerType.TEXTCONTAINS, Path = urlRules[1] } },
                     HeaderRules = new List<KeyValueTypeRule>() { new KeyValueTypeRule() { Type = ComparerType.TEXTCONTAINS, Key = headersRules[1].Keys.ToList().First(), Value = headersRules[1].Values.ToList().First() } },
@@ -108,7 +112,7 @@ namespace Orbital.Mock.Server.Pipelines.Models.Examples
                 Metadata = new MetadataInfo { Title = "Scenario 3", Description = "Test Scenario 3" },
                 Verb = 0,
                 Path = "/pets",
-                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Scenario 3", Headers = headers[2], Type = ResponseType.CUSTOM },
+                Response = new MockResponse { Status = StatusCodes.Status200OK, Body = "Scenario 3", Headers = headers[2], Type = MockResponseType.CUSTOM },
                 RequestMatchRules = new RequestMatchRules {
                     HeaderRules = new List<KeyValueTypeRule>() { new KeyValueTypeRule(){ Type = ComparerType.TEXTCONTAINS, Key = headersRules[2].Keys.ToList().First(), Value = headersRules[2].Values.ToList().First() } },
                     QueryRules = new List<KeyValueTypeRule>() { new KeyValueTypeRule() { Type = ComparerType.TEXTCONTAINS, Key = queryRules[2].Keys.ToList().First(), Value = queryRules[2].Values.ToList().First() } },

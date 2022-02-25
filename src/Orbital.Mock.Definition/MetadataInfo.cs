@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Orbital.Mock.Definition
 {
-    public class Metadata : IEquatable<Metadata>
+    public class MetadataInfo : IEquatable<MetadataInfo>
     {
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -13,10 +13,10 @@ namespace Orbital.Mock.Definition
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as Metadata);
+            return Equals(obj as MetadataInfo);
         }
 
-        public bool Equals(Metadata other)
+        public bool Equals(MetadataInfo other)
         {
             return other != null &&
                    Title == other.Title &&

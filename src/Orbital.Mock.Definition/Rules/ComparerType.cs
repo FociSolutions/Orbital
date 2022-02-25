@@ -1,4 +1,4 @@
-﻿namespace Orbital.Mock.Definition
+﻿namespace Orbital.Mock.Definition.Rules
 {
     /// <summary>
     /// Enum that indicates the type of comparison being made

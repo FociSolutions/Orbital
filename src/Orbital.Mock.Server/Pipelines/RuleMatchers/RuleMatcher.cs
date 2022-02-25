@@ -1,8 +1,10 @@
-﻿using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
+﻿using System.Linq;
+
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Rules.Assertion;
+
 using Orbital.Mock.Server.Pipelines.Comparers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using System.Linq;
 
 namespace Orbital.Mock.Server.Pipelines.RuleMatchers
 {
@@ -22,25 +24,25 @@ namespace Orbital.Mock.Server.Pipelines.RuleMatchers
             switch (assert.Rule)
             {
                 case ComparerType.REGEX:
-                    return RegexComparer.Compare(assert.Actual, assert.Expect);
+                    return RegexComparer.Compare(assert.Actual, assert.Expected);
                 case ComparerType.TEXTCONTAINS:
-                    return TextComparer.Contains(assert.Actual, assert.Expect);
+                    return TextComparer.Contains(assert.Actual, assert.Expected);
                 case ComparerType.TEXTSTARTSWITH:
-                    return TextComparer.StartsWith(assert.Actual, assert.Expect);
+                    return TextComparer.StartsWith(assert.Actual, assert.Expected);
                 case ComparerType.TEXTENDSWITH:
-                    return TextComparer.EndsWith(assert.Actual, assert.Expect);
+                    return TextComparer.EndsWith(assert.Actual, assert.Expected);
                 case ComparerType.TEXTEQUALS:
-                    return TextComparer.Equals(assert.Actual, assert.Expect);
+                    return TextComparer.Equals(assert.Actual, assert.Expected);
                 case ComparerType.ACCEPTALL:
                     return true;
                 case ComparerType.JSONCONTAINS:
-                    return JsonComparer.DeepContains(assert.Expect, assert.Actual);
+                    return JsonComparer.DeepContains(assert.Expected, assert.Actual);
                 case ComparerType.JSONEQUALITY:
-                    return JsonComparer.DeepEqual(assert.Expect, assert.Actual);
+                    return JsonComparer.DeepEqual(assert.Expected, assert.Actual);
                 case ComparerType.JSONSCHEMA:
-                    return JsonComparer.MatchesSchema(assert.Actual, assert.Expect);
+                    return JsonComparer.MatchesSchema(assert.Actual, assert.Expected);
                 case ComparerType.JSONPATH:
-                    return JsonComparer.PathEqual(assert.Expect, assert.Actual);
+                    return JsonComparer.PathEqual(assert.Expected, assert.Actual);
                 default:
                     return false;
             }

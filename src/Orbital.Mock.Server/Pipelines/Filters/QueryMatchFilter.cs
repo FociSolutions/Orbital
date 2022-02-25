@@ -1,8 +1,10 @@
-﻿using Orbital.Mock.Server.Pipelines.Filters.Bases;
+﻿using System.Linq;
+
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Rules.Assertion;
+
+using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using System.Linq;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
@@ -10,12 +12,10 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     public class QueryMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IQueryMatchPort, IScenariosPort
     {
-        private IAssertFactory assertFactory;
         private IRuleMatcher ruleMatcher;
 
-        public QueryMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
+        public QueryMatchFilter(IRuleMatcher ruleMatcher)
         {
-            this.assertFactory = assertFactory;
             this.ruleMatcher = ruleMatcher;
         }
         /// <summary>
@@ -33,7 +33,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             {
                 foreach (var rule in scenario.RequestMatchRules.QueryRules)
                 {
-                    var assertsList = assertFactory.CreateAssert(rule, port.Query);
+                    var assertsList = AssertFactory.CreateAssert(rule, port.Query);
                     if (!assertsList.Any())
                     {
                         port.QueryMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id, scenario.DefaultScenario));
@@ -44,13 +44,10 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                                     ? new MatchResult(MatchResultType.Success, scenario.Id, scenario.DefaultScenario)
                                     : new MatchResult(MatchResultType.Fail, scenario.Id, scenario.DefaultScenario));
                     }
-                    
                 }
 
             }
-
             return port;
         }
-
     }
 }

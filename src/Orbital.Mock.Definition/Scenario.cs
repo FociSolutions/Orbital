@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Net.Http;
 using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 using Newtonsoft.Json;
 
@@ -22,7 +23,7 @@ namespace Orbital.Mock.Definition
         public HttpMethod Verb { get; set; }
 
         [JsonProperty("metadata")]
-        public Metadata Metadata { get; set; }
+        public MetadataInfo Metadata { get; set; }
         
         [JsonProperty("requestMatchRules")]
         public RequestMatchRules RequestMatchRules { get; set; }

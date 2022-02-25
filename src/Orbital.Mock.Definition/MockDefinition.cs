@@ -19,7 +19,7 @@ namespace Orbital.Mock.Definition
         public bool TokenValidation { get; set; }
 
         [JsonProperty("metadata")]
-        public Metadata Metadata { get; set; }
+        public MetadataInfo Metadata { get; set; }
 
         [JsonProperty("openApi")]
         public OpenApiDocument OpenApi { get; set; }
@@ -38,7 +38,7 @@ namespace Orbital.Mock.Definition
                    Host == other.Host &&
                    BasePath == other.BasePath &&
                    EqualityComparer<OpenApiDocument>.Default.Equals(OpenApi, other.OpenApi) &&
-                   EqualityComparer<Metadata>.Default.Equals(Metadata, other.Metadata) &&
+                   EqualityComparer<MetadataInfo>.Default.Equals(Metadata, other.Metadata) &&
                    EqualityComparer<List<Scenario>>.Default.Equals(Scenarios, other.Scenarios) &&
                    EqualityComparer<bool>.Default.Equals(TokenValidation, other.TokenValidation);
         }

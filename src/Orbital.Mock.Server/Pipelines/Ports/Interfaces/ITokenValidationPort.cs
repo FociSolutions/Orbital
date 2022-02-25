@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 
-using Orbital.Mock.Server.Models;
+using Orbital.Mock.Definition.Match;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {

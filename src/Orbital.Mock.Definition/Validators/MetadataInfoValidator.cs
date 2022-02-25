@@ -5,9 +5,9 @@ namespace Orbital.Mock.Definition.Validators
     /// <summary>
     /// Validator responsible for validating MetadataInfo objects
     /// </summary>
-    public class MetadataValidator : AbstractValidator<Metadata>
+    public class MetadataInfoValidator : AbstractValidator<MetadataInfo>
     {
-        public MetadataValidator()
+        public MetadataInfoValidator()
         {
             RuleFor(x => x.Title).NotEmpty();
         }

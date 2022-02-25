@@ -1,7 +1,9 @@
-﻿using MediatR;
+﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
-using Orbital.Mock.Server.Models;
-using System.Diagnostics.CodeAnalysis;
+
+using Orbital.Mock.Definition.Response;
+
+using MediatR;
 
 namespace Orbital.Mock.Server.Pipelines.Commands
 {

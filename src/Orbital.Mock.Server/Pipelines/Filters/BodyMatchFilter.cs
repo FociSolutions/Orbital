@@ -1,26 +1,26 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Rules.Assertion;
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using System.Linq;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class BodyMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IBodyMatchPort, IScenariosPort
     {
-
-        private IAssertFactory assertFactory;
         private IRuleMatcher ruleMatcher;
 
-        public BodyMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
+        public BodyMatchFilter(IRuleMatcher ruleMatcher)
         {
-            this.assertFactory = assertFactory;
             this.ruleMatcher = ruleMatcher;
         }
         /// <summary>
@@ -35,6 +35,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             if (!TryParseBody(port.Body, out var bodyObject, out _))
             {
+                //< TODO :: Fix this - what even is it doing?
                 GenerateJsonBodyErrorResults(port.Scenarios);
             }
             else
@@ -44,7 +45,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 {
                     foreach(var rule in scenario.RequestMatchRules.BodyRules)
                     {
-                        var assertsList = assertFactory.CreateAssert(rule, port.Body);
+                        var assertsList = AssertFactory.CreateAssert(rule, port.Body);
                         port.BodyMatchResults.Add(ruleMatcher.Match(assertsList.ToArray())
                                    ? new MatchResult(MatchResultType.Success, scenario.Id, scenario.DefaultScenario)
                                      : new MatchResult(MatchResultType.Fail, scenario.Id, scenario.DefaultScenario));

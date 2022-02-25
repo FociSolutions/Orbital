@@ -1,14 +1,19 @@
-﻿using MediatR;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.Extensions.Caching.Memory;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Response;
 using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.Pipelines.Commands;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+
+using MediatR;
 
 namespace Orbital.Mock.Server.Pipelines.Handlers
 {
@@ -20,7 +25,6 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
     [ExcludeFromCodeCoverage]
     internal class InvokeSynchronousPipelineHandler : IRequestHandler<InvokeSynchronousPipelineCommand, MockResponse>
     {
-
         private readonly IPipeline<MessageProcessorInput, Task<MockResponse>> mockServerProcessor;
         private readonly IMemoryCache cache;
         private string mockIds;
