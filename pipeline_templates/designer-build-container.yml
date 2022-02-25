@@ -1,0 +1,29 @@
+---
+jobs:
+  - job: build_designer_container
+    displayName: Build Orbital Designer Container
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - task: CmdLine@2
+        inputs:
+          script: dotnet tool install --global GitVersion.Tool
+        displayName: Install GitVersion.Tool
+
+      - script: |
+          chmod -R 755 $(Build.BinariesDirectory)/tools/GitVersion.CommandLine/tools/
+          mkdir $(System.DefaultWorkingDirectory)/gitversion && touch $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+          dotnet-gitversion /output json /nofetch > $(System.DefaultWorkingDirectory)/gitversion/gitversionvariables.json
+          dotnet-gitversion /output buildserver /nofetch
+        displayName: Set git version environment variables
+
+      - task: Docker@2
+        displayName: Build and Push Orbital Designer Container
+        inputs:
+          command: buildAndPush
+          containerRegistry: Foci Container Registry
+          repository: orbitaldesigner
+          buildContext: $(System.DefaultWorkingDirectory)
+          dockerfile: $(System.DefaultWorkingDirectory)/docker/designer/Dockerfile
+          tags: |
+            $(GitVersion.SemVer)

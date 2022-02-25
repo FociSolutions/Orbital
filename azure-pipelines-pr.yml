@@ -3,7 +3,7 @@ trigger: none
 
 stages:
   - stage: install_and_test
-    displayName: Install and Test
+    displayName: Test
 
     jobs:
       - template: pipeline_templates/designer-install-and-test.yml

@@ -1,0 +1,39 @@
+---
+trigger:
+  - develop
+
+stages:
+  - stage: install_and_test
+    displayName: Test
+
+    jobs:
+      - template: pipeline_templates/designer-install-and-test.yml
+      - template: pipeline_templates/server-build-and-test.yml
+
+  - stage: mirror_to_github
+    displayName: Mirror to GitHub
+    dependsOn:
+      - install_and_test
+    condition: succeeded('install_and_test')
+
+    jobs:
+      - template: pipeline_templates/mirror-to-github.yml
+
+  - stage: build_and_push_containers
+    displayName: Build and Push Containers
+    dependsOn:
+      - install_and_test
+    condition: succeeded('install_and_test')
+
+    jobs:
+      - template: pipeline_templates/designer-build-container.yml
+      - template: pipeline_templates/server-build-container.yml
+
+  - stage: deploy_dev_containers
+    displayName: Deploy Dev Containers
+    dependsOn:
+      - build_and_push_containers
+    condition: succeeded('build_and_push_containers')
+
+    jobs:
+      - template: pipeline_templates/deploy-dev-containers.yml
