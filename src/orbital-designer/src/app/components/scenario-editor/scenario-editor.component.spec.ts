@@ -133,9 +133,15 @@ describe('ScenarioEditorComponent', () => {
   });
 
   describe('ScenarioEditorComponent.cancel', () => {
-    it('should set the triggerOpenCancelBox to true when cancelled', () => {
+    it('should set the triggerOpenCancelBox to true when cancelled with a dirty form', () => {
+      component.scenarioForm.markAsDirty();
       component.cancel();
       expect(component.triggerOpenCancelBox).toBe(true);
+    });
+
+    it('should not set the triggerOpenCancelBox to true when cancelled with a clean form', () => {
+      component.cancel();
+      expect(component.triggerOpenCancelBox).toBe(false);
     });
 
     it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', fakeAsync(() => {
