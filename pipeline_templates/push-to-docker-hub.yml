@@ -1,0 +1,34 @@
+---
+# Note: This template requires the `Foci Secrets` variable group to be loaded
+jobs:
+  - job: push_to_docker_hub
+    displayName: Push to DockerHub
+    pool:
+      vmImage: ubuntu-latest
+      environment: production
+    steps:
+      - download: current
+        artifact: gitversion
+
+      - task: OneLuckiDev.json2variable.vsts-release-web-test.oneLuckiDevJson2Variable@1
+        displayName: Set git variables to environment variables
+        inputs:
+          jsonFile: $(Pipeline.Workspace)/gitversion/gitversionvariables.json
+          variablePrefix: GitVersion
+
+      - task: DockerInstaller@0
+        displayName: Install Docker
+
+      - task: Bash@3
+        displayName: Pull images from Foci Azure Container Registry
+        inputs:
+          targetType: filePath
+          filePath: $(System.DefaultWorkingDirectory)/scripts/acrprodscript.sh
+          arguments: '"$(GitVersion.SemVer)" "$(variables.azureregistrypassword)"'
+
+      - task: Bash@3
+        displayName: Push images to DockerHub
+        inputs:
+          targetType: filePath
+          filePath: $(System.DefaultWorkingDirectory)/scripts/dockerprod.sh
+          arguments: '"$(GitVersion.SemVer)" "$(GitVersion.Major)" "$(GitVersion.Minor)" "$(GitVersion.MajorMinorPatch)" "$(docker-hub-password)"'

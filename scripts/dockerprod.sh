@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "Docker login"
 echo "$5" | docker login --username "$DOCKERHUBUSERNAME" --password-stdin
 
