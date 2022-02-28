@@ -5,7 +5,7 @@ using Xunit;
 using Bogus;
 using FluentValidation.TestHelper;
 
-namespace Orbital.Mock.Server.Tests.Models.Validators
+namespace Orbital.Mock.Definition.Tests.Validators
 {
     public class MetadataInfoValidatorTests
     {

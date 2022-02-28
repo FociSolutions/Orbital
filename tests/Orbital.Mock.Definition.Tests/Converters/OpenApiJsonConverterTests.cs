@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.IO;
 
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers.Exceptions;
@@ -11,7 +8,7 @@ using Orbital.Mock.Definition.Converters;
 using Xunit;
 using Newtonsoft.Json;
 
-namespace Orbital.Mock.Server.Tests.Models.Converters
+namespace Orbital.Mock.Definition.Tests.Converters
 {
     public class OpenApiJsonConverterTests
     {

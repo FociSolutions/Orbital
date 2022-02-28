@@ -29,8 +29,7 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.DefaultScenarioMatch
 
         private void Given_the_server_has_a_mock_definition_with_a_default_scenario_and_others_which_do_not_match()
         {
-            var content = new StringContent(this.mockDefinitionDefaultScenarioJson.ToString(),
-                Encoding.UTF8, "application/json");
+            var content = new StringContent(this.mockDefinitionDefaultScenarioJson.ToString(), Encoding.UTF8, "application/json");
             _ = this.client.PostAsync(CommonData.AdminUri, content).Result;
         }
 

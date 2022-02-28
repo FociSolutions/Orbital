@@ -32,7 +32,7 @@ namespace Orbital.Mock.Server.IntegrationTests
             get
             {
                 var serverBaseUri = Environment.GetEnvironmentVariable("OrbitalServer.AppServiceApplicationUrl");
-                return serverBaseUri != null ? serverBaseUri : "https://localhost:5001";
+                return serverBaseUri ?? "https://localhost:5001";
             }
         }
 

@@ -1,12 +1,10 @@
 ﻿using System;
 
-using Orbital.Mock.Definition;
-
 using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
 
-namespace Orbital.Mock.Server.Tests.Models
+namespace Orbital.Mock.Definition.Tests
 {
     public class MetadataInfoTests
     {

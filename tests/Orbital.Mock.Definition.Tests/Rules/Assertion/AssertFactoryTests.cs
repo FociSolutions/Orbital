@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 
-using Orbital.Mock.Definition;
 using Orbital.Mock.Definition.Rules;
 using Orbital.Mock.Definition.Rules.Assertion;
 
@@ -11,7 +10,7 @@ using Newtonsoft.Json.Linq;
 using Assert = Xunit.Assert;
 using AssertOrbital = Orbital.Mock.Definition.Rules.Assertion.Assert;
 
-namespace Orbital.Mock.Server.Tests.Factories
+namespace Orbital.Mock.Definition.Tests.Rules.Assertion
 {
     public class AssertFactoryTests
     {

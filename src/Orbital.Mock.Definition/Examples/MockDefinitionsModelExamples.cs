@@ -36,7 +36,7 @@ namespace Orbital.Mock.Definition.Examples
                     Title = "Test Title",
                     Description = "Test Description"
                 },
-                OpenApi = JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine("Examples", "SwaggerSchemaExamples", "OpenApiDocumentSwaggerSchemaExample.json"))),
+                OpenApi = JsonConvert.DeserializeObject(File.ReadAllText(Path.Combine(".." , "Orbital.Mock.Definition", "Examples", "SwaggerSchemaExamples", "OpenApiDocumentSwaggerSchemaExample.json"))),
                 Scenarios = GenerateScenarios()
             };
         }

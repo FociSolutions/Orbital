@@ -10,7 +10,7 @@ using Bogus;
 using Xunit;
 using FluentValidation.TestHelper;
 
-namespace Orbital.Mock.Server.Tests.Models.Validators
+namespace Orbital.Mock.Definition.Tests.Validators
 {
     public class MockDefinitionValidatorTests
     {

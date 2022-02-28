@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 using Assert = Xunit.Assert;
 
-namespace Orbital.Mock.Server.Tests.Models.Validators
+namespace Orbital.Mock.Definition.Tests.Validators
 {
     public class BodyRuleValidatorTests
     {
