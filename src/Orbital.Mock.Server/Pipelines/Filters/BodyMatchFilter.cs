@@ -35,8 +35,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             if (!TryParseBody(port.Body, out var bodyObject, out _))
             {
-                //< TODO :: Fix this - what even is it doing?
-                GenerateJsonBodyErrorResults(port.Scenarios);
+                port.BodyMatchResults = GenerateJsonBodyErrorResults(port.Scenarios);
             }
             else
             {
@@ -49,8 +48,6 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                         port.BodyMatchResults.Add(ruleMatcher.Match(assertsList.ToArray())
                                    ? new MatchResult(MatchResultType.Success, scenario.Id, scenario.DefaultScenario)
                                      : new MatchResult(MatchResultType.Fail, scenario.Id, scenario.DefaultScenario));
-                        
-                        
                     }
                 }
             }
@@ -62,11 +59,11 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// Generates the match rules if the raw request body isn't valid for this filter
         /// </summary>
         /// <param name="scenarios">The scenarios on the port</param>
-        private static void GenerateJsonBodyErrorResults(IEnumerable<Scenario> scenarios)
+        private static List<MatchResult> GenerateJsonBodyErrorResults(IEnumerable<Scenario> scenarios)
         {
-            scenarios.Select(scenario => scenario.RequestMatchRules.BodyRules.Any()
-                ? new MatchResult(MatchResultType.Fail, scenario.Id, scenario.DefaultScenario)
-                : new MatchResult(MatchResultType.Ignore, scenario.Id, scenario.DefaultScenario));
+            return scenarios.Select(scenario => scenario.RequestMatchRules.BodyRules.Any() ? MatchResult.Create(MatchResultType.Fail, scenario) 
+                                                                                           : MatchResult.Create(MatchResultType.Ignore, scenario))
+                            .ToList();
         }
 
         /// <summary>
