@@ -183,8 +183,12 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    * Opens the cancel box
    */
   cancel(): void {
-    this.logger.debug('Opened cancel box for scenario-editor');
-    this.triggerOpenCancelBox = true;
+    if (this.scenarioForm.dirty) {
+      this.logger.debug('Opened cancel box for scenario-editor');
+      this.triggerOpenCancelBox = true;
+    } else {
+      this.router.navigateByUrl('/scenario-view');
+    }
   }
 
   /**
