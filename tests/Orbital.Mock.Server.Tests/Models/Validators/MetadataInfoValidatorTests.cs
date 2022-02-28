@@ -1,12 +1,9 @@
-﻿using Bogus;
-using FluentValidation.Results;
-using FluentValidation.TestHelper;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Validators;
+
 using Xunit;
+using Bogus;
+using FluentValidation.TestHelper;
 
 namespace Orbital.Mock.Server.Tests.Models.Validators
 {
@@ -39,7 +36,7 @@ namespace Orbital.Mock.Server.Tests.Models.Validators
         public void MetadataInfoValidateTitleEmptyFailure()
         {
             var metadataInfo = metadataInfoFake.Generate();
-            metadataInfo.Title = String.Empty;
+            metadataInfo.Title = string.Empty;
 
             var input = new
             {

@@ -1,13 +1,17 @@
-﻿using Bogus;
-using MediatR;
+﻿using System;
+using System.Threading;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
+
+using Orbital.Mock.Definition;
+
 using Orbital.Mock.Server.Controllers;
 using Orbital.Mock.Server.MockDefinitions.Commands;
-using Orbital.Mock.Server.Models;
-using System;
-using System.Threading;
+
+using Bogus;
+using MediatR;
+using NSubstitute;
 using Xunit;
 using Assert = Xunit.Assert;
 

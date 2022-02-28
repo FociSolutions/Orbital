@@ -1,18 +1,19 @@
-﻿using Bogus;
-using Orbital.Mock.Server.Models;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Rules;
+
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
-using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Interfaces;
-using Assert = Xunit.Assert;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using Orbital.Mock.Server.Factories.Interfaces;
-using Orbital.Mock.Server.Factories;
+
+using Bogus;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
@@ -20,7 +21,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
     {
         private readonly Faker<Scenario> scenarioFaker;
         private IRuleMatcher ruleMatcher = new RuleMatcher();
-        private IAssertFactory assertFactory = new AssertFactory();
 
         public HeaderMatchFilterTests()
         {
@@ -57,7 +57,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = headers
             };
             #endregion
-            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -87,7 +87,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = headers
             };
 
-            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -114,7 +114,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 Headers = headers
             };
             #endregion
-            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -144,7 +144,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -175,7 +175,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -202,7 +202,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var port = new ProcessMessagePort()
             {
@@ -229,7 +229,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var port = new ProcessMessagePort()
             {

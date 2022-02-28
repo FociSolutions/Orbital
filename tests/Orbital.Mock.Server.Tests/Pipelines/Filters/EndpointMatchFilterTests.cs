@@ -1,11 +1,16 @@
-﻿using Bogus;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using Orbital.Mock.Server.Models;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Response;
+
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
+using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
 

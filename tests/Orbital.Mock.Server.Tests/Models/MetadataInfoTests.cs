@@ -1,6 +1,8 @@
-﻿using Bogus;
-using Orbital.Mock.Server.Models;
-using System;
+﻿using System;
+
+using Orbital.Mock.Definition;
+
+using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
 
@@ -33,7 +35,6 @@ namespace Orbital.Mock.Server.Tests.Models
             var Actual = metadataInfo.Equals(input.objTest);
             Assert.True(Actual);
         }
-
 
         [Fact]
         public void EqualsFailsNullMetadataTest()

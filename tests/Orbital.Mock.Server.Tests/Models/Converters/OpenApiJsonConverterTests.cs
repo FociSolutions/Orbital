@@ -1,12 +1,15 @@
-﻿using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Readers.Exceptions;
-using Newtonsoft.Json;
-using Orbital.Mock.Server.Models.Converters;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
+
+using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers.Exceptions;
+
+using Orbital.Mock.Definition.Converters;
+
 using Xunit;
+using Newtonsoft.Json;
 
 namespace Orbital.Mock.Server.Tests.Models.Converters
 {

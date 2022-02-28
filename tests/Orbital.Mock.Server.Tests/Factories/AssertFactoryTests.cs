@@ -1,14 +1,15 @@
-﻿using Bogus;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Factories;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Models.Rules;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Rules.Assertion;
+
+using Bogus;
 using Xunit;
+using Newtonsoft.Json.Linq;
 using Assert = Xunit.Assert;
-using AssertOrbital = Orbital.Mock.Server.Models.Assert;
+using AssertOrbital = Orbital.Mock.Definition.Rules.Assertion.Assert;
 
 namespace Orbital.Mock.Server.Tests.Factories
 {
@@ -18,7 +19,6 @@ namespace Orbital.Mock.Server.Tests.Factories
         public void AssertFactoryReturnsListForQueries()
         {
             #region TestSetup
-            var Target = new AssertFactory();
             var faker = new Faker();
             var fakerQueryRule = new Faker<KeyValueTypeRule>()
                 .CustomInstantiator(f => new KeyValueTypeRule() { Type = f.PickRandom<ComparerType>(), Key = f.Random.String(), Value = f.Random.String() });
@@ -38,16 +38,16 @@ namespace Orbital.Mock.Server.Tests.Factories
             };
             var actual = new List<AssertOrbital>();
             #endregion
+
             foreach (var rule in fakeScenario.RequestMatchRules.QueryRules)
             {
-                actual.AddRange(Target.CreateAssert(rule, input.Query));
-                
+                actual.AddRange(AssertFactory.CreateAssert(rule, input.Query));    
             }
 
             foreach (var expected in input.Query)
             {
-                Assert.NotNull(actual.Select(a => a.Expect == expected.Key));
-                Assert.NotNull(actual.Select(a => a.Expect == expected.Value));
+                Assert.NotNull(actual.Select(a => a.Expected == expected.Key));
+                Assert.NotNull(actual.Select(a => a.Expected == expected.Value));
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Key));
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Value));
             }
@@ -58,7 +58,6 @@ namespace Orbital.Mock.Server.Tests.Factories
         public void AssertFactoryReturnsListForHeaders()
         {
             #region TestSetup
-            var Target = new AssertFactory();
             var faker = new Faker();
             var fakerHeaderRule = new Faker<KeyValueTypeRule>()
                 .CustomInstantiator(f => new KeyValueTypeRule() { Type = f.PickRandom<ComparerType>(), Key = f.Random.String(), Value = f.Random.String() });
@@ -81,13 +80,13 @@ namespace Orbital.Mock.Server.Tests.Factories
 
             foreach(var rule in fakeScenario.RequestMatchRules.HeaderRules)
             {
-                actual.AddRange(Target.CreateAssert(rule, input.Header));
+                actual.AddRange(AssertFactory.CreateAssert(rule, input.Header));
             }
             
             foreach (var expected in input.Header)
             {
-                Assert.NotNull(actual.Select(a => a.Expect == expected.Key));
-                Assert.NotNull(actual.Select(a => a.Expect == expected.Value));
+                Assert.NotNull(actual.Select(a => a.Expected == expected.Key));
+                Assert.NotNull(actual.Select(a => a.Expected == expected.Value));
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Key));
                 Assert.NotNull(actual.Select(a => a.Actual == expected.Value));
             }
@@ -97,7 +96,6 @@ namespace Orbital.Mock.Server.Tests.Factories
         public void AssertFactoryReturnsListForBody()
         {
             #region TestSetup
-            var Target = new AssertFactory();
             var fakerJObject = new Faker<JObject>()
                            .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
@@ -119,10 +117,10 @@ namespace Orbital.Mock.Server.Tests.Factories
 
             foreach(var rule in fakeScenario.RequestMatchRules.BodyRules)
             {
-                actual.AddRange(Target.CreateAssert(rule, input.Body));
+                actual.AddRange(AssertFactory.CreateAssert(rule, input.Body));
             }
             
-            Assert.NotNull(actual.Select(a => a.Expect == input.Body));
+            Assert.NotNull(actual.Select(a => a.Expected == input.Body));
         }
     }
 }

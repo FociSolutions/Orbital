@@ -1,8 +1,9 @@
-﻿using Bogus;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Validators;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Validators;
+
+using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
 

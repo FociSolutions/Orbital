@@ -1,31 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Bogus;
+using System.Collections.Generic;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Factories;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Models.Rules;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Response;
+
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
+using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Server.Tests;
 using Orbital.Mock.Server.Tests.Pipelines.Filters;
-using Scriban;
+
+using Bogus;
 using Xunit;
+using Scriban;
 using Assert = Xunit.Assert;
 using NSubstitute;
-using Orbital.Mock.Server.Services.Interfaces;
-using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace Orbital.Mock.Server.LongRunningTests
 {
@@ -67,7 +70,7 @@ namespace Orbital.Mock.Server.LongRunningTests
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(_validMethods));
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
+            _mockServerProcessor = new MockServerProcessor(new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
         }
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequest()
         {
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
+            _mockServerProcessor = new MockServerProcessor(new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
 
             var scenarios = GenerateRandomScenarios(out var httpContext);
 
@@ -148,7 +151,7 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequestEnsuringInterpipelineEventsAreProcessed()
         {
-            _mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
+            _mockServerProcessor = new MockServerProcessor(new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
 
             var Target = _mockServerProcessor;
 

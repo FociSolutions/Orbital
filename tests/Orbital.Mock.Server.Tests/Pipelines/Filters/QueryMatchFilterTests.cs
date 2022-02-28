@@ -1,21 +1,22 @@
-﻿using Bogus;
-using Orbital.Mock.Server.Models;
+﻿using System.Linq;
+using System.Collections.Generic;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Match;
+
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
-using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Interfaces;
-using Assert = Xunit.Assert;
-using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
+
+using Bogus;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
     public class QueryMatchFilterTests
     {
-        private AssertFactory assertFactory = new AssertFactory();
         private RuleMatcher ruleMatcher = new RuleMatcher();
 
         static readonly ComparerType[] Comparisons = new[] { ComparerType.JSONCONTAINS, ComparerType.JSONEQUALITY, ComparerType.JSONPATH, ComparerType.JSONSCHEMA, ComparerType.REGEX };
@@ -49,7 +50,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new QueryMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
                 .QueryMatchResults.Where(x =>x.Match.Equals(MatchResultType.Success)).Select(x => x.ScenarioId).ToList();
@@ -63,7 +64,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void QueryMatchFilterNoMatchTest()
         {
             #region TestSetup
-            var assertFactory = new AssertFactory();
             var faker = new Faker();
             var fakerQueryRule = new Faker<KeyValueTypeRule>()
                 .CustomInstantiator(f => new KeyValueTypeRule() 
@@ -89,7 +89,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new QueryMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var Actual = Target.Process(new ProcessMessagePort {Scenarios = input.Scenarios, Query = input.Query})
                 .QueryMatchResults.Where(x => x.Match == MatchResultType.Success).Select(y => y.ScenarioId).ToList();
@@ -108,7 +108,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new QueryMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Query = input.Query }).QueryMatchResults;
 
@@ -131,7 +131,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new QueryMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Faults = input.Faults }).QueryMatchResults;
 

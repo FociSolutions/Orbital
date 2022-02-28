@@ -1,7 +1,10 @@
-﻿using Bogus;
+﻿using System;
+
 using Microsoft.OpenApi.Models;
-using Orbital.Mock.Server.Models;
-using System;
+
+using Orbital.Mock.Definition;
+
+using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
 

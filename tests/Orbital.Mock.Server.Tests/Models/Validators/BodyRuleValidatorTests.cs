@@ -1,6 +1,5 @@
-﻿using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Models.Validators;
+﻿using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Validators;
 
 using Xunit;
 using Bogus;

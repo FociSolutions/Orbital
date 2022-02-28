@@ -1,18 +1,19 @@
-﻿using Bogus;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Pipelines.Filters;
-using Orbital.Mock.Server.Pipelines.Ports;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using Xunit;
-using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Interfaces;
+using System.Collections.Generic;
 
-using Assert = Xunit.Assert;
-using Orbital.Mock.Server.Factories;
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Match;
+
+using Orbital.Mock.Server.Pipelines.Ports;
+using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
+
+using Bogus;
+using Xunit;
+using Newtonsoft.Json.Linq;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
@@ -56,7 +57,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Result = Target.Process(new ProcessMessagePort()
             {
@@ -91,7 +92,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
                     { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -121,7 +122,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -151,7 +152,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -181,7 +182,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -211,7 +212,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -241,7 +242,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -271,7 +272,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -301,7 +302,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -331,7 +332,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -361,7 +362,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -391,7 +392,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
             { Scenarios = input.Scenarios, Body = input.Body.ToString() })
@@ -417,7 +418,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort { Scenarios = input.Scenarios, Body = input.Body.ToString() })
                                .BodyMatchResults.Where(x => x.Match.Equals(MatchResultType.Success))
@@ -442,7 +443,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new BodyMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new BodyMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var Actual = Target.Process(new ProcessMessagePort()
                     { Scenarios = input.Scenarios, Body = input.Body })
