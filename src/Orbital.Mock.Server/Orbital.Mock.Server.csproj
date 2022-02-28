@@ -61,6 +61,7 @@
 
   <ItemGroup>
     <Folder Include="Factories\" />
+    <Folder Include="Models\Examples\" />
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
   </ItemGroup>

@@ -163,7 +163,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var Target = new UpdateMockDefinitionHandler(cache, data);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
-            var Actual = cache.Get<List<string>>(data.mockIds);
+            var Actual = cache.Get<List<string>>(data.MockIds);
 
             Assert.Contains(input.mockDefinition.Metadata.Title, Actual);
         }
@@ -190,11 +190,11 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #endregion
 
             cache.Set(input.mockDefinition.Metadata.Title, input.mockDefinition);
-            cache.Set(data.mockIds, new List<string> { input.mockDefinition.Metadata.Title });
+            cache.Set(data.MockIds, new List<string> { input.mockDefinition.Metadata.Title });
             var Target = new UpdateMockDefinitionHandler(cache, data);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
-            var Actual = cache.Get<List<string>>(data.mockIds);
+            var Actual = cache.Get<List<string>>(data.MockIds);
 
             Assert.Contains(input.mockDefinition.Metadata.Title, Actual);
         }

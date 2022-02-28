@@ -1,19 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json;
-using Microsoft.OpenApi.Writers;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Pipelines.Models.Examples;
+using System.Diagnostics.CodeAnalysis;
+
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.DependencyInjection;
+
+using Swashbuckle.AspNetCore.Filters;
+
+using Orbital.Mock.Definition.Examples;
 
 namespace Orbital.Mock.Server.Registrations
 {

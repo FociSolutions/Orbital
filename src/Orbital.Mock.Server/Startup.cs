@@ -16,7 +16,6 @@ using Orbital.Mock.Definition.Validators;
 
 using Orbital.Mock.Server.Functions;
 using Orbital.Mock.Server.Middleware;
-using Orbital.Mock.Server.Models;
 
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Pipelines.Models;
@@ -84,7 +83,6 @@ namespace Orbital.Mock.Server
                 processor.Start();
                 return processor;
             });
-            services.AddSingleton<CommonData>();
 
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);
