@@ -180,7 +180,7 @@ describe('PoliciesFormComponent', () => {
       component.addPolicyHandler(DELAY_POLICY);
       component.addPolicyHandler(DELAY_POLICY);
 
-      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith(true);
       spy.mockRestore();
     });
@@ -218,7 +218,7 @@ describe('PoliciesFormComponent', () => {
       const spy = jest.spyOn(component.policyIsDuplicatedEvent, 'emit');
       component.removePolicyHandler(0);
 
-      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith(false);
       spy.mockRestore();
     });

@@ -116,22 +116,16 @@ The purpose of a scenario is to describe what the endpoint will expect from the 
 
 2. Click **"+"** on the bottom right to add a new scenario.
 
-3. Start by filling the **"Metadata"** section. Give the new scenario a name and description. The name is required.
-   ![New Scenario Metadata](/readme_images/newScenarioMetadata.png)
+3. Start by filling the **"General"** section. Give the new scenario a name and description. The name is required.
+   ![New Scenario General](/readme_images/newScenarioGeneral.png)
 
-4. Click **"Request Match Rules"** and then click **"Header Match Rules"**. Enter in _"Content-Type"_ as the key and _"application/json"_ as the value.
+4. Click **"Request"** and then select **"Header Match Rules"**. Enter in _"Content-Type"_ as the key and _"application/json"_ as the value.
 
 5. Click **"+"** next to the value to add it as a header rule. The rule will appear below.
    ![Header Match Rule](/readme_images/headerMatchRule.png)
 
 6. A response has to be defined for this header rule. Click **Response** and enter in the text as shown below. In this example, the server will return a `200` with the following response:
    ![New Scenario Response](/readme_images/newScenarioResponse.png)
-
-```
-{
-	"pet1": "max"
-}
-```
 
 7. Click **"Save"**.
 
