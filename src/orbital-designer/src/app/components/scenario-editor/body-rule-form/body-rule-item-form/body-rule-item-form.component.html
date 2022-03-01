@@ -2,6 +2,30 @@
   <div class="mat-h3 policy-title" *ngIf="title">{{ title }}</div>
 
   <div class="row">
+    <ng-container *nfIf="mode === 'add'">
+      <mat-form-field class="flex-grow">
+        <mat-label>Match Type</mat-label>
+        <mat-select formControlName="ruleType">
+          <mat-option *ngFor="let type of ruleTypes" [value]="type.value">
+            {{ type.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="flex-grow">
+        <mat-label>Match Condition</mat-label>
+        <mat-select formControlName="ruleCondition">
+          <mat-option *ngFor="let condition of currentMatchConditions" [value]="condition.value">
+            {{ condition.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-icon-button color="primary" (click)="addItem()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </ng-container>
+
     <ng-container *ngIf="mode === 'view'">
       <mat-form-field class="flex-grow">
         <mat-label>Match Type</mat-label>
