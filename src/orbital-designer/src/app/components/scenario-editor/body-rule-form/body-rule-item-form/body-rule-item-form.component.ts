@@ -76,7 +76,7 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
   @Input() touched = false;
   @Input() readonly title = '';
   @Input() readonly errors: string[] = [];
-  @Input() mode: 'view' | 'edit' = 'view';
+  @Input() mode: 'add' | 'edit' | 'view' = 'view';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
   @Input() readonly pathMaxLength = 3000;
 
