@@ -2,9 +2,11 @@
 using System.Net;
 using System.Net.Http;
 using System.Text;
+
+using Orbital.Mock.Definition.Response;
+
 using LightBDD.XUnit2;
 using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
 using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.IntegrationTests.OrbitalAdmin.PostMockDefinitionNoResponseType
@@ -42,7 +44,7 @@ namespace Orbital.Mock.Server.IntegrationTests.OrbitalAdmin.PostMockDefinitionNo
         {
             GetResult = Client.GetAsync(CommonData.AdminUri).Result.Content.ReadAsStringAsync().Result;
             var scenarioResponseType = Convert.ToInt32(JArray.Parse(GetResult)[0]["scenarios"][0]["response"]["type"].ToString());
-            Assert.Equal(scenarioResponseType, (int)ResponseType.CUSTOM);
+            Assert.Equal(scenarioResponseType, (int)MockResponseType.CUSTOM);
         }
     }
 }

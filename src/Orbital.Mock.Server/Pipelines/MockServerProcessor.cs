@@ -1,5 +1,15 @@
-﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using Orbital.Mock.Server.Models;
+﻿using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+
+using Orbital.Mock.Definition.Response;
+using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Server.Pipelines.Envelopes;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Orbital.Mock.Server.Pipelines.Factories;
@@ -7,18 +17,10 @@ using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Ports;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
-using Microsoft.AspNetCore.Http;
-using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+
 using Scriban;
-using Orbital.Mock.Server.Services.Interfaces;
+using Serilog;
 
 namespace Orbital.Mock.Server.Pipelines
 {
@@ -48,18 +50,18 @@ namespace Orbital.Mock.Server.Pipelines
 
         public bool PipelineIsRunning { get; private set; }
 
-        public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher, TemplateContext templateContext, IPublicKeyService pubKeyService)
+        public MockServerProcessor(IRuleMatcher ruleMatcher, TemplateContext templateContext, IPublicKeyService pubKeyService)
             : this(new PathValidationFilter<ProcessMessagePort>(),
-                  new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
+                  new QueryMatchFilter<ProcessMessagePort>(ruleMatcher),
                   new EndpointMatchFilter<ProcessMessagePort>(),
-                  new BodyMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
-                  new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
-                  new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
+                  new BodyMatchFilter<ProcessMessagePort>(ruleMatcher),
+                  new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher),
+                  new UrlMatchFilter<ProcessMessagePort>(ruleMatcher),
                   new ResponseSelectorFilter<ProcessMessagePort>(templateContext),
                   new PolicyFilter<ProcessMessagePort>(),
                   new TokenParseFilter<ProcessMessagePort>(),
                   new TokenValidationFilter<ProcessMessagePort>(pubKeyService),
-                  new TokenRequestMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher))
+                  new TokenRequestMatchFilter<ProcessMessagePort>(ruleMatcher))
         {
         }
 

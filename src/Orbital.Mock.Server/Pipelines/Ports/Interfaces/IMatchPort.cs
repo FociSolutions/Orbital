@@ -1,4 +1,4 @@
-﻿using Orbital.Mock.Server.Models.Interfaces;
+﻿using Orbital.Mock.Definition.Rules;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {

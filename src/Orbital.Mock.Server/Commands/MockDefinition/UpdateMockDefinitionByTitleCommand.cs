@@ -1,6 +1,8 @@
-﻿using MediatR;
-using Orbital.Mock.Server.Models;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Orbital.Mock.Definition;
+
+using MediatR;
 
 namespace Orbital.Mock.Server.MockDefinitions.Commands
 {

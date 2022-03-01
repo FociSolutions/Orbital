@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+
 using Microsoft.IdentityModel.Tokens;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Interfaces;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Tokens;
+
 using Orbital.Mock.Server.Pipelines.Ports;
 using Orbital.Mock.Server.Pipelines.Filters;
+using Orbital.Mock.Server.Services.Interfaces;
+
+using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
-using Bogus;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Services.Interfaces;
 using NSubstitute;
+using Newtonsoft.Json.Linq;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
@@ -41,13 +46,13 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3));
-            var fakerTokenRule = new Faker<TokenRuleInfo>()
+            var fakerTokenRule = new Faker<TokenRules>()
                 .RuleFor(t => t.ValidationType, v => TokenValidationType.JWT_VALIDATION);
 
             ScenarioFaker = new Faker<Scenario>()
                 .RuleFor(m => m.RequestMatchRules, _ => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Id, n => n.Random.ToString())
-                .RuleFor(m => m.TokenRule, () => fakerTokenRule);
+                .RuleFor(m => m.TokenRules, () => fakerTokenRule);
 
             asymmetricKey = JwtUtils.CreateAsymmetricJwk();
             asymmetricJwk = JsonWebKeyConverter.ConvertFromSecurityKey(asymmetricKey);
@@ -170,7 +175,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region Test Setup
             var fakeScenario = ScenarioFaker.Generate();
-            fakeScenario.TokenRule.ValidationType = TokenValidationType.NONE;
+            fakeScenario.TokenRules.ValidationType = TokenValidationType.NONE;
             var port = GetPort(scenarios: new List<Scenario>() { fakeScenario });
             #endregion
 
@@ -202,7 +207,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region Test Setup
             var fakeScenario = ScenarioFaker.Generate();
-            fakeScenario.TokenRule.ValidationType = TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH;
+            fakeScenario.TokenRules.ValidationType = TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH;
             var port = GetPort(scenarios: new List<Scenario>() { fakeScenario });
             #endregion
 

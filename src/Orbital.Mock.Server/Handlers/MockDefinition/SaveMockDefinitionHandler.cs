@@ -1,10 +1,13 @@
-﻿using MediatR;
-using Microsoft.Extensions.Caching.Memory;
-using Orbital.Mock.Server.MockDefinitions.Commands;
-using Orbital.Mock.Server.Models;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using Microsoft.Extensions.Caching.Memory;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Server.MockDefinitions.Commands;
+
+using MediatR;
 
 namespace Orbital.Mock.Server.Handlers
 {
@@ -14,16 +17,14 @@ namespace Orbital.Mock.Server.Handlers
     public class SaveMockDefinitionHandler : IRequestHandler<SaveMockDefinitionCommand>
     {
         private readonly IMemoryCache cache;
-        private readonly string mockIds;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="cache">Cache to save the mock definition</param>
-        public SaveMockDefinitionHandler(IMemoryCache cache, CommonData data)
+        public SaveMockDefinitionHandler(IMemoryCache cache)
         {
             this.cache = cache;
-            this.mockIds = data.mockIds;
         }
 
         /// <summary>
@@ -37,12 +38,12 @@ namespace Orbital.Mock.Server.Handlers
             lock (request.databaseLock)
             {
                 this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-                var keysCollection = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
+                var keysCollection = this.cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
 
                 if (!keysCollection.Contains(request.MockDefinition.Metadata.Title))
                 {
                     keysCollection.Add(request.MockDefinition.Metadata.Title);
-                    this.cache.Set(mockIds, keysCollection);
+                    this.cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
                 }
 
                 return Unit.Task;

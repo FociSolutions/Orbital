@@ -1,4 +1,4 @@
-﻿using Orbital.Mock.Server.Models;
+﻿using Orbital.Mock.Definition.Rules.Assertion;
 
 namespace Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces
 {

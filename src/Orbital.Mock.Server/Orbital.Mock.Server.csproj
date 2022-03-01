@@ -51,12 +51,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Models\Examples\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -68,5 +62,9 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orbital.Mock.Definition\Orbital.Mock.Definition.csproj" />
   </ItemGroup>
 </Project>

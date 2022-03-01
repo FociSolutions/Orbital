@@ -1,8 +1,11 @@
-﻿using Orbital.Mock.Server.Pipelines.Filters.Bases;
+﻿using System.Linq;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Rules.Assertion;
+
+using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using Orbital.Mock.Server.Models;
-using System.Linq;
-using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
@@ -10,12 +13,10 @@ namespace Orbital.Mock.Server.Pipelines.Filters
     public class HeaderMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IScenariosPort, IHeaderMatchPort
     {
-        private IAssertFactory assertFactory;
         private IRuleMatcher ruleMatcher;
 
-        public HeaderMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
+        public HeaderMatchFilter(IRuleMatcher ruleMatcher)
         {
-            this.assertFactory = assertFactory;
             this.ruleMatcher = ruleMatcher;
         }
         /// <summary>
@@ -32,7 +33,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             {
                 foreach(var rule in scenario.RequestMatchRules.HeaderRules)
                 {
-                    var assertsList = assertFactory.CreateAssert(rule, port.Headers);
+                    var assertsList = AssertFactory.CreateAssert(rule, port.Headers);
                     if (!assertsList.Any())
                     {
                         port.HeaderMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id, scenario.DefaultScenario));

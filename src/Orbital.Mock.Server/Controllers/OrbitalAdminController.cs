@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
 
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Examples;
+
 using Orbital.Mock.Server.Filters;
-using Orbital.Mock.Server.Models;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.Pipelines.Ports;
-using Orbital.Mock.Server.Pipelines.Models.Examples;
 
 using MediatR;
 using Serilog;
-using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Orbital.Mock.Server.Controllers
@@ -114,10 +114,7 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new UpdateMockDefinitionByTitleCommand(mockDefinition, ref databaseLock);
             var result = mediator.Send(command).Result;
-            if (result == null)
-            {
-                return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition);
-            }
+            if (result == null) { return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition); }
             Log.Information("OrbitalAdminController: Sent HTTPut Command to update Mockdefinition, {MockDefinition}", mockDefinition.Metadata.Title);
             return Ok();
         }

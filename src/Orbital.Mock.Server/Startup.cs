@@ -3,22 +3,20 @@ using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 using Microsoft.IdentityModel.Tokens;
 
-//using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Orbital.Mock.Server.Factories;
-using Orbital.Mock.Server.Factories.Interfaces;
+using Orbital.Mock.Definition.Response;
+using Orbital.Mock.Definition.Converters;
+using Orbital.Mock.Definition.Validators;
+
 using Orbital.Mock.Server.Functions;
 using Orbital.Mock.Server.Middleware;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Converters;
-using Orbital.Mock.Server.Models.Validators;
+
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
@@ -33,9 +31,6 @@ using MediatR;
 using Scriban;
 using Scriban.Runtime;
 using FluentValidation.AspNetCore;
-
-using System;
-using System.Collections;
 
 namespace Orbital.Mock.Server
 {
@@ -81,16 +76,13 @@ namespace Orbital.Mock.Server
 
             services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyServiceConfig.SECTION_NAME).Bind(cfg));
             services.AddSingleton<IPublicKeyService, PublicKeyService>();
-
-            services.AddSingleton<IAssertFactory, AssertFactory>();
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
-                var processor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), ConfigureTemplateContext(), s.GetService<IPublicKeyService>());
+                var processor = new MockServerProcessor(new RuleMatcher(), ConfigureTemplateContext(), s.GetService<IPublicKeyService>());
                 processor.Start();
                 return processor;
             });
-            services.AddSingleton<CommonData>();
 
             ApiVersionRegistration.ConfigureService(services);
             SwaggerRegistration.ConfigureService(services);

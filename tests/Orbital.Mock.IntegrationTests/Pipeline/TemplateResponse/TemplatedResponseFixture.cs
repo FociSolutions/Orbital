@@ -1,8 +1,10 @@
-﻿using LightBDD.XUnit2;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
+﻿using System.Text;
 using System.Net.Http;
-using System.Text;
+
+using Orbital.Mock.Definition;
+
+using LightBDD.XUnit2;
+using Newtonsoft.Json.Linq;
 using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.IntegrationTests.Pipeline.TemplateResponse

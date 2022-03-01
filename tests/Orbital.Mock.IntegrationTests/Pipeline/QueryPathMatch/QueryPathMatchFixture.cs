@@ -1,8 +1,10 @@
-﻿using LightBDD.XUnit2;
-using Newtonsoft.Json.Linq;
-using Orbital.Mock.Server.Models;
+﻿using System.Text;
 using System.Net.Http;
-using System.Text;
+
+using Orbital.Mock.Definition;
+
+using LightBDD.XUnit2;
+using Newtonsoft.Json.Linq;
 using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.IntegrationTests.Pipeline.QueryPathMatch
@@ -12,7 +14,6 @@ namespace Orbital.Mock.Server.IntegrationTests.Pipeline.QueryPathMatch
         private readonly HttpClient Client;
         private Scenario scenario;
         private HttpResponseMessage PostResult;
-        private string queryStringMatch = "{\r\n  \"animal-type\": \"cat\"\r\n}";
         private JToken mockDefinitionQueryJson;
 
         public QueryPathMatchFixture_Fixture()

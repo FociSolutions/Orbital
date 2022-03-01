@@ -4,8 +4,12 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Diagnostics.CodeAnalysis;
 
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Policies;
+using Orbital.Mock.Definition.Response;
+
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
