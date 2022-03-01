@@ -16,7 +16,7 @@
 
 button#save-button {
   min-width: 9rem;
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: #005c50;
   }
 }
