@@ -31,7 +31,7 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         {
             lock (request.databaseLock)
             {
-                cache.TryGetValue(CommonData.MockIds, out List<string> KeyList);
+                cache.TryGetValue(Constants.MOCK_IDS_CACHE_KEY, out List<string> KeyList);
 
                 if (KeyList == null) { return Task.FromResult(new List<MockDefinition>() as IEnumerable<MockDefinition>); }
 

@@ -80,7 +80,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             cache.Set(mockDefinition.Metadata.Title, mockDefinition);
 
             var expected = mockDefinition.Metadata.Title;
-            cache.Set(CommonData.MockIds, new List<string>() { mockDefinition.Metadata.Title });
+            cache.Set(Constants.MOCK_IDS_CACHE_KEY, new List<string>() { mockDefinition.Metadata.Title });
 
             var deleteMockDefinitionCommand = new DeleteMockDefinitionByTitleCommand(mockDefinition.Metadata.Title, ref TestUtils.databaseLock);
             #endregion

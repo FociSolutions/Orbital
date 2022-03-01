@@ -49,7 +49,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var mockdeffake1 = mockDefinitionFake.Generate();
             var mockdeffake2 = new MockDefinition { Host = mockdeffake1.Host + "diff", Metadata = mockdeffake1.Metadata };
 
-            cache.Set(CommonData.MockIds, new List<string> { mockdeffake1.Metadata.Title, mockdeffake2.Metadata.Title });
+            cache.Set(Constants.MOCK_IDS_CACHE_KEY, new List<string> { mockdeffake1.Metadata.Title, mockdeffake2.Metadata.Title });
             cache.Set(mockdeffake1.Metadata.Title, mockdeffake1);
             cache.Set(mockdeffake2.Metadata.Title, mockdeffake2);
 

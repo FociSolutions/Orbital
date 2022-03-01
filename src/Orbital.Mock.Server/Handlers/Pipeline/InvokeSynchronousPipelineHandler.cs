@@ -38,7 +38,7 @@ namespace Orbital.Mock.Server.Pipelines.Handlers
         {
             lock (command.databaseLock)
             {
-                var idList = cache.GetOrCreate(CommonData.MockIds, c => new List<string>());
+                var idList = cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, c => new List<string>());
                 var mockDefinitions = idList.Select(id => this.cache.Get<MockDefinition>(id));
 
                 var scenarios = mockDefinitions.SelectMany(mockDefinition => mockDefinition.Scenarios);

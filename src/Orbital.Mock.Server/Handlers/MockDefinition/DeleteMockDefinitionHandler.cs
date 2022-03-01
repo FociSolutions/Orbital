@@ -37,9 +37,9 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
             lock (request.databaseLock)
             {
                 this.cache.Remove(request.MockDefinitionTitle);
-                var KeyList = this.cache.GetOrCreate(CommonData.MockIds, cacheEntry => { return new List<string>(); });
+                var KeyList = this.cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
                 KeyList.Remove(request.MockDefinitionTitle);
-                this.cache.Set(CommonData.MockIds, KeyList);
+                this.cache.Set(Constants.MOCK_IDS_CACHE_KEY, KeyList);
             }
             return Unit.Task;
         }

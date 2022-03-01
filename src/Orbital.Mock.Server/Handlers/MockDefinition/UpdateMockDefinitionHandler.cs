@@ -39,11 +39,11 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
             {
                 var mockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
                 cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-                var KeyList = this.cache.GetOrCreate(CommonData.MockIds, cacheEntry => { return new List<string>(); });
+                var KeyList = this.cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
                 if (!KeyList.Contains(request.MockDefinition.Metadata.Title))
                 {
                     KeyList.Add(request.MockDefinition.Metadata.Title);
-                    this.cache.Set(CommonData.MockIds, KeyList);
+                    this.cache.Set(Constants.MOCK_IDS_CACHE_KEY, KeyList);
                 }
                 return Task.FromResult(mockDefinition);
             }

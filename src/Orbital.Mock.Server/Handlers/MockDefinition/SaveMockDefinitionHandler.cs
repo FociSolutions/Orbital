@@ -38,12 +38,12 @@ namespace Orbital.Mock.Server.Handlers
             lock (request.databaseLock)
             {
                 this.cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-                var keysCollection = this.cache.GetOrCreate(CommonData.MockIds, cacheEntry => { return new List<string>(); });
+                var keysCollection = this.cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
 
                 if (!keysCollection.Contains(request.MockDefinition.Metadata.Title))
                 {
                     keysCollection.Add(request.MockDefinition.Metadata.Title);
-                    this.cache.Set(CommonData.MockIds, keysCollection);
+                    this.cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
                 }
 
                 return Unit.Task;
