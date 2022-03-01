@@ -160,12 +160,12 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.selectedScenario
       );
 
-      const formData: ScenarioEditorFormValues = this.scenarioForm.value;
-      this.insertFormDataIntoScenario(formData, this.selectedScenario);
-
-      this.store.addOrUpdateScenario(this.selectedScenario);
-
-      this.logger.debug('ScenarioEditorComponent:saveScenario: Updated the provided scenario', this.selectedScenario);
+      if (this.scenarioForm.dirty) {
+        const formData: ScenarioEditorFormValues = this.scenarioForm.value;
+        this.insertFormDataIntoScenario(formData, this.selectedScenario);
+        this.store.addOrUpdateScenario(this.selectedScenario);
+        this.logger.debug('ScenarioEditorComponent:saveScenario: Updated the provided scenario', this.selectedScenario);
+      }
 
       this.router.navigateByUrl('/scenario-view');
     }
