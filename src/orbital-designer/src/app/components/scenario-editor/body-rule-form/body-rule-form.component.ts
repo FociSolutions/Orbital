@@ -69,6 +69,19 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     );
   }
 
+  subscribeToAddValueChanges() {
+    this.subscriptions.push(
+      this.add.valueChanges.subscribe((value) => {
+        this.itemIsDuplicatedEvent.emit(this.itemIsDuplicated(value));
+      })
+    );
+    //this.cleanupSubscriptions();
+  }
+
+  /*cleanupSubscriptions() {
+    this.subscriptions = this.subscriptions.filter((s) => !s.closed);
+  }*/
+
   validate(_: FormControl): ValidationErrors | null {
     return this.formArray.valid ? null : { body_rule: true };
   }
@@ -88,17 +101,13 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     if (this.itemIsDuplicated(item)) {
       this.itemIsDuplicatedEvent.emit(true);
     } else {
-      const itemForm = BodyRuleItemFormComponent.buildForm(item);
+      this.newItemIndex = this.formArray.length;
+      const itemForm = BodyRuleItemFormComponent.buildForm({});
       this.formArray.push(itemForm);
       this.add.reset(null, { emitEvent: false });
-      this.newItemIndex = this.formArray.length;
-      //this.subscribeToAddValueChanges();
+      this.subscribeToAddValueChanges();
       this.cdRef.detectChanges();
     }
-    /*this.newItemIndex = this.formArray.length;
-    const itemForm = BodyRuleItemFormComponent.buildForm({});
-    this.formArray.push(itemForm);
-    this.cdRef.detectChanges();*/
   }
 
   /**
