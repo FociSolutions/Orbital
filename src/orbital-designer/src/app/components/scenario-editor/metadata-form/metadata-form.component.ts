@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, forwardRef } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -35,9 +35,10 @@ export interface MetadataFormValues {
     },
   ],
 })
-export class MetadataFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+export class MetadataFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
 
+  @Input() touched = false;
   @Input() readonly title_maxlength = 50;
   @Input() readonly description_maxlength = 500;
 
@@ -51,6 +52,12 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
   }
 
   constructor(private formBuilder: FormBuilder) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -68,9 +75,12 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: MetadataFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       })
     );
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
   }
 
   setDisabledState(isDisabled: boolean): void {

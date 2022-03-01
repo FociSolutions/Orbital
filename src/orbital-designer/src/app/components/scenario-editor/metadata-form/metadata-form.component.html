@@ -1,6 +1,12 @@
 <mat-card [formGroup]="form">
   <mat-form-field class="full-width">
-    <input formControlName="title" matInput [maxlength]="title_maxlength" placeholder="Scenario Name" />
+    <input
+      formControlName="title"
+      matInput
+      [maxlength]="title_maxlength"
+      placeholder="Scenario Name"
+      (blur)="touch()"
+    />
     <mat-hint>{{ title.value?.length ?? 0 }}/{{ title_maxlength }}</mat-hint>
   </mat-form-field>
   <ng-container *ngIf="title.invalid && title.errors && (title.dirty || title.touched)">
@@ -10,7 +16,13 @@
   </ng-container>
 
   <mat-form-field class="full-width top-margin">
-    <input formControlName="description" matInput [maxlength]="description_maxlength" placeholder="Description" />
+    <input
+      formControlName="description"
+      matInput
+      [maxlength]="description_maxlength"
+      placeholder="Description"
+      (blur)="touch()"
+    />
     <mat-hint>{{ description.value?.length ?? 0 }}/{{ description_maxlength }}</mat-hint>
   </mat-form-field>
   <ng-container *ngIf="description.invalid && description.errors && (description.dirty || description.touched)">

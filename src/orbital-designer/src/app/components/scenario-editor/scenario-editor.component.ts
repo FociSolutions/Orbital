@@ -55,6 +55,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     return this.scenarioForm.get('policies') as FormControl;
   }
 
+  touched = false;
   scenarioId: string;
   selectedScenario: Scenario;
   triggerOpenCancelBox: boolean;
@@ -168,6 +169,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       }
 
       this.router.navigateByUrl('/scenario-view');
+    } else {
+      this.scenarioForm.markAllAsTouched();
+      this.touched = true;
     }
   }
 

@@ -12,13 +12,16 @@
           <mat-tab>
             <ng-template mat-tab-label>
               General
-              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!metadata.valid || !policies.valid"
+              <mat-icon
+                class="tab-warning-icon"
+                color="warn"
+                *ngIf="(!metadata.valid && metadata.touched) || !policies.valid"
                 >priority_high</mat-icon
               >
             </ng-template>
             <div class="tab-body">
               <h3 class="mat-h3">Metadata</h3>
-              <app-metadata-form formControlName="metadata"></app-metadata-form>
+              <app-metadata-form formControlName="metadata" [touched]="touched"></app-metadata-form>
               <br />
               <h3 class="mat-h3">Policies</h3>
               <app-policies-form formControlName="policies"></app-policies-form>
