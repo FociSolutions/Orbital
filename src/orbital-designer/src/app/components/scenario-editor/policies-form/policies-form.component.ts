@@ -132,7 +132,7 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
    * @param policy the policy to test
    * @returns true if the policy is duplicated, false otherwise
    */
-  policyIsDuplicated(policy: PolicyFormValues): boolean {
+  policyIsDuplicated(policy: PolicyFormValues | null): boolean {
     const policies = this.formArray.value ?? [];
     return PoliciesFormComponent.policyIsDuplicated(policies, policy);
   }
@@ -143,19 +143,21 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
    * @param policy the policy to test (should be a reference from the provided list to avoid self-duplicate detection)
    * @returns true if the policy is duplicated, false otherwise
    */
-  static policyIsDuplicated(policies: PoliciesFormValues, policy: PolicyFormValues): boolean {
-    for (const otherPolicy of policies) {
-      if (policy === otherPolicy) {
-        continue;
-      }
-      switch (policy.type) {
-        case PolicyType.DELAY_RESPONSE:
-          if (otherPolicy.type === PolicyType.DELAY_RESPONSE) {
-            return true;
+  static policyIsDuplicated(policies: PoliciesFormValues, policy: PolicyFormValues | null): boolean {
+    if (policy) {
+      for (const otherPolicy of policies) {
+        if (policy === otherPolicy) {
+          continue;
+        }
+        switch (policy.type) {
+          case PolicyType.DELAY_RESPONSE:
+            if (otherPolicy.type === PolicyType.DELAY_RESPONSE) {
+              return true;
+            }
+            break;
+          default: {
+            const _: never = policy.type;
           }
-          break;
-        default: {
-          const _: never = policy.type;
         }
       }
     }
