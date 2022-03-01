@@ -1,4 +1,16 @@
 <ng-container [formGroup]="form">
+  <app-body-rule-item-form
+    formControlName="add"
+    title="Add {{ itemName }}"
+    mode="add"
+    (addItemEvent)="addItemHandler($event)"
+    [itemIsDuplicatedEvent]="itemIsDuplicated"
+  ></app-body-rule-item-form>
+
+  <mat-divider></mat-divider>
+
+  <div class="text-muted" *ngIf="!formArray.controls.length">No {{ itemNamePlural }} added.</div>
+
   <div class="item-form" formArrayName="formArray" *ngFor="let ctrl of formArray.controls; let i = index">
     <app-body-rule-item-form
       [mode]="newItemIndex === i ? 'edit' : 'view'"
@@ -7,18 +19,4 @@
       [errors]="ctrl.errors | getStringErrors"
     ></app-body-rule-item-form>
   </div>
-
-  <mat-card>
-    <div *ngIf="!formArray.length" class="row justify-content-center">
-      <p>It looks like you don't have any {{ itemNamePlural }}. Click on the add button below to get started.</p>
-    </div>
-    <div *ngIf="formArray.length" class="row justify-content-center">
-      <p>Add a new {{ itemName }}.</p>
-    </div>
-    <div class="row justify-content-center">
-      <button mat-mini-fab color="primary" (click)="addItem()">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-  </mat-card>
 </ng-container>
