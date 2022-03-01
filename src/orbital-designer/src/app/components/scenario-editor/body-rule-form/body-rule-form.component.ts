@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   AbstractControl,
@@ -41,10 +41,17 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     return this.form.get('formArray') as FormArray;
   }
 
+  get add(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.form.get('add') as FormControl;
+  }
+
   @Input() itemName = 'Body Match Rule';
   @Input() itemNamePlural = 'Body Match Rules';
 
   newItemIndex = null;
+
+  itemIsDuplicatedEvent = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef) {}
 
@@ -55,6 +62,7 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
 
     this.subscriptions.push(
       this.formArray.valueChanges.subscribe((values: BodyRuleFormValues | null) => {
+        this.itemIsDuplicatedEvent.emit(this.itemIsDuplicated(this.add.value));
         this.onChange.forEach((fn) => fn(values));
         this.onTouched.forEach((fn) => fn());
       })
@@ -76,11 +84,21 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     }
   }
 
-  addItem() {
-    this.newItemIndex = this.formArray.length;
+  addItemHandler(item: BodyRuleItemFormValues) {
+    if (this.itemIsDuplicated(item)) {
+      this.itemIsDuplicatedEvent.emit(true);
+    } else {
+      const itemForm = BodyRuleItemFormComponent.buildForm(item);
+      this.formArray.push(itemForm);
+      this.add.reset(null, { emitEvent: false });
+      this.newItemIndex = this.formArray.length;
+      //this.subscribeToAddValueChanges();
+      this.cdRef.detectChanges();
+    }
+    /*this.newItemIndex = this.formArray.length;
     const itemForm = BodyRuleItemFormComponent.buildForm({});
     this.formArray.push(itemForm);
-    this.cdRef.detectChanges();
+    this.cdRef.detectChanges();*/
   }
 
   /**
