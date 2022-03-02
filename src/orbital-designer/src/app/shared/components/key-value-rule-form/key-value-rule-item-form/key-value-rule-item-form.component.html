@@ -3,18 +3,18 @@
 
   <div class="row">
     <mat-form-field class="flex-grow">
-      <input formControlName="key" matInput [maxlength]="keyMaxLength" placeholder="Key" />
+      <input formControlName="key" matInput [maxlength]="keyMaxLength" placeholder="Key" (blur)="touch()" />
       <mat-hint>{{ key.value?.length || 0 }}/{{ keyMaxLength }}</mat-hint>
     </mat-form-field>
 
     <mat-form-field class="flex-grow-2">
-      <input formControlName="value" matInput [maxlength]="valueMaxLength" placeholder="Value" />
+      <input formControlName="value" matInput [maxlength]="valueMaxLength" placeholder="Value" (blur)="touch()" />
       <mat-hint>{{ value.value?.length || 0 }}/{{ valueMaxLength }}</mat-hint>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Value Rule</mat-label>
-      <mat-select formControlName="type">
+      <mat-select formControlName="type" (blur)="touch()">
         <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.value">
           {{ ruleType.label }}
         </mat-option>
