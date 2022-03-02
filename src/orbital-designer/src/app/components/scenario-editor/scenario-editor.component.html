@@ -32,7 +32,9 @@
           <mat-tab>
             <ng-template mat-tab-label>
               Request
-              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!request.valid">priority_high</mat-icon>
+              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!request.valid && request.touched">
+                priority_high
+              </mat-icon>
             </ng-template>
             <div class="tab-body">
               <app-request-form formControlName="request"></app-request-form>

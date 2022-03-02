@@ -9,13 +9,15 @@
   </mat-form-field>
 </div>
 
-<div [formGroup]="form">
-  <div [formGroup]="requestMatchRules">
+<ng-container [formGroup]="form">
+  <ng-container [formGroup]="requestMatchRules">
     <app-key-value-rule-form
       *ngIf="currentRuleType === 'header'"
       formControlName="headerRules"
       itemName="Header Match Rule"
       itemNamePlural="Header Match Rules"
+      [touched]="touched"
+      (touchedEvent)="touch()"
     ></app-key-value-rule-form>
 
     <app-key-value-rule-form
@@ -23,17 +25,31 @@
       formControlName="queryRules"
       itemName="Query Param Match Rule"
       itemNamePlural="Query Param Match Rules"
+      [touched]="touched"
+      (touchedEvent)="touch()"
     ></app-key-value-rule-form>
 
-    <app-url-rule-form *ngIf="currentRuleType === 'url'" formControlName="urlRules"></app-url-rule-form>
+    <app-url-rule-form
+      *ngIf="currentRuleType === 'url'"
+      formControlName="urlRules"
+      [touched]="touched"
+      (touchedEvent)="touch()"
+    ></app-url-rule-form>
 
-    <app-body-rule-form *ngIf="currentRuleType === 'body'" formControlName="bodyRules"></app-body-rule-form>
-  </div>
+    <app-body-rule-form
+      *ngIf="currentRuleType === 'body'"
+      formControlName="bodyRules"
+      [touched]="touched"
+      (touchedEvent)="touch()"
+    ></app-body-rule-form>
+  </ng-container>
 
   <app-key-value-rule-form
     *ngIf="currentRuleType === 'token_payload'"
     formControlName="tokenRules"
     itemName="Token (JWT) Payload Match Rule"
     itemNamePlural="Token (JWT) Payload Match Rules"
+    [touched]="touched"
+    (touchedEvent)="touch()"
   ></app-key-value-rule-form>
-</div>
+</ng-container>
