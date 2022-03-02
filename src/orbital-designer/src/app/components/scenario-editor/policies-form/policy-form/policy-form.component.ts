@@ -55,18 +55,18 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
     return this.form.get('value') as FormControl;
   }
 
+  @Input() touched = false;
+  @Input() title = '';
+  @Input() errors: string[] = [];
+  @Input() mode: 'add' | 'edit' = 'edit';
+  @Input() policyIsDuplicatedEvent = new EventEmitter<boolean>();
+
   @Output() addPolicyEvent = new EventEmitter<PolicyFormValues>();
   @Output() removePolicyEvent = new EventEmitter<void>();
   @Output() touchedEvent = new EventEmitter<void>();
 
   readonly policyTypes = [{ value: PolicyType.DELAY_RESPONSE, label: 'Delay Response' }];
   PolicyType = PolicyType;
-
-  @Input() touched = false;
-  @Input() title = '';
-  @Input() errors: string[] = [];
-  @Input() mode: 'add' | 'edit' = 'edit';
-  @Input() policyIsDuplicatedEvent = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder) {}
 

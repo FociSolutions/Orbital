@@ -60,8 +60,10 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
   }
 
   @Input() touched = false;
-  policyIsDuplicatedEvent = new EventEmitter<boolean>();
+
   @Output() touchedEvent = new EventEmitter<void>();
+
+  policyIsDuplicatedEvent = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef) {}
 
