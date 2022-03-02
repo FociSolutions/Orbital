@@ -121,7 +121,7 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     if (this.itemIsDuplicated(item)) {
       this.itemIsDuplicatedEvent.emit(true);
     } else {
-      const itemForm = BodyRuleItemFormComponent.buildForm({});
+      const itemForm = BodyRuleItemFormComponent.buildForm(item);
       this.formArray.push(itemForm);
       this.add.reset(null, { emitEvent: false });
       this.subscribeToAddValueChanges();
