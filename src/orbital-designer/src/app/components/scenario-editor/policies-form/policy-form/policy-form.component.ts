@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy-type';
 import {
@@ -33,8 +43,8 @@ export type PolicyFormValues = DelayResponsePolicy;
     },
   ],
 })
-export class PolicyFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  readonly form: FormGroup;
+export class PolicyFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup;
 
   get type(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -47,16 +57,20 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
 
   @Output() addPolicyEvent = new EventEmitter<PolicyFormValues>();
   @Output() removePolicyEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
 
   readonly policyTypes = [{ value: PolicyType.DELAY_RESPONSE, label: 'Delay Response' }];
   PolicyType = PolicyType;
 
+  @Input() touched = false;
   @Input() title = '';
   @Input() errors: string[] = [];
   @Input() mode: 'add' | 'edit' = 'edit';
   @Input() policyIsDuplicatedEvent = new EventEmitter<boolean>();
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
     this.form = this.formBuilder.group({
       type: [null, Validators.required],
       value: [null, [Validators.required, Validators.min(1), Validators.pattern('^[0-9]+$')]],
@@ -65,13 +79,8 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: PolicyFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
-      })
-    );
-  }
+      }),
 
-  ngOnInit(): void {
-    this.subscriptions.push(
       this.policyIsDuplicatedEvent.subscribe((isDuplicated) => {
         if (isDuplicated !== this.form.hasError('duplicate')) {
           if (isDuplicated) {
@@ -86,6 +95,17 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
         }
       })
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   addPolicy() {

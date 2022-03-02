@@ -15,7 +15,7 @@
               <mat-icon
                 class="tab-warning-icon"
                 color="warn"
-                *ngIf="(!metadata.valid && metadata.touched) || !policies.valid"
+                *ngIf="(!metadata.valid && metadata.touched) || (!policies.valid && policies.touched)"
                 >priority_high</mat-icon
               >
             </ng-template>
@@ -24,7 +24,7 @@
               <app-metadata-form formControlName="metadata" [touched]="touched"></app-metadata-form>
               <br />
               <h3 class="mat-h3">Policies</h3>
-              <app-policies-form formControlName="policies"></app-policies-form>
+              <app-policies-form formControlName="policies" [touched]="touched"></app-policies-form>
             </div>
           </mat-tab>
 

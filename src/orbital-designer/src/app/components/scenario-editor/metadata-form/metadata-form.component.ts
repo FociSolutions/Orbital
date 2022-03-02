@@ -38,10 +38,6 @@ export interface MetadataFormValues {
 export class MetadataFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
 
-  @Input() touched = false;
-  @Input() readonly title_maxlength = 50;
-  @Input() readonly description_maxlength = 500;
-
   get title(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.form.get('title') as FormControl;
@@ -51,13 +47,11 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
     return this.form.get('description') as FormControl;
   }
 
-  constructor(private formBuilder: FormBuilder) {}
+  @Input() touched = false;
+  @Input() readonly title_maxlength = 50;
+  @Input() readonly description_maxlength = 500;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
-      this.form.markAllAsTouched();
-    }
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -79,8 +73,18 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
     );
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
   touch() {
     this.onTouched.forEach((fn) => fn());
+  }
+
+  validate(_: FormControl): ValidationErrors | null {
+    return this.form.valid ? null : { metadata: true };
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -105,10 +109,6 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
   /*
    * Boilerplate Code Below Here
    */
-
-  validate(_: FormControl): ValidationErrors | null {
-    return this.form.valid ? null : { metadata: true };
-  }
 
   private readonly subscriptions: Subscription[] = [];
 
