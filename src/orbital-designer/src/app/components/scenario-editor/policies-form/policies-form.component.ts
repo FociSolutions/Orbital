@@ -1,4 +1,15 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   AbstractControl,
@@ -35,7 +46,7 @@ type PartialPoliciesFormValues = Partial<PolicyFormValues>[];
     },
   ],
 })
-export class PoliciesFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+export class PoliciesFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
 
   get formArray(): FormArray {
@@ -47,6 +58,10 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.form.get('add') as FormControl;
   }
+
+  @Input() touched = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   policyIsDuplicatedEvent = new EventEmitter<boolean>();
 
@@ -62,11 +77,16 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
       this.formArray.valueChanges.subscribe((value: PoliciesFormValues | null) => {
         this.policyIsDuplicatedEvent.emit(this.policyIsDuplicated(this.add.value));
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       })
     );
 
     this.subscribeToAddValueChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.formArray.markAllAsTouched();
+    }
   }
 
   subscribeToAddValueChanges() {
@@ -80,6 +100,11 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
 
   cleanupSubscriptions() {
     this.subscriptions = this.subscriptions.filter((s) => !s.closed);
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   validate(_: FormControl): ValidationErrors | null {

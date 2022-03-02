@@ -8,9 +8,9 @@ import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { KeyValueRuleItemFormComponent, KeyValueRuleItemFormValues } from './key-value-rule-item-form.component';
 import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
-import { Component, ViewChild } from '@angular/core';
+import { Component, SimpleChanges, ViewChild } from '@angular/core';
 
-describe('KeyValueRuleFormComponent', () => {
+describe('KeyValueRuleItemFormComponent', () => {
   let wrapper: TestWrapperComponent;
   let component: KeyValueRuleItemFormComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
@@ -57,7 +57,7 @@ describe('KeyValueRuleFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('KeyValueRuleFormComponent.writeValue', () => {
+  describe('KeyValueRuleItemFormComponent.writeValue', () => {
     it('should set the values for the form fields', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.form.value).toEqual(SAMPLE_VALUE);
@@ -92,7 +92,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent validation', () => {
+  describe('KeyValueRuleItemFormComponent validation', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
@@ -180,7 +180,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent.setDisabledState', () => {
+  describe('KeyValueRuleItemFormComponent.setDisabledState', () => {
     it('should set the disabled state to true on all the controls in the form group', () => {
       component.setDisabledState(true);
       expect(Object.values(component.form.controls).every((x) => x.disabled && !x.enabled)).toBe(true);
@@ -194,7 +194,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent.registerOnChange', () => {
+  describe('KeyValueRuleItemFormComponent.registerOnChange', () => {
     it('should add an onChange function', () => {
       const expected = () => undefined;
       component.registerOnChange(expected);
@@ -203,7 +203,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent.registerOnTouched', () => {
+  describe('KeyValueRuleItemFormComponent.registerOnTouched', () => {
     it('should add an onChange function', () => {
       const expected = () => undefined;
       component.registerOnTouched(expected);
@@ -212,7 +212,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent.noWhiteSpaceValidator', () => {
+  describe('KeyValueRuleItemFormComponent.noWhiteSpaceValidator', () => {
     it('should return null if the value contains no white space', () => {
       const control = { value: faker.random.word() } as AbstractControl;
       const actual = KeyValueRuleItemFormComponent.noWhiteSpaceValidator(control);
@@ -226,6 +226,76 @@ describe('KeyValueRuleFormComponent', () => {
 
       expect(actual).toBeTruthy();
       expect(actual.whitespace).toBeTruthy();
+    });
+  });
+
+  describe('KeyValueRuleItemFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('KeyValueRuleItemFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

@@ -12,36 +12,44 @@
           <mat-tab>
             <ng-template mat-tab-label>
               General
-              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!metadata.valid || !policies.valid"
-                >priority_high</mat-icon
+              <mat-icon
+                class="tab-warning-icon"
+                color="warn"
+                *ngIf="(!metadata.valid && metadata.touched) || (!policies.valid && policies.touched)"
               >
+                priority_high
+              </mat-icon>
             </ng-template>
             <div class="tab-body">
               <h3 class="mat-h3">Metadata</h3>
-              <app-metadata-form formControlName="metadata"></app-metadata-form>
+              <app-metadata-form formControlName="metadata" [touched]="touched"></app-metadata-form>
               <br />
               <h3 class="mat-h3">Policies</h3>
-              <app-policies-form formControlName="policies"></app-policies-form>
+              <app-policies-form formControlName="policies" [touched]="touched"></app-policies-form>
             </div>
           </mat-tab>
 
           <mat-tab>
             <ng-template mat-tab-label>
               Request
-              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!request.valid">priority_high</mat-icon>
+              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!request.valid && request.touched">
+                priority_high
+              </mat-icon>
             </ng-template>
             <div class="tab-body">
-              <app-request-form formControlName="request"></app-request-form>
+              <app-request-form formControlName="request" [touched]="touched"></app-request-form>
             </div>
           </mat-tab>
 
           <mat-tab>
             <ng-template mat-tab-label>
               Response
-              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!response.valid">priority_high</mat-icon>
+              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!response.valid && response.touched">
+                priority_high
+              </mat-icon>
             </ng-template>
             <div class="tab-body">
-              <app-response-form formControlName="response"></app-response-form>
+              <app-response-form formControlName="response" [touched]="touched"></app-response-form>
             </div>
           </mat-tab>
         </mat-tab-group>
@@ -53,15 +61,7 @@
             </button>
           </div>
           <div id="save-button-div">
-            <button
-              id="save-button"
-              color="primary"
-              mat-raised-button
-              (click)="save()"
-              [disabled]="!scenarioForm.valid || !scenarioForm.dirty"
-            >
-              Save
-            </button>
+            <button id="save-button" color="primary" mat-raised-button (click)="save()">Save</button>
           </div>
         </div>
       </div>

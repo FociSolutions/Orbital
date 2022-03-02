@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   ControlValueAccessor,
@@ -35,7 +45,7 @@ export interface UrlRuleItemFormValues {
     },
   ],
 })
-export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
 
   get type(): FormControl {
@@ -48,21 +58,23 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
     return this.form.get('path') as FormControl;
   }
 
-  @Output() readonly addItemEvent = new EventEmitter<UrlRuleItemFormValues>();
-  @Output() readonly removeItemEvent = new EventEmitter<void>();
-
+  @Input() touched = false;
   @Input() readonly title = '';
   @Input() readonly errors: string[] = [];
   @Input() readonly mode: 'add' | 'edit' = 'edit';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
   @Input() readonly pathMaxLength = 3000;
 
+  @Output() readonly addItemEvent = new EventEmitter<UrlRuleItemFormValues>();
+  @Output() readonly removeItemEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
+
   readonly ruleTypes = [
     { value: RuleType.ACCEPTALL, label: 'Accept All' },
     { value: RuleType.REGEX, label: 'Matches Regex' },
     { value: RuleType.TEXTEQUALS, label: 'Equals' },
   ];
-  ruleType = RuleType;
+  RuleType = RuleType;
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -76,7 +88,6 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
       this.form.valueChanges.subscribe((value: UrlRuleItemFormValues | null) => {
         const adjustedValue = this.adjustFormValue(value);
         this.onChange.forEach((fn) => fn(adjustedValue));
-        this.onTouched.forEach((fn) => fn());
         // Must be after the callbacks since it triggers another event on this observable
         if (value) {
           this.handleDisablingPathField(value.type);
@@ -85,6 +96,17 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
 
       this.itemIsDuplicatedEvent.subscribe((isDuplicated) => this.handleIsDuplicatedEvent(isDuplicated))
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   adjustFormValue(value: UrlRuleItemFormValues | null): UrlRuleItemFormValues | null {

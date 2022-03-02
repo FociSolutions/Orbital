@@ -1,4 +1,15 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   AbstractControl,
@@ -33,7 +44,7 @@ export type BodyRuleFormValues = BodyRuleItemFormValues[];
     },
   ],
 })
-export class BodyRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+export class BodyRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
 
   get formArray(): FormArray {
@@ -43,6 +54,9 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
 
   @Input() itemName = 'Body Match Rule';
   @Input() itemNamePlural = 'Body Match Rules';
+  @Input() touched = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   newItemIndex = null;
 
@@ -56,9 +70,19 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.push(
       this.formArray.valueChanges.subscribe((values: BodyRuleFormValues | null) => {
         this.onChange.forEach((fn) => fn(values));
-        this.onTouched.forEach((fn) => fn());
       })
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.formArray.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   validate(_: FormControl): ValidationErrors | null {

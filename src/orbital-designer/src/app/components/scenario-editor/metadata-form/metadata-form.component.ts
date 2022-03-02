@@ -1,4 +1,14 @@
-import { Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -35,11 +45,8 @@ export interface MetadataFormValues {
     },
   ],
 })
-export class MetadataFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+export class MetadataFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
-
-  @Input() readonly title_maxlength = 50;
-  @Input() readonly description_maxlength = 500;
 
   get title(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -49,6 +56,12 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.form.get('description') as FormControl;
   }
+
+  @Input() touched = false;
+  @Input() readonly title_maxlength = 50;
+  @Input() readonly description_maxlength = 500;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -68,9 +81,23 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: MetadataFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       })
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
+  }
+
+  validate(_: FormControl): ValidationErrors | null {
+    return this.form.valid ? null : { metadata: true };
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -95,10 +122,6 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
   /*
    * Boilerplate Code Below Here
    */
-
-  validate(_: FormControl): ValidationErrors | null {
-    return this.form.valid ? null : { metadata: true };
-  }
 
   private readonly subscriptions: Subscription[] = [];
 

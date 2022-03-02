@@ -1,4 +1,14 @@
-import { Component, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -41,7 +51,7 @@ export interface RequestFormValues {
     },
   ],
 })
-export class RequestFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+export class RequestFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
 
   get requestMatchRules(): FormGroup {
@@ -69,6 +79,10 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.form.get('tokenRules') as FormControl;
   }
+
+  @Input() touched = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   static readonly ruleTypesStatic = {
     header: 'Header Match Rules',
@@ -108,9 +122,19 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: RequestFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       })
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   writeValue(value?: Partial<RequestFormValues> | null): void {

@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PolicyFormComponent, PolicyFormValues } from './policy-form.component';
 import * as faker from 'faker';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy-type';
+import { SimpleChanges } from '@angular/core';
 
 describe('PolicyFormComponent', () => {
   let component: PolicyFormComponent;
@@ -166,6 +167,76 @@ describe('PolicyFormComponent', () => {
       component.registerOnTouched(expected);
 
       expect(component.onTouched).toContain(expected);
+    });
+  });
+
+  describe('PolicyFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('PolicyFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

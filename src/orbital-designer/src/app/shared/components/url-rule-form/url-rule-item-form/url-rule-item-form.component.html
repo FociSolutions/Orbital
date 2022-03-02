@@ -4,15 +4,15 @@
   <div class="row">
     <mat-form-field>
       <mat-label>Match Type</mat-label>
-      <mat-select formControlName="type">
+      <mat-select formControlName="type" (blur)="touch()">
         <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.value">
           {{ ruleType.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field [ngClass]="['flex-grow', !type.value || type.value === ruleType.ACCEPTALL ? 'hide' : '']">
-      <input matInput formControlName="path" placeholder="URL Path" [maxlength]="pathMaxLength" />
+    <mat-form-field [ngClass]="{ 'flex-grow': true, hide: !type.value || type.value === RuleType.ACCEPTALL }">
+      <input matInput formControlName="path" placeholder="URL Path" [maxlength]="pathMaxLength" (blur)="touch()" />
       <mat-hint>{{ path.value?.length || 0 }}/{{ pathMaxLength }}</mat-hint>
     </mat-form-field>
 

@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response-type';
 import { AbstractControl } from '@angular/forms';
+import { SimpleChanges } from '@angular/core';
 
 describe('ResponseFormComponent', () => {
   let component: ResponseFormComponent;
@@ -305,6 +306,76 @@ describe('ResponseFormComponent', () => {
 
       expect(actual).toBeTruthy();
       expect(actual.invalid).toBeTruthy();
+    });
+  });
+
+  describe('ResponseFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('ResponseFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

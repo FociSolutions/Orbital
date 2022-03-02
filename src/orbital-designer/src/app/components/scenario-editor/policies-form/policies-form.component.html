@@ -15,6 +15,8 @@
     <app-policy-form
       [formControlName]="i"
       (removePolicyEvent)="removePolicyHandler(i)"
+      [touched]="touched"
+      (touchedEvent)="touch()"
       [errors]="ctrl.errors | getStringErrors"
     ></app-policy-form>
   </div>

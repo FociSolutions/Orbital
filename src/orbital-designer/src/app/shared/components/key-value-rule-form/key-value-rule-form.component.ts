@@ -6,6 +6,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
   forwardRef,
 } from '@angular/core';
@@ -64,9 +65,11 @@ export class KeyValueRuleFormComponent implements ControlValueAccessor, Validato
   @Input() readonly itemNamePlural = 'Key Value Rule items';
   @Input() allowKeyWhitespace = false;
   @Input() allowDuplicateKeys = true;
+  @Input() touched = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   itemIsDuplicatedEvent = new EventEmitter<boolean>();
-
   validateNoDuplicatesInstance = KeyValueRuleFormComponent.validateNoDuplicates(true);
 
   constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef) {}
@@ -81,7 +84,6 @@ export class KeyValueRuleFormComponent implements ControlValueAccessor, Validato
       this.formArray.valueChanges.subscribe((values: KeyValueRuleFormValues | null) => {
         this.itemIsDuplicatedEvent.emit(this.itemIsDuplicated(this.add.value));
         this.onChange.forEach((fn) => fn(values));
-        this.onTouched.forEach((fn) => fn());
       })
     );
 
@@ -96,6 +98,9 @@ export class KeyValueRuleFormComponent implements ControlValueAccessor, Validato
       );
       this.formArray.addValidators(this.validateNoDuplicatesInstance);
     }
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.formArray.markAllAsTouched();
+    }
   }
 
   subscribeToAddValueChanges() {
@@ -109,6 +114,11 @@ export class KeyValueRuleFormComponent implements ControlValueAccessor, Validato
 
   cleanupSubscriptions() {
     this.subscriptions = this.subscriptions.filter((s) => !s.closed);
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   validate(_: FormControl): ValidationErrors | null {

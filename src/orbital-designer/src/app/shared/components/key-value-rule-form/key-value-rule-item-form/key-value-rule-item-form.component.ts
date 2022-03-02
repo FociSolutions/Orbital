@@ -63,9 +63,7 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
     return this.form.get('type') as FormControl;
   }
 
-  @Output() addItemEvent = new EventEmitter<KeyValueRuleItemFormValues>();
-  @Output() removeItemEvent = new EventEmitter<void>();
-
+  @Input() touched = false;
   @Input() readonly title = '';
   @Input() readonly errors: string[] = [];
   @Input() mode: 'add' | 'edit' = 'edit';
@@ -73,6 +71,10 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
   @Input() readonly keyMaxLength = 200;
   @Input() readonly valueMaxLength = 3000;
   @Input() allowKeyWhitespace = false;
+
+  @Output() addItemEvent = new EventEmitter<KeyValueRuleItemFormValues>();
+  @Output() removeItemEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
 
   readonly ruleTypes = [
     { value: RuleType.REGEX, label: 'Matches Regex' },
@@ -94,7 +96,6 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: KeyValueRuleItemFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       }),
 
       this.itemIsDuplicatedEvent.subscribe((isDuplicated) => this.handleIsDuplicatedEvent(isDuplicated))
@@ -109,6 +110,14 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
         this.key.addValidators(KeyValueRuleItemFormComponent.noWhiteSpaceValidator);
       }
     }
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   handleIsDuplicatedEvent(isDuplicated: boolean) {

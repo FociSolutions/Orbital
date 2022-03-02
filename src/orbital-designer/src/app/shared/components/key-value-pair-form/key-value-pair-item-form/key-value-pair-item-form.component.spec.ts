@@ -7,8 +7,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { KeyValuePairItemFormComponent, KeyValuePairItemFormValues } from './key-value-pair-item-form.component';
 import * as faker from 'faker';
+import { SimpleChanges } from '@angular/core';
 
-describe('KvpFormComponent', () => {
+describe('KeyValuePairItemFormComponent', () => {
   let component: KeyValuePairItemFormComponent;
   let fixture: ComponentFixture<KeyValuePairItemFormComponent>;
   let SAMPLE_VALUE: KeyValuePairItemFormValues;
@@ -42,7 +43,7 @@ describe('KvpFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('KvpFormComponent.writeValue', () => {
+  describe('KeyValuePairItemFormComponent.writeValue', () => {
     it('should set the values for the form fields', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.form.value).toEqual(SAMPLE_VALUE);
@@ -77,7 +78,7 @@ describe('KvpFormComponent', () => {
     });
   });
 
-  describe('KvpFormComponent validation', () => {
+  describe('KeyValuePairItemFormComponent validation', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
@@ -116,7 +117,7 @@ describe('KvpFormComponent', () => {
     });
   });
 
-  describe('KvpFormComponent.setDisabledState', () => {
+  describe('KeyValuePairItemFormComponent.setDisabledState', () => {
     it('should set the disabled state to true on all the controls in the form group', () => {
       component.setDisabledState(true);
       expect(Object.values(component.form.controls).every((x) => x.disabled && !x.enabled)).toBe(true);
@@ -130,7 +131,7 @@ describe('KvpFormComponent', () => {
     });
   });
 
-  describe('KvpFormComponent.registerOnChange', () => {
+  describe('KeyValuePairItemFormComponent.registerOnChange', () => {
     it('should set the onChange function', () => {
       const expected = () => undefined;
       component.registerOnChange(expected);
@@ -139,12 +140,82 @@ describe('KvpFormComponent', () => {
     });
   });
 
-  describe('KvpFormComponent.registerOnTouched', () => {
+  describe('KeyValuePairItemFormComponent.registerOnTouched', () => {
     it('should set the onTouched function', () => {
       const expected = () => undefined;
       component.registerOnTouched(expected);
 
       expect(component.onTouched).toContain(expected);
+    });
+  });
+
+  describe('KeyValuePairItemFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('KeyValuePairItemFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

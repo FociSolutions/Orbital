@@ -12,10 +12,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { GetStringErrorsPipe } from '../../pipes/get-string-errors/get-string-errors.pipe';
-import { Component, ViewChild } from '@angular/core';
+import { Component, SimpleChanges, ViewChild } from '@angular/core';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 
-describe('KeyValueRulesFormComponent', () => {
+describe('KeyValueRuleFormComponent', () => {
   let wrapper: TestWrapperComponent;
   let component: KeyValueRuleFormComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
@@ -70,7 +70,7 @@ describe('KeyValueRulesFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('KeyValueRulesFormComponent.writeValue', () => {
+  describe('KeyValueRuleFormComponent.writeValue', () => {
     it('should set the values for the form fields', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.formArray.value).toEqual(SAMPLE_VALUE);
@@ -105,7 +105,7 @@ describe('KeyValueRulesFormComponent', () => {
     });
   });
 
-  describe('KeyValueRulesFormComponent validation', () => {
+  describe('KeyValueRuleFormComponent validation', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
@@ -137,7 +137,7 @@ describe('KeyValueRulesFormComponent', () => {
       expect(component.validate(null)).toBeNull();
     });
 
-    describe('KeyValueRulesFormComponent validation allowDuplicateKeys', () => {
+    describe('KeyValueRuleFormComponent validation allowDuplicateKeys', () => {
       it('should fail validation if allowDuplicateKeys is enabled and any entry is completely duplicated', () => {
         wrapper.allowDuplicateKeys = true;
         fixture.detectChanges();
@@ -172,7 +172,7 @@ describe('KeyValueRulesFormComponent', () => {
     });
   });
 
-  describe('KeyValueRulesFormComponent.setDisabledState', () => {
+  describe('KeyValueRuleFormComponent.setDisabledState', () => {
     it('should set the disabled state to true on all the controls in the form group', () => {
       component.setDisabledState(true);
       expect(Object.values(component.formArray.controls).every((x) => x.disabled && !x.enabled)).toBe(true);
@@ -185,7 +185,7 @@ describe('KeyValueRulesFormComponent', () => {
     });
   });
 
-  describe('KeyValueRulesFormComponent.registerOnChange', () => {
+  describe('KeyValueRuleFormComponent.registerOnChange', () => {
     it('should set the onChange function', () => {
       const expected = () => undefined;
       component.registerOnChange(expected);
@@ -194,7 +194,7 @@ describe('KeyValueRulesFormComponent', () => {
     });
   });
 
-  describe('KeyValueRulesFormComponent.registerOnTouched', () => {
+  describe('KeyValueRuleFormComponent.registerOnTouched', () => {
     it('should set the onTouched function', () => {
       const expected = () => undefined;
       component.registerOnTouched(expected);
@@ -203,7 +203,7 @@ describe('KeyValueRulesFormComponent', () => {
     });
   });
 
-  describe('KeyValueRulesFormComponent.addItemHandler', () => {
+  describe('KeyValueRuleFormComponent.addItemHandler', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).cdRef = { detectChanges: jest.fn() };
@@ -242,7 +242,7 @@ describe('KeyValueRulesFormComponent', () => {
     });
   });
 
-  describe('KeyValueRulesFormComponent.removeItemHandler', () => {
+  describe('KeyValueRuleFormComponent.removeItemHandler', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).cdRef = { detectChanges: jest.fn() };
@@ -276,6 +276,76 @@ describe('KeyValueRulesFormComponent', () => {
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith(false);
+      spy.mockRestore();
+    });
+  });
+
+  describe('KeyValueRuleFormComponent.ngOnChanges', () => {
+    it('should mark the formArray as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(true);
+    });
+
+    it('should not mark the formArray as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+  });
+
+  describe('KeyValueRuleFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
       spy.mockRestore();
     });
   });

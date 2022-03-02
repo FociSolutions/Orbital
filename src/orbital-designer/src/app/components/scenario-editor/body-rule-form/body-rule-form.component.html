@@ -4,6 +4,8 @@
       [mode]="newItemIndex === i ? 'edit' : 'view'"
       [formControlName]="i"
       (removeItemEvent)="removeItemHandler(i)"
+      [touched]="touched"
+      (touchedEvent)="touch()"
       [errors]="ctrl.errors | getStringErrors"
     ></app-body-rule-item-form>
   </div>
