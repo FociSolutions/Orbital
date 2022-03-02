@@ -97,6 +97,7 @@ describe('ScenarioEditorComponent', () => {
         component.scenarioId = scenario.id;
         component.selectedScenario = scenario;
         component.scenarioForm.setValue(component.convertScenarioToFormData(scenario));
+        component.scenarioForm.markAsDirty();
 
         component.save();
 

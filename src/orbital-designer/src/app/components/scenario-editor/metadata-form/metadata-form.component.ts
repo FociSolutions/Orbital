@@ -1,4 +1,14 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -51,6 +61,8 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
   @Input() readonly title_maxlength = 50;
   @Input() readonly description_maxlength = 500;
 
+  @Output() touchedEvent = new EventEmitter<void>();
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
@@ -81,6 +93,7 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
 
   touch() {
     this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   validate(_: FormControl): ValidationErrors | null {

@@ -37,7 +37,7 @@
               </mat-icon>
             </ng-template>
             <div class="tab-body">
-              <app-request-form formControlName="request"></app-request-form>
+              <app-request-form formControlName="request" [touched]="touched"></app-request-form>
             </div>
           </mat-tab>
 
@@ -49,7 +49,7 @@
               </mat-icon>
             </ng-template>
             <div class="tab-body">
-              <app-response-form formControlName="response"></app-response-form>
+              <app-response-form formControlName="response" [touched]="touched"></app-response-form>
             </div>
           </mat-tab>
         </mat-tab-group>
