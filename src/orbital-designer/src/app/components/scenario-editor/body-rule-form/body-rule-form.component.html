@@ -13,7 +13,6 @@
 
   <div class="item-form" formArrayName="formArray" *ngFor="let ctrl of formArray.controls; let i = index">
     <app-body-rule-item-form
-      [mode]="newItemIndex === i ? 'edit' : 'view'"
       [formControlName]="i"
       (removeItemEvent)="removeItemHandler(i)"
       [errors]="ctrl.errors | getStringErrors"

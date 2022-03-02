@@ -233,7 +233,7 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
 
   addItem() {
     if (this.form.valid) {
-      this.addItemEvent.emit(this.form.value);
+      this.addItemEvent.emit(this.adaptInternalFormatToExternal(this.form.value));
     }
   }
 
