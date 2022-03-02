@@ -1,4 +1,15 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   AbstractControl,
@@ -33,7 +44,7 @@ export type UrlRuleFormValues = UrlRuleItemFormValues[];
     },
   ],
 })
-export class UrlRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+export class UrlRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
 
   get formArray(): FormArray {
@@ -48,6 +59,9 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
 
   @Input() itemName = 'URL Match Rule';
   @Input() itemNamePlural = 'URL Match Rules';
+  @Input() touched = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   itemIsDuplicatedEvent = new EventEmitter<boolean>();
 
@@ -63,11 +77,16 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
       this.formArray.valueChanges.subscribe((values: UrlRuleFormValues | null) => {
         this.itemIsDuplicatedEvent.emit(this.itemIsDuplicated(this.add.value));
         this.onChange.forEach((fn) => fn(values));
-        this.onTouched.forEach((fn) => fn());
       })
     );
 
     this.subscribeToAddValueChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.formArray.markAllAsTouched();
+    }
   }
 
   subscribeToAddValueChanges() {
@@ -81,6 +100,11 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
 
   cleanupSubscriptions() {
     this.subscriptions = this.subscriptions.filter((s) => !s.closed);
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   validate(_: FormControl): ValidationErrors | null {
