@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { GetStringErrorsPipe } from '../../../shared/pipes/get-string-errors/get-string-errors.pipe';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 import { MatCardModule } from '@angular/material/card';
+import { SimpleChanges } from '@angular/core';
 
 describe('BodyRuleFormComponent', () => {
   let component: BodyRuleFormComponent;
@@ -184,6 +185,76 @@ describe('BodyRuleFormComponent', () => {
       expect(() => component.removeItemHandler(-1)).toThrow();
       expect(() => component.removeItemHandler(0)).toThrow();
       expect(() => component.removeItemHandler(1)).toThrow();
+    });
+  });
+
+  describe('BodyRuleFormComponent.ngOnChanges', () => {
+    it('should mark the formArray as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(true);
+    });
+
+    it('should not mark the formArray as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+  });
+
+  describe('BodyRuleFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

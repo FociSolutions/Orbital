@@ -21,7 +21,7 @@
     <ng-container *ngIf="mode === 'edit'">
       <mat-form-field class="flex-grow">
         <mat-label>Match Type</mat-label>
-        <mat-select formControlName="ruleType">
+        <mat-select formControlName="ruleType" (blur)="touch()">
           <mat-option *ngFor="let type of ruleTypes" [value]="type.value">
             {{ type.label }}
           </mat-option>
@@ -30,7 +30,7 @@
 
       <mat-form-field class="flex-grow">
         <mat-label>Match Condition</mat-label>
-        <mat-select formControlName="ruleCondition">
+        <mat-select formControlName="ruleCondition" (blur)="touch()">
           <mat-option *ngFor="let condition of currentMatchConditions" [value]="condition.value">
             {{ condition.label }}
           </mat-option>
@@ -66,7 +66,7 @@
 
     <mat-form-field class="w-100" *ngIf="mode === 'edit' && ruleType.value === BodyRuleType.TEXT">
       <mat-label>Match Value</mat-label>
-      <textarea matInput rows="5" formControlName="value"></textarea>
+      <textarea matInput rows="5" formControlName="value" (blur)="touch()"></textarea>
     </mat-form-field>
 
     <ng-container *ngIf="value.invalid && value.errors && (value.dirty || value.touched)">

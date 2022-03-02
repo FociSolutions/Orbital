@@ -1,4 +1,15 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   ControlValueAccessor,
@@ -44,7 +55,7 @@ export interface BodyRuleItemFormValues {
     },
   ],
 })
-export class BodyRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+export class BodyRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
   form: FormGroup;
 
   get ruleType(): FormControl {
@@ -62,14 +73,16 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     return this.form.get('value') as FormControl;
   }
 
-  @Output() readonly addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
-  @Output() readonly removeItemEvent = new EventEmitter<void>();
-
+  @Input() touched = false;
   @Input() readonly title = '';
   @Input() readonly errors: string[] = [];
   @Input() mode: 'view' | 'edit' = 'view';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
   @Input() readonly pathMaxLength = 3000;
+
+  @Output() readonly addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
+  @Output() readonly removeItemEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
 
   readonly ruleTypes = [
     { value: BodyRuleType.TEXT, label: 'Text' },
@@ -116,7 +129,6 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: InternalBodyRuleItemFormValues | null) => {
         this.onChange.forEach((fn) => fn(this.adaptInternalFormatToExternal(value)));
-        this.onTouched.forEach((fn) => fn());
       }),
 
       this.ruleType.valueChanges.subscribe((value: BodyRuleType | null) => {
@@ -131,11 +143,27 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     this.valueEditorOptions.modes = ['code', 'text'];
     this.valueEditorOptions.statusBar = true;
     this.valueEditorOptions.onFocus = () => (this.valueDataWasFocused = true);
-    this.valueEditorOptions.onBlur = () => this.valueDataWasFocused && this.value.markAsTouched();
+    this.valueEditorOptions.onBlur = () => {
+      if (this.valueDataWasFocused) {
+        this.value.markAsTouched();
+        this.touch();
+      }
+    };
     this.valueEditorOptions.onChangeText = (jsonString: string) => {
       this.value.markAsDirty();
       this.value.setValue(jsonString);
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   adaptInternalFormatToExternal(values: InternalBodyRuleItemFormValues | null): BodyRuleItemFormValues | null {
