@@ -62,8 +62,8 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     return this.form.get('value') as FormControl;
   }
 
-  @Output() readonly addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
-  @Output() readonly removeItemEvent = new EventEmitter<void>();
+  @Output() addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
+  @Output() removeItemEvent = new EventEmitter<void>();
 
   @Input() readonly title = '';
   @Input() readonly errors: string[] = [];
