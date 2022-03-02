@@ -2,9 +2,11 @@
   <mat-form-field appearance="outline" floatLabel="always">
     <mat-label>Request Rule Type</mat-label>
     <mat-select [(ngModel)]="currentRuleType">
-      <mat-option *ngFor="let rule of ruleTypes | keyvalue: compareAllEqual" [value]="rule.key">
-        {{ rule.value }}
-      </mat-option>
+      <ng-container *ngFor="let rule of ruleTypes | keyvalue: compareAllEqual">
+        <mat-option *ngIf="rule.key !== 'token_payload' || tokenValidationIsEnabled" [value]="rule.key">
+          {{ rule.value }}
+        </mat-option>
+      </ng-container>
     </mat-select>
   </mat-form-field>
 </div>
@@ -45,7 +47,7 @@
   </ng-container>
 
   <app-key-value-rule-form
-    *ngIf="currentRuleType === 'token_payload'"
+    *ngIf="currentRuleType === 'token_payload' && tokenValidationIsEnabled"
     formControlName="tokenRules"
     itemName="Token (JWT) Payload Match Rule"
     itemNamePlural="Token (JWT) Payload Match Rules"
