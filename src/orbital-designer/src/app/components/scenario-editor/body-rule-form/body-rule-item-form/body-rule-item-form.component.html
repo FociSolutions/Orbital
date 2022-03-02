@@ -22,7 +22,7 @@
       </button>
     </ng-container>
 
-    <ng-container *ngIf="mode === 'edit' || 'add'">
+    <ng-container *ngIf="mode === 'edit' || mode === 'add'">
       <mat-form-field class="flex-grow">
         <mat-label>Match Type</mat-label>
         <mat-select formControlName="ruleType" (blur)="touch()">
@@ -76,7 +76,7 @@
   <div class="match-value" *ngIf="mode !== 'edit' || ruleType.value">
     <h3 class="mat-h3" *ngIf="mode !== 'edit' || ruleType.value !== BodyRuleType.TEXT">Match Value *</h3>
 
-    <mat-form-field class="w-100" *ngIf="mode === 'edit' || ('add' && ruleType.value === BodyRuleType.TEXT)">
+    <mat-form-field class="w-100" *ngIf="(mode === 'edit' || mode === 'add') && ruleType.value === BodyRuleType.TEXT">
       <mat-label>Match Value</mat-label>
       <textarea matInput rows="5" formControlName="value" (blur)="touch()"></textarea>
     </mat-form-field>
@@ -87,7 +87,7 @@
     </ng-container>
 
     <json-editor
-      *ngIf="mode === 'edit' || ('add' && ruleType.value === BodyRuleType.JSON)"
+      *ngIf="(mode === 'edit' || mode === 'add') && ruleType.value === BodyRuleType.JSON"
       [options]="valueEditorOptions"
       [data]="initValueData"
     ></json-editor>
