@@ -71,6 +71,7 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
 
   ngOnInit() {
     this.form = this.formBuilder.group({
+      add: null,
       formArray: this.formBuilder.array([], BodyRuleFormComponent.validateNoDuplicates),
     });
 
@@ -80,6 +81,8 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
         this.onChange.forEach((fn) => fn(values));
       })
     );
+
+    this.subscribeToAddValueChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

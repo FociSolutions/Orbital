@@ -80,8 +80,8 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
   @Input() readonly pathMaxLength = 3000;
 
-  @Output() readonly addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
-  @Output() readonly removeItemEvent = new EventEmitter<void>();
+  @Output() addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
+  @Output() removeItemEvent = new EventEmitter<void>();
   @Output() touchedEvent = new EventEmitter<void>();
 
   readonly ruleTypes = [
