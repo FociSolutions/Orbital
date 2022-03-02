@@ -49,8 +49,6 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
   @Input() itemName = 'Body Match Rule';
   @Input() itemNamePlural = 'Body Match Rules';
 
-  newItemIndex = null;
-
   itemIsDuplicatedEvent = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef) {}
@@ -104,8 +102,7 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     if (this.itemIsDuplicated(item)) {
       this.itemIsDuplicatedEvent.emit(true);
     } else {
-      this.newItemIndex = this.formArray.length;
-      const itemForm = BodyRuleItemFormComponent.buildForm({});
+      const itemForm = BodyRuleItemFormComponent.buildForm(item);
       this.formArray.push(itemForm);
       this.add.reset(null, { emitEvent: false });
       this.subscribeToAddValueChanges();
