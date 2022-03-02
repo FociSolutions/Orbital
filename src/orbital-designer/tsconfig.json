@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "strictBindCallApply": true,
+    "strictFunctionTypes": true,
     "alwaysStrict": true,
     "noImplicitThis": true,
     "downlevelIteration": true,
