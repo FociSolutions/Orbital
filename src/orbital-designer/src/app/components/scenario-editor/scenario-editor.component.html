@@ -37,7 +37,11 @@
               </mat-icon>
             </ng-template>
             <div class="tab-body">
-              <app-request-form formControlName="request" [touched]="touched"></app-request-form>
+              <app-request-form
+                formControlName="request"
+                [touched]="touched"
+                [tokenValidationIsEnabled]="tokenValidationIsEnabled"
+              ></app-request-form>
             </div>
           </mat-tab>
 

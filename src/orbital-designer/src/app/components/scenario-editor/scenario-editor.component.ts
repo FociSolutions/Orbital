@@ -55,6 +55,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     return this.scenarioForm.get('policies') as FormControl;
   }
 
+  tokenValidationIsEnabled = false;
   touched = false;
   scenarioId: string;
   selectedScenario: Scenario;
@@ -218,6 +219,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     if (!currentMock) {
       return;
     }
+
+    this.tokenValidationIsEnabled = currentMock.tokenValidation;
 
     const selected = currentMock.scenarios.find((s) => s.id === scenarioId);
     if (selected) {

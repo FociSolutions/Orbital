@@ -81,6 +81,7 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
   }
 
   @Input() touched = false;
+  @Input() tokenValidationIsEnabled = false;
 
   @Output() touchedEvent = new EventEmitter<void>();
 
