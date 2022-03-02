@@ -85,7 +85,7 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.touched?.firstChange && changes.touched?.currentValue) {
-      this.form.markAllAsTouched();
+      this.formArray.markAllAsTouched();
     }
   }
 

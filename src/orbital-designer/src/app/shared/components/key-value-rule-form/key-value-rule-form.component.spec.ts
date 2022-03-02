@@ -281,7 +281,7 @@ describe('KeyValueRuleFormComponent', () => {
   });
 
   describe('KeyValueRuleFormComponent.ngOnChanges', () => {
-    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+    it('should mark the formArray as touched if the touched input is true and not the firstChange', () => {
       const changes: SimpleChanges = {
         touched: {
           isFirstChange: () => false,
@@ -292,10 +292,10 @@ describe('KeyValueRuleFormComponent', () => {
       };
       component.ngOnChanges(changes);
 
-      expect(component.form.touched).toBe(true);
+      expect(component.formArray.touched).toBe(true);
     });
 
-    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+    it('should not mark the formArray as touched if the touched input is false and not the firstChange', () => {
       const changes: SimpleChanges = {
         touched: {
           isFirstChange: () => false,
@@ -306,10 +306,10 @@ describe('KeyValueRuleFormComponent', () => {
       };
       component.ngOnChanges(changes);
 
-      expect(component.form.touched).toBe(false);
+      expect(component.formArray.touched).toBe(false);
     });
 
-    it('should not mark the form as touched if the input is the firstChange', () => {
+    it('should not mark the formArray as touched if the input is the firstChange', () => {
       const changes: SimpleChanges = {
         touched: {
           isFirstChange: () => true,
@@ -320,14 +320,14 @@ describe('KeyValueRuleFormComponent', () => {
       };
       component.ngOnChanges(changes);
 
-      expect(component.form.touched).toBe(false);
+      expect(component.formArray.touched).toBe(false);
     });
 
-    it('should not mark the form as touched if the input does not contain the touched change', () => {
+    it('should not mark the formArray as touched if the input does not contain the touched change', () => {
       const changes: SimpleChanges = {};
       component.ngOnChanges(changes);
 
-      expect(component.form.touched).toBe(false);
+      expect(component.formArray.touched).toBe(false);
     });
   });
 

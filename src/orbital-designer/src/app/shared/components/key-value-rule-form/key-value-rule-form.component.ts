@@ -99,7 +99,7 @@ export class KeyValueRuleFormComponent implements ControlValueAccessor, Validato
       this.formArray.addValidators(this.validateNoDuplicatesInstance);
     }
     if (!changes.touched?.firstChange && changes.touched?.currentValue) {
-      this.form.markAllAsTouched();
+      this.formArray.markAllAsTouched();
     }
   }
 
