@@ -29,11 +29,11 @@ export class DesignerStore extends Store<State> {
 
   constructor(private logger: NGXLogger) {
     super({
-      selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey) ?? ''),
-      selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey) ?? ''),
-      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey) ?? ''),
-      mockDefinitions: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey) ?? '') || {},
-      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey) ?? '') || [],
+      selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey) ?? 'null'),
+      selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey) ?? 'null'),
+      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey) ?? 'null'),
+      mockDefinitions: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey) ?? 'null') || {},
+      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey) ?? 'null') || [],
     });
 
     this.state$.subscribe((state) => {

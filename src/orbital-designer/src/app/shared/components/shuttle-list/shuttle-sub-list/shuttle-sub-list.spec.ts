@@ -9,6 +9,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import validMockDefinition from '../../../../../test-files/test-mockdefinition-object';
 import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
+import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 describe('ShuttleSubListComponent', () => {
   let component: ShuttleSubListComponent;
@@ -55,7 +56,7 @@ describe('ShuttleSubListComponent', () => {
       });
 
       it('should return false if there are filtered options but the option passed is not filtered', () => {
-        expect(component.hideOption(null)).toBeFalsy();
+        expect(component.hideOption(null as unknown as MockDefinition)).toBeFalsy();
       });
     });
 

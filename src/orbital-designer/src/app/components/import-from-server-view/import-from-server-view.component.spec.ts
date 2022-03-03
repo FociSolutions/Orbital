@@ -61,7 +61,7 @@ describe('ImportFromServerViewComponent', () => {
 
   describe('ImportFromServerViewComponent.onSubmit', () => {
     it('should set the designer stores Mockdefinitions and navigate to the endpoint-view', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
         const store = TestBed.inject(DesignerStore);
         const expectedMockDefinition: MockDefinition = validMockDefinition;
@@ -103,7 +103,7 @@ describe('ImportFromServerViewComponent', () => {
         status: 200,
       });
       component.onResponse(response.body as unknown as MockDefinition[]);
-      expect(component.formArray.controls[0].value).toEqual(response.body[0]);
+      expect(component.formArray.controls[0].value).toEqual(response.body?.[0]);
     });
   });
 });

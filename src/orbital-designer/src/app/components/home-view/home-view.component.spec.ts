@@ -57,7 +57,7 @@ describe('HomeViewComponent', () => {
 
   describe('HomeViewComponent.navigateTo', () => {
     it('should call the navigateUrl function passing in the given url', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         const navigationSpy = jest.spyOn(router, 'navigateByUrl');
         component.navigateTo(path);
         tick();
@@ -67,7 +67,7 @@ describe('HomeViewComponent', () => {
     }));
 
     it('should navigate to endpoint-view if store has at least one mock definiition', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         const navigationSpy = jest.spyOn(router, 'navigateByUrl');
         const mockDefs: Record<string, MockDefinition> = {
           key: testMockdefinitionObject,

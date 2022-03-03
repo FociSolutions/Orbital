@@ -4,22 +4,23 @@ import { MockDefinitionService } from './mock-definition.service';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import validMockDefinitionFile from '../../../test-files/test-mockdefinition-file.mock';
 import { DesignerStore } from '../../store/designer-store';
-import { ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
+import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { VerbType } from 'src/app/models/verb-type';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { defaultMockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
+import { MockDefinition, defaultMockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import validOpenApiTest from '../../../test-files/valid-openapi-spec';
 import * as yaml from 'js-yaml';
 import { OpenAPIV2 } from 'openapi-types';
-import * as _ from 'lodash';
+import { cloneDeep } from 'lodash';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response-type';
+import { Response } from 'src/app/models/mock-definition/scenario/response.model';
 
 describe('MockDefinitionService', () => {
   let store: DesignerStore;
   let service: MockDefinitionService;
   let scenarioParams: ScenarioParams;
 
-  const ValidMockDefinitionInst = _.cloneDeep(validMockDefinition);
+  const ValidMockDefinitionInst = cloneDeep(validMockDefinition);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,7 +42,7 @@ describe('MockDefinitionService', () => {
   });
 
   it('should clone a scenario from the store such that no name conflicts will be encountered', (done) => {
-    const scenarios = [];
+    const scenarios: Scenario[] = [];
     for (let i = 0; i < 10; i++) {
       const scenario = service.generateNewScenario(scenarioParams);
       scenario.metadata.title = faker.random.words(3);
@@ -59,7 +60,7 @@ describe('MockDefinitionService', () => {
   });
 
   it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', (done) => {
-    const scenarios = [];
+    const scenarios: Scenario[] = [];
     for (let i = 0; i < 10; i++) {
       const scenario = service.generateNewScenario(scenarioParams);
 
@@ -94,7 +95,7 @@ describe('MockDefinitionService', () => {
   });
 
   it('should not clone a scenario from the store if the cloned scenario is invalid', (done) => {
-    const scenarios = [];
+    const scenarios: Scenario[] = [];
     for (let i = 0; i < 10; i++) {
       const scenario = service.generateNewScenario(scenarioParams);
 
@@ -105,8 +106,7 @@ describe('MockDefinitionService', () => {
     store.state.mockDefinition.scenarios = scenarios;
 
     const scenarioLengthComponentExpected = store.state.mockDefinition.scenarios.length;
-    const scenarioToClone = null;
-    service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
+    service.cloneScenario(validMockDefinition.metadata.title, null).subscribe({
       next: (hasCloned) => {
         const scenarioLengthComponentActual = store.state.mockDefinition.scenarios.length;
         expect(scenarioLengthComponentActual).toEqual(scenarioLengthComponentExpected);
@@ -118,7 +118,7 @@ describe('MockDefinitionService', () => {
 
   describe('When getDefaultValidationScenarios is called', () => {
     it('should not create any default token validation 401 scenarios if one exists already exists in each noted path-verb pair', (done) => {
-      const scenarios = [];
+      const scenarios: Scenario[] = [];
       for (let i = 0; i < 3; i++) {
         const scenario = service.generateNewScenario(scenarioParams);
 
@@ -133,7 +133,7 @@ describe('MockDefinitionService', () => {
     });
 
     it('should create the same amount of scenarios (3) as there are scenarios in a path-verb pair that do NOT have a 401 scenario (3)', (done) => {
-      const scenarios = [];
+      const scenarios: Scenario[] = [];
       let path = '';
       for (let i = 0; i < 3; i++) {
         path += `${faker.random.words(1)}/`;
@@ -150,7 +150,7 @@ describe('MockDefinitionService', () => {
   });
 
   it('should clone a scenario and ensure that the title and id are different', (done) => {
-    const scenarios = [];
+    const scenarios: Scenario[] = [];
     for (let i = 0; i < 10; i++) {
       const scenario = service.generateNewScenario(scenarioParams);
 
@@ -215,12 +215,13 @@ describe('MockDefinitionService', () => {
   });
 
   describe('backwards compatibility tests', () => {
-    let mockDefinitionWithoutResponseType: Record<string, unknown>;
+    let mockDefinitionWithoutResponseType: MockDefinition;
     let mockDefinitionWithoutResponseTypeJSON: string;
 
     beforeEach(() => {
-      mockDefinitionWithoutResponseType = JSON.parse(_.cloneDeep(validMockDefinitionFile));
-      delete mockDefinitionWithoutResponseType.scenarios[0].response.type;
+      mockDefinitionWithoutResponseType = JSON.parse(cloneDeep(validMockDefinitionFile));
+      const { type: _, ...response } = mockDefinitionWithoutResponseType.scenarios[0].response;
+      mockDefinitionWithoutResponseType.scenarios[0].response = response as unknown as Response;
       mockDefinitionWithoutResponseTypeJSON = JSON.stringify(mockDefinitionWithoutResponseType);
     });
 

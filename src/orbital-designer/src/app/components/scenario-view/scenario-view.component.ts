@@ -24,7 +24,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   private storeSubscription: Subscription;
   private _selectedMode: number;
 
-  endpointVerb: VerbType;
+  endpointVerb: VerbType = VerbType.NONE;
   endpointPath: string;
 
   scenarioList: Scenario[] = [];
@@ -92,7 +92,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * This function takes an scenario object and return its path as a string
    * @param scenario The scenario to be converted to string
    */
-  scenarioToString(scenario: Scenario): string | undefined {
+  scenarioToString(scenario: Scenario | null): string | undefined {
     if (scenario?.metadata) {
       return scenario.metadata.title;
     }
@@ -102,7 +102,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * This function takes a list of scenarios and updates it to the new list of filtered scenarios
    * @param newScenarios The list of scenarios
    */
-  setFilteredList(newScenarios: Scenario[]) {
+  setFilteredList(newScenarios: Scenario[] | null) {
     if (newScenarios) {
       this.filteredList = newScenarios;
     }
@@ -113,7 +113,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
    * then a monotonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
-  cloneScenario(scenario: Scenario) {
+  cloneScenario(scenario: Scenario | null) {
     this.logger.debug(scenario);
     const observable = this.mockDefinitionService
       .cloneScenario(this.store.state.mockDefinition.metadata.title, scenario)

@@ -62,7 +62,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   scenarioId: string;
   selectedScenario: Scenario;
   triggerOpenCancelBox: boolean;
-  endpointVerb: VerbType;
+  endpointVerb: VerbType = VerbType.NONE;
   endpointPath: string;
 
   constructor(

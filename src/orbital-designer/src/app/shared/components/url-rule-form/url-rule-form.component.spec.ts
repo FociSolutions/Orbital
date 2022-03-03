@@ -3,7 +3,7 @@ import { UrlRuleFormComponent, UrlRuleFormValues } from './url-rule-form.compone
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
 import { UrlRuleItemFormComponent, UrlRuleItemFormValues } from './url-rule-item-form/url-rule-item-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -88,14 +88,14 @@ describe('UrlRuleFormComponent', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
     it('should not fail validation with no inputs', () => {
       component.writeValue(VALUE_NULL);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
@@ -104,8 +104,8 @@ describe('UrlRuleFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 

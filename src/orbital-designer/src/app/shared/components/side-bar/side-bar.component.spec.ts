@@ -99,7 +99,7 @@ describe('SideBarComponent', () => {
   });
   describe('SideBarComponent.openDialogBox', () => {
     it('should return to homepage if last mockdefinition is dismissed', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
         component.mockDefinitions = [validMockDefinition];
 

@@ -83,7 +83,7 @@ export class MockDefinitionService {
    * @param mockId  string representation of mock definition's id
    * @param scenario Object representation of the scenario to be cloned
    */
-  cloneScenario(mockId: string, scenario: Scenario): Observable<boolean> {
+  cloneScenario(mockId: string, scenario?: Scenario | null): Observable<boolean> {
     return new Observable((observer) => {
       try {
         if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {

@@ -6,7 +6,7 @@ import {
   KeyValueRuleItemFormComponent,
   KeyValueRuleItemFormValues,
 } from './key-value-rule-item-form/key-value-rule-item-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -109,14 +109,14 @@ describe('KeyValueRuleFormComponent', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
     it('should not fail validation with no inputs', () => {
       component.writeValue(VALUE_NULL);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
@@ -125,8 +125,8 @@ describe('KeyValueRuleFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should not fail validation if more than one entry has the same key but different value', () => {
@@ -134,7 +134,7 @@ describe('KeyValueRuleFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeNull();
-      expect(component.validate(null)).toBeNull();
+      expect(component.validate(null as unknown as FormControl)).toBeNull();
     });
 
     describe('KeyValueRuleFormComponent validation allowDuplicateKeys', () => {
@@ -145,8 +145,8 @@ describe('KeyValueRuleFormComponent', () => {
 
         const actual = component.formArray.errors;
         expect(actual).toBeTruthy();
-        expect(actual.duplicate).toBeTruthy();
-        expect(component.validate(null)).toBeTruthy();
+        expect(actual?.duplicate).toBeTruthy();
+        expect(component.validate(null as unknown as FormControl)).toBeTruthy();
       });
 
       it('should not fail validation if allowDuplicateKeys is enabled and entries have the same keys with different values ', () => {
@@ -156,7 +156,7 @@ describe('KeyValueRuleFormComponent', () => {
 
         const actual = component.formArray.errors;
         expect(actual).toBeNull();
-        expect(component.validate(null)).toBeNull();
+        expect(component.validate(null as unknown as FormControl)).toBeNull();
       });
 
       it('should fail validation if allowDuplicateKeys is disabled and entries have the same keys with different values ', () => {
@@ -166,8 +166,8 @@ describe('KeyValueRuleFormComponent', () => {
 
         const actual = component.formArray.errors;
         expect(actual).toBeTruthy();
-        expect(actual.duplicate).toBeTruthy();
-        expect(component.validate(null)).toBeTruthy();
+        expect(actual?.duplicate).toBeTruthy();
+        expect(component.validate(null as unknown as FormControl)).toBeTruthy();
       });
     });
   });

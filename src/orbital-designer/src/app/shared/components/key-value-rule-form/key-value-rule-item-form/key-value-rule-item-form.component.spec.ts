@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { KeyValueRuleItemFormComponent, KeyValueRuleItemFormValues } from './key-value-rule-item-form.component';
 import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
@@ -15,7 +15,11 @@ describe('KeyValueRuleItemFormComponent', () => {
   let component: KeyValueRuleItemFormComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
   let SAMPLE_VALUE: KeyValueRuleItemFormValues;
-  const VALUE_NULL: KeyValueRuleItemFormValues = { key: null, value: null, type: null };
+  const VALUE_NULL: KeyValueRuleItemFormValues = {
+    key: null as unknown as string,
+    value: null as unknown as string,
+    type: null as unknown as RuleType,
+  };
 
   @Component({
     selector: 'app-test-wrapper-component',
@@ -101,13 +105,13 @@ describe('KeyValueRuleItemFormComponent', () => {
     });
 
     it('should fail validation if the key field is empty', () => {
-      const value: KeyValueRuleItemFormValues = { ...SAMPLE_VALUE, key: null };
+      const value: KeyValueRuleItemFormValues = { ...SAMPLE_VALUE, key: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the key field exceeds its maxlength', () => {
@@ -117,10 +121,10 @@ describe('KeyValueRuleItemFormComponent', () => {
       };
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeTruthy();
-      expect(actual.maxlength).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.maxlength).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if allowKeyWhitespace is `false` and the key field contains a space empty', () => {
@@ -129,10 +133,10 @@ describe('KeyValueRuleItemFormComponent', () => {
       fixture.detectChanges();
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeTruthy();
-      expect(actual.whitespace).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.whitespace).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should not fail validation if allowKeyWhitespace is `true` and the key field contains a space empty', () => {
@@ -141,19 +145,19 @@ describe('KeyValueRuleItemFormComponent', () => {
       fixture.detectChanges();
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeNull();
-      expect(component.validate(null)).toBeNull();
+      expect(component.validate(null as unknown as FormControl)).toBeNull();
     });
 
     it('should fail validation if the value field is empty', () => {
-      const value: KeyValueRuleItemFormValues = { ...SAMPLE_VALUE, value: null };
+      const value: KeyValueRuleItemFormValues = { ...SAMPLE_VALUE, value: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the value field exceeds its maxlength', () => {
@@ -163,10 +167,10 @@ describe('KeyValueRuleItemFormComponent', () => {
       };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.maxlength).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.maxlength).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the entry is duplicated', () => {
@@ -175,8 +179,8 @@ describe('KeyValueRuleItemFormComponent', () => {
 
       const actual = component.form.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 
@@ -225,7 +229,7 @@ describe('KeyValueRuleItemFormComponent', () => {
       const actual = KeyValueRuleItemFormComponent.noWhiteSpaceValidator(control);
 
       expect(actual).toBeTruthy();
-      expect(actual.whitespace).toBeTruthy();
+      expect(actual?.whitespace).toBeTruthy();
     });
   });
 
