@@ -89,7 +89,7 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
               duplicate: 'This policy (type or value) already exists. Duplicates are not allowed.',
             });
           } else {
-            const { duplicate: _, ...errors } = this.form.errors;
+            const { duplicate: _, ...errors } = this.form.errors ?? {};
             this.form.setErrors(Object.keys(errors).length ? errors : null);
           }
         }
@@ -138,7 +138,7 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
         return fb.group({ type: policy.type ?? null, value: policy.value ?? null });
       default: {
         // Cause a type-check error if a case is missed
-        const _: never = policy.type;
+        const _: undefined = policy.type;
         throw new Error('Invalid Policy Type');
       }
     }
@@ -158,10 +158,10 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: PolicyFormValues) => void> = [];
+  readonly onChange: Array<(value: PolicyFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: PolicyFormValues) => void): void {
+  registerOnChange(fn: (value: PolicyFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

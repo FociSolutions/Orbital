@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
 import { Observer } from 'rxjs';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
@@ -14,7 +14,7 @@ import { NotificationService } from 'src/app/services/notification-service/notif
   styleUrls: ['./delete-from-server-view.component.scss'],
 })
 export class DeleteFromServerViewComponent implements OnInit {
-  @Input() set errorsRestRequest(errors: Record<string, unknown>) {
+  @Input() set errorsRestRequest(errors: ValidationErrors | null) {
     if (this.inputControl) {
       this.inputControl.setErrors(errors);
     }
@@ -55,8 +55,6 @@ export class DeleteFromServerViewComponent implements OnInit {
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
-  options: Record<string, unknown> = {};
-  body?: string = null;
 
   concatToURI = '';
 
@@ -90,7 +88,7 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.statusMessage = '';
     this.errorMessage = '';
     this.inputControl.markAsDirty();
-    if (this.sendRequestDisabled) {
+    if (this.sendRequestDisabled()) {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
 
@@ -150,7 +148,7 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.logger.debug('Received http response', response);
 
     if (response) {
-      response.forEach((m) => (m.openApi.tags = m.openApi.tags.filter((t) => t.name !== 'openapi')));
+      response.forEach((m) => (m.openApi.tags = m.openApi.tags?.filter((t) => t.name !== 'openapi')));
       this.formArray = new FormArray(response.map((mockDef) => new FormControl(mockDef, null)));
 
       this.logger.debug('DeleteFromServerViewComponent FormArray value:', this.formArray);

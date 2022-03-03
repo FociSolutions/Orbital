@@ -232,7 +232,7 @@ export class KeyValuePairFormComponent implements ControlValueAccessor, Validato
               ...error,
             });
           } else {
-            const { duplicate: _, ...errors } = control.errors;
+            const { duplicate: _, ...errors } = control.errors ?? {};
             control.setErrors(Object.keys(errors).length ? errors : null);
           }
         }
@@ -252,10 +252,10 @@ export class KeyValuePairFormComponent implements ControlValueAccessor, Validato
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: KeyValuePairFormValues) => void> = [];
+  readonly onChange: Array<(value: KeyValuePairFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: KeyValuePairFormValues) => void): void {
+  registerOnChange(fn: (value: KeyValuePairFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

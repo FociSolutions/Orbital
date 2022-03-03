@@ -34,6 +34,10 @@ export interface RequestFormValues {
   tokenRules: KeyValueRuleFormValues;
 }
 
+type DeepNullable<T> = {
+  [K in keyof T]: DeepNullable<T[K]> | null;
+};
+
 @Component({
   selector: 'app-request-form',
   templateUrl: './request-form.component.html',
@@ -97,7 +101,7 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
 
   currentRuleType: keyof typeof RequestFormComponent.ruleTypesStatic = 'header';
 
-  defaults: RequestFormValues = {
+  defaults: DeepNullable<RequestFormValues> = {
     requestMatchRules: {
       headerRules: null,
       queryRules: null,
@@ -179,10 +183,10 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: RequestFormValues) => void> = [];
+  readonly onChange: Array<(value: RequestFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: RequestFormValues) => void): void {
+  registerOnChange(fn: (value: RequestFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

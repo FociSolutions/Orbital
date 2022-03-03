@@ -171,7 +171,7 @@ export class ResponseFormComponent implements ControlValueAccessor, Validator, O
     if (value === null || value === undefined) {
       this.form.reset(this.defaults, { emitEvent: false });
     } else {
-      this.form.patchValue(this.adaptExternalFormatToInternal(value), { emitEvent: false });
+      this.form.patchValue(this.adaptExternalFormatToInternal(value) ?? {}, { emitEvent: false });
     }
     this.initBodyData = this.safeParseJson(this.body.value);
   }
@@ -220,10 +220,10 @@ export class ResponseFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: ResponseFormValues) => void> = [];
+  readonly onChange: Array<(value: ResponseFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: ResponseFormValues) => void): void {
+  registerOnChange(fn: (value: ResponseFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

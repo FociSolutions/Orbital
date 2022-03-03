@@ -31,7 +31,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   filteredList: Scenario[] = [];
 
   errorMessage: string;
-  triggerOpen: string;
+  triggerOpen: string | null;
   mockDefinition: MockDefinition;
   isHoveringOverMenu: boolean;
   dropdownVisible: boolean;
@@ -80,21 +80,24 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   addScenario() {
     this.router.navigate(['/scenario-editor', uuid.v4()]);
   }
+
   /**
    * Goes back to the endpoint page
    */
   goToEndpoints() {
     this.router.navigateByUrl('/endpoint-view');
   }
+
   /**
    * This function takes an scenario object and return its path as a string
    * @param scenario The scenario to be converted to string
    */
-  scenarioToString(scenario: Scenario): string {
+  scenarioToString(scenario: Scenario): string | undefined {
     if (scenario?.metadata) {
       return scenario.metadata.title;
     }
   }
+
   /**
    * This function takes a list of scenarios and updates it to the new list of filtered scenarios
    * @param newScenarios The list of scenarios

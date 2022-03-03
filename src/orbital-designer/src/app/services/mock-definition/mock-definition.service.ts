@@ -131,7 +131,7 @@ export class MockDefinitionService {
    * @param endpoints list of endpoints from the imported openapi document
    */
   getDefaultScenarios(endpoints: OpenAPIV2.PathsObject, validation = false): Scenario[] {
-    const defaultScenariosPerEndpoint = [];
+    const defaultScenariosPerEndpoint: Scenario[] = [];
     const keyArrayOfEndpoints = Object.keys(endpoints);
 
     keyArrayOfEndpoints.forEach((pathName) => {
@@ -207,7 +207,7 @@ export class MockDefinitionService {
     };
   }
 
-  private getEndpointVerbTypes(endpoint: unknown): VerbType[] {
+  private getEndpointVerbTypes(endpoint: OpenAPIV2.PathItemObject): VerbType[] {
     const verbs: VerbType[] = [];
     const verbKeys = Object.keys(endpoint);
     verbKeys.forEach((key) => {

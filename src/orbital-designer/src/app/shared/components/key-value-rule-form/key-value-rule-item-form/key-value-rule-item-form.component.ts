@@ -128,7 +128,7 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
           duplicate: 'This item already exists. Duplicates are not allowed.',
         });
       } else {
-        const { duplicate: _, ...errors } = this.form.errors;
+        const { duplicate: _, ...errors } = this.form.errors ?? {};
         this.form.setErrors(Object.keys(errors).length ? errors : null);
       }
     }
@@ -185,10 +185,10 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: KeyValueRuleItemFormValues) => void> = [];
+  readonly onChange: Array<(value: KeyValueRuleItemFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: KeyValueRuleItemFormValues) => void): void {
+  registerOnChange(fn: (value: KeyValueRuleItemFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

@@ -207,7 +207,7 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
             ...error,
           });
         } else {
-          const { duplicate: _, ...errors } = control.errors;
+          const { duplicate: _, ...errors } = control.errors ?? {};
           control.setErrors(Object.keys(errors).length ? errors : null);
         }
       }
@@ -226,10 +226,10 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: BodyRuleFormValues) => void> = [];
+  readonly onChange: Array<(value: BodyRuleFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: BodyRuleFormValues) => void): void {
+  registerOnChange(fn: (value: BodyRuleFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

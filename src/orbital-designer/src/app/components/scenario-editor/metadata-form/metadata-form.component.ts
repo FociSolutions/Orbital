@@ -129,10 +129,10 @@ export class MetadataFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: MetadataFormValues) => void> = [];
+  readonly onChange: Array<(value: MetadataFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: MetadataFormValues) => void): void {
+  registerOnChange(fn: (value: MetadataFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

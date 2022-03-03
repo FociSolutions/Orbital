@@ -24,6 +24,14 @@ export interface ScenarioEditorFormValues {
   policies: PoliciesFormValues;
 }
 
+type DeepNullable<T> = {
+  [K in keyof T]: DeepNullable<T[K]> | null;
+};
+
+function isNotNull<T>(arg: T): arg is Exclude<T, null> {
+  return arg !== null;
+}
+
 @Component({
   selector: 'app-scenario-editor',
   templateUrl: './scenario-editor.component.html',
@@ -104,7 +112,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  convertScenarioToFormData(scenario?: Scenario): ScenarioEditorFormValues {
+  convertScenarioToFormData(scenario?: Scenario): DeepNullable<ScenarioEditorFormValues> {
     const response: ResponseFormValues = this.convertResponseDataToFormValues(scenario?.response ?? defaultResponse);
     const policies: PoliciesFormValues = this.convertPoliciesDataToFormValues(scenario?.policies ?? []);
     return {
@@ -138,7 +146,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
           }
         }
       })
-      .filter((p) => p !== null);
+      .filter(isNotNull);
   }
 
   ngOnDestroy(): void {
@@ -231,9 +239,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.selectedScenario
       );
     } else {
-      const endpointVerb = this.store.state.selectedEndpoint.verb;
-      const endpointPath = this.store.state.selectedEndpoint.path;
-      this.selectedScenario = this.createEmptyScenario(scenarioId, endpointVerb, endpointPath);
+      const endpointVerb = this.store.state.selectedEndpoint?.verb;
+      const endpointPath = this.store.state.selectedEndpoint?.path;
+      this.selectedScenario = this.createEmptyScenario(scenarioId, endpointVerb ?? VerbType.NONE, endpointPath ?? '');
       this.logger.debug(
         `ScenarioEditorComponent:retrieveScenario: Scenario not found, new scenario was created for (${endpointPath}, ${endpointVerb})`,
         this.selectedScenario
