@@ -191,7 +191,11 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
    * @param formArray the FormArray object to validate
    * @returns a ValidationErrors object containing any errors, or null if there are no errors
    */
-  static validateNoDuplicates(formArray: FormArray): ValidationErrors | null {
+  static validateNoDuplicates(formArray: AbstractControl): ValidationErrors | null {
+    if (!(formArray instanceof FormArray)) {
+      throw new Error('Validator can only be used with FormArray controls');
+    }
+
     const items: UrlRuleFormValues = formArray.value ?? [];
     const controls: AbstractControl[] = formArray.controls;
     let error: ValidationErrors | null = null;

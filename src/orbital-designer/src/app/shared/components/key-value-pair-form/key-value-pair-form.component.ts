@@ -211,7 +211,11 @@ export class KeyValuePairFormComponent implements ControlValueAccessor, Validato
    * @returns a ValidationErrors object containing any errors, or null if there are no errors
    */
   static validateNoDuplicates(allowDuplicateKeys: boolean = false): ValidatorFn {
-    return (formArray: FormArray) => {
+    return (formArray: AbstractControl) => {
+      if (!(formArray instanceof FormArray)) {
+        throw new Error('Validator can only be used with FormArray controls');
+      }
+
       const items: KeyValuePairFormValues = formArray.value ?? [];
       const controls: AbstractControl[] = formArray.controls;
       let error: ValidationErrors | null = null;
