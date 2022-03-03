@@ -153,7 +153,7 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should add an item to the list', () => {
-      component.addItemHandler(SAMPLE_ITEM);
+      component.addItemHandler(NULL_ITEM);
 
       expect(component.formArray.controls.length).toBe(1);
       expect(component.formArray.value).toEqual([NULL_ITEM]);
