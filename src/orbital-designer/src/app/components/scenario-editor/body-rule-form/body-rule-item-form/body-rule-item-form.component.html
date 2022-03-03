@@ -41,7 +41,7 @@
         </mat-select>
       </mat-form-field>
 
-      <div *ngIf="mode === 'edit'">
+      <ng-container *ngIf="mode === 'edit'">
         <button mat-icon-button color="primary" [disabled]="!form.valid" (click)="saveItem()">
           <mat-icon>visibility</mat-icon>
         </button>
@@ -49,7 +49,7 @@
         <button mat-icon-button color="warn" (click)="removeItem()">
           <mat-icon>delete_forever</mat-icon>
         </button>
-      </div>
+      </ng-container>
 
       <button
         *ngIf="mode === 'add'"
