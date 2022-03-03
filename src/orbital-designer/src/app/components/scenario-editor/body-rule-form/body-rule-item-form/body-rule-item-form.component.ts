@@ -32,13 +32,12 @@ import {
   JsonRuleCondition,
   TextRuleCondition,
 } from './body-rule-item-form.types';
+import { Nullable } from 'src/app/shared/Utilities/Nullable';
 
 export interface BodyRuleItemFormValues {
   type: RuleType;
   value: string;
 }
-
-type Nullable<T> = { [K in keyof T]: T[K] | null };
 
 @Component({
   selector: 'app-body-rule-item-form',

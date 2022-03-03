@@ -16,20 +16,14 @@ import { Response, defaultResponse } from 'src/app/models/mock-definition/scenar
 import { RequestFormValues } from './request-form/request-form.component';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { isNotNull } from 'src/app/shared/Utilities/type-guards';
+import { DeepNullable } from 'src/app/shared/Utilities/Nullable';
 
 export interface ScenarioEditorFormValues {
   metadata: MetadataFormValues;
   request: RequestFormValues;
   response: ResponseFormValues;
   policies: PoliciesFormValues;
-}
-
-type DeepNullable<T> = {
-  [K in keyof T]: DeepNullable<T[K]> | null;
-};
-
-function isNotNull<T>(arg: T): arg is Exclude<T, null> {
-  return arg !== null;
 }
 
 @Component({

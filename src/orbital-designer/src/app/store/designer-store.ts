@@ -8,10 +8,7 @@ import { VerbType } from '../models/verb-type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
-
-function isNotNull<T>(arg: T): arg is Exclude<T, null> {
-  return arg !== null;
-}
+import { isNotNull } from '../shared/Utilities/type-guards';
 
 export interface State {
   selectedEndpoint: Endpoint | null;
