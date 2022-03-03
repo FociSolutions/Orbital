@@ -51,11 +51,15 @@
         </button>
       </div>
 
-      <div *ngIf="mode === 'add'">
-        <button mat-mini-fab color="primary" [disabled]="!form.valid || !form.touched" (click)="addItem()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
+      <button
+        *ngIf="mode === 'add'"
+        mat-mini-fab
+        color="primary"
+        [disabled]="!form.valid || !form.touched"
+        (click)="addItem()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
     </ng-container>
   </div>
 

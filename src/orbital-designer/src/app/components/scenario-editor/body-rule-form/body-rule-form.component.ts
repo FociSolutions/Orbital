@@ -100,6 +100,11 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
         this.itemIsDuplicatedEvent.emit(this.itemIsDuplicated(value));
       })
     );
+    this.cleanupSubscriptions();
+  }
+
+  cleanupSubscriptions() {
+    this.subscriptions = this.subscriptions.filter((s) => !s.closed);
   }
 
   validate(_: FormControl): ValidationErrors | null {
@@ -211,7 +216,7 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
    * Boilerplate Code Below Here
    */
 
-  private readonly subscriptions: Subscription[] = [];
+  private subscriptions: Subscription[] = [];
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
