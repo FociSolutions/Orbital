@@ -146,7 +146,7 @@ describe('BodyRuleFormComponent', () => {
     });
   });
 
-  describe('BodyRuleFormComponent.addItem', () => {
+  describe('BodyRuleFormComponent.addItemHandler, () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).cdRef = { detectChanges: jest.fn() };
