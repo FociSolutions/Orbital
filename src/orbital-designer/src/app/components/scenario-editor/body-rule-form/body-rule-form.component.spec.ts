@@ -153,7 +153,7 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should add an item to the list', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
 
       expect(component.formArray.controls.length).toBe(1);
       expect(component.formArray.value).toEqual([NULL_ITEM]);
@@ -167,7 +167,7 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should remove an item from the list', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
       component.removeItemHandler(0);
 
       expect(component.formArray.controls.length).toBe(0);
@@ -175,7 +175,7 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should throw an error if the requested index is out of bounds', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
       expect(() => component.removeItemHandler(-1)).toThrow();
       expect(() => component.removeItemHandler(1)).toThrow();
       expect(() => component.removeItemHandler(2)).toThrow();
