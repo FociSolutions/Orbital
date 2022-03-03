@@ -10,7 +10,7 @@ export class SearchBarComponent implements OnChanges {
   @Output() filteredList: EventEmitter<unknown[]>;
   @ViewChild(MatInput) input: MatInput;
   @Input() list: unknown[] = [];
-  @Input() itemToStringFn: (_: unknown) => string = (x: string) => x;
+  @Input() itemToStringFn: (_: unknown) => string = (x: unknown) => x.toString();
   constructor() {
     this.filteredList = new EventEmitter<unknown[]>();
   }
