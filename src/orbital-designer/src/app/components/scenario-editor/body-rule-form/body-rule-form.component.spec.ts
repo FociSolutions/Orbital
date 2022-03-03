@@ -146,7 +146,7 @@ describe('BodyRuleFormComponent', () => {
     });
   });
 
-  describe('BodyRuleFormComponent.addItemHandler, () => {
+  describe('BodyRuleFormComponent.addItemHandler', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).cdRef = { detectChanges: jest.fn() };
@@ -157,6 +157,21 @@ describe('BodyRuleFormComponent', () => {
 
       expect(component.formArray.controls.length).toBe(1);
       expect(component.formArray.value).toEqual([NULL_ITEM]);
+    });
+
+    it('should clear the add form when adding an item', () => {
+      component.add.setValue(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(component.add.value).toBeNull();
+    });
+
+    it('should not add a duplicate item to the list', () => {
+      component.addItemHandler(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(component.formArray.controls.length).toBe(1);
+      expect(component.formArray.value).toEqual([SAMPLE_ITEM]);
     });
   });
 
