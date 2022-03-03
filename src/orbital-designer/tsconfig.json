@@ -1,6 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "strictBindCallApply": true,
+    "alwaysStrict": true,
+    "noImplicitThis": true,
     "downlevelIteration": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
