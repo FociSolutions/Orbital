@@ -76,12 +76,12 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
   @Input() touched = false;
   @Input() readonly title = '';
   @Input() readonly errors: string[] = [];
-  @Input() mode: 'view' | 'edit' = 'view';
+  @Input() mode: 'add' | 'edit' | 'view' = 'view';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
   @Input() readonly pathMaxLength = 3000;
 
-  @Output() readonly addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
-  @Output() readonly removeItemEvent = new EventEmitter<void>();
+  @Output() addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
+  @Output() removeItemEvent = new EventEmitter<void>();
   @Output() touchedEvent = new EventEmitter<void>();
 
   readonly ruleTypes = [
@@ -256,6 +256,12 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
         const _: never = ruleType;
         return ' ';
       }
+    }
+  }
+
+  addItem() {
+    if (this.form.valid) {
+      this.addItemEvent.emit(this.adaptInternalFormatToExternal(this.form.value));
     }
   }
 

@@ -17,10 +17,6 @@ describe('BodyRuleFormComponent', () => {
   let component: BodyRuleFormComponent;
   let fixture: ComponentFixture<BodyRuleFormComponent>;
   let SAMPLE_ITEM: BodyRuleItemFormValues;
-  const NULL_ITEM: BodyRuleItemFormValues = {
-    type: null,
-    value: null,
-  };
   let SAMPLE_VALUE: BodyRuleFormValues;
   const VALUE_NULL: BodyRuleFormValues = [];
 
@@ -146,17 +142,42 @@ describe('BodyRuleFormComponent', () => {
     });
   });
 
-  describe('BodyRuleFormComponent.addItem', () => {
+  describe('BodyRuleFormComponent.addItemHandler', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).cdRef = { detectChanges: jest.fn() };
     });
 
     it('should add an item to the list', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
 
       expect(component.formArray.controls.length).toBe(1);
-      expect(component.formArray.value).toEqual([NULL_ITEM]);
+      expect(component.formArray.value).toEqual([SAMPLE_ITEM]);
+    });
+
+    it('should clear the add form when adding an item', () => {
+      component.add.setValue(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(component.add.value).toBeNull();
+    });
+
+    it('should not add a duplicate item to the list', () => {
+      component.addItemHandler(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(component.formArray.controls.length).toBe(1);
+      expect(component.formArray.value).toEqual([SAMPLE_ITEM]);
+    });
+
+    it('should emit a duplicate item event when attempting to add an existing item', () => {
+      const spy = jest.spyOn(component.itemIsDuplicatedEvent, 'emit');
+      component.addItemHandler(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(spy).toHaveBeenCalledTimes(3);
+      expect(spy).toHaveBeenCalledWith(true);
+      spy.mockRestore();
     });
   });
 
@@ -167,7 +188,7 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should remove an item from the list', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
       component.removeItemHandler(0);
 
       expect(component.formArray.controls.length).toBe(0);
@@ -175,7 +196,7 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should throw an error if the requested index is out of bounds', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
       expect(() => component.removeItemHandler(-1)).toThrow();
       expect(() => component.removeItemHandler(1)).toThrow();
       expect(() => component.removeItemHandler(2)).toThrow();

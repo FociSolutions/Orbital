@@ -65,7 +65,15 @@
             </button>
           </div>
           <div id="save-button-div">
-            <button id="save-button" color="primary" mat-raised-button (click)="save()">Save</button>
+            <button
+              id="save-button"
+              color="primary"
+              mat-raised-button
+              (click)="save()"
+              [disabled]="!scenarioForm.valid || !scenarioForm.dirty"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
