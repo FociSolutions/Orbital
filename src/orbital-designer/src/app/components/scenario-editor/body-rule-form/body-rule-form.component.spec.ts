@@ -17,10 +17,6 @@ describe('BodyRuleFormComponent', () => {
   let component: BodyRuleFormComponent;
   let fixture: ComponentFixture<BodyRuleFormComponent>;
   let SAMPLE_ITEM: BodyRuleItemFormValues;
-  const NULL_ITEM: BodyRuleItemFormValues = {
-    type: null,
-    value: null,
-  };
   let SAMPLE_VALUE: BodyRuleFormValues;
   const VALUE_NULL: BodyRuleFormValues = [];
 
@@ -153,10 +149,10 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should add an item to the list', () => {
-      component.addItemHandler(NULL_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
 
       expect(component.formArray.controls.length).toBe(1);
-      expect(component.formArray.value).toEqual([NULL_ITEM]);
+      expect(component.formArray.value).toEqual([SAMPLE_ITEM]);
     });
 
     it('should clear the add form when adding an item', () => {
@@ -172,6 +168,16 @@ describe('BodyRuleFormComponent', () => {
 
       expect(component.formArray.controls.length).toBe(1);
       expect(component.formArray.value).toEqual([SAMPLE_ITEM]);
+    });
+
+    it('should emit a duplicate item event when attempting to add an existing item', () => {
+      const spy = jest.spyOn(component.itemIsDuplicatedEvent, 'emit');
+      component.addItemHandler(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(spy).toHaveBeenCalledTimes(3);
+      expect(spy).toHaveBeenCalledWith(true);
+      spy.mockRestore();
     });
   });
 
