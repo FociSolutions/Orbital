@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { Observer } from 'rxjs';
@@ -20,8 +20,6 @@ export class ImportFromServerViewComponent implements OnInit {
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
-  options: Record<string, unknown> = {};
-  body?: string = null;
 
   concatToURI = '';
 
@@ -33,7 +31,7 @@ export class ImportFromServerViewComponent implements OnInit {
 
   controlsMockDefinitionToString = (control: AbstractControl) => control.value.metadata.title;
 
-  @Input() set errorsRestRequest(errors: Record<string, unknown>) {
+  @Input() set errorsRestRequest(errors: ValidationErrors | null) {
     if (this.inputControl) {
       this.inputControl.setErrors(errors);
     }
@@ -79,7 +77,7 @@ export class ImportFromServerViewComponent implements OnInit {
 
   sendRequest() {
     this.inputControl.markAsDirty();
-    if (this.sendRequestDisabled) {
+    if (this.sendRequestDisabled()) {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
 
@@ -116,7 +114,7 @@ export class ImportFromServerViewComponent implements OnInit {
   }
 
   /**
-   * If the response returned is not an error or domexceptions it sets the controls
+   * If the response returned is not an error or dom exceptions it sets the controls
    * values to the response body. The control is then responsible for validation.
    * @param response HttpResponse received by the input
    */
@@ -124,7 +122,7 @@ export class ImportFromServerViewComponent implements OnInit {
     this.logger.debug('Received http response', response);
 
     if (response) {
-      response.forEach((m) => (m.openApi.tags = m.openApi.tags.filter((t) => t.name !== 'openapi')));
+      response.forEach((m) => (m.openApi.tags = m.openApi.tags?.filter((t) => t.name !== 'openapi')));
       this.formArray = new FormArray(response.map((mockDef) => new FormControl(mockDef, null)));
 
       this.logger.debug('ImportFormServerViewComponent FormArray value:', this.formArray);

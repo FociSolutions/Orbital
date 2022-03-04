@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { KeyValuePairItemFormComponent, KeyValuePairItemFormValues } from './key-value-pair-item-form.component';
 import * as faker from 'faker';
 import { SimpleChanges } from '@angular/core';
@@ -13,7 +13,7 @@ describe('KeyValuePairItemFormComponent', () => {
   let component: KeyValuePairItemFormComponent;
   let fixture: ComponentFixture<KeyValuePairItemFormComponent>;
   let SAMPLE_VALUE: KeyValuePairItemFormValues;
-  const VALUE_NULL: KeyValuePairItemFormValues = { key: null, value: null };
+  const VALUE_NULL: KeyValuePairItemFormValues = { key: null as unknown as string, value: null as unknown as string };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -87,23 +87,23 @@ describe('KeyValuePairItemFormComponent', () => {
     });
 
     it('should fail validation if the key field is empty', () => {
-      const value: KeyValuePairItemFormValues = { ...SAMPLE_VALUE, key: null };
+      const value: KeyValuePairItemFormValues = { ...SAMPLE_VALUE, key: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the value field is empty', () => {
-      const value: KeyValuePairItemFormValues = { ...SAMPLE_VALUE, value: null };
+      const value: KeyValuePairItemFormValues = { ...SAMPLE_VALUE, value: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the entry is duplicated', () => {
@@ -112,8 +112,8 @@ describe('KeyValuePairItemFormComponent', () => {
 
       const actual = component.form.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 

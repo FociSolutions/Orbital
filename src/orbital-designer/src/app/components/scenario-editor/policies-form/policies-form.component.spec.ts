@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
 import { PolicyFormComponent } from './policy-form/policy-form.component';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy-type';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -87,14 +87,14 @@ describe('PoliciesFormComponent', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
     it('should not fail validation with no inputs', () => {
       component.writeValue(VALUE_NULL);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
@@ -103,8 +103,8 @@ describe('PoliciesFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if there is more than one delay policy', () => {
@@ -112,8 +112,8 @@ describe('PoliciesFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 

@@ -141,7 +141,7 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
           duplicate: 'This item already exists. Duplicates are not allowed.',
         });
       } else {
-        const { duplicate: _, ...errors } = this.form.errors;
+        const { duplicate: _, ...errors } = this.form.errors ?? {};
         this.form.setErrors(Object.keys(errors).length ? errors : null);
       }
     }
@@ -149,7 +149,10 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
 
   addItem() {
     if (this.form.valid) {
-      this.addItemEvent.emit(this.adjustFormValue(this.form.value));
+      const adjustedValue = this.adjustFormValue(this.form.value);
+      if (adjustedValue) {
+        this.addItemEvent.emit(adjustedValue);
+      }
     }
   }
 
@@ -190,10 +193,10 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: UrlRuleItemFormValues) => void> = [];
+  readonly onChange: Array<(value: UrlRuleItemFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: UrlRuleItemFormValues) => void): void {
+  registerOnChange(fn: (value: UrlRuleItemFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

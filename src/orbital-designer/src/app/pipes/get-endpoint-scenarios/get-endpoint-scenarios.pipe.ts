@@ -12,14 +12,10 @@ export class GetEndpointScenariosPipe implements PipeTransform {
    * @param scenarios The list of scenarios to filter
    * @param endpoint The endpoint to filter the scenarios against
    */
-  transform(scenarios: Scenario[], endpoint: Endpoint): Scenario[] {
+  transform(scenarios: Scenario[], endpoint: Endpoint | null): Scenario[] {
     if (!endpoint) {
       return scenarios;
     }
-    return scenarios.filter(
-      (scenario) =>
-        scenario.path === endpoint.path &&
-        scenario.verb.toString().toUpperCase() === endpoint.verb.toString().toUpperCase()
-    );
+    return scenarios.filter((scenario) => scenario.path === endpoint.path && scenario.verb === endpoint.verb);
   }
 }

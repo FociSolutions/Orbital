@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UrlRuleItemFormComponent, UrlRuleItemFormValues } from './url-rule-item-form.component';
 import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
@@ -14,7 +14,7 @@ describe('UrlRuleItemFormComponent', () => {
   let component: UrlRuleItemFormComponent;
   let fixture: ComponentFixture<UrlRuleItemFormComponent>;
   let SAMPLE_VALUE: UrlRuleItemFormValues;
-  const VALUE_NULL: UrlRuleItemFormValues = { type: null, path: undefined };
+  const VALUE_NULL: UrlRuleItemFormValues = { type: null as unknown as RuleType, path: undefined as unknown as string };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -102,23 +102,23 @@ describe('UrlRuleItemFormComponent', () => {
     });
 
     it('should fail validation if the type field is empty', () => {
-      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, type: null };
+      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, type: null as unknown as RuleType };
       component.writeValue(value);
 
-      const actual = component.type.validator(component.type);
+      const actual = component.type.validator?.(component.type);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the path field is empty', () => {
-      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: null };
+      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.path.validator(component.path);
+      const actual = component.path.validator?.(component.path);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the entry is duplicated', () => {
@@ -127,8 +127,8 @@ describe('UrlRuleItemFormComponent', () => {
 
       const actual = component.form.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 
@@ -137,21 +137,21 @@ describe('UrlRuleItemFormComponent', () => {
       const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, type: RuleType.ACCEPTALL };
       const actual = component.adjustFormValue(value);
 
-      expect(actual.path).toBe('');
+      expect(actual?.path).toBe('');
     });
 
     it('should set the path to an empty string if the path is null', () => {
-      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: null };
+      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: null as unknown as string };
       const actual = component.adjustFormValue(value);
 
-      expect(actual.path).toBe('');
+      expect(actual?.path).toBe('');
     });
 
     it('should set the path to an empty string if the path is undefined', () => {
-      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: undefined };
+      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: undefined as unknown as string };
       const actual = component.adjustFormValue(value);
 
-      expect(actual.path).toBe('');
+      expect(actual?.path).toBe('');
     });
   });
 
@@ -169,7 +169,7 @@ describe('UrlRuleItemFormComponent', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.path.enabled).toBe(true);
 
-      component.writeValue({ type: null });
+      component.writeValue({ type: null as unknown as RuleType });
       expect(component.path.disabled).toBe(true);
       expect(component.path.value).toBe(SAMPLE_VALUE.path);
     });

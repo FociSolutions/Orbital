@@ -102,7 +102,7 @@ export class KeyValuePairItemFormComponent implements ControlValueAccessor, Vali
           duplicate: 'This item already exists. Duplicates are not allowed.',
         });
       } else {
-        const { duplicate: _, ...errors } = this.form.errors;
+        const { duplicate: _, ...errors } = this.form.errors ?? {};
         this.form.setErrors(Object.keys(errors).length ? errors : null);
       }
     }
@@ -150,10 +150,10 @@ export class KeyValuePairItemFormComponent implements ControlValueAccessor, Vali
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: KeyValuePairItemFormValues) => void> = [];
+  readonly onChange: Array<(value: KeyValuePairItemFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: KeyValuePairItemFormValues) => void): void {
+  registerOnChange(fn: (value: KeyValuePairItemFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

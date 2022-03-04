@@ -216,7 +216,7 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
             ...error,
           });
         } else {
-          const { duplicate: _, ...errors } = control.errors;
+          const { duplicate: _, ...errors } = control.errors ?? {};
           control.setErrors(Object.keys(errors).length ? errors : null);
         }
       }
@@ -235,10 +235,10 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: PoliciesFormValues) => void> = [];
+  readonly onChange: Array<(value: PoliciesFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: PoliciesFormValues) => void): void {
+  registerOnChange(fn: (value: PoliciesFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

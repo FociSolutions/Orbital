@@ -234,7 +234,7 @@ export class KeyValueRuleFormComponent implements ControlValueAccessor, Validato
               ...error,
             });
           } else {
-            const { duplicate: _, ...errors } = control.errors;
+            const { duplicate: _, ...errors } = control.errors ?? {};
             control.setErrors(Object.keys(errors).length ? errors : null);
           }
         }
@@ -254,10 +254,10 @@ export class KeyValueRuleFormComponent implements ControlValueAccessor, Validato
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: KeyValueRuleFormValues) => void> = [];
+  readonly onChange: Array<(value: KeyValueRuleFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: KeyValueRuleFormValues) => void): void {
+  registerOnChange(fn: (value: KeyValueRuleFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

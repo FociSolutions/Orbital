@@ -16,6 +16,8 @@ import { Response, defaultResponse } from 'src/app/models/mock-definition/scenar
 import { RequestFormValues } from './request-form/request-form.component';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { isNotNull } from 'src/app/shared/Utilities/type-guards';
+import { DeepNullable } from 'src/app/shared/Utilities/nullable';
 
 export interface ScenarioEditorFormValues {
   metadata: MetadataFormValues;
@@ -60,7 +62,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   scenarioId: string;
   selectedScenario: Scenario;
   triggerOpenCancelBox: boolean;
-  endpointVerb: VerbType;
+  endpointVerb: VerbType = VerbType.NONE;
   endpointPath: string;
 
   constructor(
@@ -104,7 +106,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  convertScenarioToFormData(scenario?: Scenario): ScenarioEditorFormValues {
+  convertScenarioToFormData(scenario?: Scenario): DeepNullable<ScenarioEditorFormValues> {
     const response: ResponseFormValues = this.convertResponseDataToFormValues(scenario?.response ?? defaultResponse);
     const policies: PoliciesFormValues = this.convertPoliciesDataToFormValues(scenario?.policies ?? []);
     return {
@@ -138,7 +140,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
           }
         }
       })
-      .filter((p) => p !== null);
+      .filter(isNotNull);
   }
 
   ngOnDestroy(): void {
@@ -231,9 +233,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.selectedScenario
       );
     } else {
-      const endpointVerb = this.store.state.selectedEndpoint.verb;
-      const endpointPath = this.store.state.selectedEndpoint.path;
-      this.selectedScenario = this.createEmptyScenario(scenarioId, endpointVerb, endpointPath);
+      const endpointVerb = this.store.state.selectedEndpoint?.verb;
+      const endpointPath = this.store.state.selectedEndpoint?.path;
+      this.selectedScenario = this.createEmptyScenario(scenarioId, endpointVerb ?? VerbType.NONE, endpointPath ?? '');
       this.logger.debug(
         `ScenarioEditorComponent:retrieveScenario: Scenario not found, new scenario was created for (${endpointPath}, ${endpointVerb})`,
         this.selectedScenario

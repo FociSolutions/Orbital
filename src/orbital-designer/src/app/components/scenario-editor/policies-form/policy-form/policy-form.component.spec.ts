@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PolicyFormComponent, PolicyFormValues } from './policy-form.component';
 import * as faker from 'faker';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy-type';
@@ -14,7 +14,10 @@ describe('PolicyFormComponent', () => {
   let component: PolicyFormComponent;
   let fixture: ComponentFixture<PolicyFormComponent>;
   let SAMPLE_VALUE: PolicyFormValues;
-  const VALUE_NULL: PolicyFormValues = { type: null, value: null };
+  const VALUE_NULL: PolicyFormValues = {
+    type: null as unknown as PolicyType.DELAY_RESPONSE,
+    value: null as unknown as number,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -88,43 +91,43 @@ describe('PolicyFormComponent', () => {
     });
 
     it('should fail validation if the type field is empty', () => {
-      const value: PolicyFormValues = { ...SAMPLE_VALUE, type: null };
+      const value: PolicyFormValues = { ...SAMPLE_VALUE, type: null as unknown as PolicyType.DELAY_RESPONSE };
       component.writeValue(value);
 
-      const actual = component.type.validator(component.type);
+      const actual = component.type.validator?.(component.type);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the value field is empty', () => {
-      const value: PolicyFormValues = { ...SAMPLE_VALUE, value: null };
+      const value: PolicyFormValues = { ...SAMPLE_VALUE, value: null as unknown as number };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the value field is 0', () => {
       const value: PolicyFormValues = { ...SAMPLE_VALUE, value: 0 };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.min).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.min).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the value field is negative', () => {
       const value: PolicyFormValues = { ...SAMPLE_VALUE, value: -1 };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.pattern).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.pattern).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the entry is duplicated', () => {
@@ -133,8 +136,8 @@ describe('PolicyFormComponent', () => {
 
       const actual = component.form.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 

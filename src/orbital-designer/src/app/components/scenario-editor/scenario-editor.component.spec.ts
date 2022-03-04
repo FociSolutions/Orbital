@@ -82,7 +82,7 @@ describe('ScenarioEditorComponent', () => {
 
   describe('ScenarioEditorComponent.save', () => {
     it('should save the scenario if all the fields are valid', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         const store: DesignerStore = TestBed.inject(DesignerStore);
         store.state.mockDefinition = validMockDefinition;
 
@@ -103,12 +103,12 @@ describe('ScenarioEditorComponent', () => {
 
         const actual = store.state.mockDefinition.scenarios.find((s) => s.id === scenario.id);
         expect(actual).toBeTruthy();
-        expect(actual.metadata.title).toEqual(scenario.metadata.title);
+        expect(actual?.metadata.title).toEqual(scenario.metadata.title);
       });
     }));
 
     it('should not save the scenario if the form id invalid', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         const store: DesignerStore = TestBed.inject(DesignerStore);
         store.state.mockDefinition = validMockDefinition;
 
@@ -128,7 +128,7 @@ describe('ScenarioEditorComponent', () => {
 
         const actual = store.state.mockDefinition.scenarios.find((s) => s.id === scenario.id);
         expect(actual).toBeTruthy();
-        expect(actual.metadata.title).toEqual(validMockDefinition.scenarios[0].metadata.title);
+        expect(actual?.metadata.title).toEqual(validMockDefinition.scenarios[0].metadata.title);
       });
     }));
   });
@@ -146,7 +146,7 @@ describe('ScenarioEditorComponent', () => {
     });
 
     it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         component.onCancelDialogAction(false);
         tick();
         fixture.detectChanges();

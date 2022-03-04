@@ -19,6 +19,7 @@ import { defaultTokenRule } from '../models/mock-definition/scenario/token-rule.
 import { defaultResponse } from '../models/mock-definition/scenario/response.model';
 import { RuleType } from '../models/mock-definition/scenario/rule-type';
 import { defaultPolicy } from '../models/mock-definition/scenario/policy.model';
+import { Endpoint } from '../models/endpoint.model';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
@@ -37,10 +38,10 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.selectedEndpoint', () => {
     it('should set the selectedEndpoint', fakeAsync(() => {
-      const Expected = {
+      const Expected: Endpoint = {
         path: faker.random.words(),
         verb: VerbType.GET,
-        spec: null,
+        spec: {} as OpenAPIV2.OperationObject,
       };
       store.selectedEndpoint = Expected;
       tick();
@@ -109,10 +110,10 @@ describe('DesignerStore', () => {
     it('should update the state with new endpoints without clearing old ones', (done) => {
       const service = new OpenApiSpecService();
       const petStore = new File([validOpenApi], 'test.yml');
-      const originalEndpoint = {
+      const originalEndpoint: Endpoint = {
         path: '/original-pets',
         verb: VerbType.GET,
-        spec: null,
+        spec: {} as OpenAPIV2.OperationObject,
       };
       serviceFileReader.read(petStore).subscribe({
         next: (fileread) => {
@@ -202,7 +203,13 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.updateApiInformation()', () => {
     it('should update openApi, host, and basepath', fakeAsync(() => {
-      const fakeDocument: OpenAPIV2.Document = { basePath: '', host: '', info: null, paths: null, swagger: '' };
+      const fakeDocument: OpenAPIV2.Document = {
+        basePath: '',
+        host: '',
+        info: {} as OpenAPIV2.InfoObject,
+        paths: {} as OpenAPIV2.PathsObject,
+        swagger: '',
+      };
       const apiInfo = {
         host: faker.internet.domainName(),
         basepath: faker.internet.domainSuffix(),

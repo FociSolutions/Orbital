@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -26,7 +26,7 @@ export class CreateEditMockViewComponent implements OnInit {
 
   editMode: boolean;
   titleList: string[] = [];
-  selectedMockDefinition: MockDefinition | null;
+  selectedMockDefinition: MockDefinition;
 
   //Data variables for edit mode
   mockTitle: string;
@@ -61,9 +61,11 @@ export class CreateEditMockViewComponent implements OnInit {
       }
     });
     if (this.editMode) {
-      this.selectedMockDefinition = this.findSelectedMock(this.mockId, this.mockDefinitions);
-      if (!this.selectedMockDefinition) {
+      const maybeMockDef = this.findSelectedMock(this.mockId ?? '', this.mockDefinitions);
+      if (!maybeMockDef) {
         this.router.navigateByUrl('/endpoint-view');
+      } else {
+        this.selectedMockDefinition = maybeMockDef;
       }
     } else if (this.mockDefinitions.length) {
       for (const mockDef of this.mockDefinitions) {
@@ -75,8 +77,8 @@ export class CreateEditMockViewComponent implements OnInit {
   /**
    * Finds mock selected on sidebar and populated the form data
    */
-  findSelectedMock(mockId: string, mockDefinitions: MockDefinition[]): MockDefinition {
-    let foundMock: MockDefinition = null;
+  findSelectedMock(mockId: string, mockDefinitions: MockDefinition[]): MockDefinition | null {
+    let foundMock: MockDefinition | null = null;
     for (const mockDef of mockDefinitions) {
       if (mockDef.id === mockId) {
         foundMock = mockDef;
@@ -158,7 +160,7 @@ export class CreateEditMockViewComponent implements OnInit {
    * @returns null, or an error object.
    */
   validateText(name: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: unknown } | null => {
+    return (control: AbstractControl): ValidationErrors | null => {
       if (control.value !== null && control.value !== undefined) {
         if (!control.value.length) {
           return { key: `${name} is required.` };
@@ -175,13 +177,14 @@ export class CreateEditMockViewComponent implements OnInit {
           }
         }
       }
+      return null;
     };
   }
 
   populateEditData(md: MockDefinition) {
-    this.formGroup.get('title').setValue(md.metadata.title);
-    this.formGroup.get('description').setValue(md.metadata.description);
-    this.formGroup.get('validateToken').setValue(md.tokenValidation);
+    this.formGroup.get('title')?.setValue(md.metadata.title);
+    this.formGroup.get('description')?.setValue(md.metadata.description);
+    this.formGroup.get('validateToken')?.setValue(md.tokenValidation);
   }
 
   /**

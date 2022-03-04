@@ -46,6 +46,7 @@ export class GetVerbColorPipe implements PipeTransform {
       default: {
         // Cause a type-check error if a case is missed
         const _: never = verb;
+        throw new Error('Invalid verb. Unable to select colour.');
       }
     }
   }

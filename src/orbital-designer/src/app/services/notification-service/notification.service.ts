@@ -15,7 +15,7 @@ export class NotificationService {
    * @param action The name of the button which dismisses the snackbar
    * @param duration How long in milliseconds to show the snackbar for
    */
-  open(message: string, action = null, duration = this.default_snackbar_duration_ms) {
+  open(message: string, action?: string, duration: number = this.default_snackbar_duration_ms) {
     this.zone.run(() => {
       this.snackBar.open(message, action, { duration });
     });

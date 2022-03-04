@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BodyRuleItemFormComponent, BodyRuleItemFormValues } from './body-rule-item-form.component';
 import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
@@ -94,33 +94,33 @@ describe('BodyRuleItemFormComponent', () => {
     });
 
     it('should fail validation if the ruleType field is empty', () => {
-      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, type: null };
+      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, type: null as unknown as RuleType };
       component.writeValue(value);
 
-      const actual = component.ruleType.validator(component.ruleType);
+      const actual = component.ruleType.validator?.(component.ruleType);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the ruleCondition field is empty', () => {
-      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, type: null };
+      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, type: null as unknown as RuleType };
       component.writeValue(value);
 
-      const actual = component.ruleCondition.validator(component.ruleCondition);
+      const actual = component.ruleCondition.validator?.(component.ruleCondition);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the value field is empty', () => {
-      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, value: null };
+      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, value: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the entry is duplicated', () => {
@@ -129,8 +129,8 @@ describe('BodyRuleItemFormComponent', () => {
 
       const actual = component.form.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 

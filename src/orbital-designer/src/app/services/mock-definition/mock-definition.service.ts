@@ -83,7 +83,7 @@ export class MockDefinitionService {
    * @param mockId  string representation of mock definition's id
    * @param scenario Object representation of the scenario to be cloned
    */
-  cloneScenario(mockId: string, scenario: Scenario): Observable<boolean> {
+  cloneScenario(mockId: string, scenario?: Scenario | null): Observable<boolean> {
     return new Observable((observer) => {
       try {
         if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {
@@ -131,7 +131,7 @@ export class MockDefinitionService {
    * @param endpoints list of endpoints from the imported openapi document
    */
   getDefaultScenarios(endpoints: OpenAPIV2.PathsObject, validation = false): Scenario[] {
-    const defaultScenariosPerEndpoint = [];
+    const defaultScenariosPerEndpoint: Scenario[] = [];
     const keyArrayOfEndpoints = Object.keys(endpoints);
 
     keyArrayOfEndpoints.forEach((pathName) => {
@@ -207,7 +207,7 @@ export class MockDefinitionService {
     };
   }
 
-  private getEndpointVerbTypes(endpoint: unknown): VerbType[] {
+  private getEndpointVerbTypes(endpoint: OpenAPIV2.PathItemObject): VerbType[] {
     const verbs: VerbType[] = [];
     const verbKeys = Object.keys(endpoint);
     verbKeys.forEach((key) => {

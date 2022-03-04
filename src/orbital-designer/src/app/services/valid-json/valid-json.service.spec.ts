@@ -40,7 +40,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.required).toBeTruthy();
+        expect(actual?.required).toBeTruthy();
       });
 
       it('should return an error if the value is an empty string', () => {
@@ -48,7 +48,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.required).toBeTruthy();
+        expect(actual?.required).toBeTruthy();
       });
 
       it('should return an error if the top-level object has no keys', () => {
@@ -56,7 +56,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.empty).toBeTruthy();
+        expect(actual?.empty).toBeTruthy();
       });
 
       it('should return an error if input is not valid json', () => {
@@ -64,7 +64,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.invalid).toBeTruthy();
+        expect(actual?.invalid).toBeTruthy();
       });
 
       it('should return an error if the top level type is a string', () => {
@@ -72,7 +72,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
 
       it('should return an error if the top level type is a number', () => {
@@ -80,7 +80,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
 
       it('should return an error if the top level type is a boolean', () => {
@@ -88,7 +88,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
 
       it('should return an error if the top level type is null', () => {
@@ -96,7 +96,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
 
       it('should return an error if the top level type is an array', () => {
@@ -104,7 +104,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
     });
 
@@ -148,7 +148,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.invalid).toBeTruthy();
+        expect(actual?.invalid).toBeTruthy();
       });
 
       it('should return an error if the top level type is a string', () => {
@@ -156,7 +156,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
 
       it('should return an error if the top level type is a number', () => {
@@ -164,7 +164,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
 
       it('should return an error if the top level type is a boolean', () => {
@@ -172,7 +172,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
 
       it('should return an error if the top level type is null', () => {
@@ -180,7 +180,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
 
       it('should return an error if the top level type is an array', () => {
@@ -188,7 +188,7 @@ describe('ValidJsonService', () => {
         const actual = validator(control);
 
         expect(actual).toBeTruthy();
-        expect(actual.top_level_object).toBeTruthy();
+        expect(actual?.top_level_object).toBeTruthy();
       });
     });
   });

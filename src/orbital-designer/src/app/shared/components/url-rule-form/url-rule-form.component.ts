@@ -212,7 +212,7 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
             ...error,
           });
         } else {
-          const { duplicate: _, ...errors } = control.errors;
+          const { duplicate: _, ...errors } = control.errors ?? {};
           control.setErrors(Object.keys(errors).length ? errors : null);
         }
       }
@@ -231,10 +231,10 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: UrlRuleFormValues) => void> = [];
+  readonly onChange: Array<(value: UrlRuleFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: UrlRuleFormValues) => void): void {
+  registerOnChange(fn: (value: UrlRuleFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 
