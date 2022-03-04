@@ -22,7 +22,7 @@ import {
 import { Subscription } from 'rxjs';
 import { KeyValueRuleFormValues } from 'src/app/shared/components/key-value-rule-form/key-value-rule-form.component';
 import { UrlRuleFormValues } from 'src/app/shared/components/url-rule-form/url-rule-form.component';
-import { DeepNullable } from 'src/app/shared/Utilities/Nullable';
+import { DeepNullable } from 'src/app/shared/Utilities/nullable';
 import { BodyRuleFormValues } from '../body-rule-form/body-rule-form.component';
 
 export interface RequestFormValues {

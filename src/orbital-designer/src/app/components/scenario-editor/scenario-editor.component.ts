@@ -17,7 +17,7 @@ import { RequestFormValues } from './request-form/request-form.component';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { isNotNull } from 'src/app/shared/Utilities/type-guards';
-import { DeepNullable } from 'src/app/shared/Utilities/Nullable';
+import { DeepNullable } from 'src/app/shared/Utilities/nullable';
 
 export interface ScenarioEditorFormValues {
   metadata: MetadataFormValues;

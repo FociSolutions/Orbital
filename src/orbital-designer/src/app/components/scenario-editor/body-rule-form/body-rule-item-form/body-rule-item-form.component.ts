@@ -32,7 +32,7 @@ import {
   JsonRuleCondition,
   TextRuleCondition,
 } from './body-rule-item-form.types';
-import { Nullable } from 'src/app/shared/Utilities/Nullable';
+import { Nullable } from 'src/app/shared/Utilities/nullable';
 
 export interface BodyRuleItemFormValues {
   type: RuleType;
