@@ -60,7 +60,7 @@ export interface InternalResponseFormValues {
   ],
 })
 export class ResponseFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
-  form: FormGroup;
+  form: FormGroup = this.formBuilder.group({});
 
   get type(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

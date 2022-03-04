@@ -45,7 +45,7 @@ export type BodyRuleFormValues = BodyRuleItemFormValues[];
   ],
 })
 export class BodyRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
-  form: FormGroup;
+  form: FormGroup = this.formBuilder.group({});
 
   get formArray(): FormArray {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

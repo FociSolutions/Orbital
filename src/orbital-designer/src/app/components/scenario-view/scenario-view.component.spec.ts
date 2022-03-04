@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
 import { MatTabsModule } from '@angular/material/tabs';
+import { cloneDeep } from 'lodash';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -138,7 +139,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -153,7 +154,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -171,7 +172,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -188,7 +189,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -206,7 +207,7 @@ describe('ScenarioViewComponent', () => {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
         scenario.path = `/${faker.random.words()}`;
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -242,7 +243,7 @@ describe('ScenarioViewComponent', () => {
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;

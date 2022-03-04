@@ -45,7 +45,7 @@ export interface KeyValuePairItemFormValues {
   ],
 })
 export class KeyValuePairItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
-  form: FormGroup;
+  form: FormGroup = this.formBuilder.group({});
 
   get key(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

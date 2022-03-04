@@ -58,14 +58,14 @@ export class DeleteFromServerViewComponent implements OnInit {
 
   concatToURI = '';
 
-  inputControl: FormControl;
+  inputControl: FormControl | null = null;
   requestInProgress = false;
   title = 'Server URI';
 
-  statusMessage: string;
-  errorMessage: string;
-  deleteInProgress: boolean;
-  triggerOpenConfirmBox: boolean;
+  statusMessage = '';
+  errorMessage = '';
+  deleteInProgress = false;
+  triggerOpenConfirmBox = false;
 
   controlsMockDefinitionToString = (control: AbstractControl) => control.value.metadata.title;
 
@@ -77,7 +77,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   }
 
   sendRequestDisabled() {
-    return this.inputControl.value.length === 0 || this.requestInProgress || this.deleteInProgress;
+    return this.inputControl?.value.length === 0 || this.requestInProgress || this.deleteInProgress;
   }
 
   getSpinnerId() {
@@ -87,12 +87,12 @@ export class DeleteFromServerViewComponent implements OnInit {
   sendRequest() {
     this.statusMessage = '';
     this.errorMessage = '';
-    this.inputControl.markAsDirty();
+    this.inputControl?.markAsDirty();
     if (this.sendRequestDisabled()) {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
 
-      this.orbitalService.getAll(`${this.inputControl.value}${this.concatToURI}`).subscribe(this.requestObserver);
+      this.orbitalService.getAll(`${this.inputControl?.value}${this.concatToURI}`).subscribe(this.requestObserver);
     }
   }
 
@@ -103,7 +103,7 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.deleteInProgress = true;
     this.orbitalService
       .deleteMockDefinitions(
-        `${this.inputControl.value}${this.concatToURI}`,
+        `${this.inputControl?.value}${this.concatToURI}`,
         this.mockDefinitions.map((mockDefinition) => mockDefinition.metadata.title)
       )
       .pipe(

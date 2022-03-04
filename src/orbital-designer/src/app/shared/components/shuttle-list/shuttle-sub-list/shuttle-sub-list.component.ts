@@ -15,7 +15,7 @@ export class ShuttleSubListComponent {
 
   filteredOutOptions: MatListOption[] = [];
 
-  @ViewChild('matList') matList: MatSelectionList;
+  @ViewChild('matList') matList: MatSelectionList | null = null;
 
   @Output() itemSelected: EventEmitter<MockDefinition[]>;
 
@@ -52,10 +52,10 @@ export class ShuttleSubListComponent {
    * @param event The checkbox change event emitted by the select/deselect all checkbox
    */
   onSelectAll(event: MatCheckboxChange) {
-    this.matList.options.forEach(
+    this.matList?.options.forEach(
       (option) => (option.selected = this.hideOption(option.value) ? option.selected : event.checked)
     );
-    this.itemSelected.emit(this.matList.selectedOptions.selected.map((option) => option.value));
+    this.itemSelected.emit(this.matList?.selectedOptions.selected.map((option) => option.value));
 
     this.emitSearchResultsSelected();
   }
@@ -84,9 +84,10 @@ export class ShuttleSubListComponent {
    * @param value The string value from the input
    */
   onSearchInput(value: string) {
-    this.filteredOutOptions = this.matList.options.filter(
-      (option) => !ShuttleSubListComponent.ignoreCaseContainsMatch(option.value.value.metadata.title, value)
-    );
+    this.filteredOutOptions =
+      this.matList?.options.filter(
+        (option) => !ShuttleSubListComponent.ignoreCaseContainsMatch(option.value.value.metadata.title, value)
+      ) ?? [];
     this.emitSearchResultsSelected();
   }
 
@@ -111,7 +112,7 @@ export class ShuttleSubListComponent {
    */
   private emitSearchResultsSelected() {
     this.itemSelected.emit(
-      this.matList.selectedOptions.selected
+      this.matList?.selectedOptions.selected
         .filter((e) => !this.filteredOutOptions.includes(e))
         .filter((option) => option.selected)
         .map((option) => option.value)

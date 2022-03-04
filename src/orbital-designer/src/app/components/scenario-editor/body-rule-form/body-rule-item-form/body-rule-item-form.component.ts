@@ -57,7 +57,7 @@ export interface BodyRuleItemFormValues {
   ],
 })
 export class BodyRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
-  form: FormGroup;
+  form: FormGroup = this.formBuilder.group({});
 
   get ruleType(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -110,7 +110,7 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
   valueEditorOptions = new JsonEditorOptions();
   initValueData = {};
   valueDataWasFocused = false;
-  @ViewChild(JsonEditorComponent, { static: false }) valueEditor: JsonEditorComponent;
+  @ViewChild(JsonEditorComponent, { static: false }) valueEditor: JsonEditorComponent | null = null;
 
   defaults: Nullable<InternalBodyRuleItemFormValues> = {
     ruleType: null,

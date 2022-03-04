@@ -44,7 +44,7 @@ export type PolicyFormValues = DelayResponsePolicy;
   ],
 })
 export class PolicyFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
-  form: FormGroup;
+  form: FormGroup = this.formBuilder.group({});
 
   get type(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

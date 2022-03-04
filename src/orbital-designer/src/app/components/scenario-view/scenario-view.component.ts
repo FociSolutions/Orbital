@@ -21,20 +21,20 @@ import { ValidationType } from 'src/app/models/mock-definition/scenario/token-ru
 export class ScenarioViewComponent implements OnInit, OnDestroy {
   @Input() scenarios: Scenario[] = [];
   @Output() shouldCloneToView = new EventEmitter<Scenario>();
-  private storeSubscription: Subscription;
-  private _selectedMode: number;
+  private storeSubscription: Subscription | null = null;
+  private _selectedMode: ValidationType = ValidationType.NONE;
 
   endpointVerb: VerbType = VerbType.NONE;
-  endpointPath: string;
+  endpointPath = '';
 
   scenarioList: Scenario[] = [];
   filteredList: Scenario[] = [];
 
-  errorMessage: string;
-  triggerOpen: string | null;
-  mockDefinition: MockDefinition;
-  isHoveringOverMenu: boolean;
-  dropdownVisible: boolean;
+  errorMessage = '';
+  triggerOpen: string | null = null;
+  mockDefinition: MockDefinition | null = null;
+  isHoveringOverMenu = false;
+  dropdownVisible = false;
 
   modes = [
     { value: ValidationType.NONE, viewValue: 'None' },
@@ -74,7 +74,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.storeSubscription.unsubscribe();
+    this.storeSubscription?.unsubscribe();
   }
 
   addScenario() {
@@ -193,19 +193,19 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateScenariosValidationType(mode: number) {
+  updateScenariosValidationType(mode: ValidationType) {
     this.scenarioList.forEach((scenario) => {
       scenario.tokenRule.validationType = mode;
       this.store.addOrUpdateScenario(scenario);
     });
   }
 
-  get selectedMode(): number {
+  get selectedMode(): ValidationType {
     return this._selectedMode;
   }
 
-  set selectedMode(value: number) {
+  set selectedMode(value: ValidationType) {
     this._selectedMode = value;
-    this.updateScenariosValidationType(this.selectedMode);
+    this.updateScenariosValidationType(value);
   }
 }

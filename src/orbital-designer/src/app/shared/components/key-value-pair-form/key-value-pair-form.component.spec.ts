@@ -27,7 +27,7 @@ describe('KeyValuePairFormComponent', () => {
     template: '<app-key-value-pair-form [allowDuplicateKeys]="allowDuplicateKeys"></app-key-value-pair-form>',
   })
   class TestWrapperComponent {
-    @ViewChild(KeyValuePairFormComponent) child: KeyValuePairFormComponent;
+    @ViewChild(KeyValuePairFormComponent) child!: KeyValuePairFormComponent;
     allowDuplicateKeys = false;
   }
 

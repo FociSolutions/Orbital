@@ -53,7 +53,7 @@ export interface RequestFormValues {
   ],
 })
 export class RequestFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
-  form: FormGroup;
+  form: FormGroup = this.formBuilder.group({});
 
   get requestMatchRules(): FormGroup {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

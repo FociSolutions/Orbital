@@ -29,7 +29,7 @@ describe('KeyValueRuleFormComponent', () => {
     template: '<app-key-value-rule-form [allowDuplicateKeys]="allowDuplicateKeys"></app-key-value-rule-form>',
   })
   class TestWrapperComponent {
-    @ViewChild(KeyValueRuleFormComponent) child: KeyValueRuleFormComponent;
+    @ViewChild(KeyValueRuleFormComponent) child!: KeyValueRuleFormComponent;
     allowDuplicateKeys = true;
   }
 

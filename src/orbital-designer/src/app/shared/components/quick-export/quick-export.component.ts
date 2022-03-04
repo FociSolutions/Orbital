@@ -10,12 +10,12 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./quick-export.component.scss'],
 })
 export class QuickExportComponent {
-  triggerOpenCancelBox: boolean;
-  urlToNavigateTo: string;
-  urlInService: string;
-  mockInService: MockDefinition;
-  exportStatusMessage: string;
-  exportErrorMessage: string;
+  triggerOpenCancelBox = false;
+  urlToNavigateTo = '';
+  urlInService = '';
+  mockInService: MockDefinition | null = null;
+  exportStatusMessage = '';
+  exportErrorMessage = '';
 
   constructor(
     private router: Router,
@@ -35,7 +35,7 @@ export class QuickExportComponent {
     this.mockInService = this.mockdefinitionService.getMockdefinition();
     if (this.router.url.includes('scenario-editor')) {
       this.triggerOpenCancelBox = true;
-    } else if (this.urlInService) {
+    } else if (this.urlInService && this.mockInService) {
       this.exportStatusMessage = '';
       this.exportErrorMessage = '';
       this.mockdefinitionService.exportMockDefinition(this.urlInService, this.mockInService).subscribe(

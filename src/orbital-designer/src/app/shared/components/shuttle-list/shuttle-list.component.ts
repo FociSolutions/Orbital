@@ -28,7 +28,7 @@ export class ShuttleListComponent implements OnDestroy {
   leftSelected: MockDefinition[] = [];
   rightSelected: MockDefinition[] = [];
 
-  @Input() itemToStringFn: (_: MockDefinition) => string;
+  @Input() itemToStringFn: (_: MockDefinition) => string = (item: MockDefinition) => String(item);
 
   constructor() {
     this.outputList = new EventEmitter<MockDefinition[]>();

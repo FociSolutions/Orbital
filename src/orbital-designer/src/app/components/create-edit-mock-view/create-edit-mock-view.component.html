@@ -43,8 +43,14 @@
       <button *ngIf="!editMode" mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="createMock()">
         Create
       </button>
-      <button *ngIf="editMode" mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="editMock()">
-        Edit
+      <button
+        *ngIf="editMode"
+        mat-raised-button
+        color="primary"
+        [disabled]="formGroup.invalid"
+        (click)="updateMockDef()"
+      >
+        Save
       </button>
     </div>
   </form>

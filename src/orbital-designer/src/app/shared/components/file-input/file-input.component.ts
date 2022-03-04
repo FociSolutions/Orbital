@@ -10,8 +10,8 @@ import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 export class FileInputComponent {
   constructor(private logger: NGXLogger, private readFileParser: ReadFileService) {}
   fileName: string[] = [];
-  currentFileName: string;
-  fileContent: string;
+  currentFileName = '';
+  fileContent = '';
   @Input() label = '';
   @Input() accept = '';
   @Input() multiple = true;

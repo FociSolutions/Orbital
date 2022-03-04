@@ -26,7 +26,7 @@ describe('KeyValueRuleItemFormComponent', () => {
     template: '<app-key-value-rule-item-form [allowKeyWhitespace]="allowKeyWhitespace"></app-key-value-rule-item-form>',
   })
   class TestWrapperComponent {
-    @ViewChild(KeyValueRuleItemFormComponent) child: KeyValueRuleItemFormComponent;
+    @ViewChild(KeyValueRuleItemFormComponent) child!: KeyValueRuleItemFormComponent;
     allowKeyWhitespace = false;
   }
 
