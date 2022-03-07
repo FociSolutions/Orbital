@@ -158,7 +158,7 @@ export class MockDefinitionService {
 
     for (const endpoint in scenarioDict) {
       for (const verb in scenarioDict[endpoint]) {
-        if (scenarioDict[endpoint][verb] === false) {
+        if (!scenarioDict[endpoint][verb]) {
           const verbInt = parseInt(verb);
           scenarioList.push(
             this.generateNewScenario(
@@ -176,9 +176,8 @@ export class MockDefinitionService {
     return scenarioList;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private mapUnauthorizedScenarios(scenarios: Scenario[]): Record<string, any> {
-    const scenarioDict = {};
+  private mapUnauthorizedScenarios(scenarios: Scenario[]): Record<string, Record<string, boolean>> {
+    const scenarioDict: Record<string, Record<string, boolean>> = {};
     for (const scenario of scenarios) {
       let isUnauthorized: boolean = scenario.response.status === HttpStatus.StatusCodes.UNAUTHORIZED;
 
@@ -211,8 +210,11 @@ export class MockDefinitionService {
     const verbs: VerbType[] = [];
     const verbKeys = Object.keys(endpoint);
     verbKeys.forEach((key) => {
-      const type = VerbType[key.toUpperCase()];
-      verbs.push(type);
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      const type: VerbType | undefined = VerbType[key.toUpperCase() as keyof typeof VerbType];
+      if (type) {
+        verbs.push(type);
+      }
     });
     return verbs;
   }

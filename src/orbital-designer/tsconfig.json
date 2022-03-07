@@ -1,12 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "alwaysStrict": true,
-    "noImplicitThis": true,
+    "strict": true,
     "downlevelIteration": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

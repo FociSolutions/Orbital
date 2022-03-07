@@ -1,15 +1,11 @@
 import { cloneDeep } from 'lodash';
 
 /**
- * Converts the list of records into an array, in the form of (key, value)
+ * Converts the list of records into an array copies of the values
  * @deprecated Do not use, to be removed after refactoring code
  */
-export function recordMap<K extends string | number | symbol, T, TResult>(
-  record: Record<K, T>,
-  fn: (record: T) => TResult
-): TResult[] {
-  const keys = Object.keys(record);
-  return keys.map((k) => fn(cloneDeep(record[k])));
+export function recordMap<T, TResult>(record: Record<string, T>, fn: (record: T) => TResult): TResult[] {
+  return Object.values(record).map((x) => fn(cloneDeep(x)));
 }
 
 /**
@@ -19,10 +15,7 @@ export function recordMap<K extends string | number | symbol, T, TResult>(
  * @param recordToCompare The second object to compare
  * @returns true if the objects have the same keys with the same values, false otherwise
  */
-export function compareRecords<K extends string | number | symbol, T>(
-  record: Record<K, T>,
-  recordToCompare: Record<K, T>
-): boolean {
+export function compareRecords<T>(record: Record<string, T>, recordToCompare: Record<string, T>): boolean {
   const keys = Object.keys(record);
   const keysToCompare = Object.keys(recordToCompare);
 
