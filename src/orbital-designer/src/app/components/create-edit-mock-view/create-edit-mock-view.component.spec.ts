@@ -18,7 +18,6 @@ import * as yaml from 'js-yaml';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import * as uuid from 'uuid';
-import { recordMap } from 'src/app/models/record';
 
 describe('CreateEditMockViewComponent', () => {
   let component: CreateEditMockViewComponent;
@@ -160,12 +159,7 @@ describe('CreateEditMockViewComponent', () => {
 
     it('should find the mockdef in the store', () => {
       const mockId = selectedMockDef.id;
-      expect(
-        component.findSelectedMock(
-          mockId,
-          recordMap(store.state.mockDefinitions, (md) => md)
-        )
-      ).toEqual(selectedMockDef);
+      expect(component.findSelectedMock(mockId, Object.values(store.state.mockDefinitions))).toEqual(selectedMockDef);
     });
   });
 
