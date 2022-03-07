@@ -20,7 +20,7 @@ export class ExportToServerViewComponent implements OnInit {
   readonly emptyListMessageServerBox = 'No Mockdefinitions';
   rightHandSideMocks: MockDefinition[] = [];
   leftHandSideMocks: FormArray = this.formBuilder.array([]);
-  inputControl: FormControl | null = null;
+  inputControl: FormControl = new FormControl();
   exportStatusMessage = '';
   isUploadingMocks = false;
   exportErrors = '';

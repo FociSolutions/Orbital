@@ -59,7 +59,7 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
   }
 
   @Input() touched = false;
-  @Input() readonly title = '';
+  @Input() readonly title: string = '';
   @Input() readonly errors: string[] = [];
   @Input() readonly mode: 'add' | 'edit' = 'edit';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();

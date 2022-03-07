@@ -32,6 +32,21 @@ export class CreateEditMockViewComponent implements OnInit {
   mockTokenValid = false;
   mockKey = '';
 
+  get title(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('title') as FormControl;
+  }
+
+  get description(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('description') as FormControl;
+  }
+
+  get validateToken(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('validateToken') as FormControl;
+  }
+
   errorMessageToEmitFromCreate: Record<string, string[]> = {};
   constructor(
     private route: ActivatedRoute,
@@ -151,10 +166,6 @@ export class CreateEditMockViewComponent implements OnInit {
    */
   goBack() {
     this.location.back();
-  }
-
-  get validateToken() {
-    return this.formGroup.get('validateToken');
   }
 
   /**

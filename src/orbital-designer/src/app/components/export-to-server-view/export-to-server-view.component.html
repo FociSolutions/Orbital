@@ -4,7 +4,7 @@
   <div class="column center-hr flex-grow div-body">
     <app-tooltip message="Enter the Server URI that your Mockdefinition files should be exported to">
       <div class="container">
-        <app-text-input title="Server URI" maxLength="200" [control]="inputControl"></app-text-input>
+        <app-text-input title="Server URI" [maxLength]="200" [control]="inputControl"></app-text-input>
         <div *ngIf="disabled" id="submit-buttons">
           <mat-spinner diameter="25" [id]="getSpinnerId()"></mat-spinner>
         </div>

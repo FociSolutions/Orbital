@@ -92,10 +92,8 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * This function takes an scenario object and return its path as a string
    * @param scenario The scenario to be converted to string
    */
-  scenarioToString(scenario: Scenario | null): string | undefined {
-    if (scenario?.metadata) {
-      return scenario.metadata.title;
-    }
+  scenarioToString(scenario: Scenario | null): string {
+    return scenario?.metadata.title ?? '';
   }
 
   /**

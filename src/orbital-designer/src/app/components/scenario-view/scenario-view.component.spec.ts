@@ -114,9 +114,9 @@ describe('ScenarioViewComponent', () => {
         const actual = component.scenarioToString(scenario);
         expect(actual).toEqual(expected);
       });
-      it('should return undefined result', () => {
+      it('should return empty result', () => {
         const scenario = null;
-        expect(component.scenarioToString(scenario)).toBeUndefined();
+        expect(component.scenarioToString(scenario)).toEqual('');
       });
     });
     describe('ScenarioViewComponent.setFilteredList', () => {

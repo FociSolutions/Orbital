@@ -58,7 +58,7 @@ export class DeleteFromServerViewComponent implements OnInit {
 
   concatToURI = '';
 
-  inputControl: FormControl | null = null;
+  inputControl: FormControl = new FormControl();
   requestInProgress = false;
   title = 'Server URI';
 
