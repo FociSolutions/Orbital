@@ -46,7 +46,7 @@ export interface MetadataFormValues {
   ],
 })
 export class MetadataFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
-  form: FormGroup;
+  form: FormGroup = this.formBuilder.group({});
 
   get title(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

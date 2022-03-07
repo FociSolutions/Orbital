@@ -12,15 +12,15 @@ import * as uuid from 'uuid';
   styleUrls: ['./side-bar.component.scss'],
 })
 export class SideBarComponent {
-  mockDefinitions: MockDefinition[];
-  selectedMockDefinition: string;
+  mockDefinitions: MockDefinition[] = [];
+  selectedMockDefinition: string | null = null;
   title = 'MOCKDEFINITIONS';
 
-  triggerOpenConfirmBox: boolean;
-  triggerOpenCancelBox: boolean;
-  urlToNavigateTo: string;
+  triggerOpenConfirmBox = false;
+  triggerOpenCancelBox = false;
+  urlToNavigateTo = '';
 
-  mockDefinitionToBeDismissed: MockDefinition;
+  mockDefinitionToBeDismissed: MockDefinition | null = null;
 
   constructor(private store: DesignerStore, private router: Router, private logger: NGXLogger) {
     this.store.state$.subscribe((state) => {
@@ -50,8 +50,10 @@ export class SideBarComponent {
    * Dismisses a Mockdefinition from the side bar view and removes it from the store
    * Navigates back to homepage if the last mockdefinition is dismissed
    */
-  onDismiss(mockDefinition: MockDefinition) {
-    this.store.deleteMockDefinitionByTitle(mockDefinition.metadata.title);
+  onDismiss(mockDefinition: MockDefinition | null) {
+    if (mockDefinition) {
+      this.store.deleteMockDefinitionByTitle(mockDefinition.metadata.title);
+    }
     this.logger.info('Mockdefinition Dismissed', mockDefinition);
     if (this.mockDefinitions.length <= 0) {
       this.router.navigate(['/']);

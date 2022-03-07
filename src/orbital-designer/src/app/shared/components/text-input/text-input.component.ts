@@ -10,7 +10,7 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 export class TextInputComponent {
   errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   @Input() title = '';
-  @Input() maxLength: number;
+  @Input() maxLength: number | undefined;
   @Input() multiLine = false;
   @Input() control!: FormControl;
 

@@ -11,8 +11,9 @@ import { DesignerStore } from '../../store/designer-store';
   providedIn: 'root',
 })
 export class ExportMockdefinitionService {
-  urlCache: string;
-  mockdefinitionCache: MockDefinition;
+  urlCache = '';
+  mockdefinitionCache: MockDefinition | null = null;
+
   constructor(private store: DesignerStore, private httpClient: HttpClient, private logger: NGXLogger) {
     this.store.state$.subscribe((state) => {
       if (state.mockDefinition) {
@@ -31,7 +32,7 @@ export class ExportMockdefinitionService {
   /**
    * Access to Mockdefinition for Quick Export
    */
-  getMockdefinition(): MockDefinition {
+  getMockdefinition(): MockDefinition | null {
     return this.mockdefinitionCache;
   }
 

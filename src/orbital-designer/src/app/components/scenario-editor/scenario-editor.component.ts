@@ -35,7 +35,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   // The new formGroup that the controls will be migrated into
-  scenarioForm: FormGroup;
+  scenarioForm: FormGroup = this.formBuilder.group({});
 
   get metadata(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -59,11 +59,11 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
 
   tokenValidationIsEnabled = false;
   touched = false;
-  scenarioId: string;
-  selectedScenario: Scenario;
-  triggerOpenCancelBox: boolean;
+  scenarioId = '';
+  selectedScenario: Scenario | null = null;
+  triggerOpenCancelBox = false;
   endpointVerb: VerbType = VerbType.NONE;
-  endpointPath: string;
+  endpointPath = '';
 
   constructor(
     private router: Router,
@@ -106,7 +106,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  convertScenarioToFormData(scenario?: Scenario): DeepNullable<ScenarioEditorFormValues> {
+  convertScenarioToFormData(scenario: Scenario | null): DeepNullable<ScenarioEditorFormValues> {
     const response: ResponseFormValues = this.convertResponseDataToFormValues(scenario?.response ?? defaultResponse);
     const policies: PoliciesFormValues = this.convertPoliciesDataToFormValues(scenario?.policies ?? []);
     return {
@@ -164,7 +164,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.selectedScenario
       );
 
-      if (this.scenarioForm.dirty) {
+      if (this.scenarioForm.dirty && this.selectedScenario) {
         const formData: ScenarioEditorFormValues = this.scenarioForm.value;
         this.insertFormDataIntoScenario(formData, this.selectedScenario);
         this.store.addOrUpdateScenario(this.selectedScenario);

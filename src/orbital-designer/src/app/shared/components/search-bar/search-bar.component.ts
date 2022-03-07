@@ -8,7 +8,7 @@ import { MatInput } from '@angular/material/input';
 })
 export class SearchBarComponent implements OnChanges {
   @Output() filteredList: EventEmitter<unknown[]>;
-  @ViewChild(MatInput) input: MatInput;
+  @ViewChild(MatInput) input: MatInput | undefined;
   @Input() list: unknown[] = [];
   @Input() itemToStringFn: (_: unknown) => string = (x: unknown) => String(x);
   constructor() {

@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { recordMap } from 'src/app/models/record';
 import * as uuid from 'uuid';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-create-edit-mock-view',
@@ -19,20 +20,20 @@ import * as uuid from 'uuid';
 })
 export class CreateEditMockViewComponent implements OnInit {
   formGroup: FormGroup;
-  private openApiFile: string;
+  private openApiFile = '';
   private mockDefinitions: MockDefinition[] = [];
-  private mockId: string | null;
-  private keyStore: string;
+  private mockId: string | null = null;
+  private keyStore = ' ';
 
-  editMode: boolean;
+  editMode = false;
   titleList: string[] = [];
-  selectedMockDefinition: MockDefinition;
+  selectedMockDefinition: MockDefinition | null = null;
 
   //Data variables for edit mode
-  mockTitle: string;
-  mockDesc: string;
-  mockTokenValid: boolean;
-  mockKey: string;
+  mockTitle = '';
+  mockDesc = '';
+  mockTokenValid = false;
+  mockKey = '';
 
   errorMessageToEmitFromCreate: Record<string, string[]> = {};
   constructor(
@@ -125,9 +126,12 @@ export class CreateEditMockViewComponent implements OnInit {
     );
   }
 
-  editMock() {
+  updateMockDef() {
+    if (!this.selectedMockDefinition) {
+      return;
+    }
     const updatedMockDef = this.formToUpdateMockDefinition(this.selectedMockDefinition);
-    const oldTitle = this.selectedMockDefinition.metadata.title;
+    const oldTitle = this.selectedMockDefinition?.metadata.title;
 
     if (updatedMockDef.tokenValidation) {
       const validationScenarios = this.mockdefinitionService.getDefaultValidationScenarios(updatedMockDef.scenarios);
@@ -217,7 +221,7 @@ export class CreateEditMockViewComponent implements OnInit {
   }
 
   formToUpdateMockDefinition(oldMockDef: MockDefinition): MockDefinition {
-    const newMockDef: MockDefinition = JSON.parse(JSON.stringify(oldMockDef));
+    const newMockDef: MockDefinition = cloneDeep(oldMockDef);
     newMockDef.metadata = {
       title: this.formGroup.value.title,
       description: this.formGroup.value.description,

@@ -4,6 +4,7 @@
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "alwaysStrict": true,
     "noImplicitThis": true,
     "downlevelIteration": true,

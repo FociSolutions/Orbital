@@ -46,11 +46,11 @@ describe('MockDefinitionService', () => {
     for (let i = 0; i < 10; i++) {
       const scenario = service.generateNewScenario(scenarioParams);
       scenario.metadata.title = faker.random.words(3);
-      scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      scenarios.push(cloneDeep(scenario));
     }
     store.state.mockDefinition.scenarios = scenarios;
 
-    const scenarioToClone = JSON.parse(JSON.stringify(scenarios[0]));
+    const scenarioToClone = cloneDeep(scenarios[0]);
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
       next: () => {
         expect(store.state.mockDefinition.scenarios.find((x) => x.metadata.title.includes('-copy'))).toBeTruthy();
@@ -65,12 +65,12 @@ describe('MockDefinitionService', () => {
       const scenario = service.generateNewScenario(scenarioParams);
 
       scenario.metadata.title = faker.random.words(3);
-      scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      scenarios.push(cloneDeep(scenario));
     }
 
     store.state.mockDefinition.scenarios = scenarios;
 
-    const scenarioToClone = JSON.parse(JSON.stringify(scenarios[0]));
+    const scenarioToClone = cloneDeep(scenarios[0]);
 
     service.cloneScenario(validMockDefinition.metadata.title, scenarioToClone).subscribe({
       complete: () => {
@@ -100,7 +100,7 @@ describe('MockDefinitionService', () => {
       const scenario = service.generateNewScenario(scenarioParams);
 
       scenario.metadata.title = faker.random.words(3);
-      scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      scenarios.push(cloneDeep(scenario));
     }
     store.state.mockDefinition = defaultMockDefinition;
     store.state.mockDefinition.scenarios = scenarios;
@@ -124,7 +124,7 @@ describe('MockDefinitionService', () => {
 
         scenario.metadata.title = faker.random.words(3);
         scenario.response.status = 401;
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       const tokenValidationScenarios = service.getDefaultValidationScenarios(scenarios);
@@ -140,7 +140,7 @@ describe('MockDefinitionService', () => {
         const scenario = service.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words(3);
         scenario.path = path;
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       const tokenValidationScenarios = service.getDefaultValidationScenarios(scenarios);
@@ -155,7 +155,7 @@ describe('MockDefinitionService', () => {
       const scenario = service.generateNewScenario(scenarioParams);
 
       scenario.metadata.title = faker.random.words(3);
-      scenarios.push(JSON.parse(JSON.stringify(scenario)));
+      scenarios.push(cloneDeep(scenario));
     }
 
     store.state.mockDefinition.scenarios = scenarios;

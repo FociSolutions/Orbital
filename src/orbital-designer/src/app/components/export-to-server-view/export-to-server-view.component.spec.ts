@@ -42,7 +42,7 @@ describe('ExportToServerViewComponent', () => {
 
   describe('When export component is initialized and the input form control is created', () => {
     it('should equal the value stored in the environment', () => {
-      expect(component.inputControl.value).toBe(environment.apiUrl);
+      expect(component.inputControl?.value).toBe(environment.apiUrl);
     });
   });
 });
