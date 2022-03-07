@@ -212,7 +212,7 @@ export class MockDefinitionService {
     verbKeys.forEach((key) => {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       const type: VerbType | undefined = VerbType[key.toUpperCase() as keyof typeof VerbType];
-      if (type) {
+      if (type !== undefined) {
         verbs.push(type);
       }
     });

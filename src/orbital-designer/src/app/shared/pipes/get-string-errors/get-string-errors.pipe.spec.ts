@@ -8,14 +8,14 @@ describe('GetStringErrorsPipe', () => {
 
   it('returns an empty array if there are no errors', () => {
     const pipe = new GetStringErrorsPipe();
-    const expected = [];
+    const expected: string[] = [];
     const actual = pipe.transform({});
     expect(actual).toEqual(expected);
   });
 
   it('returns an empty array if there are no string errors', () => {
     const pipe = new GetStringErrorsPipe();
-    const expected = [];
+    const expected: string[] = [];
     const actual = pipe.transform({ required: true });
     expect(actual).toEqual(expected);
   });
