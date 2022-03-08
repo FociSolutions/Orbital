@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
@@ -10,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Orbital.Mock.Definition.Response;
 using Orbital.Mock.Definition.Converters;
@@ -26,6 +28,8 @@ using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 using Orbital.Mock.Server.Registrations;
 using Orbital.Mock.Server.Services;
 using Orbital.Mock.Server.Services.Interfaces;
+
+using Orbital.Mock.Server.HealthChecks;
 
 using Bogus;
 using MediatR;
@@ -74,7 +78,8 @@ namespace Orbital.Mock.Server
                             ValidateAudience = false
                         };
                     });
-            services.AddHealthChecks();
+            services.AddHealthChecks()
+                .AddCheck<DefaultHealthCheck>("Default_Health_Check");
 
             services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyServiceConfig.SECTION_NAME).Bind(cfg));
             services.AddSingleton<IPublicKeyService, PublicKeyService>();
@@ -123,7 +128,15 @@ namespace Orbital.Mock.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health");
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                {
+                    ResultStatusCodes =
+                    {
+                        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
+                    }
+                });
             });
         }
 

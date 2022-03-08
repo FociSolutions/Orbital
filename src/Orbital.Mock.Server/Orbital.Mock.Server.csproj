@@ -60,7 +60,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="HealthChecks\" />
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
   </ItemGroup>
