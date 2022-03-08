@@ -24,4 +24,10 @@
     <ProjectReference Include="..\..\src\Orbital.Mock.Definition\Orbital.Mock.Definition.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="MockDefinitions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MockDefinitions\" />
+  </ItemGroup>
 </Project>
