@@ -21,6 +21,9 @@
     <None Include="xunit.runner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="pet_store_tests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -66,5 +69,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Orbital.Mock.Definition\Orbital.Mock.Definition.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="pet_store_tests.json" />
   </ItemGroup>
 </Project>
