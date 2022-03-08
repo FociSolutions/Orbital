@@ -23,7 +23,7 @@ export class ImportFromServerViewComponent implements OnInit {
 
   concatToURI = '';
 
-  inputControl: FormControl | null = null;
+  inputControl: FormControl = new FormControl();
   requestInProgress = false;
   title = 'Server URI';
 
@@ -100,7 +100,7 @@ export class ImportFromServerViewComponent implements OnInit {
    * @param list The list of FormControls given by the shuttle list when the user moves items from
    * one list to the other.
    */
-  onListOutput(list: FormControl[]) {
+  onListOutput(list: AbstractControl[]) {
     this.mockDefinitions = list.map((control) => control.value);
   }
 

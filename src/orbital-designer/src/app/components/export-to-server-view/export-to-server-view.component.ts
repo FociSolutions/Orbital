@@ -20,7 +20,7 @@ export class ExportToServerViewComponent implements OnInit {
   readonly emptyListMessageServerBox = 'No Mockdefinitions';
   rightHandSideMocks: MockDefinition[] = [];
   leftHandSideMocks: FormArray = this.formBuilder.array([]);
-  inputControl: FormControl | null = null;
+  inputControl: FormControl = new FormControl();
   exportStatusMessage = '';
   isUploadingMocks = false;
   exportErrors = '';
@@ -100,7 +100,7 @@ export class ExportToServerViewComponent implements OnInit {
    * @param list The list of FormControls given by the shuttle list when the user moves items from
    * one list to the other.
    */
-  onListOutput(list: FormControl[]) {
+  onListOutput(list: AbstractControl[]) {
     this.rightHandSideMocks = list.map((control) => control.value);
   }
 

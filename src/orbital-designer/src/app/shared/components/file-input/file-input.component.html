@@ -23,7 +23,7 @@
     #fileInput
     [multiple]="this.multiple"
     type="file"
-    (change)="emitFileContent($event.target.files)"
+    (change)="emitFileContent($any($event.target)?.files)"
     style="display: none"
     [accept]="accept"
     onclick="this.value=null;"

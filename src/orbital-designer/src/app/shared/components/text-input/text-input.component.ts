@@ -10,9 +10,9 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 export class TextInputComponent {
   errorStateMatcher = new ShowOnDirtyErrorStateMatcher();
   @Input() title = '';
-  @Input() maxLength: number | undefined;
+  @Input() maxLength: number | null = null;
   @Input() multiLine = false;
-  @Input() control!: FormControl;
+  @Input() control: FormControl = new FormControl();
 
   getErrors(): string[] {
     return this.control.errors ? Object.values(this.control.errors) : [];

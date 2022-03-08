@@ -42,7 +42,7 @@
                   >
                     <mat-card-content>
                       <mat-card-title>
-                        <div>{{ scenario?.metadata.title }}</div>
+                        <div>{{ scenario?.metadata?.title }}</div>
                         <div class="scenario-options-menu">
                           <button
                             mat-icon-button
@@ -68,7 +68,7 @@
 
                       <mat-card-subtitle>
                         <div class="subtitle">
-                          <div class="description">{{ scenario?.metadata.description }}</div>
+                          <div class="description">{{ scenario?.metadata?.description }}</div>
                           <div>
                             <div *ngIf="scenario.requestMatchRules.urlRules.length > 0">
                               URL Rules: {{ scenario.requestMatchRules.urlRules.length }}
@@ -88,7 +88,7 @@
                             <div *ngIf="scenario.policies.length > 0">Policies: {{ scenario.policies.length }}</div>
                           </div>
                           <div>
-                            {{ scenario?.response.status }} |
+                            {{ scenario?.response?.status }} |
                             {{ getScenarioResponseStatusString(scenario) }}
                           </div>
                         </div>

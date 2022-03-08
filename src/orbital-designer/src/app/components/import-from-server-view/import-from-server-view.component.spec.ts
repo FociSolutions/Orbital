@@ -65,7 +65,7 @@ describe('ImportFromServerViewComponent', () => {
         const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
         const store = TestBed.inject(DesignerStore);
         const expectedMockDefinition: MockDefinition = validMockDefinition;
-        const expectedMockDefinitions = {};
+        const expectedMockDefinitions: Record<string, MockDefinition> = {};
         expectedMockDefinitions[validMockDefinition.metadata.title] = expectedMockDefinition;
         component.mockDefinitions = [validMockDefinition];
         component.onSubmit();

@@ -58,7 +58,7 @@ export class DeleteFromServerViewComponent implements OnInit {
 
   concatToURI = '';
 
-  inputControl: FormControl | null = null;
+  inputControl: FormControl = new FormControl();
   requestInProgress = false;
   title = 'Server URI';
 
@@ -67,7 +67,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   deleteInProgress = false;
   triggerOpenConfirmBox = false;
 
-  controlsMockDefinitionToString = (control: AbstractControl) => control.value.metadata.title;
+  controlsMockDefinitionToString = (control: AbstractControl) => control.value?.metadata?.title ?? '';
 
   ngOnInit() {
     this.inputControl = new FormControl(
@@ -135,7 +135,7 @@ export class DeleteFromServerViewComponent implements OnInit {
    * @param list The list of FormControls given by the shuttle list when the user moves items from
    * one list to the other.
    */
-  onListOutput(list: FormControl[]) {
+  onListOutput(list: AbstractControl[]) {
     this.mockDefinitions = list.map((control) => control.value);
   }
 

@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { recordMap } from 'src/app/models/record';
 import { DesignerStore } from 'src/app/store/designer-store';
 import * as uuid from 'uuid';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-side-bar',
@@ -25,7 +25,7 @@ export class SideBarComponent {
   constructor(private store: DesignerStore, private router: Router, private logger: NGXLogger) {
     this.store.state$.subscribe((state) => {
       if (state.mockDefinition) {
-        this.mockDefinitions = recordMap(state.mockDefinitions, (md) => md);
+        this.mockDefinitions = Object.values(state.mockDefinitions).map(cloneDeep);
         this.selectedMockDefinition = state.mockDefinition.metadata.title;
       }
     });

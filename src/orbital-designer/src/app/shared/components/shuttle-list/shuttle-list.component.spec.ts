@@ -13,8 +13,8 @@ import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.m
 import testMockDefinitionObject from '../../../../test-files/test-mockdefinition-object';
 
 describe('ShuttleListComponent', () => {
-  let component: ShuttleListComponent;
-  let fixture: ComponentFixture<ShuttleListComponent>;
+  let component: ShuttleListComponent<MockDefinition>;
+  let fixture: ComponentFixture<ShuttleListComponent<MockDefinition>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -32,7 +32,7 @@ describe('ShuttleListComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShuttleListComponent);
+    fixture = TestBed.createComponent<ShuttleListComponent<MockDefinition>>(ShuttleListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

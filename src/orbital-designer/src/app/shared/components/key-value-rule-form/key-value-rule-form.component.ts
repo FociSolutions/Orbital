@@ -61,8 +61,8 @@ export class KeyValueRuleFormComponent implements ControlValueAccessor, Validato
     return this.form.get('add') as FormControl;
   }
 
-  @Input() readonly itemName = 'Key Value Rule item';
-  @Input() readonly itemNamePlural = 'Key Value Rule items';
+  @Input() readonly itemName: string = 'Key Value Rule item';
+  @Input() readonly itemNamePlural: string = 'Key Value Rule items';
   @Input() allowKeyWhitespace = false;
   @Input() allowDuplicateKeys = true;
   @Input() touched = false;

@@ -4,8 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { SearchBarComponent } from './search-bar.component';
 
 describe('SearchBarComponent', () => {
-  let component: SearchBarComponent;
-  let fixture: ComponentFixture<SearchBarComponent>;
+  let component: SearchBarComponent<string>;
+  let fixture: ComponentFixture<SearchBarComponent<string>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -15,7 +15,7 @@ describe('SearchBarComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchBarComponent);
+    fixture = TestBed.createComponent<SearchBarComponent<string>>(SearchBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -24,7 +24,7 @@ describe('SearchBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('SearchBarComponent.onSearch', () => {
+  describe('SearchBarComponent.onSearchInput', () => {
     it('should remove any items that do not match the criteria', (done) => {
       const unfilteredList: string[] = faker.random.words(10).split(' ');
       component.list = unfilteredList;

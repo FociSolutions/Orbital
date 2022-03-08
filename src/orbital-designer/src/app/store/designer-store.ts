@@ -8,7 +8,6 @@ import { VerbType } from '../models/verb-type';
 import { Metadata } from '../models/mock-definition/metadata.model';
 import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
-import { isNotNull } from '../shared/Utilities/type-guards';
 
 export interface State {
   selectedEndpoint: Endpoint | null;
@@ -135,6 +134,15 @@ export class DesignerStore extends Store<State> {
     });
   }
 
+  static extractOperationObject(
+    pathItemObject: OpenAPIV2.PathItemObject,
+    verb: VerbType
+  ): OpenAPIV2.OperationObject | null {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const method = VerbType[verb] as keyof typeof OpenAPIV2.HttpMethods;
+    return pathItemObject[OpenAPIV2.HttpMethods[method]] ?? null;
+  }
+
   /**
    * setEndpoints reads the details of the endpoints specified in the Open Api document
    * and updates the state of the designer store.
@@ -145,12 +153,17 @@ export class DesignerStore extends Store<State> {
     this.logger.debug('Clearing current endpoints: ', clearStore);
     const pathStrings = Object.keys(doc.paths);
     let endpoints: Endpoint[] = [];
+
+    const httpMethods = Object.keys(OpenAPIV2.HttpMethods);
+    const validVerbTypes: VerbType[] = Object.keys(VerbType)
+      .map((v) => Number(v))
+      .filter((v) => !isNaN(v) && httpMethods.includes(VerbType[v]));
+
     for (const path of pathStrings) {
       const pathObject: OpenAPIV2.PathItemObject = doc.paths[path];
-      const newEndpoints: Endpoint[] = Object.keys(VerbType)
-        .map((verb) => ({ verb: VerbType[verb], lowerVerb: verb.toLowerCase() }))
-        .map(({ verb, lowerVerb }) => (pathObject[lowerVerb] ? { path, verb, spec: pathObject[lowerVerb] } : null))
-        .filter(isNotNull);
+      const newEndpoints: Endpoint[] = validVerbTypes
+        .map((verb) => ({ path, verb, spec: DesignerStore.extractOperationObject(pathObject, verb) }))
+        .filter((e): e is Endpoint => e.spec !== null);
       endpoints = [...endpoints, ...newEndpoints];
     }
     this.logger.debug('Endpoints from openApi document ', endpoints);

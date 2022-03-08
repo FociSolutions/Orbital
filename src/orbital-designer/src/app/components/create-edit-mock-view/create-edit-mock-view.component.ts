@@ -9,7 +9,6 @@ import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
-import { recordMap } from 'src/app/models/record';
 import * as uuid from 'uuid';
 import { cloneDeep } from 'lodash';
 
@@ -21,9 +20,7 @@ import { cloneDeep } from 'lodash';
 export class CreateEditMockViewComponent implements OnInit {
   formGroup: FormGroup;
   private openApiFile = '';
-  private mockDefinitions: MockDefinition[] = [];
   private mockId: string | null = null;
-  private keyStore = ' ';
 
   editMode = false;
   titleList: string[] = [];
@@ -34,6 +31,21 @@ export class CreateEditMockViewComponent implements OnInit {
   mockDesc = '';
   mockTokenValid = false;
   mockKey = '';
+
+  get title(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('title') as FormControl;
+  }
+
+  get description(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('description') as FormControl;
+  }
+
+  get validateToken(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('validateToken') as FormControl;
+  }
 
   errorMessageToEmitFromCreate: Record<string, string[]> = {};
   constructor(
@@ -55,21 +67,23 @@ export class CreateEditMockViewComponent implements OnInit {
   ngOnInit() {
     this.mockId = this.route.snapshot.paramMap.get('uuid');
     this.editMode = !!this.mockId;
+    let mockDefinitions: MockDefinition[] = [];
 
     this.store.state$.subscribe((state) => {
       if (state.mockDefinition) {
-        this.mockDefinitions = recordMap(state.mockDefinitions, (md) => md);
+        mockDefinitions = Object.values(state.mockDefinitions);
       }
     });
+
     if (this.editMode) {
-      const maybeMockDef = this.findSelectedMock(this.mockId ?? '', this.mockDefinitions);
+      const maybeMockDef = this.findSelectedMock(this.mockId ?? '', mockDefinitions);
       if (!maybeMockDef) {
         this.router.navigateByUrl('/endpoint-view');
       } else {
         this.selectedMockDefinition = maybeMockDef;
       }
-    } else if (this.mockDefinitions.length) {
-      for (const mockDef of this.mockDefinitions) {
+    } else if (mockDefinitions.length) {
+      for (const mockDef of mockDefinitions) {
         this.titleList.push(mockDef.metadata.title);
       }
     }
@@ -152,10 +166,6 @@ export class CreateEditMockViewComponent implements OnInit {
    */
   goBack() {
     this.location.back();
-  }
-
-  get validateToken() {
-    return this.formGroup.get('validateToken');
   }
 
   /**
