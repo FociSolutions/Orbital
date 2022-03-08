@@ -1,6 +1,6 @@
 <div class="container">
   <div class="search-bar-div">
-    <mat-icon>search</mat-icon><input matInput (keyup)="onSearchInput($event.target.value)" />
+    <mat-icon>search</mat-icon><input class="search" matInput (keyup)="onSearchInput($any($event.target)?.value)" />
   </div>
   <div *ngIf="this.list.length" class="checkbox-div">
     <mat-checkbox
@@ -22,7 +22,7 @@
       checkboxPosition="before"
     >
       <div class="list-item">
-        <h5>{{ item.value?.metadata?.title }}</h5>
+        <h5>{{ itemToStringFn(item) }}</h5>
         <mat-divider></mat-divider>
       </div>
     </mat-list-option>
