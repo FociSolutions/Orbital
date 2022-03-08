@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 using Microsoft.IdentityModel.Tokens;
 
@@ -73,6 +74,7 @@ namespace Orbital.Mock.Server
                             ValidateAudience = false
                         };
                     });
+            services.AddHealthChecks();
 
             services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyServiceConfig.SECTION_NAME).Bind(cfg));
             services.AddSingleton<IPublicKeyService, PublicKeyService>();
@@ -121,6 +123,7 @@ namespace Orbital.Mock.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
 
