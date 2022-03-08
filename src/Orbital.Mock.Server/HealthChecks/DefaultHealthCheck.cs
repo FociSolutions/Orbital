@@ -19,12 +19,12 @@ namespace Orbital.Mock.Server.HealthChecks
                 if (isHealthyResult)
                 {
                     return Task.FromResult(
-                        HealthCheckResult.Healthy("The server is healthy."));
+                        HealthCheckResult.Healthy("The server is reachable and has succeeded the health check."));
                 }
 
             return Task.FromResult(
                 new HealthCheckResult(context.Registration.FailureStatus,
-                "The server is not healthy."));
+                "The server is unreachable and has failed the health check."));
 
         }
     }
