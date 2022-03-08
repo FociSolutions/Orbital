@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { saveAs } from 'file-saver';
 import { cloneDeep } from 'lodash';
@@ -20,6 +20,8 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
   list: FormControl[] = [];
   selected: any[] = [];
   isMockSelected = false;
+
+  controlsMockDefinitionToString = (control: AbstractControl) => control.value?.metadata?.title ?? '';
 
   constructor(private location: Location, private store: DesignerStore) {
     this.outputList = new EventEmitter<unknown[]>();
