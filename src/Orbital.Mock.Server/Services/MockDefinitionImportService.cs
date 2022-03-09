@@ -7,20 +7,31 @@ using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Definition;
 
 using Serilog;
+using Microsoft.Extensions.Options;
 
 namespace Orbital.Mock.Server.Services
 {
+
+    public class MockDefinitionImportServiceConfig
+    {
+        /// <summary>
+        /// The file path for the MockDefinition json file to be imported and loaded at startup
+        /// </summary>
+        public string PATH { get; set; }
+    }
+
     /// <summary>
     /// A utility class used to manage the importing and loading of MockDefinitions from various sources
     /// </summary>
     public class MockDefinitionImportService : IMockDefinitionImportService
     {
         readonly IMemoryCache cache;
-        const string MockDefFile = "./mock_definition.json";
+        string MockDefFile;
 
-        public MockDefinitionImportService(IMemoryCache cache)
+        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options)
         {
             this.cache = cache;
+            MockDefFile = options.Value.PATH;
         }
 
         /// <summary>
@@ -28,7 +39,11 @@ namespace Orbital.Mock.Server.Services
         /// </summary>
         public void ImportAllIntoMemoryCache()
         {
-            ImportFromFile(MockDefFile);
+            if (MockDefFile != null)
+            {
+                Log.Information("MockDefinitionImportService: Attempting to load MockDef from provided file: '{File}'", MockDefFile);
+                ImportFromFile(MockDefFile);
+            }
         }
 
         /// <summary>

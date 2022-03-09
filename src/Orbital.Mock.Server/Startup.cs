@@ -83,9 +83,12 @@ namespace Orbital.Mock.Server
             services.AddHealthChecks()
                 .AddCheck<ReadinessHealthCheck>("Readiness_Health_Check");
 
+            services.Configure<MockDefinitionImportServiceConfig>(Configuration.GetSection(Constants.MOCK_DEF_IMPORT_SVC_SECTION_NAME));
             services.AddSingleton<IMockDefinitionImportService, MockDefinitionImportService>();
-            services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyServiceConfig.SECTION_NAME).Bind(cfg));
+
+            services.Configure<PublicKeyServiceConfig>(Configuration.GetSection(Constants.PUB_KEY_SVC_SECTION_NAME));
             services.AddSingleton<IPublicKeyService, PublicKeyService>();
+
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
