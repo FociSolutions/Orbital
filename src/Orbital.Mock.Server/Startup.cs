@@ -31,6 +31,8 @@ using Orbital.Mock.Server.Services.Interfaces;
 
 using Orbital.Mock.Server.HealthChecks;
 
+using static Orbital.Mock.Server.Constants;
+
 using Bogus;
 using MediatR;
 using Scriban;
@@ -128,8 +130,7 @@ namespace Orbital.Mock.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                // v1 hardcoded temporarily, need dynamic source of singular api version
-                endpoints.MapHealthChecks("/api/v1/OrbitalAdmin/health", new HealthCheckOptions()
+                endpoints.MapHealthChecks($"{ADMIN_ENDPOINT_URL}/health", new HealthCheckOptions()
                 {
                     ResultStatusCodes =
                     {
