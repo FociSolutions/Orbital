@@ -152,6 +152,8 @@ namespace Orbital.Mock.Server.Pipelines
             //< After response selection - we link to the policy filter as a final step
             responseSelectorBlock.LinkTo(policyFilterBlock, linkOptions);
             policyFilterBlock.LinkTo(this.endBlock, linkOptions);
+
+            PipelineIsRunning = true;
         }
 
         /// <inheritdoc />

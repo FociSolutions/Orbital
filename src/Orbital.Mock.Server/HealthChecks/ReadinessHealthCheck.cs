@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,13 +9,23 @@ namespace Orbital.Mock.Server.HealthChecks
     /// Performs a basic availability health check on the server and returns a
     /// Health Check Result with a message
     /// </summary>
-    public class DefaultHealthCheck : IHealthCheck
+    public class ReadinessHealthCheck : IHealthCheck
     {
+        private readonly IPipeline _pipeline;
+
+        public ReadinessHealthCheck(IPipeline pipeline)
+        {
+            _pipeline = pipeline;
+        }
+
         public Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context, 
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default
+            )
         {
             var isHealthyResult = false;
+
+            _pipeline.
 
             if (isHealthyResult)
                 {

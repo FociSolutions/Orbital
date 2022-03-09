@@ -79,7 +79,7 @@ namespace Orbital.Mock.Server
                         };
                     });
             services.AddHealthChecks()
-                .AddCheck<DefaultHealthCheck>("Default_Health_Check");
+                .AddCheck<ReadinessHealthCheck>("Readiness_Health_Check");
 
             services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyServiceConfig.SECTION_NAME).Bind(cfg));
             services.AddSingleton<IPublicKeyService, PublicKeyService>();
