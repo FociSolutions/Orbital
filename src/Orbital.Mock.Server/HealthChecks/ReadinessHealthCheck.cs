@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 namespace Orbital.Mock.Server.HealthChecks
 {
     /// <summary>
-    /// Performs a basic availability health check on the server and returns a
-    /// Health Check Result with a message
+    /// Performs a basic readiness health check on the server
+    /// Returns Healthy if the pipeline is up and running and the server can take requests
+    /// Returns Unhealthy if the pipeline is not running and therefore the server cannot take requests
     /// </summary>
     internal class ReadinessHealthCheck : IHealthCheck
     {
