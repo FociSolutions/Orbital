@@ -31,6 +31,8 @@ using Orbital.Mock.Server.Services.Interfaces;
 
 using Orbital.Mock.Server.HealthChecks;
 
+using static Orbital.Mock.Server.Constants;
+
 using Bogus;
 using MediatR;
 using Scriban;
@@ -79,7 +81,7 @@ namespace Orbital.Mock.Server
                         };
                     });
             services.AddHealthChecks()
-                .AddCheck<DefaultHealthCheck>("Default_Health_Check");
+                .AddCheck<ReadinessHealthCheck>("Readiness_Health_Check");
 
             services.AddSingleton<IMockDefinitionImportService, MockDefinitionImportService>();
             services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyServiceConfig.SECTION_NAME).Bind(cfg));
@@ -129,7 +131,7 @@ namespace Orbital.Mock.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                endpoints.MapHealthChecks($"{ADMIN_ENDPOINT_URL}/health", new HealthCheckOptions()
                 {
                     ResultStatusCodes =
                     {
