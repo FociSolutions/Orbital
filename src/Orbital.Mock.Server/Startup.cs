@@ -128,7 +128,8 @@ namespace Orbital.Mock.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                // v1 hardcoded temporarily, need dynamic source of singular api version
+                endpoints.MapHealthChecks("/api/v1/OrbitalAdmin/health", new HealthCheckOptions()
                 {
                     ResultStatusCodes =
                     {
