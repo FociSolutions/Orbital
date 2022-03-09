@@ -232,6 +232,11 @@ namespace Orbital.Mock.Server.Pipelines
             Log.Information("MockserviceProcessor has shutdown successfully");
             return true;
         }
+
+        public bool GetPipelineStatus()
+        {
+            return this.PipelineIsRunning;
+        }
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();

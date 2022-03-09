@@ -9,13 +9,15 @@ namespace Orbital.Mock.Server.HealthChecks
     /// Performs a basic availability health check on the server and returns a
     /// Health Check Result with a message
     /// </summary>
-    public class ReadinessHealthCheck : IHealthCheck
+    internal class ReadinessHealthCheck : IHealthCheck
     {
         private readonly IPipeline _pipeline;
+        private bool isHealthy;
 
-        public ReadinessHealthCheck(IPipeline pipeline)
+        internal ReadinessHealthCheck(IPipeline pipeline)
         {
             _pipeline = pipeline;
+            isHealthy = false;
         }
 
         public Task<HealthCheckResult> CheckHealthAsync(
@@ -23,17 +25,14 @@ namespace Orbital.Mock.Server.HealthChecks
             CancellationToken cancellationToken = default
             )
         {
-            var isHealthyResult = false;
+            isHealthy = _pipeline.GetPipelineStatus();
 
-            _pipeline.
+            if (isHealthy)
+            {
+                return Task.FromResult(HealthCheckResult.Healthy("The server is healthy and ready to receive requests."));
+            }
 
-            if (isHealthyResult)
-                {
-                    return Task.FromResult(
-                        HealthCheckResult.Healthy("The server is reachable and has succeeded the health check."));
-                }
-
-            return Task.FromResult( new HealthCheckResult(context.Registration.FailureStatus, "The server is unreachable and has failed the health check."));
+            return Task.FromResult( new HealthCheckResult(context.Registration.FailureStatus, "The server is unhealthy and cannot receive requests."));
         }
     }
 }
