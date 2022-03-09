@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Diagnostics.CodeAnalysis;
@@ -21,6 +20,7 @@ namespace Orbital.Mock.Server.Middleware
     public class ServerRequestMiddleware
     {
         private const string AdminRegexString = @"^/api/v\d/OrbitalAdmin";
+        private const string HealthCheckString = @"/health";
         private static readonly Regex AdminRegex = new Regex(AdminRegexString);
 
         private readonly RequestDelegate next;
@@ -45,7 +45,7 @@ namespace Orbital.Mock.Server.Middleware
         /// <returns></returns>
         public async Task InvokeAsync(HttpContext context)
         {
-            if (AdminRegex.IsMatch(context.Request.Path))
+            if (AdminRegex.IsMatch(context.Request.Path) || context.Request.Path.ToString().EndsWith(HealthCheckString))
             {
                 await next.Invoke(context);
             }

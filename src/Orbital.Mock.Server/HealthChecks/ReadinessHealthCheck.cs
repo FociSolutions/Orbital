@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Orbital.Mock.Server.Pipelines.Models.Interfaces;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+using Orbital.Mock.Definition.Response;
+using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 
 namespace Orbital.Mock.Server.HealthChecks
 {
@@ -12,10 +16,10 @@ namespace Orbital.Mock.Server.HealthChecks
     /// </summary>
     internal class ReadinessHealthCheck : IHealthCheck
     {
-        private readonly IPipeline _pipeline;
+        private readonly IPipeline<MessageProcessorInput, Task<MockResponse>> _pipeline;
         private bool isHealthy;
 
-        internal ReadinessHealthCheck(IPipeline pipeline)
+        public ReadinessHealthCheck(IPipeline<MessageProcessorInput, Task<MockResponse>> pipeline)
         {
             _pipeline = pipeline;
             isHealthy = false;

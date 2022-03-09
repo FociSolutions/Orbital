@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Factories\**" />
+    <EmbeddedResource Remove="Factories\**" />
+    <None Remove="Factories\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="MockDefinitions\Handler\NewFile1.txt" />
     <None Remove="Services\" />
   </ItemGroup>
@@ -43,7 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Factories\" />
     <Folder Include="Services\" />
   </ItemGroup>
 </Project>
