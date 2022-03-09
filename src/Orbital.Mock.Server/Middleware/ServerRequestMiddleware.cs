@@ -20,7 +20,6 @@ namespace Orbital.Mock.Server.Middleware
     public class ServerRequestMiddleware
     {
         private const string AdminRegexString = @"^/api/v\d/OrbitalAdmin";
-        private const string HealthCheckString = @"/health";
         private static readonly Regex AdminRegex = new Regex(AdminRegexString);
 
         private readonly RequestDelegate next;
@@ -45,7 +44,7 @@ namespace Orbital.Mock.Server.Middleware
         /// <returns></returns>
         public async Task InvokeAsync(HttpContext context)
         {
-            if (AdminRegex.IsMatch(context.Request.Path) || context.Request.Path.ToString().EndsWith(HealthCheckString))
+            if (AdminRegex.IsMatch(context.Request.Path))
             {
                 await next.Invoke(context);
             }
