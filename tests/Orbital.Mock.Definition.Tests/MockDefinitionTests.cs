@@ -127,5 +127,21 @@ namespace Orbital.Mock.Definition.Tests
             var Actual = Target.Equals(input.mockDefinitionTest);
             Assert.False(Actual);
         }
+
+        [Fact]
+        public void CreateFromFileSuccessfully()
+        {
+            #region Test Setup
+            var fileName = System.IO.Path.Combine("..", "..", "..", "MockDefinitions", "pet_store_tests.json");
+            var expectedTitle = "Pet Store Tests";
+            var expectedDescription = "This is to pass into Unit Tests.";
+            #endregion
+
+            var mockDef = MockDefinition.CreateFromFile(fileName);
+
+            Assert.Equal(expectedTitle, mockDef.Metadata.Title);
+            Assert.Equal(expectedDescription, mockDef.Metadata.Description);
+            Assert.NotNull(mockDef);
+        }
     }
 }

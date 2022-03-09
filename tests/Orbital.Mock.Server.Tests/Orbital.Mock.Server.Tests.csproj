@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="MockDefinitions\Handler\NewFile1.txt" />
     <None Remove="Services\" />
+    <None Remove="MockDefinitions\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,10 +41,14 @@
     <None Update="xunit.runner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="mock_definition.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Factories\" />
     <Folder Include="Services\" />
+    <Folder Include="MockDefinitions\" />
   </ItemGroup>
 </Project>

@@ -56,8 +56,6 @@ export class DeleteFromServerViewComponent implements OnInit {
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
 
-  concatToURI = '';
-
   inputControl: FormControl = new FormControl();
   requestInProgress = false;
   title = 'Server URI';
@@ -88,11 +86,12 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.statusMessage = '';
     this.errorMessage = '';
     this.inputControl?.markAsDirty();
-    if (this.sendRequestDisabled()) {
+    if (!this.sendRequestDisabled()) {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
-
-      this.orbitalService.getAll(`${this.inputControl?.value}${this.concatToURI}`).subscribe(this.requestObserver);
+      const url = `${this.inputControl?.value}`;
+      this.logger.info('Import From Server: sendRequest(): url:', url);
+      this.orbitalService.getAll(url).subscribe(this.requestObserver);
     }
   }
 
@@ -103,7 +102,7 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.deleteInProgress = true;
     this.orbitalService
       .deleteMockDefinitions(
-        `${this.inputControl?.value}${this.concatToURI}`,
+        `${this.inputControl?.value}`,
         this.mockDefinitions.map((mockDefinition) => mockDefinition.metadata.title)
       )
       .pipe(

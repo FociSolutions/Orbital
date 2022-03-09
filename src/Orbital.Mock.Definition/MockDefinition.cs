@@ -47,5 +47,27 @@ namespace Orbital.Mock.Definition
         {
             return HashCode.Combine(Host, Metadata, Scenarios, TokenValidation);
         }
+
+        /// <summary>
+        /// Retrieves a JSON file from disk and converts it to a MockDefinition
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static MockDefinition CreateFromFile(string fileName)
+        {
+            var json = System.IO.File.ReadAllText(fileName);
+            return CreateFromJsonString(json);
+
+        }
+
+        /// <summary>
+        /// Converts a JSON string containing a Mock Definition into an object of type MockDefinition
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static MockDefinition CreateFromJsonString(string json)
+        {
+            return JsonConvert.DeserializeObject<MockDefinition>(json);
+        }
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 using Microsoft.Extensions.Caching.Memory;
 
-using Orbital.Mock.Definition;
 using Orbital.Mock.Server.MockDefinitions.Commands;
 
 using MediatR;

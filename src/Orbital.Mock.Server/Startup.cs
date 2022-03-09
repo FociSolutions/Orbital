@@ -81,6 +81,7 @@ namespace Orbital.Mock.Server
             services.AddHealthChecks()
                 .AddCheck<DefaultHealthCheck>("Default_Health_Check");
 
+            services.AddSingleton<IMockDefinitionImportService, MockDefinitionImportService>();
             services.Configure<PublicKeyServiceConfig>(cfg => Configuration.GetSection(PublicKeyServiceConfig.SECTION_NAME).Bind(cfg));
             services.AddSingleton<IPublicKeyService, PublicKeyService>();
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
@@ -102,7 +103,7 @@ namespace Orbital.Mock.Server
         /// <param name="env"></param>
         /// <param name="provider"></param>
         //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment _, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment _, IApiVersionDescriptionProvider provider, IMockDefinitionImportService mockDefImporter)
         {
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
@@ -138,6 +139,8 @@ namespace Orbital.Mock.Server
                     }
                 });
             });
+
+            mockDefImporter.ImportAllIntoMemoryCache();
         }
 
         /// <summary>

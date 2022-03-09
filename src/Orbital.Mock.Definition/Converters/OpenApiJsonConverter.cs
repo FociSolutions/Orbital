@@ -70,8 +70,8 @@ namespace Orbital.Mock.Definition.Converters
                 writer.Flush();
                 var openApiWriter = new OpenApiJsonWriter(memory);
 
-                var tagfound = openApi.Tags.Where(t =>  t.Name.Equals("openapi"));
-                if (tagfound.FirstOrDefault().Description.Equals(OpenApiSpecVersion.OpenApi3_0.ToString()))
+                var tagfound = openApi.Tags.Where(t =>  t.Name.Equals("openapi")).FirstOrDefault();
+                if (tagfound != null && tagfound.Description.Equals(OpenApiSpecVersion.OpenApi3_0.ToString()))
                 {
                     openApi.SerializeAsV3(openApiWriter);
                 }

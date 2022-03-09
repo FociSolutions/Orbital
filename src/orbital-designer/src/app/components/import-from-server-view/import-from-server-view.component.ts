@@ -21,8 +21,6 @@ export class ImportFromServerViewComponent implements OnInit {
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
 
-  concatToURI = '';
-
   inputControl: FormControl = new FormControl();
   requestInProgress = false;
   title = 'Server URI';
@@ -66,7 +64,7 @@ export class ImportFromServerViewComponent implements OnInit {
   }
 
   sendRequestDisabled() {
-    return this.inputControl?.value.length === 0 || this.requestInProgress;
+    return !this.inputControl?.value.length || this.requestInProgress;
   }
 
   getSpinnerId() {
@@ -75,11 +73,12 @@ export class ImportFromServerViewComponent implements OnInit {
 
   sendRequest() {
     this.inputControl?.markAsDirty();
-    if (this.sendRequestDisabled()) {
+    if (!this.sendRequestDisabled()) {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
-
-      this.orbitalService.getAll(`${this.inputControl?.value}${this.concatToURI}`).subscribe(this.requestObserver);
+      const url = `${this.inputControl?.value}`;
+      this.logger.info('Import From Server: sendRequest(): url:', url);
+      this.orbitalService.getAll(url).subscribe(this.requestObserver);
     }
   }
 
