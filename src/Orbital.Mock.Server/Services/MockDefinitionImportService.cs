@@ -34,7 +34,7 @@ namespace Orbital.Mock.Server.Services
         /// <summary>
         /// Loads a MockDefinition from a file into the MemoryCache
         /// </summary>
-        void ImportFromFile(string fileName)
+        public void ImportFromFile(string fileName)
         {
             if (System.IO.File.Exists(fileName))
             {
@@ -54,15 +54,15 @@ namespace Orbital.Mock.Server.Services
         /// Loads the given MockDefinition into the memory cache
         /// </summary>
         /// <param name="mockDefinition"></param>
-        void AddMockDefToMemoryCache(MockDefinition mockDefinition)
+        public void AddMockDefToMemoryCache(MockDefinition mockDefinition)
         {
-            cache.Set(mockDefinition.Metadata.Title, mockDefinition);
-            var keysCollection = this.cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
+            _ = cache.Set(mockDefinition.Metadata.Title, mockDefinition);
+            var keysCollection = cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
 
             if (!keysCollection.Contains(mockDefinition.Metadata.Title))
             {
                 keysCollection.Add(mockDefinition.Metadata.Title);
-                this.cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
+                _ = cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
             }
         }
 
