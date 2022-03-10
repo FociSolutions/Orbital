@@ -20,11 +20,6 @@ namespace Orbital.Mock.Server.Services
     public class PublicKeyServiceConfig
     {
         /// <summary>
-        /// The configuration section name for the configuration variables in this class
-        /// </summary>
-        public const string SECTION_NAME = "PUB_KEYS";
-
-        /// <summary>
         /// The JSON data defining JWKs in the same format as it would be if it were
         /// retrieved from an identity server.
         /// </summary>
