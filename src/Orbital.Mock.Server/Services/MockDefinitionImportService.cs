@@ -46,7 +46,7 @@ namespace Orbital.Mock.Server.Services
         {
             if (MockDefPath != null)
             {
-                Log.Information($"MockDefinitionImportService: Attempting to load MockDef(s) from PATH option: '{MockDefPath}'");
+                Log.Information("MockDefinitionImportService: Attempting to load MockDef(s) from PATH option: '{MockDefPath}'", MockDefPath);
                 ImportFromPath(MockDefPath);
             }
         }
