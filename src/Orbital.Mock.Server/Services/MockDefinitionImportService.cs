@@ -19,6 +19,16 @@ namespace Orbital.Mock.Server.Services
         /// The file path for the MockDefinition json file to be imported and loaded at startup
         /// </summary>
         public string PATH { get; set; }
+
+        /// <summary>
+        /// The url to a git repo to clone and import mock definiitons from
+        /// </summary>
+        public string GIT_REPO { get; set; }
+
+        /// <summary>
+        /// The branch to use when cloning a git repo for the purposes of importing mock definitions from it
+        /// </summary>
+        public string GIT_BRANCH { get; set; }
     }
 
     /// <summary>
@@ -30,12 +40,12 @@ namespace Orbital.Mock.Server.Services
         readonly ILogger Log;
 
         readonly IMemoryCache cache;
-        readonly string MockDefPath;
+        readonly MockDefinitionImportServiceConfig config;
 
         public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, ILogger injectedLog = null)
         {
             this.cache = cache;
-            MockDefPath = options.Value.PATH;
+            config = options.Value;
             Log = injectedLog ?? Serilog.Log.Logger;
         }
 
@@ -44,10 +54,10 @@ namespace Orbital.Mock.Server.Services
         /// </summary>
         public void ImportAllIntoMemoryCache()
         {
-            if (MockDefPath != null)
+            if (config.PATH != null)
             {
-                Log.Information("MockDefinitionImportService: Attempting to load MockDef(s) from PATH option: '{MockDefPath}'", MockDefPath);
-                ImportFromPath(MockDefPath);
+                Log.Information("MockDefinitionImportService: Attempting to load MockDef(s) from PATH option: '{MockDefPath}'", config.PATH);
+                ImportFromPath(config.PATH);
             }
         }
 
