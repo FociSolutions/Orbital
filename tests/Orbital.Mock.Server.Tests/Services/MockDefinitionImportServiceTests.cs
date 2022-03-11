@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Serilog;
+using Orbital.Mock.Server.Services.Interfaces;
 
 namespace Orbital.Mock.Server.Tests.Services
 {
@@ -36,10 +37,11 @@ namespace Orbital.Mock.Server.Tests.Services
             });
 
             var logger = Substitute.For<ILogger>();
+            var git = Substitute.For<IGitCommands>();
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
-            var mockDefImportService = new MockDefinitionImportService(cache, config_mock, logger);
+            var mockDefImportService = new MockDefinitionImportService(cache, config_mock, git, logger);
 
             return (mockDefImportService, cache, logger);
         }

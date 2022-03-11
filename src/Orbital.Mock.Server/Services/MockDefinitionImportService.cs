@@ -50,11 +50,13 @@ namespace Orbital.Mock.Server.Services
         readonly IMemoryCache cache;
         readonly MockDefinitionImportServiceConfig config;
         readonly ILogger Log;
+        readonly IGitCommands git;
 
-        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, ILogger injectedLog = null)
+        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, IGitCommands git, ILogger injectedLog = null)
         {
             this.cache = cache;
             config = options.Value;
+            this.git = git;
             Log = injectedLog ?? Serilog.Log.Logger;
         }
 
@@ -148,10 +150,10 @@ namespace Orbital.Mock.Server.Services
 
             _ = Directory.CreateDirectory(RepoDirectory);
 
-            var options = new CloneOptions();
+            var options = git.GetCloneOptions();
             if (branch != null) { options.BranchName = branch; }
 
-            _ = Repository.Clone(repo, RepoDirectory, options);
+            _ = git.Clone(repo, RepoDirectory, options);
 
             ImportFromPath(Path.Combine(RepoDirectory, path));
 
