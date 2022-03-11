@@ -54,7 +54,7 @@ namespace Orbital.Mock.Server.Services
         /// Loads a MockDefinition from a given filepath into the MemoryCache
         /// </summary>
         /// <param name="filePath">Input filepath to be parsed - can be directory or file</param>
-        public void ImportFromPath(string filePath)
+        internal void ImportFromPath(string filePath)
         {
             if (Directory.Exists(filePath))
             {
