@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using System;
+using System.IO;
 using System.Collections.Generic;
 
 using Microsoft.OpenApi.Models;
@@ -58,7 +60,7 @@ namespace Orbital.Mock.Definition
         {
             try
             {
-                var json = System.IO.File.ReadAllText(fileName);
+                var json = File.ReadAllText(fileName);
                 return CreateFromJsonString(json);
             }
             catch (Exception e)

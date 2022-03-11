@@ -9,6 +9,7 @@ using Orbital.Mock.Definition;
 
 using Serilog;
 using Newtonsoft.Json;
+using LibGit2Sharp;
 
 namespace Orbital.Mock.Server.Services
 {
@@ -29,6 +30,12 @@ namespace Orbital.Mock.Server.Services
         /// The branch to use when cloning a git repo for the purposes of importing mock definitions from it
         /// </summary>
         public string GIT_BRANCH { get; set; }
+
+        /// <summary>
+        /// The path to import from when cloning a git repo for the purposes of importing mock definitions from it.
+        /// It must be a file or directory that is relative to the root of the git repo.
+        /// </summary>
+        public string GIT_PATH { get; set; }
     }
 
     /// <summary>
@@ -36,11 +43,13 @@ namespace Orbital.Mock.Server.Services
     /// </summary>
     public class MockDefinitionImportService : IMockDefinitionImportService
     {
+
         const string MockDefExtension = ".json";
-        readonly ILogger Log;
+        readonly string RepoDirectory = Path.Combine(".", ".orbital_temp_git_repo");
 
         readonly IMemoryCache cache;
         readonly MockDefinitionImportServiceConfig config;
+        readonly ILogger Log;
 
         public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, ILogger injectedLog = null)
         {
@@ -58,6 +67,12 @@ namespace Orbital.Mock.Server.Services
             {
                 Log.Information("MockDefinitionImportService: Attempting to load MockDef(s) from PATH option: '{MockDefPath}'", config.PATH);
                 ImportFromPath(config.PATH);
+            }
+
+            if (config.GIT_REPO != null)
+            {
+                Log.Information("MockDefinitionImportService: Attempting to load MockDef(s) from GIT_REPO option: '{Repo}'", config.GIT_REPO);
+                ImportFromGitRepo(config.GIT_REPO, config.GIT_BRANCH, config.GIT_PATH);
             }
         }
 
@@ -118,6 +133,29 @@ namespace Orbital.Mock.Server.Services
             {
                 Log.Error($"MockDefinitionImportService: Failed to import Mock Definition from a File: '{fileName}'");
             }
+        }
+
+        /// <summary>
+        /// Load MockDefinitions from the specified git repo into the MemoryCache.
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="branch">The branch to checkout. If not specified, the default branch is used.</param>
+        /// <param name="path">The path of the mock definition to import, relative to the root of the repo.
+        ///                    If not specified, mockdefinitions will be loaded from the root of the repo. </param>
+        private void ImportFromGitRepo(string repo, string branch = null, string path = ".")
+        {
+            if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
+
+            _ = Directory.CreateDirectory(RepoDirectory);
+
+            var options = new CloneOptions();
+            if (branch != null) { options.BranchName = branch; }
+
+            _ = Repository.Clone(repo, RepoDirectory, options);
+
+            ImportFromPath(Path.Combine(RepoDirectory, path));
+
+            if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
         }
 
         /// <summary>
