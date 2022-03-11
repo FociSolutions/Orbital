@@ -62,7 +62,7 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./mock_definition.json");
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json"); 
 
             cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
 
@@ -117,7 +117,7 @@ namespace Orbital.Mock.Server.Tests.Services
         public void ImportFromAllSuccessTest()
         {
             #region Test Setup
-            var (mockDefImportService, cache) = GetSetupObjects("./mock_definition.json");
+            var (mockDefImportService, cache) = GetSetupObjects("./TestMockDefDirectory/mock_definition.json");
             #endregion
 
             mockDefImportService.ImportAllIntoMemoryCache();

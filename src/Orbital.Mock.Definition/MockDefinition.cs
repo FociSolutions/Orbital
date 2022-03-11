@@ -18,7 +18,7 @@ namespace Orbital.Mock.Definition
         [JsonProperty("tokenValidation")]
         public bool TokenValidation { get; set; }
 
-        [JsonProperty("metadata", Required = Requiured.Always)]
+        [JsonProperty("metadata", Required = Required.Always)]
         public MetadataInfo Metadata { get; set; }
 
         [JsonProperty("openApi", Required = Required.Always)]
