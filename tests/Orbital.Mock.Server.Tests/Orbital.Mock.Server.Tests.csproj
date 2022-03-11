@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="EmptyJson.json" />
     <None Remove="MockDefinitions\Handler\NewFile1.txt" />
+    <None Remove="NewFile1.txt" />
     <None Remove="Services\" />
     <None Remove="MockDefinitions\" />
   </ItemGroup>
@@ -44,11 +46,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="mock_definition_empty.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="mock_definition_invalid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestMockDefDirectory\mock_definition.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="xunit.runner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="mock_definition.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

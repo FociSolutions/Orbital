@@ -5,6 +5,8 @@ using Orbital.Mock.Definition;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Orbital.Mock.Server.Tests.Services
 {
@@ -60,7 +62,7 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromFile("./mock_definition.json");
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json"); 
 
             cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
 
@@ -68,10 +70,54 @@ namespace Orbital.Mock.Server.Tests.Services
         }
 
         [Fact]
+        public void ImportFromDirectoryPathSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/");
+
+            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+
+            Assert.NotNull(savedDefinition);
+        }
+
+        [Fact]
+        public void ImportFromInvalidFileFailTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            Assert.Throws<JsonReaderException>(() => mockDefImportService.ImportFromPath("./mock_definition_invalid.json"));
+        }
+        
+        [Fact]
+        public void ImportFromEmptyJsonFileFailTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            Assert.Throws<JsonSerializationException>(() => mockDefImportService.ImportFromPath("./mock_definition_empty.json"));
+        }
+
+        [Fact]
+        public void FileNotExistsFailTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            Assert.Throws<FileNotFoundException>(() => mockDefImportService.ImportFromPath("./mock_definition_not_exists.json"));
+        }
+
+        [Fact]
         public void ImportFromAllSuccessTest()
         {
             #region Test Setup
-            var (mockDefImportService, cache) = GetSetupObjects("./mock_definition.json");
+            var (mockDefImportService, cache) = GetSetupObjects("./TestMockDefDirectory/mock_definition.json");
             #endregion
 
             mockDefImportService.ImportAllIntoMemoryCache();

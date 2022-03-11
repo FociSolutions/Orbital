@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
+using Newtonsoft.Json;
 
 namespace Orbital.Mock.Definition.Tests
 {
@@ -142,6 +143,12 @@ namespace Orbital.Mock.Definition.Tests
             Assert.Equal(expectedTitle, mockDef.Metadata.Title);
             Assert.Equal(expectedDescription, mockDef.Metadata.Description);
             Assert.NotNull(mockDef);
+        }
+
+        [Fact]
+        public void CreateFromEmptyStringFailTest()
+        {
+            Assert.Throws<JsonSerializationException>(() => MockDefinition.CreateFromJsonString(""));
         }
     }
 }

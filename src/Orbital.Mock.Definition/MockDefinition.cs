@@ -18,13 +18,13 @@ namespace Orbital.Mock.Definition
         [JsonProperty("tokenValidation")]
         public bool TokenValidation { get; set; }
 
-        [JsonProperty("metadata")]
+        [JsonProperty("metadata", Required = Required.Always)]
         public MetadataInfo Metadata { get; set; }
 
-        [JsonProperty("openApi")]
+        [JsonProperty("openApi", Required = Required.Always)]
         public OpenApiDocument OpenApi { get; set; }
 
-        [JsonProperty("scenarios")]
+        [JsonProperty("scenarios", Required = Required.AllowNull)]
         public List<Scenario> Scenarios { get; set; }
 
         public override bool Equals(object obj)
@@ -67,7 +67,8 @@ namespace Orbital.Mock.Definition
         /// <returns></returns>
         public static MockDefinition CreateFromJsonString(string json)
         {
-            return JsonConvert.DeserializeObject<MockDefinition>(json);
+            var result = JsonConvert.DeserializeObject<MockDefinition>(json); 
+            return (result is not null) ? result : throw new JsonSerializationException($"Failed to deserialize MockDefinition from JSON: {json}");
         }
     }
 }

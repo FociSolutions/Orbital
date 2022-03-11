@@ -1,13 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Caching.Memory;
 
 using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Definition;
 
 using Serilog;
-using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Orbital.Mock.Server.Services
 {
@@ -25,13 +27,15 @@ namespace Orbital.Mock.Server.Services
     /// </summary>
     public class MockDefinitionImportService : IMockDefinitionImportService
     {
+        const string MockDefExtension = ".json";
+
         readonly IMemoryCache cache;
-        string MockDefFile;
+        string MockDefPath;
 
         public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options)
         {
             this.cache = cache;
-            MockDefFile = options.Value.PATH;
+            MockDefPath = options.Value.PATH;
         }
 
         /// <summary>
@@ -39,29 +43,51 @@ namespace Orbital.Mock.Server.Services
         /// </summary>
         public void ImportAllIntoMemoryCache()
         {
-            if (MockDefFile != null)
+            if (MockDefPath != null)
             {
-                Log.Information("MockDefinitionImportService: Attempting to load MockDef from provided file: '{File}'", MockDefFile);
-                ImportFromFile(MockDefFile);
+                Log.Information($"MockDefinitionImportService: Attempting to load MockDef(s) from PATH option: '{MockDefPath}'");
+                ImportFromPath(MockDefPath);
             }
         }
 
         /// <summary>
-        /// Loads a MockDefinition from a file into the MemoryCache
+        /// Loads a MockDefinition from a given filepath into the MemoryCache
         /// </summary>
-        public void ImportFromFile(string fileName)
+        /// <param name="filePath">Input filepath to be parsed - can be directory or file</param>
+        internal void ImportFromPath(string filePath)
         {
-            if (System.IO.File.Exists(fileName))
+            if (Directory.Exists(filePath))
+            {
+                var mockDefs = Directory.GetFiles(filePath, $"*{MockDefExtension}");
+
+                if (mockDefs.Length == 0) Log.Warning($"MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{filePath}'");
+                
+                foreach (string path in mockDefs) { ImportFromFile(path); }
+            } 
+            else
+            {
+                ImportFromFile(filePath);
+            }
+        }
+
+        /// <summary>
+        /// Loads MockDefinition from file into MemoryCache
+        /// </summary>
+        /// <param name="fileName"></param>
+        void ImportFromFile(string fileName)
+        {
+            try
             {
                 var mockDefinition = MockDefinition.CreateFromFile(fileName);
 
-                Log.Information("MockDefinitionImportService: Imported Mock Definition from a File, {Title}", mockDefinition.Metadata.Title);
+                Log.Information($"MockDefinitionImportService: Imported Mock Definition from a File, {mockDefinition.Metadata.Title}");
 
                 AddMockDefToMemoryCache(mockDefinition);
             }
-            else
+            catch (JsonSerializationException e)
             {
-                Log.Warning("MockDefinitionImportService: Unable to import Mock Definition, file does not exist: {FileName}", fileName);
+                Log.Error($"Failed to parse Mock Definition from file '{fileName}' with Exception: {e}");
+                throw e;
             }
         }
 
