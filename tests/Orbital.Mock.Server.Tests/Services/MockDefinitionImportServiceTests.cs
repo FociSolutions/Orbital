@@ -70,6 +70,20 @@ namespace Orbital.Mock.Server.Tests.Services
         }
 
         [Fact]
+        public void ImportFromCommaDelimitedFilesPathSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json, ./TestMockDefDirectory/mock_definition1.json");
+
+            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+
+            Assert.NotNull(savedDefinition);
+        }
+
+        [Fact]
         public void ImportFromDirectoryPathSuccessTest()
         {
             #region Test Setup
