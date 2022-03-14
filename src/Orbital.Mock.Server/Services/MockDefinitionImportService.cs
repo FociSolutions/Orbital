@@ -50,7 +50,7 @@ namespace Orbital.Mock.Server.Services
         }
 
         /// <summary>
-        /// Loads a MockDefinition from a single or multiple filepaths into the MemoryCache
+        /// Loads a MockDefinition from one or many filepaths into the MemoryCache
         /// </summary>
         /// <param name="filePath">Input filepath (string) to be parsed
         /// - can be directory or file
@@ -59,11 +59,16 @@ namespace Orbital.Mock.Server.Services
         /// </param>
         internal void ImportFromPath(string filePath)
         {
+            bool multiPathFlag = filePath.Contains(',') ? true : false; // for tests
             var paths = filePath.Contains(',') ? filePath.Split(',') : new string[] { filePath };
 
             foreach (var path in paths)
             {
-                if (IsDirectory(path))
+                if (File.Exists(path))
+                {
+                    ImportFromFile(path);
+                }
+                else if (Directory.Exists(path))
                 {
                     var mockDefs = Directory.GetFiles(path, $"*{MockDefExtension}");
 
@@ -73,19 +78,9 @@ namespace Orbital.Mock.Server.Services
                 }
                 else
                 {
-                    ImportFromFile(path);
+                    Log.Error($"{path} is not a valid file or directory.");
                 }
             }
-        }
-
-        /// <summary>
-        /// Checks if the passed path is a file or a directory
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns>True if directory, false if file</returns>
-        static bool IsDirectory(string filePath)
-        {
-            return Directory.Exists(filePath);
         }
 
         /// <summary>
@@ -123,6 +118,16 @@ namespace Orbital.Mock.Server.Services
                 keysCollection.Add(mockDefinition.Metadata.Title);
                 _ = cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
             }
+        }
+
+        /// <summary>
+        /// Checks if the passed path is a file or a directory
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns>True if directory, false if file</returns>
+        static bool IsDirectory(string filePath)
+        {
+            return Directory.Exists(filePath);
         }
 
     }
