@@ -76,17 +76,19 @@ namespace Orbital.Mock.Server.Services
         /// <param name="fileName"></param>
         void ImportFromFile(string fileName)
         {
-            if (!File.Exists(fileName))
-            {
-                Log.Error("Failed to find Mock Definition file");
-            }
+           
             try
             {
+                                            
                 var mockDefinition = MockDefinition.CreateFromFile(fileName);
 
                 Log.Information($"MockDefinitionImportService: Imported Mock Definition from a File, {mockDefinition.Metadata.Title}");
 
                 AddMockDefToMemoryCache(mockDefinition);
+            }
+            catch (FileNotFoundException)
+            {
+               Log.Error("Failed to find Mock Definition file");                   
             }
             catch (JsonSerializationException e)
             {
