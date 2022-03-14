@@ -70,17 +70,18 @@ namespace Orbital.Mock.Server.Tests.Services
         }
 
         [Fact]
-        public void ImportFromCommaDelimitedFilesPathSuccessTest()
+        public void ImportFromNonExistantPathFailTest()
         {
             #region Test Setup
             var (mockDefImportService, cache) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json, ./TestMockDefDirectory/mock_definition1.json");
+            string NonExistantPath = @"Z:\I\Dont\Exist";
+            mockDefImportService.ImportFromPath($"{Path.Combine(NonExistantPath, "mock_definition.json")}");
 
             cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
 
-            Assert.NotNull(savedDefinition);
+            Assert.Null(savedDefinition);
         }
 
         [Fact]
