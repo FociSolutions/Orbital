@@ -90,7 +90,7 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json,./mock_definition.json");
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json,./base_mock_definition.json");
 
             Assert.True(cache.Count == 2);
         }
