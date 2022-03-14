@@ -84,6 +84,43 @@ namespace Orbital.Mock.Server.Tests.Services
         }
 
         [Fact]
+        public void ImportFromMultiplePathsSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json,./mock_definition.json");
+
+            Assert.True(cache.Count == 2);
+        }
+
+        [Fact]
+        public void ImportFromMultiplePathsSomeInvalidSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json,./mock_def.json");
+
+            Assert.True(cache.Count == 1);
+        }
+
+        [Fact]
+        public void ImportFromMultiplePathsAllInvalidSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock.json,./mock_def.json");
+
+            Assert.True(cache.Count == 0);
+
+        }
+
+        [Fact]
         public void ImportFromInvalidFileFailTest()
         {
             #region Test Setup
