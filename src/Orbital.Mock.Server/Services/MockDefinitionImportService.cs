@@ -59,7 +59,6 @@ namespace Orbital.Mock.Server.Services
         /// </param>
         internal void ImportFromPath(string filePath)
         {
-            bool multiPathFlag = filePath.Contains(',') ? true : false; // for tests
             var paths = filePath.Contains(',') ? filePath.Split(',') : new string[] { filePath };
 
             foreach (var path in paths)
