@@ -46,6 +46,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="base_mock_definition.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="mock_definition_empty.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

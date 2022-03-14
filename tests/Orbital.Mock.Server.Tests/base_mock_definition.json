@@ -1,7 +1,7 @@
 {
   "id": "3b120d6e-142e-4090-9629-a836cf3f593f",
   "metadata": {
-    "title": "Pet Store Tests",
+    "title": "Pet Store Tests Base",
     "description": "This is to pass into Unit Tests."
   },
   "tokenValidation": true,
