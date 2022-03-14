@@ -88,7 +88,7 @@ namespace Orbital.Mock.Server.Services
             }
             catch (FileNotFoundException)
             {
-               Log.Error("Failed to find Mock Definition file");                   
+               Log.Error($"Failed to find Mock Definition file: {fileName}");                   
             }
             catch (JsonSerializationException e)
             {
