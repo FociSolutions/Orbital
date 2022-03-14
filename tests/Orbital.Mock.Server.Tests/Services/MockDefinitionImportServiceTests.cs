@@ -70,6 +70,21 @@ namespace Orbital.Mock.Server.Tests.Services
         }
 
         [Fact]
+        public void ImportFromNonExistantPathFailTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            string NonExistantPath = @"Z:\I\Dont\Exist";
+            mockDefImportService.ImportFromPath($"{Path.Combine(NonExistantPath, "mock_definition.json")}");
+
+            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+
+            Assert.Null(savedDefinition);
+        }
+
+        [Fact]
         public void ImportFromDirectoryPathSuccessTest()
         {
             #region Test Setup
@@ -110,7 +125,11 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache) = GetSetupObjects();
             #endregion
 
-            Assert.Throws<FileNotFoundException>(() => mockDefImportService.ImportFromPath("./mock_definition_not_exists.json"));
+            mockDefImportService.ImportFromPath("./mock_definition_not_exists.json");
+
+            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+
+            Assert.Null(savedDefinition);
         }
 
         [Fact]
