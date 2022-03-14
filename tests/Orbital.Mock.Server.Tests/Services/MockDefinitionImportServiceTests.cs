@@ -125,7 +125,11 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache) = GetSetupObjects();
             #endregion
 
-            Assert.Throws<FileNotFoundException>(() => mockDefImportService.ImportFromPath("./mock_definition_not_exists.json"));
+            mockDefImportService.ImportFromPath("./mock_definition_not_exists.json");
+
+            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+
+            Assert.Null(savedDefinition);
         }
 
         [Fact]
