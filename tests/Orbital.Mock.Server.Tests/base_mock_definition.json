@@ -1,0 +1,222 @@
+{
+  "id": "3b120d6e-142e-4090-9629-a836cf3f593f",
+  "metadata": {
+    "title": "Pet Store Tests Base",
+    "description": "This is to pass into Unit Tests."
+  },
+  "tokenValidation": true,
+  "openApi": {
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Swagger Petstore",
+      "license": { "name": "MIT" }
+    },
+    "host": "petstore.swagger.io",
+    "basePath": "/v1",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+      "/pets": {
+        "get": {
+          "summary": "List all pets",
+          "operationId": "listPets",
+          "tags": ["pets"],
+          "parameters": [
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "How many items to return at one time (max 100)",
+              "required": false,
+              "type": "integer",
+              "format": "int32"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A paged array of pets",
+              "headers": {
+                "x-next": {
+                  "type": "string",
+                  "description": "A link to the next page of responses"
+                }
+              },
+              "schema": { "$ref": "#/definitions/Pets" }
+            },
+            "default": {
+              "description": "unexpected error",
+              "schema": { "$ref": "#/definitions/Error" }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a pet",
+          "operationId": "createPets",
+          "tags": ["pets"],
+          "responses": {
+            "201": { "description": "Null response" },
+            "default": {
+              "description": "unexpected error",
+              "schema": { "$ref": "#/definitions/Error" }
+            }
+          }
+        }
+      },
+      "/pets/{petId}": {
+        "get": {
+          "summary": "Info for a specific pet",
+          "operationId": "showPetById",
+          "tags": ["pets"],
+          "parameters": [
+            {
+              "name": "petId",
+              "in": "path",
+              "required": true,
+              "description": "The id of the pet to retrieve",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Expected response to a valid request",
+              "schema": { "$ref": "#/definitions/Pets" }
+            },
+            "default": {
+              "description": "unexpected error",
+              "schema": { "$ref": "#/definitions/Error" }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Pet": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "tag": { "type": "string" }
+        }
+      },
+      "Pets": { "type": "array", "items": { "$ref": "#/definitions/Pet" } },
+      "Error": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": { "type": "integer", "format": "int32" },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "b7a5d8ec-1d03-44b6-a679-ff4596c43a79",
+      "metadata": {
+        "title": "Default OK Scenario",
+        "description": "Default OK Description"
+      },
+      "verb": 0,
+      "path": "/pets",
+      "response": {
+        "headers": {},
+        "body": "{\n  \"pet-name\": \"Sherlock\"\n}",
+        "status": 200,
+        "type": 1
+      },
+      "requestMatchRules": {
+        "headerRules": [
+          { "key": "Content-Type", "value": "application/json", "type": 5 }
+        ],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": []
+      },
+      "policies": [{ "type": 1, "value": 123 }],
+      "defaultScenario": true,
+      "tokenRule": { "validationType": 0, "rules": [] }
+    },
+    {
+      "id": "dcb2078f-2d21-44d0-a836-c33bea258cd1",
+      "metadata": { "title": "Invalid-Token Scenario", "description": "" },
+      "verb": 0,
+      "path": "/pets",
+      "response": { "headers": {}, "body": "{}", "status": 401, "type": 1 },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": []
+      },
+      "policies": [],
+      "defaultScenario": false,
+      "tokenRule": { "validationType": 0, "rules": [] }
+    },
+    {
+      "id": "c0a364d5-e538-4278-8c3c-59aa9ee92aa7",
+      "metadata": { "title": "Default OK Scenario", "description": "" },
+      "verb": 3,
+      "path": "/pets",
+      "response": { "headers": {}, "body": "{}", "status": 200, "type": 1 },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": []
+      },
+      "policies": [],
+      "defaultScenario": true,
+      "tokenRule": { "validationType": 0, "rules": [] }
+    },
+    {
+      "id": "24fc30cc-3daa-4d6c-b636-f71cd9aede2e",
+      "metadata": { "title": "Invalid-Token Scenario", "description": "" },
+      "verb": 3,
+      "path": "/pets",
+      "response": { "headers": {}, "body": "{}", "status": 401, "type": 1 },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": []
+      },
+      "policies": [],
+      "defaultScenario": false,
+      "tokenRule": { "validationType": 0, "rules": [] }
+    },
+    {
+      "id": "9c8f5fa1-bec6-4fc7-bb2a-208a60c7670e",
+      "metadata": { "title": "Default OK Scenario", "description": "" },
+      "verb": 0,
+      "path": "/pets/{petId}",
+      "response": { "headers": {}, "body": "{}", "status": 200, "type": 1 },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": []
+      },
+      "policies": [],
+      "defaultScenario": true,
+      "tokenRule": { "validationType": 0, "rules": [] }
+    },
+    {
+      "id": "b6d098bc-551d-4834-9bc6-78ffe8bd3428",
+      "metadata": { "title": "Invalid-Token Scenario", "description": "" },
+      "verb": 0,
+      "path": "/pets/{petId}",
+      "response": { "headers": {}, "body": "{}", "status": 401, "type": 1 },
+      "requestMatchRules": {
+        "headerRules": [],
+        "queryRules": [],
+        "bodyRules": [],
+        "urlRules": []
+      },
+      "policies": [],
+      "defaultScenario": false,
+      "tokenRule": { "validationType": 0, "rules": [] }
+    }
+  ]
+}

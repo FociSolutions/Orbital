@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Orbital.Mock.Server.Tests.Services
 {
@@ -99,6 +101,48 @@ namespace Orbital.Mock.Server.Tests.Services
         }
 
         [Fact]
+        public void ImportFromMultiplePathsSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json,./base_mock_definition.json");
+
+            var ids = GetAddedMockDefinitionsIds(cache);
+
+            Assert.Equal(2, ids.Count());
+        }
+
+        [Fact]
+        public void ImportFromMultiplePathsSomeInvalidSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json,./mock_def.json");
+
+            var ids = GetAddedMockDefinitionsIds(cache);
+
+            Assert.Equal(1, ids.Count());
+        }
+
+        [Fact]
+        public void ImportFromMultiplePathsAllInvalidSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock.json,./mock_def.json");
+
+            var ids = GetAddedMockDefinitionsIds(cache);
+
+            Assert.Equal(0, ids.Count());
+        }
+
+        [Fact]
         public void ImportFromInvalidFileFailTest()
         {
             #region Test Setup
@@ -161,5 +205,9 @@ namespace Orbital.Mock.Server.Tests.Services
             Assert.Equal(expected, actual);
         }
 
+        static IEnumerable<string> GetAddedMockDefinitionsIds(IMemoryCache cache)
+        {
+            return cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, c => new List<string>());
+        }
     }
 }

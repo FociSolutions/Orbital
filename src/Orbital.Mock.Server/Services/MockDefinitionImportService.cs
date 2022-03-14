@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 
 using Microsoft.Extensions.Options;
@@ -51,22 +50,35 @@ namespace Orbital.Mock.Server.Services
         }
 
         /// <summary>
-        /// Loads a MockDefinition from a given filepath into the MemoryCache
+        /// Loads a MockDefinition from one or many filepaths into the MemoryCache
         /// </summary>
-        /// <param name="filePath">Input filepath to be parsed - can be directory or file</param>
+        /// <param name="filePath">Input filepath (string) to be parsed
+        /// - can be directory or file
+        /// - can be singular filepath
+        /// - can represent multiple filepaths, separated by comma
+        /// </param>
         internal void ImportFromPath(string filePath)
         {
-            if (Directory.Exists(filePath))
-            {
-                var mockDefs = Directory.GetFiles(filePath, $"*{MockDefExtension}");
+            var paths = filePath.Contains(',') ? filePath.Split(',') : new string[] { filePath };
 
-                if (mockDefs.Length == 0) Log.Warning($"MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{filePath}'");
-                
-                foreach (string path in mockDefs) { ImportFromFile(path); }
-            } 
-            else
+            foreach (var path in paths)
             {
-                ImportFromFile(filePath);
+                if (File.Exists(path))
+                {
+                    ImportFromFile(path);
+                }
+                else if (Directory.Exists(path))
+                {
+                    var mockDefs = Directory.GetFiles(path, $"*{MockDefExtension}");
+
+                    if (mockDefs.Length == 0) Log.Warning($"MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{filePath}'");
+
+                    foreach (string mockDefPath in mockDefs) { ImportFromFile(mockDefPath); }
+                }
+                else
+                {
+                    Log.Error($"{path} is not a valid file or directory.");
+                }
             }
         }
 
@@ -111,6 +123,16 @@ namespace Orbital.Mock.Server.Services
                 keysCollection.Add(mockDefinition.Metadata.Title);
                 _ = cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
             }
+        }
+
+        /// <summary>
+        /// Checks if the passed path is a file or a directory
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns>True if directory, false if file</returns>
+        static bool IsDirectory(string filePath)
+        {
+            return Directory.Exists(filePath);
         }
 
     }
