@@ -14,6 +14,7 @@ using Microsoft.Extensions.Primitives;
 
 using Orbital.Mock.Definition;
 using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Tokens;
 using Orbital.Mock.Definition.Response;
 
 using Orbital.Mock.Server.Pipelines;
@@ -38,6 +39,13 @@ namespace Orbital.Mock.Server.LongRunningTests
         private readonly Faker<Scenario> _fakerScenario;
         private readonly List<HttpMethod> _validMethods = new List<HttpMethod> { HttpMethod.Get, HttpMethod.Put, HttpMethod.Post, HttpMethod.Delete };
 
+        private static readonly List<ComparerType> TestMatchTypes = new List<ComparerType>()
+        {
+            ComparerType.REGEX,
+            ComparerType.TEXTSTARTSWITH, ComparerType.TEXTENDSWITH, ComparerType.TEXTCONTAINS, ComparerType.TEXTEQUALS,
+            ComparerType.ACCEPTALL
+        };
+
         public static IPublicKeyService GetPublicKeyServiceMock()
         {
             var mock = Substitute.For<IPublicKeyService>();
@@ -52,9 +60,11 @@ namespace Orbital.Mock.Server.LongRunningTests
             var fakerJObject = new Faker<JObject>()
                 .CustomInstantiator(f => JObject.FromObject(new { Value = f.Random.AlphaNumeric(TestUtils.GetRandomStringLength()) }));
             var fakerBodyRule = new Faker<BodyRule>()
-                .CustomInstantiator(f => new BodyRule(f.PickRandom<ComparerType>(), fakerJObject.Generate()));
+                .CustomInstantiator(f => new BodyRule(f.PickRandom(TestMatchTypes), fakerJObject.Generate()));
             var fakerHeaderQueryRule = new Faker<KeyValueTypeRule>()
-                .CustomInstantiator(f => new KeyValueTypeRule() { Type = f.PickRandom<ComparerType>(), Key = f.Random.String(), Value = f.Random.String() });
+                .CustomInstantiator(f => new KeyValueTypeRule() { Type = f.PickRandom(TestMatchTypes), Key = f.Random.String(), Value = f.Random.String() });
+            var fakerTokenRules = new Faker<TokenRules>()
+                .CustomInstantiator(f => new TokenRules() { CheckExpired = false, ValidationType = TokenValidationType.NONE, Rules = new List<KeyValueTypeRule>() });
             var fakerResponse = new Faker<MockResponse>()
                 .CustomInstantiator(f => new MockResponse(
                     (int)f.PickRandom<HttpStatusCode>(),
@@ -62,12 +72,14 @@ namespace Orbital.Mock.Server.LongRunningTests
                 ));
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                 .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
-                .RuleFor(m => m.HeaderRules, f => fakerHeaderQueryRule.Generate(5))
-                .RuleFor(m => m.QueryRules, f => fakerHeaderQueryRule.Generate(5));
+                .RuleFor(m => m.HeaderRules, _ => fakerHeaderQueryRule.Generate(5))
+                .RuleFor(m => m.QueryRules, _ => fakerHeaderQueryRule.Generate(5))
+                .RuleFor(m => m.UrlRules, _ => new List<PathTypeRule>());
             _fakerScenario = new Faker<Scenario>()
                 .RuleFor(m => m.Id, f => f.Random.Guid().ToString())
-                .RuleFor(m => m.Response, f => fakerResponse.Generate())
-                .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
+                .RuleFor(m => m.Response, _ => fakerResponse.Generate())
+                .RuleFor(m => m.RequestMatchRules, _ => fakerRequestMatchRules.Generate())
+                .RuleFor(m => m.TokenRules, _ => fakerTokenRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(_validMethods));
             _mockServerProcessor = new MockServerProcessor(new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
@@ -126,12 +138,13 @@ namespace Orbital.Mock.Server.LongRunningTests
 
             cancelledTokenSource.Cancel();
 
-            var Actual = Target.PipelineIsRunning;
+            //< Expect that the pipeline status is 'false' as it's no longer running
+            var PipelineStatus = Target.GetPipelineStatus();
+            Assert.False(PipelineStatus);
 
-            // should not accept anymore data after it has been cancelled
-            _ = Target.Push(input, cancelledTokenSource.Token);
-
-            Assert.False(Actual);
+            //< We expect the pipeline to refuse any new work with a 403 response
+            var ActualResult = Target.Push(input, cancelledTokenSource.Token).Result;
+            Assert.Equal(403, ActualResult.Status);
         }
 
         public static Stream GenerateStreamFromString(string s)
