@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Orbital.Mock.Definition
 {
@@ -49,26 +50,43 @@ namespace Orbital.Mock.Definition
         }
 
         /// <summary>
-        /// Retrieves a JSON file from disk and converts it to a MockDefinition
+        /// Retrieves a JSON file from disk and converts it to a MockDefinition, returns null if the MockDefinition cannot be retireved or parsed
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
         public static MockDefinition CreateFromFile(string fileName)
         {
-            var json = System.IO.File.ReadAllText(fileName);
-            return CreateFromJsonString(json);
+            try
+            {
+                var json = System.IO.File.ReadAllText(fileName);
+                return CreateFromJsonString(json);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Exception has been identified on filename: '{fileName}'", fileName);
+            }
 
+            return null;
         }
 
         /// <summary>
-        /// Converts a JSON string containing a Mock Definition into an object of type MockDefinition
+        /// Converts a JSON string containing a Mock Definition into an object of type MockDefinition, returns null if the MockDefinition cannot be parsed
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
         public static MockDefinition CreateFromJsonString(string json)
         {
-            var result = JsonConvert.DeserializeObject<MockDefinition>(json); 
-            return (result is not null) ? result : throw new JsonSerializationException($"Failed to deserialize MockDefinition from JSON: {json}");
+            try
+            {
+                var result = JsonConvert.DeserializeObject<MockDefinition>(json);
+                return (result is not null) ? result : throw new JsonSerializationException($"Failed to deserialize MockDefinition from JSON: {json}");
+            }
+            catch (Exception e) when (e is JsonSerializationException || e is JsonReaderException)
+            {
+                Log.Error(e, "Failed to parse Mock Definition from file '{Json}'", json);
+            }
+            
+            return null;
         }
     }
 }

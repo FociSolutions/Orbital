@@ -27,14 +27,16 @@ namespace Orbital.Mock.Server.Services
     public class MockDefinitionImportService : IMockDefinitionImportService
     {
         const string MockDefExtension = ".json";
+        readonly ILogger Log;
 
         readonly IMemoryCache cache;
-        string MockDefPath;
+        readonly string MockDefPath;
 
-        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options)
+        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, ILogger injectedLog = null)
         {
             this.cache = cache;
             MockDefPath = options.Value.PATH;
+            Log = injectedLog ?? Serilog.Log.Logger;
         }
 
         /// <summary>
@@ -90,22 +92,21 @@ namespace Orbital.Mock.Server.Services
         {
             if (!File.Exists(fileName))
             {
-                Log.Warning($"Failed to find Mock Definition file: {fileName}");
+                Log.Error($"MockDefinitionImportService: Failed to find Mock Definition file: {fileName}");
                 return;
             }
             
-            try
-            {                      
-                var mockDefinition = MockDefinition.CreateFromFile(fileName);
-
+            var mockDefinition = MockDefinition.CreateFromFile(fileName);
+            
+            if (mockDefinition != null)
+            {
                 Log.Information($"MockDefinitionImportService: Imported Mock Definition from a File, {mockDefinition.Metadata.Title}");
 
                 AddMockDefToMemoryCache(mockDefinition);
             }
-            catch (JsonSerializationException e)
+            else
             {
-                Log.Error($"Failed to parse Mock Definition from file '{fileName}' with Exception: {e}");
-                throw e;
+                Log.Error($"MockDefinitionImportService: Failed to import Mock Definition from a File: '{fileName}'");
             }
         }
 

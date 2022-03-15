@@ -148,7 +148,7 @@ namespace Orbital.Mock.Definition.Tests
         [Fact]
         public void CreateFromEmptyStringFailTest()
         {
-            Assert.Throws<JsonSerializationException>(() => MockDefinition.CreateFromJsonString(""));
+            Assert.Null(MockDefinition.CreateFromJsonString(""));
         }
     }
 }
