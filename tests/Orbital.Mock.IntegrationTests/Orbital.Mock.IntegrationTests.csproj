@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="LibGit2Sharp" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="MockDefinitions\PetStoreBaseMockDefinitionBodyJsonPath.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

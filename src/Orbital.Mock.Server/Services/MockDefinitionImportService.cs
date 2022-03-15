@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 using Microsoft.Extensions.Options;
@@ -9,7 +10,6 @@ using Orbital.Mock.Definition;
 
 using Serilog;
 using Newtonsoft.Json;
-using LibGit2Sharp;
 
 namespace Orbital.Mock.Server.Services
 {
@@ -100,13 +100,13 @@ namespace Orbital.Mock.Server.Services
                 {
                     var mockDefs = Directory.GetFiles(path, $"*{MockDefExtension}");
 
-                    if (mockDefs.Length == 0) Log.Warning($"MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{filePath}'");
+                    if (mockDefs.Length == 0) Log.Warning("MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{FilePath}'", filePath);
 
                     foreach (string mockDefPath in mockDefs) { ImportFromFile(mockDefPath); }
                 }
                 else
                 {
-                    Log.Error($"{path} is not a valid file or directory.");
+                    Log.Error("{Path} is not a valid file or directory.", path);
                 }
             }
         }
@@ -119,7 +119,7 @@ namespace Orbital.Mock.Server.Services
         {
             if (!File.Exists(fileName))
             {
-                Log.Error($"MockDefinitionImportService: Failed to find Mock Definition file: {fileName}");
+                Log.Error("MockDefinitionImportService: Failed to find Mock Definition file: {FileName}", fileName);
                 return;
             }
             
@@ -127,13 +127,13 @@ namespace Orbital.Mock.Server.Services
             
             if (mockDefinition != null)
             {
-                Log.Information($"MockDefinitionImportService: Imported Mock Definition from a File, {mockDefinition.Metadata.Title}");
+                Log.Information("MockDefinitionImportService: Imported Mock Definition from a File, {Title}", mockDefinition.Metadata.Title);
 
                 AddMockDefToMemoryCache(mockDefinition);
             }
             else
             {
-                Log.Error($"MockDefinitionImportService: Failed to import Mock Definition from a File: '{fileName}'");
+                Log.Error("MockDefinitionImportService: Failed to import Mock Definition from a File: '{FileName}'", fileName);
             }
         }
 
@@ -174,16 +174,6 @@ namespace Orbital.Mock.Server.Services
                 keysCollection.Add(mockDefinition.Metadata.Title);
                 _ = cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
             }
-        }
-
-        /// <summary>
-        /// Checks if the passed path is a file or a directory
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns>True if directory, false if file</returns>
-        static bool IsDirectory(string filePath)
-        {
-            return Directory.Exists(filePath);
         }
 
     }

@@ -36,11 +36,10 @@ namespace Orbital.Mock.Server.Tests.Services
                 PATH = PATH,
             });
 
-            var logger = Substitute.For<ILogger>();
+            var cache = new MemoryCache(new MemoryCacheOptions());
             var git = Substitute.For<IGitCommands>();
+            var logger = Substitute.For<ILogger>();
 
-            var options = new MemoryCacheOptions();
-            var cache = new MemoryCache(options);
             var mockDefImportService = new MockDefinitionImportService(cache, config_mock, git, logger);
 
             return (mockDefImportService, cache, logger);
@@ -129,7 +128,7 @@ namespace Orbital.Mock.Server.Tests.Services
 
             var ids = GetAddedMockDefinitionsIds(cache);
 
-            Assert.Equal(1, ids.Count());
+            Assert.Single(ids);
         }
 
         [Fact]
@@ -143,7 +142,7 @@ namespace Orbital.Mock.Server.Tests.Services
 
             var ids = GetAddedMockDefinitionsIds(cache);
 
-            Assert.Equal(0, ids.Count());
+            Assert.Empty(ids);
         }
 
         [Fact]
@@ -152,9 +151,9 @@ namespace Orbital.Mock.Server.Tests.Services
             #region Test Setup
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
+
             mockDefImportService.ImportFromPath("./mock_definition_invalid.json");
 
-            
             var actual = cache.Count;
             var expected = 0;
 
@@ -167,8 +166,8 @@ namespace Orbital.Mock.Server.Tests.Services
             #region Test Setup
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
+
             mockDefImportService.ImportFromPath("./mock_definition_empty.json");
-            
             
             var actual = cache.Count;
             var expected = 0;
