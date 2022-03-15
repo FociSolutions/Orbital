@@ -113,6 +113,8 @@ namespace Orbital.Mock.Server.LongRunningTests
         [Fact]
         public async void MockServerProcessorCancelTokenAfterRequest()
         {
+            int TaskCount = 20;
+
             _mockServerProcessor = new MockServerProcessor(new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
 
             var scenarios = GenerateRandomScenarios(out var httpContext);
@@ -127,7 +129,7 @@ namespace Orbital.Mock.Server.LongRunningTests
             // fill the pipeline with tasks
             var fillPipeline = new Task(() =>
             {
-                while (true)
+                foreach (int i in Enumerable.Range(0, TaskCount))
                 {
                     _ = Target.Push(input, cancelledTokenSource.Token);
                 }
@@ -144,7 +146,7 @@ namespace Orbital.Mock.Server.LongRunningTests
 
             //< We expect the pipeline to refuse any new work with a 403 response
             var ActualResult = Target.Push(input, cancelledTokenSource.Token).Result;
-            Assert.Equal(403, ActualResult.Status);
+            Assert.Equal(503, ActualResult.Status);
         }
 
         public static Stream GenerateStreamFromString(string s)

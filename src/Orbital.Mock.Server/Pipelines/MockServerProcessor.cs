@@ -162,7 +162,7 @@ namespace Orbital.Mock.Server.Pipelines
         /// <inheritdoc />
         public async Task<MockResponse> Push(MessageProcessorInput input, CancellationToken token)
         {
-            if (!pipelineIsRunning) { return new MockResponse(403); }
+            if (!pipelineIsRunning) { return new MockResponse(503); }
 
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
 
