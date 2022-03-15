@@ -67,7 +67,8 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json"); 
+            var path = Path.Combine(".", "fixtures", "mock_definition_valid.json");
+            mockDefImportService.ImportFromPath(path); 
 
             cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
 
@@ -81,12 +82,12 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            string NonExistantPath = @"Z:\I\Dont\Exist";
-            mockDefImportService.ImportFromPath($"{Path.Combine(NonExistantPath, "mock_definition.json")}");
+            var path = Path.Combine(".", "fixtures", "not_a_directory", "mock_definition.json");
+            mockDefImportService.ImportFromPath(path);
 
-            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+            var actual = cache.Count;
 
-            Assert.Null(savedDefinition);
+            Assert.Equal(0, actual);
         }
 
         [Fact]
@@ -96,11 +97,14 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./TestMockDefDirectory/");
+            var path = Path.Combine(".", "fixtures", "directory_import_test");
+            mockDefImportService.ImportFromPath(path);
 
-            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+            cache.TryGetValue($"{testMockDefFileTitle} 1", out var savedDefinition1);
+            cache.TryGetValue($"{testMockDefFileTitle} 2", out var savedDefinition2);
 
-            Assert.NotNull(savedDefinition);
+            Assert.NotNull(savedDefinition1);
+            Assert.NotNull(savedDefinition2);
         }
 
         [Fact]
@@ -110,7 +114,9 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json,./base_mock_definition.json");
+            var path1 = Path.Combine(".", "fixtures", "directory_import_test", "mock_definition_1.json");
+            var path2 = Path.Combine(".", "fixtures", "mock_definition_valid.json");
+            mockDefImportService.ImportFromPath($"{path1},{path2}");
 
             var ids = GetAddedMockDefinitionsIds(cache);
 
@@ -124,7 +130,9 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json,./mock_def.json");
+            var path1 = Path.Combine(".", "fixtures", "directory_import_test", "mock_definition_1.json");
+            var path2 = Path.Combine(".", "fixtures", "mock_def.json");
+            mockDefImportService.ImportFromPath($"{path1},{path2}");
 
             var ids = GetAddedMockDefinitionsIds(cache);
 
@@ -138,7 +146,10 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock.json,./mock_def.json");
+            var path1 = Path.Combine(".", "fixtures", "directory_import_test", "mock_definition_not_exists.json");
+            var path2 = Path.Combine(".", "fixtures", "mock_definition_not_exists.json");
+            var path3 = Path.Combine(".", "fixtures", "directory_not_exists");
+            mockDefImportService.ImportFromPath($"{path1},{path2},{path3}");
 
             var ids = GetAddedMockDefinitionsIds(cache);
 
@@ -152,7 +163,8 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./mock_definition_invalid.json");
+            var path = Path.Combine(".", "fixtures", "mock_definition_invalid.json");
+            mockDefImportService.ImportFromPath(path);
 
             var actual = cache.Count;
             var expected = 0;
@@ -167,8 +179,9 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./mock_definition_empty.json");
-            
+            var path = Path.Combine(".", "fixtures", "mock_definition_empty.json");
+            mockDefImportService.ImportFromPath(path);
+
             var actual = cache.Count;
             var expected = 0;
 
@@ -182,9 +195,9 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, _) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./mock_definition_not_exists.json");
+            var path = Path.Combine(".", "fixtures", "mock_definition_not_exists.json");
+            mockDefImportService.ImportFromPath(path);
 
-           
             var actual = cache.Count;
             var expected = 0;
 
@@ -195,7 +208,8 @@ namespace Orbital.Mock.Server.Tests.Services
         public void ImportFromAllSuccessTest()
         {
             #region Test Setup
-            var (mockDefImportService, cache, _) = GetSetupObjects("./TestMockDefDirectory/mock_definition.json");
+            var path = Path.Combine(".", "fixtures", "mock_definition_valid.json");
+            var (mockDefImportService, cache, _) = GetSetupObjects(path);
             #endregion
 
             mockDefImportService.ImportAllIntoMemoryCache();
@@ -227,7 +241,8 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, logger) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./mock_definition_empty.json");
+            var path = Path.Combine(".", "fixtures", "mock_definition_empty.json");
+            mockDefImportService.ImportFromPath(path);
 
             #pragma warning disable Serilog004 // Constant MessageTemplate verifier
             logger.Received().Error(Arg.Any<string>()); 
@@ -246,15 +261,18 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, cache, logger) = GetSetupObjects();
             #endregion
 
-            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json");
+            var path = Path.Combine(".", "fixtures", "mock_definition_valid.json");
+            mockDefImportService.ImportFromPath(path);
 
             #pragma warning disable Serilog004 // Constant MessageTemplate verifier
             logger.DidNotReceive().Error(Arg.Any<string>());
             #pragma warning restore Serilog004 // Constant MessageTemplate verifier
 
+            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
             var ids = GetAddedMockDefinitionsIds(cache);
 
-            Assert.Equal(1, ids.Count());
+            Assert.NotNull(savedDefinition);
+            Assert.Single(ids);
         }
 
         static IEnumerable<string> GetAddedMockDefinitionsIds(IMemoryCache cache)

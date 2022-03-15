@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 
 using Microsoft.Extensions.Options;
@@ -9,7 +8,6 @@ using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Definition;
 
 using Serilog;
-using Newtonsoft.Json;
 
 namespace Orbital.Mock.Server.Services
 {
@@ -106,7 +104,7 @@ namespace Orbital.Mock.Server.Services
                 }
                 else
                 {
-                    Log.Error("{Path} is not a valid file or directory.", path);
+                    Log.Error("MockDefinitionImportService: {Path} is not a valid file or directory.", path);
                 }
             }
         }
@@ -144,7 +142,7 @@ namespace Orbital.Mock.Server.Services
         /// <param name="branch">The branch to checkout. If not specified, the default branch is used.</param>
         /// <param name="path">The path of the mock definition to import, relative to the root of the repo.
         ///                    If not specified, mockdefinitions will be loaded from the root of the repo. </param>
-        private void ImportFromGitRepo(string repo, string branch = null, string path = ".")
+        void ImportFromGitRepo(string repo, string branch = null, string path = ".")
         {
             if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
 
@@ -164,7 +162,7 @@ namespace Orbital.Mock.Server.Services
         /// Loads the given MockDefinition into the memory cache
         /// </summary>
         /// <param name="mockDefinition"></param>
-        public void AddMockDefToMemoryCache(MockDefinition mockDefinition)
+        internal void AddMockDefToMemoryCache(MockDefinition mockDefinition)
         {
             _ = cache.Set(mockDefinition.Metadata.Title, mockDefinition);
             var keysCollection = cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });

@@ -10,6 +10,8 @@
     <Compile Remove="Factories\**" />
     <EmbeddedResource Remove="Factories\**" />
     <None Remove="Factories\**" />
+    <None Remove="fixtures\" />
+    <None Remove="fixtures\directory_import_test\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,27 +48,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="base_mock_definition.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="mock_definition_empty.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="mock_definition_invalid.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestMockDefDirectory\mock_definition.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="xunit.runner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mock_definition.json">
+    <None Update="fixtures\directory_import_test\mock_definition_1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\directory_import_test\mock_definition_2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\mock_definition_valid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\mock_definition_empty.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\mock_definition_invalid.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="MockDefinitions\" />
+    <Folder Include="fixtures\" />
+    <Folder Include="fixtures\directory_import_test\" />
   </ItemGroup>
 </Project>
