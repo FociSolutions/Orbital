@@ -26,7 +26,9 @@ namespace Orbital.Mock.Server.Pipelines
 {
     public class MockServerProcessor : IPipeline<MessageProcessorInput, Task<MockResponse>>
     {
+        
         private readonly SyncBlockFactory blockFactory;
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         #region Blocks
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
@@ -48,7 +50,8 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly TokenRequestMatchFilter<ProcessMessagePort> tokenRequestMatchFilter;
         #endregion
 
-        public bool PipelineIsRunning { get; private set; }
+        private bool pipelineIsRunning = false;
+        public bool GetPipelineStatus() => pipelineIsRunning;
 
         public MockServerProcessor(IRuleMatcher ruleMatcher, TemplateContext templateContext, IPublicKeyService pubKeyService)
             : this(new PathValidationFilter<ProcessMessagePort>(),
@@ -153,15 +156,17 @@ namespace Orbital.Mock.Server.Pipelines
             responseSelectorBlock.LinkTo(policyFilterBlock, linkOptions);
             policyFilterBlock.LinkTo(this.endBlock, linkOptions);
 
-            PipelineIsRunning = true;
+            pipelineIsRunning = true;
         }
 
         /// <inheritdoc />
         public async Task<MockResponse> Push(MessageProcessorInput input, CancellationToken token)
         {
+            if (!pipelineIsRunning) { return new MockResponse(503); }
+
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
 
-            token.Register(() => cancellationTokenSource.Cancel());
+            token.Register(() => CancelPipeline());
 
             if (input == null ||
                 input.ServerHttpRequest == null ||
@@ -222,7 +227,7 @@ namespace Orbital.Mock.Server.Pipelines
                 }
 
                 this.cancellationTokenSource.Cancel();
-                PipelineIsRunning = false;
+                pipelineIsRunning = false;
             }
             catch (AggregateException e)
             {
@@ -233,14 +238,19 @@ namespace Orbital.Mock.Server.Pipelines
             return true;
         }
 
-        public bool GetPipelineStatus()
+        void CancelPipeline()
         {
-            return this.PipelineIsRunning;
+            //< Propagate the cancellation via the CancellationToken
+            cancellationTokenSource.Cancel();
+            //< Attempting to 'gracefully' shutdown the pipeline & complete existing requests
+            Stop();
+            //< Set the 'pipelineIsRunning' flag to false so we refuse new work
+            pipelineIsRunning = false;
         }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
-        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
+        
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
