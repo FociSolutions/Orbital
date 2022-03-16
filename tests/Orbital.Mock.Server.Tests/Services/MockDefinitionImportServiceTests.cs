@@ -244,13 +244,13 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(".", "fixtures", "mock_definition_empty.json");
             mockDefImportService.ImportFromPath(path);
 
-            #pragma warning disable Serilog004 // Constant MessageTemplate verifier
-            logger.Received().Error(Arg.Any<string>()); 
-            #pragma warning restore Serilog004 // Constant MessageTemplate verifier
+            logger.ReceivedWithAnyArgs().Error("{Test}", "");
 
+            var errorCalls = logger.ReceivedCalls().Where(x => x.GetMethodInfo().Name == nameof(logger.Error));
             var actual = cache.Count;
             var expected = 0;
 
+            Assert.Single(errorCalls);
             Assert.Equal(expected, actual);
         }
 
@@ -264,13 +264,13 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(".", "fixtures", "mock_definition_valid.json");
             mockDefImportService.ImportFromPath(path);
 
-            #pragma warning disable Serilog004 // Constant MessageTemplate verifier
-            logger.DidNotReceive().Error(Arg.Any<string>());
-            #pragma warning restore Serilog004 // Constant MessageTemplate verifier
+            //logger.DidNotReceiveWithAnyArgs().Error("{Test}", "");
+            var errorCalls = logger.ReceivedCalls().Where(x => x.GetMethodInfo().Name == nameof(logger.Error));
 
             cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
             var ids = GetAddedMockDefinitionsIds(cache);
 
+            Assert.Empty(errorCalls);
             Assert.NotNull(savedDefinition);
             Assert.Single(ids);
         }
