@@ -238,6 +238,24 @@ namespace Orbital.Mock.Server.Tests.Services
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void EmptyLogOutputAsImportWasSuccessfulTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache, logger) = GetSetupObjects();
+            #endregion
+
+            mockDefImportService.ImportFromPath("./TestMockDefDirectory/mock_definition.json");
+
+            #pragma warning disable Serilog004 // Constant MessageTemplate verifier
+            logger.DidNotReceive().Error(Arg.Any<string>());
+            #pragma warning restore Serilog004 // Constant MessageTemplate verifier
+
+            var ids = GetAddedMockDefinitionsIds(cache);
+
+            Assert.Equal(1, ids.Count());
+        }
+
         static IEnumerable<string> GetAddedMockDefinitionsIds(IMemoryCache cache)
         {
             return cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, c => new List<string>());
