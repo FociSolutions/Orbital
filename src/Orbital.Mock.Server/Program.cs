@@ -42,9 +42,9 @@ namespace Orbital.Mock.Server
             // Also gather vars with the app specific prefix
             configurationBuilder.AddEnvironmentVariables(Constants.ENV_PREFIX);
             var loggerConfiguration = new LoggerConfiguration()
-            .MinimumLevel.Information() 
-            .Enrich.FromLogContext()
-            .WriteTo.Console();
+                .MinimumLevel.Information() 
+                .Enrich.FromLogContext()
+                .WriteTo.Console();
 
             if (context.HostingEnvironment.IsDevelopment())
             {
