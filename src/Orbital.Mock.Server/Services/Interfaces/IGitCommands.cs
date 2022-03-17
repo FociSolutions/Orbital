@@ -16,7 +16,7 @@ namespace Orbital.Mock.Server.Services.Interfaces
         /// <param name="sourceUrl">The URL of the repo</param>
         /// <param name="workdirPath">The local path to clone into</param>
         /// <param name="options">Options controlling clone behavior</param>
-        /// <returns></returns>
+        /// <returns>The path to the created directory</returns>
         public string Clone(string sourceUrl, string workdirPath, CloneOptions options = null);
     }
 }

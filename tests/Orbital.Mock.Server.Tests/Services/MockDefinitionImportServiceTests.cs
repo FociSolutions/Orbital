@@ -5,11 +5,11 @@ using Orbital.Mock.Definition;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using NSubstitute.Extensions;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Serilog;
-using Orbital.Mock.Server.Services.Interfaces;
 
 namespace Orbital.Mock.Server.Tests.Services
 {
@@ -30,8 +30,9 @@ namespace Orbital.Mock.Server.Tests.Services
                 .RuleFor(m => m.Metadata, f => metadataFake.Generate());
         }
 
-        static (MockDefinitionImportService mockDefImportService, MemoryCache cache, ILogger logger)
-        GetSetupObjects(string PATH = null, string GIT_REPO = null, string GIT_BRANCH = null, string GIT_PATH = null) {
+        (MockDefinitionImportService mockDefImportService, MemoryCache cache, ILogger logger)
+        GetSetupObjects(string PATH = null, string GIT_REPO = null, string GIT_BRANCH = null, string GIT_PATH = null)
+        {
             var config_mock = Substitute.For<IOptions<MockDefinitionImportServiceConfig>>();
             config_mock.Value.Returns(new MockDefinitionImportServiceConfig
             {
@@ -42,8 +43,16 @@ namespace Orbital.Mock.Server.Tests.Services
             });
 
             var cache = new MemoryCache(new MemoryCacheOptions());
-            var git = Substitute.For<IGitCommands>();
+            var git = Substitute.ForPartsOf<GitCommands>();
             var logger = Substitute.For<ILogger>();
+
+            git.Configure().Clone(default, default).ReturnsForAnyArgs(x =>
+            {
+                var src = Path.Combine(fixtureDir, "mock_definition_valid.json");
+                var dest = Path.Combine(MockDefinitionImportService.RepoDirectory, "mock_definition_valid.json");
+                File.Copy(src, dest);
+                return MockDefinitionImportService.RepoDirectory;
+            });
 
             var mockDefImportService = new MockDefinitionImportService(cache, config_mock, git, logger);
 
@@ -275,6 +284,23 @@ namespace Orbital.Mock.Server.Tests.Services
             var ids = GetAddedMockDefinitionsIds(cache);
 
             Assert.Empty(errorCalls);
+            Assert.NotNull(savedDefinition);
+            Assert.Single(ids);
+        }
+
+        [Fact]
+        public void ImportFromGitRepoSuccessTest()
+        {
+            #region Test Setup
+            var (mockDefImportService, cache, _) = GetSetupObjects(GIT_REPO: "https://github.com/not-a-git-repo", GIT_BRANCH: "test_branch", GIT_PATH: ".");
+            #endregion
+
+            mockDefImportService.ImportAllIntoMemoryCache();
+
+            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+            var ids = GetAddedMockDefinitionsIds(cache);
+
+            Assert.False(Directory.Exists(MockDefinitionImportService.RepoDirectory));
             Assert.NotNull(savedDefinition);
             Assert.Single(ids);
         }

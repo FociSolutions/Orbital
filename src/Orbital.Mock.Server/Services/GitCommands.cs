@@ -6,15 +6,14 @@ namespace Orbital.Mock.Server.Services
 {
     public class GitCommands : IGitCommands
     {
-
         /// <inheritdoc />
-        public CloneOptions GetCloneOptions()
+        public virtual CloneOptions GetCloneOptions()
         {
             return new CloneOptions();
         }
 
         /// <inheritdoc />
-        public string Clone(string sourceUrl, string workdirPath, CloneOptions options = null)
+        public virtual string Clone(string sourceUrl, string workdirPath, CloneOptions options = null)
         {
             if (options != null) {
                 return Repository.Clone(sourceUrl, workdirPath, options);
