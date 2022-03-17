@@ -1,6 +1,4 @@
-﻿using System;
-
-using Orbital.Mock.Server.Services.Interfaces;
+﻿using Orbital.Mock.Server.Services.Interfaces;
 
 using LibGit2Sharp;
 

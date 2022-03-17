@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 using Microsoft.Extensions.Options;
@@ -50,12 +51,12 @@ namespace Orbital.Mock.Server.Services
         readonly ILogger Log;
         readonly IGitCommands git;
 
-        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, IGitCommands git, ILogger injectedLog = null)
+        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, IGitCommands git, ILogger logger = null)
         {
             this.cache = cache;
             config = options.Value;
             this.git = git;
-            Log = injectedLog ?? Serilog.Log.Logger;
+            Log = logger ?? Serilog.Log.Logger;
         }
 
         /// <summary>
@@ -144,18 +145,25 @@ namespace Orbital.Mock.Server.Services
         ///                    If not specified, mockdefinitions will be loaded from the root of the repo. </param>
         void ImportFromGitRepo(string repo, string branch = null, string path = ".")
         {
-            if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
+            try
+            {
+                if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
 
-            _ = Directory.CreateDirectory(RepoDirectory);
+                _ = Directory.CreateDirectory(RepoDirectory);
 
-            var options = git.GetCloneOptions();
-            if (branch != null) { options.BranchName = branch; }
+                var options = git.GetCloneOptions();
+                if (branch != null) { options.BranchName = branch; }
 
-            _ = git.Clone(repo, RepoDirectory, options);
+                _ = git.Clone(repo, RepoDirectory, options);
 
-            ImportFromPath(Path.Combine(RepoDirectory, path));
+                ImportFromPath(Path.Combine(RepoDirectory, path));
 
-            if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
+                if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "MockDefinitionImportService: Failed to import Mock Definition(s) from a Git Repo: '{Repo}'", repo);
+            }
         }
 
         /// <summary>
