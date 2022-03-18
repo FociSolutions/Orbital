@@ -62,7 +62,7 @@ namespace Orbital.Mock.Server.Services
         /// <summary>
         /// Imports MockDefinitions from all supported sources and loads them into the MemoryCache.
         /// </summary>
-        public void ImportAllIntoMemoryCache()
+        public IMemoryCache ImportAllIntoMemoryCache()
         {
             if (config.PATH != null)
             {
@@ -75,6 +75,8 @@ namespace Orbital.Mock.Server.Services
                 Log.Information("MockDefinitionImportService: Attempting to load MockDef(s) from GIT_REPO option: '{Repo}'", config.GIT_REPO);
                 ImportFromGitRepo(config.GIT_REPO, config.GIT_BRANCH, config.GIT_PATH);
             }
+
+            return cache;
         }
 
         /// <summary>
@@ -170,7 +172,7 @@ namespace Orbital.Mock.Server.Services
         /// Loads the given MockDefinition into the memory cache
         /// </summary>
         /// <param name="mockDefinition"></param>
-        internal void AddMockDefToMemoryCache(MockDefinition mockDefinition)
+        internal IMemoryCache AddMockDefToMemoryCache(MockDefinition mockDefinition)
         {
             _ = cache.Set(mockDefinition.Metadata.Title, mockDefinition);
             var keysCollection = cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
@@ -180,6 +182,8 @@ namespace Orbital.Mock.Server.Services
                 keysCollection.Add(mockDefinition.Metadata.Title);
                 _ = cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
             }
+
+            return cache;
         }
 
     }
