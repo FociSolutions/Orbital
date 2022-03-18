@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 using Microsoft.Extensions.Options;
@@ -8,7 +9,6 @@ using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Definition;
 
 using Serilog;
-using Newtonsoft.Json;
 
 namespace Orbital.Mock.Server.Services
 {
@@ -19,6 +19,22 @@ namespace Orbital.Mock.Server.Services
         /// The file path for the MockDefinition json file to be imported and loaded at startup
         /// </summary>
         public string PATH { get; set; }
+
+        /// <summary>
+        /// The url to a git repo to clone and import mock definiitons from
+        /// </summary>
+        public string GIT_REPO { get; set; }
+
+        /// <summary>
+        /// The branch to use when cloning a git repo for the purposes of importing mock definitions from it
+        /// </summary>
+        public string GIT_BRANCH { get; set; }
+
+        /// <summary>
+        /// The path to import from when cloning a git repo for the purposes of importing mock definitions from it.
+        /// It must be a file or directory that is relative to the root of the git repo.
+        /// </summary>
+        public string GIT_PATH { get; set; }
     }
 
     /// <summary>
@@ -26,29 +42,39 @@ namespace Orbital.Mock.Server.Services
     /// </summary>
     public class MockDefinitionImportService : IMockDefinitionImportService
     {
+
         const string MockDefExtension = ".json";
-        readonly ILogger Log;
+        public static readonly string RepoDirectory = Path.Combine(".", ".orbital_temp_git_repo");
 
         readonly IMemoryCache cache;
-        readonly string MockDefPath;
+        readonly MockDefinitionImportServiceConfig config;
+        readonly ILogger Log;
+        readonly IGitCommands git;
 
-        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, ILogger injectedLog = null)
+        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, IGitCommands git, ILogger logger = null)
         {
             this.cache = cache;
-            MockDefPath = options.Value.PATH;
-            Log = injectedLog ?? Serilog.Log.Logger;
+            config = options.Value;
+            this.git = git;
+            Log = logger ?? Serilog.Log.Logger;
         }
 
-        /// <summary>
-        /// Imports MockDefinitions from all supported sources and loads them into the MemoryCache.
-        /// </summary>
-        public void ImportAllIntoMemoryCache()
+        /// <inheritdoc/>
+        public IMemoryCache ImportAllIntoMemoryCache()
         {
-            if (MockDefPath != null)
+            if (config.PATH != null)
             {
-                Log.Information($"MockDefinitionImportService: Attempting to load MockDef(s) from PATH option: '{MockDefPath}'");
-                ImportFromPath(MockDefPath);
+                Log.Information("MockDefinitionImportService: Attempting to load MockDef(s) from PATH option: '{MockDefPath}'", config.PATH);
+                ImportFromPath(config.PATH);
             }
+
+            if (config.GIT_REPO != null)
+            {
+                Log.Information("MockDefinitionImportService: Attempting to load MockDef(s) from GIT_REPO option: '{Repo}'", config.GIT_REPO);
+                ImportFromGitRepo(config.GIT_REPO, config.GIT_BRANCH, config.GIT_PATH);
+            }
+
+            return cache;
         }
 
         /// <summary>
@@ -59,12 +85,15 @@ namespace Orbital.Mock.Server.Services
         /// - can be singular filepath
         /// - can represent multiple filepaths, separated by comma
         /// </param>
-        internal void ImportFromPath(string filePath)
+        /// <param name="prepend">Prepend the path to all the paths provided</param>
+        void ImportFromPath(string filePath, string prepend = null)
         {
             var paths = filePath.Contains(',') ? filePath.Split(',') : new string[] { filePath };
 
-            foreach (var path in paths)
+            foreach (var rawPath in paths)
             {
+                var path = prepend == null ? rawPath : Path.Combine(prepend, rawPath);
+
                 if (File.Exists(path))
                 {
                     ImportFromFile(path);
@@ -73,13 +102,13 @@ namespace Orbital.Mock.Server.Services
                 {
                     var mockDefs = Directory.GetFiles(path, $"*{MockDefExtension}");
 
-                    if (mockDefs.Length == 0) Log.Warning($"MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{filePath}'");
+                    if (mockDefs.Length == 0) Log.Warning("MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{FilePath}'", filePath);
 
                     foreach (string mockDefPath in mockDefs) { ImportFromFile(mockDefPath); }
                 }
                 else
                 {
-                    Log.Error($"{path} is not a valid file or directory.");
+                    Log.Error("MockDefinitionImportService: {Path} is not a valid file or directory.", path);
                 }
             }
         }
@@ -92,7 +121,7 @@ namespace Orbital.Mock.Server.Services
         {
             if (!File.Exists(fileName))
             {
-                Log.Error($"MockDefinitionImportService: Failed to find Mock Definition file: {fileName}");
+                Log.Error("MockDefinitionImportService: Failed to find Mock Definition file: {FileName}", fileName);
                 return;
             }
             
@@ -100,21 +129,48 @@ namespace Orbital.Mock.Server.Services
             
             if (mockDefinition != null)
             {
-                Log.Information($"MockDefinitionImportService: Imported Mock Definition from a File, {mockDefinition.Metadata.Title}");
+                Log.Information("MockDefinitionImportService: Imported Mock Definition from a File, {Title}", mockDefinition.Metadata.Title);
 
                 AddMockDefToMemoryCache(mockDefinition);
             }
             else
             {
-                Log.Error($"MockDefinitionImportService: Failed to import Mock Definition from a File: '{fileName}'");
+                Log.Error("MockDefinitionImportService: Failed to import Mock Definition from a File: '{FileName}'", fileName);
             }
         }
 
         /// <summary>
-        /// Loads the given MockDefinition into the memory cache
+        /// Load MockDefinitions from the specified git repo into the MemoryCache.
         /// </summary>
-        /// <param name="mockDefinition"></param>
-        public void AddMockDefToMemoryCache(MockDefinition mockDefinition)
+        /// <param name="repo"></param>
+        /// <param name="branch">The branch to checkout. If not specified, the default branch is used.</param>
+        /// <param name="path">The path of the mock definition to import, relative to the root of the repo.
+        ///                    If not specified, mockdefinitions will be loaded from the root of the repo. </param>
+        void ImportFromGitRepo(string repo, string branch = null, string path = ".")
+        {
+            try
+            {
+                if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
+
+                _ = Directory.CreateDirectory(RepoDirectory);
+
+                var options = git.GetCloneOptions();
+                if (branch != null) { options.BranchName = branch; }
+
+                _ = git.Clone(repo, RepoDirectory, options);
+
+                ImportFromPath(path, RepoDirectory);
+
+                if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "MockDefinitionImportService: Failed to import Mock Definition(s) from a Git Repo: '{Repo}'", repo);
+            }
+        }
+
+        /// <inheritdoc/>
+        public IMemoryCache AddMockDefToMemoryCache(MockDefinition mockDefinition)
         {
             _ = cache.Set(mockDefinition.Metadata.Title, mockDefinition);
             var keysCollection = cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
@@ -124,16 +180,8 @@ namespace Orbital.Mock.Server.Services
                 keysCollection.Add(mockDefinition.Metadata.Title);
                 _ = cache.Set(Constants.MOCK_IDS_CACHE_KEY, keysCollection);
             }
-        }
 
-        /// <summary>
-        /// Checks if the passed path is a file or a directory
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns>True if directory, false if file</returns>
-        static bool IsDirectory(string filePath)
-        {
-            return Directory.Exists(filePath);
+            return cache;
         }
 
     }

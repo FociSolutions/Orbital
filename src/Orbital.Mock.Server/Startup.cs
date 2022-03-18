@@ -89,6 +89,7 @@ namespace Orbital.Mock.Server
             services.Configure<PublicKeyServiceConfig>(Configuration.GetSection(Constants.PUB_KEY_SVC_SECTION_NAME));
             services.AddSingleton<IPublicKeyService, PublicKeyService>();
 
+            services.AddSingleton<IGitCommands, GitCommands>();
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
