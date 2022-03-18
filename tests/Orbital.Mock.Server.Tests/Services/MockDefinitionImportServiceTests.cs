@@ -51,6 +51,9 @@ namespace Orbital.Mock.Server.Tests.Services
                 var src = Path.Combine(fixtureDir, "mock_definition_valid.json");
                 var dest = Path.Combine(MockDefinitionImportService.RepoDirectory, "mock_definition_valid.json");
                 File.Copy(src, dest);
+                var src2 = Path.Combine(fixtureDir, "directory_import_test", "mock_definition_1.json");
+                var dest2 = Path.Combine(MockDefinitionImportService.RepoDirectory, "mock_definition_1.json");
+                File.Copy(src2, dest2);
                 return MockDefinitionImportService.RepoDirectory;
             });
 
@@ -127,7 +130,7 @@ namespace Orbital.Mock.Server.Tests.Services
             #region Test Setup
             var path1 = Path.Combine(fixtureDir, "directory_import_test", "mock_definition_1.json");
             var path2 = Path.Combine(fixtureDir, "mock_definition_valid.json");
-            var (mockDefImportService, _) = GetSetupObjects(PATH: $"{path1},{path2}");
+            var (mockDefImportService, _) = GetSetupObjects(PATH: string.Join(",", path1, path2));
             #endregion
 
             var cache = mockDefImportService.ImportAllIntoMemoryCache();
@@ -143,7 +146,7 @@ namespace Orbital.Mock.Server.Tests.Services
             #region Test Setup
             var path1 = Path.Combine(fixtureDir, "directory_import_test", "mock_definition_1.json");
             var path2 = Path.Combine(fixtureDir, "mock_def.json");
-            var (mockDefImportService, _) = GetSetupObjects(PATH: $"{path1},{path2}");
+            var (mockDefImportService, _) = GetSetupObjects(PATH: string.Join(",", path1, path2));
             #endregion
 
             var cache = mockDefImportService.ImportAllIntoMemoryCache();
@@ -160,7 +163,7 @@ namespace Orbital.Mock.Server.Tests.Services
             var path1 = Path.Combine(fixtureDir, "directory_import_test", "mock_definition_not_exists.json");
             var path2 = Path.Combine(fixtureDir, "mock_definition_not_exists.json");
             var path3 = Path.Combine(fixtureDir, "directory_not_exists");
-            var (mockDefImportService, _) = GetSetupObjects(PATH: $"{path1},{path2},{path3}");
+            var (mockDefImportService, _) = GetSetupObjects(PATH: string.Join(",", path1, path2, path3));
             #endregion
 
             var cache = mockDefImportService.ImportAllIntoMemoryCache();
@@ -286,7 +289,8 @@ namespace Orbital.Mock.Server.Tests.Services
         public void ImportFromGitRepoSuccessTest()
         {
             #region Test Setup
-            var (mockDefImportService, _) = GetSetupObjects(GIT_REPO: "https://github.com/not-a-git-repo", GIT_BRANCH: "test_branch", GIT_PATH: ".");
+            var path = Path.Combine(".", "mock_definition_valid.json");
+            var (mockDefImportService, _) = GetSetupObjects(GIT_REPO: "https://github.com/not-a-git-repo", GIT_BRANCH: "test_branch", GIT_PATH: path);
             #endregion
 
             var cache = mockDefImportService.ImportAllIntoMemoryCache();
@@ -297,6 +301,28 @@ namespace Orbital.Mock.Server.Tests.Services
             Assert.False(Directory.Exists(MockDefinitionImportService.RepoDirectory));
             Assert.NotNull(savedDefinition);
             Assert.Single(ids);
+        }
+
+        [Fact]
+        public void ImportFromGitRepoMultiPathsSuccessTest()
+        {
+            #region Test Setup
+            var path1 = Path.Combine(".", "mock_definition_valid.json");
+            var path2 = Path.Combine(".", "mock_definition_1.json");
+            var path = string.Join(",", path1, path2);
+            var (mockDefImportService, _) = GetSetupObjects(GIT_REPO: "https://github.com/not-a-git-repo", GIT_BRANCH: "test_branch", GIT_PATH: path);
+            #endregion
+
+            var cache = mockDefImportService.ImportAllIntoMemoryCache();
+
+            cache.TryGetValue(testMockDefFileTitle, out var savedDefinition);
+            cache.TryGetValue($"{testMockDefFileTitle} 1", out var savedDefinition1);
+            var ids = GetAddedMockDefinitionsIds(cache);
+
+            Assert.False(Directory.Exists(MockDefinitionImportService.RepoDirectory));
+            Assert.NotNull(savedDefinition);
+            Assert.NotNull(savedDefinition1);
+            Assert.Equal(2, ids.Count());
         }
 
         static IEnumerable<string> GetAddedMockDefinitionsIds(IMemoryCache cache)

@@ -85,12 +85,15 @@ namespace Orbital.Mock.Server.Services
         /// - can be singular filepath
         /// - can represent multiple filepaths, separated by comma
         /// </param>
-        void ImportFromPath(string filePath)
+        /// <param name="prepend">Prepend the path to all the paths provided</param>
+        void ImportFromPath(string filePath, string prepend = null)
         {
             var paths = filePath.Contains(',') ? filePath.Split(',') : new string[] { filePath };
 
-            foreach (var path in paths)
+            foreach (var rawPath in paths)
             {
+                var path = prepend == null ? rawPath : Path.Combine(prepend, rawPath);
+
                 if (File.Exists(path))
                 {
                     ImportFromFile(path);
@@ -156,7 +159,7 @@ namespace Orbital.Mock.Server.Services
 
                 _ = git.Clone(repo, RepoDirectory, options);
 
-                ImportFromPath(Path.Combine(RepoDirectory, path));
+                ImportFromPath(path, RepoDirectory);
 
                 if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
             }
