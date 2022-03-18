@@ -59,9 +59,7 @@ namespace Orbital.Mock.Server.Services
             Log = logger ?? Serilog.Log.Logger;
         }
 
-        /// <summary>
-        /// Imports MockDefinitions from all supported sources and loads them into the MemoryCache.
-        /// </summary>
+        /// <inheritdoc/>
         public IMemoryCache ImportAllIntoMemoryCache()
         {
             if (config.PATH != null)
@@ -168,11 +166,8 @@ namespace Orbital.Mock.Server.Services
             }
         }
 
-        /// <summary>
-        /// Loads the given MockDefinition into the memory cache
-        /// </summary>
-        /// <param name="mockDefinition"></param>
-        internal IMemoryCache AddMockDefToMemoryCache(MockDefinition mockDefinition)
+        /// <inheritdoc/>
+        public IMemoryCache AddMockDefToMemoryCache(MockDefinition mockDefinition)
         {
             _ = cache.Set(mockDefinition.Metadata.Title, mockDefinition);
             var keysCollection = cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
