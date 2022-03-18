@@ -85,7 +85,7 @@ namespace Orbital.Mock.Server.Services
         /// - can be singular filepath
         /// - can represent multiple filepaths, separated by comma
         /// </param>
-        internal void ImportFromPath(string filePath)
+        void ImportFromPath(string filePath)
         {
             var paths = filePath.Contains(',') ? filePath.Split(',') : new string[] { filePath };
 
