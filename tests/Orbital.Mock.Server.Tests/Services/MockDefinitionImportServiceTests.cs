@@ -100,7 +100,7 @@ namespace Orbital.Mock.Server.Tests.Services
             var (mockDefImportService, _) = GetSetupObjects(PATH: path);
             #endregion
 
-            IMemoryCache cache = mockDefImportService.ImportAllIntoMemoryCache();
+            var cache = mockDefImportService.ImportAllIntoMemoryCache();
 
             var actual = GetAddedMockDefinitionsIds(cache);
 
