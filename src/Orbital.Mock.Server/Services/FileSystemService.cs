@@ -1,7 +1,7 @@
 ﻿using System;
+using Serilog;
 using System.IO;
-
-using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using Orbital.Mock.Server.Services.Interfaces;
 
 namespace Orbital.Mock.Server.Services
@@ -10,7 +10,6 @@ namespace Orbital.Mock.Server.Services
     public class FileSystemService : IFileSystemService
     {
 
-        
         public bool FileExists(string path)
         {
             return File.Exists(path);
@@ -30,34 +29,71 @@ namespace Orbital.Mock.Server.Services
             return true;
         }
 
-        public FileInfo GetFileInfo(string path) 
+        public bool DeleteDirectory(string path, bool recurse = false)
         {
-            if (!IsValidPath(path)) throw new FileNotFoundException(path);
+            if (!IsValidPath(path)) { throw new DirectoryNotFoundException(
+                $"Unable to locate DIR: {path}"); }
+
+            try
+            {
+                Directory.Delete(path, recurse);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Failed to delete directory from PATH: {Path}", path);
+                return false;
+            }
+        }
+
+        public FileInfo GetFileInfo(string path)
+        {
+            if (!IsValidPath(path)) { throw new FileNotFoundException(
+                $"No file found at PATH: {path}"); }
 
             return new FileInfo(path);
         }
 
-        public DirectoryInfo GetDirectoryInfo(string path) 
+        public DirectoryInfo GetDirectoryInfo(string path)
         {
-            if (!IsValidPath(path)) throw new DirectoryNotFoundException(path);
+            if (!IsValidPath(path)) { throw new DirectoryNotFoundException(
+                $"Unable to locate DIR: {path}"); }
 
             return new DirectoryInfo(path);
         }
 
-        public bool DeleteDirectory(string path, bool recurse)
+        public DirectoryInfo CreateDirectory(string path)
         {
-            if (!IsValidPath(path)) throw new DirectoryNotFoundException(path);
-            if (recurse)
-            {
-                Directory.Delete(path, true);
-                return true;
-            }
-            else if (!recurse)
-            {
-                Directory.Delete(path);
-                return true;
-            }
-            return false;
+            if (!IsValidPath(path)) { throw new IOException(
+                $"Unable to create directory at PATH: {path}"); }
+
+            return Directory.CreateDirectory(path);
+        }
+
+        public IEnumerable<string> GetDirectoryFiles(string path)
+        {
+            if (!DirectoryExists(path)) throw new DirectoryNotFoundException(
+                $"Unable to locate DIR: {path}");
+
+            return Directory.GetFiles(path);
+        }
+
+        public IEnumerable<string> GetDirectoryFiles(string path, string? searchPattern = null)
+        {
+            if (!DirectoryExists(path)) throw new DirectoryNotFoundException(
+                $"Unable to locate DIR: {path}");
+
+            return Directory.GetFiles(path, searchPattern ?? "*");
+        }
+
+        public IEnumerable<string> GetDirectoryFiles(string path, string? searchPattern = null,
+            bool includesubDirectories = false)
+        {
+            if (!DirectoryExists(path)) throw new DirectoryNotFoundException(
+                $"Unable to locate DIR: {path}");
+
+            return Directory.GetFiles(path, searchPattern ?? "*", 
+                includesubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
         }
     }
 }

@@ -61,14 +61,21 @@ namespace Orbital.Mock.Server.Services.Interfaces
         DirectoryInfo CreateDirectory(string path);
 
         /// <summary>
-        /// Returns file names (including their paths) that match the specified search
-        /// pattern in the specified directory.
+        /// Returns file names (including their paths) for the specified path
+        /// </summary>
+        /// <param name="path">Input file path</param>
+        /// <returns>Iterable object of string filepaths</returns>
+        IEnumerable<string> GetDirectoryFiles(string path);
+
+        /// <summary>
+        /// Returns file names (including their paths) for the specified path 
+        /// that match the specified search pattern in the specified directory.
         /// </summary>
         /// <param name="path">Input file path</param>
         /// <param name="searchPattern">String pattern as a file search filter</param>
         /// <returns>Iterable object of string filepaths</returns>
-        IEnumerable<string> GetFiles(string path, string searchPattern);
-
+        IEnumerable<string> GetDirectoryFiles(string path, string searchPattern);
+        
         /// <summary>
         /// Returns file names (including their paths) that match the specified search
         /// pattern in the specified directory. Includes a flag whether to search the current directory, 
@@ -76,8 +83,8 @@ namespace Orbital.Mock.Server.Services.Interfaces
         /// </summary>
         /// <param name="path">Input file path</param>
         /// <param name="searchPattern">String pattern as a file search filter</param>
-        /// <param name="includesubDirectories">Performs recursive deletion on subdirectories/files in selected directory</param>
+        /// <param name="includesubDirectories">Performs retrieval on subdirectories/files in selected directory</param>
         /// <returns>Iterable object of string filepaths</returns>
-        IEnumerable<string> GetFiles(string path, string searchPattern, bool includesubDirectories);
+        IEnumerable<string> GetDirectoryFiles(string path, string searchPattern, bool includesubDirectories);
     }
 }
