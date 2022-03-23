@@ -26,7 +26,7 @@ namespace Orbital.Mock.Server.Services.Interfaces
         /// </summary>
         /// <param name="path">Input path</param>
         /// <returns>true if valid useable path or false if invalid</returns>
-        bool IsValidPath(string path);
+        bool IsInvalidPath(string path);
 
         /// <summary>
         /// Deletes a directory for a given path.

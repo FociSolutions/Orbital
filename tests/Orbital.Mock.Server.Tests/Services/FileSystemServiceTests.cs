@@ -8,12 +8,14 @@ namespace Orbital.Mock.Server.Tests.Services
 {
     public class FileSystemServiceTests
     {
-        
+        private readonly ITestOutputHelper output;
         private readonly string ROOT_DIR = Path.Combine(".", "fixtures");
         private const string TARGET_DIR = "file_system_service_test";
         private const string FILE_EXTENSION = ".txt";
-        private const string FILE_NAME = "fileRoot";
-        private readonly ITestOutputHelper output;
+        private const string ROOT_FILE_NAME = "fileRoot";
+        private const string PATH_TO_FILE = "Dir1\\Dir1.1\\file1.1.txt";
+        private const string PATH_TO_FILE_LOCATION = "Dir3\\Dir3.1\\Dir3.1.1";
+        
 
 
         public FileSystemServiceTests(ITestOutputHelper output)
@@ -21,15 +23,17 @@ namespace Orbital.Mock.Server.Tests.Services
             this.output = output;
         }
 
-        public FileSystemService BuildFileSystemService()
+        public static FileSystemService BuildFileSystemService()
         {
             return new FileSystemService();
         }
 
 
         [Theory]
-        [InlineData(FILE_NAME + FILE_EXTENSION)]
-        public void DoesFileExist_ReturnsTrue(string fileName)
+        [InlineData(ROOT_FILE_NAME + FILE_EXTENSION)]
+        [InlineData(PATH_TO_FILE)]
+        [InlineData(PATH_TO_FILE_LOCATION + "\\file3.1.1.txt")]
+        public void DoesFileExist_ReturnsTrueForSuccess(string fileName)
         {
             #region Test Setup
             var fileSysService = BuildFileSystemService();
@@ -47,29 +51,32 @@ namespace Orbital.Mock.Server.Tests.Services
         [InlineData("")]
         [InlineData("fileDoesNotExist.txt")]
         [InlineData("fileReallyDoesNotExist.json")]
-        public void FileDoesNotExistorEmptyInput_ReturnsFalse(string fileName)
+        [InlineData(ROOT_FILE_NAME + "json")]
+        public void FileDoesNotExistOrEmptyInput_ReturnsFalseForFail(string fileName)
         {
             #region Test Setup
             var fileSysService = BuildFileSystemService();
             var path = Path.Combine(ROOT_DIR, TARGET_DIR);
             #endregion
 
-
             output.WriteLine(path);
-            var expected = fileSysService.FileExists($"{path}{fileName}");
-            Assert.False(expected);
+            var expectedFail = fileSysService.FileExists($"{path}{fileName}");
+            Assert.False(expectedFail);
         }
 
 
         [Theory]
         [InlineData(TARGET_DIR)]
-        public void DoesDirectoryExist_ReturnsTrue(string directory)
+        [InlineData(TARGET_DIR + "\\" + PATH_TO_FILE_LOCATION)]
+        public void DoesDirectoryExist_ReturnsTrueForSuccess(string directory)
         {
             #region Test Setup
             var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
             #endregion
 
-            var expected = fileSysService.DirectoryExists($"{ROOT_DIR}\\{directory}");
+            output.WriteLine(path);
+            var expected = fileSysService.DirectoryExists(path);
             Assert.True(expected); 
         }
 
@@ -82,16 +89,50 @@ namespace Orbital.Mock.Server.Tests.Services
         /// </summary>
         [Theory]
         [InlineData("ImADirectoryThatDoesNotExist")]
-        public void NoDirectoryExist_ReturnsFalse(string directory)
+        public void NoDirectoryExist_ReturnsFalseForFail(string directory)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            var expectedFail = fileSysService.DirectoryExists(path);           
+            Assert.False(expectedFail);
+        }
+
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("       ")]
+        [InlineData("*<>?\"'/\\[]{}:;|")]
+        [InlineData("*  <> ?\"' / \\ [ ] : ; |        ")]
+        [InlineData("* <> \"' / \\ [ ] : ; | \\filePath       ")]
+        public void CheckGuardClause_ReturnsTrueForInvalidInputs(string invalidPath)
         {
             #region Test Setup
             var fileSysService = BuildFileSystemService();
             #endregion
 
-            var expectedFail = fileSysService.DirectoryExists($"{ROOT_DIR}\\{directory}");           
-            Assert.False(expectedFail);
-
+            var expected = fileSysService.IsInvalidPath(invalidPath);
+            Assert.True(expected);
         }
+
+        
+        [Fact]
+        public void CheckGuardClause_ReturnsFalseForValidInputs()
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, TARGET_DIR, PATH_TO_FILE);
+            #endregion
+
+            output.WriteLine(path);
+            var expectedFail = fileSysService.IsInvalidPath(path);
+            Assert.False(expectedFail);
+        }
+
+        
 
     }
 }

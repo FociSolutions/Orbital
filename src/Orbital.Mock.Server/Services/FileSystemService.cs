@@ -20,18 +20,17 @@ namespace Orbital.Mock.Server.Services
             return Directory.Exists(path);
         }
 
-        public bool IsValidPath(string path)
+        public bool IsInvalidPath(string path)
         {
-            if (string.IsNullOrWhiteSpace(path)
-                || !FileExists(path)
-                || !DirectoryExists(path)) return false;
+            var NO_INVALID_CHARS = -1;
 
-            return true;
+            return string.IsNullOrWhiteSpace(path) 
+                || path.IndexOfAny(Path.GetInvalidPathChars()) != NO_INVALID_CHARS;
         }
 
         public bool DeleteDirectory(string path, bool recurse = false)
         {
-            if (!IsValidPath(path)) { throw new DirectoryNotFoundException(
+            if (!DirectoryExists(path)) { throw new DirectoryNotFoundException(
                 $"Unable to locate DIR: {path}"); }
 
             try
@@ -48,7 +47,7 @@ namespace Orbital.Mock.Server.Services
 
         public FileInfo GetFileInfo(string path)
         {
-            if (!IsValidPath(path)) { throw new FileNotFoundException(
+            if (IsInvalidPath(path)) { throw new FileNotFoundException(
                 $"No file found at PATH: {path}"); }
 
             return new FileInfo(path);
@@ -56,7 +55,7 @@ namespace Orbital.Mock.Server.Services
 
         public DirectoryInfo GetDirectoryInfo(string path)
         {
-            if (!IsValidPath(path)) { throw new DirectoryNotFoundException(
+            if (!DirectoryExists(path)) { throw new DirectoryNotFoundException(
                 $"Unable to locate DIR: {path}"); }
 
             return new DirectoryInfo(path);
@@ -64,7 +63,7 @@ namespace Orbital.Mock.Server.Services
 
         public DirectoryInfo CreateDirectory(string path)
         {
-            if (!IsValidPath(path)) { throw new IOException(
+            if (IsInvalidPath(path)) { throw new IOException(
                 $"Unable to create directory at PATH: {path}"); }
 
             return Directory.CreateDirectory(path);
