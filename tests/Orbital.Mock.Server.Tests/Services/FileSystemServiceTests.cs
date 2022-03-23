@@ -131,8 +131,5 @@ namespace Orbital.Mock.Server.Tests.Services
             var expectedFail = fileSysService.IsInvalidPath(path);
             Assert.False(expectedFail);
         }
-
-        
-
     }
 }
