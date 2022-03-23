@@ -94,7 +94,7 @@ namespace Orbital.Mock.Server.Services
             {
                 var path = prepend == null ? rawPath : Path.Combine(prepend, rawPath);
 
-                if (File.Exists(path))
+                if (File.Exists(path)) 
                 {
                     ImportFromFile(path);
                 }
