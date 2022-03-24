@@ -70,6 +70,8 @@ namespace Orbital.Mock.Server
                 })
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>());
 
+            services.AddHealthChecks();
+
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddAuthentication("Bearer")
