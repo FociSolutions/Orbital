@@ -2,6 +2,7 @@
 using Xunit.Abstractions;
 using System;
 using System.IO;
+using System.Reflection;
 using Orbital.Mock.Server.Services;
 
 namespace Orbital.Mock.Server.Tests.Services
@@ -13,26 +14,39 @@ namespace Orbital.Mock.Server.Tests.Services
         private const string TARGET_DIR = "file_system_service_test";
         private const string FILE_EXTENSION = ".txt";
         private const string ROOT_FILE_NAME = "fileRoot";
-        private const string PATH_TO_FILE = "Dir1\\Dir1.1\\file1.1.txt";
-        private const string PATH_TO_FILE_LOCATION = "Dir3\\Dir3.1\\Dir3.1.1";
+        private const string PATH_TO_FILE = @"Dir1\Dir1.1\file1.1.txt";
+        private const string PATH_TO_FILE_LOCATION = @"Dir3\Dir3.1\Dir3.1.1";
+        private const string MOCK_DEF_PATH = @"directory_import_test\mock_definition_2.json";
         
-
 
         public FileSystemServiceTests(ITestOutputHelper output)
         {
             this.output = output;
         }
 
-        public static FileSystemService BuildFileSystemService()
+        static FileSystemService BuildFileSystemService()
         {
             return new FileSystemService();
         }
 
 
+        static string GetTemporaryDirectoryName()
+        {
+            var tempFile = Path.GetTempFileName();
+            var tempName = Path.GetFileNameWithoutExtension(tempFile);
+
+            return Path.Combine(Path.GetTempPath(), tempName);
+        }
+
+        static DirectoryInfo CreateTempDirectory(string dirName)
+        {
+            return Directory.CreateDirectory(dirName);
+        }
+
         [Theory]
         [InlineData(ROOT_FILE_NAME + FILE_EXTENSION)]
         [InlineData(PATH_TO_FILE)]
-        [InlineData(PATH_TO_FILE_LOCATION + "\\file3.1.1.txt")]
+        [InlineData(PATH_TO_FILE_LOCATION + @"\file3.1.1.txt")]
         public void DoesFileExist_ReturnsTrueForSuccess(string fileName)
         {
             #region Test Setup
@@ -67,7 +81,8 @@ namespace Orbital.Mock.Server.Tests.Services
 
         [Theory]
         [InlineData(TARGET_DIR)]
-        [InlineData(TARGET_DIR + "\\" + PATH_TO_FILE_LOCATION)]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE_LOCATION)]
+        [InlineData(TARGET_DIR + @"\DeleteDir")]
         public void DoesDirectoryExist_ReturnsTrueForSuccess(string directory)
         {
             #region Test Setup
@@ -119,17 +134,49 @@ namespace Orbital.Mock.Server.Tests.Services
         }
 
         
-        [Fact]
-        public void CheckGuardClause_ReturnsFalseForValidInputs()
+        [Theory]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE)]
+        [InlineData(@"\" + MOCK_DEF_PATH)]
+        public void CheckGuardClause_ReturnsFalseForValidInputs(string givenPath)
         {
             #region Test Setup
             var fileSysService = BuildFileSystemService();
-            var path = Path.Combine(ROOT_DIR, TARGET_DIR, PATH_TO_FILE);
+            var path = Path.Combine(ROOT_DIR, givenPath);
             #endregion
 
             output.WriteLine(path);
             var expectedFail = fileSysService.IsInvalidPath(path);
             Assert.False(expectedFail);
         }
+
+        [Fact]
+        public void DeletingDirectory_ReturnsTrueForSuccess()
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = GetTemporaryDirectoryName();
+            var dirToDelete = CreateTempDirectory(path);
+            #endregion
+
+            output.WriteLine(path);
+            var expected = fileSysService.DeleteDirectory(Path.GetFullPath(dirToDelete.Name), true);
+            Assert.True(expected);
+        }
+
+        
+        /*[Theory]
+        [InlineData("ImADirectoryThatDoesNotExist", true)]
+        [InlineData("DeleteDir", false)]
+        public void DeletingDirectory_ReturnsFalseAndThrowsException(string dirToDelete, bool flag)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, TARGET_DIR, dirToDelete);
+            #endregion
+
+            output.WriteLine(path);
+            var expectedFail = fileSysService.DeleteDirectory(path, flag);
+            Assert.False(expectedFail);   
+        }*/
     }
 }
