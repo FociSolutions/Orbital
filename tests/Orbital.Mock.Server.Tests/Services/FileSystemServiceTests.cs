@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using Orbital.Mock.Server.Services;
+using NSubstitute.ExceptionExtensions;
 
 namespace Orbital.Mock.Server.Tests.Services
 {
@@ -24,13 +25,14 @@ namespace Orbital.Mock.Server.Tests.Services
             this.output = output;
         }
 
+
         static FileSystemService BuildFileSystemService()
         {
             return new FileSystemService();
         }
 
 
-        static string GetTemporaryDirectoryName()
+        static string CreateTempDirectoryName()
         {
             var tempFile = Path.GetTempFileName();
             var tempName = Path.GetFileNameWithoutExtension(tempFile);
@@ -38,10 +40,12 @@ namespace Orbital.Mock.Server.Tests.Services
             return Path.Combine(Path.GetTempPath(), tempName);
         }
 
+
         static DirectoryInfo CreateTempDirectory(string dirName)
         {
             return Directory.CreateDirectory(dirName);
         }
+
 
         [Theory]
         [InlineData(ROOT_FILE_NAME + FILE_EXTENSION)]
@@ -154,29 +158,62 @@ namespace Orbital.Mock.Server.Tests.Services
         {
             #region Test Setup
             var fileSysService = BuildFileSystemService();
-            var path = GetTemporaryDirectoryName();
+            var path = CreateTempDirectoryName();
             var dirToDelete = CreateTempDirectory(path);
             #endregion
 
             output.WriteLine(path);
-            var expected = fileSysService.DeleteDirectory(Path.GetFullPath(dirToDelete.Name), true);
+            var expected = fileSysService.DeleteDirectory(dirToDelete.FullName, true);
+            
+            Assert.False(dirToDelete.Exists);
             Assert.True(expected);
         }
 
         
-        /*[Theory]
-        [InlineData("ImADirectoryThatDoesNotExist", true)]
-        [InlineData("DeleteDir", false)]
-        public void DeletingDirectory_ReturnsFalseAndThrowsException(string dirToDelete, bool flag)
+        [Theory]
+        [InlineData("ImADirectoryThatDoesNotExist", false)]
+        public void DeletingDirectory_ThrowsException(string dirPath, bool flag)
         {
             #region Test Setup
             var fileSysService = BuildFileSystemService();
-            var path = Path.Combine(ROOT_DIR, TARGET_DIR, dirToDelete);
+            var path = Path.Combine(ROOT_DIR, dirPath);
             #endregion
 
             output.WriteLine(path);
-            var expectedFail = fileSysService.DeleteDirectory(path, flag);
-            Assert.False(expectedFail);   
-        }*/
+            Assert.Throws<DirectoryNotFoundException>(() => fileSysService.DeleteDirectory(path, flag));
+        }
+
+
+        [Fact]
+        public void CreateDirectory_ReturnsTrueForSuccess()
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = CreateTempDirectoryName(); 
+            #endregion
+
+            output.WriteLine(path);
+            var newDir = fileSysService.CreateDirectory(path);
+
+            Assert.True(newDir.Exists);
+        }
+
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("       ")]
+        [InlineData("*<>?\"'/\\[]{}:;|")]
+        [InlineData("*  <> ?\"' / \\ [ ] : ; |        ")]
+        [InlineData("* <> \"' / \\ [ ] : ; | \\filePath       ")]
+        public void CreateDirectory_ThrowsException(string path)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            #endregion
+
+            output.WriteLine(path);
+            Assert.Throws<IOException>(() => fileSysService.CreateDirectory(path));
+
+        }
     }
 }
