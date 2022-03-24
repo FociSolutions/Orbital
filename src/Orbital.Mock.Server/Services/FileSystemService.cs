@@ -33,16 +33,8 @@ namespace Orbital.Mock.Server.Services
             if (!DirectoryExists(path)) { throw new DirectoryNotFoundException(
                 $"Unable to locate DIR: {path}"); }
 
-            try
-            {
-                Directory.Delete(path, recurse);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Failed to delete directory from PATH: {Path}", path);
-                return false;
-            }
+            Directory.Delete(path, recurse);
+            return true;  
         }
 
         public FileInfo GetFileInfo(string path)
