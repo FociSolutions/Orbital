@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Integration Tests\**" />
+    <Content Remove="Integration Tests\**" />
+    <EmbeddedResource Remove="Integration Tests\**" />
+    <None Remove="Integration Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -25,8 +32,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Orbital.Mock.Server\Orbital.Mock.Server.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Integration Tests\" />
   </ItemGroup>
 </Project>

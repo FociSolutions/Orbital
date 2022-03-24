@@ -70,8 +70,6 @@ namespace Orbital.Mock.Server
                 })
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>());
 
-            services.AddHealthChecks();
-
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddAuthentication("Bearer")
@@ -82,6 +80,8 @@ namespace Orbital.Mock.Server
                             ValidateAudience = false
                         };
                     });
+
+            services.AddHealthChecks();
             services.AddHealthChecks()
                 .AddCheck<ReadinessHealthCheck>("Readiness_Health_Check");
 
