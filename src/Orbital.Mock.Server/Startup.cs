@@ -80,6 +80,8 @@ namespace Orbital.Mock.Server
                             ValidateAudience = false
                         };
                     });
+
+            services.AddHealthChecks();
             services.AddHealthChecks()
                 .AddCheck<ReadinessHealthCheck>("Readiness_Health_Check");
 
