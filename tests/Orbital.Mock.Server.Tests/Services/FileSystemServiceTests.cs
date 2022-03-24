@@ -69,7 +69,7 @@ namespace Orbital.Mock.Server.Tests.Services
         [InlineData("")]
         [InlineData("fileDoesNotExist.txt")]
         [InlineData("fileReallyDoesNotExist.json")]
-        [InlineData(ROOT_FILE_NAME + "json")]
+        [InlineData(ROOT_FILE_NAME + ".json")]
         public void FileDoesNotExistOrEmptyInput_ReturnsFalseForFail(string fileName)
         {
             #region Test Setup
@@ -215,5 +215,77 @@ namespace Orbital.Mock.Server.Tests.Services
             Assert.Throws<IOException>(() => fileSysService.CreateDirectory(path));
 
         }
+
+
+        [Theory]
+        [InlineData(ROOT_FILE_NAME + FILE_EXTENSION)]
+        [InlineData(PATH_TO_FILE)]
+        [InlineData(PATH_TO_FILE_LOCATION + @"\file3.1.1.txt")]
+        public void GetFile_ReturnsTrueforExistingFile(string fileName)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, TARGET_DIR, fileName);
+            #endregion
+
+            var returnedFileObj = fileSysService.GetFileInfo(path);
+            
+            Assert.True(returnedFileObj.Exists);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("fileDoesNotExist.txt")]
+        [InlineData("fileReallyDoesNotExist.json")]
+        [InlineData(ROOT_FILE_NAME + "json")]
+        [InlineData(PATH_TO_FILE_LOCATION)]
+        public void GetFile_ReturnsFalseAsNoFile(string fileName)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, TARGET_DIR, fileName);
+            #endregion
+
+            var returnedFileObj = fileSysService.GetFileInfo(path);
+            
+            Assert.False(returnedFileObj.Exists);
+        }
+
+
+        [Theory]
+        [InlineData(TARGET_DIR)]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE_LOCATION)]
+        [InlineData(TARGET_DIR + @"\DeleteDir")]
+        public void GetDirectory_ReturnsTrueforExistingDirectory(string directory)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            var returnedDirObj = fileSysService.GetDirectoryInfo(path);
+
+            Assert.True(returnedDirObj.Exists);
+        }
+
+
+        [Theory]
+        [InlineData("ImADirectoryThatDoesNotExist")]
+        [InlineData("fileDoesNotExist.txt")]
+        [InlineData("fileReallyDoesNotExist.json")]
+        [InlineData(ROOT_FILE_NAME + ".json")]
+        public void GetDirectory_ThrowsNotFoundException(string directory)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            output.WriteLine(path);
+
+            Assert.Throws<DirectoryNotFoundException>(() => fileSysService.GetDirectoryInfo(path));
+        }
+
+
     }
 }
