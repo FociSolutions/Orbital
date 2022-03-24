@@ -26,4 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Orbital.Mock.Server\Orbital.Mock.Server.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Integration Tests\" />
+  </ItemGroup>
 </Project>
