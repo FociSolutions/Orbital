@@ -1,10 +1,7 @@
 ﻿using Xunit;
 using Xunit.Abstractions;
-using System;
 using System.IO;
-using System.Reflection;
 using Orbital.Mock.Server.Services;
-using NSubstitute.ExceptionExtensions;
 
 namespace Orbital.Mock.Server.Tests.Services
 {
@@ -18,8 +15,12 @@ namespace Orbital.Mock.Server.Tests.Services
         private const string PATH_TO_FILE = @"Dir1\Dir1.1\file1.1.txt";
         private const string PATH_TO_FILE_LOCATION = @"Dir3\Dir3.1\Dir3.1.1";
         private const string MOCK_DEF_PATH = @"directory_import_test\mock_definition_2.json";
-        
 
+
+        /// <summary>
+        /// Constructor to initialize a I/O stream to review retrieved paths and tested returned values. 
+        /// Operates like: Console.Log(args)
+        /// </summary>
         public FileSystemServiceTests(ITestOutputHelper output)
         {
             this.output = output;
@@ -58,7 +59,6 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(ROOT_DIR, TARGET_DIR, fileName);
             #endregion
 
-            output.WriteLine(path);
             var expected = fileSysService.FileExists(path);
             Assert.True(expected);
         }
@@ -77,7 +77,6 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(ROOT_DIR, TARGET_DIR);
             #endregion
 
-            output.WriteLine(path);
             var expectedFail = fileSysService.FileExists($"{path}{fileName}");
             Assert.False(expectedFail);
         }
@@ -94,7 +93,6 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(ROOT_DIR, directory);
             #endregion
 
-            output.WriteLine(path);
             var expected = fileSysService.DirectoryExists(path);
             Assert.True(expected); 
         }
@@ -115,7 +113,7 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(ROOT_DIR, directory);
             #endregion
 
-            var expectedFail = fileSysService.DirectoryExists(path);           
+            var expectedFail = fileSysService.DirectoryExists(path);            
             Assert.False(expectedFail);
         }
 
@@ -148,10 +146,10 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(ROOT_DIR, givenPath);
             #endregion
 
-            output.WriteLine(path);
-            var expectedFail = fileSysService.IsInvalidPath(path);
+            var expectedFail = fileSysService.IsInvalidPath(path); 
             Assert.False(expectedFail);
         }
+
 
         [Fact]
         public void DeletingDirectory_ReturnsTrueForSuccess()
@@ -162,7 +160,6 @@ namespace Orbital.Mock.Server.Tests.Services
             var dirToDelete = CreateTempDirectory(path);
             #endregion
 
-            output.WriteLine(path);
             var expected = fileSysService.DeleteDirectory(dirToDelete.FullName, true);
             
             Assert.False(dirToDelete.Exists);
@@ -179,7 +176,6 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(ROOT_DIR, dirPath);
             #endregion
 
-            output.WriteLine(path);
             Assert.Throws<DirectoryNotFoundException>(() => fileSysService.DeleteDirectory(path, flag));
         }
 
@@ -192,9 +188,7 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = CreateTempDirectoryName(); 
             #endregion
 
-            output.WriteLine(path);
             var newDir = fileSysService.CreateDirectory(path);
-
             Assert.True(newDir.Exists);
         }
 
@@ -211,7 +205,6 @@ namespace Orbital.Mock.Server.Tests.Services
             var fileSysService = BuildFileSystemService();
             #endregion
 
-            output.WriteLine(path);
             Assert.Throws<IOException>(() => fileSysService.CreateDirectory(path));
 
         }
@@ -229,9 +222,9 @@ namespace Orbital.Mock.Server.Tests.Services
             #endregion
 
             var returnedFileObj = fileSysService.GetFileInfo(path);
-            
             Assert.True(returnedFileObj.Exists);
         }
+
 
         [Theory]
         [InlineData("")]
@@ -247,7 +240,6 @@ namespace Orbital.Mock.Server.Tests.Services
             #endregion
 
             var returnedFileObj = fileSysService.GetFileInfo(path);
-            
             Assert.False(returnedFileObj.Exists);
         }
 
@@ -264,7 +256,6 @@ namespace Orbital.Mock.Server.Tests.Services
             #endregion
 
             var returnedDirObj = fileSysService.GetDirectoryInfo(path);
-
             Assert.True(returnedDirObj.Exists);
         }
 
@@ -281,11 +272,116 @@ namespace Orbital.Mock.Server.Tests.Services
             var path = Path.Combine(ROOT_DIR, directory);
             #endregion
 
-            output.WriteLine(path);
-
             Assert.Throws<DirectoryNotFoundException>(() => fileSysService.GetDirectoryInfo(path));
         }
 
 
+        [Theory]
+        [InlineData(TARGET_DIR)]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE_LOCATION)]
+        public void GetDirectoryFiles_ReturnsWithListFiles(string directory)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            var returnedFiles = fileSysService.GetDirectoryFiles(path);
+            Assert.NotNull(returnedFiles);
+            
+            foreach (string singleFile in returnedFiles)
+            {
+                Assert.Contains(".txt", singleFile);
+            }
+        }
+
+
+        [Theory]
+        [InlineData("ImADirectoryThatDoesNotExist")]
+        [InlineData("fileDoesNotExist.txt")]
+        [InlineData("fileReallyDoesNotExist.json")]
+        [InlineData(ROOT_FILE_NAME + ".json")]
+        public void GetDirectoryFiles_ReturnsNoListOfFiles(string directory)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            Assert.Throws<DirectoryNotFoundException>(() => fileSysService.GetDirectoryFiles(path));
+        }
+
+
+        [Theory]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE_LOCATION, null)]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE_LOCATION, "")]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE_LOCATION, "*.txt")]
+        public void GetDirectoryFilesWithPattern_ReturnsListofFiles(string directory, string pattern)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            var returnedFiles = fileSysService.GetDirectoryFiles(path, pattern);
+            Assert.NotNull(returnedFiles);
+
+            foreach (string singleFile in returnedFiles)
+            {
+                Assert.Contains(".txt", singleFile);
+            }
+        }
+
+
+        [Theory]
+        [InlineData(TARGET_DIR, "*.json")]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE_LOCATION, "#($_<>)")]
+        public void GetDirectoryFilesWithPattern_ReturnsNoListOfFiles(string directory, string pattern)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            var returnedFiles = fileSysService.GetDirectoryFiles(path, pattern);
+            Assert.Empty(returnedFiles);      
+        }
+
+
+        [Theory]
+        [InlineData(TARGET_DIR, null, true)]
+        [InlineData(TARGET_DIR, "*.txt", false)]
+        [InlineData(TARGET_DIR, "*.txt", true)]
+        public void GetDirectoryFilesWithSearchOptions_ReturnsListofFiles(
+            string directory, string pattern, bool includeSubDir)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            var returnedFiles = fileSysService.GetDirectoryFiles(path, pattern, includeSubDir);
+            Assert.NotNull(returnedFiles);
+
+            foreach (string singleFile in returnedFiles)
+            {
+                Assert.Contains(".txt", singleFile);
+            }
+        }
+
+        [Theory]
+        [InlineData(TARGET_DIR, "*.json", true)]
+        [InlineData(TARGET_DIR + @"\" + PATH_TO_FILE_LOCATION, "#($_<>)", false)]
+        public void GetDirectoryFilesWithSearchOptions_ReturnsNoListOfFiles(
+            string directory, string pattern, bool includeSubDir)
+        {
+            #region Test Setup
+            var fileSysService = BuildFileSystemService();
+            var path = Path.Combine(ROOT_DIR, directory);
+            #endregion
+
+            var returnedFiles = fileSysService.GetDirectoryFiles(path, pattern, includeSubDir);
+            Assert.Empty(returnedFiles);
+        }
     }
 }
