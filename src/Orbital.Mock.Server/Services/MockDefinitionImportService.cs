@@ -46,10 +46,10 @@ namespace Orbital.Mock.Server.Services
         const string MockDefExtension = ".json";
         public static readonly string RepoDirectory = Path.Combine(".", ".orbital_temp_git_repo");
 
-        readonly IMemoryCache cache;
-        readonly MockDefinitionImportServiceConfig config;
         readonly ILogger Log;
         readonly IGitCommands git;
+        readonly IMemoryCache cache;
+        readonly MockDefinitionImportServiceConfig config;
 
         public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, IGitCommands git, ILogger logger = null)
         {
