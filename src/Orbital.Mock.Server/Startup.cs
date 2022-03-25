@@ -109,10 +109,14 @@ namespace Orbital.Mock.Server
                         [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
                     }
                 });
+
+                //readiness check implies that the server is up AND able to take requests
                 endpoints.MapHealthChecks($"{Constants.ADMIN_ENDPOINT_URL}/healthz/ready", new HealthCheckOptions
                 {
                     Predicate = healthCheck => healthCheck.Tags.Contains("ready")
                 });
+
+                //live check implies that the server is up
                 endpoints.MapHealthChecks($"{Constants.ADMIN_ENDPOINT_URL}/healthz/live", new HealthCheckOptions
                 {
                     Predicate = _ => false
