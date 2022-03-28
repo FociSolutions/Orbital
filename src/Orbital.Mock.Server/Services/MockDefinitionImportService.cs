@@ -49,9 +49,9 @@ namespace Orbital.Mock.Server.Services
 
         readonly ILogger Log;
         readonly IGitCommands git;
+        readonly IFileSystemService fileSystemService;
         readonly IMemoryCache cache;
         readonly MockDefinitionImportServiceConfig config;
-        readonly IFileSystemService fileSystemService;
 
         public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, 
             IGitCommands git, IFileSystemService fileSystemService, ILogger logger = null)
