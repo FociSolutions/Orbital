@@ -35,6 +35,7 @@ namespace Orbital.Mock.Server.Registrations
 
             services.AddSingleton<IGitCommands, GitCommands>();
             services.AddSingleton<IRuleMatcher, RuleMatcher>();
+            services.AddSingleton<IFileSystemService, FileSystemService>();
             services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
             {
                 var processor = new MockServerProcessor(new RuleMatcher(), ConfigureTemplateContext(), s.GetService<IPublicKeyService>());
