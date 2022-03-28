@@ -42,7 +42,7 @@ namespace Orbital.Mock.Server.Services.Interfaces
         /// corresponding to methods within the System.IO.FileInfo class.
         /// </summary>
         /// <param name="path">Input file path</param>
-        /// <returns>A FileInfo object with default methods</returns>
+        /// <returns>An instantiable FileInfo object with default methods</returns>
         FileInfo GetFileInfo(string path);
 
         /// <summary>
@@ -50,14 +50,14 @@ namespace Orbital.Mock.Server.Services.Interfaces
         /// corresponding to methods within the System.IO.Directory class.
         /// </summary>
         /// <param name="path">Input directory path</param>
-        /// <returns>A DirectoryInfo object with default methods</returns>
+        /// <returns>An instantiable DirectoryInfo object with default methods</returns>
         DirectoryInfo GetDirectoryInfo(string path);
 
         /// <summary>
         /// Creates a Directory at the specified path.
         /// </summary>
         /// <param name="path">Input destination path</param>
-        /// <returns>DirectoryInfo object of the newly created directory</returns>
+        /// <returns>An instantiable DirectoryInfo object of the newly created directory</returns>
         DirectoryInfo CreateDirectory(string path);
 
         /// <summary>

@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
@@ -12,13 +13,30 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
+using Orbital.Mock.Definition.Response;
 using Orbital.Mock.Definition.Converters;
 using Orbital.Mock.Definition.Validators;
 
+using Orbital.Mock.Server.Functions;
 using Orbital.Mock.Server.Middleware;
-using Orbital.Mock.Server.Registrations;
 
+using Orbital.Mock.Server.Pipelines;
+using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Server.Pipelines.Models.Interfaces;
+using Orbital.Mock.Server.Pipelines.RuleMatchers;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+using Orbital.Mock.Server.Registrations;
+using Orbital.Mock.Server.Services;
+using Orbital.Mock.Server.Services.Interfaces;
+
+using Orbital.Mock.Server.HealthChecks;
+
+using static Orbital.Mock.Server.Constants;
+
+using Bogus;
 using MediatR;
+using Scriban;
+using Scriban.Runtime;
 using FluentValidation.AspNetCore;
 
 namespace Orbital.Mock.Server
@@ -26,12 +44,11 @@ namespace Orbital.Mock.Server
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
+        public IConfiguration Configuration { get; }
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
@@ -47,8 +64,11 @@ namespace Orbital.Mock.Server
             }));
 
             services.AddControllers()
-                    .AddNewtonsoftJson(opt => opt.SerializerSettings.Converters.Add(new OpenApiJsonConverter()))
-                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>());
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.Converters.Add(new OpenApiJsonConverter());
+                })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MetadataInfoValidator>());
 
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
@@ -60,11 +80,27 @@ namespace Orbital.Mock.Server
                             ValidateAudience = false
                         };
                     });
+            services.AddHealthChecks()
+                .AddCheck<ReadinessHealthCheck>("Readiness_Health_Check");
 
-            ServiceRegistration.ConfigureService(services, Configuration);
-            HealthRegistration.ConfigureService(services);
-            SwaggerRegistration.ConfigureService(services);
+            services.Configure<MockDefinitionImportServiceConfig>(Configuration.GetSection(Constants.MOCK_DEF_IMPORT_SVC_SECTION_NAME));
+            services.AddSingleton<IMockDefinitionImportService, MockDefinitionImportService>();
+
+            services.Configure<PublicKeyServiceConfig>(Configuration.GetSection(Constants.PUB_KEY_SVC_SECTION_NAME));
+            services.AddSingleton<IPublicKeyService, PublicKeyService>();
+        
+            services.AddSingleton<IGitCommands, GitCommands>();
+            services.AddSingleton<IRuleMatcher, RuleMatcher>();
+            services.AddSingleton<IFileSystemService, FileSystemService>();
+            services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(s =>
+            {
+                var processor = new MockServerProcessor(new RuleMatcher(), ConfigureTemplateContext(), s.GetService<IPublicKeyService>());
+                processor.Start();
+                return processor;
+            });
+
             ApiVersionRegistration.ConfigureService(services);
+            SwaggerRegistration.ConfigureService(services);
         }
 
         /// <summary>
@@ -74,7 +110,7 @@ namespace Orbital.Mock.Server
         /// <param name="env"></param>
         /// <param name="provider"></param>
         //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment _, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment _, IApiVersionDescriptionProvider provider, IMockDefinitionImportService mockDefImporter)
         {
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
@@ -100,7 +136,7 @@ namespace Orbital.Mock.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHealthChecks($"{Constants.ADMIN_ENDPOINT_URL}/health", new HealthCheckOptions()
+                endpoints.MapHealthChecks($"{ADMIN_ENDPOINT_URL}/health", new HealthCheckOptions()
                 {
                     ResultStatusCodes =
                     {
@@ -109,19 +145,26 @@ namespace Orbital.Mock.Server
                         [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
                     }
                 });
-
-                //readiness check implies that the server is up AND able to take requests
-                endpoints.MapHealthChecks($"{Constants.ADMIN_ENDPOINT_URL}/readyz", new HealthCheckOptions
-                {
-                    Predicate = healthCheck => healthCheck.Tags.Contains("ready")
-                });
-
-                //live check implies that the server is up
-                endpoints.MapHealthChecks($"{Constants.ADMIN_ENDPOINT_URL}/livez", new HealthCheckOptions
-                {
-                    Predicate = _ => false
-                });
             });
+
+            mockDefImporter.ImportAllIntoMemoryCache();
+        }
+
+        /// <summary>
+        /// This method creates the template context with buildin functions needed for templaded responses to work..
+        /// </summary>
+        private TemplateContext ConfigureTemplateContext()
+        {
+            var globalContext = new TemplateContext();
+
+            var scriptObjectOrbital = new BuiltinOrbitalFunctions();
+            var scriptObjectFaker = new ScriptObject();
+            scriptObjectFaker.Import(new Faker());
+
+            globalContext.PushGlobal(scriptObjectFaker);
+            globalContext.PushGlobal(scriptObjectOrbital);
+
+            return globalContext;
         }
     }
 }

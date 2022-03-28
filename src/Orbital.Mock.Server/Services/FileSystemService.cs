@@ -1,6 +1,4 @@
-﻿using System;
-using Serilog;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 using Orbital.Mock.Server.Services.Interfaces;
 

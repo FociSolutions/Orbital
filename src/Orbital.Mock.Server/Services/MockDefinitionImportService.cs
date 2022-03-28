@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 
 using Microsoft.Extensions.Options;
@@ -50,13 +51,16 @@ namespace Orbital.Mock.Server.Services
         readonly IGitCommands git;
         readonly IMemoryCache cache;
         readonly MockDefinitionImportServiceConfig config;
+        readonly IFileSystemService fileSystemService;
 
-        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, IGitCommands git, ILogger logger = null)
+        public MockDefinitionImportService(IMemoryCache cache, IOptions<MockDefinitionImportServiceConfig> options, 
+            IGitCommands git, IFileSystemService fileSystemService, ILogger logger = null)
         {
             this.cache = cache;
             config = options.Value;
             this.git = git;
             Log = logger ?? Serilog.Log.Logger;
+            this.fileSystemService = fileSystemService;
         }
 
         /// <inheritdoc/>
@@ -94,15 +98,15 @@ namespace Orbital.Mock.Server.Services
             {
                 var path = prepend == null ? rawPath : Path.Combine(prepend, rawPath);
 
-                if (File.Exists(path)) 
+                if (fileSystemService.FileExists(path))
                 {
                     ImportFromFile(path);
                 }
-                else if (Directory.Exists(path))
+                else if (fileSystemService.DirectoryExists(path))
                 {
-                    var mockDefs = Directory.GetFiles(path, $"*{MockDefExtension}");
+                    var mockDefs = fileSystemService.GetDirectoryFiles(path, $"*{MockDefExtension}");
 
-                    if (mockDefs.Length == 0) Log.Warning("MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{FilePath}'", filePath);
+                    if (!mockDefs.Any()) Log.Warning("MockDefinitionImportService: Attempted to load mock definitions from empty directory: '{FilePath}'", filePath);
 
                     foreach (string mockDefPath in mockDefs) { ImportFromFile(mockDefPath); }
                 }
@@ -119,7 +123,7 @@ namespace Orbital.Mock.Server.Services
         /// <param name="fileName"></param>
         void ImportFromFile(string fileName)
         {
-            if (!File.Exists(fileName))
+            if (!fileSystemService.FileExists(fileName))
             {
                 Log.Error("MockDefinitionImportService: Failed to find Mock Definition file: {FileName}", fileName);
                 return;
@@ -150,9 +154,9 @@ namespace Orbital.Mock.Server.Services
         {
             try
             {
-                if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
+                if (fileSystemService.DirectoryExists(RepoDirectory)) { fileSystemService.DeleteDirectory(RepoDirectory, true); }
 
-                _ = Directory.CreateDirectory(RepoDirectory);
+                _ = fileSystemService.CreateDirectory(RepoDirectory);
 
                 var options = git.GetCloneOptions();
                 if (branch != null) { options.BranchName = branch; }
@@ -161,7 +165,7 @@ namespace Orbital.Mock.Server.Services
 
                 ImportFromPath(path, RepoDirectory);
 
-                if (Directory.Exists(RepoDirectory)) { Directory.Delete(RepoDirectory, true); }
+                if (fileSystemService.DirectoryExists(RepoDirectory)) { fileSystemService.DeleteDirectory(RepoDirectory, true); }
             }
             catch (Exception e)
             {
