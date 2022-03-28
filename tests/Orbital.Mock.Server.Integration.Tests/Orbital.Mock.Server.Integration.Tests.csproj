@@ -13,6 +13,7 @@
     <None Remove="Integration Tests\**" />
     <None Remove="fixtures\" />
     <Content Remove="fixtures\mock_definition_valid.json" />
+    <None Remove="Services\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="fixtures\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fixtures\mock_definition_valid.json">
