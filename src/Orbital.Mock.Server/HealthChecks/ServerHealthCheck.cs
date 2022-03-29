@@ -33,12 +33,10 @@ namespace Orbital.Mock.Server.HealthChecks
 
         public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
-            isPipelineRunning = _pipeline.GetPipelineStatus();
-
             if (!StartupCompleted)
                 return Task.FromResult(HealthCheckResult.Unhealthy("StartupBackgroundService is still configuring underlying services!"));
 
-            if (!isPipelineRunning)
+            if (!_pipeline.GetPipelineStatus())
                 return Task.FromResult(HealthCheckResult.Unhealthy("The pipeline is either stopped or faulted."));
 
             return Task.FromResult(HealthCheckResult.Healthy("Configuration is complete and the pipeline is running. The server is ready to take requests!"));
