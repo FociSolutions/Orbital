@@ -11,9 +11,6 @@ using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 
-
-[assembly: InternalsVisibleTo("Orbital.Mock.Server.Integration.Tests")]
-
 namespace Orbital.Mock.Server.Services
 {
     internal class StartupBackgroundService : BackgroundService

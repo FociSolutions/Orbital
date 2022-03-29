@@ -6,23 +6,27 @@ namespace Orbital.Mock.Server.Integration.Tests.Fakes
 {
     internal class FakePipeline : IPipeline
     {
+        private bool pipelineIsRunning;
+
         public FakePipeline()
         {
+            pipelineIsRunning = false;
         }
 
         public bool GetPipelineStatus()
         {
-            throw new NotImplementedException();
+            return pipelineIsRunning;
         }
 
         public void Start()
         {
-            throw new NotImplementedException();
+            pipelineIsRunning = true;
         }
 
         public bool Stop()
         {
-            throw new NotImplementedException();
+            pipelineIsRunning = false;
+            return true;
         }
 
         public void Dispose()
