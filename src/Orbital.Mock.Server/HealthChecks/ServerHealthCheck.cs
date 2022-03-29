@@ -11,7 +11,6 @@ namespace Orbital.Mock.Server.HealthChecks
 {
     internal class ServerHealthCheck : IHealthCheck
     {
-        private volatile bool isPipelineRunning;
         private volatile bool isReady;
 
         private readonly IPipeline<MessageProcessorInput, Task<MockResponse>> _pipeline;
@@ -19,8 +18,6 @@ namespace Orbital.Mock.Server.HealthChecks
         public ServerHealthCheck(IPipeline<MessageProcessorInput, Task<MockResponse>> pipeline)
         {
             _pipeline = pipeline;
-            
-            isPipelineRunning = false;
             isReady = false;
         }
 
