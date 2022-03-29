@@ -14,11 +14,11 @@ namespace Orbital.Mock.Server.Services
 {
     internal class StartupBackgroundService : BackgroundService
     {
-        private readonly StartupHealthCheck healthCheck;
+        private readonly ServerHealthCheck healthCheck;
         private readonly IMockDefinitionImportService mockDefService;
         private readonly IPipeline<MessageProcessorInput, Task<MockResponse>> pipeline;
 
-        public StartupBackgroundService(StartupHealthCheck healthCheck, IMockDefinitionImportService mockDefService,
+        public StartupBackgroundService(ServerHealthCheck healthCheck, IMockDefinitionImportService mockDefService,
                                             IPipeline<MessageProcessorInput, Task<MockResponse>> pipeline)
         {
             this.healthCheck = healthCheck;
