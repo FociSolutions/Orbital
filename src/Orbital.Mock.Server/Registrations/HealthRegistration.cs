@@ -11,10 +11,9 @@ namespace Orbital.Mock.Server.Registrations
     {
         public static void ConfigureService(IServiceCollection services)
         {
-            services.AddSingleton<StartupHealthCheck>();
+            services.AddSingleton<ServerHealthCheck>();
             services.AddHealthChecks()
-                    .AddCheck<StartupHealthCheck>("Startup", tags: new[] { "ready" })
-                    .AddCheck<ReadinessHealthCheck>("Readiness_Health_Check"); //< TODO :: Verify need of this check
+                    .AddCheck<ServerHealthCheck>("Server_Health_Check", tags: new[] { "ready" });
         }
     }
 }
