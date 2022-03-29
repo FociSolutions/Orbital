@@ -35,16 +35,13 @@ namespace Orbital.Mock.Server.HealthChecks
         {
             isPipelineRunning = _pipeline.GetPipelineStatus();
 
-            if (!isPipelineRunning)
-                return Task.FromResult(HealthCheckResult.Unhealthy("The pipeline is not running yet!"));
-
             if (!StartupCompleted)
                 return Task.FromResult(HealthCheckResult.Unhealthy("StartupBackgroundService is still configuring underlying services!"));
 
-            if (StartupCompleted && isPipelineRunning)
-                return Task.FromResult(HealthCheckResult.Healthy("Configuration is complete and the pipeline is running. The server is ready to take requests!"));
+            if (!isPipelineRunning)
+                return Task.FromResult(HealthCheckResult.Unhealthy("The pipeline is either stopped or faulted."));
 
-            return Task.FromResult(HealthCheckResult.Unhealthy("An unexpected error occurred."));
+            return Task.FromResult(HealthCheckResult.Healthy("Configuration is complete and the pipeline is running. The server is ready to take requests!"));
         }
     }
 }
