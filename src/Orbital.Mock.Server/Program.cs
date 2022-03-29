@@ -1,17 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Security.Authentication;
+﻿
 using System.Diagnostics.CodeAnalysis;
 
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 using Serilog;
 using Serilog.Events;
@@ -23,10 +16,10 @@ namespace Orbital.Mock.Server
     {
         public static void Main(string[] args)
         {
-            CreateHostBuild(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuild(string[] args) =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
            Host.CreateDefaultBuilder(args)
                .ConfigureAppConfiguration(ConfigAppConfiguration)
                .UseSerilog()
@@ -35,12 +28,18 @@ namespace Orbital.Mock.Server
                    webBuilder.UseStartup<Startup>();
                });
 
-        private static void ConfigAppConfiguration(HostBuilderContext context, IConfigurationBuilder configurationBuilder)
+        private static void ConfigureEnvironmentVariables(IConfigurationBuilder configurationBuilder)
         {
             // Gather any vars with the DOTNET_ prefix
             configurationBuilder.AddEnvironmentVariables();
             // Also gather vars with the app specific prefix
             configurationBuilder.AddEnvironmentVariables(Constants.ENV_PREFIX);
+        }
+
+        private static void ConfigAppConfiguration(HostBuilderContext context, IConfigurationBuilder configurationBuilder)
+        {
+            ConfigureEnvironmentVariables(configurationBuilder);
+
             var loggerConfiguration = new LoggerConfiguration()
                 .MinimumLevel.Information() 
                 .Enrich.FromLogContext()
