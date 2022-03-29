@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 
 using Microsoft.Extensions.Hosting;
 
@@ -10,9 +9,6 @@ using Orbital.Mock.Server.HealthChecks;
 using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
-
-
-[assembly: InternalsVisibleTo("Orbital.Mock.Server.Integration.Tests")]
 
 namespace Orbital.Mock.Server.Services
 {

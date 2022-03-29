@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-[assembly: InternalsVisibleToAttribute("Orbital.Mock.Server.Integration.Tests")]
+[assembly: InternalsVisibleTo("Orbital.Mock.Server.Integration.Tests")]
 
 namespace Orbital.Mock.Server.Pipelines.Models.Interfaces
 {
