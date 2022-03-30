@@ -28,6 +28,14 @@ namespace Orbital.Mock.Server.Integration.Tests.Fakes
             pipelineIsRunning = false;
             return true;
         }
+ 
+        public HttpStatusCode Push()
+        {
+            if (!pipelineIsRunning)
+                return HttpStatusCode.ServiceUnavailable;
+
+            return HttpStatusCode.OK;
+        }
 
         public HttpStatusCode Push()
         {

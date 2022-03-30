@@ -27,4 +27,8 @@ namespace Orbital.Mock.Server.Integration.Tests.CustomWebApplicationFactories
             });
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1cfa87f (finished setting up fake pipeline and custom web factory for health check integration tests)
