@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Net;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 
 namespace Orbital.Mock.Server.Integration.Tests.Fakes
@@ -27,6 +27,14 @@ namespace Orbital.Mock.Server.Integration.Tests.Fakes
         {
             pipelineIsRunning = false;
             return true;
+        }
+ 
+        public HttpStatusCode Push()
+        {
+            if (!pipelineIsRunning)
+                return HttpStatusCode.ServiceUnavailable;
+
+            return HttpStatusCode.OK;
         }
 
         public void Dispose()
