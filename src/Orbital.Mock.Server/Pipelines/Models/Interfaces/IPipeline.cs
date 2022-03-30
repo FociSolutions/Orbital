@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
+
+[assembly: InternalsVisibleTo("Orbital.Mock.Server.Integration.Tests")]
 
 namespace Orbital.Mock.Server.Pipelines.Models.Interfaces
 {
