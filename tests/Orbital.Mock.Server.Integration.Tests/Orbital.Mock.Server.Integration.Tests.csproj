@@ -43,6 +43,7 @@
   <ItemGroup>
     <Folder Include="fixtures\" />
     <Folder Include="Services\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Fakes\" />
     <Folder Include="CustomWebAppFactories\" />
     <Folder Include="CustomWebAppFactories\Template\" />
