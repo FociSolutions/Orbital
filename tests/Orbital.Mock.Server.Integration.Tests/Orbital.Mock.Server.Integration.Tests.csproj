@@ -14,6 +14,7 @@
     <None Remove="fixtures\" />
     <Content Remove="fixtures\mock_definition_valid.json" />
     <None Remove="Services\" />
+    <None Remove="Controllers\" />
     <None Remove="Fakes\" />
     <None Remove="CustomWebAppFactories\" />
     <None Remove="CustomWebAppFactories\Template\" />
