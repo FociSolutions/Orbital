@@ -7,7 +7,6 @@ using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
 using Serilog;
-using System.Collections;
 
 namespace Orbital.Mock.Definition
 {
@@ -91,6 +90,13 @@ namespace Orbital.Mock.Definition
 
             return null;
         }
+
+        /// <summary>
+        /// Converts a JSON string containing an array of MockDefinition objects into an IEnumerable&lt;MockDefinition&gt;
+        /// </summary>
+        /// <param name="json">JSON string containing array of MockDefinition objects</param>
+        /// <returns></returns>
+        /// <exception cref="JsonSerializationException"></exception>
         public static IEnumerable<MockDefinition> CreateFromJsonArrayString(string json)
         {
             try
@@ -104,7 +110,6 @@ namespace Orbital.Mock.Definition
             }
 
             return null;
-
         }
     }
 }

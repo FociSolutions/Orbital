@@ -1,11 +1,11 @@
 ﻿using Xunit;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Orbital.Mock.Definition;
-using System.Linq;
 
 namespace Orbital.Mock.Server.Integration.Tests
 {
@@ -17,7 +17,6 @@ namespace Orbital.Mock.Server.Integration.Tests
         {
             var pathVarName = $"{Constants.ENV_PREFIX}{Constants.MOCK_DEF_IMPORT_SVC_SECTION_NAME}__PATH";
             var mockDefPath = Path.Combine(".", "fixtures");
-            //, "mock_definition_valid.json"
             Environment.SetEnvironmentVariable(pathVarName, mockDefPath);
 
             _client = factory.CreateDefaultClient();
@@ -54,8 +53,7 @@ namespace Orbital.Mock.Server.Integration.Tests
             Assert.True(response.IsSuccessStatusCode);
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var mockDef = MockDefinition.CreateFromJsonArrayString(responseBody)
-                .Single();
+            var mockDef = MockDefinition.CreateFromJsonArrayString(responseBody).Single();
 
             Assert.Equal(expected, mockDef.Metadata.Title);
         }
