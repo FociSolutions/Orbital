@@ -41,7 +41,6 @@
     <ProjectReference Include="..\..\src\Orbital.Mock.Server\Orbital.Mock.Server.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="fixtures\" />
     <Folder Include="Services\" />
     <Folder Include="Controllers\" />
     <Folder Include="Fakes\" />

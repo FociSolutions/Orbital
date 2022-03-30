@@ -87,7 +87,28 @@ namespace Orbital.Mock.Definition
             {
                 Log.Error(e, "Failed to parse Mock Definition from file '{Json}'", json);
             }
-            
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts a JSON string containing an array of MockDefinition objects into an IEnumerable&lt;MockDefinition&gt;
+        /// </summary>
+        /// <param name="json">JSON string containing array of MockDefinition objects</param>
+        /// <returns></returns>
+        /// <exception cref="JsonSerializationException"></exception>
+        public static IEnumerable<MockDefinition> CreateFromJsonArrayString(string json)
+        {
+            try
+            {
+                var result = JsonConvert.DeserializeObject<MockDefinition[]>(json);
+                return (result is not null) ? result : throw new JsonSerializationException($"Failed to deserialize MockDefinition from JSON: {json}");
+            }
+            catch (Exception e) when (e is JsonSerializationException || e is JsonReaderException)
+            {
+                Log.Error(e, "Failed to parse Mock Definition from file '{Json}'", json);
+            }
+
             return null;
         }
     }

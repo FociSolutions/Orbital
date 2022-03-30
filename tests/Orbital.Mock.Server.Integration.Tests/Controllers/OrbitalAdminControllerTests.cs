@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace Orbital.Mock.Server.Integration.Tests
         public OrbitalAdminControllerTests(CustomWebApplicationFactory<Startup> factory)
         {
             var pathVarName = $"{Constants.ENV_PREFIX}{Constants.MOCK_DEF_IMPORT_SVC_SECTION_NAME}__PATH";
-            var mockDefPath = Path.Combine(".", "fixtures", "mock_definition_valid.json");
+            var mockDefPath = Path.Combine(".", "fixtures");
             Environment.SetEnvironmentVariable(pathVarName, mockDefPath);
 
             _client = factory.CreateDefaultClient();
@@ -38,6 +39,23 @@ namespace Orbital.Mock.Server.Integration.Tests
 
             Assert.Equal(expected, mockDef.Metadata.Title);
         }
+        
+        [Fact]
+        public async Task GetAll_ReturnsLoadedMockDef()
+        {
+            #region Test Setup
+            var expected = "Pet Store Tests";
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/");
+            #endregion
 
+            var response = await _client.SendAsync(request);
+
+            Assert.True(response.IsSuccessStatusCode);
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var mockDef = MockDefinition.CreateFromJsonArrayString(responseBody).Single();
+
+            Assert.Equal(expected, mockDef.Metadata.Title);
+        }
     }
 }
