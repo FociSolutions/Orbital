@@ -37,6 +37,7 @@ namespace Orbital.Mock.Server.Integration.Tests.Fakes
             return HttpStatusCode.OK;
         }
 
+<<<<<<< HEAD
         public HttpStatusCode Push()
         {
             if (!pipelineIsRunning)
@@ -45,9 +46,15 @@ namespace Orbital.Mock.Server.Integration.Tests.Fakes
             return HttpStatusCode.OK;
         }
 
+=======
+>>>>>>> a81465720ae120830dfd9a7e968fdac780c25375
         public void Dispose()
         {
             throw new NotImplementedException();
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> a81465720ae120830dfd9a7e968fdac780c25375
