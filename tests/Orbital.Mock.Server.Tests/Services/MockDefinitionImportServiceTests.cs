@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Serilog;
+using Orbital.Mock.Server.Services.Interfaces;
 
 namespace Orbital.Mock.Server.Tests.Services
 {
@@ -45,6 +46,7 @@ namespace Orbital.Mock.Server.Tests.Services
             var cache = new MemoryCache(new MemoryCacheOptions());
             var git = Substitute.ForPartsOf<GitCommands>();
             var logger = Substitute.For<ILogger>();
+            var fss = Substitute.ForPartsOf<FileSystemService>();
 
             git.Configure().Clone(default, default).ReturnsForAnyArgs(x =>
             {
@@ -57,7 +59,7 @@ namespace Orbital.Mock.Server.Tests.Services
                 return MockDefinitionImportService.RepoDirectory;
             });
 
-            var mockDefImportService = new MockDefinitionImportService(cache, config_mock, git, logger);
+            var mockDefImportService = new MockDefinitionImportService(cache, config_mock, git, fss, logger);
 
             return (mockDefImportService, logger);
         }

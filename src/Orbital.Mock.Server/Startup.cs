@@ -53,7 +53,7 @@ namespace Orbital.Mock.Server
             services.AddMemoryCache();
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddAuthentication("Bearer")
-                    .AddJwtBearer("Bearer", opt => 
+                    .AddJwtBearer("Bearer", opt =>
                     {
                         opt.TokenValidationParameters = new TokenValidationParameters
                         {
