@@ -25,11 +25,20 @@ namespace Orbital.Mock.Server.Integration.Tests.HealthChecks
         [Fact]
         public async Task ServerHealthCheck_ReturnsOK()
         {
-            //_factory.FakePipeline.Start();
-
             var response = await _client.GetAsync("/health");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task ServerHealthCheckPipelineStopped_ReturnsServiceUnavailable()
+        {
+
+            _factory.FakePipeline.Stop();
+
+            var response = await _client.GetAsync("/health");
+
+            Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
         }
     }
 }
