@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "bb33028d-9057-4dac-9fb7-989d02a6bfe4",
+		"name": "orbital",
+		"description": "To run Newman from the Postman link use command\n\nnewman run yourlink -k",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post new mock",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Confirm response message\", function () {\r",
+							"  pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.response.to.be.withBody;\r",
+							"  pm.response.to.be.json;\r",
+							"  pm.expect(responseJson.metadata.description).to.eql(\"This is to pass into Unit Tests.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"host\": null,\r\n        \"tokenValidation\": true,\r\n        \"metadata\": {\r\n            \"title\": \"Pet Store Tests New Mock\",\r\n            \"description\": \"This is to pass into Unit Tests.\"\r\n        },\r\n        \"openApi\": {\r\n            \"swagger\": \"2.0\",\r\n            \"info\": {\r\n                \"title\": \"Swagger Petstore\",\r\n                \"license\": {\r\n                    \"name\": \"MIT\"\r\n                },\r\n                \"version\": \"1.0.0\"\r\n            },\r\n            \"paths\": {\r\n                \"/pets\": {},\r\n                \"/pets/{petId}\": {}\r\n            }\r\n        },\r\n        \"scenarios\": [\r\n            {\r\n                \"id\": \"b7a5d8ec-1d03-44b6-a679-ff4596c43a79\",\r\n                \"path\": \"/pets\",\r\n                \"verb\": 0,\r\n                \"metadata\": {\r\n                    \"title\": \"Default OK Scenario\",\r\n                    \"description\": \"Default OK Description\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [\r\n                        {\r\n                            \"key\": \"Content-Type\",\r\n                            \"value\": \"application/json\",\r\n                            \"type\": 5\r\n                        }\r\n                    ],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 200,\r\n                    \"body\": \"{\\n  \\\"pet-name\\\": \\\"Sherlock\\\"\\n}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [\r\n                    {\r\n                        \"type\": 1,\r\n                        \"value\": 123.0\r\n                    }\r\n                ],\r\n                \"defaultScenario\": true\r\n            },\r\n            {\r\n                \"id\": \"dcb2078f-2d21-44d0-a836-c33bea258cd1\",\r\n                \"path\": \"/pets\",\r\n                \"verb\": 0,\r\n                \"metadata\": {\r\n                    \"title\": \"Invalid-Token Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 401,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": false\r\n            },\r\n            {\r\n                \"id\": \"c0a364d5-e538-4278-8c3c-59aa9ee92aa7\",\r\n                \"path\": \"/pets\",\r\n                \"verb\": 3,\r\n                \"metadata\": {\r\n                    \"title\": \"Default OK Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 200,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": true\r\n            },\r\n            {\r\n                \"id\": \"24fc30cc-3daa-4d6c-b636-f71cd9aede2e\",\r\n                \"path\": \"/pets\",\r\n                \"verb\": 3,\r\n                \"metadata\": {\r\n                    \"title\": \"Invalid-Token Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 401,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": false\r\n            },\r\n            {\r\n                \"id\": \"9c8f5fa1-bec6-4fc7-bb2a-208a60c7670e\",\r\n                \"path\": \"/pets/{petId}\",\r\n                \"verb\": 0,\r\n                \"metadata\": {\r\n                    \"title\": \"Default OK Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 200,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": true\r\n            },\r\n            {\r\n                \"id\": \"b6d098bc-551d-4834-9bc6-78ffe8bd3428\",\r\n                \"path\": \"/pets/{petId}\",\r\n                \"verb\": 0,\r\n                \"metadata\": {\r\n                    \"title\": \"Invalid-Token Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 401,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": false\r\n            }\r\n        ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all mocks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check that it returns an array\", function(){\r",
+							"    var jsonData= pm.response.json();\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit mock",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// pm.test(\"Response body test\", function () {\r",
+							"//     let responseJson = pm.response.json();\r",
+							"    \r",
+							"//     pm.response.to.have.status(200);\r",
+							"//     pm.response.to.be.withBody;\r",
+							"//     pm.response.to.be.json;\r",
+							"//     pm.expect(responseJson.metadata.description).to.eql(\"This is to pass into Unit Tests for PUT2.\");\r",
+							"// });\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"host\": null,\r\n        \"tokenValidation\": true,\r\n        \"metadata\": {\r\n            \"title\": \"Pet Store Tests New Mock\",\r\n            \"description\": \"This is to pass into Unit Tests for PUT3.\"\r\n        },\r\n        \"openApi\": {\r\n            \"swagger\": \"2.0\",\r\n            \"info\": {\r\n                \"title\": \"Swagger Petstore\",\r\n                \"license\": {\r\n                    \"name\": \"MIT\"\r\n                },\r\n                \"version\": \"1.0.0\"\r\n            },\r\n            \"paths\": {\r\n                \"/pets\": {},\r\n                \"/pets/{petId}\": {}\r\n            }\r\n        },\r\n        \"scenarios\": [\r\n            {\r\n                \"id\": \"b7a5d8ec-1d03-44b6-a679-ff4596c43a79\",\r\n                \"path\": \"/pets\",\r\n                \"verb\": 0,\r\n                \"metadata\": {\r\n                    \"title\": \"Default OK Scenario\",\r\n                    \"description\": \"Default OK Description\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [\r\n                        {\r\n                            \"key\": \"Content-Type\",\r\n                            \"value\": \"application/json\",\r\n                            \"type\": 5\r\n                        }\r\n                    ],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 200,\r\n                    \"body\": \"{\\n  \\\"pet-name\\\": \\\"Sherlock\\\"\\n}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [\r\n                    {\r\n                        \"type\": 1,\r\n                        \"value\": 123.0\r\n                    }\r\n                ],\r\n                \"defaultScenario\": true\r\n            },\r\n            {\r\n                \"id\": \"dcb2078f-2d21-44d0-a836-c33bea258cd1\",\r\n                \"path\": \"/pets\",\r\n                \"verb\": 0,\r\n                \"metadata\": {\r\n                    \"title\": \"Invalid-Token Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 401,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": false\r\n            },\r\n            {\r\n                \"id\": \"c0a364d5-e538-4278-8c3c-59aa9ee92aa7\",\r\n                \"path\": \"/pets\",\r\n                \"verb\": 3,\r\n                \"metadata\": {\r\n                    \"title\": \"Default OK Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 200,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": true\r\n            },\r\n            {\r\n                \"id\": \"24fc30cc-3daa-4d6c-b636-f71cd9aede2e\",\r\n                \"path\": \"/pets\",\r\n                \"verb\": 3,\r\n                \"metadata\": {\r\n                    \"title\": \"Invalid-Token Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 401,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": false\r\n            },\r\n            {\r\n                \"id\": \"9c8f5fa1-bec6-4fc7-bb2a-208a60c7670e\",\r\n                \"path\": \"/pets/{petId}\",\r\n                \"verb\": 0,\r\n                \"metadata\": {\r\n                    \"title\": \"Default OK Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 200,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": true\r\n            },\r\n            {\r\n                \"id\": \"b6d098bc-551d-4834-9bc6-78ffe8bd3428\",\r\n                \"path\": \"/pets/{petId}\",\r\n                \"verb\": 0,\r\n                \"metadata\": {\r\n                    \"title\": \"Invalid-Token Scenario\",\r\n                    \"description\": \"\"\r\n                },\r\n                \"requestMatchRules\": {\r\n                    \"urlRules\": [],\r\n                    \"headerRules\": [],\r\n                    \"queryRules\": [],\r\n                    \"bodyRules\": []\r\n                },\r\n                \"tokenRule\": {\r\n                    \"checkExpired\": false,\r\n                    \"validationType\": 0,\r\n                    \"rules\": []\r\n                },\r\n                \"response\": {\r\n                    \"status\": 401,\r\n                    \"body\": \"{}\",\r\n                    \"headers\": {},\r\n                    \"query\": {},\r\n                    \"type\": 1\r\n                },\r\n                \"policies\": [],\r\n                \"defaultScenario\": false\r\n            }\r\n        ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get mock by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.expect(pm.response.json().metadata.description).to.eql(\"This is to pass into Unit Tests for PUT3.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/Pet Store Tests New Mock",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"Pet Store Tests New Mock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete mock",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/Pet Store Tests New Mock",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"Pet Store Tests New Mock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all mocks after delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check that it returns an array\", function(){\r",
+							"    var jsonData= pm.response.json();\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(jsonData.length).to.equal(0);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}",
+					"host": [
+						"{{api_url}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_url",
+			"value": "https://localhost:5001/api/v1/OrbitalAdmin",
+			"type": "string"
+		}
+	]
+}
