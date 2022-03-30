@@ -17,6 +17,12 @@ namespace Orbital.Mock.Server.Tests.Services
         private static readonly string PATH_TO_FILE_LOCATION = Path.Combine("Dir3", "Dir3.1", "Dir3.1.1");
         private static readonly string MOCK_DEF_PATH = Path.Combine(".", "fixtures", "directory_import_test");
 
+
+        static string GenerateInvalidPaths()
+        {
+            return string.Join(" ",Path.GetInvalidPathChars());
+        }
+
         public static IEnumerable<object[]> ExistingFilePaths =>
             new List<object[]>
             {
@@ -56,8 +62,7 @@ namespace Orbital.Mock.Server.Tests.Services
                 new object[] { null },
                 new object[] { "" },
                 new object[] { "     " },
-                new object[] { "*<>?\"'/\\[]{}:;|" },
-                new object[] { "*  <> ?\"' / \\ [ ] : ; |  \\filepath      " }
+                new object[] { GenerateInvalidPaths() }
            };
 
         public static IEnumerable<object[]> ExistingDirectoryPathsAndPatterns =>
