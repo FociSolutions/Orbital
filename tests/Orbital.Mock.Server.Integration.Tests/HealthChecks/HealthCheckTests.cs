@@ -22,10 +22,8 @@ namespace Orbital.Mock.Server.Integration.Tests.HealthChecks
             _factory = factory;
         }
 
-        //test that doesn't force any variables but tests the natural 
-        //result of startup
         [Fact]
-        public async Task NaturalServerHealthCheck_ReturnsOK()
+        public async Task HealthEndpoint_ReturnsOK()
         {
             var response = await _client.GetAsync("/health");
 
@@ -33,11 +31,47 @@ namespace Orbital.Mock.Server.Integration.Tests.HealthChecks
         }
 
         [Fact]
-        public async Task ServerHealthCheckPipelineStopped_ReturnsServiceUnavailable()
+        public async Task HealthEndpointPipelineStopped_ReturnsServiceUnavailable()
         {
             _factory.FakePipeline.Stop();
 
             var response = await _client.GetAsync("/health");
+
+            Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task readyz_ReturnsOK()
+        {
+            var response = await _client.GetAsync("/readyz");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task readyzPipelineStopped_ReturnsServiceUnavailable()
+        {
+            _factory.FakePipeline.Stop();
+            
+            var response = await _client.GetAsync("/readyz");
+
+            Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task livez_ReturnsOK()
+        {
+            var response = await _client.GetAsync("/livez");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task livezPipelineStopped_ReturnsServiceUnavailable()
+        {
+            _factory.FakePipeline.Stop();
+
+            var response = await _client.GetAsync("/livez");
 
             Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
         }
