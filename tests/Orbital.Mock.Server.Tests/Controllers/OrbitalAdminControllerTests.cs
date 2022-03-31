@@ -247,8 +247,8 @@ namespace Orbital.Mock.Server.Tests.Controllers
         {
             #region Test Setup
             var metadataFake = new Faker<MetadataInfo>()
-                    .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-                    .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
                 .RuleFor(m => m.Host, f => f.Internet.DomainName())
@@ -272,6 +272,7 @@ namespace Orbital.Mock.Server.Tests.Controllers
             var mediatorMock = Substitute.For<IMediator>();
             mediatorMock.Send(Arg.Any<UpdateMockDefinitionByTitleCommand>(), Arg.Any<CancellationToken>()).Returns<MockDefinition>(input.mockDefinition);
             #endregion
+
             var Target = new OrbitalAdminController(mediatorMock)
             {
                 ControllerContext = controllerContext
@@ -281,7 +282,7 @@ namespace Orbital.Mock.Server.Tests.Controllers
 
             var Actual = Target.Put(input.mockDefinition);
 
-            Assert.IsType<OkResult>(Actual);
+            Assert.IsType<OkObjectResult>(Actual);
         }
     }
 }

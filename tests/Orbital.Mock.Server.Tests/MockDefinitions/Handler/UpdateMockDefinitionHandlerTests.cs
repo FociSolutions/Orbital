@@ -26,12 +26,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -58,12 +58,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -81,27 +81,29 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
         }
 
         [Fact]
-        public void UpdateHandlerReturnsMockDefinitionTest()
+        public void UpdateHandlerReturnsNewMockDefinitionTest()
         {
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
 
-            var Expected = mockDefinitionFake.Generate();
-            var mockDefinitionUpdate = new MockDefinition { Host = Expected.Host + "diff", Metadata = Expected.Metadata };
+            var mockDef = mockDefinitionFake.Generate();
 
-            cache.Set(Expected.Metadata.Title, Expected);
+            cache.Set(mockDef.Metadata.Title, mockDef);
 
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate, ref TestUtils.databaseLock);
+            var Expected = mockDef;
+            Expected.Host = mockDef.Host + "diff";
+
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected, ref TestUtils.databaseLock);
             #endregion
 
             var Target = new UpdateMockDefinitionHandler(cache);
@@ -117,12 +119,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -146,12 +148,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -175,12 +177,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);

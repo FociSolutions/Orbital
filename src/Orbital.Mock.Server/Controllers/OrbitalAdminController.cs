@@ -114,9 +114,9 @@ namespace Orbital.Mock.Server.Controllers
         {
             var command = new UpdateMockDefinitionByTitleCommand(mockDefinition, ref databaseLock);
             var result = mediator.Send(command).Result;
-            if (result == null) { return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition); }
             Log.Information("OrbitalAdminController: Sent HTTPut Command to update Mockdefinition, {MockDefinition}", mockDefinition.Metadata.Title);
-            return Ok();
+            if (result == null) { return Created(new Uri($"{Request.Path}/{mockDefinition.Metadata.Title}", UriKind.Relative), mockDefinition); }
+            return Ok(mockDefinition);
         }
     }
 }

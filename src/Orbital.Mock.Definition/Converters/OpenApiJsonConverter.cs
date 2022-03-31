@@ -59,7 +59,7 @@ namespace Orbital.Mock.Definition.Converters
         }
 
         /// <summary>
-        /// The method that writes the OpenApiDocument into JSOn using the OpenApiJsonWriter from Microsoft.OpenApi.Writers
+        /// The method that writes the OpenApiDocument into JSON using the OpenApiJsonWriter from Microsoft.OpenApi.Writers
         /// </summary>
         /// <param name="writer">The JsonWriter used to write the json output</param>
         /// <param name="openApi">The OpenApiDocument Object to turn into Json</param>
