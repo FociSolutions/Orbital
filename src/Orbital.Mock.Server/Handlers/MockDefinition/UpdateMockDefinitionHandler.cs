@@ -37,15 +37,20 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         {
             lock (request.databaseLock)
             {
-                var mockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
-                cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-                var KeyList = this.cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
-                if (!KeyList.Contains(request.MockDefinition.Metadata.Title))
+                var cachedMockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
+                var mockDefExisted = cachedMockDefinition != null;
+                var newMockDef = request.MockDefinition;
+
+                cache.Set(newMockDef.Metadata.Title, newMockDef);
+                var KeyList = cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
+
+                if (!KeyList.Contains(newMockDef.Metadata.Title))
                 {
-                    KeyList.Add(request.MockDefinition.Metadata.Title);
-                    this.cache.Set(Constants.MOCK_IDS_CACHE_KEY, KeyList);
+                    KeyList.Add(newMockDef.Metadata.Title);
+                    cache.Set(Constants.MOCK_IDS_CACHE_KEY, KeyList);
                 }
-                return Task.FromResult(mockDefinition);
+
+                return Task.FromResult(mockDefExisted ? newMockDef : null);
             }
         }
 
