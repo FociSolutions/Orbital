@@ -22,8 +22,10 @@ namespace Orbital.Mock.Server.Integration.Tests.HealthChecks
             _factory = factory;
         }
 
+        //test that doesn't force any variables but tests the natural 
+        //result of startup
         [Fact]
-        public async Task ServerHealthCheck_ReturnsOK()
+        public async Task NaturalServerHealthCheck_ReturnsOK()
         {
             var response = await _client.GetAsync("/health");
 
@@ -33,7 +35,6 @@ namespace Orbital.Mock.Server.Integration.Tests.HealthChecks
         [Fact]
         public async Task ServerHealthCheckPipelineStopped_ReturnsServiceUnavailable()
         {
-
             _factory.FakePipeline.Stop();
 
             var response = await _client.GetAsync("/health");
