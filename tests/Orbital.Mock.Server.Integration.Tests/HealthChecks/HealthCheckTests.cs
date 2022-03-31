@@ -16,8 +16,6 @@ namespace Orbital.Mock.Server.Integration.Tests.HealthChecks
 
         public HealthCheckTests(HealthCheckCustomWebApplicationFactory<Startup> factory)
         {
-            factory.ClientOptions.BaseAddress = new Uri($"http://localhost{Constants.ADMIN_ENDPOINT_URL}");
-            
             _client = factory.CreateClient();
             _factory = factory;
         }
@@ -25,55 +23,92 @@ namespace Orbital.Mock.Server.Integration.Tests.HealthChecks
         [Fact]
         public async Task HealthEndpoint_ReturnsOK()
         {
-            var response = await _client.GetAsync("/health");
+            string expected = "Healthy";
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/health");
+
+            _factory.FakePipeline.Start();
+
+            var response = await _client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, content);
         }
 
         [Fact]
         public async Task HealthEndpointPipelineStopped_ReturnsServiceUnavailable()
         {
+            string expected = "Unhealthy";
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/health");
+
             _factory.FakePipeline.Stop();
 
-            var response = await _client.GetAsync("/health");
+            var response = await _client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+            Assert.Equal(expected, content);
         }
 
         [Fact]
-        public async Task readyz_ReturnsOK()
+        public async Task ReadinessCheck_ReturnsOK()
         {
-            var response = await _client.GetAsync("/readyz");
+            string expected = "Healthy";
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/readyz");
+
+            _factory.FakePipeline.Start();
+
+            var response = await _client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, content);
         }
 
         [Fact]
-        public async Task readyzPipelineStopped_ReturnsServiceUnavailable()
+        public async Task ReadinessCheckPipelineStopped_ReturnsServiceUnavailable()
         {
+            string expected = "Unhealthy";
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/readyz");
+
             _factory.FakePipeline.Stop();
-            
-            var response = await _client.GetAsync("/readyz");
+
+            var response = await _client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+            Assert.Equal(expected, content);
         }
 
         [Fact]
-        public async Task livez_ReturnsOK()
+        public async Task LivelinessCheckPipelineRunning_ReturnsOK()
         {
-            var response = await _client.GetAsync("/livez");
+            string expected = "Healthy";
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/livez");
+
+            _factory.FakePipeline.Start();
+
+            var response = await _client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, content);
         }
 
         [Fact]
-        public async Task livezPipelineStopped_ReturnsServiceUnavailable()
+        public async Task LivelinessCheckPipelineStopped_ReturnsOK()
         {
+            string expected = "Healthy";
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/livez");
+
             _factory.FakePipeline.Stop();
 
-            var response = await _client.GetAsync("/livez");
+            var response = await _client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
 
-            Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+            //< Should still be healthy even though the pipeline is stopped
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, content);
         }
     }
 }
