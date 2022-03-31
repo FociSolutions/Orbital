@@ -21,7 +21,7 @@ namespace Orbital.Mock.Server.Integration.Tests
         public OrbitalAdminControllerTests(CustomWebApplicationFactory<Startup> factory)
         {
             var pathVarName = $"{Constants.ENV_PREFIX}{Constants.MOCK_DEF_IMPORT_SVC_SECTION_NAME}__PATH";
-            mockDefPath = Path.Combine(".", "fixtures");
+            mockDefPath = Path.Combine(".", "fixtures", "mock_definition_valid.json");
             Environment.SetEnvironmentVariable(pathVarName, mockDefPath);
 
             faker = new Faker();
@@ -60,7 +60,7 @@ namespace Orbital.Mock.Server.Integration.Tests
             Assert.True(response.IsSuccessStatusCode);
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var mockDef = MockDefinition.CreateFromJsonArrayString(responseBody).Single();
+            var mockDef = MockDefinition.CreateFromJsonArrayString(responseBody).Where(x => x.Metadata.Title == expected).Single();
 
             Assert.Equal(expected, mockDef.Metadata.Title);
         }
