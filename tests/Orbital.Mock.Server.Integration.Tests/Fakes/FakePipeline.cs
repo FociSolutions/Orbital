@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Orbital.Mock.Definition.Response;
+using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 
 namespace Orbital.Mock.Server.Integration.Tests.Fakes
 {
-    internal class FakePipeline : IPipeline
+    internal class FakePipeline : IPipeline<MessageProcessorInput, Task<MockResponse>>
     {
         private bool pipelineIsRunning;
 
@@ -29,17 +34,17 @@ namespace Orbital.Mock.Server.Integration.Tests.Fakes
             return true;
         }
 
-        public HttpStatusCode Push()
-        {
-            if (!pipelineIsRunning)
-                return HttpStatusCode.ServiceUnavailable;
-
-            return HttpStatusCode.OK;
-        }
-
         public void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        public Task<MockResponse> Push(MessageProcessorInput input, CancellationToken token)
+        {
+            if (!pipelineIsRunning)
+                return Task.FromResult(new MockResponse(503));
+
+            return Task.FromResult(new MockResponse(200));
         }
     }
 }

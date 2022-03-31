@@ -113,13 +113,25 @@ namespace Orbital.Mock.Server
                 //readiness check implies that the server is up AND able to take requests
                 endpoints.MapHealthChecks($"{Constants.ADMIN_ENDPOINT_URL}/readyz", new HealthCheckOptions
                 {
-                    Predicate = healthCheck => healthCheck.Tags.Contains("ready")
+                    Predicate = healthCheck => healthCheck.Tags.Contains("ready"),
+                    ResultStatusCodes =
+                    {
+                        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
+                    }
                 });
 
                 //live check implies that the server is up
                 endpoints.MapHealthChecks($"{Constants.ADMIN_ENDPOINT_URL}/livez", new HealthCheckOptions
                 {
-                    Predicate = _ => false
+                    Predicate = _ => false,
+                    ResultStatusCodes =
+                    {
+                        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
+                    }
                 });
             });
         }

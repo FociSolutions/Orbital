@@ -3,8 +3,12 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
+using System.Threading.Tasks;
+
 using Orbital.Mock.Server.Integration.Tests.Fakes;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
+using Orbital.Mock.Server.Pipelines.Models;
+using Orbital.Mock.Definition.Response;
 
 namespace Orbital.Mock.Server.Integration.Tests.CustomWebApplicationFactories
 {
@@ -23,7 +27,7 @@ namespace Orbital.Mock.Server.Integration.Tests.CustomWebApplicationFactories
         {
             builder.ConfigureTestServices(services =>
             {
-                services.AddSingleton<IPipeline>(FakePipeline);
+                services.AddSingleton<IPipeline<MessageProcessorInput, Task<MockResponse>>>(FakePipeline);
             });
         }
     }
