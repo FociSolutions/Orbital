@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Serilog;
 
+using Orbital.Mock.Definition.Converters;
+
 namespace Orbital.Mock.Definition
 {
     public class MockDefinition : IEquatable<MockDefinition>
@@ -25,6 +27,7 @@ namespace Orbital.Mock.Definition
         public MetadataInfo Metadata { get; set; }
 
         [JsonProperty("openApi", Required = Required.Always)]
+        [JsonConverter(typeof(OpenApiJsonConverter))]
         public OpenApiDocument OpenApi { get; set; }
 
         [JsonProperty("scenarios", Required = Required.AllowNull)]
@@ -110,6 +113,15 @@ namespace Orbital.Mock.Definition
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Serializes the MockDefinition object to a JSON string representation
+        /// </summary>
+        /// <returns>The JSON String representation of the object</returns>
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }
