@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Orbital.Mock.Definition;
 using Bogus;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace Orbital.Mock.Server.Integration.Tests
 {
@@ -180,5 +181,30 @@ namespace Orbital.Mock.Server.Integration.Tests
             Assert.Equal(getResponseMockDef.Metadata.Title, postResponseMockDef.Metadata.Title);
         }
 
+        [Fact]
+        public async Task DeleteById_ReturnsNoContentStatusCode()
+        {
+            #region Test Setup
+            var mockDef = MockDefinition.CreateFromFile(mockDefPath);
+            var title = faker.Lorem.Sentence();
+            mockDef.Metadata.Title = title;
+
+            var requestContent = new StringContent(mockDef.ToJson(), Encoding.UTF8, "application/json");
+            var delRequest = new HttpRequestMessage(HttpMethod.Delete, $"{Constants.ADMIN_ENDPOINT_URL}/{title}");
+            #endregion
+
+            var postResponse = await _client.PostAsync(Constants.ADMIN_ENDPOINT_URL, requestContent);
+            var delResponse = await _client.SendAsync(delRequest);
+
+            Assert.True(postResponse.IsSuccessStatusCode);
+            Assert.True(delResponse.IsSuccessStatusCode);
+
+            var getReq = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/{title}");
+            var newResponse = await _client.SendAsync(getReq);
+            var responseBody = await newResponse.Content.ReadAsStringAsync();
+
+            Assert.Equal(StatusCodes.Status204NoContent, (int)newResponse.StatusCode);
+            Assert.Empty(responseBody);
+        }
     }
 }
