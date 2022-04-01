@@ -151,5 +151,34 @@ namespace Orbital.Mock.Server.Integration.Tests
             Assert.Equal(expected, responseMockDef.Metadata.Description);
         }
 
+        [Fact]
+        public async Task Post_CreatesMockDef()
+        {
+            #region Test Setup
+            var mockDef = MockDefinition.CreateFromFile(mockDefPath);
+            var expected = faker.Lorem.Sentence();
+            mockDef.Metadata.Title = expected;
+
+            var requestContent = new StringContent(mockDef.ToJson(), Encoding.UTF8, "application/json");
+            var getRequest = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ADMIN_ENDPOINT_URL}/{mockDef.Metadata.Title}");
+            #endregion
+
+            var postResponse = await _client.PostAsync(Constants.ADMIN_ENDPOINT_URL, requestContent);
+            var getResponse = await _client.SendAsync(getRequest);
+
+            Assert.True(postResponse.IsSuccessStatusCode);
+            Assert.True(getResponse.IsSuccessStatusCode);
+
+            var responseBody = await getResponse.Content.ReadAsStringAsync();
+            var postResponseBody = await postResponse.Content.ReadAsStringAsync();
+
+            var getResponseMockDef = MockDefinition.CreateFromJsonString(responseBody);
+            var postResponseMockDef = MockDefinition.CreateFromJsonString(postResponseBody);
+
+            Assert.Equal(expected, getResponseMockDef.Metadata.Title);
+            Assert.Equal(expected, postResponseMockDef.Metadata.Title);
+            Assert.Equal(getResponseMockDef.Metadata.Title, postResponseMockDef.Metadata.Title);
+        }
+
     }
 }
