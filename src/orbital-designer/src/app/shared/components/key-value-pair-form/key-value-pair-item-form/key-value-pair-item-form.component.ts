@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   ControlValueAccessor,
@@ -34,8 +44,8 @@ export interface KeyValuePairItemFormValues {
     },
   ],
 })
-export class KeyValuePairItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  form: FormGroup;
+export class KeyValuePairItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get key(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -46,13 +56,15 @@ export class KeyValuePairItemFormComponent implements ControlValueAccessor, Vali
     return this.form.get('value') as FormControl;
   }
 
-  @Output() readonly addItemEvent = new EventEmitter<KeyValuePairItemFormValues>();
-  @Output() readonly removeItemEvent = new EventEmitter<void>();
-
-  @Input() readonly title = '';
+  @Input() touched = false;
+  @Input() readonly title: string = '';
   @Input() readonly errors: string[] = [];
   @Input() readonly mode: 'add' | 'edit' = 'edit';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
+
+  @Output() readonly addItemEvent = new EventEmitter<KeyValuePairItemFormValues>();
+  @Output() readonly removeItemEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -65,11 +77,21 @@ export class KeyValuePairItemFormComponent implements ControlValueAccessor, Vali
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: KeyValuePairItemFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       }),
 
       this.itemIsDuplicatedEvent.subscribe((isDuplicated) => this.handleIsDuplicatedEvent(isDuplicated))
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   handleIsDuplicatedEvent(isDuplicated: boolean) {
@@ -80,7 +102,7 @@ export class KeyValuePairItemFormComponent implements ControlValueAccessor, Vali
           duplicate: 'This item already exists. Duplicates are not allowed.',
         });
       } else {
-        const { duplicate: _, ...errors } = this.form.errors;
+        const { duplicate: _, ...errors } = this.form.errors ?? {};
         this.form.setErrors(Object.keys(errors).length ? errors : null);
       }
     }
@@ -109,7 +131,7 @@ export class KeyValuePairItemFormComponent implements ControlValueAccessor, Vali
   }
 
   static buildForm(item: Partial<KeyValuePairItemFormValues>): FormGroup {
-    // Note: this forms only needs the structure to propagate values, no functionality required
+    // Note: this form only needs the structure to propagate values, no functionality required
     const fb = new FormBuilder();
     return fb.group({ key: item.key ?? null, value: item.value ?? null });
   }
@@ -128,10 +150,10 @@ export class KeyValuePairItemFormComponent implements ControlValueAccessor, Vali
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: KeyValuePairItemFormValues) => void> = [];
+  readonly onChange: Array<(value: KeyValuePairItemFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: KeyValuePairItemFormValues) => void): void {
+  registerOnChange(fn: (value: KeyValuePairItemFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

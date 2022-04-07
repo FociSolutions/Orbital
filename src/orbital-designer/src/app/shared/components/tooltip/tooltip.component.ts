@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class ToolTipComponent {
   readonly default_delay = 2000;
   @Input() message!: string;
-  @Input() matTooltipClass: unknown = '';
+  @Input() matTooltipClass = '';
   @Input() icon = 'help_outline';
   @Input() delay = this.default_delay;
 }

@@ -70,7 +70,7 @@ describe('SideBarComponent', () => {
   // Then, confirm the value returned is selected by having a true response.
   describe('SideBarComponent.isSelected', () => {
     it('should return true if selected a valid Mock Definition', () => {
-      const title = component.selectedMockDefinition;
+      const title = component.selectedMockDefinition ?? '';
       const expected = validMockDefinition.metadata.title;
       expect(expected).toEqual(title);
       expect(component.isSelected(title)).toBeTruthy();
@@ -99,7 +99,7 @@ describe('SideBarComponent', () => {
   });
   describe('SideBarComponent.openDialogBox', () => {
     it('should return to homepage if last mockdefinition is dismissed', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
         component.mockDefinitions = [validMockDefinition];
 

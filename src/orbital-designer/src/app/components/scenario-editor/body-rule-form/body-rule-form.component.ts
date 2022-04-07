@@ -1,4 +1,15 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   AbstractControl,
@@ -33,32 +44,67 @@ export type BodyRuleFormValues = BodyRuleItemFormValues[];
     },
   ],
 })
-export class BodyRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  form: FormGroup;
+export class BodyRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get formArray(): FormArray {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.form.get('formArray') as FormArray;
   }
 
+  get add(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.form.get('add') as FormControl;
+  }
+
   @Input() itemName = 'Body Match Rule';
   @Input() itemNamePlural = 'Body Match Rules';
+  @Input() touched = false;
 
-  newItemIndex = null;
+  @Output() touchedEvent = new EventEmitter<void>();
+
+  itemIsDuplicatedEvent = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
+      add: null,
       formArray: this.formBuilder.array([], BodyRuleFormComponent.validateNoDuplicates),
     });
 
     this.subscriptions.push(
       this.formArray.valueChanges.subscribe((values: BodyRuleFormValues | null) => {
+        this.itemIsDuplicatedEvent.emit(this.itemIsDuplicated(this.add.value));
         this.onChange.forEach((fn) => fn(values));
-        this.onTouched.forEach((fn) => fn());
       })
     );
+
+    this.subscribeToAddValueChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.formArray.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
+  }
+
+  subscribeToAddValueChanges() {
+    this.subscriptions.push(
+      this.add.valueChanges.subscribe((value) => {
+        this.itemIsDuplicatedEvent.emit(this.itemIsDuplicated(value));
+      })
+    );
+    this.cleanupSubscriptions();
+  }
+
+  cleanupSubscriptions() {
+    this.subscriptions = this.subscriptions.filter((s) => !s.closed);
   }
 
   validate(_: FormControl): ValidationErrors | null {
@@ -76,11 +122,16 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
     }
   }
 
-  addItem() {
-    this.newItemIndex = this.formArray.length;
-    const itemForm = BodyRuleItemFormComponent.buildForm({});
-    this.formArray.push(itemForm);
-    this.cdRef.detectChanges();
+  addItemHandler(item: BodyRuleItemFormValues) {
+    if (this.itemIsDuplicated(item)) {
+      this.itemIsDuplicatedEvent.emit(true);
+    } else {
+      const itemForm = BodyRuleItemFormComponent.buildForm(item);
+      this.formArray.push(itemForm);
+      this.add.reset(null, { emitEvent: false });
+      this.subscribeToAddValueChanges();
+      this.cdRef.detectChanges();
+    }
   }
 
   /**
@@ -135,7 +186,11 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
    * @param formArray the FormArray object to validate
    * @returns a ValidationErrors object containing any errors, or null if there are no errors
    */
-  static validateNoDuplicates(formArray: FormArray): ValidationErrors | null {
+  static validateNoDuplicates(formArray: AbstractControl): ValidationErrors | null {
+    if (!(formArray instanceof FormArray)) {
+      throw new Error('Validator can only be used with FormArray controls');
+    }
+
     const items: BodyRuleFormValues = formArray.value ?? [];
     const controls: AbstractControl[] = formArray.controls;
     let error: ValidationErrors | null = null;
@@ -152,7 +207,7 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
             ...error,
           });
         } else {
-          const { duplicate: _, ...errors } = control.errors;
+          const { duplicate: _, ...errors } = control.errors ?? {};
           control.setErrors(Object.keys(errors).length ? errors : null);
         }
       }
@@ -165,16 +220,16 @@ export class BodyRuleFormComponent implements ControlValueAccessor, Validator, O
    * Boilerplate Code Below Here
    */
 
-  private readonly subscriptions: Subscription[] = [];
+  private subscriptions: Subscription[] = [];
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: BodyRuleFormValues) => void> = [];
+  readonly onChange: Array<(value: BodyRuleFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: BodyRuleFormValues) => void): void {
+  registerOnChange(fn: (value: BodyRuleFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

@@ -9,7 +9,7 @@ import { Endpoint } from 'src/app/models/endpoint.model';
   styleUrls: ['./endpoint-view.component.scss'],
 })
 export class EndpointViewComponent {
-  mockDefinition: MockDefinition;
+  mockDefinition: MockDefinition | null = null;
   endpointList: Endpoint[] = [];
   filteredList: Endpoint[] = [];
 

@@ -1,18 +1,17 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-shuttle-list',
   templateUrl: './shuttle-list.component.html',
   styleUrls: ['./shuttle-list.component.scss'],
 })
-export class ShuttleListComponent implements OnDestroy {
+export class ShuttleListComponent<T> implements OnDestroy {
   @Input() leftTitle = '';
   @Input() rightTitle = '';
 
-  @Output() outputList: EventEmitter<MockDefinition[]>;
+  @Output() outputList = new EventEmitter<T[]>();
 
-  @Input() set list(list: MockDefinition[]) {
+  @Input() set list(list: T[]) {
     if (list) {
       this.leftList = list;
       this.rightList = [];
@@ -22,17 +21,13 @@ export class ShuttleListComponent implements OnDestroy {
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
 
-  leftList: MockDefinition[] = [];
-  rightList: MockDefinition[] = [];
+  leftList: T[] = [];
+  rightList: T[] = [];
 
-  leftSelected: MockDefinition[] = [];
-  rightSelected: MockDefinition[] = [];
+  leftSelected: T[] = [];
+  rightSelected: T[] = [];
 
-  @Input() itemToStringFn: (_: MockDefinition) => string;
-
-  constructor() {
-    this.outputList = new EventEmitter<MockDefinition[]>();
-  }
+  @Input() itemToStringFn: (_: T) => string = (item: T) => String(item);
 
   /**
    * completes event emitter
@@ -45,7 +40,7 @@ export class ShuttleListComponent implements OnDestroy {
    * Sets the leftSelected list to the items passed into it
    * @param items The list of items to set as selected from the left list
    */
-  onSelectLeft(items: MockDefinition[]): void {
+  onSelectLeft(items: T[]): void {
     this.leftSelected = [...items];
   }
 
@@ -53,7 +48,7 @@ export class ShuttleListComponent implements OnDestroy {
    * Sets the rightSelected list to the items passed into it
    * @param items The list of items to set as selected from the right list
    */
-  onSelectRight(items: MockDefinition[]): void {
+  onSelectRight(items: T[]): void {
     this.rightSelected = [...items];
   }
 

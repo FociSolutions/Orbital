@@ -48,7 +48,7 @@ export interface KeyValueRuleItemFormValues {
   ],
 })
 export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
-  form: FormGroup;
+  form: FormGroup = this.formBuilder.group({});
 
   get key(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -63,16 +63,18 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
     return this.form.get('type') as FormControl;
   }
 
-  @Output() addItemEvent = new EventEmitter<KeyValueRuleItemFormValues>();
-  @Output() removeItemEvent = new EventEmitter<void>();
-
-  @Input() readonly title = '';
+  @Input() touched = false;
+  @Input() readonly title: string = '';
   @Input() readonly errors: string[] = [];
   @Input() mode: 'add' | 'edit' = 'edit';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
   @Input() readonly keyMaxLength = 200;
   @Input() readonly valueMaxLength = 3000;
   @Input() allowKeyWhitespace = false;
+
+  @Output() addItemEvent = new EventEmitter<KeyValueRuleItemFormValues>();
+  @Output() removeItemEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
 
   readonly ruleTypes = [
     { value: RuleType.REGEX, label: 'Matches Regex' },
@@ -94,7 +96,6 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: KeyValueRuleItemFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       }),
 
       this.itemIsDuplicatedEvent.subscribe((isDuplicated) => this.handleIsDuplicatedEvent(isDuplicated))
@@ -109,6 +110,14 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
         this.key.addValidators(KeyValueRuleItemFormComponent.noWhiteSpaceValidator);
       }
     }
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   handleIsDuplicatedEvent(isDuplicated: boolean) {
@@ -119,7 +128,7 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
           duplicate: 'This item already exists. Duplicates are not allowed.',
         });
       } else {
-        const { duplicate: _, ...errors } = this.form.errors;
+        const { duplicate: _, ...errors } = this.form.errors ?? {};
         this.form.setErrors(Object.keys(errors).length ? errors : null);
       }
     }
@@ -176,10 +185,10 @@ export class KeyValueRuleItemFormComponent implements ControlValueAccessor, Vali
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: KeyValueRuleItemFormValues) => void> = [];
+  readonly onChange: Array<(value: KeyValueRuleItemFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: KeyValueRuleItemFormValues) => void): void {
+  registerOnChange(fn: (value: KeyValueRuleItemFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

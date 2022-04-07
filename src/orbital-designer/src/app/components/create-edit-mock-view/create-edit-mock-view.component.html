@@ -6,15 +6,15 @@
     <app-text-input
       class="titleInput capitalize"
       title="Title - Required"
-      maxLength="40"
-      [control]="formGroup.controls['title']"
+      [maxLength]="40"
+      [control]="title"
     ></app-text-input>
     <app-text-input
       class="descInput flex-grow capitalize"
       title="Description"
-      maxLength="1000"
-      multiLine="true"
-      [control]="formGroup.controls['description']"
+      [maxLength]="1000"
+      [multiLine]="true"
+      [control]="description"
     ></app-text-input>
 
     <div *ngIf="!editMode" class="open-api">
@@ -33,9 +33,7 @@
       </a>
     </div>
     <div class="token-validation-row">
-      <mat-checkbox class="tkValid" name="tkValid" [formControl]="formGroup.controls['validateToken']">
-        Token Validation
-      </mat-checkbox>
+      <mat-checkbox class="tkValid" name="tkValid" [formControl]="validateToken"> Token Validation </mat-checkbox>
     </div>
 
     <div class="row buttons-div">
@@ -43,8 +41,14 @@
       <button *ngIf="!editMode" mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="createMock()">
         Create
       </button>
-      <button *ngIf="editMode" mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="editMock()">
-        Edit
+      <button
+        *ngIf="editMode"
+        mat-raised-button
+        color="primary"
+        [disabled]="formGroup.invalid"
+        (click)="updateMockDef()"
+      >
+        Save
       </button>
     </div>
   </form>

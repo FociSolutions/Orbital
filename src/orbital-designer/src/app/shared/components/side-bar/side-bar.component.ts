@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
-import { recordMap } from 'src/app/models/record';
 import { DesignerStore } from 'src/app/store/designer-store';
 import * as uuid from 'uuid';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-side-bar',
@@ -12,20 +12,20 @@ import * as uuid from 'uuid';
   styleUrls: ['./side-bar.component.scss'],
 })
 export class SideBarComponent {
-  mockDefinitions: MockDefinition[];
-  selectedMockDefinition: string;
+  mockDefinitions: MockDefinition[] = [];
+  selectedMockDefinition: string | null = null;
   title = 'MOCKDEFINITIONS';
 
-  triggerOpenConfirmBox: boolean;
-  triggerOpenCancelBox: boolean;
-  urlToNavigateTo: string;
+  triggerOpenConfirmBox = false;
+  triggerOpenCancelBox = false;
+  urlToNavigateTo = '';
 
-  mockDefinitionToBeDismissed: MockDefinition;
+  mockDefinitionToBeDismissed: MockDefinition | null = null;
 
   constructor(private store: DesignerStore, private router: Router, private logger: NGXLogger) {
     this.store.state$.subscribe((state) => {
       if (state.mockDefinition) {
-        this.mockDefinitions = recordMap(state.mockDefinitions, (md) => md);
+        this.mockDefinitions = Object.values(state.mockDefinitions).map(cloneDeep);
         this.selectedMockDefinition = state.mockDefinition.metadata.title;
       }
     });
@@ -50,8 +50,10 @@ export class SideBarComponent {
    * Dismisses a Mockdefinition from the side bar view and removes it from the store
    * Navigates back to homepage if the last mockdefinition is dismissed
    */
-  onDismiss(mockDefinition: MockDefinition) {
-    this.store.deleteMockDefinitionByTitle(mockDefinition.metadata.title);
+  onDismiss(mockDefinition: MockDefinition | null) {
+    if (mockDefinition) {
+      this.store.deleteMockDefinitionByTitle(mockDefinition.metadata.title);
+    }
     this.logger.info('Mockdefinition Dismissed', mockDefinition);
     if (this.mockDefinitions.length <= 0) {
       this.router.navigate(['/']);

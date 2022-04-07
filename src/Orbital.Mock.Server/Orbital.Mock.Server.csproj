@@ -16,6 +16,7 @@
   <ItemGroup>
     <None Remove="Services\" />
     <None Remove="Services\Interfaces\" />
+    <None Remove="LibGit2Sharp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="xunit.runner.json">
@@ -48,12 +49,7 @@
     <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Models\Examples\SwaggerSchemaExamples\OpenApiDocumentSwaggerSchemaExample.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,7 +62,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orbital.Mock.Definition\Orbital.Mock.Definition.csproj" />
   </ItemGroup>
 </Project>

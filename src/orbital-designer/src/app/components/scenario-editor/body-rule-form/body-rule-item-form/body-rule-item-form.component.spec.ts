@@ -4,11 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BodyRuleItemFormComponent, BodyRuleItemFormValues } from './body-rule-item-form.component';
 import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 import { BodyRuleType, InternalBodyRuleItemFormValues, TextRuleCondition } from './body-rule-item-form.types';
+import { SimpleChanges } from '@angular/core';
 
 describe('BodyRuleItemFormComponent', () => {
   let component: BodyRuleItemFormComponent;
@@ -93,33 +94,33 @@ describe('BodyRuleItemFormComponent', () => {
     });
 
     it('should fail validation if the ruleType field is empty', () => {
-      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, type: null };
+      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, type: null as unknown as RuleType };
       component.writeValue(value);
 
-      const actual = component.ruleType.validator(component.ruleType);
+      const actual = component.ruleType.validator?.(component.ruleType);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the ruleCondition field is empty', () => {
-      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, type: null };
+      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, type: null as unknown as RuleType };
       component.writeValue(value);
 
-      const actual = component.ruleCondition.validator(component.ruleCondition);
+      const actual = component.ruleCondition.validator?.(component.ruleCondition);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the value field is empty', () => {
-      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, value: null };
+      const value: BodyRuleItemFormValues = { ...SAMPLE_VALUE, value: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the entry is duplicated', () => {
@@ -128,8 +129,8 @@ describe('BodyRuleItemFormComponent', () => {
 
       const actual = component.form.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 
@@ -244,6 +245,76 @@ describe('BodyRuleItemFormComponent', () => {
       component.registerOnValidatorChange(expected);
 
       expect(component.onValidationChange).toContain(expected);
+    });
+  });
+
+  describe('BodyRuleItemFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('BodyRuleItemFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

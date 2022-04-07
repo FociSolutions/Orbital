@@ -1,5 +1,15 @@
-﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using Orbital.Mock.Server.Models;
+﻿using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+
+using Orbital.Mock.Definition.Response;
+using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Server.Pipelines.Envelopes;
 using Orbital.Mock.Server.Pipelines.Envelopes.Interfaces;
 using Orbital.Mock.Server.Pipelines.Factories;
@@ -7,24 +17,18 @@ using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Models;
 using Orbital.Mock.Server.Pipelines.Models.Interfaces;
 using Orbital.Mock.Server.Pipelines.Ports;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
-using Microsoft.AspNetCore.Http;
-using Orbital.Mock.Server.Factories.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
+
 using Scriban;
-using Orbital.Mock.Server.Services.Interfaces;
+using Serilog;
 
 namespace Orbital.Mock.Server.Pipelines
 {
     public class MockServerProcessor : IPipeline<MessageProcessorInput, Task<MockResponse>>
     {
+        
         private readonly SyncBlockFactory blockFactory;
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         #region Blocks
         private TransformBlock<IEnvelope<ProcessMessagePort>, IEnvelope<ProcessMessagePort>> startBlock;
@@ -46,20 +50,21 @@ namespace Orbital.Mock.Server.Pipelines
         private readonly TokenRequestMatchFilter<ProcessMessagePort> tokenRequestMatchFilter;
         #endregion
 
-        public bool PipelineIsRunning { get; private set; }
+        private bool pipelineIsRunning = false;
+        public bool GetPipelineStatus() => pipelineIsRunning;
 
-        public MockServerProcessor(IAssertFactory assertFactory, IRuleMatcher ruleMatcher, TemplateContext templateContext, IPublicKeyService pubKeyService)
+        public MockServerProcessor(IRuleMatcher ruleMatcher, TemplateContext templateContext, IPublicKeyService pubKeyService)
             : this(new PathValidationFilter<ProcessMessagePort>(),
-                  new QueryMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
+                  new QueryMatchFilter<ProcessMessagePort>(ruleMatcher),
                   new EndpointMatchFilter<ProcessMessagePort>(),
-                  new BodyMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
-                  new HeaderMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
-                  new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher),
+                  new BodyMatchFilter<ProcessMessagePort>(ruleMatcher),
+                  new HeaderMatchFilter<ProcessMessagePort>(ruleMatcher),
+                  new UrlMatchFilter<ProcessMessagePort>(ruleMatcher),
                   new ResponseSelectorFilter<ProcessMessagePort>(templateContext),
                   new PolicyFilter<ProcessMessagePort>(),
                   new TokenParseFilter<ProcessMessagePort>(),
                   new TokenValidationFilter<ProcessMessagePort>(pubKeyService),
-                  new TokenRequestMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher))
+                  new TokenRequestMatchFilter<ProcessMessagePort>(ruleMatcher))
         {
         }
 
@@ -150,14 +155,18 @@ namespace Orbital.Mock.Server.Pipelines
             //< After response selection - we link to the policy filter as a final step
             responseSelectorBlock.LinkTo(policyFilterBlock, linkOptions);
             policyFilterBlock.LinkTo(this.endBlock, linkOptions);
+
+            pipelineIsRunning = true;
         }
 
         /// <inheritdoc />
         public async Task<MockResponse> Push(MessageProcessorInput input, CancellationToken token)
         {
+            if (!pipelineIsRunning) { return new MockResponse(503); }
+
             var completionSource = new TaskCompletionSource<ProcessMessagePort>();
 
-            token.Register(() => cancellationTokenSource.Cancel());
+            token.Register(() => CancelPipeline());
 
             if (input == null ||
                 input.ServerHttpRequest == null ||
@@ -218,7 +227,7 @@ namespace Orbital.Mock.Server.Pipelines
                 }
 
                 this.cancellationTokenSource.Cancel();
-                PipelineIsRunning = false;
+                pipelineIsRunning = false;
             }
             catch (AggregateException e)
             {
@@ -228,10 +237,20 @@ namespace Orbital.Mock.Server.Pipelines
             Log.Information("MockserviceProcessor has shutdown successfully");
             return true;
         }
+
+        void CancelPipeline()
+        {
+            //< Propagate the cancellation via the CancellationToken
+            cancellationTokenSource.Cancel();
+            //< Attempting to 'gracefully' shutdown the pipeline & complete existing requests
+            Stop();
+            //< Set the 'pipelineIsRunning' flag to false so we refuse new work
+            pipelineIsRunning = false;
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
-        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
+        
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

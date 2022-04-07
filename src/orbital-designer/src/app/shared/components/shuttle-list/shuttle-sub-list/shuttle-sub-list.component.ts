@@ -1,31 +1,26 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
-import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 
 @Component({
   selector: 'app-shuttle-sub-list',
   templateUrl: './shuttle-sub-list.component.html',
   styleUrls: ['./shuttle-sub-list.component.scss'],
 })
-export class ShuttleSubListComponent {
+export class ShuttleSubListComponent<T> {
   static readonly selectAllString = 'Select All';
   static readonly deselectAllString = 'Deselect All';
 
   filteredOutOptions: MatListOption[] = [];
 
-  @ViewChild('matList') matList: MatSelectionList;
+  @ViewChild('matList') matList: MatSelectionList | null = null;
 
-  @Output() itemSelected: EventEmitter<MockDefinition[]>;
+  @Output() itemSelected = new EventEmitter<T[]>();
 
-  @Input() list: FormControl[] = [];
+  @Input() list: T[] = [];
   @Input() emptyListMessage = 'List is empty';
   @Input() noSearchResultsMessage = 'No search results found';
-
-  constructor() {
-    this.itemSelected = new EventEmitter<MockDefinition[]>();
-  }
+  @Input() itemToStringFn: (_: T) => string = (item: T) => String(item);
 
   /**
    * Returns the label for the check box based upon whether or not
@@ -52,10 +47,10 @@ export class ShuttleSubListComponent {
    * @param event The checkbox change event emitted by the select/deselect all checkbox
    */
   onSelectAll(event: MatCheckboxChange) {
-    this.matList.options.forEach(
+    this.matList?.options.forEach(
       (option) => (option.selected = this.hideOption(option.value) ? option.selected : event.checked)
     );
-    this.itemSelected.emit(this.matList.selectedOptions.selected.map((option) => option.value));
+    this.itemSelected.emit(this.matList?.selectedOptions.selected.map((option) => option.value));
 
     this.emitSearchResultsSelected();
   }
@@ -72,7 +67,7 @@ export class ShuttleSubListComponent {
    * false otherwise
    * @param item The item being checked against
    */
-  hideOption(item: MockDefinition): boolean {
+  hideOption(item: T): boolean {
     if (this.filteredOutOptions.length > 0) {
       return !!this.filteredOutOptions.find((option) => option.value === item);
     }
@@ -84,9 +79,10 @@ export class ShuttleSubListComponent {
    * @param value The string value from the input
    */
   onSearchInput(value: string) {
-    this.filteredOutOptions = this.matList.options.filter(
-      (option) => !ShuttleSubListComponent.ignoreCaseContainsMatch(option.value.value.metadata.title, value)
-    );
+    this.filteredOutOptions =
+      this.matList?.options.filter(
+        (option) => !ShuttleSubListComponent.ignoreCaseContainsMatch(this.itemToStringFn(option.value), value)
+      ) ?? [];
     this.emitSearchResultsSelected();
   }
 
@@ -111,7 +107,7 @@ export class ShuttleSubListComponent {
    */
   private emitSearchResultsSelected() {
     this.itemSelected.emit(
-      this.matList.selectedOptions.selected
+      this.matList?.selectedOptions.selected
         .filter((e) => !this.filteredOutOptions.includes(e))
         .filter((option) => option.selected)
         .map((option) => option.value)

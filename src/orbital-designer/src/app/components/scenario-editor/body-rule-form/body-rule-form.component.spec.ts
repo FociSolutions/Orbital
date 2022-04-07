@@ -3,7 +3,7 @@ import { BodyRuleFormComponent, BodyRuleFormValues } from './body-rule-form.comp
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
 import { BodyRuleItemFormComponent, BodyRuleItemFormValues } from './body-rule-item-form/body-rule-item-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -11,15 +11,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { GetStringErrorsPipe } from '../../../shared/pipes/get-string-errors/get-string-errors.pipe';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 import { MatCardModule } from '@angular/material/card';
+import { SimpleChanges } from '@angular/core';
 
 describe('BodyRuleFormComponent', () => {
   let component: BodyRuleFormComponent;
   let fixture: ComponentFixture<BodyRuleFormComponent>;
   let SAMPLE_ITEM: BodyRuleItemFormValues;
-  const NULL_ITEM: BodyRuleItemFormValues = {
-    type: null,
-    value: null,
-  };
   let SAMPLE_VALUE: BodyRuleFormValues;
   const VALUE_NULL: BodyRuleFormValues = [];
 
@@ -93,14 +90,14 @@ describe('BodyRuleFormComponent', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
     it('should not fail validation with no inputs', () => {
       component.writeValue(VALUE_NULL);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
@@ -109,8 +106,8 @@ describe('BodyRuleFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 
@@ -145,17 +142,42 @@ describe('BodyRuleFormComponent', () => {
     });
   });
 
-  describe('BodyRuleFormComponent.addItem', () => {
+  describe('BodyRuleFormComponent.addItemHandler', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).cdRef = { detectChanges: jest.fn() };
     });
 
     it('should add an item to the list', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
 
       expect(component.formArray.controls.length).toBe(1);
-      expect(component.formArray.value).toEqual([NULL_ITEM]);
+      expect(component.formArray.value).toEqual([SAMPLE_ITEM]);
+    });
+
+    it('should clear the add form when adding an item', () => {
+      component.add.setValue(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(component.add.value).toBeNull();
+    });
+
+    it('should not add a duplicate item to the list', () => {
+      component.addItemHandler(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(component.formArray.controls.length).toBe(1);
+      expect(component.formArray.value).toEqual([SAMPLE_ITEM]);
+    });
+
+    it('should emit a duplicate item event when attempting to add an existing item', () => {
+      const spy = jest.spyOn(component.itemIsDuplicatedEvent, 'emit');
+      component.addItemHandler(SAMPLE_ITEM);
+      component.addItemHandler(SAMPLE_ITEM);
+
+      expect(spy).toHaveBeenCalledTimes(3);
+      expect(spy).toHaveBeenCalledWith(true);
+      spy.mockRestore();
     });
   });
 
@@ -166,7 +188,7 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should remove an item from the list', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
       component.removeItemHandler(0);
 
       expect(component.formArray.controls.length).toBe(0);
@@ -174,7 +196,7 @@ describe('BodyRuleFormComponent', () => {
     });
 
     it('should throw an error if the requested index is out of bounds', () => {
-      component.addItem();
+      component.addItemHandler(SAMPLE_ITEM);
       expect(() => component.removeItemHandler(-1)).toThrow();
       expect(() => component.removeItemHandler(1)).toThrow();
       expect(() => component.removeItemHandler(2)).toThrow();
@@ -184,6 +206,76 @@ describe('BodyRuleFormComponent', () => {
       expect(() => component.removeItemHandler(-1)).toThrow();
       expect(() => component.removeItemHandler(0)).toThrow();
       expect(() => component.removeItemHandler(1)).toThrow();
+    });
+  });
+
+  describe('BodyRuleFormComponent.ngOnChanges', () => {
+    it('should mark the formArray as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(true);
+    });
+
+    it('should not mark the formArray as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+  });
+
+  describe('BodyRuleFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

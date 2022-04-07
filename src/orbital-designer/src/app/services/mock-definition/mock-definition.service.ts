@@ -83,7 +83,7 @@ export class MockDefinitionService {
    * @param mockId  string representation of mock definition's id
    * @param scenario Object representation of the scenario to be cloned
    */
-  cloneScenario(mockId: string, scenario: Scenario): Observable<boolean> {
+  cloneScenario(mockId: string, scenario?: Scenario | null): Observable<boolean> {
     return new Observable((observer) => {
       try {
         if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {
@@ -131,7 +131,7 @@ export class MockDefinitionService {
    * @param endpoints list of endpoints from the imported openapi document
    */
   getDefaultScenarios(endpoints: OpenAPIV2.PathsObject, validation = false): Scenario[] {
-    const defaultScenariosPerEndpoint = [];
+    const defaultScenariosPerEndpoint: Scenario[] = [];
     const keyArrayOfEndpoints = Object.keys(endpoints);
 
     keyArrayOfEndpoints.forEach((pathName) => {
@@ -158,7 +158,7 @@ export class MockDefinitionService {
 
     for (const endpoint in scenarioDict) {
       for (const verb in scenarioDict[endpoint]) {
-        if (scenarioDict[endpoint][verb] === false) {
+        if (!scenarioDict[endpoint][verb]) {
           const verbInt = parseInt(verb);
           scenarioList.push(
             this.generateNewScenario(
@@ -176,9 +176,8 @@ export class MockDefinitionService {
     return scenarioList;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private mapUnauthorizedScenarios(scenarios: Scenario[]): Record<string, any> {
-    const scenarioDict = {};
+  private mapUnauthorizedScenarios(scenarios: Scenario[]): Record<string, Record<string, boolean>> {
+    const scenarioDict: Record<string, Record<string, boolean>> = {};
     for (const scenario of scenarios) {
       let isUnauthorized: boolean = scenario.response.status === HttpStatus.StatusCodes.UNAUTHORIZED;
 
@@ -207,12 +206,15 @@ export class MockDefinitionService {
     };
   }
 
-  private getEndpointVerbTypes(endpoint: unknown): VerbType[] {
+  private getEndpointVerbTypes(endpoint: OpenAPIV2.PathItemObject): VerbType[] {
     const verbs: VerbType[] = [];
     const verbKeys = Object.keys(endpoint);
     verbKeys.forEach((key) => {
-      const type = VerbType[key.toUpperCase()];
-      verbs.push(type);
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      const type: VerbType | undefined = VerbType[key.toUpperCase() as keyof typeof VerbType];
+      if (type !== undefined) {
+        verbs.push(type);
+      }
     });
     return verbs;
   }

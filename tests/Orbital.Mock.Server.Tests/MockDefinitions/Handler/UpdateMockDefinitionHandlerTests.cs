@@ -1,10 +1,14 @@
-﻿using Bogus;
+﻿using System.Threading;
+using System.Collections.Generic;
+
 using Microsoft.Extensions.Caching.Memory;
+
+using Orbital.Mock.Definition;
+
 using Orbital.Mock.Server.MockDefinitions.Commands;
 using Orbital.Mock.Server.MockDefinitions.Handlers;
-using Orbital.Mock.Server.Models;
-using System.Collections.Generic;
-using System.Threading;
+
+using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
 
@@ -12,25 +16,22 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 {
     public class UpdateMockDefinitionHandlerTests
     {
-        private readonly CommonData data;
 
         public UpdateMockDefinitionHandlerTests()
-        {
-            this.data = new CommonData();
-        }
-        [Fact]
+        { }
 
+        [Fact]
         public void UpdateMockDefinitionSuccessTest()
         {
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -43,7 +44,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected, ref TestUtils.databaseLock);
             #endregion
 
-            var Target = new UpdateMockDefinitionHandler(cache, data);
+            var Target = new UpdateMockDefinitionHandler(cache);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
             cache.TryGetValue(Expected.Metadata.Title, out var Actual);
@@ -57,12 +58,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -71,7 +72,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var Expected = mockDefinitionFake.Generate();
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected, ref TestUtils.databaseLock);
 
-            var Target = new UpdateMockDefinitionHandler(cache, data);
+            var Target = new UpdateMockDefinitionHandler(cache);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
             cache.TryGetValue(Expected.Metadata.Title, out var Actual);
@@ -80,30 +81,32 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
         }
 
         [Fact]
-        public void UpdateHandlerReturnsMockDefinitionTest()
+        public void UpdateHandlerReturnsNewMockDefinitionTest()
         {
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
 
-            var Expected = mockDefinitionFake.Generate();
-            var mockDefinitionUpdate = new MockDefinition { Host = Expected.Host + "diff", Metadata = Expected.Metadata };
+            var mockDef = mockDefinitionFake.Generate();
 
-            cache.Set(Expected.Metadata.Title, Expected);
+            cache.Set(mockDef.Metadata.Title, mockDef);
 
-            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate, ref TestUtils.databaseLock);
+            var Expected = mockDef;
+            Expected.Host = mockDef.Host + "diff";
+
+            var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(Expected, ref TestUtils.databaseLock);
             #endregion
 
-            var Target = new UpdateMockDefinitionHandler(cache, data);
+            var Target = new UpdateMockDefinitionHandler(cache);
             var Actual = Target.Handle(updateMockDefinitionCommand, CancellationToken.None).Result;
 
 
@@ -116,12 +119,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -131,7 +134,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(mockDefinitionUpdate, ref TestUtils.databaseLock);
             #endregion
 
-            var Target = new UpdateMockDefinitionHandler(cache, data);
+            var Target = new UpdateMockDefinitionHandler(cache);
             var Actual = Target.Handle(updateMockDefinitionCommand, CancellationToken.None).Result;
 
 
@@ -145,12 +148,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -160,10 +163,10 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var updateMockDefinitionCommand = new UpdateMockDefinitionByTitleCommand(input.mockDefinition, ref TestUtils.databaseLock);
             #endregion
 
-            var Target = new UpdateMockDefinitionHandler(cache, data);
+            var Target = new UpdateMockDefinitionHandler(cache);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
-            var Actual = cache.Get<List<string>>(data.mockIds);
+            var Actual = cache.Get<List<string>>(Constants.MOCK_IDS_CACHE_KEY);
 
             Assert.Contains(input.mockDefinition.Metadata.Title, Actual);
         }
@@ -174,12 +177,12 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #region Test Setup
 
             var metadataFake = new Faker<MetadataInfo>()
-           .RuleFor(m => m.Title, f => f.Lorem.Sentence())
-           .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
+                .RuleFor(m => m.Title, f => f.Lorem.Sentence())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
 
             var mockDefinitionFake = new Faker<MockDefinition>()
-            .RuleFor(m => m.Host, f => f.Internet.DomainName())
-            .RuleFor(m => m.Metadata, f => metadataFake.Generate());
+                .RuleFor(m => m.Host, f => f.Internet.DomainName())
+                .RuleFor(m => m.Metadata, f => metadataFake.Generate());
 
             var options = new MemoryCacheOptions();
             var cache = new MemoryCache(options);
@@ -190,11 +193,11 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #endregion
 
             cache.Set(input.mockDefinition.Metadata.Title, input.mockDefinition);
-            cache.Set(data.mockIds, new List<string> { input.mockDefinition.Metadata.Title });
-            var Target = new UpdateMockDefinitionHandler(cache, data);
+            cache.Set(Constants.MOCK_IDS_CACHE_KEY, new List<string> { input.mockDefinition.Metadata.Title });
+            var Target = new UpdateMockDefinitionHandler(cache);
             Target.Handle(updateMockDefinitionCommand, CancellationToken.None);
 
-            var Actual = cache.Get<List<string>>(data.mockIds);
+            var Actual = cache.Get<List<string>>(Constants.MOCK_IDS_CACHE_KEY);
 
             Assert.Contains(input.mockDefinition.Metadata.Title, Actual);
         }

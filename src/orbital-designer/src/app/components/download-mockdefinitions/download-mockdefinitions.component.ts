@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { saveAs } from 'file-saver';
-import { recordMap } from 'src/app/models/record';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-download-mockdefinitions',
@@ -17,9 +17,11 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
   emptyListMessage = 'List is empty';
   noSearchResultsMessage = 'No search results found';
 
-  list: unknown[] = [];
+  list: FormControl[] = [];
   selected: any[] = [];
   isMockSelected = false;
+
+  controlsMockDefinitionToString = (control: AbstractControl) => control.value?.metadata?.title ?? '';
 
   constructor(private location: Location, private store: DesignerStore) {
     this.outputList = new EventEmitter<unknown[]>();
@@ -27,7 +29,7 @@ export class DownloadMockdefinitionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.state$.subscribe((state) => {
-      this.list = recordMap(state.mockDefinitions, (md) => new FormControl(md));
+      this.list = Object.values(state.mockDefinitions).map((md) => new FormControl(cloneDeep(md)));
     });
   }
 

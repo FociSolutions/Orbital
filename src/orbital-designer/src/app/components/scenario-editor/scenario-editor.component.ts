@@ -16,6 +16,8 @@ import { Response, defaultResponse } from 'src/app/models/mock-definition/scenar
 import { RequestFormValues } from './request-form/request-form.component';
 import { Policy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
+import { isNotNull } from 'src/app/shared/Utilities/type-guards';
+import { DeepNullable } from 'src/app/shared/Utilities/nullable';
 
 export interface ScenarioEditorFormValues {
   metadata: MetadataFormValues;
@@ -33,7 +35,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   // The new formGroup that the controls will be migrated into
-  scenarioForm: FormGroup;
+  scenarioForm: FormGroup = this.formBuilder.group({});
 
   get metadata(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -55,11 +57,13 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     return this.scenarioForm.get('policies') as FormControl;
   }
 
-  scenarioId: string;
-  selectedScenario: Scenario;
-  triggerOpenCancelBox: boolean;
-  endpointVerb: VerbType;
-  endpointPath: string;
+  tokenValidationIsEnabled = false;
+  touched = false;
+  scenarioId = '';
+  selectedScenario: Scenario | null = null;
+  triggerOpenCancelBox = false;
+  endpointVerb: VerbType = VerbType.NONE;
+  endpointPath = '';
 
   constructor(
     private router: Router,
@@ -102,7 +106,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
     );
   }
 
-  convertScenarioToFormData(scenario?: Scenario): ScenarioEditorFormValues {
+  convertScenarioToFormData(scenario: Scenario | null): DeepNullable<ScenarioEditorFormValues> {
     const response: ResponseFormValues = this.convertResponseDataToFormValues(scenario?.response ?? defaultResponse);
     const policies: PoliciesFormValues = this.convertPoliciesDataToFormValues(scenario?.policies ?? []);
     return {
@@ -136,7 +140,7 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
           }
         }
       })
-      .filter((p) => p !== null);
+      .filter(isNotNull);
   }
 
   ngOnDestroy(): void {
@@ -160,14 +164,17 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.selectedScenario
       );
 
-      const formData: ScenarioEditorFormValues = this.scenarioForm.value;
-      this.insertFormDataIntoScenario(formData, this.selectedScenario);
-
-      this.store.addOrUpdateScenario(this.selectedScenario);
-
-      this.logger.debug('ScenarioEditorComponent:saveScenario: Updated the provided scenario', this.selectedScenario);
+      if (this.scenarioForm.dirty && this.selectedScenario) {
+        const formData: ScenarioEditorFormValues = this.scenarioForm.value;
+        this.insertFormDataIntoScenario(formData, this.selectedScenario);
+        this.store.addOrUpdateScenario(this.selectedScenario);
+        this.logger.debug('ScenarioEditorComponent:saveScenario: Updated the provided scenario', this.selectedScenario);
+      }
 
       this.router.navigateByUrl('/scenario-view');
+    } else {
+      this.scenarioForm.markAllAsTouched();
+      this.touched = true;
     }
   }
 
@@ -183,8 +190,12 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
    * Opens the cancel box
    */
   cancel(): void {
-    this.logger.debug('Opened cancel box for scenario-editor');
-    this.triggerOpenCancelBox = true;
+    if (this.scenarioForm.dirty) {
+      this.logger.debug('Opened cancel box for scenario-editor');
+      this.triggerOpenCancelBox = true;
+    } else {
+      this.router.navigateByUrl('/scenario-view');
+    }
   }
 
   /**
@@ -211,6 +222,8 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.tokenValidationIsEnabled = currentMock.tokenValidation;
+
     const selected = currentMock.scenarios.find((s) => s.id === scenarioId);
     if (selected) {
       this.selectedScenario = cloneDeep(selected);
@@ -220,9 +233,9 @@ export class ScenarioEditorComponent implements OnInit, OnDestroy {
         this.selectedScenario
       );
     } else {
-      const endpointVerb = this.store.state.selectedEndpoint.verb;
-      const endpointPath = this.store.state.selectedEndpoint.path;
-      this.selectedScenario = this.createEmptyScenario(scenarioId, endpointVerb, endpointPath);
+      const endpointVerb = this.store.state.selectedEndpoint?.verb;
+      const endpointPath = this.store.state.selectedEndpoint?.path;
+      this.selectedScenario = this.createEmptyScenario(scenarioId, endpointVerb ?? VerbType.NONE, endpointPath ?? '');
       this.logger.debug(
         `ScenarioEditorComponent:retrieveScenario: Scenario not found, new scenario was created for (${endpointPath}, ${endpointVerb})`,
         this.selectedScenario

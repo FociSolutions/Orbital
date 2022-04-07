@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy-type';
 import {
@@ -33,8 +43,8 @@ export type PolicyFormValues = DelayResponsePolicy;
     },
   ],
 })
-export class PolicyFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  readonly form: FormGroup;
+export class PolicyFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get type(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -45,18 +55,22 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
     return this.form.get('value') as FormControl;
   }
 
-  @Output() addPolicyEvent = new EventEmitter<PolicyFormValues>();
-  @Output() removePolicyEvent = new EventEmitter<void>();
-
-  readonly policyTypes = [{ value: PolicyType.DELAY_RESPONSE, label: 'Delay Response' }];
-  PolicyType = PolicyType;
-
+  @Input() touched = false;
   @Input() title = '';
   @Input() errors: string[] = [];
   @Input() mode: 'add' | 'edit' = 'edit';
   @Input() policyIsDuplicatedEvent = new EventEmitter<boolean>();
 
-  constructor(private formBuilder: FormBuilder) {
+  @Output() addPolicyEvent = new EventEmitter<PolicyFormValues>();
+  @Output() removePolicyEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
+
+  readonly policyTypes = [{ value: PolicyType.DELAY_RESPONSE, label: 'Delay Response' }];
+  PolicyType = PolicyType;
+
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
     this.form = this.formBuilder.group({
       type: [null, Validators.required],
       value: [null, [Validators.required, Validators.min(1), Validators.pattern('^[0-9]+$')]],
@@ -65,13 +79,8 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: PolicyFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
-      })
-    );
-  }
+      }),
 
-  ngOnInit(): void {
-    this.subscriptions.push(
       this.policyIsDuplicatedEvent.subscribe((isDuplicated) => {
         if (isDuplicated !== this.form.hasError('duplicate')) {
           if (isDuplicated) {
@@ -80,12 +89,23 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
               duplicate: 'This policy (type or value) already exists. Duplicates are not allowed.',
             });
           } else {
-            const { duplicate: _, ...errors } = this.form.errors;
+            const { duplicate: _, ...errors } = this.form.errors ?? {};
             this.form.setErrors(Object.keys(errors).length ? errors : null);
           }
         }
       })
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   addPolicy() {
@@ -118,7 +138,7 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
         return fb.group({ type: policy.type ?? null, value: policy.value ?? null });
       default: {
         // Cause a type-check error if a case is missed
-        const _: never = policy.type;
+        const _: undefined = policy.type;
         throw new Error('Invalid Policy Type');
       }
     }
@@ -138,10 +158,10 @@ export class PolicyFormComponent implements ControlValueAccessor, Validator, OnI
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: PolicyFormValues) => void> = [];
+  readonly onChange: Array<(value: PolicyFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: PolicyFormValues) => void): void {
+  registerOnChange(fn: (value: PolicyFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

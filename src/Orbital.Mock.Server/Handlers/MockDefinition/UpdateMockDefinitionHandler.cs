@@ -1,10 +1,13 @@
-﻿using MediatR;
-using Microsoft.Extensions.Caching.Memory;
-using Orbital.Mock.Server.MockDefinitions.Commands;
-using Orbital.Mock.Server.Models;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using Microsoft.Extensions.Caching.Memory;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Server.MockDefinitions.Commands;
+
+using MediatR;
 
 namespace Orbital.Mock.Server.MockDefinitions.Handlers
 {
@@ -14,17 +17,14 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     public class UpdateMockDefinitionHandler : IRequestHandler<UpdateMockDefinitionByTitleCommand, MockDefinition>
     {
         private readonly IMemoryCache cache;
-        private readonly string mockIds;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="cache">Cache to update with mockdefinition</param>
-        public UpdateMockDefinitionHandler(IMemoryCache cache, CommonData data)
+        public UpdateMockDefinitionHandler(IMemoryCache cache)
         {
             this.cache = cache;
-            this.mockIds = data.mockIds;
-
         }
 
         /// <summary>
@@ -37,16 +37,20 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
         {
             lock (request.databaseLock)
             {
-                var mockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
-                cache.Set(request.MockDefinition.Metadata.Title, request.MockDefinition);
-                var KeyList = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
-                if (!KeyList.Contains(request.MockDefinition.Metadata.Title))
-                {
-                    KeyList.Add(request.MockDefinition.Metadata.Title);
-                    this.cache.Set(mockIds, KeyList);
+                var cachedMockDefinition = cache.Get<MockDefinition>(request.MockDefinition.Metadata.Title);
+                var mockDefExisted = cachedMockDefinition != null;
+                var newMockDef = request.MockDefinition;
 
+                cache.Set(newMockDef.Metadata.Title, newMockDef);
+                var KeyList = cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
+
+                if (!KeyList.Contains(newMockDef.Metadata.Title))
+                {
+                    KeyList.Add(newMockDef.Metadata.Title);
+                    cache.Set(Constants.MOCK_IDS_CACHE_KEY, KeyList);
                 }
-                return Task.FromResult(mockDefinition);
+
+                return Task.FromResult(mockDefExisted ? newMockDef : null);
             }
         }
 

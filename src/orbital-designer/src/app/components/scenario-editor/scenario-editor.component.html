@@ -4,62 +4,76 @@
       <div class="sidebar row">
         <app-side-bar class="row"></app-side-bar>
       </div>
-      <div class="full-width" [formGroup]="scenarioForm">
+      <div class="w-100" [formGroup]="scenarioForm">
         <div>
           <app-overview-header [header]="headerContent"></app-overview-header>
         </div>
-        <div id="metadata-cards">
-          <mat-tab-group>
-            <mat-tab>
-              <ng-template mat-tab-label>
-                Metadata
-                <mat-icon class="tab-warning-icon" color="warn" *ngIf="!metadata.valid">priority_high</mat-icon>
-              </ng-template>
-              <div class="tab-body">
-                <app-metadata-form formControlName="metadata"></app-metadata-form>
-              </div>
-            </mat-tab>
-
-            <mat-tab>
-              <ng-template mat-tab-label>
-                Request
-                <mat-icon class="tab-warning-icon" color="warn" *ngIf="!request.valid">priority_high</mat-icon>
-              </ng-template>
-              <div class="tab-body">
-                <app-request-form formControlName="request"></app-request-form>
-              </div>
-            </mat-tab>
-
-            <mat-tab>
-              <ng-template mat-tab-label>
-                Response
-                <mat-icon class="tab-warning-icon" color="warn" *ngIf="!response.valid">priority_high</mat-icon>
-              </ng-template>
-              <div class="tab-body">
-                <app-response-form formControlName="response"></app-response-form>
-              </div>
-            </mat-tab>
-
-            <mat-tab>
-              <ng-template mat-tab-label>
-                Policies
-                <mat-icon class="tab-warning-icon" color="warn" *ngIf="!policies.valid">priority_high</mat-icon>
-              </ng-template>
-              <div class="tab-body">
-                <app-policies-form formControlName="policies"></app-policies-form>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
-
-          <div class="row button-row">
-            <div id="scenario-back-button-div">
-              <button id="go-to-scenarios" color="primary" mat-raised-button (click)="cancel()">
-                Back to Scenarios
-              </button>
+        <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              General
+              <mat-icon
+                class="tab-warning-icon"
+                color="warn"
+                *ngIf="(!metadata.valid && metadata.touched) || (!policies.valid && policies.touched)"
+              >
+                priority_high
+              </mat-icon>
+            </ng-template>
+            <div class="tab-body">
+              <h3 class="mat-h3">Metadata</h3>
+              <app-metadata-form formControlName="metadata" [touched]="touched"></app-metadata-form>
+              <br />
+              <h3 class="mat-h3">Policies</h3>
+              <app-policies-form formControlName="policies" [touched]="touched"></app-policies-form>
             </div>
-            <div id="save-button-div">
-              <button id="save-button" color="primary" mat-raised-button (click)="save()">Save</button>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Request
+              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!request.valid && request.touched">
+                priority_high
+              </mat-icon>
+            </ng-template>
+            <div class="tab-body">
+              <app-request-form
+                formControlName="request"
+                [touched]="touched"
+                [tokenValidationIsEnabled]="tokenValidationIsEnabled"
+              ></app-request-form>
             </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Response
+              <mat-icon class="tab-warning-icon" color="warn" *ngIf="!response.valid && response.touched">
+                priority_high
+              </mat-icon>
+            </ng-template>
+            <div class="tab-body">
+              <app-response-form formControlName="response" [touched]="touched"></app-response-form>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+        <div class="row button-row">
+          <div id="scenario-back-button-div">
+            <button id="go-to-scenarios" mat-raised-button (click)="cancel()">
+              <mat-icon>chevron_left</mat-icon>Back to Scenarios
+            </button>
+          </div>
+          <div id="save-button-div">
+            <button
+              id="save-button"
+              color="primary"
+              mat-raised-button
+              (click)="save()"
+              [disabled]="!scenarioForm.valid || !scenarioForm.dirty"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
@@ -70,8 +84,8 @@
 <ng-template #headerContent let-path="path">
   <div class="title column center">
     <div class="endpoint-info">
-      <mat-chip-list
-        ><mat-chip [style.background-color]="endpointVerb | getVerbColor">{{ endpointVerb | getVerbString }}</mat-chip>
+      <mat-chip-list class="mr-1">
+        <mat-chip [style.background-color]="endpointVerb | getVerbColor">{{ endpointVerb | getVerbString }}</mat-chip>
       </mat-chip-list>
       <h3>
         {{ endpointPath }}

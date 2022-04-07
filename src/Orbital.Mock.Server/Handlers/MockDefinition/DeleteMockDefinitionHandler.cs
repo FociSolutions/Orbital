@@ -1,10 +1,12 @@
-﻿using MediatR;
-using Microsoft.Extensions.Caching.Memory;
-using Orbital.Mock.Server.MockDefinitions.Commands;
-using Orbital.Mock.Server.Models;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using Microsoft.Extensions.Caching.Memory;
+
+using Orbital.Mock.Server.MockDefinitions.Commands;
+
+using MediatR;
 
 namespace Orbital.Mock.Server.MockDefinitions.Handlers
 {
@@ -14,18 +16,14 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
     public class DeleteMockDefinitionHandler : IRequestHandler<DeleteMockDefinitionByTitleCommand>
     {
         private readonly IMemoryCache cache;
-        private readonly string mockIds;
-
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="cache">Cache to delete mock definition from</param>
-        /// <param name="data">CommonData object used to get the mockIds list key for the cache</param>
-        public DeleteMockDefinitionHandler(IMemoryCache cache, CommonData data)
+        public DeleteMockDefinitionHandler(IMemoryCache cache)
         {
             this.cache = cache;
-            this.mockIds = data.mockIds;
         }
         /// <summary>
         /// Asynchronously deletes the mock definition from cache
@@ -38,9 +36,9 @@ namespace Orbital.Mock.Server.MockDefinitions.Handlers
             lock (request.databaseLock)
             {
                 this.cache.Remove(request.MockDefinitionTitle);
-                var KeyList = this.cache.GetOrCreate(mockIds, cacheEntry => { return new List<string>(); });
+                var KeyList = this.cache.GetOrCreate(Constants.MOCK_IDS_CACHE_KEY, cacheEntry => { return new List<string>(); });
                 KeyList.Remove(request.MockDefinitionTitle);
-                this.cache.Set(mockIds, KeyList);
+                this.cache.Set(Constants.MOCK_IDS_CACHE_KEY, KeyList);
             }
             return Unit.Task;
         }

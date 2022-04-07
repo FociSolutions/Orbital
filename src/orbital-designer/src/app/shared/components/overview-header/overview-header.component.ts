@@ -7,6 +7,6 @@ import { Metadata } from '../../../models/mock-definition/metadata.model';
   styleUrls: ['./overview-header.component.scss'],
 })
 export class OverviewHeaderComponent {
-  @Input() metadata: Metadata;
-  @Input() header: TemplateRef<unknown>;
+  @Input() metadata: Metadata | undefined;
+  @Input() header: TemplateRef<unknown> | undefined;
 }

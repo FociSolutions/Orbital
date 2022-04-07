@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "strict": true,
     "downlevelIteration": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -15,6 +16,6 @@
     "lib": ["es2018", "dom"]
   },
   "angularCompilerOptions": {
-    "strictTemplates": false
+    "strictTemplates": true
   }
 }

@@ -7,7 +7,8 @@ import { JsonEditorComponent } from 'ang-jsoneditor';
 import { MatCardModule } from '@angular/material/card';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response-type';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
+import { SimpleChanges } from '@angular/core';
 
 describe('ResponseFormComponent', () => {
   let component: ResponseFormComponent;
@@ -86,93 +87,93 @@ describe('ResponseFormComponent', () => {
     });
 
     it('should fail validation if the type field is empty', () => {
-      const value: ResponseFormValues = { ...SAMPLE_VALUE, type: null };
+      const value: ResponseFormValues = { ...SAMPLE_VALUE, type: null as unknown as ResponseType };
       component.writeValue(value);
 
-      const actual = component.type.validator(component.type);
+      const actual = component.type.validator?.(component.type);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the status field is empty', () => {
-      const value: ResponseFormValues = { ...SAMPLE_VALUE, status: null };
+      const value: ResponseFormValues = { ...SAMPLE_VALUE, status: null as unknown as number };
       component.writeValue(value);
 
-      const actual = component.status.validator(component.status);
+      const actual = component.status.validator?.(component.status);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the there are duplicate headers', () => {
       component.writeValue(null);
       component.headers.setValue([...INT_SAMPLE_VALUE.headers, ...INT_SAMPLE_VALUE.headers]);
 
-      const actual = component.headers.validator(component.headers);
+      const actual = component.headers.validator?.(component.headers);
       expect(actual).toBeTruthy();
-      expect(actual.key_value_pair).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.key_value_pair).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the body field is not valid json', () => {
       const value: ResponseFormValues = { ...SAMPLE_VALUE, body: 'not_json' };
       component.writeValue(value);
 
-      const actual = component.body.validator(component.body);
+      const actual = component.body.validator?.(component.body);
       expect(actual).toBeTruthy();
-      expect(actual.invalid).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.invalid).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the body field has a top level string', () => {
       const value: ResponseFormValues = { ...SAMPLE_VALUE, body: '"a_string"' };
       component.writeValue(value);
 
-      const actual = component.body.validator(component.body);
+      const actual = component.body.validator?.(component.body);
       expect(actual).toBeTruthy();
-      expect(actual.top_level_object).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.top_level_object).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the body field has a top level number', () => {
       const value: ResponseFormValues = { ...SAMPLE_VALUE, body: '1' };
       component.writeValue(value);
 
-      const actual = component.body.validator(component.body);
+      const actual = component.body.validator?.(component.body);
       expect(actual).toBeTruthy();
-      expect(actual.top_level_object).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.top_level_object).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the body field has a top level boolean', () => {
       const value: ResponseFormValues = { ...SAMPLE_VALUE, body: 'true' };
       component.writeValue(value);
 
-      const actual = component.body.validator(component.body);
+      const actual = component.body.validator?.(component.body);
       expect(actual).toBeTruthy();
-      expect(actual.top_level_object).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.top_level_object).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the body field has a top level null', () => {
       const value: ResponseFormValues = { ...SAMPLE_VALUE, body: 'true' };
       component.writeValue(value);
 
-      const actual = component.body.validator(component.body);
+      const actual = component.body.validator?.(component.body);
       expect(actual).toBeTruthy();
-      expect(actual.top_level_object).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.top_level_object).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the body field has a top level array', () => {
       const value: ResponseFormValues = { ...SAMPLE_VALUE, body: '[]' };
       component.writeValue(value);
 
-      const actual = component.body.validator(component.body);
+      const actual = component.body.validator?.(component.body);
       expect(actual).toBeTruthy();
-      expect(actual.top_level_object).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.top_level_object).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 
@@ -304,7 +305,77 @@ describe('ResponseFormComponent', () => {
       const actual = ResponseFormComponent.statusCodeValidator(control);
 
       expect(actual).toBeTruthy();
-      expect(actual.invalid).toBeTruthy();
+      expect(actual?.invalid).toBeTruthy();
+    });
+  });
+
+  describe('ResponseFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('ResponseFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

@@ -8,11 +8,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import validMockDefinition from '../../../../../test-files/test-mockdefinition-object';
 import * as _ from 'lodash';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 
 describe('ShuttleSubListComponent', () => {
-  let component: ShuttleSubListComponent;
-  let fixture: ComponentFixture<ShuttleSubListComponent>;
+  let component: ShuttleSubListComponent<FormControl>;
+  let fixture: ComponentFixture<ShuttleSubListComponent<FormControl>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,8 +22,9 @@ describe('ShuttleSubListComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShuttleSubListComponent);
+    fixture = TestBed.createComponent<ShuttleSubListComponent<FormControl>>(ShuttleSubListComponent);
     component = fixture.componentInstance;
+    component.itemToStringFn = (control: AbstractControl) => control.value?.metadata?.title ?? '';
     const mock1 = _.cloneDeep(validMockDefinition);
     const mock2 = _.cloneDeep(validMockDefinition);
     mock1.metadata.title = faker.random.words(3);
@@ -55,7 +56,7 @@ describe('ShuttleSubListComponent', () => {
       });
 
       it('should return false if there are filtered options but the option passed is not filtered', () => {
-        expect(component.hideOption(null)).toBeFalsy();
+        expect(component.hideOption(null as unknown as FormControl)).toBeFalsy();
       });
     });
 

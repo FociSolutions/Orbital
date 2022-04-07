@@ -3,11 +3,11 @@
 
   <div class="row">
     <mat-form-field class="flex-grow">
-      <input formControlName="key" matInput placeholder="Key" />
+      <input formControlName="key" matInput placeholder="Key" (blur)="touch()" />
     </mat-form-field>
 
     <mat-form-field class="flex-grow-2">
-      <input formControlName="value" matInput placeholder="Value" />
+      <input formControlName="value" matInput placeholder="Value" (blur)="touch()" />
     </mat-form-field>
 
     <button

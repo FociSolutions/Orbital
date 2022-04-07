@@ -4,7 +4,7 @@
   <mat-card class="row align-items-flex-start mb-1">
     <mat-form-field class="mr-3">
       <mat-label>Response Type</mat-label>
-      <mat-select formControlName="type">
+      <mat-select formControlName="type" (blur)="touch()">
         <mat-option *ngFor="let p of responseTypes" [value]="p.value">
           {{ p.label }}
         </mat-option>
@@ -14,7 +14,15 @@
     <div class="flex-grow">
       <div class="row">
         <mat-form-field class="status-code">
-          <input matInput type="number" min="100" max="599" formControlName="status" placeholder="Status Code" />
+          <input
+            matInput
+            type="number"
+            min="100"
+            max="599"
+            formControlName="status"
+            placeholder="Status Code"
+            (blur)="touch()"
+          />
         </mat-form-field>
 
         <mat-form-field class="flex-grow">
@@ -35,6 +43,8 @@
     formControlName="headers"
     itemName="Header"
     itemNamePlural="Headers"
+    [touched]="touched"
+    (touchedEvent)="touch()"
   ></app-key-value-pair-form>
 
   <br />

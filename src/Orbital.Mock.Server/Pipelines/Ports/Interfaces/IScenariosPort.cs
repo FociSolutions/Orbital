@@ -1,8 +1,6 @@
-﻿using Orbital.Mock.Server.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
+using Orbital.Mock.Definition;
 
 namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
 {

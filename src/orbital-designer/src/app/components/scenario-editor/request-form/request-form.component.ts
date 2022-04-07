@@ -1,4 +1,14 @@
-import { Component, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -12,6 +22,7 @@ import {
 import { Subscription } from 'rxjs';
 import { KeyValueRuleFormValues } from 'src/app/shared/components/key-value-rule-form/key-value-rule-form.component';
 import { UrlRuleFormValues } from 'src/app/shared/components/url-rule-form/url-rule-form.component';
+import { DeepNullable } from 'src/app/shared/Utilities/nullable';
 import { BodyRuleFormValues } from '../body-rule-form/body-rule-form.component';
 
 export interface RequestFormValues {
@@ -41,8 +52,8 @@ export interface RequestFormValues {
     },
   ],
 })
-export class RequestFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  form: FormGroup;
+export class RequestFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get requestMatchRules(): FormGroup {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -70,6 +81,11 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
     return this.form.get('tokenRules') as FormControl;
   }
 
+  @Input() touched = false;
+  @Input() tokenValidationIsEnabled = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
+
   static readonly ruleTypesStatic = {
     header: 'Header Match Rules',
     query: 'Query Param Match Rules',
@@ -82,7 +98,7 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
 
   currentRuleType: keyof typeof RequestFormComponent.ruleTypesStatic = 'header';
 
-  defaults: RequestFormValues = {
+  defaults: DeepNullable<RequestFormValues> = {
     requestMatchRules: {
       headerRules: null,
       queryRules: null,
@@ -108,9 +124,19 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: RequestFormValues | null) => {
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       })
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   writeValue(value?: Partial<RequestFormValues> | null): void {
@@ -154,10 +180,10 @@ export class RequestFormComponent implements ControlValueAccessor, Validator, On
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: RequestFormValues) => void> = [];
+  readonly onChange: Array<(value: RequestFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: RequestFormValues) => void): void {
+  registerOnChange(fn: (value: RequestFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

@@ -3,7 +3,8 @@ import { MetadataFormComponent, MetadataFormValues } from './metadata-form.compo
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SimpleChanges } from '@angular/core';
 
 describe('MetadataFormComponent', () => {
   let component: MetadataFormComponent;
@@ -39,8 +40,8 @@ describe('MetadataFormComponent', () => {
 
     it('should clear the values in the form when null is passed in', () => {
       const value: MetadataFormValues = {
-        title: null,
-        description: null,
+        title: null as unknown as string,
+        description: null as unknown as string,
       };
       component.writeValue(null);
 
@@ -82,20 +83,20 @@ describe('MetadataFormComponent', () => {
       const value: MetadataFormValues = { ...SAMPLE_VALUE, title: '' };
       component.writeValue(value);
 
-      const actual = component.title.validator(component.title);
+      const actual = component.title.validator?.(component.title);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the title field contains only whitespace', () => {
       const value: MetadataFormValues = { ...SAMPLE_VALUE, title: '     ' };
       component.writeValue(value);
 
-      const actual = component.title.validator(component.title);
+      const actual = component.title.validator?.(component.title);
       expect(actual).toBeTruthy();
-      expect(actual.whitespace).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.whitespace).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the title field has more than the max characters', () => {
@@ -105,10 +106,10 @@ describe('MetadataFormComponent', () => {
       };
       component.writeValue(value);
 
-      const actual = component.title.validator(component.title);
+      const actual = component.title.validator?.(component.title);
       expect(actual).toBeTruthy();
-      expect(actual.maxlength).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.maxlength).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the description field has more than the max characters', () => {
@@ -118,19 +119,19 @@ describe('MetadataFormComponent', () => {
       };
       component.writeValue(value);
 
-      const actual = component.description.validator(component.description);
+      const actual = component.description.validator?.(component.description);
       expect(actual).toBeTruthy();
-      expect(actual.maxlength).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.maxlength).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should not fail validation if the description field is empty', () => {
       const value: MetadataFormValues = { ...SAMPLE_VALUE, description: '' };
       component.writeValue(value);
 
-      const actual = component.description.validator(component.description);
+      const actual = component.description.validator?.(component.description);
       expect(actual).toBeNull();
-      expect(component.validate(null)).toBeNull();
+      expect(component.validate(null as unknown as FormControl)).toBeNull();
     });
   });
 
@@ -165,6 +166,68 @@ describe('MetadataFormComponent', () => {
     });
   });
 
+  describe('MetadataFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('MetadataFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+  });
+
   describe('MetadataFormComponent.notOnlyWhiteSpaceValidator', () => {
     it('should return null if the input contains more than white space', () => {
       const control = { value: faker.random.word() } as AbstractControl;
@@ -192,7 +255,7 @@ describe('MetadataFormComponent', () => {
       const actual = MetadataFormComponent.notOnlyWhiteSpaceValidator(control);
 
       expect(actual).toBeTruthy();
-      expect(actual.whitespace).toBeTruthy();
+      expect(actual?.whitespace).toBeTruthy();
     });
   });
 });

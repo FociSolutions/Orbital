@@ -1,36 +1,27 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Collections.Generic;
-
-using System.Net.Http.Headers;
-using Microsoft.Net.Http.Headers;
-
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 
-using Orbital.Mock.Server.Models;
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Rules.Assertion;
+
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
-using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using Orbital.Mock.Server.Factories.Interfaces;
-using Orbital.Mock.Server.Models.Rules;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class TokenRequestMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, ITokenRequestMatchPort, IScenariosPort
     {
-        private IAssertFactory AssertFactory;
         private IRuleMatcher RuleMatcher;
 
-        public TokenRequestMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
+        public TokenRequestMatchFilter(IRuleMatcher ruleMatcher)
         {
-            this.AssertFactory = assertFactory;
             this.RuleMatcher = ruleMatcher;
         }
-
 
         public override T Process(T port)
         {
@@ -53,7 +44,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             foreach (var scenario in tokenMatchScenarios)
             {
 
-                foreach (KeyValueTypeRule rule in scenario.TokenRule.Rules)
+                foreach (KeyValueTypeRule rule in scenario.TokenRules.Rules)
                 {
                     var assertList = AssertFactory.CreateAssert(rule, tokenMap);
                     if (!assertList.Any())
@@ -104,7 +95,6 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             {
                 return false;
             }
-
         }
 
         /// <summary>
@@ -115,7 +105,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <returns>An IEnumerabled of Scenarios</returns>
         static bool CheckValidationResult(IEnumerable<Scenario> scenarios)
         {
-            return scenarios.Any(s => s.TokenRule.ValidationType == TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH);
+            return scenarios.Any(s => s.TokenRules.ValidationType == TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH);
         }
 
         /// <summary>
@@ -126,7 +116,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
         /// <returns>true if successes match the amount of rules, false otherwise.</returns>
         static bool HasSuccessfulScenario(T port)
         {
-            var ruleCountDict = port.Scenarios.ToDictionary(x => x.Id, z => z.TokenRule.Rules.Count);
+            var ruleCountDict = port.Scenarios.ToDictionary(x => x.Id, z => z.TokenRules.Rules.Count);
 
             return port.TokenMatchResults
                     .GroupBy(r => r.ScenarioId)

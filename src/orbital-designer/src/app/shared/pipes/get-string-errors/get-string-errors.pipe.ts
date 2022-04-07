@@ -10,7 +10,7 @@ export class GetStringErrorsPipe implements PipeTransform {
    * Note: only errors with string values are included, others, i.e. boolean errors are ignored.
    * @param errors The ValidationErrors object
    */
-  transform(errors?: ValidationErrors): string[] {
+  transform(errors: ValidationErrors | null): string[] {
     return Object.values(errors ?? {}).filter((x: unknown): x is string => typeof x === 'string');
   }
 }

@@ -1,4 +1,15 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   AbstractControl,
@@ -35,8 +46,8 @@ type PartialPoliciesFormValues = Partial<PolicyFormValues>[];
     },
   ],
 })
-export class PoliciesFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  form: FormGroup;
+export class PoliciesFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get formArray(): FormArray {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -47,6 +58,10 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.form.get('add') as FormControl;
   }
+
+  @Input() touched = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   policyIsDuplicatedEvent = new EventEmitter<boolean>();
 
@@ -62,11 +77,16 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
       this.formArray.valueChanges.subscribe((value: PoliciesFormValues | null) => {
         this.policyIsDuplicatedEvent.emit(this.policyIsDuplicated(this.add.value));
         this.onChange.forEach((fn) => fn(value));
-        this.onTouched.forEach((fn) => fn());
       })
     );
 
     this.subscribeToAddValueChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.formArray.markAllAsTouched();
+    }
   }
 
   subscribeToAddValueChanges() {
@@ -80,6 +100,11 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
 
   cleanupSubscriptions() {
     this.subscriptions = this.subscriptions.filter((s) => !s.closed);
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   validate(_: FormControl): ValidationErrors | null {
@@ -132,7 +157,7 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
    * @param policy the policy to test
    * @returns true if the policy is duplicated, false otherwise
    */
-  policyIsDuplicated(policy: PolicyFormValues): boolean {
+  policyIsDuplicated(policy: PolicyFormValues | null): boolean {
     const policies = this.formArray.value ?? [];
     return PoliciesFormComponent.policyIsDuplicated(policies, policy);
   }
@@ -143,19 +168,21 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
    * @param policy the policy to test (should be a reference from the provided list to avoid self-duplicate detection)
    * @returns true if the policy is duplicated, false otherwise
    */
-  static policyIsDuplicated(policies: PoliciesFormValues, policy: PolicyFormValues): boolean {
-    for (const otherPolicy of policies) {
-      if (policy === otherPolicy) {
-        continue;
-      }
-      switch (policy.type) {
-        case PolicyType.DELAY_RESPONSE:
-          if (otherPolicy.type === PolicyType.DELAY_RESPONSE) {
-            return true;
+  static policyIsDuplicated(policies: PoliciesFormValues, policy: PolicyFormValues | null): boolean {
+    if (policy) {
+      for (const otherPolicy of policies) {
+        if (policy === otherPolicy) {
+          continue;
+        }
+        switch (policy.type) {
+          case PolicyType.DELAY_RESPONSE:
+            if (otherPolicy.type === PolicyType.DELAY_RESPONSE) {
+              return true;
+            }
+            break;
+          default: {
+            const _: never = policy.type;
           }
-          break;
-        default: {
-          const _: never = policy.type;
         }
       }
     }
@@ -168,7 +195,11 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
    * @param formArray the FormArray object to validate
    * @returns a ValidationErrors object containing any errors, or null if there are no errors
    */
-  static validateNoDuplicates(formArray: FormArray): ValidationErrors | null {
+  static validateNoDuplicates(formArray: AbstractControl): ValidationErrors | null {
+    if (!(formArray instanceof FormArray)) {
+      throw new Error('Validator can only be used with FormArray controls');
+    }
+
     const policies: PoliciesFormValues = formArray.value ?? [];
     const controls: AbstractControl[] = formArray.controls;
     let error: ValidationErrors | null = null;
@@ -185,7 +216,7 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
             ...error,
           });
         } else {
-          const { duplicate: _, ...errors } = control.errors;
+          const { duplicate: _, ...errors } = control.errors ?? {};
           control.setErrors(Object.keys(errors).length ? errors : null);
         }
       }
@@ -204,10 +235,10 @@ export class PoliciesFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: PoliciesFormValues) => void> = [];
+  readonly onChange: Array<(value: PoliciesFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: PoliciesFormValues) => void): void {
+  registerOnChange(fn: (value: PoliciesFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

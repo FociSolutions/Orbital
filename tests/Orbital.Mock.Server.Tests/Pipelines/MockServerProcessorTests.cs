@@ -11,10 +11,11 @@ using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
-using Orbital.Mock.Server.Factories;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Interfaces;
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Tokens;
+using Orbital.Mock.Definition.Response;
+
 using Orbital.Mock.Server.Services.Interfaces;
 using Orbital.Mock.Server.Pipelines;
 using Orbital.Mock.Server.Pipelines.Models;
@@ -88,7 +89,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                     (int)f.PickRandom<HttpStatusCode>(),
                     f.Lorem.Paragraph()
                     ));
-            var fakerTokenRule = new Faker<TokenRuleInfo>();
+            var fakerTokenRule = new Faker<TokenRules>();
             var fakerRequestMatchRules = new Faker<RequestMatchRules>()
                     .RuleFor(m => m.BodyRules, _ => fakerBodyRule.Generate(3))
                     .RuleFor(m => m.HeaderRules, f => fakerHeaderQueryRule.Generate(3))
@@ -100,8 +101,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines
                 .RuleFor(m => m.RequestMatchRules, f => fakerRequestMatchRules.Generate())
                 .RuleFor(m => m.Path, f => $"/{f.Random.Word().Replace(" ", "")}")
                 .RuleFor(m => m.Verb, f => f.PickRandom(validMethods))
-                .RuleFor(m => m.TokenRule, f => fakerTokenRule.Generate());
-            this.mockServerProcessor = new MockServerProcessor(new AssertFactory(), new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
+                .RuleFor(m => m.TokenRules, f => fakerTokenRule.Generate());
+            this.mockServerProcessor = new MockServerProcessor(new RuleMatcher(), new TemplateContext(), GetPublicKeyServiceMock());
         }
         [Fact]
         public void MockServerProcessorStopAfterStartTest()

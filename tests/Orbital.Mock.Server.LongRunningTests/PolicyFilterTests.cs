@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
+using Orbital.Mock.Definition.Policies;
 using Orbital.Mock.Server.Pipelines.Policies;
 
 using Xunit;

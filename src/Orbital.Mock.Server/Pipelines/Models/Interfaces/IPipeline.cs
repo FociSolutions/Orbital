@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
+
+[assembly: InternalsVisibleTo("Orbital.Mock.Server.Integration.Tests")]
 
 namespace Orbital.Mock.Server.Pipelines.Models.Interfaces
 {
@@ -17,6 +20,12 @@ namespace Orbital.Mock.Server.Pipelines.Models.Interfaces
         /// Stop the pipeline
         /// </summary>
         bool Stop();
+
+        /// <summary>
+        /// Access the variable that holds the status of the pipeline (running or not)
+        /// </summary>
+        /// <returns>True if the pipeline has started successfully and ready to accept requests</returns>
+        bool GetPipelineStatus();
     }
 
     /// <summary>

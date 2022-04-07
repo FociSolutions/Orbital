@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { NGXLogger } from 'ngx-logger';
@@ -19,11 +19,11 @@ import { environment } from 'src/environments/environment';
 export class ExportToServerViewComponent implements OnInit {
   readonly emptyListMessageServerBox = 'No Mockdefinitions';
   rightHandSideMocks: MockDefinition[] = [];
-  leftHandSideMocks: FormArray;
-  inputControl: FormControl;
-  exportStatusMessage: string;
-  isUploadingMocks: boolean;
-  exportErrors: string;
+  leftHandSideMocks: FormArray = this.formBuilder.array([]);
+  inputControl: FormControl = new FormControl();
+  exportStatusMessage = '';
+  isUploadingMocks = false;
+  exportErrors = '';
 
   controlsMockDefinitionToString = (control: AbstractControl) => control.value.metadata.title;
 
@@ -32,7 +32,8 @@ export class ExportToServerViewComponent implements OnInit {
     private store: DesignerStore,
     private logger: NGXLogger,
     private mockService: ExportMockdefinitionService,
-    private service: OrbitalAdminService
+    private service: OrbitalAdminService,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -48,7 +49,7 @@ export class ExportToServerViewComponent implements OnInit {
   private resetForm() {
     const keys = Object.keys(this.store.state.mockDefinitions);
     const controls = keys.map((k) => new FormControl(this.store.state.mockDefinitions[k]));
-    this.leftHandSideMocks = new FormArray(controls);
+    this.leftHandSideMocks = this.formBuilder.array(controls);
     this.rightHandSideMocks = [];
   }
 
@@ -59,7 +60,7 @@ export class ExportToServerViewComponent implements OnInit {
     this.isUploadingMocks = true;
     this.exportErrors = '';
     this.exportStatusMessage = '';
-    this.logger.debug('URL contents before uploading', this.inputControl.value);
+    this.logger.debug('URL contents before uploading', this.inputControl?.value);
 
     return this.exportMocksFromForm()
       .pipe(
@@ -73,7 +74,7 @@ export class ExportToServerViewComponent implements OnInit {
           if (every(uploadMockStatus)) {
             this.logger.debug('Received response from export to server promise resolution');
             this.exportStatusMessage = 'File(s) successfully exported';
-            this.mockService.urlCache = this.inputControl.value;
+            this.mockService.urlCache = this.inputControl?.value;
           } else {
             this.exportErrors = 'File(s) could not be exported because of an error';
           }
@@ -90,7 +91,7 @@ export class ExportToServerViewComponent implements OnInit {
    */
   exportMocksFromForm(): Observable<boolean[]> {
     this.logger.debug('Mockdefinitions to export', this.rightHandSideMocks);
-    return this.service.exportMockDefinitions(this.inputControl.value, this.rightHandSideMocks);
+    return this.service.exportMockDefinitions(this.inputControl?.value, this.rightHandSideMocks);
   }
 
   /**
@@ -99,7 +100,7 @@ export class ExportToServerViewComponent implements OnInit {
    * @param list The list of FormControls given by the shuttle list when the user moves items from
    * one list to the other.
    */
-  onListOutput(list: FormControl[]) {
+  onListOutput(list: AbstractControl[]) {
     this.rightHandSideMocks = list.map((control) => control.value);
   }
 

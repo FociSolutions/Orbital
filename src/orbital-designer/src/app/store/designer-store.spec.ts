@@ -19,11 +19,16 @@ import { defaultTokenRule } from '../models/mock-definition/scenario/token-rule.
 import { defaultResponse } from '../models/mock-definition/scenario/response.model';
 import { RuleType } from '../models/mock-definition/scenario/rule-type';
 import { defaultPolicy } from '../models/mock-definition/scenario/policy.model';
+import { Endpoint } from '../models/endpoint.model';
 
 describe('DesignerStore', () => {
   let store: DesignerStore;
   let serviceFileReader: ReadFileService;
-  const acceptedVerbs = Object.keys(VerbType).map((verb) => verb.toLowerCase());
+  type HttpMethodsKeys = keyof typeof OpenAPIV2.HttpMethods;
+  const validVerbTypes: OpenAPIV2.HttpMethods[] = Object.keys(VerbType)
+    .map((v) => Number(v))
+    .filter((v) => !isNaN(v) && OpenAPIV2.HttpMethods[VerbType[v] as HttpMethodsKeys])
+    .map((v) => OpenAPIV2.HttpMethods[VerbType[v] as HttpMethodsKeys]);
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [LoggerTestingModule] });
@@ -37,10 +42,10 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.selectedEndpoint', () => {
     it('should set the selectedEndpoint', fakeAsync(() => {
-      const Expected = {
+      const Expected: Endpoint = {
         path: faker.random.words(),
         verb: VerbType.GET,
-        spec: null,
+        spec: {} as OpenAPIV2.OperationObject,
       };
       store.selectedEndpoint = Expected;
       tick();
@@ -50,7 +55,7 @@ describe('DesignerStore', () => {
 
   describe('DesignerStore.selectedScenario', () => {
     it('should set the selectedScenario', fakeAsync(() => {
-      const mockverb = VerbType.GET;
+      const verb = VerbType.GET;
       const path = faker.random.words();
       const Expected: Scenario = {
         id: uuid.v4(),
@@ -58,7 +63,7 @@ describe('DesignerStore', () => {
           title: 'New Scenario',
           description: '',
         },
-        verb: mockverb,
+        verb,
         path,
         response: defaultResponse,
         requestMatchRules: {
@@ -91,13 +96,13 @@ describe('DesignerStore', () => {
       store.setEndpoints(Expected.openApi);
 
       for (const path of Object.keys(Expected.openApi.paths)) {
-        for (const verb of acceptedVerbs) {
+        for (const verb of validVerbTypes) {
           if (Expected.openApi.paths[path][verb]) {
             expect(
               store.state.endpoints.findIndex(
                 (endpoint) =>
                   endpoint.path === path &&
-                  endpoint.verb === VerbType[verb.toUpperCase()] &&
+                  endpoint.verb === VerbType[verb.toUpperCase() as keyof typeof VerbType] &&
                   endpoint.spec === Expected.openApi.paths[path][verb]
               )
             ).toBeGreaterThan(-1);
@@ -109,24 +114,24 @@ describe('DesignerStore', () => {
     it('should update the state with new endpoints without clearing old ones', (done) => {
       const service = new OpenApiSpecService();
       const petStore = new File([validOpenApi], 'test.yml');
-      const originalEndpoint = {
+      const originalEndpoint: Endpoint = {
         path: '/original-pets',
         verb: VerbType.GET,
-        spec: null,
+        spec: {} as OpenAPIV2.OperationObject,
       };
       serviceFileReader.read(petStore).subscribe({
-        next: (fileread) => {
-          service.readOpenApiSpec(fileread).subscribe({
+        next: (fileRead) => {
+          service.readOpenApiSpec(fileRead).subscribe({
             next: (n) => {
               store.setEndpoints(n, false);
               for (const path of Object.keys(n.paths)) {
-                for (const verb of acceptedVerbs) {
+                for (const verb of validVerbTypes) {
                   if (n.paths[path][verb]) {
                     expect(
                       store.state.endpoints.findIndex(
                         (endpoint) =>
                           endpoint.path === path &&
-                          endpoint.verb === VerbType[verb.toUpperCase()] &&
+                          endpoint.verb === VerbType[verb.toUpperCase() as keyof typeof VerbType] &&
                           endpoint.spec === n.paths[path][verb]
                       )
                     ).toBeGreaterThan(-1);
@@ -154,14 +159,14 @@ describe('DesignerStore', () => {
       tick();
       expect(store.state.mockDefinition).toEqual(Expected);
       for (const path of Object.keys(Expected.openApi.paths)) {
-        for (const verb of acceptedVerbs) {
-          if (Expected.openApi.paths[path][verb]) {
+        for (const verb of validVerbTypes) {
+          if (Expected.openApi.paths[path]?.[verb as OpenAPIV2.HttpMethods]) {
             expect(
               store.state.endpoints.findIndex(
                 (endpoint) =>
                   endpoint.path === path &&
-                  endpoint.verb === VerbType[verb.toUpperCase()] &&
-                  endpoint.spec === Expected.openApi.paths[path][verb]
+                  endpoint.verb === VerbType[verb.toUpperCase() as keyof typeof VerbType] &&
+                  endpoint.spec === Expected.openApi.paths[path][verb as OpenAPIV2.HttpMethods]
               )
             ).toBeGreaterThan(-1);
           }
@@ -201,17 +206,23 @@ describe('DesignerStore', () => {
   });
 
   describe('DesignerStore.updateApiInformation()', () => {
-    it('should update openApi, host, and basepath', fakeAsync(() => {
-      const fakeDocument: OpenAPIV2.Document = { basePath: '', host: '', info: null, paths: null, swagger: '' };
+    it('should update openApi, host, and basePath', fakeAsync(() => {
+      const fakeDocument: OpenAPIV2.Document = {
+        basePath: '',
+        host: '',
+        info: {} as OpenAPIV2.InfoObject,
+        paths: {} as OpenAPIV2.PathsObject,
+        swagger: '',
+      };
       const apiInfo = {
         host: faker.internet.domainName(),
-        basepath: faker.internet.domainSuffix(),
+        basePath: faker.internet.domainSuffix(),
         openApi: fakeDocument,
       };
-      store.updateApiInformation(apiInfo.host, apiInfo.basepath, apiInfo.openApi);
+      store.updateApiInformation(apiInfo.host, apiInfo.basePath, apiInfo.openApi);
       tick();
       expect(store.state.mockDefinition.host).toEqual(apiInfo.host);
-      expect(store.state.mockDefinition.basePath).toEqual(apiInfo.basepath);
+      expect(store.state.mockDefinition.basePath).toEqual(apiInfo.basePath);
       expect(store.state.mockDefinition.openApi).toEqual(apiInfo.openApi);
     }));
   });
@@ -221,7 +232,7 @@ describe('DesignerStore', () => {
       store.mockDefinition = validMockDefinition;
       const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
-        const mockverb = VerbType.GET;
+        const verb = VerbType.GET;
         const path = 'pets';
         scenarios.push({
           id: uuid.v4(),
@@ -229,7 +240,7 @@ describe('DesignerStore', () => {
             title: 'New Scenario',
             description: '',
           },
-          verb: mockverb,
+          verb,
           policies: [defaultPolicy],
           tokenRule: defaultTokenRule,
           path,
@@ -438,7 +449,7 @@ describe('DesignerStore', () => {
 
   describe('addOrUpdateScenario', () => {
     it('should add new scenario', fakeAsync(() => {
-      const mockverb = VerbType.GET;
+      const verb = VerbType.GET;
       const path = faker.random.words();
       const scenario: Scenario = {
         id: uuid.v4(),
@@ -446,7 +457,7 @@ describe('DesignerStore', () => {
           title: 'New Scenario',
           description: '',
         },
-        verb: mockverb,
+        verb,
         path,
         response: defaultResponse,
         policies: [defaultPolicy],

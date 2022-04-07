@@ -80,7 +80,7 @@ describe('DeleteFromServerViewComponent', () => {
         status: 200,
       });
       component.onResponse(response.body as unknown as MockDefinition[]);
-      expect(component.formArray.controls[0].value).toEqual(response.body[0]);
+      expect(component.formArray.controls[0].value).toEqual(response.body?.[0]);
     });
   });
 });

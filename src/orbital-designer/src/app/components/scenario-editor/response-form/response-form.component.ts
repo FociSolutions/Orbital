@@ -1,4 +1,14 @@
-import { Component, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { ValidJsonService } from 'src/app/services/valid-json/valid-json.service';
 import HttpStatusCodes, { StatusCodes } from 'http-status-codes';
 import {
@@ -49,8 +59,8 @@ export interface InternalResponseFormValues {
     },
   ],
 })
-export class ResponseFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  form: FormGroup;
+export class ResponseFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get type(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -68,6 +78,10 @@ export class ResponseFormComponent implements ControlValueAccessor, Validator, O
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return this.form.get('body') as FormControl;
   }
+
+  @Input() touched = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   readonly responseTypes = [
     { value: ResponseType.CUSTOM, label: 'Custom' },
@@ -99,7 +113,6 @@ export class ResponseFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: InternalResponseFormValues | null) => {
         this.onChange.forEach((fn) => fn(this.adaptInternalFormatToExternal(value)));
-        this.onTouched.forEach((fn) => fn());
       })
     );
 
@@ -107,11 +120,27 @@ export class ResponseFormComponent implements ControlValueAccessor, Validator, O
     this.bodyEditorOptions.modes = ['code', 'text'];
     this.bodyEditorOptions.statusBar = true;
     this.bodyEditorOptions.onFocus = () => (this.bodyDataWasFocused = true);
-    this.bodyEditorOptions.onBlur = () => this.bodyDataWasFocused && this.body.markAsTouched();
+    this.bodyEditorOptions.onBlur = () => {
+      if (this.bodyDataWasFocused) {
+        this.body.markAsTouched();
+        this.touch();
+      }
+    };
     this.bodyEditorOptions.onChangeText = (jsonString: string) => {
       this.body.markAsDirty();
       this.body.setValue(jsonString);
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   adaptInternalFormatToExternal(values: InternalResponseFormValues | null): ResponseFormValues | null {
@@ -142,7 +171,7 @@ export class ResponseFormComponent implements ControlValueAccessor, Validator, O
     if (value === null || value === undefined) {
       this.form.reset(this.defaults, { emitEvent: false });
     } else {
-      this.form.patchValue(this.adaptExternalFormatToInternal(value), { emitEvent: false });
+      this.form.patchValue(this.adaptExternalFormatToInternal(value) ?? {}, { emitEvent: false });
     }
     this.initBodyData = this.safeParseJson(this.body.value);
   }
@@ -191,10 +220,10 @@ export class ResponseFormComponent implements ControlValueAccessor, Validator, O
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: ResponseFormValues) => void> = [];
+  readonly onChange: Array<(value: ResponseFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: ResponseFormValues) => void): void {
+  registerOnChange(fn: (value: ResponseFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

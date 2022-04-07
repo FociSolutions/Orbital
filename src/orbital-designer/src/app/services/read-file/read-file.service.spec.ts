@@ -33,7 +33,7 @@ describe('ReadFileService', () => {
     });
 
     it('should read a given file and return an observable with the content from the file', (done) => {
-      service.read(null).subscribe(
+      service.read(null as unknown as File).subscribe(
         () => undefined,
         (error: ProgressEvent) => {
           expect(error).toBeTruthy();

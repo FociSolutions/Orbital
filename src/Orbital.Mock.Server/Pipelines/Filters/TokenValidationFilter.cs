@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.IdentityModel.Tokens.Jwt;
+
 using Microsoft.IdentityModel.Tokens;
-using Orbital.Mock.Server.Models;
+
+using Orbital.Mock.Definition.Match;
+
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using Orbital.Mock.Server.Services.Interfaces;
+
 using Serilog;
 
 namespace Orbital.Mock.Server.Pipelines.Filters

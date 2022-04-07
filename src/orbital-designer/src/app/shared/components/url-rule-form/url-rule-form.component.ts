@@ -1,4 +1,15 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, forwardRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   AbstractControl,
@@ -33,8 +44,8 @@ export type UrlRuleFormValues = UrlRuleItemFormValues[];
     },
   ],
 })
-export class UrlRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  form: FormGroup;
+export class UrlRuleFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get formArray(): FormArray {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -48,6 +59,9 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
 
   @Input() itemName = 'URL Match Rule';
   @Input() itemNamePlural = 'URL Match Rules';
+  @Input() touched = false;
+
+  @Output() touchedEvent = new EventEmitter<void>();
 
   itemIsDuplicatedEvent = new EventEmitter<boolean>();
 
@@ -63,11 +77,16 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
       this.formArray.valueChanges.subscribe((values: UrlRuleFormValues | null) => {
         this.itemIsDuplicatedEvent.emit(this.itemIsDuplicated(this.add.value));
         this.onChange.forEach((fn) => fn(values));
-        this.onTouched.forEach((fn) => fn());
       })
     );
 
     this.subscribeToAddValueChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.formArray.markAllAsTouched();
+    }
   }
 
   subscribeToAddValueChanges() {
@@ -81,6 +100,11 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
 
   cleanupSubscriptions() {
     this.subscriptions = this.subscriptions.filter((s) => !s.closed);
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   validate(_: FormControl): ValidationErrors | null {
@@ -167,7 +191,11 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
    * @param formArray the FormArray object to validate
    * @returns a ValidationErrors object containing any errors, or null if there are no errors
    */
-  static validateNoDuplicates(formArray: FormArray): ValidationErrors | null {
+  static validateNoDuplicates(formArray: AbstractControl): ValidationErrors | null {
+    if (!(formArray instanceof FormArray)) {
+      throw new Error('Validator can only be used with FormArray controls');
+    }
+
     const items: UrlRuleFormValues = formArray.value ?? [];
     const controls: AbstractControl[] = formArray.controls;
     let error: ValidationErrors | null = null;
@@ -184,7 +212,7 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
             ...error,
           });
         } else {
-          const { duplicate: _, ...errors } = control.errors;
+          const { duplicate: _, ...errors } = control.errors ?? {};
           control.setErrors(Object.keys(errors).length ? errors : null);
         }
       }
@@ -203,10 +231,10 @@ export class UrlRuleFormComponent implements ControlValueAccessor, Validator, On
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: UrlRuleFormValues) => void> = [];
+  readonly onChange: Array<(value: UrlRuleFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: UrlRuleFormValues) => void): void {
+  registerOnChange(fn: (value: UrlRuleFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
 import { MatTabsModule } from '@angular/material/tabs';
+import { cloneDeep } from 'lodash';
 
 describe('ScenarioViewComponent', () => {
   let component: ScenarioViewComponent;
@@ -110,11 +111,12 @@ describe('ScenarioViewComponent', () => {
 
         const scenario = component.scenarioList[0];
         const expected = component.scenarioList[0].metadata.title;
-        expect(expected).toEqual(component.scenarioToString(scenario));
+        const actual = component.scenarioToString(scenario);
+        expect(actual).toEqual(expected);
       });
-      it('should return undefined result', () => {
+      it('should return empty result', () => {
         const scenario = null;
-        expect(component.scenarioToString(scenario)).toBeUndefined();
+        expect(component.scenarioToString(scenario)).toEqual('');
       });
     });
     describe('ScenarioViewComponent.setFilteredList', () => {
@@ -133,11 +135,11 @@ describe('ScenarioViewComponent', () => {
 
   describe('ScenarioViewComponent.cloneScenario', () => {
     it('should clone a scenario from the store such that no name conflicts will be encountered', () => {
-      const scenarios = [];
+      const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -148,11 +150,11 @@ describe('ScenarioViewComponent', () => {
     });
 
     it('should clone a scenario from the store such that name conflicts will be encountered and will auto-rename', () => {
-      const scenarios = [];
+      const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -166,11 +168,11 @@ describe('ScenarioViewComponent', () => {
     });
 
     it('should not clone a scenario from the store if the cloned scenario is invalid', () => {
-      const scenarios = [];
+      const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -183,11 +185,11 @@ describe('ScenarioViewComponent', () => {
     });
 
     it('should clone a scenario and ensure that the title and id are different', () => {
-      const scenarios = [];
+      const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -200,12 +202,12 @@ describe('ScenarioViewComponent', () => {
     });
 
     it('should clone a scenario and ensure that there exists another scenario with the same contents, except for title and id', () => {
-      const scenarios = [];
+      const scenarios: Scenario[] = [];
       for (let i = 0; i < 3; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
         scenario.path = `/${faker.random.words()}`;
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;
@@ -237,11 +239,11 @@ describe('ScenarioViewComponent', () => {
     });
 
     it('should clone a scenario from the store and the defaultScenario property should be false', () => {
-      const scenarios = [];
+      const scenarios: Scenario[] = [];
       for (let i = 0; i < 10; i++) {
         const scenario: Scenario = mockDefService.generateNewScenario(scenarioParams);
         scenario.metadata.title = faker.random.words();
-        scenarios.push(JSON.parse(JSON.stringify(scenario)));
+        scenarios.push(cloneDeep(scenario));
       }
 
       store.state.mockDefinition.scenarios = scenarios;

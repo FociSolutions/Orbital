@@ -1,11 +1,14 @@
-﻿using Bogus;
+﻿using System;
+using System.Threading;
+using System.Collections.Generic;
+
 using Microsoft.Extensions.Caching.Memory;
+
+using Orbital.Mock.Definition;
 using Orbital.Mock.Server.Handlers;
 using Orbital.Mock.Server.MockDefinitions.Commands;
-using Orbital.Mock.Server.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading;
+
+using Bogus;
 using Xunit;
 using Assert = Xunit.Assert;
 
@@ -13,12 +16,10 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
 {
     public class SaveMockDefinitionHandlerTests
     {
-        private readonly CommonData data;
         private Faker<MockDefinition> mockDefinitionFake;
 
         public SaveMockDefinitionHandlerTests()
         {
-            this.data = new CommonData();
             var metadataFake = new Faker<MetadataInfo>()
             .RuleFor(m => m.Title, f => f.Lorem.Sentence())
             .RuleFor(m => m.Description, f => f.Lorem.Paragraph());
@@ -37,7 +38,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var mockDefinition = mockDefinitionFake.Generate();
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition, ref TestUtils.databaseLock);
 
-            var Target = new SaveMockDefinitionHandler(cache, data);
+            var Target = new SaveMockDefinitionHandler(cache);
             Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
 
             cache.TryGetValue(mockDefinition.Metadata.Title, out var savedDefinition);
@@ -63,7 +64,7 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(input.mockDefinition, ref TestUtils.databaseLock);
 
 
-            var Target = new SaveMockDefinitionHandler(cache, data);
+            var Target = new SaveMockDefinitionHandler(cache);
             Assert.Throws<ArgumentNullException>(() => Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result);
         }
 
@@ -76,10 +77,10 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #endregion
             var mockDefinition = mockDefinitionFake.Generate();
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition, ref TestUtils.databaseLock);
-            var Target = new SaveMockDefinitionHandler(cache, data);
+            var Target = new SaveMockDefinitionHandler(cache);
             Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
 
-            cache.TryGetValue(data.mockIds, out List<string> Actual);
+            cache.TryGetValue(Constants.MOCK_IDS_CACHE_KEY, out List<string> Actual);
             Assert.Contains(mockDefinition.Metadata.Title, Actual);
         }
 
@@ -92,13 +93,13 @@ namespace Orbital.Mock.Server.Tests.MockDefinitions.Handler
             #endregion
             var mockDefinition = mockDefinitionFake.Generate();
             var saveMockDefinitionCommand = new SaveMockDefinitionCommand(mockDefinition, ref TestUtils.databaseLock);
-            cache.Set(data.mockIds, new List<string> { mockDefinition.Metadata.Title });
+            cache.Set(Constants.MOCK_IDS_CACHE_KEY, new List<string> { mockDefinition.Metadata.Title });
             cache.Set(mockDefinition.Metadata.Title, mockDefinition);
 
-            var Target = new SaveMockDefinitionHandler(cache, data);
+            var Target = new SaveMockDefinitionHandler(cache);
             Target.Handle(saveMockDefinitionCommand, CancellationToken.None).Result.ToString();
 
-            cache.TryGetValue(data.mockIds, out List<string> Actual);
+            cache.TryGetValue(Constants.MOCK_IDS_CACHE_KEY, out List<string> Actual);
 
             Assert.Contains(mockDefinition.Metadata.Title, Actual);
 

@@ -10,14 +10,16 @@
 
   <mat-divider></mat-divider>
 
-  <div class="text-muted" *ngIf="!formArray.controls.length">No {{ itemNamePlural }} added</div>
+  <div class="text-muted" *ngIf="!formArray.controls.length">No {{ itemNamePlural }} added.</div>
 
   <div class="item-form" formArrayName="formArray" *ngFor="let ctrl of formArray.controls; let i = index">
     <app-key-value-rule-item-form
       [formControlName]="i"
       (removeItemEvent)="removeItemHandler(i)"
-      [errors]="ctrl.errors | getStringErrors"
+      [touched]="touched"
+      (touchedEvent)="touch()"
       [allowKeyWhitespace]="allowKeyWhitespace"
+      [errors]="ctrl.errors | getStringErrors"
     ></app-key-value-rule-item-form>
   </div>
 </ng-container>

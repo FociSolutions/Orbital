@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   ControlValueAccessor,
@@ -35,8 +45,8 @@ export interface UrlRuleItemFormValues {
     },
   ],
 })
-export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  form: FormGroup;
+export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get type(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -48,21 +58,23 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
     return this.form.get('path') as FormControl;
   }
 
-  @Output() readonly addItemEvent = new EventEmitter<UrlRuleItemFormValues>();
-  @Output() readonly removeItemEvent = new EventEmitter<void>();
-
-  @Input() readonly title = '';
+  @Input() touched = false;
+  @Input() readonly title: string = '';
   @Input() readonly errors: string[] = [];
   @Input() readonly mode: 'add' | 'edit' = 'edit';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
   @Input() readonly pathMaxLength = 3000;
+
+  @Output() readonly addItemEvent = new EventEmitter<UrlRuleItemFormValues>();
+  @Output() readonly removeItemEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
 
   readonly ruleTypes = [
     { value: RuleType.ACCEPTALL, label: 'Accept All' },
     { value: RuleType.REGEX, label: 'Matches Regex' },
     { value: RuleType.TEXTEQUALS, label: 'Equals' },
   ];
-  ruleType = RuleType;
+  RuleType = RuleType;
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -76,7 +88,6 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
       this.form.valueChanges.subscribe((value: UrlRuleItemFormValues | null) => {
         const adjustedValue = this.adjustFormValue(value);
         this.onChange.forEach((fn) => fn(adjustedValue));
-        this.onTouched.forEach((fn) => fn());
         // Must be after the callbacks since it triggers another event on this observable
         if (value) {
           this.handleDisablingPathField(value.type);
@@ -85,6 +96,17 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
 
       this.itemIsDuplicatedEvent.subscribe((isDuplicated) => this.handleIsDuplicatedEvent(isDuplicated))
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
   }
 
   adjustFormValue(value: UrlRuleItemFormValues | null): UrlRuleItemFormValues | null {
@@ -119,7 +141,7 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
           duplicate: 'This item already exists. Duplicates are not allowed.',
         });
       } else {
-        const { duplicate: _, ...errors } = this.form.errors;
+        const { duplicate: _, ...errors } = this.form.errors ?? {};
         this.form.setErrors(Object.keys(errors).length ? errors : null);
       }
     }
@@ -127,7 +149,10 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
 
   addItem() {
     if (this.form.valid) {
-      this.addItemEvent.emit(this.adjustFormValue(this.form.value));
+      const adjustedValue = this.adjustFormValue(this.form.value);
+      if (adjustedValue) {
+        this.addItemEvent.emit(adjustedValue);
+      }
     }
   }
 
@@ -168,10 +193,10 @@ export class UrlRuleItemFormComponent implements ControlValueAccessor, Validator
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: UrlRuleItemFormValues) => void> = [];
+  readonly onChange: Array<(value: UrlRuleItemFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
 
-  registerOnChange(fn: (value: UrlRuleItemFormValues) => void): void {
+  registerOnChange(fn: (value: UrlRuleItemFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

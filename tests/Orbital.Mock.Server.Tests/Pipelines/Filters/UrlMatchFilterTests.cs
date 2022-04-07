@@ -1,18 +1,19 @@
-﻿using Bogus;
-using Orbital.Mock.Server.Factories;
-using Orbital.Mock.Server.Factories.Interfaces;
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Models.Rules;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Match;
+
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.Ports;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using System;
-using System.Collections.Generic;
-using Assert = Xunit.Assert;
-using System.Linq;
+
+using Bogus;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
@@ -20,7 +21,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
     {
         private readonly Faker<Scenario> scenarioFaker;
         private IRuleMatcher ruleMatcher = new RuleMatcher();
-        private IAssertFactory assertFactory = new AssertFactory();
 
         public UrlMatchFilterTests()
         {
@@ -50,7 +50,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new UrlMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new UrlMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var port = new ProcessMessagePort()
             {
@@ -80,7 +80,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new UrlMatchFilter<ProcessMessagePort>(new AssertFactory(), new RuleMatcher());
+            var Target = new UrlMatchFilter<ProcessMessagePort>(new RuleMatcher());
 
             var port = new ProcessMessagePort()
             {
@@ -110,7 +110,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 
             #endregion
 
-            var Target = new UrlMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new UrlMatchFilter<ProcessMessagePort>(ruleMatcher);
 
             var port = new ProcessMessagePort()
             {

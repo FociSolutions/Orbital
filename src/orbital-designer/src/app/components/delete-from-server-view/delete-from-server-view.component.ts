@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
 import { Observer } from 'rxjs';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
@@ -14,7 +14,7 @@ import { NotificationService } from 'src/app/services/notification-service/notif
   styleUrls: ['./delete-from-server-view.component.scss'],
 })
 export class DeleteFromServerViewComponent implements OnInit {
-  @Input() set errorsRestRequest(errors: Record<string, unknown>) {
+  @Input() set errorsRestRequest(errors: ValidationErrors | null) {
     if (this.inputControl) {
       this.inputControl.setErrors(errors);
     }
@@ -55,21 +55,17 @@ export class DeleteFromServerViewComponent implements OnInit {
   mockDefinitions: MockDefinition[] = [];
   formArray: FormArray;
   requestObserver: Observer<MockDefinition[]>;
-  options: Record<string, unknown> = {};
-  body?: string = null;
 
-  concatToURI = '';
-
-  inputControl: FormControl;
+  inputControl: FormControl = new FormControl();
   requestInProgress = false;
   title = 'Server URI';
 
-  statusMessage: string;
-  errorMessage: string;
-  deleteInProgress: boolean;
-  triggerOpenConfirmBox: boolean;
+  statusMessage = '';
+  errorMessage = '';
+  deleteInProgress = false;
+  triggerOpenConfirmBox = false;
 
-  controlsMockDefinitionToString = (control: AbstractControl) => control.value.metadata.title;
+  controlsMockDefinitionToString = (control: AbstractControl) => control.value?.metadata?.title ?? '';
 
   ngOnInit() {
     this.inputControl = new FormControl(
@@ -79,7 +75,7 @@ export class DeleteFromServerViewComponent implements OnInit {
   }
 
   sendRequestDisabled() {
-    return this.inputControl.value.length === 0 || this.requestInProgress || this.deleteInProgress;
+    return this.inputControl?.value.length === 0 || this.requestInProgress || this.deleteInProgress;
   }
 
   getSpinnerId() {
@@ -89,12 +85,13 @@ export class DeleteFromServerViewComponent implements OnInit {
   sendRequest() {
     this.statusMessage = '';
     this.errorMessage = '';
-    this.inputControl.markAsDirty();
-    if (this.sendRequestDisabled) {
+    this.inputControl?.markAsDirty();
+    if (!this.sendRequestDisabled()) {
       this.requestInProgress = true;
       this.errorsRestRequest = null;
-
-      this.orbitalService.getAll(`${this.inputControl.value}${this.concatToURI}`).subscribe(this.requestObserver);
+      const url = `${this.inputControl?.value}`;
+      this.logger.info('Import From Server: sendRequest(): url:', url);
+      this.orbitalService.getAll(url).subscribe(this.requestObserver);
     }
   }
 
@@ -105,7 +102,7 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.deleteInProgress = true;
     this.orbitalService
       .deleteMockDefinitions(
-        `${this.inputControl.value}${this.concatToURI}`,
+        `${this.inputControl?.value}`,
         this.mockDefinitions.map((mockDefinition) => mockDefinition.metadata.title)
       )
       .pipe(
@@ -137,7 +134,7 @@ export class DeleteFromServerViewComponent implements OnInit {
    * @param list The list of FormControls given by the shuttle list when the user moves items from
    * one list to the other.
    */
-  onListOutput(list: FormControl[]) {
+  onListOutput(list: AbstractControl[]) {
     this.mockDefinitions = list.map((control) => control.value);
   }
 
@@ -150,7 +147,7 @@ export class DeleteFromServerViewComponent implements OnInit {
     this.logger.debug('Received http response', response);
 
     if (response) {
-      response.forEach((m) => (m.openApi.tags = m.openApi.tags.filter((t) => t.name !== 'openapi')));
+      response.forEach((m) => (m.openApi.tags = m.openApi.tags?.filter((t) => t.name !== 'openapi')));
       this.formArray = new FormArray(response.map((mockDef) => new FormControl(mockDef, null)));
 
       this.logger.debug('DeleteFromServerViewComponent FormArray value:', this.formArray);

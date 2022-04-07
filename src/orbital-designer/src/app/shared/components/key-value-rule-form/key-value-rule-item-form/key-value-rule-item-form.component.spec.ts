@@ -4,25 +4,29 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { KeyValueRuleItemFormComponent, KeyValueRuleItemFormValues } from './key-value-rule-item-form.component';
 import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
-import { Component, ViewChild } from '@angular/core';
+import { Component, SimpleChanges, ViewChild } from '@angular/core';
 
-describe('KeyValueRuleFormComponent', () => {
+describe('KeyValueRuleItemFormComponent', () => {
   let wrapper: TestWrapperComponent;
   let component: KeyValueRuleItemFormComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
   let SAMPLE_VALUE: KeyValueRuleItemFormValues;
-  const VALUE_NULL: KeyValueRuleItemFormValues = { key: null, value: null, type: null };
+  const VALUE_NULL: KeyValueRuleItemFormValues = {
+    key: null as unknown as string,
+    value: null as unknown as string,
+    type: null as unknown as RuleType,
+  };
 
   @Component({
     selector: 'app-test-wrapper-component',
     template: '<app-key-value-rule-item-form [allowKeyWhitespace]="allowKeyWhitespace"></app-key-value-rule-item-form>',
   })
   class TestWrapperComponent {
-    @ViewChild(KeyValueRuleItemFormComponent) child: KeyValueRuleItemFormComponent;
+    @ViewChild(KeyValueRuleItemFormComponent) child!: KeyValueRuleItemFormComponent;
     allowKeyWhitespace = false;
   }
 
@@ -57,7 +61,7 @@ describe('KeyValueRuleFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('KeyValueRuleFormComponent.writeValue', () => {
+  describe('KeyValueRuleItemFormComponent.writeValue', () => {
     it('should set the values for the form fields', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.form.value).toEqual(SAMPLE_VALUE);
@@ -92,7 +96,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent validation', () => {
+  describe('KeyValueRuleItemFormComponent validation', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
@@ -101,13 +105,13 @@ describe('KeyValueRuleFormComponent', () => {
     });
 
     it('should fail validation if the key field is empty', () => {
-      const value: KeyValueRuleItemFormValues = { ...SAMPLE_VALUE, key: null };
+      const value: KeyValueRuleItemFormValues = { ...SAMPLE_VALUE, key: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the key field exceeds its maxlength', () => {
@@ -117,10 +121,10 @@ describe('KeyValueRuleFormComponent', () => {
       };
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeTruthy();
-      expect(actual.maxlength).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.maxlength).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if allowKeyWhitespace is `false` and the key field contains a space empty', () => {
@@ -129,10 +133,10 @@ describe('KeyValueRuleFormComponent', () => {
       fixture.detectChanges();
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeTruthy();
-      expect(actual.whitespace).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.whitespace).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should not fail validation if allowKeyWhitespace is `true` and the key field contains a space empty', () => {
@@ -141,19 +145,19 @@ describe('KeyValueRuleFormComponent', () => {
       fixture.detectChanges();
       component.writeValue(value);
 
-      const actual = component.key.validator(component.key);
+      const actual = component.key.validator?.(component.key);
       expect(actual).toBeNull();
-      expect(component.validate(null)).toBeNull();
+      expect(component.validate(null as unknown as FormControl)).toBeNull();
     });
 
     it('should fail validation if the value field is empty', () => {
-      const value: KeyValueRuleItemFormValues = { ...SAMPLE_VALUE, value: null };
+      const value: KeyValueRuleItemFormValues = { ...SAMPLE_VALUE, value: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the value field exceeds its maxlength', () => {
@@ -163,10 +167,10 @@ describe('KeyValueRuleFormComponent', () => {
       };
       component.writeValue(value);
 
-      const actual = component.value.validator(component.value);
+      const actual = component.value.validator?.(component.value);
       expect(actual).toBeTruthy();
-      expect(actual.maxlength).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.maxlength).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the entry is duplicated', () => {
@@ -175,12 +179,12 @@ describe('KeyValueRuleFormComponent', () => {
 
       const actual = component.form.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 
-  describe('KeyValueRuleFormComponent.setDisabledState', () => {
+  describe('KeyValueRuleItemFormComponent.setDisabledState', () => {
     it('should set the disabled state to true on all the controls in the form group', () => {
       component.setDisabledState(true);
       expect(Object.values(component.form.controls).every((x) => x.disabled && !x.enabled)).toBe(true);
@@ -194,7 +198,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent.registerOnChange', () => {
+  describe('KeyValueRuleItemFormComponent.registerOnChange', () => {
     it('should add an onChange function', () => {
       const expected = () => undefined;
       component.registerOnChange(expected);
@@ -203,7 +207,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent.registerOnTouched', () => {
+  describe('KeyValueRuleItemFormComponent.registerOnTouched', () => {
     it('should add an onChange function', () => {
       const expected = () => undefined;
       component.registerOnTouched(expected);
@@ -212,7 +216,7 @@ describe('KeyValueRuleFormComponent', () => {
     });
   });
 
-  describe('KeyValueRuleFormComponent.noWhiteSpaceValidator', () => {
+  describe('KeyValueRuleItemFormComponent.noWhiteSpaceValidator', () => {
     it('should return null if the value contains no white space', () => {
       const control = { value: faker.random.word() } as AbstractControl;
       const actual = KeyValueRuleItemFormComponent.noWhiteSpaceValidator(control);
@@ -225,7 +229,77 @@ describe('KeyValueRuleFormComponent', () => {
       const actual = KeyValueRuleItemFormComponent.noWhiteSpaceValidator(control);
 
       expect(actual).toBeTruthy();
-      expect(actual.whitespace).toBeTruthy();
+      expect(actual?.whitespace).toBeTruthy();
+    });
+  });
+
+  describe('KeyValueRuleItemFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('KeyValueRuleItemFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

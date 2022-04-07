@@ -4,7 +4,7 @@
   <div class="row">
     <mat-form-field>
       <mat-label>Policy Type</mat-label>
-      <mat-select formControlName="type">
+      <mat-select formControlName="type" (blur)="touch()">
         <mat-option *ngFor="let p of policyTypes" [value]="p.value">
           {{ p.label }}
         </mat-option>
@@ -12,7 +12,7 @@
     </mat-form-field>
 
     <mat-form-field [ngClass]="[type.value !== PolicyType.DELAY_RESPONSE ? 'hide' : '', 'flex-grow']">
-      <input formControlName="value" matInput type="number" min="1" step="1" placeholder="Delay" />
+      <input formControlName="value" matInput type="number" min="1" step="1" placeholder="Delay" (blur)="touch()" />
       <mat-hint>Milliseconds</mat-hint>
     </mat-form-field>
 

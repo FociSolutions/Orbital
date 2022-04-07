@@ -4,16 +4,17 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UrlRuleItemFormComponent, UrlRuleItemFormValues } from './url-rule-item-form.component';
 import * as faker from 'faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
+import { SimpleChanges } from '@angular/core';
 
-describe('UrlRuleFormComponent', () => {
+describe('UrlRuleItemFormComponent', () => {
   let component: UrlRuleItemFormComponent;
   let fixture: ComponentFixture<UrlRuleItemFormComponent>;
   let SAMPLE_VALUE: UrlRuleItemFormValues;
-  const VALUE_NULL: UrlRuleItemFormValues = { type: null, path: undefined };
+  const VALUE_NULL: UrlRuleItemFormValues = { type: null as unknown as RuleType, path: undefined as unknown as string };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,7 +44,7 @@ describe('UrlRuleFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('UrlRuleFormComponent.writeValue', () => {
+  describe('UrlRuleItemFormComponent.writeValue', () => {
     it('should set the values for the form fields', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.form.value).toEqual(SAMPLE_VALUE);
@@ -66,14 +67,14 @@ describe('UrlRuleFormComponent', () => {
       spy.mockRestore();
     });
 
-    it('should notify of a touch when called', () => {
+    it('should not notify of a touch when called', () => {
       const spy = jest.fn();
       component.registerOnTouched(spy);
 
       component.writeValue(SAMPLE_VALUE);
       component.writeValue(null);
 
-      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledTimes(0);
       spy.mockRestore();
     });
 
@@ -92,7 +93,7 @@ describe('UrlRuleFormComponent', () => {
     });
   });
 
-  describe('UrlRuleFormComponent validation', () => {
+  describe('UrlRuleItemFormComponent validation', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
@@ -101,23 +102,23 @@ describe('UrlRuleFormComponent', () => {
     });
 
     it('should fail validation if the type field is empty', () => {
-      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, type: null };
+      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, type: null as unknown as RuleType };
       component.writeValue(value);
 
-      const actual = component.type.validator(component.type);
+      const actual = component.type.validator?.(component.type);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the path field is empty', () => {
-      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: null };
+      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: null as unknown as string };
       component.writeValue(value);
 
-      const actual = component.path.validator(component.path);
+      const actual = component.path.validator?.(component.path);
       expect(actual).toBeTruthy();
-      expect(actual.required).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.required).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if the entry is duplicated', () => {
@@ -126,35 +127,35 @@ describe('UrlRuleFormComponent', () => {
 
       const actual = component.form.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 
-  describe('UrlRuleFormComponent.adjustFormValue', () => {
+  describe('UrlRuleItemFormComponent.adjustFormValue', () => {
     it('should set the path to an empty string if the RuleType is set to ACCEPTALL', () => {
       const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, type: RuleType.ACCEPTALL };
       const actual = component.adjustFormValue(value);
 
-      expect(actual.path).toBe('');
+      expect(actual?.path).toBe('');
     });
 
     it('should set the path to an empty string if the path is null', () => {
-      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: null };
+      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: null as unknown as string };
       const actual = component.adjustFormValue(value);
 
-      expect(actual.path).toBe('');
+      expect(actual?.path).toBe('');
     });
 
     it('should set the path to an empty string if the path is undefined', () => {
-      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: undefined };
+      const value: UrlRuleItemFormValues = { ...SAMPLE_VALUE, path: undefined as unknown as string };
       const actual = component.adjustFormValue(value);
 
-      expect(actual.path).toBe('');
+      expect(actual?.path).toBe('');
     });
   });
 
-  describe('UrlRuleFormComponent.handleDisablingPathField', () => {
+  describe('UrlRuleItemFormComponent.handleDisablingPathField', () => {
     it('should save the path value and disable the path field if it is enabled and the type is ACCEPTALL', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.path.enabled).toBe(true);
@@ -168,7 +169,7 @@ describe('UrlRuleFormComponent', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.path.enabled).toBe(true);
 
-      component.writeValue({ type: null });
+      component.writeValue({ type: null as unknown as RuleType });
       expect(component.path.disabled).toBe(true);
       expect(component.path.value).toBe(SAMPLE_VALUE.path);
     });
@@ -188,7 +189,7 @@ describe('UrlRuleFormComponent', () => {
     });
   });
 
-  describe('UrlRuleFormComponent.setDisabledState', () => {
+  describe('UrlRuleItemFormComponent.setDisabledState', () => {
     it('should set the disabled state to true on all the controls in the form group', () => {
       component.setDisabledState(true);
       expect(Object.values(component.form.controls).every((x) => x.disabled && !x.enabled)).toBe(true);
@@ -202,7 +203,7 @@ describe('UrlRuleFormComponent', () => {
     });
   });
 
-  describe('UrlRuleFormComponent.registerOnChange', () => {
+  describe('UrlRuleItemFormComponent.registerOnChange', () => {
     it('should set the onChange function', () => {
       const expected = () => undefined;
       component.registerOnChange(expected);
@@ -211,12 +212,82 @@ describe('UrlRuleFormComponent', () => {
     });
   });
 
-  describe('UrlRuleFormComponent.registerOnTouched', () => {
+  describe('UrlRuleItemFormComponent.registerOnTouched', () => {
     it('should set the onTouched function', () => {
       const expected = () => undefined;
       component.registerOnTouched(expected);
 
       expect(component.onTouched).toContain(expected);
+    });
+  });
+
+  describe('UrlRuleItemFormComponent.ngOnChanges', () => {
+    it('should mark the form as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(true);
+    });
+
+    it('should not mark the form as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+
+    it('should not mark the form as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.form.touched).toBe(false);
+    });
+  });
+
+  describe('UrlRuleItemFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
   });
 });

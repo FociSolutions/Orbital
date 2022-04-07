@@ -6,8 +6,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./dialog-box.component.scss'],
 })
 export class DialogBoxComponent {
-  @Input() titleText: string;
-  @Input() bodyText: string;
+  @Input() titleText = '';
+  @Input() bodyText = '';
   @Input() confirmButtonText = 'Confirm';
   @Input() cancelButtonText = 'Cancel';
 

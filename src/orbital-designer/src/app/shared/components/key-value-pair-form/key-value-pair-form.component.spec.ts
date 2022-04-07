@@ -6,15 +6,15 @@ import {
   KeyValuePairItemFormComponent,
   KeyValuePairItemFormValues,
 } from './key-value-pair-item-form/key-value-pair-item-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { GetStringErrorsPipe } from '../../pipes/get-string-errors/get-string-errors.pipe';
-import { Component, ViewChild } from '@angular/core';
+import { Component, SimpleChanges, ViewChild } from '@angular/core';
 
-describe('KvpsFormComponent', () => {
+describe('KeyValuePairFormComponent', () => {
   let wrapper: TestWrapperComponent;
   let component: KeyValuePairFormComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
@@ -27,7 +27,7 @@ describe('KvpsFormComponent', () => {
     template: '<app-key-value-pair-form [allowDuplicateKeys]="allowDuplicateKeys"></app-key-value-pair-form>',
   })
   class TestWrapperComponent {
-    @ViewChild(KeyValuePairFormComponent) child: KeyValuePairFormComponent;
+    @ViewChild(KeyValuePairFormComponent) child!: KeyValuePairFormComponent;
     allowDuplicateKeys = false;
   }
 
@@ -67,7 +67,7 @@ describe('KvpsFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('KvpsFormComponent.writeValue', () => {
+  describe('KeyValuePairFormComponent.writeValue', () => {
     it('should set the values for the form fields', () => {
       component.writeValue(SAMPLE_VALUE);
       expect(component.formArray.value).toEqual(SAMPLE_VALUE);
@@ -102,18 +102,18 @@ describe('KvpsFormComponent', () => {
     });
   });
 
-  describe('KvpsFormComponent validation', () => {
+  describe('KeyValuePairFormComponent validation', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
     it('should not fail validation with no inputs', () => {
       component.writeValue(VALUE_NULL);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
@@ -122,8 +122,8 @@ describe('KvpsFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if more than one entry has the same key but different value', () => {
@@ -131,11 +131,11 @@ describe('KvpsFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
-    describe('KvpsFormComponent validation allowDuplicateKeys', () => {
+    describe('KeyValuePairFormComponent validation allowDuplicateKeys', () => {
       it('should fail validation if allowDuplicateKeys is enabled and any entry is completely duplicated', () => {
         wrapper.allowDuplicateKeys = true;
         fixture.detectChanges();
@@ -143,8 +143,8 @@ describe('KvpsFormComponent', () => {
 
         const actual = component.formArray.errors;
         expect(actual).toBeTruthy();
-        expect(actual.duplicate).toBeTruthy();
-        expect(component.validate(null)).toBeTruthy();
+        expect(actual?.duplicate).toBeTruthy();
+        expect(component.validate(null as unknown as FormControl)).toBeTruthy();
       });
 
       it('should not fail validation if allowDuplicateKeys is enabled and entries have the same keys with different values ', () => {
@@ -154,12 +154,12 @@ describe('KvpsFormComponent', () => {
 
         const actual = component.formArray.errors;
         expect(actual).toBeNull();
-        expect(component.validate(null)).toBeNull();
+        expect(component.validate(null as unknown as FormControl)).toBeNull();
       });
     });
   });
 
-  describe('KvpsFormComponent.setDisabledState', () => {
+  describe('KeyValuePairFormComponent.setDisabledState', () => {
     it('should set the disabled state to true on all the controls in the form group', () => {
       component.setDisabledState(true);
       expect(Object.values(component.formArray.controls).every((x) => x.disabled && !x.enabled)).toBe(true);
@@ -172,7 +172,7 @@ describe('KvpsFormComponent', () => {
     });
   });
 
-  describe('KvpsFormComponent.registerOnChange', () => {
+  describe('KeyValuePairFormComponent.registerOnChange', () => {
     it('should set the onChange function', () => {
       const expected = () => undefined;
       component.registerOnChange(expected);
@@ -181,7 +181,7 @@ describe('KvpsFormComponent', () => {
     });
   });
 
-  describe('KvpsFormComponent.registerOnTouched', () => {
+  describe('KeyValuePairFormComponent.registerOnTouched', () => {
     it('should set the onTouched function', () => {
       const expected = () => undefined;
       component.registerOnTouched(expected);
@@ -190,7 +190,7 @@ describe('KvpsFormComponent', () => {
     });
   });
 
-  describe('KvpsFormComponent.addItemHandler', () => {
+  describe('KeyValuePairFormComponent.addItemHandler', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).cdRef = { detectChanges: jest.fn() };
@@ -229,7 +229,7 @@ describe('KvpsFormComponent', () => {
     });
   });
 
-  describe('KvpsFormComponent.removeItemHandler', () => {
+  describe('KeyValuePairFormComponent.removeItemHandler', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (component as any).cdRef = { detectChanges: jest.fn() };
@@ -263,6 +263,76 @@ describe('KvpsFormComponent', () => {
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith(false);
+      spy.mockRestore();
+    });
+  });
+
+  describe('KeyValuePairFormComponent.ngOnChanges', () => {
+    it('should mark the formArray as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(true);
+    });
+
+    it('should not mark the formArray as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+  });
+
+  describe('KeyValuePairFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
       spy.mockRestore();
     });
   });

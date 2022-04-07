@@ -10,8 +10,8 @@ import { NGXLogger } from 'ngx-logger';
 import { cloneDeep } from 'lodash';
 
 export interface State {
-  selectedEndpoint: Endpoint;
-  selectedScenario: Scenario;
+  selectedEndpoint: Endpoint | null;
+  selectedScenario: Scenario | null;
   mockDefinition: MockDefinition;
   mockDefinitions: Record<string, MockDefinition>;
   endpoints: Endpoint[];
@@ -28,11 +28,11 @@ export class DesignerStore extends Store<State> {
 
   constructor(private logger: NGXLogger) {
     super({
-      selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey)),
-      selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey)),
-      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey)),
-      mockDefinitions: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey)) || {},
-      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey)) || [],
+      selectedEndpoint: JSON.parse(localStorage.getItem(DesignerStore.selectedEndpointStoreKey) ?? 'null'),
+      selectedScenario: JSON.parse(localStorage.getItem(DesignerStore.selectedScenarioStoreKey) ?? 'null'),
+      mockDefinition: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionStoreKey) ?? 'null'),
+      mockDefinitions: JSON.parse(localStorage.getItem(DesignerStore.mockDefinitionsStoreKey) ?? 'null') || {},
+      endpoints: JSON.parse(localStorage.getItem(DesignerStore.endpointsStoreKey) ?? 'null') || [],
     });
 
     this.state$.subscribe((state) => {
@@ -115,27 +115,32 @@ export class DesignerStore extends Store<State> {
   /**
    * This setter updates the selected endpoint for the designer store
    */
-  set selectedEndpoint(endpoint: Endpoint) {
+  set selectedEndpoint(endpoint: Endpoint | null) {
     this.logger.debug('setting selectedEndpoint to ', endpoint);
     this.setState({
       ...this.state,
-      selectedEndpoint: {
-        ...endpoint,
-      },
+      selectedEndpoint: endpoint ? { ...endpoint } : null,
     });
   }
 
   /**
    * This setter updates the selected scenario for the designer store
    */
-  set selectedScenario(scenario: Scenario) {
+  set selectedScenario(scenario: Scenario | null) {
     this.logger.debug('setting selectedScenario to ', scenario);
     this.setState({
       ...this.state,
-      selectedScenario: {
-        ...scenario,
-      },
+      selectedScenario: scenario ? { ...scenario } : null,
     });
+  }
+
+  static extractOperationObject(
+    pathItemObject: OpenAPIV2.PathItemObject,
+    verb: VerbType
+  ): OpenAPIV2.OperationObject | null {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const method = VerbType[verb] as keyof typeof OpenAPIV2.HttpMethods;
+    return pathItemObject[OpenAPIV2.HttpMethods[method]] ?? null;
   }
 
   /**
@@ -147,13 +152,18 @@ export class DesignerStore extends Store<State> {
   setEndpoints(doc: OpenAPIV2.Document, clearStore = true): void {
     this.logger.debug('Clearing current endpoints: ', clearStore);
     const pathStrings = Object.keys(doc.paths);
-    let endpoints = [];
+    let endpoints: Endpoint[] = [];
+
+    const httpMethods = Object.keys(OpenAPIV2.HttpMethods);
+    const validVerbTypes: VerbType[] = Object.keys(VerbType)
+      .map((v) => Number(v))
+      .filter((v) => !isNaN(v) && httpMethods.includes(VerbType[v]));
+
     for (const path of pathStrings) {
       const pathObject: OpenAPIV2.PathItemObject = doc.paths[path];
-      const newEndpoints = Object.keys(VerbType)
-        .map((verb) => ({ verb: VerbType[verb], lowerVerb: verb.toLowerCase() }))
-        .map(({ verb, lowerVerb }) => (pathObject[lowerVerb] ? { path, verb, spec: pathObject[lowerVerb] } : null))
-        .filter((endpoint) => endpoint);
+      const newEndpoints: Endpoint[] = validVerbTypes
+        .map((verb) => ({ path, verb, spec: DesignerStore.extractOperationObject(pathObject, verb) }))
+        .filter((e): e is Endpoint => e.spec !== null);
       endpoints = [...endpoints, ...newEndpoints];
     }
     this.logger.debug('Endpoints from openApi document ', endpoints);

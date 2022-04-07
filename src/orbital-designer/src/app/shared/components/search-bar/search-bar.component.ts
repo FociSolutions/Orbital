@@ -6,21 +6,18 @@ import { MatInput } from '@angular/material/input';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
 })
-export class SearchBarComponent implements OnChanges {
-  @Output() filteredList: EventEmitter<unknown[]>;
-  @ViewChild(MatInput) input: MatInput;
-  @Input() list: unknown[] = [];
-  @Input() itemToStringFn: (_: unknown) => string = (x: string) => x;
-  constructor() {
-    this.filteredList = new EventEmitter<unknown[]>();
-  }
+export class SearchBarComponent<T> implements OnChanges {
+  @Output() filteredList = new EventEmitter<T[]>();
+  @ViewChild(MatInput) input: MatInput | undefined;
+  @Input() list: T[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Input() itemToStringFn: (_: any) => string = (x: any) => String(x);
 
   /**
    * Function that takes a string and a list as input and filters out the mat list
    * based on the input text
    * @param value The string to be searched
    */
-
   onSearchInput(value: string) {
     this.filteredList.emit(
       this.list.filter((option) => SearchBarComponent.ignoreCaseContainsMatch(this.itemToStringFn(option), value))

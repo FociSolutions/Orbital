@@ -1,28 +1,21 @@
-﻿using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 
-using Microsoft.Net.Http.Headers;
+using Orbital.Mock.Definition;
+using Orbital.Mock.Definition.Rules;
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Tokens;
 
-using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Rules;
-using Orbital.Mock.Server.Models.Interfaces;
-using Orbital.Mock.Server.Factories;
 using Orbital.Mock.Server.Pipelines.Ports;
 using Orbital.Mock.Server.Pipelines.Filters;
 using Orbital.Mock.Server.Pipelines.RuleMatchers;
-
-using Xunit;
-using Assert = Xunit.Assert;
+using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
 
 using Bogus;
-using Scriban;
-using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using Orbital.Mock.Server.Factories.Interfaces;
-using System;
-using System.IdentityModel.Tokens.Jwt;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Orbital.Mock.Server.Tests.Pipelines.Filters
 {
@@ -30,7 +23,6 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
     {
         private readonly Faker<Scenario> scenarioFaker;
         private IRuleMatcher ruleMatcher = new RuleMatcher();
-        private IAssertFactory assertFactory = new AssertFactory();
 
         public TokenRequestMatchFilterTests()
         {
@@ -41,11 +33,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                     Key = f.Random.Word(),
                     Value = f.Random.Word()
                 });
-            var fakeTokenRule = new Faker<TokenRuleInfo>()
+            var fakeTokenRule = new Faker<TokenRules>()
                 .RuleFor(t => t.Rules, f => fakeTokenRequestMatchRules.Generate(5));
 
             scenarioFaker = new Faker<Scenario>()
-                                .RuleFor(m => m.TokenRule, fakeTokenRule)
+                                .RuleFor(m => m.TokenRules, fakeTokenRule)
                                 .RuleFor(m => m.Id, f => Guid.NewGuid().ToString());
         }
 
@@ -54,10 +46,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
-            fakeScenario.TokenRule.ValidationType = TokenValidationType.REQUEST_MATCH;
+            fakeScenario.TokenRules.ValidationType = TokenValidationType.REQUEST_MATCH;
 
             string secret = TestUtils.GetRandomString(new Faker(), minLen: 64);
-            var rules = fakeScenario.TokenRule.Rules.Select(r => r.GenerateKeyValuePair());
+            var rules = fakeScenario.TokenRules.Rules.Select(r => r.GenerateKeyValuePair());
             var jwtString = TestUtils.GenerateJwt(secret, claims: rules.ToList());
             var port = new ProcessMessagePort()
             {
@@ -68,7 +60,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new TokenRequestMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new TokenRequestMatchFilter<ProcessMessagePort>(ruleMatcher);
             Target.Process(port);
 
             Assert.Equal(rules.Count(), port.TokenMatchResults.Where(x => x.Match == MatchResultType.Success).Count());
@@ -80,11 +72,11 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
-            fakeScenario.TokenRule.ValidationType = TokenValidationType.REQUEST_MATCH;
-            fakeScenario.TokenRule.CheckExpired = true;
+            fakeScenario.TokenRules.ValidationType = TokenValidationType.REQUEST_MATCH;
+            fakeScenario.TokenRules.CheckExpired = true;
 
             string secret = TestUtils.GetRandomString(new Faker(), minLen: 64);
-            var rules = fakeScenario.TokenRule.Rules.Select(r => KeyValuePair.Create(r.Key, "test")).Take(4).ToList();
+            var rules = fakeScenario.TokenRules.Rules.Select(r => KeyValuePair.Create(r.Key, "test")).Take(4).ToList();
             var jwtString = TestUtils.GenerateJwt(secret, claims: rules);
 
             var port = new ProcessMessagePort()
@@ -96,7 +88,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new TokenRequestMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new TokenRequestMatchFilter<ProcessMessagePort>(ruleMatcher);
             Target.Process(port);
 
             Assert.Null(port.Token);
@@ -108,10 +100,10 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         {
             #region Test Setup
             var fakeScenario = scenarioFaker.Generate();
-            fakeScenario.TokenRule.ValidationType = TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH;
+            fakeScenario.TokenRules.ValidationType = TokenValidationType.JWT_VALIDATION_AND_REQUEST_MATCH;
 
             string secret = TestUtils.GetRandomString(new Faker(), minLen: 64);
-            var rules = fakeScenario.TokenRule.Rules.Select(r => r.GenerateKeyValuePair());
+            var rules = fakeScenario.TokenRules.Rules.Select(r => r.GenerateKeyValuePair());
             var jwtString = TestUtils.GenerateJwt(secret, claims: rules.ToList());
             var port = new ProcessMessagePort()
             {
@@ -122,7 +114,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
             };
             #endregion
 
-            var Target = new TokenRequestMatchFilter<ProcessMessagePort>(assertFactory, ruleMatcher);
+            var Target = new TokenRequestMatchFilter<ProcessMessagePort>(ruleMatcher);
             Target.Process(port);
 
             Assert.Single(port.TokenMatchResults);

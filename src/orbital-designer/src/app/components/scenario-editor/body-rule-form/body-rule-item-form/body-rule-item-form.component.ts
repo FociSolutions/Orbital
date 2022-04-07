@@ -1,4 +1,15 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  forwardRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   ControlValueAccessor,
@@ -21,6 +32,7 @@ import {
   JsonRuleCondition,
   TextRuleCondition,
 } from './body-rule-item-form.types';
+import { Nullable } from 'src/app/shared/Utilities/nullable';
 
 export interface BodyRuleItemFormValues {
   type: RuleType;
@@ -44,8 +56,8 @@ export interface BodyRuleItemFormValues {
     },
   ],
 })
-export class BodyRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy {
-  form: FormGroup;
+export class BodyRuleItemFormComponent implements ControlValueAccessor, Validator, OnInit, OnChanges, OnDestroy {
+  form: FormGroup = this.formBuilder.group({});
 
   get ruleType(): FormControl {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -62,14 +74,16 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     return this.form.get('value') as FormControl;
   }
 
-  @Output() readonly addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
-  @Output() readonly removeItemEvent = new EventEmitter<void>();
-
-  @Input() readonly title = '';
+  @Input() touched = false;
+  @Input() readonly title: string = '';
   @Input() readonly errors: string[] = [];
-  @Input() mode: 'view' | 'edit' = 'view';
+  @Input() mode: 'add' | 'edit' | 'view' = 'view';
   @Input() readonly itemIsDuplicatedEvent = new EventEmitter<boolean>();
   @Input() readonly pathMaxLength = 3000;
+
+  @Output() addItemEvent = new EventEmitter<BodyRuleItemFormValues>();
+  @Output() removeItemEvent = new EventEmitter<void>();
+  @Output() touchedEvent = new EventEmitter<void>();
 
   readonly ruleTypes = [
     { value: BodyRuleType.TEXT, label: 'Text' },
@@ -96,9 +110,9 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
   valueEditorOptions = new JsonEditorOptions();
   initValueData = {};
   valueDataWasFocused = false;
-  @ViewChild(JsonEditorComponent, { static: false }) valueEditor: JsonEditorComponent;
+  @ViewChild(JsonEditorComponent, { static: false }) valueEditor: JsonEditorComponent | null = null;
 
-  defaults: InternalBodyRuleItemFormValues = {
+  defaults: Nullable<InternalBodyRuleItemFormValues> = {
     ruleType: null,
     ruleCondition: null,
     value: '{}',
@@ -116,7 +130,6 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     this.subscriptions.push(
       this.form.valueChanges.subscribe((value: InternalBodyRuleItemFormValues | null) => {
         this.onChange.forEach((fn) => fn(this.adaptInternalFormatToExternal(value)));
-        this.onTouched.forEach((fn) => fn());
       }),
 
       this.ruleType.valueChanges.subscribe((value: BodyRuleType | null) => {
@@ -131,21 +144,38 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     this.valueEditorOptions.modes = ['code', 'text'];
     this.valueEditorOptions.statusBar = true;
     this.valueEditorOptions.onFocus = () => (this.valueDataWasFocused = true);
-    this.valueEditorOptions.onBlur = () => this.valueDataWasFocused && this.value.markAsTouched();
+    this.valueEditorOptions.onBlur = () => {
+      if (this.valueDataWasFocused) {
+        this.value.markAsTouched();
+        this.touch();
+      }
+    };
     this.valueEditorOptions.onChangeText = (jsonString: string) => {
       this.value.markAsDirty();
       this.value.setValue(jsonString);
     };
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.touched?.firstChange && changes.touched?.currentValue) {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  touch() {
+    this.onTouched.forEach((fn) => fn());
+    this.touchedEvent.emit();
+  }
+
   adaptInternalFormatToExternal(values: InternalBodyRuleItemFormValues | null): BodyRuleItemFormValues | null {
-    return !values ? null : { type: this.getExternalRuleType(values), value: values.value };
+    const type = this.getExternalRuleType(values);
+    return !values || !type ? null : { type, value: values.value ?? '' };
   }
 
   adaptExternalFormatToInternal(
     values: Partial<BodyRuleItemFormValues> | null
-  ): Partial<InternalBodyRuleItemFormValues> | null {
-    return !values ? null : { ...this.getInternalRuleType(values.type), value: values.value };
+  ): Nullable<InternalBodyRuleItemFormValues> | null {
+    return !values ? null : { ...this.getInternalRuleType(values.type), value: values.value ?? null };
   }
 
   handleIsDuplicatedEvent(isDuplicated: boolean) {
@@ -156,7 +186,7 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
           duplicate: 'This item already exists. Duplicates are not allowed.',
         });
       } else {
-        const { duplicate: _, ...errors } = this.form.errors;
+        const { duplicate: _, ...errors } = this.form.errors ?? {};
         this.form.setErrors(Object.keys(errors).length ? errors : null);
       }
     }
@@ -231,6 +261,15 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     }
   }
 
+  addItem() {
+    if (this.form.valid) {
+      const externalValue = this.adaptInternalFormatToExternal(this.form.value);
+      if (externalValue) {
+        this.addItemEvent.emit(externalValue);
+      }
+    }
+  }
+
   saveItem() {
     this.mode = 'view';
     this.initValueData = this.safeParseJson(this.value.value ?? this.defaults.value);
@@ -257,9 +296,9 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
       this.form.reset(this.defaults, { emitEvent: false });
     } else {
       const int_value = this.adaptExternalFormatToInternal(value);
-      this.setCurrentMatchConditions(int_value.ruleType);
-      this.handleValueSetupForType(int_value.ruleType);
-      this.form.patchValue(int_value, { emitEvent: false });
+      this.setCurrentMatchConditions(int_value?.ruleType ?? null);
+      this.handleValueSetupForType(int_value?.ruleType ?? null);
+      this.form.patchValue(int_value ?? {}, { emitEvent: false });
     }
     this.initValueData = this.safeParseJson(this.value.value ?? this.defaults.value);
     this.onValidationChange.forEach((fn) => fn());
@@ -276,14 +315,14 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
   static buildForm(item: Partial<BodyRuleItemFormValues>): FormGroup {
     // Note: this form only needs the structure to propagate values, no functionality required
     const fb = new FormBuilder();
-    const schema: BodyRuleItemFormValues = {
+    const schema: Nullable<BodyRuleItemFormValues> = {
       type: item.type ?? null,
       value: item.value ?? null,
     };
     return fb.group(schema);
   }
 
-  getExternalRuleType(rule: Partial<InternalBodyRuleItemFormValues> | null): RuleType {
+  getExternalRuleType(rule: Partial<InternalBodyRuleItemFormValues> | null): RuleType | null {
     switch (rule?.ruleType) {
       case BodyRuleType.TEXT:
         switch (rule?.ruleCondition) {
@@ -296,7 +335,7 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
           case TextRuleCondition.ENDS_WITH:
             return RuleType.TEXTENDSWITH;
           default: {
-            const _: never = rule;
+            const _: undefined = rule.ruleCondition;
           }
         }
         break;
@@ -311,18 +350,18 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
           case JsonRuleCondition.SCHEMA:
             return RuleType.JSONSCHEMA;
           default: {
-            const _: never = rule;
+            const _: undefined = rule.ruleCondition;
           }
         }
         break;
       default: {
-        const _: never = rule;
+        const _: undefined = rule?.ruleType;
       }
     }
     return null;
   }
 
-  getInternalRuleType(type: RuleType): InternalRuleType {
+  getInternalRuleType(type?: RuleType | null): Nullable<InternalRuleType> {
     switch (type) {
       case RuleType.NONE:
       case RuleType.REGEX:
@@ -343,8 +382,12 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
         return { ruleType: BodyRuleType.TEXT, ruleCondition: TextRuleCondition.STARTS_WITH };
       case RuleType.TEXTENDSWITH:
         return { ruleType: BodyRuleType.TEXT, ruleCondition: TextRuleCondition.ENDS_WITH };
+      case undefined:
+      case null:
+        return { ruleType: null, ruleCondition: null };
       default: {
         const _: never = type;
+        throw new Error('Invalid RuleType');
       }
     }
   }
@@ -359,11 +402,11 @@ export class BodyRuleItemFormComponent implements ControlValueAccessor, Validato
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  readonly onChange: Array<(value: BodyRuleItemFormValues) => void> = [];
+  readonly onChange: Array<(value: BodyRuleItemFormValues | null) => void> = [];
   readonly onTouched: Array<() => void> = [];
   readonly onValidationChange: Array<() => void> = [];
 
-  registerOnChange(fn: (value: BodyRuleItemFormValues) => void): void {
+  registerOnChange(fn: (value: BodyRuleItemFormValues | null) => void): void {
     this.onChange.push(fn);
   }
 

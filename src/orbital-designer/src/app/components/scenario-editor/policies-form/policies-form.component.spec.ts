@@ -4,13 +4,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as faker from 'faker';
 import { PolicyFormComponent } from './policy-form/policy-form.component';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy-type';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { DelayResponsePolicy } from 'src/app/models/mock-definition/scenario/policy.model';
 import { GetStringErrorsPipe } from 'src/app/shared/pipes/get-string-errors/get-string-errors.pipe';
+import { SimpleChanges } from '@angular/core';
 
 describe('PoliciesFormComponent', () => {
   let component: PoliciesFormComponent;
@@ -86,14 +87,14 @@ describe('PoliciesFormComponent', () => {
     it('should not fail validation with valid inputs', () => {
       component.writeValue(SAMPLE_VALUE);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
     it('should not fail validation with no inputs', () => {
       component.writeValue(VALUE_NULL);
 
-      const actual = component.validate(null);
+      const actual = component.validate(null as unknown as FormControl);
       expect(actual).toBeNull();
     });
 
@@ -102,8 +103,8 @@ describe('PoliciesFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
 
     it('should fail validation if there is more than one delay policy', () => {
@@ -111,8 +112,8 @@ describe('PoliciesFormComponent', () => {
 
       const actual = component.formArray.errors;
       expect(actual).toBeTruthy();
-      expect(actual.duplicate).toBeTruthy();
-      expect(component.validate(null)).toBeTruthy();
+      expect(actual?.duplicate).toBeTruthy();
+      expect(component.validate(null as unknown as FormControl)).toBeTruthy();
     });
   });
 
@@ -180,7 +181,7 @@ describe('PoliciesFormComponent', () => {
       component.addPolicyHandler(DELAY_POLICY);
       component.addPolicyHandler(DELAY_POLICY);
 
-      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith(true);
       spy.mockRestore();
     });
@@ -218,8 +219,78 @@ describe('PoliciesFormComponent', () => {
       const spy = jest.spyOn(component.policyIsDuplicatedEvent, 'emit');
       component.removePolicyHandler(0);
 
-      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith(false);
+      spy.mockRestore();
+    });
+  });
+
+  describe('PoliciesFormComponent.ngOnChanges', () => {
+    it('should mark the formArray as touched if the touched input is true and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(true);
+    });
+
+    it('should not mark the formArray as touched if the touched input is false and not the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => false,
+          firstChange: false,
+          previousValue: undefined,
+          currentValue: false,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input is the firstChange', () => {
+      const changes: SimpleChanges = {
+        touched: {
+          isFirstChange: () => true,
+          firstChange: true,
+          previousValue: undefined,
+          currentValue: true,
+        },
+      };
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+
+    it('should not mark the formArray as touched if the input does not contain the touched change', () => {
+      const changes: SimpleChanges = {};
+      component.ngOnChanges(changes);
+
+      expect(component.formArray.touched).toBe(false);
+    });
+  });
+
+  describe('PoliciesFormComponent.touch', () => {
+    it('should execute the onTouched callbacks', () => {
+      const spy = jest.fn();
+      component.registerOnTouched(spy);
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+
+    it('should emit a touchedEvent when called', () => {
+      const spy = jest.spyOn(component.touchedEvent, 'emit');
+      component.touch();
+
+      expect(spy).toHaveBeenCalledTimes(1);
       spy.mockRestore();
     });
   });

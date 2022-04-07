@@ -21,20 +21,20 @@ import { ValidationType } from 'src/app/models/mock-definition/scenario/token-ru
 export class ScenarioViewComponent implements OnInit, OnDestroy {
   @Input() scenarios: Scenario[] = [];
   @Output() shouldCloneToView = new EventEmitter<Scenario>();
-  private storeSubscription: Subscription;
-  private _selectedMode: number;
+  private storeSubscription: Subscription | null = null;
+  private _selectedMode: ValidationType = ValidationType.NONE;
 
-  endpointVerb: VerbType;
-  endpointPath: string;
+  endpointVerb: VerbType = VerbType.NONE;
+  endpointPath = '';
 
   scenarioList: Scenario[] = [];
   filteredList: Scenario[] = [];
 
-  errorMessage: string;
-  triggerOpen: string;
-  mockDefinition: MockDefinition;
-  isHoveringOverMenu: boolean;
-  dropdownVisible: boolean;
+  errorMessage = '';
+  triggerOpen: string | null = null;
+  mockDefinition: MockDefinition | null = null;
+  isHoveringOverMenu = false;
+  dropdownVisible = false;
 
   modes = [
     { value: ValidationType.NONE, viewValue: 'None' },
@@ -74,32 +74,33 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.storeSubscription.unsubscribe();
+    this.storeSubscription?.unsubscribe();
   }
 
   addScenario() {
     this.router.navigate(['/scenario-editor', uuid.v4()]);
   }
+
   /**
    * Goes back to the endpoint page
    */
   goToEndpoints() {
     this.router.navigateByUrl('/endpoint-view');
   }
+
   /**
    * This function takes an scenario object and return its path as a string
    * @param scenario The scenario to be converted to string
    */
-  scenarioToString(scenario: Scenario): string {
-    if (scenario?.metadata) {
-      return scenario.metadata.title;
-    }
+  scenarioToString(scenario: Scenario | null): string {
+    return scenario?.metadata.title ?? '';
   }
+
   /**
    * This function takes a list of scenarios and updates it to the new list of filtered scenarios
    * @param newScenarios The list of scenarios
    */
-  setFilteredList(newScenarios: Scenario[]) {
+  setFilteredList(newScenarios: Scenario[] | null) {
     if (newScenarios) {
       this.filteredList = newScenarios;
     }
@@ -110,7 +111,7 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
    * Clones a scenario, and adds the -copy suffix to the name. If a scenario already exists with that suffix (and has the same name),
    * then a monotonically increasing integer will be appended such that it does not conflict with any existing scenario names.
    */
-  cloneScenario(scenario: Scenario) {
+  cloneScenario(scenario: Scenario | null) {
     this.logger.debug(scenario);
     const observable = this.mockDefinitionService
       .cloneScenario(this.store.state.mockDefinition.metadata.title, scenario)
@@ -190,19 +191,19 @@ export class ScenarioViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateScenariosValidationType(mode: number) {
+  updateScenariosValidationType(mode: ValidationType) {
     this.scenarioList.forEach((scenario) => {
       scenario.tokenRule.validationType = mode;
       this.store.addOrUpdateScenario(scenario);
     });
   }
 
-  get selectedMode(): number {
+  get selectedMode(): ValidationType {
     return this._selectedMode;
   }
 
-  set selectedMode(value: number) {
+  set selectedMode(value: ValidationType) {
     this._selectedMode = value;
-    this.updateScenariosValidationType(this.selectedMode);
+    this.updateScenariosValidationType(value);
   }
 }

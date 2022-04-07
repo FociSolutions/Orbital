@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Orbital.Mock.Server.Models;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+
+using Microsoft.AspNetCore.Http;
+
+using Orbital.Mock.Definition;
 
 namespace Orbital.Mock.Server.Pipelines.Models
 {

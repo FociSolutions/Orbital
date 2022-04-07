@@ -8,6 +8,7 @@
         [emptyListMessage]="emptyListMessage"
         [noSearchResultsMessage]="noSearchResultsMessage"
         (itemSelected)="onSelectLeft($event)"
+        [itemToStringFn]="itemToStringFn"
       ></app-shuttle-sub-list>
     </mat-card>
   </div>
@@ -24,6 +25,7 @@
         [emptyListMessage]="emptyListMessage"
         [noSearchResultsMessage]="noSearchResultsMessage"
         (itemSelected)="onSelectRight($event)"
+        [itemToStringFn]="itemToStringFn"
       ></app-shuttle-sub-list
     ></mat-card>
   </div>

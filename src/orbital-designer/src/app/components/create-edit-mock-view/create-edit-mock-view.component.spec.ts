@@ -18,7 +18,6 @@ import * as yaml from 'js-yaml';
 import { ReadFileService } from 'src/app/services/read-file/read-file.service';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import * as uuid from 'uuid';
-import { recordMap } from 'src/app/models/record';
 
 describe('CreateEditMockViewComponent', () => {
   let component: CreateEditMockViewComponent;
@@ -52,20 +51,20 @@ describe('CreateEditMockViewComponent', () => {
   describe('CreateEditMockViewComponent.validateText', () => {
     it('should return null if title is valid', () => {
       const title = component.formGroup.get('title');
-      title.setValue('test');
-      expect(title.errors).toBeFalsy();
+      title?.setValue('test');
+      expect(title?.errors).toBeFalsy();
     });
     it('should return error if title is empty', () => {
       const title = component.formGroup.get('title');
-      title.setValue('');
-      expect(title.errors).toEqual({
+      title?.setValue('');
+      expect(title?.errors).toEqual({
         key: 'Title is required.',
       });
     });
     it('should return error if title is just whitespace', () => {
       const title = component.formGroup.get('title');
-      title.setValue(' ');
-      expect(title.errors).toEqual({
+      title?.setValue(' ');
+      expect(title?.errors).toEqual({
         key: 'Title cannot contain only whitespace',
       });
     });
@@ -73,8 +72,8 @@ describe('CreateEditMockViewComponent', () => {
     it('should return error if it is a title and has a title that already exists', () => {
       const title = component.formGroup.get('title');
       component.titleList.push('myMockTest');
-      title.setValue('myMockTest');
-      expect(title.errors).toEqual({
+      title?.setValue('myMockTest');
+      expect(title?.errors).toEqual({
         key: 'Title already exists.',
       });
     });
@@ -103,7 +102,7 @@ describe('CreateEditMockViewComponent', () => {
 
   describe('CreateEditMockViewComponent.createMock', () => {
     it('should set the mockDefinition store and route to mock editor', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         jest.spyOn(TestBed.inject(Router), 'navigateByUrl').mockImplementation((route) => {
           expect(route).toEqual('/endpoint-view');
           return Promise.resolve(false);
@@ -115,7 +114,7 @@ describe('CreateEditMockViewComponent', () => {
     }));
 
     it('should not navigate or change designer store state if the formGroup is invalid', fakeAsync(() => {
-      fixture.ngZone.run(() => {
+      fixture.ngZone?.run(() => {
         const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
         generateMockDefinitionAndSetForm();
         fixture.detectChanges();
@@ -160,12 +159,7 @@ describe('CreateEditMockViewComponent', () => {
 
     it('should find the mockdef in the store', () => {
       const mockId = selectedMockDef.id;
-      expect(
-        component.findSelectedMock(
-          mockId,
-          recordMap(store.state.mockDefinitions, (md) => md)
-        )
-      ).toEqual(selectedMockDef);
+      expect(component.findSelectedMock(mockId, Object.values(store.state.mockDefinitions))).toEqual(selectedMockDef);
     });
   });
 

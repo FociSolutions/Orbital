@@ -1,21 +1,21 @@
-﻿using Orbital.Mock.Server.Factories.Interfaces;
-using Orbital.Mock.Server.Models;
+﻿using System.Linq;
+
+using Orbital.Mock.Definition.Match;
+using Orbital.Mock.Definition.Rules.Assertion;
+
 using Orbital.Mock.Server.Pipelines.Filters.Bases;
 using Orbital.Mock.Server.Pipelines.Ports.Interfaces;
 using Orbital.Mock.Server.Pipelines.RuleMatchers.Interfaces;
-using System.Linq;
 
 namespace Orbital.Mock.Server.Pipelines.Filters
 {
     public class UrlMatchFilter<T> : FaultableBaseFilter<T>
         where T : IFaultablePort, IUrlMatchPort, IScenariosPort, IPathValidationPort
     {
-        private IAssertFactory assertFactory;
         private IRuleMatcher ruleMatcher;
 
-        public UrlMatchFilter(IAssertFactory assertFactory, IRuleMatcher ruleMatcher)
+        public UrlMatchFilter(IRuleMatcher ruleMatcher)
         {
-            this.assertFactory = assertFactory;
             this.ruleMatcher = ruleMatcher;
         }
         /// <summary>
@@ -32,7 +32,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             {
                 foreach (var rule in scenario.RequestMatchRules.UrlRules)
                 {
-                    var assertsList = assertFactory.CreateAssert(rule, port.Path);
+                    var assertsList = AssertFactory.CreateAssert(rule, port.Path);
                     if (!assertsList.Any())
                     {
                         port.URLMatchResults.Add(new MatchResult(MatchResultType.Ignore, scenario.Id, scenario.DefaultScenario));

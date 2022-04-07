@@ -1,6 +1,6 @@
-﻿using Orbital.Mock.Server.Models;
-using Orbital.Mock.Server.Models.Interfaces;
-using System;
+﻿using System;
+
+using Orbital.Mock.Definition.Policies;
 
 namespace Orbital.Mock.Server.Pipelines.Policies
 {

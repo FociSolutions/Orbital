@@ -7,8 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Factories\**" />
+    <EmbeddedResource Remove="Factories\**" />
+    <None Remove="Factories\**" />
+    <None Remove="fixtures\" />
+    <None Remove="fixtures\directory_import_test\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="EmptyJson.json" />
     <None Remove="MockDefinitions\Handler\NewFile1.txt" />
+    <None Remove="NewFile1.txt" />
     <None Remove="Services\" />
+    <None Remove="MockDefinitions\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,12 +48,43 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="fixtures\file_system_service_test\DeleteDir\Dir3.1\Dir3.1.1\file1.1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\file_system_service_test\Dir1\Dir1.1\file1.1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\file_system_service_test\Dir2\file2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\file_system_service_test\Dir3\Dir3.1\Dir3.1.1\file3.1.1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\file_system_service_test\fileRoot.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="xunit.runner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\directory_import_test\mock_definition_1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\directory_import_test\mock_definition_2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\mock_definition_valid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\mock_definition_empty.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="fixtures\mock_definition_invalid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="MockDefinitions\" />
+    <Folder Include="fixtures\directory_import_test\" />
   </ItemGroup>
 </Project>

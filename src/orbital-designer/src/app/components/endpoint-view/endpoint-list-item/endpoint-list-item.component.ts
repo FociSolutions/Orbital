@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./endpoint-list-item.component.scss'],
 })
 export class EndpointListItemComponent {
-  @Input() endpoint: Endpoint;
-  @Input() scenarioCount: number;
+  @Input() endpoint: Endpoint | null = null;
+  @Input() scenarioCount = 0;
 
   constructor(private store: DesignerStore, private logger: NGXLogger, private router: Router) {}
 
@@ -29,7 +29,7 @@ export class EndpointListItemComponent {
    * Gets the endpoint's description
    */
   get endpointDescription(): string {
-    return !this.endpoint || !this.endpoint.spec.description ? 'No description' : this.endpoint.spec.description;
+    return !this.endpoint?.spec.description ? 'No description' : this.endpoint.spec.description;
   }
 
   get scenarioDisplay(): string {

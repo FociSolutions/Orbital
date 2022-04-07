@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
@@ -9,8 +9,8 @@ import { OpenApiSpecService } from 'src/app/services/openapispecservice/open-api
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
-import { recordMap } from 'src/app/models/record';
 import * as uuid from 'uuid';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-create-edit-mock-view',
@@ -19,20 +19,33 @@ import * as uuid from 'uuid';
 })
 export class CreateEditMockViewComponent implements OnInit {
   formGroup: FormGroup;
-  private openApiFile: string;
-  private mockDefinitions: MockDefinition[] = [];
-  private mockId: string | null;
-  private keyStore: string;
+  private openApiFile = '';
+  private mockId: string | null = null;
 
-  editMode: boolean;
+  editMode = false;
   titleList: string[] = [];
-  selectedMockDefinition: MockDefinition | null;
+  selectedMockDefinition: MockDefinition | null = null;
 
   //Data variables for edit mode
-  mockTitle: string;
-  mockDesc: string;
-  mockTokenValid: boolean;
-  mockKey: string;
+  mockTitle = '';
+  mockDesc = '';
+  mockTokenValid = false;
+  mockKey = '';
+
+  get title(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('title') as FormControl;
+  }
+
+  get description(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('description') as FormControl;
+  }
+
+  get validateToken(): FormControl {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return this.formGroup.get('validateToken') as FormControl;
+  }
 
   errorMessageToEmitFromCreate: Record<string, string[]> = {};
   constructor(
@@ -54,19 +67,23 @@ export class CreateEditMockViewComponent implements OnInit {
   ngOnInit() {
     this.mockId = this.route.snapshot.paramMap.get('uuid');
     this.editMode = !!this.mockId;
+    let mockDefinitions: MockDefinition[] = [];
 
     this.store.state$.subscribe((state) => {
       if (state.mockDefinition) {
-        this.mockDefinitions = recordMap(state.mockDefinitions, (md) => md);
+        mockDefinitions = Object.values(state.mockDefinitions);
       }
     });
+
     if (this.editMode) {
-      this.selectedMockDefinition = this.findSelectedMock(this.mockId, this.mockDefinitions);
-      if (!this.selectedMockDefinition) {
+      const maybeMockDef = this.findSelectedMock(this.mockId ?? '', mockDefinitions);
+      if (!maybeMockDef) {
         this.router.navigateByUrl('/endpoint-view');
+      } else {
+        this.selectedMockDefinition = maybeMockDef;
       }
-    } else if (this.mockDefinitions.length) {
-      for (const mockDef of this.mockDefinitions) {
+    } else if (mockDefinitions.length) {
+      for (const mockDef of mockDefinitions) {
         this.titleList.push(mockDef.metadata.title);
       }
     }
@@ -75,8 +92,8 @@ export class CreateEditMockViewComponent implements OnInit {
   /**
    * Finds mock selected on sidebar and populated the form data
    */
-  findSelectedMock(mockId: string, mockDefinitions: MockDefinition[]): MockDefinition {
-    let foundMock: MockDefinition = null;
+  findSelectedMock(mockId: string, mockDefinitions: MockDefinition[]): MockDefinition | null {
+    let foundMock: MockDefinition | null = null;
     for (const mockDef of mockDefinitions) {
       if (mockDef.id === mockId) {
         foundMock = mockDef;
@@ -123,9 +140,12 @@ export class CreateEditMockViewComponent implements OnInit {
     );
   }
 
-  editMock() {
+  updateMockDef() {
+    if (!this.selectedMockDefinition) {
+      return;
+    }
     const updatedMockDef = this.formToUpdateMockDefinition(this.selectedMockDefinition);
-    const oldTitle = this.selectedMockDefinition.metadata.title;
+    const oldTitle = this.selectedMockDefinition?.metadata.title;
 
     if (updatedMockDef.tokenValidation) {
       const validationScenarios = this.mockdefinitionService.getDefaultValidationScenarios(updatedMockDef.scenarios);
@@ -148,17 +168,13 @@ export class CreateEditMockViewComponent implements OnInit {
     this.location.back();
   }
 
-  get validateToken() {
-    return this.formGroup.get('validateToken');
-  }
-
   /**
    * Validation for text inputs on this page.
    * @param name - the form control name
    * @returns null, or an error object.
    */
   validateText(name: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: unknown } | null => {
+    return (control: AbstractControl): ValidationErrors | null => {
       if (control.value !== null && control.value !== undefined) {
         if (!control.value.length) {
           return { key: `${name} is required.` };
@@ -175,13 +191,14 @@ export class CreateEditMockViewComponent implements OnInit {
           }
         }
       }
+      return null;
     };
   }
 
   populateEditData(md: MockDefinition) {
-    this.formGroup.get('title').setValue(md.metadata.title);
-    this.formGroup.get('description').setValue(md.metadata.description);
-    this.formGroup.get('validateToken').setValue(md.tokenValidation);
+    this.formGroup.get('title')?.setValue(md.metadata.title);
+    this.formGroup.get('description')?.setValue(md.metadata.description);
+    this.formGroup.get('validateToken')?.setValue(md.tokenValidation);
   }
 
   /**
@@ -214,7 +231,7 @@ export class CreateEditMockViewComponent implements OnInit {
   }
 
   formToUpdateMockDefinition(oldMockDef: MockDefinition): MockDefinition {
-    const newMockDef: MockDefinition = JSON.parse(JSON.stringify(oldMockDef));
+    const newMockDef: MockDefinition = cloneDeep(oldMockDef);
     newMockDef.metadata = {
       title: this.formGroup.value.title,
       description: this.formGroup.value.description,
