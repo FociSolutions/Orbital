@@ -16,5 +16,6 @@ COPY --from=build-env /app/out .
 RUN chmod -R u+w /app
 
 ENV ASPNETCORE_ENVIROMENT=Production
+ENV LD_LIBRARY_PATH=/app/runtimes/debian.9-x64/native/
 
 ENTRYPOINT ["dotnet", "Orbital.Mock.Server.dll"]
