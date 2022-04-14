@@ -18,6 +18,12 @@ Normally, creating a back-end API takes many days, if not weeks. During this tim
 - Pipeline: each API filter is isolated, allowing for greater security, and better error and load handling
 - Easy to deploy: just two docker containers
 
+# Demo Project
+
+Foci has published a sample project that exemplifies the intended usage of Orbital within a development team to allow for parallel development of the front-end and back-ends based on an OpenAPI contract.
+
+The project is available on github [here](https://github.com/FociSolutions/Orbital-Demo).
+
 # Getting Started
 
 **Note: Orbital uses an in-memory datastore. Please save or export all data (via Export to File or Export to Server) before exiting, otherwise it will be lost.**
