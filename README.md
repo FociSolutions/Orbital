@@ -20,7 +20,7 @@ Normally, creating a back-end API takes many days, if not weeks. During this tim
 
 # Demo Project
 
-Foci has published a sample project that exemplifies the intended usage of Orbital within a development team to allow for parallel development of the front-end and back-ends based on an OpenAPI contract.
+Foci has published a sample project that exemplifies the intended usage of Orbital within a development team to allow for parallel development of the front and backend services based on an OpenAPI contract.
 
 The project is available on github [here](https://github.com/FociSolutions/Orbital-Demo).
 
