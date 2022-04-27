@@ -1,4 +1,5 @@
-version: '3'
+version: "3"
+
 services:
   designer:
     # Build Orbitial Designer
@@ -6,11 +7,12 @@ services:
       context: .
       dockerfile: ./docker/designer/Dockerfile
     ports:
-     - "4200:80"
+      - "4200:80"
+
   mock:
     # Build Orbitial Mock Server
     build:
       context: .
       dockerfile: ./docker/mock/Dockerfile
     ports:
-      - "5001:80"
+      - "5000:80"
