@@ -56,15 +56,12 @@ describe('SideBarComponent', () => {
   });
 
   // Checks that the h1 rendered content is equals to "MOCKDEFINITIONS"
-  it(
-    'should render title in h1 tag',
-    waitForAsync(() => {
-      fixture = TestBed.createComponent(SideBarComponent);
-      fixture.detectChanges();
-      const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelector('h1').textContent).toContain('MOCKDEFINITIONS');
-    })
-  );
+  it('should render title in h1 tag', waitForAsync(() => {
+    fixture = TestBed.createComponent(SideBarComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('MOCKDEFINITIONS');
+  }));
 
   // Check if a valid mockdefinition is passed to the isSelected method.
   // Then, confirm the value returned is selected by having a true response.
