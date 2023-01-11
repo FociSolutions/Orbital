@@ -32,11 +32,11 @@ stages:
       - template: pipeline_templates/designer-build-container.yml
       - template: pipeline_templates/server-build-container.yml
 
-  - stage: push_to_docker_hub
-    displayName: Push To DockerHub
+  - stage: push_to_repos
+    displayName: Push To Other Container Repos
     dependsOn:
       - build_and_push_containers
     condition: succeeded('build_and_push_containers')
 
     jobs:
-      - template: pipeline_templates/push-to-docker-hub.yml
+      - template: pipeline_templates/push-to-container-repos.yml

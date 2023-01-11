@@ -1,8 +1,8 @@
 ---
 # Note: This template requires the `Foci Secrets` variable group to be loaded
 jobs:
-  - job: push_to_docker_hub
-    displayName: Push to DockerHub
+  - job: push_to_registries
+    displayName: Push to DockerHub & Google Artifact Registry
     pool:
       vmImage: ubuntu-latest
       environment: production
@@ -30,5 +30,12 @@ jobs:
         displayName: Push images to DockerHub
         inputs:
           targetType: filePath
-          filePath: $(System.DefaultWorkingDirectory)/scripts/dockerprod.sh
+          filePath: $(System.DefaultWorkingDirectory)/scripts/docker_prod.sh
+          arguments: '"$(GitVersion.SemVer)" "$(GitVersion.Major)" "$(GitVersion.Minor)" "$(GitVersion.MajorMinorPatch)" "$(docker-hub-password)"'
+
+      - task: Bash@3
+        displayName: Push images to Google Artifact Registry
+        inputs:
+          targetType: filePath
+          filePath: $(System.DefaultWorkingDirectory)/scripts/gar_prod.sh
           arguments: '"$(GitVersion.SemVer)" "$(GitVersion.Major)" "$(GitVersion.Minor)" "$(GitVersion.MajorMinorPatch)" "$(docker-hub-password)"'
