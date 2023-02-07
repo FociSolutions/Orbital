@@ -1,0 +1,42 @@
+---
+trigger:
+  - task/push-to-gar
+
+variables:
+  - group: Foci Secrets
+
+stages:
+  - stage: install_and_test
+    displayName: Test
+
+    jobs:
+      - template: pipeline_templates/designer-install-and-test.yml
+      - template: pipeline_templates/server-build-and-test.yml
+
+  - stage: mirror_to_github
+    displayName: Mirror to GitHub
+    dependsOn:
+      - install_and_test
+    condition: succeeded('install_and_test')
+
+    jobs:
+      - template: pipeline_templates/mirror-to-github.yml
+
+  - stage: build_and_push_containers
+    displayName: Build and Push Containers
+    dependsOn:
+      - install_and_test
+    condition: succeeded('install_and_test')
+
+    jobs:
+      - template: pipeline_templates/designer-build-container.yml
+      - template: pipeline_templates/server-build-container.yml
+
+  - stage: push_to_repos
+    displayName: Push To Other Container Repos
+    dependsOn:
+      - build_and_push_containers
+    condition: succeeded('build_and_push_containers')
+
+    jobs:
+      - template: pipeline_templates/push-to-container-repos.yml

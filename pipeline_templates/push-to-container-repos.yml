@@ -38,4 +38,4 @@ jobs:
         inputs:
           targetType: filePath
           filePath: $(System.DefaultWorkingDirectory)/scripts/gar_prod.sh
-          arguments: '"$(GitVersion.SemVer)" "$(GitVersion.Major)" "$(GitVersion.Minor)" "$(GitVersion.MajorMinorPatch)" "$(docker-hub-password)"'
+          arguments: '"$(GitVersion.SemVer)" "$(GitVersion.Major)" "$(GitVersion.Minor)" "$(GitVersion.MajorMinorPatch)"'

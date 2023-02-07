@@ -24,8 +24,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ORBITAL_PUB_KEYS__CACHE_TIME_HOURS": "12",
-        "ORBITAL_PUB_KEYS__JWKS_ENDPOINT": "https://localhost:4326/.well-known/openid-configuration",
-        "ORBITAL_IMPORT_SVC__PATH": "./mock_definition.json"
+        "ORBITAL_PUB_KEYS__JWKS_ENDPOINT": "http://localhost:5005",
+        "ORBITAL_IMPORT_SVC__PATH": "./mock_definition.json",
+        "ORBITAL_PUB_KEYS__JWKS_ENDPOINT_ ORBITAL_PUB_KEYS__JWKS_ENDPOINT_TEMP": "https://localhost:4326/.well-known/openid-configuration"
       }
     }
   }

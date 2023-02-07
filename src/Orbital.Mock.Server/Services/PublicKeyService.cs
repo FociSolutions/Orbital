@@ -192,10 +192,13 @@ namespace Orbital.Mock.Server.Services
         private void LoadKeysFromConfig()
         {
             if (cfg.JWKS is null || cfg.JWKS == string.Empty) { return; }
+            
 
             try
             {
-                foreach (var key in new JsonWebKeySet(cfg.JWKS).Keys) { MaybeAddKey(key); }
+                foreach (var key in new JsonWebKeySet(cfg.JWKS).Keys) {
+                    MaybeAddKey(key);
+                }
             }
             catch (Exception ex)
             {
