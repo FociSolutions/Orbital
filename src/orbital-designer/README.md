@@ -34,7 +34,7 @@ Update command: `npx @angular/cli@<version> update @angular/core@<version> @angu
 
 Example to update to Angular 13: `npx @angular/cli@13 update @angular/core@13 @angular/cli@13`
 
-Angular Material can als be updated in a subsequent step: `npx @angular/cli@13 update @angular/material@13`
+Angular Material can also be updated in a subsequent step: `npx @angular/cli@13 update @angular/material@13`
 
 Note: Using `npx @angular/cli@<version> update` uses the ng cli version specified, but if the desired version is already installed, then `ng update` can simply be used, followed by the packages to be updated: i.e. `ng update @angular/cli @angular/core @angular/cdk @angular-eslint/schematics @angular/material`
 
