@@ -16,8 +16,8 @@ jobs:
       - task: UseDotNet@2
         displayName: Set DotNet version
         inputs:
-          version: 5.0.x
-          performMultiLevelLookup: true
+          packageType: 'sdk'
+          version: '6.x'
 
       - task: DotNetCoreCLI@2
         displayName: Build
