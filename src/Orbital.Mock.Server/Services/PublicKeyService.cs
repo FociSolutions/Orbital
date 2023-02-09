@@ -87,7 +87,17 @@ namespace Orbital.Mock.Server.Services
         /// <param name="httpClient">A clinet used to make HTTP requests</param>
         public PublicKeyService(IOptions<PublicKeyServiceConfig> options, HttpClient httpClient = null)
         {
-            client = httpClient ?? new HttpClient();
+            var handler = new HttpClientHandler
+            {
+                ClientCertificateOptions = ClientCertificateOption.Manual,
+                ServerCertificateCustomValidationCallback =
+                (httpRequestMessage, cert, cetChain, policyErrors) =>
+            {
+                return true;
+            }
+            };
+
+            client = httpClient ?? new HttpClient(handler);
 
             cfg = options.Value;
 
@@ -257,7 +267,7 @@ namespace Orbital.Mock.Server.Services
                 Log.Error(ex, "An unexpected error occurred while trying to cache the JWK with id '{Id}'", key.Kid);
                 return false;
             }
-            
+
         }
 
         /// <summary>
