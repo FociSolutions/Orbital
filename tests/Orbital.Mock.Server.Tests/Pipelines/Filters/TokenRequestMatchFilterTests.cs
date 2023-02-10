@@ -68,6 +68,32 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         }
 
         [Fact]
+        public void TokenMatchFilterNoRulesSuccess()
+        {
+            #region Test Setup
+            var fakeScenario = scenarioFaker.Generate();
+            fakeScenario.TokenRules.ValidationType = TokenValidationType.JWT_VALIDATION;
+            fakeScenario.TokenRules.Rules.Clear();
+
+            string secret = TestUtils.GetRandomString(new Faker(), minLen: 64);
+            var rules = fakeScenario.TokenRules.Rules.Select(r => r.GenerateKeyValuePair());
+            var jwtString = TestUtils.GenerateJwt(secret, claims: rules.ToList());
+            var port = new ProcessMessagePort()
+            {
+                TokenScheme = TokenConstants.Bearer,
+                TokenParameter = jwtString,
+                Scenarios = new List<Scenario>() { fakeScenario },
+                Token = new JwtSecurityToken(jwtString)
+            };
+            #endregion
+
+            var Target = new TokenRequestMatchFilter<ProcessMessagePort>(ruleMatcher);
+            Target.Process(port);
+
+            Assert.NotNull(port.Token);
+        }
+
+        [Fact]
         public void TokenMatchInvalidMatchFailureTest()
         {
             #region Test Setup
