@@ -8,22 +8,27 @@
     // Append -bullseye or -buster to pin to an OS version.
     // Use the -bullseye variants if you are on a M1 mac.
     "args": {
-      "VARIANT": "16-bullseye"
+      "VARIANT": "18-bullseye"
     }
   },
 
-  // Set *default* container specific settings.json values on container create.
-  "settings": {},
-
-  // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "christian-kohler.path-intellisense",
-    "Angular.ng-template",
-    "johnpapa.Angular2",
-    "vscode-icons-team.vscode-icons",
-    "natewallace.angular2-inline"
-  ],
+  
+  "customizations": {
+    "vscode": {
+      // Set *default* container specific settings.json values on container create.
+      "settings": {},
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "christian-kohler.path-intellisense",
+        "Angular.ng-template",
+        "johnpapa.Angular2",
+        "vscode-icons-team.vscode-icons",
+        "natewallace.angular2-inline"
+      ]
+    }
+  },
+  
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
