@@ -1,18 +1,8 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.194.3/containers/typescript-node
+// For format details, see https://containers.dev/implementors/json_schema/. For config options, see the README at:
+// https://github.com/devcontainers/images/blob/main/src/typescript-node/README.md
 {
   "name": "Node.js & TypeScript",
-  "build": {
-    "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick a Node version: 16, 14, 12.
-    // Append -bullseye or -buster to pin to an OS version.
-    // Use the -bullseye variants if you are on a M1 mac.
-    "args": {
-      "VARIANT": "18-bullseye"
-    }
-  },
-
-  
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18-bullseye",
   "customizations": {
     "vscode": {
       // Set *default* container specific settings.json values on container create.
@@ -24,17 +14,17 @@
         "Angular.ng-template",
         "johnpapa.Angular2",
         "vscode-icons-team.vscode-icons",
-        "natewallace.angular2-inline"
+        "natewallace.angular2-inline",
+        "pflannery.vscode-versionlens"
       ]
     }
   },
-  
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "yarn install",
+  "postCreateCommand": "npm install -g @angular/cli",
 
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "node"
