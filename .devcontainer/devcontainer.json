@@ -2,7 +2,9 @@
 // https://github.com/devcontainers/images/blob/main/src/typescript-node/README.md
 {
   "name": "Node.js & TypeScript",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18-bullseye",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "customizations": {
     "vscode": {
       // Set *default* container specific settings.json values on container create.
@@ -24,7 +26,7 @@
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install -g @angular/cli",
+  // "postCreateCommand": "npm install -g @angular/cli",
 
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "node"
