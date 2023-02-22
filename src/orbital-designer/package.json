@@ -86,7 +86,7 @@
     "@storybook/builder-webpack5": "^6.5.16",
     "@storybook/cli": "^6.5.16",
     "@storybook/manager-webpack5": "^6.5.16",
-    "@types/faker": "^6.6.9",
+    "@types/faker": "^5.5.9",
     "@types/file-saver": "^2.0.5",
     "@types/jasmine": "^4.3.1",
     "@types/jasminewd2": "~2.0.10",
