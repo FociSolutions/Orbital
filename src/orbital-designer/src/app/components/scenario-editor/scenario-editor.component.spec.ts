@@ -29,7 +29,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { RequestFormComponent } from './request-form/request-form.component';
 import validMockDefinition from 'src/test-files/test-mockdefinition-object';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;

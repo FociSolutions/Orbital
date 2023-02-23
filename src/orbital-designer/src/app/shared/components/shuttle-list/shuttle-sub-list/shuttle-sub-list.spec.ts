@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { ShuttleSubListComponent } from './shuttle-sub-list.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';

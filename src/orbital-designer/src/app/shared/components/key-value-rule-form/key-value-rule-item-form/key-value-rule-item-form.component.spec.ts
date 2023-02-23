@@ -115,9 +115,10 @@ describe('KeyValueRuleItemFormComponent', () => {
     });
 
     it('should fail validation if the key field exceeds its maxlength', () => {
+      const testString = 'x';
       const value: KeyValueRuleItemFormValues = {
         ...SAMPLE_VALUE,
-        key: faker.helpers.repeatString('x', component.keyMaxLength + 1),
+        key: testString.repeat(component.keyMaxLength + 1),
       };
       component.writeValue(value);
 

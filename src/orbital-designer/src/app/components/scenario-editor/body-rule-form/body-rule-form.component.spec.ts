@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BodyRuleFormComponent, BodyRuleFormValues } from './body-rule-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { BodyRuleItemFormComponent, BodyRuleItemFormValues } from './body-rule-item-form/body-rule-item-form.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';

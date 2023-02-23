@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { KeyValuePairItemFormComponent, KeyValuePairItemFormValues } from './key-value-pair-item-form.component';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { SimpleChanges } from '@angular/core';
 
 describe('KeyValuePairItemFormComponent', () => {

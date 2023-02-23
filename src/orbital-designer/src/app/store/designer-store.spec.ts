@@ -1,5 +1,5 @@
 import { DesignerStore } from './designer-store';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { VerbType } from '../models/verb-type';
 import { MockDefinition } from '../models/mock-definition/mock-definition.model';
 import validOpenApi from '../../test-files/valid-openapi-spec';

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeyValuePairFormComponent, KeyValuePairFormValues } from './key-value-pair-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import {
   KeyValuePairItemFormComponent,
   KeyValuePairItemFormValues,
