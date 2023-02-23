@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { KeyValueRuleItemFormComponent, KeyValueRuleItemFormValues } from './key-value-rule-item-form.component';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 import { Component, SimpleChanges, ViewChild } from '@angular/core';
 
@@ -162,9 +162,10 @@ describe('KeyValueRuleItemFormComponent', () => {
     });
 
     it('should fail validation if the value field exceeds its maxlength', () => {
+      const testString = 'x';
       const value: KeyValueRuleItemFormValues = {
         ...SAMPLE_VALUE,
-        value: faker.helpers.repeatString('x', component.valueMaxLength + 1),
+        value: testString.repeat(component.valueMaxLength + 1),
       };
       component.writeValue(value);
 
