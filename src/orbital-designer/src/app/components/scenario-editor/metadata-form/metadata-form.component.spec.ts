@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MetadataFormComponent, MetadataFormValues } from './metadata-form.component';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SimpleChanges } from '@angular/core';
 
@@ -100,9 +100,10 @@ describe('MetadataFormComponent', () => {
     });
 
     it('should fail validation if the title field has more than the max characters', () => {
+      const testString = 'x';
       const value: MetadataFormValues = {
         ...SAMPLE_VALUE,
-        title: faker.helpers.repeatString('x', component.title_maxlength + 1),
+        title: testString.repeat(component.title_maxlength + 1),
       };
       component.writeValue(value);
 
@@ -113,9 +114,10 @@ describe('MetadataFormComponent', () => {
     });
 
     it('should fail validation if the description field has more than the max characters', () => {
+      const testString = 'x';
       const value: MetadataFormValues = {
         ...SAMPLE_VALUE,
-        description: faker.helpers.repeatString('x', component.description_maxlength + 1),
+        description: testString.repeat(component.description_maxlength + 1),
       };
       component.writeValue(value);
 

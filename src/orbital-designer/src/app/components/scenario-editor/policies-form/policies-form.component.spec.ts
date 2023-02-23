@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PoliciesFormComponent, PoliciesFormValues } from './policies-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { PolicyFormComponent } from './policy-form/policy-form.component';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy-type';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';

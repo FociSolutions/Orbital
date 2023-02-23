@@ -1,5 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { MockDefinitionService } from './mock-definition.service';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import validMockDefinitionFile from '../../../test-files/test-mockdefinition-file.mock';

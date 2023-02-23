@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { HomeViewComponent } from './home-view.component';
 import { Router } from '@angular/router';
 import { MatGridListModule } from '@angular/material/grid-list';
