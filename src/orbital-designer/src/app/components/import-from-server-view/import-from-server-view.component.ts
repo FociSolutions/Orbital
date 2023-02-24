@@ -1,6 +1,13 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  UntypedFormArray,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { Observer } from 'rxjs';
@@ -18,7 +25,7 @@ export class ImportFromServerViewComponent implements OnInit {
   readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
 
   mockDefinitions: MockDefinition[] = [];
-  formArray: FormArray;
+  formArray: FormArray | UntypedFormArray;
   requestObserver: Observer<MockDefinition[]>;
 
   inputControl: FormControl = new FormControl();
@@ -40,7 +47,7 @@ export class ImportFromServerViewComponent implements OnInit {
     private router: Router,
     private orbitalService: OrbitalAdminService
   ) {
-    this.formArray = new FormArray([]);
+    this.formArray = new UntypedFormArray([]);
 
     this.requestObserver = {
       next: (event) => {
@@ -50,7 +57,7 @@ export class ImportFromServerViewComponent implements OnInit {
       error: () => {
         this.errors = 'File(s) could not be imported because of an error';
         this.requestInProgress = false;
-        this.formArray = new FormArray([]);
+        this.formArray = new UntypedFormArray([]);
       },
       complete: () => (this.requestInProgress = false),
     };
