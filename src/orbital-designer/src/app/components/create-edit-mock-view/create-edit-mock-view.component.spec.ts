@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '../../shared/shared.module';
@@ -123,6 +123,7 @@ describe('CreateEditMockViewComponent', () => {
         fixture.detectChanges();
         tick();
         expect(routerSpy).not.toHaveBeenCalled();
+        flush();
       });
     }));
   });

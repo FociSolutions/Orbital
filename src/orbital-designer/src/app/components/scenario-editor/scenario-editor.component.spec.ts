@@ -24,12 +24,12 @@ import { PoliciesFormComponent } from './policies-form/policies-form.component';
 import { PolicyFormComponent } from './policies-form/policy-form/policy-form.component';
 import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinition/export-mockdefinition.service';
 import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
-import { JsonEditorComponent } from 'ang-jsoneditor';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { RequestFormComponent } from './request-form/request-form.component';
 import validMockDefinition from 'src/test-files/test-mockdefinition-object';
 import { faker } from '@faker-js/faker';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -50,7 +50,6 @@ describe('ScenarioEditorComponent', () => {
         PoliciesFormComponent,
         PolicyFormComponent,
         RequestFormComponent,
-        JsonEditorComponent,
       ],
       imports: [
         LoggerTestingModule,
@@ -66,6 +65,7 @@ describe('ScenarioEditorComponent', () => {
         MatChipsModule,
       ],
       providers: [DesignerStore, ExportMockdefinitionService, MockDefinitionService],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -141,8 +141,10 @@ describe('ScenarioEditorComponent', () => {
     });
 
     it('should not set the triggerOpenCancelBox to true when cancelled with a clean form', () => {
-      component.cancel();
-      expect(component.triggerOpenCancelBox).toBe(false);
+      fixture.ngZone?.run(() => {
+        component.cancel();
+        expect(component.triggerOpenCancelBox).toBe(false);
+      });
     });
 
     it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', fakeAsync(() => {

@@ -3,12 +3,11 @@ import { InternalResponseFormValues, ResponseFormComponent, ResponseFormValues }
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../../../shared/shared.module';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { JsonEditorComponent } from 'ang-jsoneditor';
 import { MatCardModule } from '@angular/material/card';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response-type';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { SimpleChanges } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, SimpleChanges } from '@angular/core';
 
 describe('ResponseFormComponent', () => {
   let component: ResponseFormComponent;
@@ -18,8 +17,9 @@ describe('ResponseFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ResponseFormComponent, JsonEditorComponent],
+      declarations: [ResponseFormComponent],
       imports: [SharedModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
