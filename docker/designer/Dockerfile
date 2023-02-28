@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY ./src/orbital-designer/package.json ./src/orbital-designer/package-lock.json ./
 
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # add app
 COPY ./src/orbital-designer .
