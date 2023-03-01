@@ -21,9 +21,15 @@ $orbital-designer-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $orbital-designer-theme: mat.define-light-theme(
-  $orbital-designer-primary,
-  $orbital-designer-accent,
-  $orbital-designer-warn
+  (
+    color: (
+      primary: $orbital-designer-primary,
+      accent: $orbital-designer-accent,
+      warn: $orbital-designer-warn,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
 );
 
 // Include theme styles for core and each component used in your app.
