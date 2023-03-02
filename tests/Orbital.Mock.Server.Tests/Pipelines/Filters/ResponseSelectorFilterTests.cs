@@ -103,7 +103,7 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
         public void ResponseSelectorFilterNoResponseFoundTest()
         {
             #region TestSetup
-            var Scenarios =  new List<Scenario>();
+            var Scenarios = new List<Scenario>();
             #endregion
 
             var port = new ProcessMessagePort()
@@ -167,6 +167,8 @@ namespace Orbital.Mock.Server.Tests.Pipelines.Filters
                 BodyMatchResults = Scenarios.Take(SelectedScenarioIndex + 1).Select(scenario => new MatchResult(MatchResultType.Success, scenario.Id, false)).ToList(),
                 TokenValidationResults = new List<MatchResult> { MatchResult.Create(MatchResultType.Fail, UnauthScenario) }
             };
+
+            port.InvalidateToken();
 
             var Target = new ResponseSelectorFilter<ProcessMessagePort>(new TemplateContext());
 

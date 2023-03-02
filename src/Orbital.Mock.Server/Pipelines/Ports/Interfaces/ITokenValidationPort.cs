@@ -12,5 +12,7 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
         public ICollection<MatchResult> TokenValidationResults { get; set; }
 
         public JwtSecurityToken Token { get; set; }
+
+        public void InvalidateToken();
     }
 }

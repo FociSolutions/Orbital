@@ -64,7 +64,7 @@ namespace Orbital.Mock.Server.Pipelines.Filters
             // If there are any scenarios & any of the scenarios have failed, un-authenticate the port
             if (tokenMatchScenarios.Any() && !HasSuccessfulScenario(port))
             {
-                port.Token = null;
+                port.InvalidateToken();
             }
 
             return port;
