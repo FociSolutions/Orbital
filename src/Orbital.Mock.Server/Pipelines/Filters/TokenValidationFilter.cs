@@ -54,6 +54,11 @@ namespace Orbital.Mock.Server.Pipelines.Filters
 
             var tokenScenarios = port.Scenarios.Where(x => x.RequiresTokenValidation());
 
+            if (!tokenScenarios.Any())
+            {
+                return port;
+            }
+
             var tokenIsValid = TryValidateToken(port, out JwtSecurityToken maybeValidToken);
 
             if (!tokenIsValid)

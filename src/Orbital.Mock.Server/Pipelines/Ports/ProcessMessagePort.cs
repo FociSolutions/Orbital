@@ -84,8 +84,8 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public ICollection<MatchResult> TokenMatchResults { get; set; }
         public bool IsAuthenticated => !IsInvalidated;
         public bool IsInvalidated { get; private set; } = false;
-
         public bool CheckAuthentication => Scenarios.Any(x => x.RequiresTokenValidation());
+        public bool CheckAuthorizaiton => Scenarios.Any(x => x.RequiresTokenRequestMatch());
 
         public IFaultablePort AppendFault(Exception e)
         {
