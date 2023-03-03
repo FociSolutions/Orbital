@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DesignerStore } from '../../store/designer-store';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { DesignerStore } from '../../store/designer-store';
  * Redirects to the homepage if the user goes to an internal route which requires
  * a mock definition to be loaded
  */
-export class OverviewRedirectService implements CanActivate {
+export class OverviewRedirectService {
   constructor(private store: DesignerStore, private router: Router) {}
 
   /**
