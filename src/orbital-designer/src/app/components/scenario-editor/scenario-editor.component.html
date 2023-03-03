@@ -84,11 +84,9 @@
 <ng-template #headerContent let-path="path">
   <div class="title column center">
     <div class="endpoint-info">
-      <mat-chip-listbox class="mr-1">
-        <mat-chip-option [style.background-color]="endpointVerb | getVerbColor">{{
-          endpointVerb | getVerbString
-        }}</mat-chip-option>
-      </mat-chip-listbox>
+      <mat-chip-list class="mr-1">
+        <mat-chip [style.background-color]="endpointVerb | getVerbColor">{{ endpointVerb | getVerbString }}</mat-chip>
+      </mat-chip-list>
       <h3>
         {{ endpointPath }}
       </h3>
