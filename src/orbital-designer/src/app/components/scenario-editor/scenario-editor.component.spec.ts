@@ -25,11 +25,11 @@ import { PolicyFormComponent } from './policies-form/policy-form/policy-form.com
 import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinition/export-mockdefinition.service';
 import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { JsonEditorComponent } from 'ang-jsoneditor';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { RequestFormComponent } from './request-form/request-form.component';
 import validMockDefinition from 'src/test-files/test-mockdefinition-object';
 import { faker } from '@faker-js/faker';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ScenarioEditorComponent', () => {
   let component: ScenarioEditorComponent;
@@ -50,6 +50,7 @@ describe('ScenarioEditorComponent', () => {
         PoliciesFormComponent,
         PolicyFormComponent,
         RequestFormComponent,
+        JsonEditorComponent,
       ],
       imports: [
         LoggerTestingModule,
@@ -65,7 +66,6 @@ describe('ScenarioEditorComponent', () => {
         MatChipsModule,
       ],
       providers: [DesignerStore, ExportMockdefinitionService, MockDefinitionService],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

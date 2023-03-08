@@ -7,7 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { StatusCodes } from 'http-status-codes';
 import { ResponseType } from 'src/app/models/mock-definition/scenario/response-type';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { CUSTOM_ELEMENTS_SCHEMA, SimpleChanges } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
+import { JsonEditorComponent } from 'ang-jsoneditor';
 
 describe('ResponseFormComponent', () => {
   let component: ResponseFormComponent;
@@ -17,9 +18,8 @@ describe('ResponseFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ResponseFormComponent],
+      declarations: [ResponseFormComponent, JsonEditorComponent],
       imports: [SharedModule, MatCardModule, BrowserAnimationsModule, LoggerTestingModule],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

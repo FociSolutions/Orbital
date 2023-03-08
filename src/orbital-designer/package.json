@@ -28,8 +28,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "prepare": "cd ../.. && husky install ./src/orbital-designer/.husky",
-    "pre-commit": "lint-staged",
-    "pkg-chk": "package-lock-check"
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,json,yaml,yml,html,css,scss,md}": "prettier --write",
@@ -113,7 +112,6 @@
     "jest-junit": "^15.0.0",
     "jest-preset-angular": "^13.0.0",
     "lint-staged": "^13.1.2",
-    "package-lock-check": "^1.1.0",
     "protractor": "~7.0.0",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
