@@ -1,6 +1,13 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  UntypedFormArray,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
 import { Observer } from 'rxjs';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
@@ -14,19 +21,34 @@ import { NotificationService } from 'src/app/services/notification-service/notif
   styleUrls: ['./delete-from-server-view.component.scss'],
 })
 export class DeleteFromServerViewComponent implements OnInit {
+  static readonly urlMaxLength = 2048;
+  readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
+
+  mockDefinitions: MockDefinition[] = [];
+  formArray: FormArray | UntypedFormArray;
+  requestObserver: Observer<MockDefinition[]>;
+
+  inputControl: FormControl = new FormControl();
+  requestInProgress = false;
+  title = 'Server URI';
+
+  statusMessage = '';
+  errorMessage = '';
+  deleteInProgress = false;
+  triggerOpenConfirmBox = false;
+
   @Input() set errorsRestRequest(errors: ValidationErrors | null) {
     if (this.inputControl) {
       this.inputControl.setErrors(errors);
     }
   }
-
   constructor(
     private location: Location,
     private logger: NGXLogger,
     private orbitalService: OrbitalAdminService,
     private notificationService: NotificationService
   ) {
-    this.formArray = new FormArray([]);
+    this.formArray = new UntypedFormArray([]);
 
     this.requestObserver = {
       next: (event) => {
@@ -49,22 +71,6 @@ export class DeleteFromServerViewComponent implements OnInit {
   get disabled(): boolean {
     return this.mockDefinitions.length === 0 || this.requestInProgress || this.deleteInProgress;
   }
-  static readonly urlMaxLength = 2048;
-  readonly emptyListMessageServerBox = 'No Mockdefinition(s) ';
-
-  mockDefinitions: MockDefinition[] = [];
-  formArray: FormArray;
-  requestObserver: Observer<MockDefinition[]>;
-
-  inputControl: FormControl = new FormControl();
-  requestInProgress = false;
-  title = 'Server URI';
-
-  statusMessage = '';
-  errorMessage = '';
-  deleteInProgress = false;
-  triggerOpenConfirmBox = false;
-
   controlsMockDefinitionToString = (control: AbstractControl) => control.value?.metadata?.title ?? '';
 
   ngOnInit() {
@@ -179,7 +185,7 @@ export class DeleteFromServerViewComponent implements OnInit {
    * Clears all Mockdefinitions from the form
    */
   private clearForm() {
-    this.formArray = new FormArray([]);
+    this.formArray = new UntypedFormArray([]);
     this.mockDefinitions = [];
   }
 

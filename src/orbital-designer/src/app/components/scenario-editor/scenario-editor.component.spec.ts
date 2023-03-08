@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MetadataFormComponent } from './metadata-form/metadata-form.component';
@@ -24,8 +24,8 @@ import { PoliciesFormComponent } from './policies-form/policies-form.component';
 import { PolicyFormComponent } from './policies-form/policy-form/policy-form.component';
 import { ExportMockdefinitionService } from 'src/app/services/export-mockdefinition/export-mockdefinition.service';
 import { ScenarioViewComponent } from '../scenario-view/scenario-view.component';
+import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { JsonEditorComponent } from 'ang-jsoneditor';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { RequestFormComponent } from './request-form/request-form.component';
 import validMockDefinition from 'src/test-files/test-mockdefinition-object';
@@ -141,8 +141,10 @@ describe('ScenarioEditorComponent', () => {
     });
 
     it('should not set the triggerOpenCancelBox to true when cancelled with a clean form', () => {
-      component.cancel();
-      expect(component.triggerOpenCancelBox).toBe(false);
+      fixture.ngZone?.run(() => {
+        component.cancel();
+        expect(component.triggerOpenCancelBox).toBe(false);
+      });
     });
 
     it('should set triggerOpenCancelBox to false when onCancelDialogAction is false', fakeAsync(() => {

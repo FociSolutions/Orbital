@@ -86,7 +86,7 @@ export class MockDefinitionService {
   cloneScenario(mockId: string, scenario?: Scenario | null): Observable<boolean> {
     return new Observable((observer) => {
       try {
-        if (!scenario || !scenario.id || !scenario.metadata || !scenario.metadata.title) {
+        if (!scenario?.id || !scenario.metadata || !scenario.metadata.title) {
           this.logger.warn('Scenario not cloned because it contains undefined attributes');
           observer.next(false);
           return;
