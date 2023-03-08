@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { Location } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';
 import { OrbitalAdminService } from 'src/app/services/orbital-admin/orbital-admin.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
 describe('DeleteFromServerViewComponent', () => {
   let component: DeleteFromServerViewComponent;
