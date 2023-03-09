@@ -10,7 +10,7 @@ import { MockDefinitionService } from 'src/app/services/mock-definition/mock-def
 import { map } from 'rxjs/operators';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import * as HttpStatus from 'http-status-codes';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
 
 @Component({
