@@ -7,7 +7,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
-import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
@@ -51,7 +50,6 @@ import { MatTreeModule } from '@angular/material/tree';
     CdkStepperModule,
     CdkTableModule,
     CdkTreeModule,
-    MatAutocompleteModule,
     MatBadgeModule,
     MatBottomSheetModule,
     MatButtonModule,
