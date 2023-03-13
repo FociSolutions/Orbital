@@ -10,7 +10,7 @@ import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-c
 import { OverviewHeaderComponent } from '../../shared/components/overview-header/overview-header.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
 import { FormsModule } from '@angular/forms';
 import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
