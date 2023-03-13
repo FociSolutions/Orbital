@@ -33,7 +33,7 @@ import { ScenarioViewComponent } from './components/scenario-view/scenario-view.
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
 import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MetadataFormComponent } from './components/scenario-editor/metadata-form/metadata-form.component';
 import { ResponseFormComponent } from './components/scenario-editor/response-form/response-form.component';
 import { DownloadMockdefinitionsComponent } from './components/download-mockdefinitions/download-mockdefinitions.component';

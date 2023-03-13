@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { NotificationService } from './notification.service';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('NotificationServiceService', () => {
   beforeEach(async () => {
