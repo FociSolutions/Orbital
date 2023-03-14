@@ -26,7 +26,7 @@ import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-ru
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { cloneDeep } from 'lodash';
 
 describe('ScenarioViewComponent', () => {
