@@ -18,7 +18,7 @@ import { GetVerbColorPipe } from './pipes/get-verb-color/get-verb-color.pipe';
 import { DesignerStore } from './store/designer-store';
 import { HomeViewComponent } from './components/home-view/home-view.component';
 import { CreateEditMockViewComponent } from './components/create-edit-mock-view/create-edit-mock-view.component';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';

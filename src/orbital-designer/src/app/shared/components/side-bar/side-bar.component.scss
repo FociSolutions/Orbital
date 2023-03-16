@@ -31,11 +31,12 @@
     margin-bottom: 2vh;
 
     mat-icon {
-      opacity: 0.54;
+      opacity: 1;
     }
 
     h4 {
       font-weight: 400;
+      color: white;
       padding-left: 1em;
       width: 7.5em;
       overflow: hidden;
@@ -76,11 +77,11 @@
 }
 
 mat-action-list button mat-icon {
-  opacity: 0.54;
+  opacity: 1;
 }
 
 mat-action-list a mat-icon {
-  opacity: 0.54;
+  opacity: 1;
 }
 
 mat-action-list button h4 {

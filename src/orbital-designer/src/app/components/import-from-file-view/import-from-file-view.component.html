@@ -18,12 +18,12 @@
     <mat-card-content class="expand">
       <mat-list dense>
         <mat-list-item *ngFor="let mocks of mockdefinitionValid">
-          <h3>{{ mocks | titlecase }}</h3>
-          <mat-icon matListIcon color="primary">check_circle_outline</mat-icon>
+          <mat-icon inline class="import-file-icon" color="primary">check_circle_outline</mat-icon>
+          <strong>{{ mocks | titlecase }}</strong>
         </mat-list-item>
         <mat-list-item *ngFor="let mocks of mockdefinitionInvalid">
-          <h3>{{ mocks | titlecase }}</h3>
-          <mat-icon matListIcon color="warn">cancel</mat-icon>
+          <strong>{{ mocks | titlecase }}</strong>
+          <mat-icon inline class="import-file-icon" color="warn">cancel</mat-icon>
         </mat-list-item>
 
         <p class="errorStyle" *ngIf="!isValid()">Valid File(s) Required</p>
