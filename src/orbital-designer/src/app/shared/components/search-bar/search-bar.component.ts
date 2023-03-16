@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { MatLegacyInput as MatInput } from '@angular/material/legacy-input';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-search-bar',
