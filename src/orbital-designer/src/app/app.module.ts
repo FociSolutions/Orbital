@@ -31,7 +31,7 @@ import { EndpointListItemComponent } from './components/endpoint-view/endpoint-l
 import { SideBarComponent } from './shared/components/side-bar/side-bar.component';
 import { ScenarioViewComponent } from './components/scenario-view/scenario-view.component';
 import { ScenarioEditorComponent } from './components/scenario-editor/scenario-editor.component';
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MetadataFormComponent } from './components/scenario-editor/metadata-form/metadata-form.component';

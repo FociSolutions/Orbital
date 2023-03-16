@@ -49,11 +49,6 @@ mat-card {
   display: flex;
   flex-direction: row;
   align-items: center;
-  mat-select {
-    min-width: 4.5em;
-    padding-bottom: 0.32em;
-    margin-right: 0.3em;
-  }
   app-text-input {
     flex: 0 !important;
     text-transform: capitalize;
