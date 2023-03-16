@@ -30,12 +30,9 @@
     min-width: 14vw;
     margin-bottom: 2vh;
 
-    mat-icon {
-      opacity: 0.54;
-    }
-
     h4 {
       font-weight: 400;
+      color: white;
       padding-left: 1em;
       width: 7.5em;
       overflow: hidden;
@@ -46,10 +43,6 @@
       background: #646464 !important;
       color: white !important;
       opacity: 1;
-
-      mat-icon {
-        opacity: 1;
-      }
     }
 
     .mock-name {
@@ -73,14 +66,6 @@
     min-width: 14vw;
     margin-top: 1vh;
   }
-}
-
-mat-action-list button mat-icon {
-  opacity: 0.54;
-}
-
-mat-action-list a mat-icon {
-  opacity: 0.54;
 }
 
 mat-action-list button h4 {

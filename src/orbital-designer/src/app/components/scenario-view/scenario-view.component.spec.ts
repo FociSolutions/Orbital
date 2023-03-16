@@ -10,8 +10,8 @@ import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-c
 import { OverviewHeaderComponent } from '../../shared/components/overview-header/overview-header.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { faker } from '@faker-js/faker';
@@ -26,7 +26,7 @@ import { GetRuleTypeStringPipe } from 'src/app/pipes/get-rule-type-string/get-ru
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDefinitionService } from 'src/app/services/mock-definition/mock-definition.service';
 import { ValidationType } from 'src/app/models/mock-definition/scenario/token-rule.model';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { cloneDeep } from 'lodash';
 
 describe('ScenarioViewComponent', () => {

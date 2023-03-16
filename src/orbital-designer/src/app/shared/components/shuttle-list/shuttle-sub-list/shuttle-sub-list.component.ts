@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import {
-  MatLegacyListOption as MatListOption,
-  MatLegacySelectionList as MatSelectionList,
-} from '@angular/material/legacy-list';
+import { MatListOption, MatSelectionList } from '@angular/material/list';
 
 @Component({
   selector: 'app-shuttle-sub-list',
