@@ -12,7 +12,7 @@ import { ToolTipComponent } from './components/tooltip/tooltip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ShuttleSubListComponent } from './components/shuttle-list/shuttle-sub-list/shuttle-sub-list.component';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';

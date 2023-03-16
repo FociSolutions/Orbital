@@ -43,10 +43,6 @@
       background: #646464 !important;
       color: white !important;
       opacity: 1;
-
-      mat-icon {
-        opacity: 1;
-      }
     }
 
     .mock-name {
@@ -70,14 +66,6 @@
     min-width: 14vw;
     margin-top: 1vh;
   }
-}
-
-mat-action-list button mat-icon {
-  opacity: 1;
-}
-
-mat-action-list a mat-icon {
-  opacity: 1;
 }
 
 mat-action-list button h4 {

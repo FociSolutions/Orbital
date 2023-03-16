@@ -11,7 +11,7 @@ import { OverviewHeaderComponent } from '../../shared/components/overview-header
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
 import { faker } from '@faker-js/faker';
