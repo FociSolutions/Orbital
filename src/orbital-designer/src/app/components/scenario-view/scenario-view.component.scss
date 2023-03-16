@@ -59,8 +59,12 @@ button#add {
   }
 }
 
-.title mat-chip-list {
+.title mat-chip-listbox {
   margin-right: 1em;
+
+  mat-chip-option {
+    font-size: 1.25em;
+  }
 }
 
 p#notFoundMessage {

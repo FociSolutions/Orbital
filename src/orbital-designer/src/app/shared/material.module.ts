@@ -13,7 +13,7 @@ import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/lega
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
