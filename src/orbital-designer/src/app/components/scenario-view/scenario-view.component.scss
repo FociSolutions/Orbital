@@ -63,7 +63,7 @@ button#add {
   margin-right: 1em;
 
   mat-chip-option {
-    font-size: 1.25em;
+    font-size: 1em;
   }
 }
 
@@ -104,14 +104,14 @@ p#notFoundMessage {
     background-color: #f0f0f0;
     cursor: pointer;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
   mat-card-content {
     min-width: 90%;
     max-width: 90%;
     margin-left: 7%;
     padding: 1.7%;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
   mat-card-title {
     font-size: 1.2em;
     display: flex;
@@ -172,6 +172,10 @@ p#notFoundMessage {
   left: 0;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.5);
+
+  .dialog-modal {
+    padding: 1em;
+  }
 }
 
 .validation-type {
@@ -180,7 +184,7 @@ p#notFoundMessage {
   width: 20rem;
 }
 
-.mat-card-footer {
+.mat-mdc-card-footer {
   justify-content: space-between;
   button {
     float: right;

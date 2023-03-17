@@ -42,7 +42,7 @@ button#save-button {
   background-color: rgba(0, 0, 0, 0.5);
 
   .dialog-modal {
-    padding: 16px;
+    padding: 1em;
   }
 }
 
@@ -58,4 +58,8 @@ button#save-button {
 .button-row {
   justify-content: space-between;
   margin: 1rem;
+}
+
+mat-chip-option {
+  font-size: 1em;
 }
