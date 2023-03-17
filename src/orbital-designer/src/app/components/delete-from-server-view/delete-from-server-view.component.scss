@@ -1,13 +1,14 @@
-mat-card#container {
+#container {
   min-width: 70vw;
   min-height: 70vh;
   margin: 6.824vh auto;
+  padding: 16px;
 
   mat-card-title,
   mat-card-subtitle {
     align-self: center;
     color: #000;
-    padding-top: 0.6em;
+    padding: 0.25em 0;
   }
 
   .button-div {
