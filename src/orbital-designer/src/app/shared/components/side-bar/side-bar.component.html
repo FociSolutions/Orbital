@@ -60,7 +60,7 @@
 
 <div class="overlay" *ngIf="triggerOpenConfirmBox">
   <div>
-    <mat-card>
+    <mat-card appearance="raised" class="dialog-modal">
       <app-dialog-box
         titleText="Confirm Mockdefinition Dismissal"
         confirmButtonText="Confirm"
@@ -74,7 +74,7 @@
 
 <div class="overlay" *ngIf="triggerOpenCancelBox">
   <div>
-    <mat-card>
+    <mat-card appearance="raised" class="dialog-modal">
       <app-dialog-box
         titleText="Confirm Scenario Changes Discard"
         confirmButtonText="Confirm"
