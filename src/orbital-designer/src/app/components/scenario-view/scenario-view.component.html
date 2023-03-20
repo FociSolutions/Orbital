@@ -35,6 +35,7 @@
               <mat-list-item *ngFor="let scenario of filteredList">
                 <div id="scenario-list-item">
                   <mat-card
+                    appearance="raised"
                     *ngIf="scenario"
                     class="scenario-list-item-container min-card-height"
                     [routerLink]="this.isHoveringOverMenu ? null : ['/scenario-editor', scenario.id]"
@@ -107,11 +108,11 @@
 
                   <div class="overlay" *ngIf="showDialog(scenario)">
                     <div class="confirm-scenario-delete-dialog">
-                      <mat-card>
+                      <mat-card appearance="raised">
                         <app-dialog-box
                           titleText="Confirm Scenario Deletion"
-                          confirmButtonText="DELETE"
-                          cancelButtonText="CANCEL"
+                          confirmButtonText="Delete"
+                          cancelButtonText="Cancel"
                           [bodyText]="getBodyText(scenario)"
                           (choiceBoolean)="onDialogAction($event, scenario)"
                         ></app-dialog-box>
