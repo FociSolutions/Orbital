@@ -1,3 +1,4 @@
+// @David/Charl - Please Review
 .endpointlistitemcontainer {
   padding: 0em;
   display: flex;
@@ -10,7 +11,9 @@
     cursor: pointer;
   }
 
+  // @David/Charl - Please Review
   mat-card-content {
+    padding: 0 !important;
     margin-bottom: 0;
     display: flex;
     justify-content: flex-start;
@@ -22,7 +25,7 @@
       padding: 1rem;
       min-width: 0;
 
-      mat-card-title {
+      .mat-mdc-card-title {
         word-wrap: break-word;
         max-width: 65rem;
       }
@@ -35,7 +38,7 @@
       white-space: nowrap;
     }
 
-    mat-card-subtitle {
+    .mat-mdc-card-subtitle {
       margin-bottom: 0;
     }
 
@@ -60,12 +63,15 @@
     color: rgb(58, 58, 58);
   }
 
+  // @David/Charl - Please Review
   .verb-header {
+    padding: 0 !important;
     width: 10rem;
     flex-shrink: 0;
-    height: 100%;
+    height: 100% !important;
   }
 }
-::ng-deep .mat-card-header-text {
+
+::ng-deep .mat-mdc-card-header-text {
   margin: auto !important;
 }

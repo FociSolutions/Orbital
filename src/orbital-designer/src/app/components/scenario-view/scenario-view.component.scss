@@ -1,3 +1,4 @@
+// @David/Charl - Please Review
 .container.scenarioview {
   width: 95vw !important;
   min-height: 85vh !important;
@@ -105,6 +106,7 @@ p#notFoundMessage {
     cursor: pointer;
   }
   /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+  //@David/Charl - Please Review
   mat-card-content {
     min-width: 90%;
     max-width: 90%;
@@ -112,6 +114,7 @@ p#notFoundMessage {
     padding: 1.7%;
   }
   /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+  //@David/Charl - Please Review
   mat-card-title {
     font-size: 1.2em;
     display: flex;
