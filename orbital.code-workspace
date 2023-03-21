@@ -42,6 +42,7 @@
       "azureregistrypassword",
       "behaviour",
       "bodyrule",
+      "browserslist",
       "buildserver",
       "clonedeep",
       "Cobertura",
