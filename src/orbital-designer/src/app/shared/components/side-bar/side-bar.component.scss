@@ -1,7 +1,7 @@
 .side-bar-container {
   min-width: 14vw;
   min-height: 85vh;
-  background-color: white;
+  background-color: #fff;
   border-right: 0.1em solid rgba(0, 0, 0, 0.12);
   overflow-y: scroll;
   position: sticky;
@@ -29,19 +29,20 @@
   .side-bar-middle {
     min-width: 14vw;
     margin-bottom: 2vh;
+    color: #646464;
 
     h4 {
       font-weight: 400;
-      color: white;
       padding-left: 1em;
       width: 7.5em;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .selected {
-      background: #646464 !important;
-      color: white !important;
+    .selected,
+    .selected h4 {
+      background: #646464;
+      color: #fff;
       opacity: 1;
     }
 
