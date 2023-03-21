@@ -135,10 +135,10 @@
 
 <ng-template #headerContent let-path="path">
   <div class="title row center">
-    <mat-chip-listbox
-      ><mat-chip-option [style.background-color]="this.endpointVerb | getVerbColor">{{
+    <mat-chip-listbox>
+      <mat-chip [style.background-color]="this.endpointVerb | getVerbColor">{{
         this.endpointVerb | getVerbString
-      }}</mat-chip-option>
+      }}</mat-chip>
     </mat-chip-listbox>
     <h3>
       {{ this.endpointPath }}

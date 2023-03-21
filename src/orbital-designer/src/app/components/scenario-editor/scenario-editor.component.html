@@ -85,9 +85,7 @@
   <div class="title column center">
     <div class="endpoint-info">
       <mat-chip-listbox class="mr-1">
-        <mat-chip-option [style.background-color]="endpointVerb | getVerbColor">{{
-          endpointVerb | getVerbString
-        }}</mat-chip-option>
+        <mat-chip [style.background-color]="endpointVerb | getVerbColor">{{ endpointVerb | getVerbString }}</mat-chip>
       </mat-chip-listbox>
       <h3>
         {{ endpointPath }}
