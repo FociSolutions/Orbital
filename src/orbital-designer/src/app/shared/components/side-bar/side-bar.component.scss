@@ -64,8 +64,9 @@
   }
 
   .side-bar-bottom {
-    min-width: 14vw;
-    margin-top: 1vh;
+    mat-icon {
+      margin: 0 1.25rem;
+    }
   }
 }
 

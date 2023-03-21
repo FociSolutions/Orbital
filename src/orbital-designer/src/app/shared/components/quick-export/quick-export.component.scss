@@ -19,3 +19,9 @@ button:hover {
   color: red;
   padding-left: 20px;
 }
+
+.side-bar-container {
+  mat-icon {
+    margin: 0 1.25rem;
+  }
+}
