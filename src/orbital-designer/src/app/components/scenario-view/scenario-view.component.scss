@@ -50,7 +50,7 @@ button#add {
   padding: 0 2.25rem;
   display: flex;
   justify-content: space-between;
-  button {
+  button#add-scenario-button {
     &:hover {
       background-color: #005c50;
     }

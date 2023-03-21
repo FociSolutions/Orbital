@@ -125,8 +125,12 @@
           </div>
         </div>
         <div class="footer-buttons">
-          <button mat-raised-button color="primary" (click)="goToEndpoints()">Back to Endpoints</button>
-          <button (click)="addScenario()" mat-raised-button color="primary">Add Scenario</button>
+          <button mat-raised-button (click)="goToEndpoints()">
+            <mat-icon>chevron_left</mat-icon>Back to Endpoints
+          </button>
+          <button (click)="addScenario()" id="add-scenario-button" mat-raised-button color="primary">
+            Add Scenario
+          </button>
         </div>
       </div>
     </div>
