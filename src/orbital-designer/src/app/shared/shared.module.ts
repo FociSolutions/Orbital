@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileInputComponent } from './components/file-input/file-input.component';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { ToolTipComponent } from './components/tooltip/tooltip.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

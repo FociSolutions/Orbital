@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { ScenarioEditorComponent } from './scenario-editor.component';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MatButtonModule } from '@angular/material/button';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DesignerStore } from 'src/app/store/designer-store';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MetadataFormComponent } from './metadata-form/metadata-form.component';

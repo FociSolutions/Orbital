@@ -1,4 +1,4 @@
-<mat-card class="column" id="container">
+<mat-card appearance="raised" class="column" id="container">
   <mat-card-title class="capitalize">Delete from Server</mat-card-title>
   <mat-card-subtitle>Delete existing Mockdefinition(s) below</mat-card-subtitle>
   <div class="column center-hr flex-grow div-body">
@@ -29,7 +29,7 @@
           </div>
           <div class="overlay" *ngIf="triggerOpenConfirmBox">
             <div>
-              <mat-card>
+              <mat-card appearance="raised">
                 <app-dialog-box
                   titleText="Confirm Mockdefinition Deletion"
                   confirmButtonText="Confirm"
@@ -54,7 +54,7 @@
     ></app-shuttle-list>
   </div>
   <div class="row button-div">
-    <button mat-raised-button color="primary" (click)="onBack()">Back</button>
+    <button mat-raised-button (click)="onBack()">Back</button>
     <button mat-raised-button color="primary" [disabled]="disabled" (click)="triggerOpenConfirmationBox()">
       Delete
     </button>

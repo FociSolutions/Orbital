@@ -1,4 +1,4 @@
-<mat-card class="mat-elevation-z20 import-from-file-container flexColumn">
+<mat-card class="import-from-file-container flexColumn">
   <mat-card-title>Import From File(s)</mat-card-title>
   <mat-card-subtitle>Import existing Mockdefinition file(s) below</mat-card-subtitle>
   <app-file-input
@@ -11,7 +11,7 @@
     [errorMessage]="errorMessageToEmitFromCreate"
   >
   </app-file-input>
-  <mat-card>
+  <mat-card appearance="raised">
     <mat-card-subtitle>
       <h3>Imported Mockdefinition(s)</h3>
     </mat-card-subtitle>
@@ -32,7 +32,7 @@
   </mat-card>
   <mat-card-footer>
     <div class="row buttons-div">
-      <button mat-raised-button color="primary" (click)="goBack()">Back</button>
+      <button mat-raised-button (click)="goBack()">Back</button>
       <button mat-raised-button color="primary" [disabled]="buttonDisabled" (click)="createMock()">Next</button>
     </div>
   </mat-card-footer>
