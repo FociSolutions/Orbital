@@ -37,7 +37,7 @@
     </div>
 
     <div class="row buttons-div">
-      <button mat-raised-button color="primary" (click)="goBack()">Back</button>
+      <button mat-raised-button (click)="goBack()">Back</button>
       <button *ngIf="!editMode" mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="createMock()">
         Create
       </button>

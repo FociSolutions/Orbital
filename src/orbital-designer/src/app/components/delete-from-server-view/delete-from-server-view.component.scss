@@ -1,13 +1,14 @@
-mat-card#container {
+#container {
   min-width: 70vw;
   min-height: 70vh;
   margin: 6.824vh auto;
+  padding: 1em;
 
   mat-card-title,
   mat-card-subtitle {
     align-self: center;
     color: #000;
-    padding-top: 0.6em;
+    padding: 0.25em 0;
   }
 
   .button-div {
@@ -50,11 +51,6 @@ mat-card#container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  mat-select {
-    min-width: 4.5em;
-    padding-bottom: 0.32em;
-    margin-right: 0.3em;
-  }
   app-text-input {
     flex: 0 !important;
     text-transform: capitalize;

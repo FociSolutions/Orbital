@@ -1,6 +1,6 @@
 import { GetVerbColorPipe } from './get-verb-color.pipe';
 import { VerbType } from '../../models/verb-type';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 describe('GetVerbColorPipe', () => {
   it('create an instance', () => {

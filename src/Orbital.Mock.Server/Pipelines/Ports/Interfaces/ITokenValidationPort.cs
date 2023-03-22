@@ -8,9 +8,10 @@ namespace Orbital.Mock.Server.Pipelines.Ports.Interfaces
     public interface ITokenValidationPort : ITokenParsePort
     {
         public bool CheckAuthentication { get; }
-
+        public bool CheckAuthorizaiton { get; }
+        public bool IsInvalidated { get; }
         public ICollection<MatchResult> TokenValidationResults { get; set; }
-
         public JwtSecurityToken Token { get; set; }
+        public void InvalidateToken();
     }
 }

@@ -19,7 +19,8 @@ RUN npm run build:ci -- --output-path=dist
 ############
 
 # base image
-FROM nginx:1.20-alpine
+# Pinning major and minor version because only concerned with bug fixes/patches, not new features
+FROM nginx:1.22-alpine
 
 ## Copy our default nginx config
 COPY ./src/orbital-designer/nginx/default.conf /etc/nginx/conf.d/

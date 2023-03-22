@@ -47,6 +47,12 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                 return port;
             }
 
+            if (port.CheckAuthorizaiton && AuthorizationFailure(port, out MockResponse failAuthorizationResponse))
+            {
+                port.SelectedResponse = failAuthorizationResponse;
+                return port;
+            }
+
             var bestScenarios = GetBestScenarios(port);
 
             // if there are no default scenarios, then choose the first scenario as the best
@@ -119,7 +125,26 @@ namespace Orbital.Mock.Server.Pipelines.Filters
                             .ToHashSet();
             //< Get the scenarios (for those IDs) that contained a 401 (unauthorized) response
             var scenarios = port.Scenarios.Where(x => res.Contains(x.Id) && x.Response.Status == (int)HttpStatusCode.Unauthorized);
-            response = scenarios.Count() > 0 ? scenarios.First().Response : MockResponse.Create401();  
+            response = scenarios.Count() > 0 ? scenarios.First().Response : MockResponse.Create401();
+
+            return true;
+        }
+
+        static bool AuthorizationFailure(IProcessMessagePort port, out MockResponse response)
+        {
+            if (!port.IsInvalidated)
+            {
+                response = null;
+                return false;
+            }
+
+            var res = port.TokenValidationResults
+                .Concat(port.TokenMatchResults)
+                .Select(x => x.ScenarioId)
+                .ToHashSet();
+            //< Get the scenarios (for those IDs) that contained a 401 (unauthorized) response
+            var scenarios = port.Scenarios.Where(x => res.Contains(x.Id) && x.Response.Status == (int)HttpStatusCode.Unauthorized);
+            response = scenarios.Count() > 0 ? scenarios.First().Response : MockResponse.Create401();
 
             return true;
         }

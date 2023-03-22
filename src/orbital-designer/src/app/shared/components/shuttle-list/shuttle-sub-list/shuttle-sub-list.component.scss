@@ -10,6 +10,7 @@
     padding: 0.3em;
     input {
       flex-grow: 1;
+      border-color: transparent;
     }
 
     mat-icon {
@@ -48,14 +49,6 @@
       }
     }
   }
-}
-
-mat-selection-list::-webkit-scrollbar {
-  width: 5px;
-}
-
-mat-selection-list::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.26);
 }
 
 .list-item {

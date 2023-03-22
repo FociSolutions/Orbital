@@ -1,5 +1,5 @@
 <div class="fullscreen column center-hr">
-  <div class="container scenarioview">
+  <div class="container scenario-view">
     <div class="row">
       <div class="sidebar">
         <app-side-bar></app-side-bar>
@@ -31,10 +31,11 @@
             {{ this.errorMessage }}
           </p>
           <div id="scenario-list">
-            <mat-list class="scenariolistcontainer">
+            <mat-list class="scenario-list-container">
               <mat-list-item *ngFor="let scenario of filteredList">
                 <div id="scenario-list-item">
                   <mat-card
+                    appearance="raised"
                     *ngIf="scenario"
                     class="scenario-list-item-container min-card-height"
                     [routerLink]="this.isHoveringOverMenu ? null : ['/scenario-editor', scenario.id]"
@@ -107,11 +108,11 @@
 
                   <div class="overlay" *ngIf="showDialog(scenario)">
                     <div class="confirm-scenario-delete-dialog">
-                      <mat-card>
+                      <mat-card appearance="raised">
                         <app-dialog-box
                           titleText="Confirm Scenario Deletion"
-                          confirmButtonText="DELETE"
-                          cancelButtonText="CANCEL"
+                          confirmButtonText="Delete"
+                          cancelButtonText="Cancel"
                           [bodyText]="getBodyText(scenario)"
                           (choiceBoolean)="onDialogAction($event, scenario)"
                         ></app-dialog-box>
@@ -124,8 +125,12 @@
           </div>
         </div>
         <div class="footer-buttons">
-          <button mat-raised-button color="primary" (click)="goToEndpoints()">Back to Endpoints</button>
-          <button (click)="addScenario()" mat-raised-button color="primary">Add Scenario</button>
+          <button mat-raised-button (click)="goToEndpoints()">
+            <mat-icon>chevron_left</mat-icon>Back to Endpoints
+          </button>
+          <button (click)="addScenario()" id="add-scenario-button" mat-raised-button color="primary">
+            Add Scenario
+          </button>
         </div>
       </div>
     </div>
@@ -134,11 +139,11 @@
 
 <ng-template #headerContent let-path="path">
   <div class="title row center">
-    <mat-chip-list
-      ><mat-chip [style.background-color]="this.endpointVerb | getVerbColor">{{
+    <mat-chip-listbox>
+      <mat-chip [style.background-color]="this.endpointVerb | getVerbColor">{{
         this.endpointVerb | getVerbString
       }}</mat-chip>
-    </mat-chip-list>
+    </mat-chip-listbox>
     <h3>
       {{ this.endpointPath }}
     </h3>

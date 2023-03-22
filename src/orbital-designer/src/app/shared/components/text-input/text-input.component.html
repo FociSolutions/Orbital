@@ -5,7 +5,6 @@
     [formControl]="control"
     (focusout)="setDirty()"
     [errorStateMatcher]="errorStateMatcher"
-    autocomplete="off"
     [maxlength]="maxLength"
   />
   <mat-error *ngFor="let error of getErrors()">
@@ -21,7 +20,6 @@
     [placeholder]="title"
     [formControl]="control"
     [errorStateMatcher]="errorStateMatcher"
-    autocomplete="off"
     (focusout)="setDirty()"
     [maxlength]="maxLength"
   ></textarea>

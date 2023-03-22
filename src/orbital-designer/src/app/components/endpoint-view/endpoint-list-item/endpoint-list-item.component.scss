@@ -1,9 +1,7 @@
-.endpointlistitemcontainer {
-  padding: 0em;
-  display: flex;
-  min-width: 0;
+.endpoint-list-item-container {
+  padding: 0;
   align-items: stretch;
-  width: 100%;
+  margin: 0.25rem;
 
   &:hover {
     background-color: #f0f0f0;
@@ -11,41 +9,39 @@
   }
 
   mat-card-content {
-    margin-bottom: 0;
+    padding: 0 !important;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
 
     .endpoint-info-content {
       flex-grow: 1;
-      padding: 1rem;
+      padding: 0.75rem;
       min-width: 0;
 
-      mat-card-title {
+      .mat-mdc-card-title {
         word-wrap: break-word;
-        max-width: 65rem;
+        padding-right: 0.75rem;
       }
     }
 
     .scenario-count {
-      text-align: left;
-      font-weight: bold;
-      padding: 0 1.5rem 0 1rem;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
       white-space: nowrap;
     }
 
-    mat-card-subtitle {
+    .mat-mdc-card-subtitle {
       margin-bottom: 0;
     }
 
     .view-endpoint {
       button {
+        cursor: pointer;
         border: none;
         width: 100%;
-        height: 5rem;
+        height: 100%;
         background-color: transparent;
-        padding: 0rem 3rem;
+        padding: 0rem 1.5rem;
 
         .mat-icon {
           transform: scale(1.5);
@@ -55,17 +51,21 @@
   }
 
   .verb-text {
-    font-size: 1.5em;
+    font-size: 1.25rem;
     margin-bottom: 0;
     color: rgb(58, 58, 58);
   }
 
-  .verb-header {
-    width: 10rem;
-    flex-shrink: 0;
-    height: 100%;
+  .endpoint-row-content {
+    align-items: stretch;
+    justify-content: center;
   }
-}
-::ng-deep .mat-card-header-text {
-  margin: auto !important;
+
+  .verb-header {
+    display: flex;
+    width: 8.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
 }

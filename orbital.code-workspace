@@ -23,8 +23,6 @@
       "dbaeumer.vscode-eslint",
       // VSCode message when package-lock.json changes
       "matteopieroni.refresh-npm-packages",
-      // Command Pallette for scripts defined in package.json
-      "eg2.vscode-npm-script",
       // INtellisense when creating imports for node_modules packages
       "christian-kohler.npm-intellisense",
       // Code-aware spell checker
@@ -44,6 +42,7 @@
       "azureregistrypassword",
       "behaviour",
       "bodyrule",
+      "browserslist",
       "buildserver",
       "clonedeep",
       "Cobertura",

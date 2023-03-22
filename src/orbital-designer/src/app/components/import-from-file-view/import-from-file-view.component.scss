@@ -17,15 +17,11 @@
 
 .import-from-file-container {
   margin-top: 100px;
+  box-shadow: 0px 15px 25px 3px rgba(153, 148, 153, 1);
   mat-card-title,
   mat-card-subtitle {
     text-align: center;
   }
-}
-
-// hide the last divider in the list so it doesn't divide the end with no items
-mat-card div:last-child mat-divider {
-  display: none;
 }
 
 .noDots {
@@ -46,6 +42,12 @@ mat-card div:last-child mat-divider {
 
 .card {
   height: 100%;
+}
+
+.import-file-icon {
+  font-size: 1.5em !important;
+  margin-right: 0.5rem;
+  transform: translateY(7px);
 }
 
 .errorStyle {

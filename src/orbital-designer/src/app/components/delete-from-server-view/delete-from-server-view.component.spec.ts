@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpResponse } from '@angular/common/http';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { FormControl } from '@angular/forms';
 import { MockDefinition } from '../../models/mock-definition/mock-definition.model';

@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BodyRuleItemFormComponent, BodyRuleItemFormValues } from './body-rule-item-form.component';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { RuleType } from 'src/app/models/mock-definition/scenario/rule-type';
 import { BodyRuleType, InternalBodyRuleItemFormValues, TextRuleCondition } from './body-rule-item-form.types';
 import { SimpleChanges } from '@angular/core';

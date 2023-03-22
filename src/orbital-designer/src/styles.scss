@@ -1,13 +1,13 @@
 // Custom Theming for Angular Material
 @use '@angular/material' as mat;
 // For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
 @import '~jsoneditor/dist/jsoneditor.min.css';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
+@include mat.all-component-typographies();
 @include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
@@ -21,9 +21,15 @@ $orbital-designer-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $orbital-designer-theme: mat.define-light-theme(
-  $orbital-designer-primary,
-  $orbital-designer-accent,
-  $orbital-designer-warn
+  (
+    color: (
+      primary: $orbital-designer-primary,
+      accent: $orbital-designer-accent,
+      warn: $orbital-designer-warn,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
 );
 
 // Include theme styles for core and each component used in your app.
@@ -114,7 +120,7 @@ body {
 }
 
 .error-message,
-.mat-error {
+.mat-mdc-form-field-error {
   display: block;
   font-size: 0.75rem;
   font-weight: 400;
@@ -126,4 +132,8 @@ body {
 
 .text-muted {
   color: #8f8f8f;
+}
+
+mat-card {
+  padding: 1em;
 }

@@ -82,9 +82,10 @@ namespace Orbital.Mock.Server.Pipelines.Ports
         public JwtSecurityToken Token { get; set; }
         public ICollection<MatchResult> TokenValidationResults { get; set; }
         public ICollection<MatchResult> TokenMatchResults { get; set; }
-        public bool IsAuthenticated => Token != null;
-
+        public bool IsAuthenticated => !IsInvalidated;
+        public bool IsInvalidated { get; private set; } = false;
         public bool CheckAuthentication => Scenarios.Any(x => x.RequiresTokenValidation());
+        public bool CheckAuthorizaiton => Scenarios.Any(x => x.RequiresTokenRequestMatch());
 
         public IFaultablePort AppendFault(Exception e)
         {
@@ -94,6 +95,12 @@ namespace Orbital.Mock.Server.Pipelines.Ports
             Faults.Add(fault);
 
             return this;
+        }
+
+        public void InvalidateToken()
+        {
+            IsInvalidated = true;
+            Token = null;
         }
     }
 }

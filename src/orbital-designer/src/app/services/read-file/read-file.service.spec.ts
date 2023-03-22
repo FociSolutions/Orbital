@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ReadFileService } from './read-file.service';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 describe('ReadFileService', () => {
   let service: ReadFileService;

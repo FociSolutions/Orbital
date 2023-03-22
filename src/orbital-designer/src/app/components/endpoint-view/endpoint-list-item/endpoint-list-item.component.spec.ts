@@ -8,7 +8,7 @@ import { GetVerbColorPipe } from 'src/app/pipes/get-verb-color/get-verb-color.pi
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';
 import { Router } from '@angular/router';
 import { Endpoint } from 'src/app/models/endpoint.model';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { VerbType } from 'src/app/models/verb-type';
 import { OpenAPIV2 } from 'openapi-types';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,7 +37,7 @@ describe('EndpointListItemComponent', () => {
   describe('EndpointListItemComponent.selectEndpoint()', () => {
     beforeEach(() => {
       const path = `/${faker.random.words()}`;
-      const verb = faker.random.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
+      const verb = faker.helpers.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
 
       const response = { description: faker.random.words() } as OpenAPIV2.Response;
       const responseObject = { default: response } as OpenAPIV2.ResponsesObject;

@@ -1,7 +1,7 @@
 .side-bar-container {
   min-width: 14vw;
   min-height: 85vh;
-  background-color: white;
+  background-color: #fff;
   border-right: 0.1em solid rgba(0, 0, 0, 0.12);
   overflow-y: scroll;
   position: sticky;
@@ -29,10 +29,7 @@
   .side-bar-middle {
     min-width: 14vw;
     margin-bottom: 2vh;
-
-    mat-icon {
-      opacity: 0.54;
-    }
+    color: #646464;
 
     h4 {
       font-weight: 400;
@@ -42,14 +39,11 @@
       text-overflow: ellipsis;
     }
 
-    .selected {
-      background: #646464 !important;
-      color: white !important;
+    .selected,
+    .selected h4 {
+      background: #646464;
+      color: #fff;
       opacity: 1;
-
-      mat-icon {
-        opacity: 1;
-      }
     }
 
     .mock-name {
@@ -70,17 +64,10 @@
   }
 
   .side-bar-bottom {
-    min-width: 14vw;
-    margin-top: 1vh;
+    mat-icon {
+      margin: 0 1.25rem;
+    }
   }
-}
-
-mat-action-list button mat-icon {
-  opacity: 0.54;
-}
-
-mat-action-list a mat-icon {
-  opacity: 0.54;
 }
 
 mat-action-list button h4 {

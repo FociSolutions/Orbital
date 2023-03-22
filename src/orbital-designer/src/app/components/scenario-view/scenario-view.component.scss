@@ -1,4 +1,4 @@
-.container.scenarioview {
+.container.scenario-view {
   width: 95vw !important;
   min-height: 85vh !important;
   margin-top: 2vh;
@@ -46,20 +46,18 @@ button#add {
 }
 
 .footer-buttons {
-  margin-left: 2.8rem;
+  margin-top: 1rem;
+  padding: 0 2.25rem;
   display: flex;
-  align-items: flex-start;
-  width: 94%;
   justify-content: space-between;
-  button {
-    margin-top: 1em;
+  button#add-scenario-button {
     &:hover {
       background-color: #005c50;
     }
   }
 }
 
-.title mat-chip-list {
+.title mat-chip-listbox {
   margin-right: 1em;
 }
 
@@ -72,29 +70,20 @@ p#notFoundMessage {
   justify-content: center;
 }
 
-.scenariolistcontainer {
+.scenario-list-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
 
   mat-list-item {
-    margin-top: 0.6em;
-    width: 100%;
+    margin-bottom: 0.5rem;
     height: auto;
-  }
-
-  div#scenario-list-item {
-    width: 100%;
   }
 }
 
 .scenario-list-item-container {
-  padding: 0em;
+  padding: 0;
+  margin: 0.25rem;
   display: flex;
-  flex-direction: row;
-  width: 100%;
 
   &:hover {
     background-color: #f0f0f0;
@@ -102,14 +91,11 @@ p#notFoundMessage {
   }
 
   mat-card-content {
-    min-width: 90%;
-    max-width: 90%;
-    margin-left: 7%;
-    padding: 1.7%;
+    padding: 0.25rem 1rem;
   }
 
   mat-card-title {
-    font-size: 1.2em;
+    font-size: 1.2rem;
     display: flex;
     justify-content: space-between;
     align-content: center;
@@ -118,7 +104,6 @@ p#notFoundMessage {
 
   .scenario-options-menu {
     position: relative;
-    bottom: 0.6em;
   }
 
   .verb {
@@ -173,10 +158,10 @@ p#notFoundMessage {
 .validation-type {
   margin-left: 2.5rem;
   margin-top: 0.25rem;
-  width: 15rem;
+  width: 20rem;
 }
 
-.mat-card-footer {
+.mat-mdc-card-footer {
   justify-content: space-between;
   button {
     float: right;

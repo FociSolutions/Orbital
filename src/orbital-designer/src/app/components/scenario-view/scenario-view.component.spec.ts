@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule } from '@angular/forms';
 import { Scenario, ScenarioParams } from 'src/app/models/mock-definition/scenario/scenario.model';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { VerbType } from 'src/app/models/verb-type';
 import validMockDefinition from '../../../test-files/test-mockdefinition-object';
 import { GetVerbStringPipe } from 'src/app/pipes/get-verb-string/get-verb-string.pipe';

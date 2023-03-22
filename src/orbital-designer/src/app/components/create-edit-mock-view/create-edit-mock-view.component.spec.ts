@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '../../shared/shared.module';
@@ -6,7 +6,7 @@ import { CreateEditMockViewComponent } from './create-edit-mock-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Location } from '@angular/common';
 import validOpenApiText from '../../../test-files/valid-openapi-spec';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { MockDefinition } from 'src/app/models/mock-definition/mock-definition.model';
 import { DesignerStore } from 'src/app/store/designer-store';
 import { Router } from '@angular/router';
@@ -123,6 +123,7 @@ describe('CreateEditMockViewComponent', () => {
         fixture.detectChanges();
         tick();
         expect(routerSpy).not.toHaveBeenCalled();
+        flush();
       });
     }));
   });

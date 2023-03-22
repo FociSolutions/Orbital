@@ -84,14 +84,16 @@ describe('SideBarComponent', () => {
   // and compared against a valid mock Mockdefinitions.
   describe('SideBarComponent.updateSelected', () => {
     it('should return true if the Mockdefinitions menu item is updated and navigate to endpoint-view', fakeAsync(() => {
-      const router = TestBed.inject(Router);
-      const spy = jest.spyOn(router, 'navigateByUrl');
-      const expected = validMockDefinition;
-      component.updateSelected(validMockDefinition);
-      fixture.detectChanges();
-      expect(store.state.mockDefinition).toEqual(expected);
-      expect(spy).toHaveBeenCalledWith('/endpoint-view');
-      spy.mockRestore();
+      fixture.ngZone?.run(() => {
+        const router = TestBed.inject(Router);
+        const spy = jest.spyOn(router, 'navigateByUrl');
+        const expected = validMockDefinition;
+        component.updateSelected(validMockDefinition);
+        fixture.detectChanges();
+        expect(store.state.mockDefinition).toEqual(expected);
+        expect(spy).toHaveBeenCalledWith('/endpoint-view');
+        spy.mockRestore();
+      });
     }));
   });
   describe('SideBarComponent.openDialogBox', () => {

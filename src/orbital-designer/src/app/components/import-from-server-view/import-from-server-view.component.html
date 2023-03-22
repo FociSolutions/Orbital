@@ -1,4 +1,4 @@
-<mat-card class="column">
+<mat-card appearance="raised" class="column">
   <mat-card-title class="capitalize">Import from Server</mat-card-title>
   <mat-card-subtitle>Import existing Mockdefinition(s) below</mat-card-subtitle>
   <div class="column center-hr flex-grow div-body">
@@ -36,7 +36,7 @@
     ></app-shuttle-list>
   </div>
   <div class="row button-div">
-    <button mat-raised-button color="primary" (click)="onBack()">Back</button>
+    <button mat-raised-button (click)="onBack()">Back</button>
     <button mat-raised-button color="primary" [disabled]="disabled" (click)="onSubmit()">Next</button>
   </div>
 </mat-card>

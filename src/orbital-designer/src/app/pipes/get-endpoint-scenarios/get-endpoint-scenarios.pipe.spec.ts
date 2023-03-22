@@ -1,5 +1,5 @@
 import { GetEndpointScenariosPipe } from './get-endpoint-scenarios.pipe';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { VerbType } from '../../models/verb-type';
 import { Scenario } from '../../models/mock-definition/scenario/scenario.model';
 import * as uuid from 'uuid';
@@ -11,7 +11,7 @@ import { OpenAPIV2 } from 'openapi-types';
 
 describe('GetEndpointScenariosPipe', () => {
   const mockPath = faker.internet.url();
-  const mockVerb = faker.random.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
+  const mockVerb = faker.helpers.arrayElement([VerbType.GET, VerbType.DELETE, VerbType.PUT, VerbType.POST]);
   const BASE_SCENARIO: Scenario = {
     id: uuid.v4(),
     metadata: { title: 'New Scenario', description: '' },
@@ -33,7 +33,7 @@ describe('GetEndpointScenariosPipe', () => {
     const pipe = new GetEndpointScenariosPipe();
     const altScenario: Scenario = cloneDeep(BASE_SCENARIO);
     altScenario.path = mockPath + faker.random.words();
-    altScenario.verb = faker.random.arrayElement([VerbType.OPTIONS, VerbType.HEAD, VerbType.PATCH]);
+    altScenario.verb = faker.helpers.arrayElement([VerbType.OPTIONS, VerbType.HEAD, VerbType.PATCH]);
 
     const mockEndpoint: Endpoint = {
       path: mockPath,
@@ -51,7 +51,7 @@ describe('GetEndpointScenariosPipe', () => {
     const pipe = new GetEndpointScenariosPipe();
     const altScenario: Scenario = cloneDeep(BASE_SCENARIO);
     altScenario.path = mockPath + faker.random.words();
-    altScenario.verb = faker.random.arrayElement([VerbType.OPTIONS, VerbType.HEAD, VerbType.PATCH]);
+    altScenario.verb = faker.helpers.arrayElement([VerbType.OPTIONS, VerbType.HEAD, VerbType.PATCH]);
 
     const expected = [BASE_SCENARIO, altScenario];
     const actual = pipe.transform(expected, null);

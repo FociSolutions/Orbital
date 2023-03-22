@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PolicyFormComponent, PolicyFormValues } from './policy-form.component';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { PolicyType } from 'src/app/models/mock-definition/scenario/policy-type';
 import { SimpleChanges } from '@angular/core';
 

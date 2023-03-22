@@ -6,6 +6,10 @@
   flex-direction: column;
 }
 
+.mat-mdc-card-content:last-child {
+  padding-bottom: 0 !important;
+}
+
 .header-title {
   background-color: grayscale($color: #616161);
 }

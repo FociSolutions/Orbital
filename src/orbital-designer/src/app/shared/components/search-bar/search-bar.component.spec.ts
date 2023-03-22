@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchBarComponent } from './search-bar.component';
 

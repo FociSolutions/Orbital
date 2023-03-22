@@ -84,9 +84,9 @@
 <ng-template #headerContent let-path="path">
   <div class="title column center">
     <div class="endpoint-info">
-      <mat-chip-list class="mr-1">
+      <mat-chip-listbox class="mr-1">
         <mat-chip [style.background-color]="endpointVerb | getVerbColor">{{ endpointVerb | getVerbString }}</mat-chip>
-      </mat-chip-list>
+      </mat-chip-listbox>
       <h3>
         {{ endpointPath }}
       </h3>
@@ -101,7 +101,7 @@
 
 <div class="overlay" *ngIf="triggerOpenCancelBox">
   <div>
-    <mat-card>
+    <mat-card appearance="raised">
       <app-dialog-box
         titleText="Confirm Scenario Changes Discard"
         confirmButtonText="Confirm"
